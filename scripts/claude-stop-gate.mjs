@@ -13,14 +13,20 @@
 // pre-commit hook (.githooks/pre-commit → npm run check). Kept fast here (no
 // build, no vitest) so it is cheap to run every turn.
 import { execSync } from 'node:child_process'
-import { existsSync } from 'node:fs'
+import { existsSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 
+/* This package plus whatever products sit beside it. Read from the folder, never
+ * listed: a hardcoded list goes stale the day a product is added, and a published
+ * design system has no business naming its owner's projects. */
+const APPS = `${ROOT}/../../apps`
 const PACKAGES = [
   { name: 'design system', dir: ROOT },
-  { name: 'salim', dir: `${ROOT}/../../apps/salim` },
+  ...(existsSync(APPS) ? readdirSync(APPS) : [])
+    .map((name) => ({ name, dir: `${APPS}/${name}` }))
+    .filter(({ dir }) => existsSync(`${dir}/package.json`)),
 ]
 
 let failed = false

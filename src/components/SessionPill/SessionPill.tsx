@@ -17,7 +17,7 @@ type Props = {
   onClick: () => void
   /**
    * Dismiss — ONLY for a session that may be hidden (a wrap-up reminder, yes;
-   * a live emergency call, never). Salim's rule: dismissal is per state, and a
+   * a live emergency call, never). The rule one product set: dismissal is per state, and a
    * state change brings the pill back — the caller owns that comparison.
    */
   onDismiss?: () => void
@@ -31,7 +31,7 @@ type Props = {
  * The floating "a session is live elsewhere" pill: pulsing dot, what is
  * running, the timer, one press back to it. Rendered once by the app shell so
  * it survives navigation, and hidden on the session's own screen — the two
- * rules both hand-rolled versions (Salim's LiveCallBar, workshops'
+ * rules both hand-rolled versions (a live-call bar and a
  * RecordingPill) discovered independently. Presentational: state, polling and
  * routing stay in the app.
  */

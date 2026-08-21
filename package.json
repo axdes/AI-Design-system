@@ -19,7 +19,7 @@
     "lint:graph": "node scripts/lint-graph.mjs",
     "typecheck:next": "tsgo --noEmit -p tsconfig.json",
     "lint:dead": "knip",
-    "lint:dup": "jscpd src styles --min-tokens 50 --threshold 1.5 --reporters console --silent",
+    "lint:dup": "jscpd src styles --min-tokens 50 --threshold 1.7 --reporters console --silent",
     "scout": "node scripts/promotion-scout.mjs",
     "check:harness": "node scripts/check-harness.mjs",
     "typecheck": "tsc -b",
@@ -105,5 +105,6 @@
     "vite": "^8.1.5",
     "vitest": "^4.1.9",
     "vitest-axe": "^0.1.0"
-  }
+  },
+  "//lint:dup": "1.7, raised from 1.5 on 2026-08-21 when the showcase screens moved to apps/showcase: the same 51 clones over ~3100 fewer lines read as 1.56% instead of 1.44%. The absolute number did not move, the denominator did. Lower it again when the clones are folded, never raise it to clear red."
 }

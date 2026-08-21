@@ -76,7 +76,7 @@ type RowProps = {
 
 /**
  * One settings row: name and explanation on the left, the control on the
- * right. Consolidated from workshops' SettingsPage, where the contract was
+ * right. Consolidated from an app's SettingsPage, where the contract was
  * proven: every knob says what it affects, or nobody dares touch it.
  */
 export function SettingRow({ label, description, htmlFor, badge, children, className }: RowProps) {

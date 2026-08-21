@@ -1,7 +1,7 @@
 /**
  * Ecosystem symbol for the design system's own showcase — a light, standalone
- * mark, NO background tile, in the same family as the transcript waveform,
- * teams-digest's condensing chat and admin-portal's bell.
+ * mark, NO background tile, in the same family as the other products' marks:
+ * a waveform, a condensing chat, a bell.
  *
  * A component grid with a spark in the fourth cell: tiles are what a design
  * system is made of, and the spark is the AI that assembles them — the whole

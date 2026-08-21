@@ -1,7 +1,7 @@
 // WCAG contrast for the semantic pairs, for ANY package's token layer.
 //
-// It lived only in the design system and, hand-mirrored, in salim. workshops
-// overrides the brand palette and airun ships a token layer of its own, and
+// It lived only in the design system and, hand-mirrored, in one app. Other
+// products override the brand palette or ship a token layer of their own, and
 // neither had ever been measured — which is how a warning badge sat at 1.54:1 in
 // two products with a green gate above it.
 //
@@ -59,7 +59,7 @@ export function checkContrast({
   const primitives = new Map()
   for (const f of PRIMITIVE_FILES) for (const [k, v] of declarations(strip(readFileSync(f, 'utf8')))) primitives.set(k, v)
   const semanticCss = strip(readFileSync(SEMANTIC_FILE, 'utf8'))
-  /* A product may override a ROLE, not only a stop: workshops' green ramp is
+  /* A product may override a ROLE, not only a stop: a brighter green ramp is
    * brighter than the system's, so its success ink needs one stop darker to
    * clear its own tint. Those overrides are layered on top of the system's
    * roles, in the order the browser would apply them. */
@@ -67,7 +67,7 @@ export function checkContrast({
 
   /* Per THEME, the way a browser applies it. A role overridden in the file's
    * top-level `:root` would otherwise be read as overriding dark too, and the
-   * first attempt at this did exactly that: workshops' green ink went to a deep
+   * first attempt at this did exactly that: a product's green ink went to a deep
    * stop in both themes and dark measured a colour against itself, 1:1. */
   const overridesFor = (selector) => {
     const out = new Map()

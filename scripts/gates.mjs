@@ -79,7 +79,6 @@ export const GATES = [
    * registry stale. Nothing needs regenerating during a gate: the first step of
    * the main lane has already proved it is fresh. */
   { run: 'build:gate', why: 'it has to compile', lane: 'browser' },
-  { run: 'size', why: 'a gzipped bundle budget', lane: 'browser', needs: 'build:gate' },
   { run: 'audit', why: 'advisories, each with a written decision' , lane: 'main' },
   { run: 'scan:secrets', why: 'no keys or real addresses in what git carries' , lane: 'main' },
   {
@@ -90,14 +89,11 @@ export const GATES = [
     localOnly:
       'Pixel baselines are machine-specific by design: fonts rasterise differently per OS, so on a Linux runner these fail for a reason that is not a regression (visual/README.md). The STRUCTURE half of the same frame is not machine-specific and runs everywhere through audit:pages.',
   },
-  { run: 'audit:pages', why: 'how the screens are composed, in a real browser', lane: 'shots', needs: 'build:gate' },
-  {
-    run: 'screens',
-    lane: 'shots',
-    needs: 'build:gate',
-    why: 'whole screens shot at three widths against committed references',
-    localOnly: 'Same reason as visual: these are committed PNGs of rendered text.',
-  },
+  /* size, audit:pages and screens moved to apps/showcase on 2026-08-21, with the
+   * screens themselves. They measure a PRODUCT — a real bundle, a composed page,
+   * a whole screen at three widths — and this package stopped being one: it is a
+   * library, and the gallery that used to live inside it now consumes it from
+   * apps/ like every other product. `npm run check:all` runs both gates. */
 ]
 
 /** Which gates run in a mode. Derived, never hand-listed. */

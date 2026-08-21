@@ -1,8 +1,8 @@
 import { staticInlineStyle } from '../lib/inline-style.mjs'
 // The project-specific rules, in ONE place, for every package that has a gate.
 //
-// They used to live twice: once here and once copy-pasted into apps/salim. Nine
-// of the twelve shared rules had already drifted apart, and salim's copy of the
+// They used to live twice: once here and once copy-pasted into an app. Nine
+// of the twelve shared rules had already drifted apart, and that copy of the
 // atomic-direction rule was matching `components/atoms|molecules|organisms/`
 // paths that stopped existing when the component tree was flattened — a rule
 // that silently checked nothing for weeks. One module cannot rot in half.
@@ -59,8 +59,8 @@ export function createContext(cfg) {
    * actually imports, and that restriction is the whole point.
    *
    * It used to be every shared component, which made the dead-CSS rule blind in a
-   * way that cost two real bugs: workshops' mobile drawer styled `.sidebar`, a
-   * class emitted only by the design system's own shell/Sidebar, which workshops
+   * way that cost two real bugs: an app's mobile drawer styled `.sidebar`, a
+   * class emitted only by the design system's own shell/Sidebar, which that app
    * does not use (its nav is @ds/SideNav, root class `.side-nav`). The rules
    * matched nothing, the drawer never slid in, and the linter called the class
    * alive because it was alive SOMEWHERE. A class an app cannot render is dead in
@@ -82,7 +82,7 @@ export function createContext(cfg) {
   const usageFiles = codeFiles.filter((f) => !testFile(f))
 
   /* Translations are copy too, and they are where the copy rules drift first:
-   * nothing type-checks a sentence. Missing directory is fine, airun has none. */
+   * nothing type-checks a sentence. A missing directory is fine. */
   const localeFiles = existsSync(`${root}/${srcDir}/locales`)
     ? walk(`${root}/${srcDir}/locales`, ['.json'])
     : []
@@ -414,7 +414,7 @@ export function rDetailNeedsBack(c) {
  * An exported value referenced nowhere else is dead.
  *
  * Except when it is the package's OUTSIDE surface. `byDay` sat in the accepted-debt
- * map for exactly that reason: the design system exports it, teams-digest imports it
+ * map for exactly that reason: the design system exports it, an app imports it
  * through `@lib`, and a linter that reads one package sees a function nobody calls.
  * The debt entry recorded the closing condition as "teach the rule to read the apps
  * that consume @lib", and this is that, in two halves:

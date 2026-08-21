@@ -65,6 +65,7 @@ export function applySettings(s: Settings) {
   root.setProperty('--brand-400', s.primary)
 }
 
+/** @public Called by consuming apps, not from inside this package. */
 export function clearSettings() {
   const root = document.documentElement.style
   for (const p of PROPS) root.removeProperty(p)
@@ -73,6 +74,7 @@ export function clearSettings() {
 /* Called once at startup so saved overrides apply on any entry route. Only when
  * the user actually picked something: with nothing stored the app must show the
  * tokens as they are, or the demo page's defaults quietly become the brand. */
+/** @public Called by consuming apps, not from inside this package. */
 export function initSettings() {
   const raw = (() => { try { return localStorage.getItem(SETTINGS_KEY) } catch { return null } })()
   if (raw) applySettings(loadSettings())

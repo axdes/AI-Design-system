@@ -1,6 +1,6 @@
 /* Dates, said the way a person reading a chat would say them.
  *
- * Promoted out of apps/teams-digest when apps/teams-tasks needed the same five helpers: a chat
+ * Promoted out of one app when a second needed the same five helpers: a chat
  * tool says "12 min ago" and groups a thread by day, and two products doing it from copies is the
  * thing the promotion rule exists to stop. */
 
@@ -57,7 +57,7 @@ export function plural(n: number, one: string, many: string = `${one}s`): string
  * day is the unit the screen is grouped by. Consecutive runs only: the input is already ordered,
  * and grouping by key instead would silently reorder a thread whose clocks disagree.
  *
- * @public Nothing in this package calls it: teams-digest does, through `@lib/relativeTime`.
+ * @public Nothing in this package calls it: a consuming app does, through `@lib/relativeTime`.
  * Without the tag the dead-export rule is right about what it can see and wrong about the
  * repository, which is why it reads the consuming apps when they are on disk.
  */

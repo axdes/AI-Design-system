@@ -1,7 +1,7 @@
 /* Run a MONOREPO-wide check when the monorepo is there, and say so when it is
  * not. The design system publishes standalone (github.com/axdes/AI-Design-system),
  * and a standalone clone has no apps/, no root scripts/ and no checks.json —
- * the same situation airun's archive already handles for lint-rules: a gate
+ * the same situation a vendored archive already handles for lint-rules: a gate
  * step about the monorepo has nothing to check without one, and failing would
  * make the clone's gate a lie in the other direction. */
 import { execFileSync } from 'node:child_process'

@@ -69,7 +69,7 @@ export function WizardTemplate({
         <div className="wizard-step">{children}</div>
         {/* No Cancel here on purpose: leaving a wizard belongs to the screen's
           * own chrome (back in the header, the shell's nav) — the live case
-          * (Salim's wrap-up) never had one and nobody missed it. */}
+          * (a product's wrap-up) never had one and nobody missed it. */}
         <div className="wizard-actions">
           {index > 0 && (
             <Button variant="secondary" onClick={() => onStep(steps[index - 1].id)} disabled={busy}>

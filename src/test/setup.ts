@@ -7,9 +7,9 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
 import { afterEach } from 'vitest'
 
-/* Real i18n with the bundled en/ar resources — components that call t() must
- * render their actual copy, not a stub. */
-import '@/lib/i18n'
+/* Real i18n with the reference resources — components that call t() must render
+ * their actual copy, not a stub. See src/locales/README.md. */
+import '../../visual/i18n'
 
 afterEach(() => {
   cleanup()

@@ -65,15 +65,15 @@ const { screens, seedLocalStorage = {}, widths, auditAllow = {}, apiMocks = {}, 
  * default. A package that genuinely named its own container says so here rather
  * than having the header rules quietly skip.
  *
- * The list is not cosmetic: when workshops moved onto `<AdaptiveListPage>` this
+ * The list is not cosmetic: when an app moved onto `<AdaptiveListPage>` this
  * rule dropped straight to zero, because the wrapper it had been measuring no
  * longer existed on those screens. The per-rule tally is the only reason that
  * was visible at all.
  *
- * airun is why this exists and also why no package uses it: `.ck-page` and
+ * One app is why this exists and also why no package uses it: its page class and
  * `.vet-page` matched nothing, `header-aligns` sat at zero, and the audit read
  * green because the rule never ran. Widening the selector would have hidden
- * that; airun adopted `.page-content` instead, which is the actual fix — the cap
+ * that; it adopted `.page-content` instead, which is the actual fix — the cap
  * and the inline padding that keep header and content aligned now come from one
  * place there, as they always did everywhere else. */
 const CONTENT = contentSelectors ?? ['.page-content', '.list-page', '.adaptive-list-page', '.detail-page']
@@ -242,7 +242,7 @@ function measure({ slack, contentSelectors }) {
      * This asked for `.side-nav` or `.sidebar` and nothing else, which made it
      * wrong for every product that navigates from a top bar: it reported "the
      * sidebar is off screen" about an app that has no sidebar by design, and
-     * four salim screens were recorded as dead ends because of it.
+     * four screens in one app were recorded as dead ends because of it.
      *
      * The question is not which component the navigation is. It is whether a
      * navigation landmark OUTSIDE the page content is visible at this width —

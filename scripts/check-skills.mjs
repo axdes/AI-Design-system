@@ -92,7 +92,7 @@ for (const f of docs) {
 }
 
 /* AGENTS.md files are the same kind of artefact: an agent obeys them, and they rot
- * the same way. apps/salim's contract spent months describing an atoms/molecules/
+ * the same way. One app's contract spent months describing an atoms/molecules/
  * organisms tree the design system no longer had. Only the claims are checked here
  * (commands, paths) — frontmatter and triggers do not apply to them.
  *

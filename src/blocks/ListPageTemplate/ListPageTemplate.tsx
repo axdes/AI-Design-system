@@ -51,7 +51,7 @@ type Props = {
    */
   contentClassName?: string
   /**
-   * Extra class on the page wrapper, for the rare app-level difference. salim's
+   * Extra class on the page wrapper, for the rare app-level difference. One app's
    * shell makes this element the scroll container, for instance.
    */
   className?: string

@@ -1,9 +1,9 @@
 // Bundle budget, shared by every package that ships a build.
 //
-// It existed twice: here and in salim, copied and then drifted — different
+// It existed twice: here and in an app, copied and then drifted — different
 // wording, different chunk filter, and in the copy a real bug that made half of
 // it dead. `if (total.kb > TOTAL_BUDGET_KB)` reads a property off a number, so
-// the comparison was `undefined > 320`, which is false forever: salim's total
+// the comparison was `undefined > 320`, which is false forever: that app's total
 // budget had never once been enforced. A check that cannot fail is worse than no
 // check, because it is counted as coverage.
 //

@@ -35,195 +35,22 @@ const APPS = join(ROOT, 'apps')
 const DS = join(ROOT, 'packages/design-system')
 
 /* Apps carry their own git repositories and the design system also ships as a
- * vendored snapshot inside airun's archive. Both are checkouts with no `apps/`
+ * vendored snapshot inside an app's archive. Both are checkouts with no `apps/`
  * next to them, and there is nothing cross-package to compare there. */
 if (!existsSync(APPS)) {
   console.log('promotion-scout: no apps/ next to this checkout — nothing to compare.')
   process.exit(0)
 }
 
-/* Reasons live per LAYER, because "salim copied a screen" and "salim copied a
- * provider" are different decisions. The keys below are per PAIR so that a new
- * app copying the same layer still has to be looked at once. Sorted pair name +
- * ':' + first path segment under src/ — exactly what the grouping produces.
- * Reviewed 2026-07-29. */
-const LAYOUTS = {
-  why:
-    'The design system owns these screens as its SHOWCASE (ContentLibraryPage, ' +
-    'ContentDetailPage, AssistantPage, ProfilePage, LoginPage, Playground) and the ' +
-    'apps were ported from them, then diverged into products. What still matches is ' +
-    'page chrome: header, toolbar, empty state, the auth card. That part IS ' +
-    'promotable and the blocks already exist (ListPageTemplate, DetailPageTemplate, ' +
-    'AuthTemplate) — they are simply not adopted yet. This is the largest open ' +
-    'promotion in the repo, ~2000 lines, and it is named rather than hidden.',
-  recheck:
-    'Shrinks as each app screen is rebuilt on a block. Delete a pair here when its ' +
-    'number reaches zero; the "used by no app" section below is the same debt seen ' +
-    'from the other end.',
-}
-const FIXTURES = {
-  why:
-    'Demo fixtures (mockContent, activity, roster rows). Copying a fixture is ' +
-    'correct: a shared one would make one app\'s demo data a dependency of another\'s, ' +
-    'and fixtures are supposed to drift towards their product.',
-  recheck: 'None. Fixtures are meant to diverge.',
-}
-const PROVIDERS = {
-  why:
-    'The identical parts were already consolidated: ThemeProvider, ToastProvider, ' +
-    'SidebarProvider, ErrorBoundary, cn and useMediaQuery are three-line re-exports ' +
-    'of @lib in every app. What jscpd still matches is AuthProvider and the i18n ' +
-    'bootstrap, and those genuinely differ per product (airun has no accounts at ' +
-    'all, salim carries demo credentials, workshops reads a server session). The ' +
-    'shape repeats because the React context idiom repeats.',
-  recheck:
-    'Revisit if a second app ever wants the SAME auth model; until then a shared ' +
-    'AuthProvider would be a union of three unrelated login stories.',
-}
-const SHELLS = {
-  why:
-    'App shells. Each AppShell composes ITS chrome (salim: top bar plus the call ' +
-    'affordances; workshops: sidebar plus recording pill; airun: sidebar plus CLI ' +
-    'switcher), so the JSX differs. What matches is the grid CSS pinning a shell to ' +
-    'the viewport with one scrolling column, which is four short rules.',
-  recheck:
-    'Promote when a third app needs the same grid unchanged: at that point it is a ' +
-    'layout primitive and belongs in the components layer, not copied a fourth time.',
-}
-const PAGE_WRAPPER = {
-  why:
-    'The page wrapper rules (width cap, fluid padding, the `content` container ' +
-    'query) restated in ListPageTemplate.css. They already existed FOUR times, ' +
-    'token-identical, once inside each app\'s own AppShell.css and once in the ' +
-    'design system\'s, because `.page-content` is a convention rather than a ' +
-    'foundation class. A block cannot borrow it: it would depend on a stylesheet ' +
-    'it does not import, and rendered on its own it loses its padding entirely ' +
-    '(the visual gallery caught exactly that). So the block owns its wrapper and ' +
-    'this is the fifth copy, knowingly.',
-  recheck:
-    'Closes when `.page-content` moves into the token foundation that every app ' +
-    'loads, and the four AppShell copies plus this one all delete. That is a ' +
-    'four-repository change, so it is named here rather than smuggled in.',
-}
-const BOOTSTRAP = {
-  why:
-    'App.tsx: the route table written as `lazy(() => import(x).then(m => ({default: ' +
-    'm.X})))`, once per screen. Every line names a different module, so nothing here ' +
-    'is shareable code — it is a language idiom that a token-based detector cannot ' +
-    'tell apart from a copy. The provider stack around it is already shared via @lib.',
-  recheck: 'None. Extracting this would trade explicit routing for indirection.',
-}
-const HARNESS = {
-  why:
-    'Test harness boilerplate (axe wiring, jsdom polyfills). PROMOTED 2026-08-20, ' +
-    'in the vendor-ds idiom rather than as an import: the canonical files live in ' +
-    'src/test/harness/ and every app carries a byte-identical copy, so each suite ' +
-    'still runs standalone in its own clone. check:harness in this gate fails on ' +
-    'drift, which was the only real cost of copying.',
-  recheck:
-    'None — the copies are checked. Reopens only if an app needs a DIFFERENT ' +
-    'harness behaviour, which is an argument to add to the canonical one.',
-}
+/* The recorded decisions are DATA and they live with the products they name, at
+ * the monorepo root. This file is the scanner: it reads which products exist
+ * from the folder and knows none of them by name. A published design system
+ * that listed its owner's projects would be telling the world what they build. */
+const DECISIONS = `${ROOT}/scripts/scout.decisions.mjs`
+const { ACCEPTED, ACCEPTED_PARALLEL } = existsSync(DECISIONS)
+  ? await import(DECISIONS)
+  : { ACCEPTED: {}, ACCEPTED_PARALLEL: {} }
 
-
-
-const ACCEPTED = {
-  'design-system↔salim:layouts': LAYOUTS,
-  'design-system↔workshops:layouts': LAYOUTS,
-  'airun↔design-system:layouts': LAYOUTS,
-  'salim↔workshops:layouts': LAYOUTS,
-  'airun↔workshops:layouts': LAYOUTS,
-  'salim↔transcript:layouts': LAYOUTS,
-  'design-system↔salim:data': FIXTURES,
-  'salim↔workshops:data': FIXTURES,
-  'design-system↔salim:lib': PROVIDERS,
-  'airun↔design-system:lib': PROVIDERS,
-  'airun↔salim:lib': PROVIDERS,
-  'airun↔workshops:lib': PROVIDERS,
-  'salim↔workshops:lib': PROVIDERS,
-  /* Surfaced 2026-08-21 when the demo e-mail domains changed in the system's
-     AuthProvider: the edit moved jscpd's chunk boundaries and the pair started
-     matching on the shared login/logout logic. Same copies, same one decision. */
-  'design-system↔workshops:lib': PROVIDERS,
-  'design-system↔workshops:components': SHELLS,
-  'salim↔workshops:components': SHELLS,
-  'airun↔workshops:components': SHELLS,
-  /* airun's PAGE_WRAPPER pairs deleted 2026-08-21: the cockpit moved onto
-     OverviewPageTemplate (which owns its wrapper), airun's `.page-content`
-     shell rule went with it, and jscpd stopped matching those pairs. The same
-     restated-wrapper story continues below between the system and salim, where
-     the copies are still live — the group merely regrouped when airun's copy
-     disappeared. */
-  'design-system↔salim:components': PAGE_WRAPPER,
-  'design-system↔salim:App': BOOTSTRAP,
-  'design-system↔workshops:App': BOOTSTRAP,
-  'salim↔workshops:App': BOOTSTRAP,
-  /* salim↔workshops/transcript/teams-digest:test entries deleted 2026-08-20:
-     jscpd no longer matches those pairs (salim's harness drifted apart), and a
-     stale exception hides the next real finding. The HARNESS story continues on
-     the admin-portal pairs below, where the clones are still live. */
-  /* admin-portal (2026-08-20) carries the same harness for the same reason, plus the
-     matchMedia/ResizeObserver stubs FilterBar needs under jsdom. Fifth copy; the
-     count is now loud enough that if ONE more app appears, promoting the harness
-     into a shared test package beats a sixth copy even at the coupling cost. */
-  /* The 2026-08-20 promotion made every copy byte-identical, which is why the
-     pair list GREW: jscpd now matches pairs that had drifted apart before. All
-     of them are the same one decision. */
-  'admin-portal↔airun:test': HARNESS,
-  'admin-portal↔design-system:test': HARNESS,
-  'admin-portal↔salim:test': HARNESS,
-  'admin-portal↔workshops:test': HARNESS,
-  'admin-portal↔teams-digest:test': HARNESS,
-  'admin-portal↔transcript:test': HARNESS,
-  /* handbook (2026-08-20) is the sixth app to carry the harness. The count was
-     already called loud at five; one more appeared before anyone promoted it.
-     The recheck on HARNESS stands and is now overdue rather than optional. */
-  'admin-portal↔handbook:test': HARNESS,
-  /* admin-portal↔handbook:lib entry deleted 2026-08-21: the i18n bootstrap
-     was promoted as initI18n(resources) in the system lib — exactly what the
-     entry's recheck said should happen when handbook landed — and every app's
-     shim shrank to its resources object. jscpd stopped matching the pair. */
-  /* admin-portal↔teams-digest:app entry deleted 2026-08-21: the railless
-     shell contract (.app-bare/.app-bare-main, the panels height release, the
-     capped PageHeader) moved into styles/utilities.css — the entry's own
-     trigger, admin-portal being the second no-rail app. --page-max-width
-     stays per app on purpose: the two products genuinely tune it apart
-     (73.75rem vs 118.75rem), which is tuning, not duplication. */
-}
-
-/* Component names an app is allowed to own privately even though a sibling app
- * has one too. Key: the component name. */
-const ACCEPTED_PARALLEL = {
-  LiveCallBar: {
-    why:
-      'Salim keeps its live-call pill custom NEXT TO the promoted SessionPill, by a ' +
-      'review decision written into its CSS: an ongoing emergency call must be ' +
-      'impossible to miss — solid destructive fill, top-centre — because the white ' +
-      'card version blended into the chrome. SessionPill is a session REMINDER; this ' +
-      'is an emergency affordance with two states (active is not dismissible) and a ' +
-      'state-dependent action. Flattening it into the quiet pill would undo a review.',
-    recheck:
-      'A second app needing an unmissable critical session pill is the trigger for ' +
-      'SessionPill to grow a critical placement/fill variant; until then this stays.',
-  },
-  AppShell: {
-    why: 'Each app composes its own chrome. See the components entry above.',
-    recheck: 'Same condition: a third app needing the same grid.',
-  },
-  Logo: {
-    why:
-      'The ecosystem symbol: one bespoke thematic glyph per app, drawn in the brand gradient with ' +
-      'no background tile (transcript is a voice waveform, teams-digest a chat condensing into a ' +
-      'summary). The DRAWING is the whole point and must differ; what repeats is the contract — ' +
-      'a 48x48 box with a ~7px safe area, the gradient, and the `.eco-symbol` class the animation ' +
-      'hangs off. A shared component here would be a component with no content.',
-    recheck:
-      'CLOSED 2026-08-20: admin-portal was the third app, so the contract moved into ' +
-      'styles/utilities.css (.eco-symbol: the class, the reduced-motion rule, the safe-area and ' +
-      'gradient notes) exactly as this entry said it should. Each app keeps its own <svg>. ' +
-      'Reopens only if a product stops following the documented contract.',
-  },
-}
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m', DIM = '\x1b[2m', B = '\x1b[1m', OFF = '\x1b[0m'
 const failures = []
@@ -255,7 +82,7 @@ if (!process.argv.includes('--fast')) {
   const report = JSON.parse(readFileSync(reportPath, 'utf8'))
   rmSync(out, { recursive: true, force: true })
 
-  /* Package + layer, because "salim copied a layout" and "salim copied a
+  /* Package + layer, because "an app copied a layout" and "an app copied a
    * provider" are different decisions and deserve separate reasons. */
   const pkgOf = (p) => (p.match(/apps\/([a-z-]+)\//)?.[1] ?? (p.includes('packages/design-system') ? 'design-system' : '?'))
   const layerOf = (p) => (p.split('/src/')[1] ?? '').split('/')[0].replace(/\.[^.]+$/, '') || 'src'

@@ -19,8 +19,8 @@
   /* Stays put while the page scrolls, BY DEFAULT.
    *
    * This used to say "make the container 100dvh / sticky for an app sidebar",
-   * leaving it to the consumer. Not one consumer did it: airun got it by accident
-   * through <AppLayout>, whose nav column is sticky, and workshops hand-rolled its
+   * leaving it to the consumer. Not one consumer did it: one app got it by accident
+   * through <AppLayout>, whose nav column is sticky, and another hand-rolled its
    * own shell grid and so scrolled the whole navigation off the top of the screen.
    * A component whose job IS to be an app's navigation should not need a note
    * telling every app to remember two lines. Embedding it inside a shorter box

@@ -88,7 +88,7 @@
     "the kind exhibits: inline fixtures per kind, each naming its preset in the copy"
   ],
   "implementation": [
-    "src/layouts/ContentPatternsPage.tsx"
+    "apps/showcase/src/layouts/ContentPatternsPage.tsx"
   ],
   "behaviours": [
     {
@@ -97,7 +97,7 @@
       "when": "nothing has been pressed",
       "then": "the collection renders as rows — the representation the selection rules choose for this data — with no table on screen",
       "why": "The switcher offers alternates; the DEFAULT is never a preference, it is the rules' answer.",
-      "provenBy": "src/layouts/ContentPatternsPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ContentPatternsPage.test.tsx"
     },
     {
       "id": "switch-changes-representation-not-data",
@@ -105,7 +105,7 @@
       "when": "the viewer switches to table and then to cards",
       "then": "the same items appear in the same order in every view — the switch changes the reading, never the list",
       "why": "The acceptance the research pinned: every view truncates one ordered field list.",
-      "provenBy": "src/layouts/ContentPatternsPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ContentPatternsPage.test.tsx"
     }
   ]
 }

@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from 'react'
  * The rule it serves: a list page shows a centred welcome (hero title, the
  * cards, one big CTA, no toolbar) while everything fits the viewport, and flips
  * to the standard header layout the moment it outgrows it. That rule was written
- * once and then implemented three times — as this hook in workshops, and inline
- * in the design system's own ContentLibraryPage and in salim's copy of it. The
+ * once and then implemented three times — as this hook in one app, and inline
+ * in the design system's own ContentLibraryPage and in another app's copy of it. The
  * three had already drifted in their variable names while measuring the same
  * thing with the same arithmetic.
  *

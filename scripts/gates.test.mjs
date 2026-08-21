@@ -33,9 +33,10 @@ describe('the gate list', () => {
     for (const g of dropped) {
       expect(String(g.localOnly).length).toBeGreaterThan(40)
     }
-    /* Today that is exactly the two screenshot steps. If this list grows, the
+    /* Today that is exactly the one screenshot step left here; `screens`
+     * moved to apps/showcase with the screens. If this list grows, the
      * reason has to be as good as theirs and this test is where it is read. */
-    expect(dropped.map((g) => g.run)).toEqual(['visual', 'screens'])
+    expect(dropped.map((g) => g.run)).toEqual(['visual'])
   })
 
   it('keeps the linters that are the point of the system in CI', () => {

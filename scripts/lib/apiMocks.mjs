@@ -14,7 +14,7 @@
 //
 //   "apiMocks": {
 //     "**/api/projects":  "fixtures/projects.json",
-//     "**/api/workshops": "fixtures/workshops.json"
+//     "**/api/sessions": "fixtures/sessions.json"
 //   }
 //
 // Paths are relative to the config file. A request that matches nothing is

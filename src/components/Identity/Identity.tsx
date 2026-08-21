@@ -20,7 +20,7 @@ type Props = {
 /**
  * A person as one glance: avatar beside name and secondary line — the face
  * next to the name, never a face floating a row above it. Consolidated from
- * the showcase's and admin-portal's hand-rolled identity blocks.
+ * the showcase's and a second product's hand-rolled identity blocks.
  */
 export function Identity({ name, avatarName, secondary, src, size = 'md', vertical, className }: Props) {
   const plain = avatarName ?? (typeof name === 'string' ? name : '')

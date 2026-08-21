@@ -6,7 +6,7 @@
   align-items: center;
   gap: var(--space-2);
   /* min-height, not height: a fixed one is a promise the content keeps only while it is short.
-   * Hand-typed data does not oblige — one AI-tools cell in the AI/Run spreadsheet is a whole
+   * Hand-typed data does not oblige — one tools cell in a real spreadsheet is a whole
    * comma-separated sentence, and as a fixed-height pill it painted its text straight over the
    * tags next to it. The pill grows instead, and the text wraps inside it. */
   min-block-size: var(--control-height-sm);

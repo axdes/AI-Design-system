@@ -55,7 +55,7 @@
     "Does the list need pagination, or is the working set small enough to render at once?",
     "Make useSimpleFit measure against whatever wrapper it is inside, then move this screen onto <AdaptiveListPage>. The attempt is described in _templateNote."
   ],
-  "implementation": "src/layouts/ContentLibraryPage.tsx",
+  "implementation": "apps/showcase/src/layouts/ContentLibraryPage.tsx",
   "_templateNote": "The screen predates this block and still composes the shape by hand: it calls useSimpleFit itself and lays the welcome cluster out in .library markup rather than <ListCluster>. Moving it was TRIED on 2026-07-31 and reverted: the screen came up in the standard header layout instead of the welcome one, because the block measures the fit against its own wrapper rather than .page-content. That is a behaviour change on the design system's showcase screen, not a refactor. The block gained what the move showed it was missing (empty.reason='no-matches', so a filtered-empty list keeps its search box); the screen stays as it is until the fit measurement is made wrapper-agnostic.",
   "behaviours": [
     {
@@ -64,7 +64,7 @@
       "when": "the library renders",
       "then": "only Mohammed's documents appear — another author's work is absent from HIS library",
       "why": "The screen is called My Content, and the name is the promise.",
-      "provenBy": "src/layouts/ContentLibraryPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ContentLibraryPage.test.tsx"
     },
     {
       "id": "search-narrows-by-title",
@@ -72,7 +72,7 @@
       "when": "the author types part of a title",
       "then": "the grid narrows to matching titles and non-matching cards leave",
       "why": "Find is the toolbar zone's declared task.",
-      "provenBy": "src/layouts/ContentLibraryPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ContentLibraryPage.test.tsx"
     },
     {
       "id": "empty-search-offers-the-way-back",
@@ -80,7 +80,7 @@
       "when": "the last card leaves the grid",
       "then": "an empty state explains the situation instead of a blank grid",
       "why": "Every list's empty case must speak (the states contract).",
-      "provenBy": "src/layouts/ContentLibraryPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ContentLibraryPage.test.tsx"
     }
   ]
 }

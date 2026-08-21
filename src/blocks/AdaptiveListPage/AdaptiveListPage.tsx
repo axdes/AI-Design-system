@@ -64,8 +64,8 @@ type Props = {
 }
 
 /* Where it came from: this existed five times before it existed once — the four
- * list screens in workshops and the content library in both the design system
- * and salim. All five agreed on the behaviour and none of them shared a line of
+ * list screens in one app and the content library in both the design system
+ * and another. All five agreed on the behaviour and none of them shared a line of
  * it, which is the failure mode `npm run scout` was built to catch: the scout
  * looks BETWEEN packages, and this was repeated inside one. */
 

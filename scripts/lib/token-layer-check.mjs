@@ -5,11 +5,11 @@
 // package it runs in and compares them with themselves — and a copy always
 // agrees with itself. Nothing compared a copy with the original.
 //
-// What that cost, measured on 2026-07-31: airun carried 88 primitive stops and
+// What that cost, measured on 2026-07-31: one app carried 88 primitive stops and
 // 59 semantic roles, of which 143 were character-for-character the design
 // system's and 4 were real overrides. Three colour roles fixed in the system
 // that morning stayed broken there — status text at 1.54:1 — with a green gate
-// above them, because airun's check read airun's copy.
+// above them, because the app's check read the app's own copy.
 //
 // The rule, therefore:
 //
@@ -23,7 +23,7 @@
 // word about it is not an override, it is a divergence nobody decided on: the
 // next person cannot tell whether it is the brand, a workaround, or a mistake
 // left behind. The reason goes next to the change — a comment on the line, or one
-// above the group it covers, which is how apps/workshops/styles/brand.css is
+// above the group it covers, which is how an app's styles/brand.css is
 // already written.
 //
 // Deleting a copy is not a style preference. It is the difference between a fix

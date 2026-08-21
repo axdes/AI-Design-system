@@ -1,6 +1,6 @@
 /* The cluster's own styles, co-located with the component.
  *
- * They used to live in `apps/workshops/src/layouts/shared-chrome.css`, which
+ * They used to live in one app's `shared-chrome.css`, which
  * made `ListCluster` a design-system component that only rendered correctly
  * inside one app: any other consumer got the markup and none of the layout, and
  * the gallery rendered it bare. A component whose CSS lives in a product is not
@@ -60,7 +60,7 @@
 
 /* Capped to a reading measure. Uncapped it ran the full width of the hero — one 20px sentence
  * stretched across 1100px, which is the widest line of text on any screen in the system and the
- * one nobody can follow to its end. The transcript tool had already capped its own copy of this
+ * one nobody can follow to its end. A second product had already capped its own copy of this
  * at 30rem; the block should not have needed each product to discover that. */
 .list-cluster-subtitle {
   margin: 0;
@@ -75,7 +75,7 @@
  *
  * `display` and `gap` belong here and were missing. The rule set columns on an element that was
  * never told to be a grid, so the class only worked next to a second one the consumer wrote
- * (workshops pairs it with its own `.tile-grid`). Anywhere else the tiles stacked at their natural
+ * (an app pairs it with its own `.tile-grid`). Anywhere else the tiles stacked at their natural
  * height, flush to the start, touching each other — which is exactly how it landed in the first
  * app that used the class on its own. A grid class that is not a grid is not a class. */
 .list-cluster .list-cluster-grid {
@@ -90,7 +90,7 @@
    * of one gets one card stretched across the page. Changing the track function is a behaviour
    * change for the three Workshops lists that already override this rule, so it needs its own
    * pass rather than being smuggled in beside a missing `display`. A consumer that wants the
-   * welcome layout's few cards CENTRED lays them out itself, as teams-digest does. */
+   * welcome layout's few cards CENTRED lays them out itself, as one product does. */
 }
 
 /* Bright actions side by side, centred. The secondary one gets a card fill

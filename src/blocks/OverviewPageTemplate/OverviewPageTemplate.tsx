@@ -12,7 +12,7 @@ type Props = {
   /**
    * Header actions. On an overview this is where freshness lives too: the
    * "updated N min ago" fact sits beside the one control that refreshes it,
-   * never as a line under the title (airun's cockpit learned this twice).
+   * never as a line under the title (one product's cockpit learned this twice).
    */
   actions?: ReactNode
   /**

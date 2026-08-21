@@ -3,7 +3,7 @@ import { type ReactNode } from 'react'
 import { cn } from '../../lib/cn'
 
 /* The shapes a producer sends INSTEAD of markup. Nothing here ever receives
- * HTML, so nothing here sanitises any — the contract teams-digest proved
+ * HTML, so nothing here sanitises any — the contract its first consumer proved
  * against real Teams traffic. */
 export type RichBlock =
   | { t: 'p'; text: string }

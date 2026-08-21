@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "profile": "own",
+  "_": [
+    "PROPOSED. Not a binding until somebody moves it to bindings/own.json.",
+    "",
+    "A binding is a judgment: that this system's PageHeader is what a spec means",
+    "by pageHeader is a decision about the product, not a fact in the stylesheet.",
+    "Every entry below says what it rests on, so the ones resting on a spelling",
+    "coincidence can be found and thrown out.",
+    "",
+    "One thing this cannot see. Every role a person left uncovered in the four",
+    "hand-written bindings here was uncovered for the same reason: the answer is not a",
+    "component. A toast comes from a hook, notifications from a context instance, a",
+    "page header from composing three components, body copy from plain markup. This",
+    "pass reads a list of components, so a role answered by any of those looks exactly",
+    "like a role with no answer — and where it proposes something for one of them, it",
+    "is proposing a component in place of something that is not one.",
+    "",
+    "Roles with no candidate are under `roles` with `notCovered` and no component.",
+    "A spec asking for one of those refuses to build, which is the correct answer —",
+    "filling them with the nearest thing produces a screen that compiles and is wrong."
+  ],
+  "axes": {
+    "tone": {
+      "means": "what this element's state is",
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "danger",
+        "info"
+      ]
+    },
+    "size": {
+      "means": "the element's place on the density scale",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "roles": {
+    "pageHeader": {
+      "component": "PageHeader",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "heading": {
+      "component": "PageHeader",
+      "proposedBecause": "named pageheader, which this tool records as another word for heading"
+    },
+    "text": {
+      "component": "Textarea",
+      "proposedBecause": "name only contains \"text\" — this is a guess from spelling",
+      "weak": true,
+      "tiedWith": [
+        "InlineText",
+        "ContextMenu"
+      ],
+      "alsoConsidered": [
+        "InlineText",
+        "ContextMenu"
+      ]
+    },
+    "primaryAction": {
+      "component": "Button",
+      "variant": "primary",
+      "proposedBecause": "named button, which this tool records as another word for primaryAction"
+    },
+    "secondaryAction": {
+      "component": "Button",
+      "variant": "secondary",
+      "proposedBecause": "named button, which this tool records as another word for secondaryAction"
+    },
+    "iconAction": {
+      "component": "IconButton",
+      "proposedBecause": "named iconbutton, which this tool records as another word for iconAction",
+      "alsoConsidered": [
+        "Icon"
+      ]
+    },
+    "textInput": {
+      "component": "Input",
+      "proposedBecause": "named input, which this tool records as another word for textInput",
+      "alsoConsidered": [
+        "Textarea",
+        "InlineText",
+        "ContextMenu"
+      ]
+    },
+    "searchInput": {
+      "component": "SearchInput",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "select": {
+      "component": "Select",
+      "proposedBecause": "name matches the role exactly",
+      "alsoConsidered": [
+        "Combobox",
+        "Dropdown"
+      ]
+    },
+    "checkbox": {
+      "component": "Checkbox",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "toggle": {
+      "component": "Switch",
+      "proposedBecause": "named switch, which this tool records as another word for toggle"
+    },
+    "table": {
+      "component": "Table",
+      "proposedBecause": "name matches the role exactly",
+      "alsoConsidered": [
+        "DataGrid"
+      ]
+    },
+    "list": {
+      "component": "ListItem",
+      "proposedBecause": "name only contains \"list\" — this is a guess from spelling",
+      "weak": true,
+      "tiedWith": [
+        "ListCluster"
+      ],
+      "alsoConsidered": [
+        "ListCluster"
+      ]
+    },
+    "card": {
+      "component": "Card",
+      "proposedBecause": "name matches the role exactly",
+      "alsoConsidered": [
+        "PlanCard",
+        "HoverCard"
+      ]
+    },
+    "statusTag": {
+      "component": "Tag",
+      "proposedBecause": "named tag, which this tool records as another word for statusTag",
+      "weak": true,
+      "tiedWith": [
+        "Chip",
+        "Badge",
+        "Label"
+      ],
+      "alsoConsidered": [
+        "Chip",
+        "Badge",
+        "Label"
+      ]
+    },
+    "avatar": {
+      "component": "Avatar",
+      "proposedBecause": "name matches the role exactly",
+      "alsoConsidered": [
+        "AvatarGroup"
+      ]
+    },
+    "divider": {
+      "component": "Divider",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "inlineMessage": {
+      "component": "Alert",
+      "proposedBecause": "named alert, which this tool records as another word for inlineMessage",
+      "alsoConsidered": [
+        "InlineText"
+      ]
+    },
+    "loading": {
+      "component": "Spinner",
+      "proposedBecause": "named spinner, which this tool records as another word for loading"
+    },
+    "skeleton": {
+      "component": "Skeleton",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "emptyState": {
+      "component": "EmptyState",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "tabs": {
+      "component": "Tabs",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "pagination": {
+      "component": "Pagination",
+      "proposedBecause": "name matches the role exactly"
+    },
+    "tooltip": {
+      "component": "Tooltip",
+      "proposedBecause": "name matches the role exactly",
+      "alsoConsidered": [
+        "Popover"
+      ]
+    },
+    "dialog": {
+      "component": "Modal",
+      "proposedBecause": "named modal, which this tool records as another word for dialog"
+    },
+    "transientMessage": {
+      "notCovered": "nothing in \"own\" is named for this role or for any word recorded as meaning it",
+      "means": "Message that leaves on its own."
+    }
+  }
+}

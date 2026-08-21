@@ -14,10 +14,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        /* The app, plus the visual gallery that scripts/visual-check.mjs
-         * screenshots. Building it with the app means the baselines are taken
-         * from the same CSS and the same bundler output the product ships. */
-        app: path.resolve(pkgDir, 'index.html'),
+        /* The visual gallery that scripts/visual-check.mjs screenshots, and the
+         * only entry this package has: it is a library, and the screens that
+         * used to be built beside it now live in apps/showcase, which consumes
+         * the system the same way every product does. */
         visual: path.resolve(pkgDir, 'visual/index.html'),
       },
     },
@@ -40,9 +40,7 @@ export default defineConfig({
      * to make a change fit.
      *
      * Scope is the layers the system PROMISES — components, blocks, shell, lib.
-     * src/layouts/ is the showcase, demo screens whose real check is the visual
-     * baseline, and counting them would only move the number without telling
-     * anyone anything. Measured 2026-07-28: 64.6 / 67.3 / 64.8 / 69.5. */
+     * Measured 2026-07-28: 64.6 / 67.3 / 64.8 / 69.5. */
     coverage: {
       provider: 'v8',
       include: ['src/components/**', 'src/blocks/**', 'src/shell/**', 'src/lib/**'],

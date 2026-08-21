@@ -47,12 +47,16 @@ const ALLOW = {
   // dead value exports — DELETE these, then remove from here.
   //
   // Empty since `byDay` came out of it. That entry was the rule failing to see past the
-  // package boundary, not accepted debt: the system exports it and teams-digest imports it
+  // package boundary, not accepted debt: the system exports it and an app imports it
   // through @lib. Its recorded closing condition was "teach the rule to read the apps that
   // consume @lib", and that is what `consumerRoots` below plus the `@public` tag now do.
   deadExports: [],
   // dead CSS classes that are genuinely custom one-offs (NOT scale/series steps)
-  deadCss: [],
+  /* `.app-shell` is emitted by the shell that composes this menu, and that shell
+   * lives in the app now (apps/showcase). The rule reads this package only, so a
+   * class this package styles for a context it no longer renders looks dead.
+   * Closes when the contextual override moves to whoever owns the shell. */
+  deadCss: ['app-shell'],
   // over the size ceiling
   fileSize: [],
   /* @media widths that are deliberately NOT on the --bp-* scale, because the

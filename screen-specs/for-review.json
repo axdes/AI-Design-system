@@ -61,7 +61,7 @@
   "data": [
     "the queue: every content item with status in-review, regardless of author — seeded from mockContent, drained in local state so the empty state is really reachable"
   ],
-  "implementation": "src/layouts/ForReviewPage.tsx",
+  "implementation": "apps/showcase/src/layouts/ForReviewPage.tsx",
   "openQuestions": [],
   "behaviours": [
     {
@@ -70,7 +70,7 @@
       "when": "the reviewer presses Approve on a row",
       "then": "that row leaves the queue where it stands — no dialog, no navigation — and a toast names what was approved",
       "why": "The queue's promise: decisions are applied in place, or it is not a worklist.",
-      "provenBy": "src/layouts/ForReviewPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ForReviewPage.test.tsx"
     },
     {
       "id": "request-changes-collects-a-note",
@@ -78,7 +78,7 @@
       "when": "the reviewer presses Request changes and sends their note",
       "then": "an empty note cannot be sent; with words in it the dialog closes and the item returns to its author, leaving the queue",
       "why": "Sending work back without words is a rejection; the note is what makes it a review.",
-      "provenBy": "src/layouts/ForReviewPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ForReviewPage.test.tsx"
     },
     {
       "id": "drained-queue-is-done",
@@ -86,7 +86,7 @@
       "when": "the reviewer decides it",
       "then": "the empty state renders as the GOOD state — inbox zero — never a blank page",
       "why": "A drained worklist is the job done (same contract as every queue here).",
-      "provenBy": "src/layouts/ForReviewPage.test.tsx"
+      "provenBy": "apps/showcase/src/layouts/ForReviewPage.test.tsx"
     }
   ]
 }

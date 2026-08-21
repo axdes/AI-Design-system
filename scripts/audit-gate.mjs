@@ -79,7 +79,7 @@ const HELD_BACK = {
       'and `npm run typecheck:next` (@typescript/native-preview, the Go compiler) ' +
       'checks the same project in every package as part of the gate. It is roughly ' +
       '7x faster and it already caught something 5.9 cannot report: TS 7 removed ' +
-      '`baseUrl`, which transcript\'s tsconfig still set.',
+      '`baseUrl`, which one product\'s tsconfig still set.',
     recheck:
       'When typescript-eslint widens its peer range past 6, promote the preview to ' +
       'THE compiler, drop this entry and fold typecheck:next back into build.',

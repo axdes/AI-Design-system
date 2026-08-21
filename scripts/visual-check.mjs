@@ -90,7 +90,7 @@ async function openPage() {
    * something using it renders — so a heading that arrives after hydration is
    * fetched after the promise has already settled, and the shot catches the
    * fallback. Two awaits with a beat between made it rarer and not rare enough:
-   * transcript still flaked on 2026-08-16. Loading them explicitly removes the
+   * one product still flaked on 2026-08-16. Loading them explicitly removes the
    * race instead of narrowing it. A face whose file is not there rejects, and one
    * missing font is not a reason to fail a layout check: the shot shows it
    * anyway. */
@@ -105,7 +105,7 @@ async function openPage() {
     /* Then WAIT on the state the picture depends on, rather than on a promise
      * that has already resolved: a face is 'unloaded' until something asks for
      * it and 'loading' until it arrives. Two load passes narrowed the race and
-     * did not close it — transcript still lost about one run in five — because
+     * did not close it — a product still lost about one run in five — because
      * the second pass can itself trigger a fetch. This polls the faces
      * themselves, with a ceiling so a genuinely missing file cannot hang. */
     const deadline = Date.now() + 3000

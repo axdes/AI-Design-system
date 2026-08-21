@@ -1,7 +1,7 @@
 {
   "ref": "SessionPill",
   "level": "molecule",
-  "description": "The floating \"a session is live elsewhere\" pill: pulsing dot, what is running, the timer, one press back to it. Rendered once by the app shell so it survives navigation, and hidden on the session's own screen — the two rules both hand-rolled versions (Salim's LiveCallBar, workshops' RecordingPill) discovered independently. Presentational: state, polling and routing stay in the app.",
+  "description": "The floating \"a session is live elsewhere\" pill: pulsing dot, what is running, the timer, one press back to it. Rendered once by the app shell so it survives navigation, and hidden on the session's own screen — the two rules both hand-rolled versions (a live-call bar and a RecordingPill) discovered independently. Presentational: state, polling and routing stay in the app.",
   "exports": [
     "SessionPill"
   ],

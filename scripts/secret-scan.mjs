@@ -15,8 +15,8 @@
  *                        so scanning the working tree would keep the gate red
  *                        forever and everyone would learn to ignore it. What is
  *                        never acceptable is a key that git is versioning, and
- *                        that is exactly what this mode found: transcript had
- *                        server/.env committed with a live Anthropic key.
+ *                        that is exactly what this mode found: an app had
+ *                        server/.env committed with a live API key.
  *
  *   --all <dir>          every file under a directory, ignore rules and all.
  *                        This is the SHARE check: an archive carries whatever
@@ -105,9 +105,12 @@ const walk = (d) => {
 /* The apps carry their OWN git repositories and the monorepo excludes /apps/,
  * so one `git ls-files` at the root would miss every app file. Each repository
  * is asked separately, which is also how the exposure actually works: an app is
- * cloned on its own. */
-const repos = [MONOREPO, ...['salim', 'workshops', 'airun', 'transcript']
-  .map((a) => join(MONOREPO, 'apps', a))
+ * cloned on its own. Which apps exist is read from the FOLDER, never listed
+ * here: a hardcoded list goes stale the day someone adds a product, and it
+ * would also print that product's name inside a published package. */
+const APPS = join(MONOREPO, 'apps')
+const repos = [MONOREPO, ...(existsSync(APPS) ? readdirSync(APPS) : [])
+  .map((a) => join(APPS, a))
   .filter((d) => existsSync(join(d, '.git')))]
 
 if (allMode) {

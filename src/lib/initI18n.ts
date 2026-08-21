@@ -14,13 +14,14 @@ type Options = {
 
 /**
  * The one i18n bootstrap, promoted from seven per-app copies (the scout's
- * admin-portal↔handbook finding closed by its own condition). Every app needs
+ * the second-use finding closed by its own condition). Every app needs
  * this layer even when its own copy is English in the JSX, because shared
  * components ask for keys — Modal wants a11y.close, PageHeader wants a11y.back.
  * The RESOURCES stay per app on purpose: they are the app's words. What was
  * copied — and drifted — is everything below: the init call, `<html lang/dir>`
  * kept true to the active language, and the choice persisted when asked to.
  */
+/** @public Called by consuming apps, not from inside this package. */
 export function initI18n(resources: Resources, opts: Options = {}) {
   const locales = Object.keys(resources)
   const rtl = new Set(opts.rtl ?? ['ar'])

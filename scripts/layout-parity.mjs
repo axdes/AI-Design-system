@@ -1,6 +1,6 @@
 // Does this app's page geometry match the rest of the monorepo?
 //
-// Why this exists: teams-digest shipped a screen that every other gate called green and that a
+// Why this exists: an app shipped a screen that every other gate called green and that a
 // person called ugly on sight. Nothing was lying — the checks simply had no opinion about the
 // things that were wrong:
 //
