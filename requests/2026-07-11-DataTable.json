@@ -5,14 +5,33 @@
   "requestedBy": "agent",
   "need": "A styled, accessible table. Today the guidance is 'drop a semantic <table> inside <Card flush> and style it inline' — which every dashboard re-implements differently (the AI/Run rubric matrix, portfolio table, etc.). A canonical Table standardizes header/row/cell styling, tokened borders, tabular-nums, sticky header, and an optional highlighted column.",
   "consideredAlternatives": [
-    { "ref": "components/Card (flush) + <table>", "whyNot": "Not a component: no shared header/cell/border/zebra styling; re-hand-rolled per page." },
-    { "ref": "components/ListItem / ListCluster", "whyNot": "Lists are single-column rows, not multi-column tabular data with a header." }
+    {
+      "ref": "components/Card (flush) + <table>",
+      "whyNot": "Not a component: no shared header/cell/border/zebra styling; re-hand-rolled per page."
+    },
+    {
+      "ref": "components/ListItem / ListCluster",
+      "whyNot": "Lists are single-column rows, not multi-column tabular data with a header."
+    }
   ],
   "proposedApi": {
     "compositional": "Table, THead, TBody, Tr, Th, Td",
-    "Table": { "stickyHeader": "boolean?", "flush": "boolean? (edge-to-edge in a Card)", "size": "'sm' | 'md'" },
-    "Th": { "align": "'start' | 'end' | 'center'", "scope": "'col' | 'row'" },
-    "Td": { "align": "'start' | 'end' | 'center'", "emphasis": "boolean?", "tone": "'success' | 'warning' | 'danger' | 'ai'?" }
+    "Table": {
+      "stickyHeader": "boolean?",
+      "flush": "boolean? (edge-to-edge in a Card)",
+      "size": "'sm' | 'md'"
+    },
+    "Th": {
+      "align": "'start' | 'end' | 'center'",
+      "scope": "'col' | 'row'"
+    },
+    "Td": {
+      "align": "'start' | 'end' | 'center'",
+      "emphasis": "boolean?",
+      "tone": "'success' | 'warning' | 'danger' | 'ai'?"
+    }
   },
-  "status": "pending"
+  "status": "approved",
+  "decision": "Built as Table (organism, not molecule), under the name the JSX uses rather than DataTable: the compositional parts requested (THead, TBody, Tr, Th, Td) all exist, plus TableScroll, which the request did not foresee and every real screen needs. Two proposed props were dropped on evidence: `flush` belongs to the Card that wraps it, not to the table, and Td `emphasis`/`tone` never appeared in a screen - a cell that shouts is a Badge. `nowrap` was added later, from screens whose columns wrapped. The unbounded-row case went to a separate component, DataGrid; Table is for a known number of rows. Closed 2026-08-21: the component has been canonical for weeks and the request was simply never marked.",
+  "decidedBy": "owner (2026-08-21, asked for the July requests to be settled)"
 }

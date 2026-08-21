@@ -5,8 +5,14 @@
   "requestedBy": "agent",
   "need": "A horizontal progress/gauge to show a value on a fixed scale, with an optional target marker and tick labels. Needed for the AI/Run maturity score (value 1.4 of 3, target 2). No progress/meter primitive exists.",
   "consideredAlternatives": [
-    { "ref": "components/Badge", "whyNot": "Shows the number, not the position on a scale." },
-    { "ref": "compose with a token bar", "whyNot": "That is exactly the hand-rolled inline JSX the constitution forbids; it recurs on every dashboard." }
+    {
+      "ref": "components/Badge",
+      "whyNot": "Shows the number, not the position on a scale."
+    },
+    {
+      "ref": "compose with a token bar",
+      "whyNot": "That is exactly the hand-rolled inline JSX the constitution forbids; it recurs on every dashboard."
+    }
   ],
   "proposedApi": {
     "value": "number",
@@ -17,5 +23,7 @@
     "size": "'sm' | 'md' (default md)",
     "label": "string? (aria-label / visually-hidden description)"
   },
-  "status": "pending"
+  "status": "approved",
+  "decision": "Built as proposed, an atom, with every requested prop present: value, max, target, tone, ticks, size, label. The target marker and the fill width are the component's only dynamic inline styles, which is the documented exception to the no-inline-style rule. Closed 2026-08-21; it was built shortly after the request and never marked.",
+  "decidedBy": "owner (2026-08-21, asked for the July requests to be settled)"
 }

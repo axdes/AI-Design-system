@@ -20,6 +20,13 @@ inline JSX. It files a request here, stops, and asks the reviewer to decide.
    Resolved requests are kept, not deleted: they are the history of why the
    system looks the way it does.
 
+`check:requests` (in the gate) fails on the two ways this folder goes quiet: a
+request still `pending` while the component sits in the registry — the decision
+was taken in practice and never written down — and one pending for over 30 days
+with no `waitingFor` naming the condition that would close it. Three requests
+sat pending for six weeks after being built; nothing was waiting on them and the
+folder had no way to say so.
+
 Escape hatch (CONSTITUTION §9): P1/P2 production fixes may proceed without
 waiting, flagged as `constitution-exception: §9` in docs/CHANGELOG-REVIEW.md and
 reviewed retroactively.

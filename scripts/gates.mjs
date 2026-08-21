@@ -61,6 +61,7 @@ export const GATES = [
   { run: 'llms:check', why: 'llms.txt still says what the registry says — the non-MCP outlet may not drift' , lane: 'main' },
   { run: 'check:skills', why: 'skills, agents and the seven AGENTS.md files still name commands and paths that exist' , lane: 'main' },
   { run: 'check:lang', why: 'the package is published in English — no working-language text in what git carries' , lane: 'main' },
+  { run: 'check:requests', why: 'an escalation nobody answered stops being a process' , lane: 'main' },
   { run: 'gen:checks:check', why: 'checks.json still describes the checks this repository has' , lane: 'main' },
   { run: 'check:products', why: 'every product has a gate, the files, the aliases — and its hooks switched on' , lane: 'main' },
   { run: 'check:routes', why: 'every route resolves to a screen' , lane: 'main' },

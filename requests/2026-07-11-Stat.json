@@ -5,9 +5,18 @@
   "requestedBy": "agent",
   "need": "Dashboards need a KPI tile: a large tabular-numeric value with a caption/label and an optional semantic tone (good/warn/ai). The AI/Run cockpit KPI row and per-team score summary had to hand-roll this.",
   "consideredAlternatives": [
-    { "ref": "components/Card", "whyNot": "Card is the container, not the value/label typography + tone treatment." },
-    { "ref": "components/MetaItem", "whyNot": "MetaItem is a small icon+label meta row, not a headline metric." },
-    { "ref": "components/Badge", "whyNot": "Badge is a compact chip; not a large stat value." }
+    {
+      "ref": "components/Card",
+      "whyNot": "Card is the container, not the value/label typography + tone treatment."
+    },
+    {
+      "ref": "components/MetaItem",
+      "whyNot": "MetaItem is a small icon+label meta row, not a headline metric."
+    },
+    {
+      "ref": "components/Badge",
+      "whyNot": "Badge is a compact chip; not a large stat value."
+    }
   ],
   "proposedApi": {
     "value": "string | number (rendered tabular-nums)",
@@ -16,5 +25,7 @@
     "unit": "string? (small suffix e.g. '/3')",
     "size": "'md' | 'lg' (default md)"
   },
-  "status": "pending"
+  "status": "approved",
+  "decision": "Built, as an atom rather than a molecule: it is a value and a caption, and it composes INSIDE a Card rather than being one, which is what dropped it a level. value and label take ReactNode instead of string|number, so a screen can pass a formatted number or a link without a second component. tone, unit and size are as proposed. Closed 2026-08-21; built shortly after the request and never marked.",
+  "decidedBy": "owner (2026-08-21, asked for the July requests to be settled)"
 }

@@ -63,7 +63,8 @@
     "provenance": "node scripts/provenance.mjs",
     "build:gate": "tsc -b && vite build",
     "postinstall": "node scripts/gen-component-registry.mjs",
-    "check:lang": "node scripts/check-language.mjs"
+    "check:lang": "node scripts/check-language.mjs",
+    "check:requests": "node scripts/check-requests.mjs"
   },
   "dependencies": {
     "i18next": "^26.2.0",
