@@ -19,7 +19,7 @@
 // a real coach file, so a committed screenshot would carry client names into git
 // and a fresh clone would render onboarding instead of the cockpit. The reason and
 // the condition that reopens it (a sample coach fixture) live in its own
-// screens.config.json. It runs the page audit, which asserts rules and stores
+// config/screens.config.json. It runs the page audit, which asserts rules and stores
 // nothing.
 //
 // Being wired matters more than it sounds. teams-tasks had this config and twelve
@@ -36,7 +36,10 @@ import { comparePng, serveDir, FROZEN_NOW } from './lib/visual.mjs'
 import { installApiMocks } from './lib/apiMocks.mjs'
 
 const ROOT = process.cwd()
-const CONFIG = `${ROOT}/screens.config.json`
+/* config/ first, the package root second: this package moved its screen config
+ * into config/ when its root became a published front page, and the apps that
+ * share this script have not. Same file, same name, either place. */
+const CONFIG = [`${ROOT}/config/screens.config.json`, `${ROOT}/screens.config.json`].find((f) => existsSync(f)) ?? `${ROOT}/config/screens.config.json`
 const DIST = `${ROOT}/dist`
 const update = process.argv.includes('--update')
 
@@ -59,7 +62,7 @@ const update = process.argv.includes('--update')
 const DEFAULT_NOW = FROZEN_NOW
 
 if (!existsSync(CONFIG)) {
-  console.error(`No screens.config.json in ${ROOT} — nothing to shoot.`)
+  console.error(`No config/screens.config.json in ${ROOT} — nothing to shoot.`)
   process.exit(1)
 }
 if (!existsSync(`${DIST}/index.html`)) {

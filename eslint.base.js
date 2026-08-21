@@ -41,7 +41,7 @@ export const typescriptReact = {
      * They are held at `warn` because clearing them is a refactor of the ref
      * plumbing in the most-used components, not a lint fix, and doing it under a
      * red gate invites exactly the silent breakage the gate exists to stop. The
-     * plan is in MUTATION-BASELINE.md's "still open" list; shrink these to zero,
+     * plan is in the design system's docs/MUTATION-BASELINE.md, "still open"; shrink these to zero,
      * then delete this block. Do not add rules here to clear red. */
     'react-hooks/set-state-in-effect': 'warn',
     'react-hooks/refs': 'warn',

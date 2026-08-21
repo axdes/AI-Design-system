@@ -12,7 +12,7 @@
  * A comment saying "write English" cannot fail; this can. It reads what git
  * CARRIES, because that is what gets published.
  *
- * CHANGELOG-REVIEW.md is the one exception: it is the internal working log,
+ * docs/CHANGELOG-REVIEW.md is the one exception: it is the internal working log,
  * written in the working language on purpose, and the publisher swaps it for a
  * stub (scripts/publish-ds.mjs at the monorepo root) rather than shipping it.
  *
@@ -26,7 +26,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', R = '\x1b[0m'
 
 /* Written in the working language on purpose, and never published as itself. */
-const EXEMPT = new Set(['CHANGELOG-REVIEW.md'])
+const EXEMPT = new Set(['docs/CHANGELOG-REVIEW.md'])
 const BINARY = /\.(png|jpe?g|gif|ico|woff2?|ttf|mp3|wav|zip|pdf|xlsx)$/i
 /* Cyrillic is the working language here. Other scripts are legitimate content:
  * the ar locale is Arabic BECAUSE the system ships an Arabic translation.

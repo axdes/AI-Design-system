@@ -6,7 +6,7 @@
 // the system had quietly split in two places: `danger` against `destructive`
 // for a bad status, and `neutral` against `default` for no status.
 //
-// The vocabulary lives in prop-vocabulary.json, one sentence per word. This
+// The vocabulary lives in config/prop-vocabulary.json, one sentence per word. This
 // reads every component's public unions and holds them to it.
 //
 // Two things it will not do. It will not invent a preferred spelling: a word
@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = process.env.DS_LINT_ROOT ?? fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const RESET = '\x1b[0m', RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m'
 
-const vocab = JSON.parse(readFileSync(`${ROOT}/prop-vocabulary.json`, 'utf8'))
+const vocab = JSON.parse(readFileSync(`${ROOT}/config/prop-vocabulary.json`, 'utf8'))
 const PROPS = Object.keys(vocab).filter((k) => k !== '_')
 
 /* A component is interactive if it renders its own control. `onlyOn` uses this,
@@ -78,7 +78,7 @@ for (const name of dirs) {
           problems.push({
             name,
             line: `${name}: \`${prop}\` accepts '${w}', which the vocabulary does not have`,
-            hint: `Use one of: ${Object.keys(allowed).join(', ')} — or add '${w}' to prop-vocabulary.json with a sentence saying what it means.`,
+            hint: `Use one of: ${Object.keys(allowed).join(', ')} — or add '${w}' to config/prop-vocabulary.json with a sentence saying what it means.`,
           })
           continue
         }
@@ -148,7 +148,7 @@ if (undeclared.length) {
     console.error(`    ${u.name}${DIM} — ${u.users.join(', ')}${RESET}`)
   }
   console.error(
-    `\n  Declare each in prop-vocabulary.json: the ONE question it answers, and a` +
+    `\n  Declare each in config/prop-vocabulary.json: the ONE question it answers, and a` +
       `\n  sentence per value. If two components use the name for two different` +
       `\n  questions, that is two props wearing one name — rename one of them.\n`,
   )

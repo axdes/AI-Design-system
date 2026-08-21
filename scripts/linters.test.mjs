@@ -44,7 +44,7 @@ beforeAll(() => {
   /* Only what the linters read. styles/ comes too: the rules module resolves
    * tokens against it. */
   for (const dir of ['src', 'styles']) cpSync(join(PKG, dir), join(COPY, dir), { recursive: true })
-  for (const file of ['component-registry.json', 'prop-vocabulary.json', 'twins.json']) {
+  for (const file of ['component-registry.json', 'config/prop-vocabulary.json', 'config/twins.json']) {
     cpSync(join(PKG, file), join(COPY, file))
   }
 }, 60_000)

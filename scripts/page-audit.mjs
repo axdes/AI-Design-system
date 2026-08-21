@@ -48,10 +48,13 @@ import { createRequire } from 'node:module'
 const AXE_SOURCE = readFileSync(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8')
 
 const ROOT = process.cwd()
-const CONFIG = `${ROOT}/screens.config.json`
+/* config/ first, the package root second: this package moved its screen config
+ * into config/ when its root became a published front page, and the apps that
+ * share this script have not. Same file, same name, either place. */
+const CONFIG = [`${ROOT}/config/screens.config.json`, `${ROOT}/screens.config.json`].find((f) => existsSync(f)) ?? `${ROOT}/config/screens.config.json`
 const DIST = `${ROOT}/dist`
 
-if (!existsSync(CONFIG)) { console.error(`No screens.config.json in ${ROOT}.`); process.exit(1) }
+if (!existsSync(CONFIG)) { console.error(`No config/screens.config.json in ${ROOT}.`); process.exit(1) }
 if (!existsSync(`${DIST}/index.html`)) { console.error('No dist/index.html — run `npm run build` first.'); process.exit(1) }
 
 const { screens, seedLocalStorage = {}, widths, auditAllow = {}, apiMocks = {}, contentSelectors, localeStorageKey = 'i18n.lang', rtlLocale = 'ar' } = JSON.parse(readFileSync(CONFIG, 'utf8'))
@@ -481,7 +484,7 @@ server.close()
 if (failures.length) {
   console.error(`\n${RED}✗ ${failures.length} rule violation(s):${RESET}`)
   for (const f of failures) console.error(`    ${f}`)
-  console.error(`\n  Fix the screen, or record the exception in screens.config.json → auditAllow with a reason.`)
+  console.error(`\n  Fix the screen, or record the exception in config/screens.config.json → auditAllow with a reason.`)
   process.exit(1)
 }
 console.log(`\n${GREEN}✓ ${checks} page-composition check(s) pass.${RESET}`)

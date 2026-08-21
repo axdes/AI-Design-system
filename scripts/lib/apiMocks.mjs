@@ -10,7 +10,7 @@
 // is where the layout bugs were. Fixtures put a known, populated screen in front
 // of the rules every time, on any machine, with no ports to wait for.
 //
-// Config shape, in screens.config.json:
+// Config shape, in config/screens.config.json:
 //
 //   "apiMocks": {
 //     "**/api/projects":  "fixtures/projects.json",

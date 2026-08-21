@@ -58,11 +58,11 @@ Either way that file is the system: if a thing is not in it, it does not exist.
 - No AI-isms or filler: avoid "seamless", "effortless", "unlock", "elevate", "dive in", "delve", "in today's world", "whether you're...". Write plain, concrete copy.
 - Do not invent product facts, routes, or features in copy. If something is a placeholder, say so plainly.
 
-## MUST: Log every change in CHANGELOG-REVIEW.md
+## MUST: Log every change
 
 After any non-trivial change (a component, a token, a fix with a non-obvious
 cause, a refactor across files, a decision that overrides an earlier one), append
-an entry to `/CHANGELOG-REVIEW.md` saying **what changed and why**, in the same
+an entry to `docs/CHANGELOG-REVIEW.md` saying **what changed and why**, in the same
 turn as the change. Typos and mid-session iteration do not need one. Without the
 log the next session loses the reasoning and the user cannot trace a decision.
 
@@ -230,7 +230,7 @@ project-specific rules nothing off-the-shelf knows about.
 - **`lint:graph`** — the RESOLVED import graph (dependency-cruiser): layers
   components → blocks → shell → layouts, atomic ranks, no cycles.
 - **`lint:vocab`** — one word per meaning; a union prop name on 2+ components
-  must itself be declared in `prop-vocabulary.json`.
+  must itself be declared in `config/prop-vocabulary.json`.
 - **`npm test`** (vitest + Testing Library + axe) — what only running code can
   prove: every golden example renders and is axe-clean, every variant the
   registry advertises lands as `data-*` in the DOM, and the keyboard/ARIA

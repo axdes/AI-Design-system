@@ -23,7 +23,7 @@
 // before scoring, and it is what keeps IconButton clear of Button.
 //
 // A flagged pair is a question, not a verdict. Answer it by merging the two, or
-// by recording the pair in twins.json with what genuinely separates them and
+// by recording the pair in config/twins.json with what genuinely separates them and
 // what would make them one component again.
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -36,7 +36,7 @@ const ROOT = process.env.DS_LINT_ROOT ?? fileURLToPath(new URL('..', import.meta
 const RESET = '\x1b[0m', RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m'
 
 const reg = JSON.parse(readFileSync(`${ROOT}/component-registry.json`, 'utf8'))
-const accepted = JSON.parse(readFileSync(`${ROOT}/twins.json`, 'utf8'))
+const accepted = JSON.parse(readFileSync(`${ROOT}/config/twins.json`, 'utf8'))
 
 /* Props every React component has. They carry no information about what the
  * component IS, so counting them would make everything look alike. */
@@ -162,7 +162,7 @@ if (news.length) {
     console.error(`      ${DIM}shared props: ${f.shared.join(', ')}${RESET}`)
   }
   console.error(
-    `\n  Either fold one into the other, or add the pair to twins.json with what` +
+    `\n  Either fold one into the other, or add the pair to config/twins.json with what` +
       `\n  separates them and what would make them one component again. A duplicate` +
       `\n  in the system is inherited by every product that consumes it.\n`,
   )
@@ -171,7 +171,7 @@ if (news.length) {
 if (stale.length) {
   console.error(`${RED}✗ ${stale.length} recorded pair(s) no longer resemble each other:${RESET}`)
   for (const p of stale) console.error(`    ${p}`)
-  console.error(`\n  Remove them from twins.json — a stale excuse waives a future duplicate.\n`)
+  console.error(`\n  Remove them from config/twins.json — a stale excuse waives a future duplicate.\n`)
   process.exit(1)
 }
 console.log(`${GREEN}✓ no unexplained twin inside the system.${RESET}`)

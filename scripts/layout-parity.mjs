@@ -36,14 +36,17 @@ import { serveDir } from "./lib/visual.mjs";
 import { installApiMocks } from "./lib/apiMocks.mjs";
 
 const ROOT = process.cwd();
-const CONFIG = `${ROOT}/screens.config.json`;
+/* config/ first, the package root second: this package moved its screen config
+ * into config/ when its root became a published front page, and the apps that
+ * share this script have not. Same file, same name, either place. */
+const CONFIG = [`${ROOT}/config/screens.config.json`, `${ROOT}/screens.config.json`].find((f) => existsSync(f)) ?? `${ROOT}/config/screens.config.json`;
 const PARITY = `${ROOT}/parity.json`;
 const DIST = `${ROOT}/dist`;
 const record = process.argv.includes("--reference");
 
 const RED = "\x1b[31m", GREEN = "\x1b[32m", DIM = "\x1b[2m", B = "\x1b[1m", OFF = "\x1b[0m";
 
-if (!existsSync(CONFIG)) { console.error(`No screens.config.json in ${ROOT}.`); process.exit(1); }
+if (!existsSync(CONFIG)) { console.error(`No config/screens.config.json in ${ROOT}.`); process.exit(1); }
 if (!existsSync(`${DIST}/index.html`)) { console.error("No dist/index.html — run `npm run build` first."); process.exit(1); }
 if (!existsSync(PARITY)) {
   console.log(`${DIM}no parity.json in this package — nothing to compare against.${OFF}`);

@@ -21,7 +21,7 @@ inline JSX. It files a request here, stops, and asks the reviewer to decide.
    system looks the way it does.
 
 Escape hatch (CONSTITUTION §9): P1/P2 production fixes may proceed without
-waiting, flagged as `constitution-exception: §9` in CHANGELOG-REVIEW.md and
+waiting, flagged as `constitution-exception: §9` in docs/CHANGELOG-REVIEW.md and
 reviewed retroactively.
 
 ## Request format
