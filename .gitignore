@@ -14,3 +14,8 @@ src/__verify__/
 # writes it, predev/prebuild run that, and `gen-registry:check` rebuilds it when a
 # fresh checkout has not.
 component-registry.json
+
+# Scratch output of the design-sync tooling: proposals, not decisions. A
+# proposal that git carries reads as part of the system, and this one was
+# swept into a commit by `git add -A` and published before anyone read it.
+.ds/
