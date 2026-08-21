@@ -1,0 +1,39 @@
+{
+  "ref": "Highlight",
+  "level": "atom",
+  "description": "Marks the matched part of a result, so a list of hits shows WHY each one is a hit. Uses a real `<mark>`: the highlight is a semantic emphasis, not a colour, and a screen reader is entitled to know which words matched.",
+  "exports": [
+    "Highlight"
+  ],
+  "main": "Highlight",
+  "from": "@/components/Highlight",
+  "slots": [],
+  "props": [
+    {
+      "name": "text",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "query",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "caseSensitive",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Highlight/Highlight.tsx",
+  "uses": [
+    "Layout",
+    "ListItem"
+  ],
+  "example": "<Stack gap={1}>\n  {RESULTS.map((title) => (\n    <ListItem key={title}><Highlight text={title} query={QUERY} /></ListItem>\n  ))}\n</Stack>"
+}

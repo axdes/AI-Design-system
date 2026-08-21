@@ -1,0 +1,82 @@
+{
+  "ref": "Chip",
+  "level": "atom",
+  "description": "Rounded selectable label. A Button with a toggle state, always pill-shaped: quick actions, quick replies, pick-a-reason chips, filters, etc.",
+  "exports": [
+    "Chip"
+  ],
+  "main": "Chip",
+  "from": "@/components/Chip",
+  "slots": [],
+  "props": [
+    {
+      "name": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "Variant",
+      "required": false,
+      "values": [
+        "secondary",
+        "primary",
+        "ghost",
+        "destructive",
+        "dark"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Chip/Chip.tsx",
+  "inherits": "ButtonHTMLAttributes<HTMLButtonElement>",
+  "variants": {
+    "variant": {
+      "prop": "variant",
+      "values": [
+        "secondary",
+        "primary",
+        "ghost",
+        "destructive",
+        "dark"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "selected": {
+      "prop": "selected",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "<Chip icon=\"calendar\" onClick={() => undefined}>Request leave</Chip>"
+}

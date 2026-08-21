@@ -1,0 +1,15 @@
+/* Overrides on top of `.input`: multi-line height + vertical resize.
+ * A pill radius (from --control-radius) looks wrong on a tall box, use a
+ * rounded-rect (lg) instead. */
+.textarea {
+  height: auto;
+  min-height: calc(var(--control-height) * 2);
+  padding-block: var(--space-2);
+  border-radius: var(--radius-lg);
+  line-height: var(--leading-normal);
+  resize: vertical;
+}
+/* Sizes — keep auto-height (override .input[data-size] fixed height) + scale min-height. */
+.textarea[data-size] { height: auto; }
+.textarea[data-size="sm"] { min-height: calc(var(--control-height-sm) * 2); }
+.textarea[data-size="lg"] { min-height: calc(var(--control-height-lg) * 2); }

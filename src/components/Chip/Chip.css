@@ -1,0 +1,44 @@
+/* Chip = a Button with a selectable (toggle) state, always pill-shaped.
+ * Sizing and colors are IDENTICAL to .btn so chips and buttons match 1:1;
+ * only [data-selected] (pick-one / multi-select groups) is chip-specific. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);   /* icon↔label */
+  height: var(--control-height);
+  padding-inline: var(--control-padding-x);
+  border-radius: var(--radius-full);   /* always pill */
+  border: none;
+  font-family: inherit;
+  font-weight: var(--control-font-weight);
+  font-size: var(--control-font-size);
+  background: var(--secondary);            /* default: subtle (like btn secondary) */
+  color: var(--secondary-foreground);
+  cursor: pointer;
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+.chip:hover { background: var(--secondary-hover); }
+.chip:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+.chip:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+/* ── Sizes — mirror .btn ───── */
+.chip[data-size="sm"] { height: var(--control-height-sm); padding-inline: var(--space-3); font-size: var(--font-sm); }
+.chip[data-size="lg"] { height: var(--control-height-lg); font-size: var(--control-font-size-lg); }
+
+/* ── Variants — identical colors to .btn ───── */
+.chip[data-variant="primary"] { background: var(--primary); color: var(--primary-foreground); }
+.chip[data-variant="primary"]:hover { background: var(--primary-hover); }
+
+.chip[data-variant="ghost"] { background: transparent; color: var(--foreground); }
+.chip[data-variant="ghost"]:hover { background: var(--accent-soft); }
+
+.chip[data-variant="destructive"] { background: var(--destructive); color: var(--destructive-foreground); }
+
+.chip[data-variant="dark"] { background: var(--secondary-foreground); color: var(--background); }
+.chip[data-variant="dark"]:hover { background: var(--foreground); }
+
+/* ── Selected — primary fill, overrides the variant (pick-one / toggle groups).
+ * Placed last so it wins over variant rules at equal specificity. ───── */
+.chip[data-selected] { background: var(--primary); color: var(--primary-foreground); }
+.chip[data-selected]:hover { background: var(--primary-hover); }

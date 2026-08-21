@@ -1,0 +1,79 @@
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  inline-size: 100%;
+}
+.slider[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.slider-labelrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.slider-label {
+  font-size: var(--font-sm);
+  color: var(--foreground);
+}
+.slider-value {
+  font-size: var(--font-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+
+/* Native range, restyled. The filled portion left of the thumb uses --pct set
+ * inline; the rest is the track colour. Thumb and track are vendor-prefixed
+ * because the two engines expose different pseudo-elements. */
+.slider-input {
+  --pct: 0%; /* filled fraction; overridden inline from the value */
+  inline-size: 100%;
+  block-size: var(--space-4);
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.slider-input:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-full);
+}
+
+.slider-input::-webkit-slider-runnable-track {
+  block-size: var(--space-1);
+  border-radius: var(--radius-full);
+  background: linear-gradient(to right, var(--primary) var(--pct), var(--input) var(--pct));
+}
+.slider-input::-moz-range-track {
+  block-size: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--input);
+}
+.slider-input::-moz-range-progress {
+  block-size: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+
+.slider-input::-webkit-slider-thumb {
+  appearance: none;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  margin-block-start: calc((var(--space-1) - var(--space-4)) / 2);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: var(--shadow-sm);
+}
+.slider-input::-moz-range-thumb {
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: var(--shadow-sm);
+}

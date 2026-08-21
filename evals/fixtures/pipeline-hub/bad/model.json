@@ -1,0 +1,22 @@
+{
+  "id": "client-workspace",
+  "title": "Client workspace",
+  "roles": ["consultant"],
+  "objects": {
+    "area": {
+      "description": "One area of the workspace.",
+      "attributes": {
+        "core": ["name", "whatWaits", "count"]
+      },
+      "actions": [
+        {
+          "verb": "open",
+          "roles": ["consultant"],
+          "screen": "workspace-hub",
+          "provenBy": "workspace-hub#tile-opens-area"
+        }
+      ],
+      "screens": { "collection": "workspace-hub" }
+    }
+  }
+}

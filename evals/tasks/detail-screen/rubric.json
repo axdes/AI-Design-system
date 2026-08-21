@@ -1,0 +1,21 @@
+{
+  "id": "detail-screen",
+  "title": "Pay statement detail screen",
+  "why": "Detail pages carry a side panel, tabular data and a status chip: three things with an exact DS answer (DetailPageTemplate, Table parts, Badge) and three things agents love to improvise. The meta panel is legitimately either <MetaItem>s or a <Descriptions> list, so the rubric names the choice rather than one of them: measured 2026-08-14, three runs out of three chose Descriptions, which is what the registry says it is for.",
+  "required": [
+    "DetailPageTemplate",
+    "Table",
+    "Badge",
+    [
+      "MetaItem",
+      "Descriptions"
+    ]
+  ],
+  "forbidden": [
+    {
+      "pattern": "className=\"[^\"]*\\b(side-panel|aside|detail-header)\\b",
+      "message": "hand-rolled detail chrome — the structure comes from <DetailPageTemplate>"
+    }
+  ],
+  "entry": "Screen.tsx"
+}

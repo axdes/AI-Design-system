@@ -1,0 +1,67 @@
+{
+  "ref": "TagInput",
+  "level": "molecule",
+  "description": "Free-text tags: type, press Enter or comma, get a removable <Tag>. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag.",
+  "exports": [
+    "TagInput"
+  ],
+  "main": "TagInput",
+  "from": "@/components/TagInput",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "string[]",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string[]) => void",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/TagInput/TagInput.tsx",
+  "variants": {
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
+      ]
+    },
+    "disabled": {
+      "prop": "disabled",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Tag"
+  ],
+  "example": "const [tags, setTags] = useState(['design', 'quarterly'])\n/* Free-typed keywords: Enter or comma commits a tag, Backspace in the empty\n * field takes the last one back. Options from a fixed list belong to\n * <Combobox multiple>, not here. */\n\n<TagInput\n  label=\"Report tags\"\n  value={tags}\n  onChange={setTags}\n  placeholder=\"Add a tag and press Enter\"\n/>"
+}

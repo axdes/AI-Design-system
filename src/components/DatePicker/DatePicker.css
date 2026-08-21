@@ -1,0 +1,27 @@
+.datepicker-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 12rem;
+  block-size: var(--control-height);
+  padding-inline: var(--control-padding-x);
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--input);
+  border-radius: var(--control-radius);
+  font-family: inherit;
+  font-size: var(--control-font-size);
+  cursor: pointer;
+  transition: border-color var(--duration-fast);
+}
+.datepicker-trigger[data-size="sm"] { block-size: var(--control-height-sm); padding-inline: var(--space-3); font-size: var(--font-sm); }
+.datepicker-trigger[data-size="lg"] { block-size: var(--control-height-lg); font-size: var(--control-font-size-lg); }
+.datepicker-trigger:hover { border-color: var(--ring); }
+.datepicker-trigger:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+.datepicker-trigger[data-invalid] { border-color: var(--destructive); }
+/* --muted surface: drop the resting border (invalid + focus outline still show). */
+.datepicker-trigger[data-surface="muted"]:not([data-invalid]),
+.datepicker-trigger[data-surface="muted"]:not([data-invalid]):hover { border-color: transparent; }
+.datepicker-trigger[data-placeholder] { color: var(--muted-foreground); }
+.datepicker-trigger:disabled { opacity: 0.5; cursor: not-allowed; }
+.datepicker-icon { color: var(--icon-muted); }

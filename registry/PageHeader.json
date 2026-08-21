@@ -1,0 +1,48 @@
+{
+  "ref": "PageHeader",
+  "level": "organism",
+  "description": "The top of a page: title, breadcrumb and the page-level actions. Page chrome belongs here, not in a screen's own CSS. The title stands alone by RULE: no text renders under it (a subtitle prop existed and was removed 2026-08-20 — explanatory lines under titles are banned from this system; what used to live there is content and belongs in the page body).",
+  "exports": [
+    "PageHeader"
+  ],
+  "main": "PageHeader",
+  "from": "@/components/PageHeader",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "onBack",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "backLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "inline",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/PageHeader/PageHeader.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Icon",
+    "IconButton",
+    "NavDrawerButton",
+    "Tooltip"
+  ],
+  "example": "/* Page chrome comes from the header, not from hand-rolled markup: title,\n * optional back affordance, and the action cluster on the inline end. */\n\n<PageHeader\n  title=\"Content library\"\n  actions={<Button variant=\"primary\" iconEnd>New document<Icon name=\"add\" /></Button>}\n/>"
+}

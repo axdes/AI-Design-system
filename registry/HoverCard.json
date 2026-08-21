@@ -1,0 +1,40 @@
+{
+  "ref": "HoverCard",
+  "level": "molecule",
+  "description": "Hover-triggered rich card — a profile preview on a name, a definition on a term. Opens on hover OR focus (keyboard-reachable), closes when the pointer leaves both trigger and card. For text-only hints use <Tooltip>; for a click-triggered panel use <Popover>.",
+  "exports": [
+    "HoverCard"
+  ],
+  "main": "HoverCard",
+  "from": "@/components/HoverCard",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactElement<ChildProps>",
+      "required": true
+    },
+    {
+      "name": "content",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "openDelay",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/HoverCard/HoverCard.tsx",
+  "context": "region",
+  "uses": [
+    "Avatar",
+    "Layout"
+  ],
+  "example": "/* Rich card on hover OR focus. For a plain text hint use <Tooltip>; for a\n * click-opened panel use <Popover>. The trigger stays keyboard-reachable. */\n\n<HoverCard\n  content={\n    <Row gap={3}>\n      <Avatar name=\"Sarah Al-Mansouri\" />\n      <Stack gap={1}>\n        <strong>Sarah Al-Mansouri</strong>\n        <span>Brand manager, joined 2023</span>\n      </Stack>\n    </Row>\n  }\n>\n  <button type=\"button\">@sarah</button>\n</HoverCard>"
+}

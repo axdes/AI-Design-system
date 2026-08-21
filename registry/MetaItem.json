@@ -1,0 +1,42 @@
+{
+  "ref": "MetaItem",
+  "level": "atom",
+  "description": "One piece of secondary information (a date, an owner, a count) with its icon, sized to sit under a title.",
+  "exports": [
+    "MetaItem"
+  ],
+  "main": "MetaItem",
+  "from": "@/components/MetaItem",
+  "slots": [],
+  "props": [
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false
+    },
+    {
+      "name": "appearance",
+      "type": "'meta' | 'eyebrow'",
+      "required": false,
+      "values": [
+        "meta",
+        "eyebrow"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/MetaItem/MetaItem.tsx",
+  "inherits": "HTMLAttributes<HTMLSpanElement>",
+  "variants": {
+    "appearance": {
+      "prop": "appearance",
+      "values": [
+        "meta",
+        "eyebrow"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "<MetaItem icon=\"text_fields\">1,240 words</MetaItem>"
+}

@@ -1,0 +1,67 @@
+.input {
+  display: block;
+  width: 100%;
+  height: var(--control-height);
+  padding-inline: var(--control-padding-x);
+  border-radius: var(--control-radius);
+  border: 1px solid var(--input);
+  background: var(--background);
+  color: var(--foreground);
+  transition: border-color var(--duration-fast);
+}
+/* Sizes — mirror the button/control scale. */
+.input[data-size="sm"] { height: var(--control-height-sm); padding-inline: var(--space-3); font-size: var(--font-sm); }
+.input[data-size="lg"] { height: var(--control-height-lg); font-size: var(--control-font-size-lg); }
+
+.input::placeholder { color: var(--muted-foreground); }
+
+/* Date fields: tame the native widget so it reads as one of ours. The value
+ * is tabular so dd/mm/yyyy does not wobble while typing; the calendar glyph
+ * sits quiet until hovered (it cannot be recoloured, only dimmed). */
+.input[type='date'] {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.input[type='date']::-webkit-calendar-picker-indicator {
+  /* color-scheme flips the native glyph light in dark mode; 0.45 left it too
+   * faint there, so it rests a touch stronger and goes full on interaction. */
+  opacity: 0.6;
+  cursor: pointer;
+}
+.input[type='date']:hover::-webkit-calendar-picker-indicator,
+.input[type='date']:focus-visible::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+/* Browsers repaint autofilled fields with their own grey/yellow background and
+ * dark text, ignoring our tokens — that's what reads as a "grey" login field.
+ * The inset box-shadow re-covers the fill with --background; the long transition
+ * holds it so the native colour never flashes through. */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--foreground);
+  -webkit-box-shadow: 0 0 0 100px var(--background) inset;
+  caret-color: var(--foreground);
+  transition: background-color 100000s ease-out 0s;
+}
+
+.input:hover:not(:disabled) { border-color: var(--ring); }
+/* On a --muted surface the white fill separates the field; drop the resting
+ * border (invalid + focus outline still show). */
+.input[data-surface="muted"]:not([aria-invalid="true"]),
+.input[data-surface="muted"]:not([aria-invalid="true"]):hover:not(:disabled) { border-color: transparent; }
+.input:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.input[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+.input[aria-invalid="true"]:focus-visible {
+  outline-color: var(--destructive);
+}

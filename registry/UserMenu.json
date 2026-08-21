@@ -1,0 +1,41 @@
+{
+  "ref": "UserMenu",
+  "level": "organism",
+  "description": "Account trigger for a sidebar footer: name + role expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions.",
+  "exports": [
+    "UserMenu"
+  ],
+  "main": "UserMenu",
+  "from": "@/components/UserMenu",
+  "slots": [],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "role",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "avatarSrc",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "UserMenuAction[]",
+      "required": true
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/UserMenu/UserMenu.tsx",
+  "context": "region",
+  "example": "/* Presentation only: the account trigger for a sidebar footer. The consumer\n * owns the user object and what each action does. */\n\n<UserMenu\n  name=\"Sarah Al-Mansouri\"\n  role=\"Brand manager\"\n  menuLabel=\"Account menu\"\n  actions={[\n    { id: 'profile', label: 'Profile', icon: 'person', onSelect: () => undefined },\n    { id: 'logout', label: 'Sign out', icon: 'logout', onSelect: () => undefined },\n  ]}\n/>"
+}

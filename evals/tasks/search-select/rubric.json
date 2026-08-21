@@ -1,0 +1,13 @@
+{
+  "id": "search-select",
+  "title": "Searchable country picker",
+  "why": "A type-to-filter select is the case a plain <Select> cannot cover, and agents reliably hand-roll it from an input plus a div list, missing the whole ARIA combobox contract.",
+  "required": ["Combobox", "Field"],
+  "forbidden": [
+    {
+      "pattern": "role=\"listbox\"",
+      "message": "hand-rolled listbox — <Combobox> owns the combobox/listbox ARIA"
+    }
+  ],
+  "entry": "Screen.tsx"
+}

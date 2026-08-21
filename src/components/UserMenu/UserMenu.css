@@ -1,0 +1,41 @@
+/* Account menu for a sidebar footer. Expanded: name + role. Collapsed (inside a
+ * collapsed SideNav or the legacy app-shell rail): avatar only. */
+.user-menu { min-inline-size: 0; }
+
+.user-menu-trigger {
+  display: flex; align-items: center; gap: var(--space-2);
+  inline-size: 100%; min-inline-size: 0;
+  padding: var(--space-1) var(--space-2);
+  border: none; border-radius: var(--radius-full);
+  background: transparent; color: var(--foreground); font-family: inherit;
+  text-align: start; cursor: pointer; transition: background var(--duration-fast);
+}
+.user-menu-trigger:hover, .user-menu-trigger[data-open] { background: var(--accent); }
+.user-menu-trigger:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+
+.user-menu-avatar { display: none; }
+
+.user-menu-trigger-text { flex: 1; display: flex; flex-direction: column; min-inline-size: 0; }
+.user-menu-trigger-name {
+  font-size: var(--font-sm); font-weight: var(--font-weight-regular); line-height: var(--leading-tight);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.user-menu-trigger-role {
+  font-size: var(--font-xs); color: var(--muted-foreground); line-height: var(--leading-tight);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Collapsed rail: avatar only (works inside a collapsed SideNav or the app-shell). */
+.side-nav[data-collapsed] .user-menu,
+.app-shell[data-sidebar-collapsed] .user-menu { display: flex; justify-content: center; }
+.side-nav[data-collapsed] .user-menu-avatar,
+.app-shell[data-sidebar-collapsed] .user-menu-avatar {
+  display: grid; inline-size: var(--sidebar-rail-item-size); block-size: var(--sidebar-rail-item-size);
+}
+.side-nav[data-collapsed] .user-menu-trigger-text,
+.app-shell[data-sidebar-collapsed] .user-menu-trigger-text { display: none; }
+.side-nav[data-collapsed] .user-menu-trigger,
+.app-shell[data-sidebar-collapsed] .user-menu-trigger {
+  inline-size: var(--sidebar-rail-item-size); block-size: var(--sidebar-rail-item-size);
+  padding: 0; justify-content: center;
+}

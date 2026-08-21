@@ -1,0 +1,32 @@
+{
+  "ref": "ContentSidePanel",
+  "level": "organism",
+  "description": "Document side panel: an icon rail that slides a SidePanel out over the content, one panel per icon.",
+  "exports": [
+    "ContentSidePanel"
+  ],
+  "main": "ContentSidePanel",
+  "from": "@/components/ContentSidePanel",
+  "slots": [],
+  "props": [
+    {
+      "name": "sections",
+      "type": "readonly SidePanelSection[]",
+      "required": true
+    },
+    {
+      "name": "defaultOpen",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ContentSidePanel/ContentSidePanel.tsx",
+  "context": "region",
+  "uses": [
+    "Icon",
+    "IconButton",
+    "SidePanel",
+    "Tooltip"
+  ],
+  "example": "<ContentSidePanel\n  sections={[\n    { key: 'info', icon: 'info', label: 'Details', content: <p>Created 12 May 2026.</p> },\n    { key: 'history', icon: 'history', label: 'History', content: <p>3 revisions.</p> },\n  ]}\n/>"
+}

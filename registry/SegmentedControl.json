@@ -1,0 +1,80 @@
+{
+  "ref": "SegmentedControl",
+  "level": "molecule",
+  "description": "A single-choice toggle rendered as adjacent segments — a compact radio group for switching a view (List / Board, Day / Week / Month). Uses the radiogroup pattern (Arrow keys move and select); distinct from <Tabs>, which navigates between panels, and from <Select>, which is for longer lists.",
+  "exports": [
+    "SegmentedControl"
+  ],
+  "main": "SegmentedControl",
+  "from": "@/components/SegmentedControl",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "V",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: V) => void",
+      "required": true
+    },
+    {
+      "name": "options",
+      "type": "readonly Segment<V>[]",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SegmentedControl/SegmentedControl.tsx",
+  "context": "region",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "const [view, setView] = useState<View>('board')\n/* A compact single-choice toggle for switching a view. Use <Tabs> to navigate\n * between panels and <Select> for longer option lists. */\n\n<SegmentedControl<View>\n  label=\"View\"\n  value={view}\n  onChange={setView}\n  options={[\n    { value: 'list', label: 'List' },\n    { value: 'board', label: 'Board' },\n    { value: 'calendar', label: 'Calendar' },\n  ]}\n/>"
+}

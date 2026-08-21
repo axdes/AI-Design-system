@@ -1,0 +1,69 @@
+/* Centered error page — appears when the whole app crashes during render. */
+.error-boundary {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: var(--muted);
+}
+
+.error-boundary-card {
+  max-width: var(--prose-max-width);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  background: var(--card);
+  color: var(--card-foreground);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.error-boundary-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;   /* error-page icon circle */
+  height: 4rem;
+  margin: 0 auto;
+  border-radius: var(--radius-full);
+  /* Semantic status roles already flip per theme — no dark override needed. */
+  background: var(--destructive-soft);
+  color: var(--destructive-emphasis);
+}
+
+.error-boundary-title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-2xl);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-tight);
+}
+
+.error-boundary-subtitle {
+  color: var(--muted-foreground);
+  font-size: var(--font-sm);
+}
+
+.error-boundary-details {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--muted);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-xs);
+  color: var(--muted-foreground);
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: start;
+  max-height: 8rem;   /* error <pre> scroll cap */
+  overflow-y: auto;
+}
+
+.error-boundary-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}

@@ -1,0 +1,12 @@
+{
+  "id": "file-explorer",
+  "title": "File explorer screen",
+  "why": "Three things agents rebuild from divs: a nested expand/collapse tree, a long virtualized list, and a right-click menu. Tree, DataGrid and ContextMenu own all three, and hand-rolling any of them loses the keyboard, the windowing, or the positioning.",
+  "required": ["Tree", "DataGrid", "ContextMenu"],
+  "forbidden": [
+    { "pattern": "<table[\\s>]", "message": "raw <table> — use <DataGrid> so long lists stay windowed" },
+    { "pattern": "role=\"tree\"", "message": "hand-rolled ARIA tree — use <Tree>" },
+    { "pattern": "onContextMenu=", "message": "hand-rolled right-click handler — use <ContextMenu>" }
+  ],
+  "entry": "Screen.tsx"
+}

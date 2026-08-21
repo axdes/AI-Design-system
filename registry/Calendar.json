@@ -1,0 +1,84 @@
+{
+  "ref": "Calendar",
+  "level": "molecule",
+  "description": "A month grid for picking a single date. Keyboard: Arrow keys move day, Page Up/Down move month, Home/End jump to the week's start/end, Enter/Space select. Month and weekday names come from Intl (locale + RTL aware). Standalone, or the body of <DatePicker>.",
+  "exports": [
+    "Calendar"
+  ],
+  "main": "Calendar",
+  "from": "@/components/Calendar",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(date: Date) => void",
+      "required": true
+    },
+    {
+      "name": "month",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "onMonthChange",
+      "type": "(month: Date) => void",
+      "required": false
+    },
+    {
+      "name": "min",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "rangeStart",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "rangeEnd",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "weekStartsOn",
+      "type": "0 | 1",
+      "required": false,
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Calendar/Calendar.tsx",
+  "context": "region",
+  "uses": [
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "const [date, setDate] = useState<Date | undefined>(new Date(2026, 0, 15))\nconst [month, setMonth] = useState(MONTH)\n/* Standalone month grid. Keyboard: arrows move day, PageUp/Down move month.\n * Month/weekday names come from Intl (locale + RTL aware). For a field that\n * opens this in a popover, use <DatePicker>. */\n\n<Calendar value={date} onChange={setDate} month={month} onMonthChange={setMonth} />"
+}

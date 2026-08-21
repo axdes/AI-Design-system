@@ -1,0 +1,37 @@
+/* Clickable, block-width row. Used for menu items, demo lists etc.
+ * Base is transparent so the parent surface shows through — works on cards
+ * AND on muted page bg without ever vanishing (e.g. in dark theme where
+ * --muted === --background, a --muted base would be invisible). */
+.list-item {
+  display: block;
+  width: 100%;
+  text-align: start;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  color: var(--muted-foreground);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+.list-item:hover,
+.list-item:focus-visible {
+  background: var(--accent-soft);
+  color: var(--foreground);
+  outline: none;
+}
+.list-item strong {
+  color: var(--foreground);
+  font-weight: var(--font-weight-semibold);
+}
+/* The row you are on, when the list is a switch between panes rather than navigation. Marked with
+ * `aria-current` so the state a screen reader announces and the state you can see are the same
+ * fact. A step DARKER than the hover tint above, so the selected row still reads as the selected
+ * one while the pointer is somewhere else in the list. */
+.list-item[aria-current] {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-weight: var(--font-weight-medium);
+}

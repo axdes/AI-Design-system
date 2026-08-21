@@ -1,0 +1,56 @@
+{
+  "ref": "LoadMore",
+  "level": "molecule",
+  "description": "The end of a list that has more of it. `<Pagination>` pages a known total; this is for the ones where the total is not known and may not be finite.",
+  "exports": [
+    "LoadMore"
+  ],
+  "main": "LoadMore",
+  "from": "@/components/LoadMore",
+  "slots": [],
+  "props": [
+    {
+      "name": "onLoad",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "hasMore",
+      "type": "boolean",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "loadingLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "auto",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/LoadMore/LoadMore.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Layout",
+    "ListItem"
+  ],
+  "example": "const [shown, setShown] = useState(PAGE)\n\n<Stack gap={1}>\n  {Array.from({ length: shown }, (_, i) => (\n    <ListItem key={i}>Update {i + 1}</ListItem>\n  ))}\n  {/* hasMore false renders nothing at all, so the end of the feed is quiet. */}\n  <LoadMore\n    hasMore={shown < TOTAL}\n    label=\"Load more\"\n    onLoad={() => { setShown((n) => n + PAGE) }}\n  />\n</Stack>"
+}

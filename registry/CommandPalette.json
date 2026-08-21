@@ -1,0 +1,50 @@
+{
+  "ref": "CommandPalette",
+  "level": "organism",
+  "description": "The Cmd+K command palette: a centered search over an action list. Type to filter, Arrow keys to move, Enter to run, Escape to close. The consumer owns `open` (wire it to a global key handler) and what each command does. Portaled, focus goes to the input on open.",
+  "exports": [
+    "CommandPalette"
+  ],
+  "main": "CommandPalette",
+  "from": "@/components/CommandPalette",
+  "slots": [],
+  "props": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": true
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "commands",
+      "type": "Command[]",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "emptyLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/CommandPalette/CommandPalette.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Icon"
+  ],
+  "example": "const [open, setOpen] = useState(false)\n/* The consumer owns `open`: wire it to a global Cmd/Ctrl+K handler so the\n * palette opens from the keyboard, and let each command do its thing. Type to\n * filter, Arrow keys to move, Enter to run. */\nuseEffect(() => {\n  const onKey = (e: KeyboardEvent) => {\n    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {\n      e.preventDefault()\n      setOpen((v) => !v)\n    }\n  }\n  window.addEventListener('keydown', onKey)\n  return () => window.removeEventListener('keydown', onKey)\n}, [])\n\n<>\n  <Button variant=\"secondary\" onClick={() => setOpen(true)}>Open commands (Cmd K)</Button>\n  <CommandPalette\n    open={open}\n    onClose={() => setOpen(false)}\n    commands={[\n      { id: 'new', label: 'New document', icon: 'add', hint: 'C', onRun: () => undefined },\n      { id: 'search', label: 'Search library', icon: 'search', onRun: () => undefined },\n      { id: 'settings', label: 'Open settings', icon: 'settings', keywords: 'preferences', onRun: () => undefined },\n    ]}\n  />\n</>"
+}

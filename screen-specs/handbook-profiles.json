@@ -1,0 +1,62 @@
+{
+  "$schema": "./schema.json",
+  "id": "handbook-profiles",
+  "project": "handbook",
+  "title": "Profiles",
+  "goal": "Pick the profile the interview is for and open its requirements.",
+  "primaryQuestion": "Which profile am I interviewing for?",
+  "audience": "expert",
+  "archetype": "hub",
+  "template": "ListPageTemplate",
+  "_why": "The primary entry point of the app: an interviewer arrives with a position in mind, not with a wish to browse disciplines. Discipline is a global scope switched in the page actions; the tiles are destinations, which is what makes this a hub rather than a list.",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "Name the screen for the chosen discipline. The discipline switch (SegmentedControl, .NET | Java) sits in the page actions on every screen, because discipline is the global scope, not a navigation level.",
+      "components": [
+        "SegmentedControl"
+      ]
+    },
+    {
+      "name": "tiles",
+      "task": "navigate",
+      "data": {
+        "item": "record",
+        "cardinality": "few",
+        "fields": 3
+      },
+      "answers": "Which profile am I interviewing for?",
+      "purpose": "One tile per profile of the current discipline: the profile name as the tile's link, a one-line placeholder descriptor, and four MetaItem counters in the tile's meta row saying how many skills are mandatory at Junior, Middle, Senior and Lead — the tile already shows that requirements differ by level, which is what the matrix inside will prove.",
+      "components": [
+        "Card",
+        "CardTitle",
+        "CardMeta",
+        "Button variant=link",
+        "MetaItem"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState via the template's empty prop, reason no-data, icon=folder: the chosen discipline has no profiles yet; the action switches to the discipline that has some.",
+    "error": "Static seed data cannot fail to load; a broken deep link resolves to the profiles of the current discipline, and the no-data case is the same EmptyState the empty state names."
+  },
+  "data": [
+    "profiles of the current discipline: name, descriptor (placeholder naming its field), mandatory-skill counts per seniority level — derived from the requirements, not stored"
+  ],
+  "openQuestions": [],
+  "implementation": [
+    "apps/handbook/src/layouts/ProfilesPage.tsx",
+    "apps/handbook/src/components/DisciplineSwitch.tsx"
+  ],
+  "behaviours": [
+    {
+      "id": "discipline-scopes-the-list",
+      "given": "profiles existing in several disciplines, one discipline chosen globally",
+      "when": "the profiles list renders",
+      "then": "only the chosen discipline's profiles appear — the global scope IS the list",
+      "why": "The discipline switch is the app's one global control; a list that ignored it would fork the scope.",
+      "provenBy": "apps/handbook/src/data/queries.test.ts"
+    }
+  ]
+}

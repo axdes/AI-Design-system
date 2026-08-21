@@ -1,0 +1,123 @@
+{
+  "name": "checklist.design gap batch (8 components)",
+  "level": "mixed",
+  "date": "2026-08-08",
+  "requestedBy": "agent",
+  "need": "Second pass over https://www.checklist.design (5 categories, 110 checklists, 637 items; audit in CHECKLIST-DESIGN-AUDIT.md). The first pass fixed props on components we already had. This one is the components we do not have. Three of them are already written by hand more than once in apps/, which is the promotion trigger from CLAUDE.md, and npm run scout does not catch them because they hide in a hook and in formatting functions rather than in component folders.",
+  "consideredAlternatives": [
+    { "ref": "do nothing, no consumer", "whyNot": "Circular for the three tier-1 ones: they ARE consumed, as copy-pasted code. For the tier-2 ones the owner's point stands, a screen does not get built when the part does not exist." },
+    { "ref": "components/Tooltip + IconButton for copy", "whyNot": "That is the composition each of the six clipboard call sites already reinvents; nobody owns the copied-state feedback." },
+    { "ref": "lib/relativeTime.ts", "whyNot": "A formatter, not a component: no <time datetime>, no full date on hover, and each app wrote its own anyway." },
+    { "ref": "components/Input type=password", "whyNot": "Ten call sites, none with the reveal toggle every login checklist asks for." },
+    { "ref": "components/Combobox for search suggestions", "whyNot": "Filters a fixed option list; does not mark the matched substring, which is what website/search and search-results ask for." },
+    { "ref": "components/Pagination for a feed", "whyNot": "Pages a known total. A feed loads more of an unknown total." }
+  ],
+  "components": [
+    {
+      "name": "CopyButton",
+      "level": "molecule",
+      "tier": 1,
+      "evidence": "clipboard.writeText in 6 places across 5 apps (teams-digest/ChatDetailPage, salim/lib/useCopy.ts, workshops Share + Deliverables + TranscriptReaderPage, transcript/SessionPage). salim already extracted its own hook.",
+      "checklists": ["web-app/api-keys", "web-app/2-factor-authentication", "mobile/invite", "website/press-media"],
+      "proposedApi": {
+        "value": "string (what goes on the clipboard)",
+        "label": "string? (visible label; icon-only without it)",
+        "copiedLabel": "string? (what replaces it for two seconds)",
+        "size": "'sm' | 'md'",
+        "variant": "'ghost' | 'secondary'"
+      }
+    },
+    {
+      "name": "Time",
+      "level": "atom",
+      "tier": 1,
+      "evidence": "Four independent implementations: airun computes min/h/d ago in cockpit/RiskBoard.tsx and 'pulled N days ago' in both catalog pages, salim has a localized one in ProfilePage, teams-digest has @lib/relativeTime, and the design system has src/lib/relativeTime.ts that no app reaches.",
+      "checklists": ["web-app/notifications", "web-app/feed", "web-app/chat", "web-app/comments", "web-app/version-history", "mobile/in-app-notifications"],
+      "proposedApi": {
+        "value": "string | number | Date",
+        "mode": "'relative' | 'absolute' | 'auto' (auto = relative under a week, absolute after)",
+        "locale": "string?"
+      }
+    },
+    {
+      "name": "PasswordInput",
+      "level": "molecule",
+      "tier": 1,
+      "evidence": "type=\"password\" in 10 places (workshops LoginPage/SettingsPage/ProfilePage.EditModal, DS LoginPage/ProfilePage.EditModal/AuthTemplate example) and not one of them can be revealed.",
+      "checklists": ["web-app/login", "website/login", "mobile/login", "website/sign-up", "web-app/settings"],
+      "proposedApi": {
+        "revealLabel": "string (aria-label for the toggle)",
+        "hideLabel": "string",
+        "...": "the rest of the Input props"
+      }
+    },
+    {
+      "name": "CodeInput",
+      "level": "molecule",
+      "tier": 2,
+      "evidence": "No consumer yet; no verification screen exists in any product.",
+      "checklists": ["web-app/2-factor-authentication", "flows/verifying-account", "mobile/login"],
+      "proposedApi": {
+        "length": "number (default 6)",
+        "value": "string",
+        "onChange": "(value: string) => void",
+        "label": "string",
+        "invalid": "boolean?"
+      }
+    },
+    {
+      "name": "Highlight",
+      "level": "atom",
+      "tier": 2,
+      "evidence": "salim wraps matches in <mark> by hand in ActiveCallPage.helpers.tsx. One use, so not a promotion trigger on its own; the checklists name it twice.",
+      "checklists": ["website/search", "web-app/search-results"],
+      "proposedApi": { "text": "string", "query": "string", "caseSensitive": "boolean?" }
+    },
+    {
+      "name": "LoadMore",
+      "level": "molecule",
+      "tier": 2,
+      "evidence": "No consumer. Pagination pages a known total; nothing covers an unknown one.",
+      "checklists": ["web-app/feed", "website/blog"],
+      "proposedApi": {
+        "onLoad": "() => void",
+        "loading": "boolean",
+        "hasMore": "boolean",
+        "label": "string",
+        "auto": "boolean? (IntersectionObserver instead of a click)"
+      }
+    },
+    {
+      "name": "PlanCard",
+      "level": "organism",
+      "tier": 2,
+      "evidence": "No consumer. Named by three separate pricing checklists.",
+      "checklists": ["website/pricing", "web-app/pricing", "mobile/paywall"],
+      "proposedApi": {
+        "name": "string",
+        "price": "string",
+        "period": "string?",
+        "description": "string?",
+        "features": "string[]",
+        "action": "ReactNode",
+        "recommended": "boolean?"
+      }
+    },
+    {
+      "name": "Carousel",
+      "level": "organism",
+      "tier": 2,
+      "evidence": "No consumer, and nobody has hand-rolled one. The only component missing from the design-system category of the checklist itself.",
+      "checklists": ["design-system/carousel"],
+      "proposedApi": {
+        "items": "{ id: string; content: ReactNode }[]",
+        "label": "string",
+        "autoPlay": "number? (ms; off by default, and off entirely under prefers-reduced-motion)"
+      }
+    }
+  ],
+  "cost": "About 300 tokens of registry per component on every task, so ~2.4k for the eight. Paid for up front: props are now emitted one per line instead of one per eight (scripts/gen-component-registry.mjs), which took the registry from 43.4k to 38.3k without dropping a field.",
+  "status": "approved",
+  "decision": "Owner approved the whole list on 2026-08-08, both tiers, after pointing out that 'no consumer' is circular reasoning for a part that does not exist yet.",
+  "decidedBy": "owner"
+}

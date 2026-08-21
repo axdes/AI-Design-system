@@ -1,0 +1,92 @@
+.rangeslider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  inline-size: 100%;
+}
+.rangeslider[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rangeslider-labelrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.rangeslider-label {
+  font-size: var(--font-sm);
+  color: var(--foreground);
+}
+.rangeslider-value {
+  font-size: var(--font-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+
+/* One grid cell stacks the rail, the fill and both inputs. The inputs ignore
+ * the pointer except on their thumbs, which is what lets two of them share a
+ * single track. */
+.rangeslider-track { display: grid; }
+.rangeslider-track > * { grid-area: 1 / 1; }
+
+.rangeslider-rail {
+  align-self: center;
+  block-size: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--input);
+}
+.rangeslider-fill {
+  position: relative;
+  align-self: center;
+  block-size: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+
+.rangeslider-input {
+  inline-size: 100%;
+  block-size: var(--space-4);
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+.rangeslider-input[data-top] { z-index: 1; }
+.rangeslider-input:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-full);
+}
+
+.rangeslider-input::-webkit-slider-runnable-track {
+  block-size: var(--space-4);
+  background: transparent;
+}
+.rangeslider-input::-moz-range-track {
+  block-size: var(--space-4);
+  background: transparent;
+}
+
+.rangeslider-input::-webkit-slider-thumb {
+  appearance: none;
+  pointer-events: auto;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+.rangeslider-input::-moz-range-thumb {
+  pointer-events: auto;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}

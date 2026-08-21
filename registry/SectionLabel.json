@@ -1,0 +1,15 @@
+{
+  "ref": "SectionLabel",
+  "level": "atom",
+  "description": "The heading that names a section inside a page or a panel: the voice of a card title, one step larger. Rank comes from size and colour, not from caps.",
+  "exports": [
+    "SectionLabel"
+  ],
+  "main": "SectionLabel",
+  "from": "@/components/SectionLabel",
+  "slots": [],
+  "props": [],
+  "sourcePath": "src/components/SectionLabel/SectionLabel.tsx",
+  "inherits": "HTMLAttributes<HTMLDivElement>",
+  "example": "<SectionLabel>Leave details</SectionLabel>"
+}

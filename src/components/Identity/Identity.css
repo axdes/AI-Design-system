@@ -1,0 +1,42 @@
+/* The identity unit: one glance, one gap. min-inline-size: 0 lets the
+ * secondary line ellipsis instead of pushing the card's controls off. */
+.identity {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  text-align: start;
+}
+
+.identity-who {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.identity-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--foreground);
+}
+
+.identity-secondary {
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.identity[data-size='sm'] { gap: var(--space-2); }
+.identity[data-size='sm'] .identity-who { gap: 0; }
+
+/* The profile-hero case: face above name, centred. Never for lists. */
+.identity[data-vertical] {
+  flex-direction: column;
+  text-align: center;
+}
+
+.identity[data-vertical] .identity-who {
+  align-items: center;
+}

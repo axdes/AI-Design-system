@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["src", "visual"],
+  "//": "*.example.tsx are real modules on purpose: golden examples must compile (a renamed prop breaks the build) and render (src/test/examples.test.tsx). The registry extracts the snippet from them."
+}

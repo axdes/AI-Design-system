@@ -1,0 +1,51 @@
+{
+  "ref": "Stat",
+  "level": "atom",
+  "description": "A KPI tile: a large value with a caption. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>.",
+  "exports": [
+    "Stat"
+  ],
+  "main": "Stat",
+  "from": "@/components/Stat",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Stat/Stat.tsx",
+  "inherits": "HTMLAttributes<HTMLDivElement>",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": null
+    },
+    "size": {
+      "prop": "size",
+      "values": null
+    }
+  },
+  "example": "<Stat value=\"2.0\" label=\"Avg maturity\" />"
+}

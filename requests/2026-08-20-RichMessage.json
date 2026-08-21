@@ -1,0 +1,24 @@
+{
+  "name": "RichMessage",
+  "level": "molecule",
+  "date": "2026-08-20",
+  "requestedBy": "agent (promotion queue, second-use rule)",
+  "need": "Rendering a chat message or an AI answer with structure (headings, quotes, code, lists, tables) is rebuilt wherever a model or a chat server talks to a user. teams-digest built it twice in one app: MessageBody renders typed blocks from the server, the inline Summary renders the digest's markdown-ish output. The safe pattern both converged on — typed shapes in, never HTML — is worth owning once.",
+  "consideredAlternatives": [
+    {
+      "ref": "dangerouslySetInnerHTML + sanitiser",
+      "whyNot": "A sanitiser is a guard on a door that should not exist; typed blocks make injection structurally impossible and keep the renderer 70 lines."
+    },
+    {
+      "ref": "a markdown library",
+      "whyNot": "Full markdown is a bigger input language than any of our producers emit; the block contract is exactly what Teams and the digest actually send, and it stays inspectable."
+    }
+  ],
+  "proposedApi": {
+    "RichMessage": "blocks? (RichBlock[]: p | h | hr | quote | code | li | table), text (flat fallback, always present), className — inline marks **bold**, `code`, *em*; a wide table scrolls in its own container, never the page"
+  },
+  "sources": "apps/teams-digest MessageBody (typed blocks from the server, 'nothing here ever receives HTML'), apps/teams-digest Summary (digest output rendering, same marks)",
+  "status": "approved",
+  "decision": "Promote as a molecule (card surface); teams-digest adopts it for both call sites at its next feature touch (closing condition recorded in scout).",
+  "decidedBy": "owner (2026-08-20, approved the promotion queue)"
+}

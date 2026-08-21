@@ -1,0 +1,20 @@
+{
+  "name": "AppLayout",
+  "level": "organism",
+  "date": "2026-07-11",
+  "requestedBy": "agent",
+  "need": "Both the main app (shell/AppShell) and Workshops (organisms/AppShell) hand-roll the SAME application shell: a grid of a sticky full-height nav column + a scrolling main, plus a mobile drawer + backdrop. It is duplicated per app and coupled to each app's SidebarProvider/router. A routing-agnostic AppLayout with a `nav` slot removes the duplication so any app composes <AppLayout nav={<SideNav/>}>...</AppLayout>.",
+  "consideredAlternatives": [
+    { "ref": "shell/AppShell (main app)", "whyNot": "Coupled to SidebarProvider, react-router useLocation, and a domain RecordingPill; not reusable." },
+    { "ref": "components/Layout (Stack/Row/Grid)", "whyNot": "Generic flex/grid primitives; no sticky full-height nav column + mobile drawer/backdrop semantics." }
+  ],
+  "proposedApi": {
+    "nav": "ReactNode  // the navigation rail, e.g. a <SideNav/>",
+    "children": "ReactNode  // main content",
+    "navOpen": "boolean?  // mobile: drawer open (controlled)",
+    "onNavClose": "() => void  // mobile: backdrop / nav click closes"
+  },
+  "status": "approved",
+  "decision": "approved",
+  "decidedBy": "user (live, during the airun build)"
+}

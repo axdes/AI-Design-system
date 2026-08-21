@@ -1,0 +1,4 @@
+{
+  "note": "Cards where the work is comparing and clearing a queue: every component real, every prop legal, only the representation wrong. If these dimensions stop failing, the eval has gone blind to appropriateness and measures conformance only.",
+  "mustFail": ["required-used", "no-hand-rolling"]
+}

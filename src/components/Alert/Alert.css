@@ -1,0 +1,50 @@
+/* Modern alert: leading status icon + neutral, readable text on a lightly
+ * tinted surface with a soft colored border. The icon and border carry the
+ * tone; the text stays neutral (not a saturated fill + colored text). */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  color: var(--foreground);
+  font-size: var(--font-sm);
+  line-height: var(--leading-snug);
+}
+.alert-icon { flex: none; margin-block-start: 1px; color: var(--muted-foreground); }
+.alert-body { min-width: 0; }
+
+/* Trailing action (message + a button): pinned to the end; the row wraps so the
+ * action drops below the text on narrow widths. */
+.alert:has(.alert-action) { flex-wrap: wrap; column-gap: var(--space-3); }
+.alert-action { flex: none; margin-inline-start: auto; align-self: center; }
+
+/* Dismiss sits after the action, hugging the top edge so it stays put when the
+ * body runs to several lines. `auto` here only bites when there is no action. */
+.alert-dismiss { flex: none; margin-inline-start: auto; align-self: flex-start; }
+.alert-action + .alert-dismiss { margin-inline-start: 0; }
+.alert[data-compact] .alert-dismiss { align-self: center; }
+
+/* Compact — dense single-line strip (inline assist rows, list-level notices). */
+.alert[data-compact] {
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+}
+.alert[data-compact] .alert-icon { margin-block-start: 0; }
+
+/* Tint + a tone-matched edge. The tint alone is not enough: an info notice on
+ * the --muted page surface, or a pale success notice on a light card, had no
+ * outline left and dissolved into the background. The border is what makes the
+ * alert a shape on ANY surface; the icon still carries the emphasis colour. */
+.alert[data-tone="neutral"] { background: var(--muted); border-color: var(--border-strong); }
+.alert[data-tone="info"]    { background: var(--primary-soft); border-color: var(--primary-border); }
+.alert[data-tone="danger"]  { background: var(--destructive-soft); border-color: var(--destructive-border); }
+.alert[data-tone="warning"] { background: var(--warning-soft); border-color: var(--warning-border); }
+.alert[data-tone="success"] { background: var(--success-soft); border-color: var(--success-border); }
+.alert[data-tone="info"]    .alert-icon { color: var(--primary-soft-foreground); }
+.alert[data-tone="danger"]  .alert-icon { color: var(--destructive-emphasis); }
+.alert[data-tone="warning"] .alert-icon { color: var(--warning-emphasis); }
+.alert[data-tone="success"] .alert-icon { color: var(--success-emphasis); }

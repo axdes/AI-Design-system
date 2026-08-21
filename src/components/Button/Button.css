@@ -1,0 +1,131 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);   /* icon↔label */
+  height: var(--control-height);
+  padding-inline: var(--control-padding-x);
+  border-radius: var(--control-radius);
+  border: none;
+  font-weight: var(--control-font-weight);
+  font-size: var(--control-font-size);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  cursor: pointer;
+  transition: background var(--duration-fast);
+  /* A label wraps onto two lines only when someone asks for it. A button that folds "Run again"
+   * into a two-line pill reads as broken, and it happens whenever a flex parent squeezes it. */
+  white-space: nowrap;
+}
+/* Icons in buttons always trail the label (`order` works with the flex row,
+ * so it mirrors in RTL). `iconEnd` is redundant now but kept for compat. */
+.btn > .icon {
+  order: 1;
+}
+
+/* [data-open] = the button is acting as an open dropdown trigger; mirror hover. */
+.btn:hover,
+.btn[data-open] { background: var(--primary-hover); }
+.btn:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+/* Loading: the button stays full opacity (it is working, not disabled), the
+ * spinner leads, and any icon is hidden so it does not sit next to the spinner. */
+.btn[data-loading] {
+  opacity: 1;
+  cursor: progress;
+}
+.btn[data-loading] > .icon {
+  display: none;
+}
+.btn-spinner {
+  order: -1; /* lead the label regardless of the icon's trailing order */
+}
+
+.btn[data-size="sm"] {
+  height: var(--control-height-sm);
+  padding-inline: var(--space-3);
+  font-size: var(--font-sm);
+}
+.btn[data-size="lg"] {
+  height: var(--control-height-lg);
+  font-size: var(--control-font-size-lg);   /* type scales modestly with size */
+}
+.btn[data-block="true"] { width: 100%; }
+
+/* The hairline is not decoration. `--secondary` and `--muted` are both neutral-100 in light and
+ * both neutral-8xx in dark, so a secondary button standing on a PAGE (rather than on a white card)
+ * was the exact colour of what was behind it: the actions in a page header read as plain text with
+ * no edges, and nobody could tell they were controls. The token's own comment promised that
+ * "page-level contexts override to white", and nothing ever did.
+ *
+ * Same answer SegmentedControl already needed: a control must read on any surface. Drawn as an
+ * inset shadow rather than a border so it costs no layout and cannot shift the label by a pixel. */
+.btn[data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.btn[data-variant="secondary"]:hover,
+.btn[data-variant="secondary"][data-open] { background: var(--secondary-hover); }
+
+.btn[data-variant="ghost"] {
+  background: transparent;
+  color: var(--foreground);
+}
+.btn[data-variant="ghost"]:hover,
+.btn[data-variant="ghost"][data-open] { background: var(--accent-soft); }
+
+.btn[data-variant="destructive"] {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+}
+.btn[data-variant="destructive"]:hover,
+.btn[data-variant="destructive"][data-open] { background: color-mix(in oklch, var(--destructive) 88%, black); }
+
+/* Success: a prominent green action. Used where a state change demands an
+ * obvious "apply" (e.g. regenerate a stale report), not for routine confirms. */
+.btn[data-variant="success"] {
+  background: var(--success);
+  color: var(--success-foreground);
+}
+.btn[data-variant="success"]:hover,
+.btn[data-variant="success"][data-open] { background: color-mix(in oklch, var(--success) 88%, black); }
+
+/* Dark — solid neutral-dark fill (neutral-820), white text. */
+.btn[data-variant="dark"] {
+  background: var(--secondary-foreground);
+  color: var(--background);
+}
+.btn[data-variant="dark"]:hover,
+.btn[data-variant="dark"][data-open] { background: var(--foreground); }
+
+/* AI — the assistant's own action (open the assistant, generate, rewrite).
+ * Violet rather than brand, so "the machine did this" never reads as a normal
+ * product action. */
+.btn[data-variant="ai"] {
+  background: var(--ai);
+  color: var(--ai-foreground);
+}
+.btn[data-variant="ai"]:hover,
+.btn[data-variant="ai"][data-open] { background: color-mix(in oklch, var(--ai) 88%, black); }
+
+/* Link — brand-coloured inline text action, no button chrome. Resets the
+ * control height/padding so it reads as a link, not a pill. */
+.btn[data-variant="link"] {
+  height: auto;
+  padding-inline: 0;
+  background: transparent;
+  color: var(--primary-accent);
+}
+.btn[data-variant="link"]:hover,
+.btn[data-variant="link"][data-open] {
+  background: transparent;
+  text-decoration: underline;
+}

@@ -1,0 +1,94 @@
+/* The block owns its page wrapper, and that is a deliberate second attempt.
+ *
+ * First it invented `.list-page` with a flat `padding: var(--space-6)` — no width
+ * cap, no container query — which is why no screen could adopt it. Then it used
+ * `.page-content`, and that was worse: the class is NOT foundation. It is
+ * declared separately inside each app's own AppShell.css and inside the design
+ * system's, so a block reaching for it depends on a stylesheet it does not
+ * import, and rendered on its own (the visual gallery) it lost its padding
+ * entirely — which is exactly how the regression was caught.
+ *
+ * The four declarations turned out to be token-identical, so those rules are
+ * restated here once and resolve per app through the tokens. `.page-content`
+ * stays where it is for the screens that still hand-roll their chrome. */
+.list-page {
+  flex: 1;
+  inline-size: 100%;
+  max-inline-size: var(--page-max-width);
+  margin-inline: auto;
+  /* Top gap comes from PageHeader's own padding-block-end; only bottom here. */
+  padding-block: 0 var(--space-4);
+  padding-inline: var(--space-8);
+  container-type: inline-size;
+  container-name: content;
+}
+
+/* Empty screens: the EmptyState sits in the middle of the area, not at the top. */
+.list-page[data-center] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-block-end: var(--space-4);
+}
+
+/* A neutral stack, not a grid. A list screen brings its own layout (a `<Grid>`
+ * of cards, one reading column, a table); imposing
+ * `repeat(auto-fill, minmax(16rem, 1fr))` here meant the block only fitted the
+ * screens that happened to want cards of exactly that size. */
+.list-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ── Panelled variant ─────────────────────────────────────────────────────────
+ * `panels` is DetailPageTemplate's contract brought to the list shape: the page
+ * stops scrolling, the content region takes the leftover height, and whatever
+ * the caller put there scrolls inside itself — so the header, the toolbar and
+ * (with `<Table stickyHeader>`) the column names hold still while the rows move.
+ *
+ * The shell's height release is keyed on the same attribute
+ * (`.app-layout:has([data-panels])`), and the breakpoint is the SHELL'S 62rem,
+ * not restated: between a shell that clips and a page that has not capped
+ * itself yet, everything below the fold would simply vanish.
+ *
+ * Desktop only, for DetailPageTemplate's reason: a full-height scroller on a
+ * phone means the page under it is unreachable, so below the breakpoint the
+ * page scrolls normally. */
+@media (min-width: 62rem) {
+  .list-page[data-panels] {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-block-size: 0;
+  }
+  .list-page[data-panels] .list-page-content {
+    flex: 1;
+    min-block-size: 0;
+  }
+  /* The card becomes a column so the scroller inside it can shrink; capped, not
+   * stretched, so a short list keeps a short card instead of dragging its
+   * bottom border to the fold. Card's own `data-flush` overflow:hidden is what
+   * keeps the sticky header inside the radius. */
+  .list-page[data-panels] .list-page-content > .card {
+    display: flex;
+    flex-direction: column;
+    max-block-size: 100%;
+    min-block-size: 0;
+  }
+  /* Both axes now: the wide table keeps its sideways scroll and gains the
+   * vertical one, which is the block size the sticky header needs (Table.tsx
+   * says so on TableScroll). */
+  .list-page[data-panels] .table-scroll {
+    overflow: auto;
+    min-block-size: 0;
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "$schema": "./schema.json",
+  "id": "admin-users",
+  "title": "Admin portal — user list",
+  "goal": "Find a user mapped to Genesys and correct their record, or onboard a new one.",
+  "primaryQuestion": "Which user is the one I need?",
+  "audience": "expert",
+  "archetype": "list",
+  "template": "ListPageTemplate",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "The product's identity and the one creating action: the title is the product mark (the bell glyph, drawn to the design system's .eco-symbol contract) plus the product name — this one-screen portal has no other place to say what it is. The signed-in identity is a UserMenu at the far end of the header — the position every app here gives it — whose scope line (an Area Admin reads their area there) explains why the list is short; Sign out lives in its menu. No subtitle under the title.",
+      "components": [
+        "Button variant=primary",
+        "Icon",
+        "UserMenu"
+      ]
+    },
+    {
+      "name": "toolbar",
+      "task": "find",
+      "purpose": "Lives in the header row beside the title (the template's inline slot): free-text search, always expanded, and the dropdown filters collapsed into one tune icon whose panel slides in from the end (FilterBar collapsed) — Area for the Superuser only, an Area Admin must not even see the other areas' names, plus Organization, Organization Number, Recipient Role and Status. The two long vocabularies are searchable inside their menus, every filter applies the moment it is picked (no confirm button — the panel's footer only clears), and each row shows its picks as removable tags under its own trigger (showTags), so what is applied reads in the same place it was chosen.",
+      "components": [
+        "SearchInput",
+        "FilterBar",
+        "FilterDropdown"
+      ]
+    },
+    {
+      "name": "content",
+      "task": "find",
+      "data": { "item": "record", "cardinality": "many", "fields": 10 },
+      "answers": "Which user is the one I need?",
+      "purpose": "The table, one row per user, every record field on screen. The identity fields stack in one cell (Avatar, then name over email) and Organization carries its user-defined number as a second line, so a row stays one line tall — Table nowrap refuses to break a value in half. Every column header sorts (Th sortable), the same column again flips direction. The template's panels mode makes this the one scrolling region: the page and the header hold still, the rows move inside the card on both axes, and Table stickyHeader keeps the column names visible through the scroll. Status reads as a Badge. Row actions sit behind one three-dots IconButton per row — a Dropdown of Edit and Delete (tone danger) — under a column whose header is screen-reader-only, since the dots explain themselves.",
+      "components": [
+        "Card",
+        "Table stickyHeader=true",
+        "Avatar",
+        "Badge tone=success",
+        "IconButton",
+        "Dropdown",
+        "Tooltip"
+      ]
+    },
+    {
+      "name": "dialogs",
+      "task": "input",
+      "purpose": "Add and Edit are the same form in a FormModal, pre-filled when editing: the four identity fields and the Genesys Dynamic Group ID and Organization Number as Inputs, Status, Area and Organization as Selects, and Recipient Role as a Combobox because 21 values is a list you type into, not scan. For an Area Admin the Area select is pre-filled and disabled. Delete asks first, and the confirm is coloured destructive so it never looks like a save.",
+      "components": [
+        "FormModal",
+        "Field",
+        "Input",
+        "Select",
+        "Combobox",
+        "ConfirmDialog confirmVariant=destructive"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState via the template's empty prop, reason no-matches when search or filters exclude everyone, offering to clear them; reason no-data with the Add user action when the visible scope genuinely has no users yet. There is no no-permission state on purpose: a signed-out visitor is redirected to sign-in before this route renders, and rows outside an Area Admin's scope are not rendered rather than disabled."
+  },
+  "data": [
+    "users: id, name, email, phone, employeeId, status (active | inactive), area (5 fixed), organization (8 fixed), organizationNumber, recipientRole (21 fixed), genesysGroupId — seeded mock data in src/data/users.ts, edits kept in localStorage; no backend",
+    "actor: the signed-in identity (role + area) from AuthProvider — every read and write is scoped through it"
+  ],
+  "acceptance": [
+    "A row is one line tall: the identity fields stack inside their cell instead of stretching the row.",
+    "Only the rows scroll; the page, the header and the column names hold still through the whole list.",
+    "An Area Admin's screen contains no other area's name anywhere — options, counts and rows included.",
+    "Status reads at a glance from colour and word, without reading the rest of the row."
+  ],
+  "openQuestions": [
+    "The working set is admin-curated and renders whole; if a real deployment brings thousands of users, the Table trades up to DataGrid and the list gains paging — the requirement doc does not size it.",
+    "The one-way push to Genesys is backend scope (requirements 5): the UI records the Dynamic Group ID and shows no sync status on purpose."
+  ],
+  "implementation": [
+    "apps/admin-portal/src/layouts/UsersPage.tsx",
+    "apps/admin-portal/src/layouts/UsersPage.UserForm.tsx"
+  ],
+  "behaviours": [
+    {
+      "id": "area-admin-sees-only-own-area",
+      "given": "an Area Admin of one area, with users existing in several areas",
+      "when": "they open the user list",
+      "then": "only their own area's users render — no other area's names or counts appear anywhere on the screen",
+      "why": "Requirements 2: row-level access control everywhere; no cross-area visibility leakage, not even counts.",
+      "provenBy": "apps/admin-portal/src/layouts/UsersPage.test.tsx"
+    },
+    {
+      "id": "area-filter-absent-for-area-admin",
+      "given": "an Area Admin on the user list",
+      "when": "they open the filters",
+      "then": "there is no Area filter at all — the other areas' names are not offered as options",
+      "why": "Requirements 4.2: the Area filter is Superuser-only, and an option list naming the other areas would itself be leakage.",
+      "provenBy": "apps/admin-portal/src/layouts/UsersPage.test.tsx"
+    },
+    {
+      "id": "area-locked-in-form",
+      "given": "an Area Admin adding or editing a user",
+      "when": "the form opens",
+      "then": "the Area field is pre-filled with their own area and disabled",
+      "why": "Requirements 4.3/4.4: Area Admins cannot place a user outside their area; the Superuser chooses freely among all five.",
+      "provenBy": "apps/admin-portal/src/layouts/UsersPage.test.tsx"
+    },
+    {
+      "id": "delete-confirms-first",
+      "given": "a user row with its Delete action",
+      "when": "Delete is pressed and the confirmation is cancelled",
+      "then": "the user is still in the list — nothing is removed until the destructive confirm is pressed",
+      "why": "Requirements 4.5: confirmation prompt before deletion.",
+      "provenBy": "apps/admin-portal/src/layouts/UsersPage.test.tsx"
+    },
+    {
+      "id": "cross-area-mutation-refused",
+      "given": "an Area Admin acting on a store that also holds another area's users",
+      "when": "an update or delete names a user outside their area, or an add targets another area",
+      "then": "the store refuses the write and the record is unchanged",
+      "why": "Requirements 2: row-level control enforced everywhere means the data layer refuses what the UI never offers — defence past the rendered screen.",
+      "provenBy": "apps/admin-portal/src/lib/usersStore.test.ts"
+    }
+  ]
+}

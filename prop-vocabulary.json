@@ -1,0 +1,118 @@
+{
+  "_": [
+    "The words this system's public API is allowed to use, and what each one means.",
+    "",
+    "A shared prop name is a promise: `tone` must mean the same thing on every",
+    "component that has it, or an agent that learned it once learns it wrong",
+    "everywhere else. This file is the promise written down; scripts/lint-vocab.mjs",
+    "is the promise enforced.",
+    "",
+    "To add a value: put it here with its meaning. That is the whole cost, and it",
+    "is deliberately a sentence rather than a checkbox, because a value nobody can",
+    "describe in a sentence is a value that will drift.",
+    "",
+    "`axis` names the ONE question a prop answers. A prop name that answers two",
+    "different questions is two props wearing one name."
+  ],
+  "tone": {
+    "axis": "what this thing's state IS",
+    "values": {
+      "neutral": "no status, the resting colour",
+      "primary": "the brand accent",
+      "success": "it worked",
+      "warning": "it needs attention but nothing is broken",
+      "danger": "it is broken, failed, or over a limit",
+      "info": "neutral information worth noticing",
+      "ai": "produced by a model rather than a person",
+      "destructive": {
+        "means": "activating this control destroys something",
+        "onlyOn": "interactive",
+        "why": "Apple HIG and Material both separate a destructive ACTION from a bad STATE, and so do we: a button says `destructive`, a badge or a bar says `danger`. Allowing both words on display components is how ProgressBar, Timeline and CountBadge each ended up with the action word for a status."
+      }
+    }
+  },
+  "size": {
+    "axis": "how much room this thing takes",
+    "values": {
+      "sm": "denser than the default",
+      "md": "the default",
+      "lg": "roomier than the default",
+      "xl": "display scale",
+      "2xl": "hero scale"
+    }
+  },
+  "variant": {
+    "axis": "how much emphasis this CONTROL carries, and what role it plays",
+    "values": {
+      "primary": "the one action the screen wants",
+      "secondary": "an ordinary action",
+      "ghost": "an action with no surface until hover",
+      "quiet": "an action with no surface at all",
+      "filled": "an action carrying a solid tone",
+      "destructive": "it destroys something",
+      "success": "it confirms something",
+      "dark": "it sits on a dark surface",
+      "link": "it navigates and looks like text",
+      "ai": "it invokes a model"
+    }
+  },
+  "fill": {
+    "axis": "how a STATUS SURFACE is painted",
+    "values": {
+      "solid": "the tone at full strength",
+      "soft": "the tone's tint, for a quieter badge",
+      "plain": "no surface, the tone as ink only"
+    }
+  },
+  "shape": {
+    "axis": "what outline a BOX traces",
+    "values": {
+      "text": "a line of text",
+      "block": "a rectangular area",
+      "circle": "a round box: a person's avatar, a round control",
+      "square": "a rounded rectangle where a circle is the default: a team or an organisation rather than a person"
+    }
+  },
+  "placement": {
+    "axis": "where a SURFACE sits against the viewport",
+    "values": {
+      "center": "centred, the default dialog",
+      "drawer": "attached to an edge",
+      "top": "above the trigger",
+      "bottom": "below the trigger",
+      "start": "before the trigger in reading order (left in LTR, right in RTL)",
+      "end": "after the trigger in reading order",
+      "side": "beside the content, a fixed column (a card's horizontal media)",
+      "cover": "behind the content, filling the surface (a card's media under its own text, scrim included)"
+    }
+  },
+  "surface": {
+    "axis": "what this thing is sitting ON, so it can stay visible against it",
+    "why": "Nine components answer this question and none of them was declared here, because the check only ever validated the words of props the file already knew. A control that dissolves into the surface behind it is the exact failure this axis exists to prevent, and it was the most-shared word in the system with nothing written down about it.",
+    "values": {
+      "base": "the default surface — a card or the page body. Form controls draw their resting border here",
+      "muted": "the tinted surface (--muted): a page background, a PageHeader. A control drops its resting border and lets its white fill do the separating",
+      "card": "inside a card, on white: an icon badge goes grey so it reads",
+      "page": "on the grey page body: the same badge inverts to white"
+    },
+    "note": "Form controls answer `base` or `muted`; a block that sizes itself to a surface answers `card` or `page`. One axis, two grains of answer — a component takes the subset that makes sense for it, the way it does for `tone`."
+  },
+  "as": {
+    "axis": "which HTML element this renders as, when the choice is the document's and not the component's",
+    "why": "A heading level is a property of the page, not of the component: the same EmptyState is the page's h1 on an empty route and an h2 inside a card. Declaring the words keeps that a document decision and stops `as` drifting into a styling prop.",
+    "values": {
+      "h1": "this heading names the page. Only where nothing else does",
+      "h2": "a section of the page",
+      "h3": "a subsection",
+      "h4": "a heading below that",
+      "p": "a paragraph of text",
+      "span": "inline text, no block semantics"
+    }
+  },
+  "appearance": {
+    "axis": "which of this component's OWN looks, when the choice is local and not a system-wide scale",
+    "scoped": true,
+    "why": "Tabs are underline or pills; a meta line is meta or eyebrow. Those words mean nothing outside their component, which is exactly why they must not sit in `variant` — `variant` is the control emphasis scale, and one prop name answering two questions is how an agent learns the system wrong. This axis is the honest home for a local look, and its values are deliberately not policed.",
+    "values": {}
+  }
+}

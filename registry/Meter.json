@@ -1,0 +1,65 @@
+{
+  "ref": "Meter",
+  "level": "atom",
+  "description": "A linear progress / gauge on a fixed scale, with an optional target marker. The fill width and marker position are the only dynamic inline styles.",
+  "exports": [
+    "Meter"
+  ],
+  "main": "Meter",
+  "from": "@/components/Meter",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "target",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false
+    },
+    {
+      "name": "ticks",
+      "type": "number[] | boolean",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Meter/Meter.tsx",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": null
+    },
+    "size": {
+      "prop": "size",
+      "values": null
+    }
+  },
+  "example": "<Meter value={1.4} max={3} target={2} tone=\"warning\" ticks={[0, 1, 2, 3]} label=\"Maturity 1.4 of 3\" />"
+}

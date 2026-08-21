@@ -1,0 +1,27 @@
+/* The tile's own layout. Everything visual (surface, radius, hover) belongs to <Card>; this file
+ * only places the two things Card cannot know about: a title and a menu trigger on one row, with
+ * the trigger at the inline end.
+ *
+ * It was missing. The component shipped writing these three class names and no stylesheet ever
+ * defined them, so the head stacked: the ⋮ trigger sat on its own line under the title, in every
+ * app that adopted the tile. Caught the first time a screen outside Workshops used it. */
+
+.ws-tile-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+/* The title takes the room and wraps; the trigger keeps its size. */
+.ws-tile-head .card-title {
+  min-inline-size: 0;
+}
+
+.ws-tile-menu {
+  flex: none;
+  /* Pulls the quiet trigger back level with the title's cap height rather than its line box, so
+   * the row reads as one line and not as an icon floating below the text. */
+  margin-block-start: calc(var(--space-1) * -1);
+}

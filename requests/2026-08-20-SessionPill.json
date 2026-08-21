@@ -1,0 +1,24 @@
+{
+  "name": "SessionPill",
+  "level": "molecule",
+  "date": "2026-08-20",
+  "requestedBy": "agent (promotion queue, second-use rule)",
+  "need": "A live session that outlasts the current screen (an active call, a running recording) needs one floating affordance that follows the user everywhere and offers the one action that matters. Built twice: Salim's live-call pill (timer + return-to-call) and workshops' recording pill (pulse dot + stop). Two apps, same shape — the promotion trigger fired.",
+  "consideredAlternatives": [
+    {
+      "ref": "useToast()",
+      "whyNot": "A toast announces and leaves; a session pill stays exactly as long as the session does and is the way BACK into it."
+    },
+    {
+      "ref": "components/Banner",
+      "whyNot": "A banner occupies layout at the top of a page; the pill floats over every page because the session belongs to the app, not to a screen."
+    }
+  ],
+  "proposedApi": {
+    "SessionPill": "label, timer?, actionLabel?, icon?, onClick, onDismiss? + dismissLabel, tone? (danger pulse by default, warning static) — the app shell renders it once while a session is live; clicking returns to the session"
+  },
+  "sources": "apps/salim live-call pill (timer, return to call), apps/workshops recording pill (pulse dot, stop)",
+  "status": "approved",
+  "decision": "Promote as a molecule. Workshops adopted it 2026-08-20 (RecordingPill keeps the wiring, renders SessionPill). Salim deliberately does NOT adopt it for the live-call pill: that is an emergency affordance a review made solid-red and top-centre because the white card version blended into the chrome, and an active call may not be dismissed. Recorded in the scout's ACCEPTED_PARALLEL (LiveCallBar); a second app needing a critical pill is the trigger for a variant here.",
+  "decidedBy": "owner (2026-08-20, approved the promotion queue)"
+}

@@ -1,0 +1,47 @@
+{
+  "ref": "LinkTile",
+  "level": "organism",
+  "description": "A clickable tile: navigates on click/Enter/Space, with an overflow (⋮) menu in its top-inline-end corner. The caller supplies the title, the menu items, the open handler and the body.",
+  "exports": [
+    "LinkTile"
+  ],
+  "main": "LinkTile",
+  "from": "@/components/LinkTile",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "menu",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/LinkTile/LinkTile.tsx",
+  "context": "region",
+  "uses": [
+    "Card",
+    "Dropdown",
+    "IconButton",
+    "MetaItem"
+  ],
+  "example": "const workshop = { id: 'w1', name: 'Discovery workshop', updated: '2 days ago' }\n/* One tile = one navigable record plus its overflow menu. The menu swallows\n * its own clicks, so the tile's onOpen does not fire behind it. */\n\n<LinkTile\n  title={workshop.name}\n  menuLabel={`Actions for ${workshop.name}`}\n  onOpen={() => undefined}\n  menu={\n    <>\n      <DropdownItem icon=\"edit\" onClick={() => undefined}>Rename</DropdownItem>\n      <DropdownItem icon=\"delete\" onClick={() => undefined}>Delete</DropdownItem>\n    </>\n  }\n>\n  <MetaItem icon=\"schedule\">Updated {workshop.updated}</MetaItem>\n</LinkTile>"
+}

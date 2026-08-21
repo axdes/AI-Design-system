@@ -1,0 +1,107 @@
+/* App shell — sidebar + main area.
+ * Surface contract: gray background everywhere, white cards inside.
+ *
+ * Sidebar has 3 effective states:
+ *   - expanded (default, ≥md)            grid col = --sidebar-width
+ *   - collapsed (icon rail, ≥md)         grid col = --sidebar-width-collapsed
+ *   - drawer (mobile, <md)               grid col = 0, sidebar overlays
+ */
+.app-shell {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  background: var(--muted);
+  color: var(--foreground);
+  transition: grid-template-columns var(--duration-normal) ease;
+}
+.app-shell[data-sidebar-collapsed] {
+  grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  /* No overflow:hidden — it creates a sticky-containing-block that traps
+   * the page-header inside a non-scrolling element. min-width:0 already
+   * prevents flex children from forcing horizontal overflow. */
+}
+
+/* Editor-style routes (document detail) lock the shell to the viewport so the
+ * document scrolls INSIDE its card while the header + status bar stay put —
+ * the page itself doesn't scroll (matches the original editor). Desktop only;
+ * <62rem falls back to normal page scroll. */
+@media (min-width: 62rem) {
+  .app-shell:has(.content-detail-page) { height: 100dvh; overflow: hidden; }
+  .app-shell:has(.content-detail-page) .app-main { min-height: 0; }
+}
+
+/* Chat screens lock the shell to the viewport so the thread scrolls inside its
+ * card while the sidebar pill and composer stay put. All viewport widths. */
+.app-shell:has(.chat-shell) { height: 100dvh; overflow: hidden; }
+.app-shell:has(.chat-shell) .app-main { min-height: 0; }
+
+/* Shared content container — every layout's main content area.
+ * Lives in shell CSS (not page-specific) so it works on any route.
+ * container-type lets nested grids react to container width, not viewport. */
+.page-content {
+  flex: 1;
+  width: 100%;
+  /* Cap the main area on wide screens; centred. Header is capped to match
+   * (below) so the two stay aligned. */
+  max-width: var(--page-max-width);
+  margin-inline: auto;
+  /* Top gap comes from PageHeader's own padding-block-end; only bottom here. */
+  padding-block: 0 var(--space-4);
+  padding-inline: var(--space-8);
+  container-type: inline-size;
+  container-name: content;
+}
+
+/* Centered variant — empty/placeholder screens: the EmptyState sits in the
+ * middle of the remaining height while the PageHeader title stays on top. */
+.page-content[data-center] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keep the sticky header aligned with the capped content. */
+.page-header {
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin-inline: auto;
+}
+
+/* Mobile drawer (<md): sidebar overlays main; backdrop catches clicks. */
+@media (max-width: 48rem) {
+  .app-shell { grid-template-columns: 1fr; }
+  .app-shell .sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--sidebar-drawer-width);
+    transform: translateX(-100%);
+    transition: transform var(--duration-normal) ease;
+    z-index: var(--z-modal);
+    background: var(--background);
+    box-shadow: var(--shadow-lg);
+  }
+  [dir="rtl"] .app-shell .sidebar { transform: translateX(100%); }
+  .app-shell[data-sidebar-mobile-open] .sidebar { transform: translateX(0); }
+  /* On mobile, collapsed state has no meaning — always show full sidebar in drawer. */
+  .app-shell[data-sidebar-collapsed] { grid-template-columns: 1fr; }
+}
+
+.app-shell-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-modal) - 1);
+  background: var(--overlay);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  animation: backdrop-fade var(--duration-fast) ease-out;
+}
+@keyframes backdrop-fade { from { opacity: 0 } to { opacity: 1 } }

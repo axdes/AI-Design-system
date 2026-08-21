@@ -1,0 +1,30 @@
+/* Chat message — user bubble (right) / assistant block (left) + actions.
+ * Fills the thread's centred column (the column is capped by the messages
+ * container, like the original). */
+.chat-msg {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.chat-msg-user { align-items: flex-end; }
+
+.chat-bubble {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--muted);
+  color: var(--foreground);
+  line-height: var(--leading-normal);
+}
+
+.chat-msg-body { display: flex; flex-direction: column; gap: var(--space-3); }
+.chat-msg-body p { margin: 0; line-height: var(--leading-normal); }
+
+/* Action toolbar — comfortable touch targets (md box) with small 16px glyphs,
+ * like the original feedback row. Active (playing / copied / chosen) = primary. */
+.chat-msg-actions { display: flex; gap: var(--space-2xs); margin-block-start: var(--space-2); margin-inline-start: calc(-1 * var(--space-2)); }
+.chat-msg-actions .icon-button .icon { width: var(--icon-sm); height: var(--icon-sm); }
+.chat-msg-actions .icon-button[data-active],
+.chat-msg-actions .icon-button[data-active]:hover { color: var(--primary-accent); }
+
+/* Quick-reply chips (offered under an assistant message) — the default <Chip>. */
+.chat-choices { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-block-start: var(--space-3); }

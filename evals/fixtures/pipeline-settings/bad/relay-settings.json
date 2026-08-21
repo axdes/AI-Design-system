@@ -1,0 +1,24 @@
+{
+  "id": "relay-settings",
+  "project": "notify-relay",
+  "title": "Relay setup",
+  "goal": "Walk the operator through setting up the relay step by step.",
+  "primaryQuestion": "Is the relay set up to send?",
+  "audience": "expert",
+  "archetype": "settings",
+  "template": "WizardTemplate",
+  "zones": [
+    {
+      "name": "steps",
+      "task": "input",
+      "purpose": "Four sequential steps: host, sender, token, cadence — each unlocks the next, with a summary at the end.",
+      "components": ["WizardTemplate", "Stepper", "Input", "TokenField", "Select"]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState before the first step is begun."
+  },
+  "acceptance": [
+    "The operator completes the steps in order."
+  ]
+}

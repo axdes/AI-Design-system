@@ -1,0 +1,87 @@
+{
+  "$schema": "./schema.json",
+  "id": "program-coach",
+  "title": "Coach detail",
+  "goal": "Answer what a coach card cannot: who this coach is, what they are carrying, and which of their teams needs somebody to do something about it.",
+  "primaryQuestion": "Which of this coach's teams needs attention?",
+  "audience": "expert",
+  "archetype": "detail",
+  "template": "DetailPageTemplate",
+  "zones": [
+    {
+      "name": "header",
+      "task": "navigate",
+      "purpose": "The coach's name, whether the programme has confirmed them, and Back to the list they came from, carrying the filters in the query string so Back returns to the same view. No action here: this screen reports, it does not reassign — nothing in the tool can write a coach into the workbook.",
+      "components": [
+        "Badge fill=soft",
+        "Button variant=secondary"
+      ]
+    },
+    {
+      "name": "content",
+      "task": "browse",
+      "data": {
+        "item": "record",
+        "cardinality": "few",
+        "fields": 6
+      },
+      "answers": "Which of this coach's teams needs attention?",
+      "purpose": "The teams this coach carries, one card each, ordered by whether they need attention first. Every card states what the workbook knows — size, timezone, how the brief was graded, internal or client — and the flags that make it a case to look at: no usable brief, under three people, an internal product outside the IPP track. Detailed per-team state (met, silent, at risk) exists ONLY for the coach signed in here, because meetings and check-ins live in that coach's own instance and nothing shares them yet; on another coach's teams the screen says so rather than rendering an empty timeline that reads as 'nothing happened'.",
+      "components": [
+        "Card fill=true",
+        "CardHeader",
+        "CardTitle",
+        "MetaItem",
+        "Badge fill=soft",
+        "SectionLabel",
+        "EmptyState",
+        "Button variant=link"
+      ]
+    },
+    {
+      "name": "aside",
+      "task": "read",
+      "data": {
+        "item": "record",
+        "cardinality": "one"
+      },
+      "purpose": "Who the coach is, in the workbook's own words: location and offset, wave, coordinator, the languages they coach in as flags, the tools they have used through airun's own <ToolTag>, which wraps the system's Tag and adds the mark (that wrapper is why Tag is not named below), and their own account of the most advanced agentic workflow they have built — 106 coaches wrote one and nothing has ever shown it. Load against target sits here as a sentence, coloured by how far off it is — it used to be a sentence AND a gauge saying the same thing, and the internal-product track is named when they are on it. A Projects row states what KIND of work this person does: the internal-product track the workbook puts on them (the wave cell \"3 (IPP)\" or a row on the IPP Coaches sheet), and what the roster actually is — internal company products, client teams, or the mix as a count. Both, because neither follows from the other, and because every team card below says it per team while nothing said it about the coach. The email is here as text to copy, not a mailto: nothing in this tool sends mail yet, and a link that opens an empty client is a promise it does not keep.",
+      "components": [
+        "Descriptions",
+        "SectionLabel",
+        "Badge fill=soft"
+      ]
+    }
+  ],
+  "states": {
+    "loading": "One aria-busy on the page with a Skeleton shape=block for the aside and three for the team cards. The payload is a scan over a local file, so this is short; it exists so the load sentence does not render against a target of zero.",
+    "empty": "EmptyState icon=group when the coach carries no team at all: the case the programme most wants to see, so it says how many teams are unclaimed right now and offers the way back to the list rather than reading as an error.",
+    "error": "Alert tone=danger with the reason and a retry, the same as the programme screen. A coach whose row could not be read is not a coach with no teams.",
+    "noPermission": "No screen of its own. Outside the admin mode the route redirects to the programme view, whose EmptyState icon=layers already explains what the mode is; repeating that explanation here would be a second answer to a question already answered one click away."
+  },
+  "data": [
+    "coach: the row from coach/sources/coaches-sot.json — name, email, wave, location, timezone, utcOffset, languages, tools, sdlcStages, workflow, teamsTarget, confirmed, coordinator",
+    "teams: every row of Teams Overview whose Coach column resolves to this coach on a word-order-insensitive name key, plus the IPP Coaches sheet for the internal-product track",
+    "flags per team, all computed from the workbook so they work for ANY coach, not only the one signed in: brief graded 0-1 (215 teams), brief not graded at all (539), fewer than three people (170), internal product with no IPP row",
+    "instance state (meetings, check-ins, risk) exists only for the signed-in coach's own teams, under coach/. The screen never implies it has this for anyone else."
+  ],
+  "implementation": [
+    "apps/airun/src/layouts/CoachPage.tsx",
+    "apps/airun/src/components/cards/CoachCard.tsx",
+    "apps/airun/src/components/cards/TeamCard.tsx",
+    "apps/airun/src/components/cards/EntityCard.tsx"
+  ],
+  "openQuestions": [
+    "Whether the org side will share per-team state once the SharePoint folder exists. Until it does, 'met / not met / silent' is answerable for one coach's own teams and for nobody else's, and this screen is built to say which of the two it is looking at rather than to average them."
+  ],
+  "behaviours": [
+    {
+      "id": "release-reports-rows-already-taken",
+      "given": "a release whose teams include a row somebody already reassigned by hand",
+      "when": "the freeing pass runs",
+      "then": "the already-taken row is reported, never overwritten",
+      "why": "Every row is re-read before it is touched; one coach's decision must not erase another's.",
+      "provenBy": "apps/airun/src/lib/menteeRelease.test.ts"
+    }
+  ]
+}

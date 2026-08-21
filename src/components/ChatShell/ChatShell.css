@@ -1,0 +1,58 @@
+/* Chat screen chrome. Locks inside <AppShell> (which sets viewport height for
+ * `:has(.chat-shell)`); only the inner regions scroll. Columns:
+ *   default            [history | thread]
+ *   data-with-panel    [history | thread | panel]
+ *   collapsed          history column shrinks to its icon rail (auto). */
+.chat-shell {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--foreground);
+}
+/* The leading slot, mobile only: the chat has no PageHeader to hold it. */
+.chat-shell-bar { display: none; }
+.chat-shell-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  padding: var(--space-4);
+}
+.chat-shell-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: var(--chat-sidebar-width) 1fr;
+  background: var(--card);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+.chat-shell-body[data-with-panel] {
+  grid-template-columns: var(--chat-sidebar-width) 1fr var(--chat-panel-width);
+}
+.chat-shell[data-chat-collapsed] .chat-shell-body {
+  grid-template-columns: auto 1fr;
+}
+.chat-shell[data-chat-collapsed] .chat-shell-body[data-with-panel] {
+  grid-template-columns: auto 1fr var(--chat-panel-width);
+}
+/* No history column (no chats yet): thread spans the surface. */
+.chat-shell-body[data-no-sidebar] { grid-template-columns: 1fr; }
+.chat-shell-body[data-no-sidebar][data-with-panel] { grid-template-columns: 1fr var(--chat-panel-width); }
+
+/* <72rem: drop the panel column (the page hides the panel element itself). */
+@media (max-width: 72rem) {
+  .chat-shell-body[data-with-panel],
+  .chat-shell[data-chat-collapsed] .chat-shell-body[data-with-panel] {
+    grid-template-columns: var(--chat-sidebar-width) 1fr;
+  }
+}
+/* <48rem: single column (sidebar becomes the app drawer). */
+@media (max-width: 48rem) {
+  .chat-shell-bar {
+    display: flex;
+    padding: var(--space-3) var(--space-4) 0;
+  }
+  .chat-shell-body,
+  .chat-shell-body[data-with-panel] { grid-template-columns: 1fr; }
+}

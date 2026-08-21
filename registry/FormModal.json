@@ -1,0 +1,63 @@
+{
+  "ref": "FormModal",
+  "level": "block",
+  "description": "Recurring pattern: a Modal wrapping a FormStack of Fields with cancel/confirm actions. The shape behind RenameModal and create/edit dialogs across projects.",
+  "exports": [
+    "FormModal"
+  ],
+  "main": "FormModal",
+  "from": "@/blocks/FormModal",
+  "slots": [],
+  "props": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "confirmLabel",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "cancelLabel",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "onConfirm",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "busy",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/FormModal/FormModal.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Field",
+    "FormStack",
+    "Input",
+    "Modal"
+  ],
+  "example": "const [open, setOpen] = useState(true)\nconst [name, setName] = useState('Q3 report')\n\n<FormModal open={open} title=\"Rename\" onConfirm={() => setOpen(false)} onClose={() => setOpen(false)}>\n  <Field label=\"Name\" htmlFor=\"rename-name\" required>\n    <Input id=\"rename-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n</FormModal>"
+}

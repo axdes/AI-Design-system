@@ -1,0 +1,12 @@
+{
+  "id": "states-screen",
+  "title": "The three states of a results panel",
+  "why": "Loading, error and empty are where a screen is most often finished by hand: a div that says \"No results\", a tinted box for the error, and a CSS spinner nobody else in the product has. Spinner, Alert and EmptyState own all three, and the failure is not laziness — the happy path is what a task describes, so the other three states get invented on the spot.",
+  "required": ["Spinner", "Alert", "EmptyState"],
+  "forbidden": [
+    { "pattern": "className=\"[^\"]*\\b(spinner|loader|loading-dots)\\b", "message": "hand-rolled spinner — use <Spinner>, or <Button loading> inside a button" },
+    { "pattern": "<div[^>]*role=\"(alert|status)\"", "message": "hand-rolled alert — use <Alert tone=\"danger\">" },
+    { "pattern": "className=\"[^\"]*\\bempty(-state)?\\b", "message": "hand-rolled empty state — use <EmptyState>" }
+  ],
+  "entry": "Screen.tsx"
+}

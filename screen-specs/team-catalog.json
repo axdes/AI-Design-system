@@ -1,0 +1,117 @@
+{
+  "$schema": "./schema.json",
+  "id": "team-catalog",
+  "title": "Team catalog",
+  "goal": "Fill the coach's roster: see which AI/Run teams have no coach, judge them, and take the ones worth taking.",
+  "primaryQuestion": "Which free team is worth taking?",
+  "audience": "expert",
+  "archetype": "list",
+  "template": "ListPageTemplate",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "Name the screen and offer the one page-level action, on ONE line. Refresh PULLS the spreadsheet — it used to re-read the copy on disk, so it looked like a refresh and fetched nothing, which is why the list seemed never to update.",
+      "components": [
+        "Button variant=secondary"
+      ]
+    },
+    {
+      "name": "toolbar",
+      "task": "find",
+      "purpose": "Everything that narrows the list, in one row: search, then the Free / Mine / All switch carrying its counts, then one dropdown per facet of the SoT row. The counts are on the switch because the default view hides 352 teams another coach already has and 18 nobody may take, and a list that silently drops two thirds of the programme reads as broken. Search sits HERE rather than beside the page title — it narrows the list exactly like the controls next to it — and renders EXPANDED. Every control in this row is the same height. Under the row, on a line of its own: the roster quota, how many teams match, what the view is hiding, and how old the spreadsheet is.",
+      "components": [
+        "SearchInput expanded=true",
+        "SegmentedControl",
+        "FilterBar",
+        "FilterDropdown multi=true"
+      ]
+    },
+    {
+      "name": "content",
+      "task": "browse",
+      "data": {
+        "item": "record",
+        "cardinality": "many",
+        "fields": 8
+      },
+      "answers": "Which free team is worth taking?",
+      "purpose": "One card per team: code and name, the fit score with its verdict, the two or three reasons behind it, size, timezone, declared AI tools, and the actions. The score is PERSONAL — hours of overlap with this coach's working day, a language that reaches at least a third of the team, tools this coach has actually used — so the reasons on the card are sentences about this coach, not about the team in the abstract. The grid is .catalog-grid, a container query in the page CSS, because the column count follows the content column rather than the viewport. The WHOLE CARD leads to the detail screen, carrying the filters in the query string so Back returns to this exact list. It is the title that does it: the title control carries `card-link`, whose ::after covers the tile, so there is one accessible name and one focus stop and the hit area is the card — not a click handler on a div, which no keyboard can reach. `Card interactive` supplies the cursor and the hover lift that say so. The actions row carries `card-above` to stay clickable in its own right, and the separate Open details button is gone: the card is the link. A fourth segment, Saved, is the SHORTLIST: candidates the coach is still weighing up. Saving is not deciding — it writes one local file (coach/shortlist.json), never SharePoint, and is undone with the same button — so the row offers Save for later beside Take this team, and a saved card can carry a private note about why it was kept. Taking a team or turning it down ends its candidacy and clears it from the basket. An empty Saved list is a no-matches empty state, not a no-data one: the segments that emptied it have to stay on screen or there is no way back. Teams that are taken or ineligible render in the same card, without the take button and with the reason stated. A team this coach declined keeps its card, badged with the date and the reason. Sorted by fit and grown in batches of 24 as the list is scrolled — no pager: the filters are what narrow 537 teams, and a pager on top of them makes the coach navigate a list they are already navigating. The button that grows it is a real button, so the observer stays an optimisation rather than the mechanism. Tool names render through airun's own <ToolTag>, which wraps the system's Tag and supplies the mark for the tools we have one for — an app component that renders a system component and supplies the wiring, which is the promotion rule working rather than a second Tag. That is why Tag is not in the list below: the screen no longer names it directly. The card follows the same four blocks as the coach catalog's (apps/airun/src/components/catalog/TeamCatalogCard.tsx): what the team is, what the workbook knows, why this score, what you can do. The fit bar is gone — the badge already says the number and a bar nobody can read between two cards is decoration; saving is an icon-only star with a Tooltip; the note is edited by clicking the note; and turning a team down is a named menu item rather than a cross that read as \"hide this card\". The card carries TWO icon actions and nothing else: the star keeps a candidate, the second one takes them (or undoes a take). A filled blue button on every card made a list of cards read as a list of forms, and the menu behind it held one item. Turning a free row down with a reason is gone from this screen entirely — nobody was doing it here, and the cross that carried it read as \"hide this card\". The name is a HEADING, one step larger than the body and not painted or underlined as a link: the whole card is the link, and a link inside a link-shaped card is two hit areas for one thing. The reasons sit under a \"Why this fit\" label, because loose sentences under a row of facts do not say what they are or who they are about. The facts inside a card sit in a <Row>, never in <CardMeta>: CardMeta is the card's FOOTER here — it draws its own hairline, pins itself to the bottom and pushes its items to both edges, which put a second divider in the middle of the card and scattered four facts across its width. The score badge sits on the same LINE as the name, not centred against the name plus the line under it, where it was beside neither. A bullet under \"Why this fit\" that repeats a fact printed two lines above it is dropped at the source (size, brief grade, availability): of three bullets, two used to be facts already on the card.",
+      "components": [
+        "Card fill=true",
+        "CardHeader",
+        "CardTitle",
+        "Row",
+        "MetaItem",
+        "Badge fill=soft",
+        "Divider",
+        "Button variant=link",
+        "IconButton size=md",
+        "Tooltip",
+        "SectionLabel"
+      ]
+    },
+    {
+      "name": "notice",
+      "task": "act",
+      "purpose": "The two page-level facts that outrank the list when they exist, each an Alert with its one action. A decision that never left this machine is worth nothing to the programme, so unpushed claims and declines list themselves by name in a warning whose button writes the workbook, spelled as the sentence it will write. And when the shared filter set changed, an info Alert offers to apply it everywhere. Conditional both: a coach with nothing pending never sees them.",
+      "components": [
+        "Alert tone=warning",
+        "Alert tone=info",
+        "Button variant=primary"
+      ]
+    },
+    {
+      "name": "dialogs",
+      "task": "input",
+      "purpose": "The two writes this screen performs. Taking a team is a confirmation, because it changes the sidebar and it is a claim other coaches will see. Declining a team is a form, because the reason is the payload: it is what the org side reads as a signal, and a decline with no reason is worth nothing to them.",
+      "components": [
+        "ConfirmDialog confirmVariant=primary",
+        "FormModal",
+        "Field",
+        "Select",
+        "Textarea"
+      ]
+    }
+  ],
+  "states": {
+    "loading": "Six Skeleton shape=block cards in the grid, with a single aria-busy on the grid element. The SoT is a local file and a scored pass over 912 rows, so this is short; it exists so the quota line does not appear above an empty page.",
+    "empty": "EmptyState via the template's empty prop. Two distinct cases: reason='no-matches' with icon=tune when the filters emptied the list, offering to clear them (the header keeps its search and filters, which are what the user has to undo); reason='no-data' with icon=group when the SoT itself holds no unassigned team, offering Refresh.",
+    "error": "Alert tone=danger above the grid when the catalog could not be read (no SoT file yet, or the bridge failed), naming the file it looked for and offering Refresh as the action. Not an empty state: an unread catalog is not an empty catalog. There is no noPermission state on purpose: the catalog reads a file already on this machine and every write is local, so the one action that reaches outside is Refresh and it fails into this same Alert."
+  },
+  "data": [
+    "teams: code, name, project, description, aiTools, contact, membersCount, country, timezone, descQuality, confirmed, coach — from coach/sources/teams-sot.json (912 rows on this machine: 537 takeable, 352 with another coach, 18 ineligible)",
+    "fit: score 0-100, verdict (strong | possible | weak), reasons[], flags[] — computed by tools/lib/fit.mjs scoreFit(), the same rubric the single-team vetting screen already uses",
+    "eligibility: eligible, blockers[] — tools/lib/fit.mjs checkEligibility(), which rules out internal company teams, teams already coached, and conflicts of interest",
+    "quota: taken vs target — coach/coach.json, per coach",
+    "claims and declines: appended to coach/events as one JSON object per line (coach, team code, action, reason, timestamp), which is the shape the shared SharePoint folder will read. A claim is LOCAL until the org fills in the SoT Coach column, so the card says so rather than implying the team is now off the market for everyone."
+  ],
+  "implementation": [
+    "apps/airun/src/layouts/TeamCatalogPage.tsx",
+    "apps/airun/src/components/catalog/TeamCatalogCard.tsx",
+    "apps/airun/src/components/cards/TeamCard.tsx",
+    "apps/airun/src/components/cards/EntityCard.tsx"
+  ],
+  "openQuestions": [
+    "Where a decline notice is sent. The coach OPS call agreed that a team dropping out is a signal the org side wants early, and no central address exists yet — it has to come from the program leads. Until it does, the decline is written to coach/events and the drafted message waits in the UI instead of being sent to a guessed address.",
+    "Whether the org side wants declines and claims pushed before the shared SharePoint folder exists. The record is already written in the shape that folder will read (append-only, one event per line, coach + team + action + reason + timestamp), so turning the push on is a transport change, not a data change."
+  ],
+  "behaviours": [
+    {
+      "id": "free-row-is-not-a-free-team",
+      "given": "a workbook row with no coach whose twin row is coached",
+      "when": "the catalog judges the row",
+      "then": "it names the coach and the row the copy really belongs to, instead of offering the team as free",
+      "why": "The last collision started with two identical cards in a list of three hundred; taking a twin sends a real message to real people.",
+      "provenBy": "apps/airun/tools/lib/twins.test.mjs"
+    },
+    {
+      "id": "released-duplicate-frees-its-row",
+      "given": "a row released as a duplicate of another",
+      "when": "its own twin check runs",
+      "then": "the released copy reads as nobody's and does not block the row it was released in favour of",
+      "why": "A guard that keeps biting after the correction becomes the new trap.",
+      "provenBy": "apps/airun/tools/lib/twins.test.mjs"
+    }
+  ]
+}

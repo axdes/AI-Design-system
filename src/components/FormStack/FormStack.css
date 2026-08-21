@@ -1,0 +1,17 @@
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* THE form rule: inside a form, a control fills its Field. Text inputs already
+ * do; Select and Combobox size to their content everywhere else (a toolbar
+ * pill should hug its label), which inside a form gave every dropdown its own
+ * width — a form whose rows are ragged reads as unrelated questions. The
+ * form is where the exception lives, so the form declares it. */
+.form-stack .select-trigger,
+.form-stack .select,
+.form-stack .combobox {
+  inline-size: 100%;
+  min-inline-size: 0;
+}

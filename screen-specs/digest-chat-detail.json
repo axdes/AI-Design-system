@@ -1,0 +1,112 @@
+{
+  "$schema": "./schema.json",
+  "id": "digest-chat-detail",
+  "title": "Chat digest",
+  "goal": "Read a chosen window of this chat, either whole or only what was worth reading in it, and summarise that window.",
+  "primaryQuestion": "What arrived since the last summary?",
+  "audience": "expert",
+  "archetype": "detail",
+  "template": "DetailPageTemplate",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "The chat's Teams topic, back to the list, the window picker, and the one action. The picker sits beside the action because it decides what the action covers: only the unread window moves the watermark, every other window is a plain read. The action counts what it is about to cover and is disabled, not hidden, when the window is empty.",
+      "components": [
+        "SegmentedControl",
+        "Button variant=primary"
+      ]
+    },
+    {
+      "name": "content",
+      "task": "read",
+      "data": { "item": "prose", "cardinality": "many" },
+      "answers": "What arrived since the last summary?",
+      "purpose": "ONE list, and two controls that say which. The window picker in the header says WHICH messages (unread, today, 3 days, week, month); the switch above the list says HOW MANY of them (everything, or only what a scoring function with no model in it picked out). The list is TURNS, not messages: consecutive lines from one person within five minutes are one turn, printed with the name, the clock and an avatar once, because repeating all three above every line was the noisiest thing on the screen. Nothing here is a card: the panelled column already is the card surface, and a second frame around the content spent padding and a hairline to say nothing.",
+      "components": [
+        "SegmentedControl",
+        "Avatar size=sm",
+        "Divider",
+        "SectionLabel",
+        "Badge tone=primary",
+        "Icon",
+        "IconButton variant=quiet",
+        "Tooltip",
+        "Skeleton",
+        "Alert tone=warning"
+      ]
+    }
+  ],
+  "states": {
+    "loading": "Skeleton lines in the content column while the new messages load; the Summarise button shows loading with loadingLabel while the CLI is running, which is tens of seconds and needs to look alive",
+    "empty": "EmptyState icon=check_circle. For the unread window it says everything is covered; for a clock window it offers a wider one. This is the normal resting state, not a failure",
+    "error": "Alert tone=danger role=alert above the content: either Graph refused the chat, or the CLI failed. A failed summary states that nothing was marked as summarised, because the next question is always whether the messages were lost"
+  },
+  "data": [
+    "chat: id, label, lastSummarizedAt — the digest server's per-chat file. Summaries are NOT stored",
+    "messages: the chosen window, from Microsoft Graph",
+    "highlights: the same window ranked, computed on the server without a model"
+  ],
+  "acceptance": [
+    "Opening the chat answers 'what is new' with no click: the unread window is already on screen and says how many messages it holds.",
+    "The window picker and the summarise action sit together, and the action names what it is about to cover.",
+    "Consecutive lines from one person read as one turn with one name and one clock, not a name above every line.",
+    "The reading block is fixed to the viewport: only the messages scroll, never the page."
+  ],
+  "openQuestions": [
+    "Long threads render every new message at once. If a chat is left unwatched for weeks the column gets long; whether that needs collapsing depends on how far behind people actually fall.",
+    "The summary is written by whichever CLI is configured, so its shape is the prompt's promise rather than the screen's. If the shape matters it belongs in the prompt, not in components here."
+  ],
+  "implementation": "apps/teams-digest/src/layouts/ChatDetailPage.tsx",
+  "_why": "The template runs with `panels` and NO aside. That is what fixes the reading block to the viewport and scrolls the content inside it instead of growing the page to 2 000px; the design system only draws the seam between panels when there actually is a second one.",
+  "behaviours": [
+    {
+      "id": "window-is-what-is-unsummarised",
+      "given": "a chat whose last summary covered messages up to a watermark",
+      "when": "the reader opens it",
+      "then": "the screen lists exactly the messages after that watermark, and says how many",
+      "why": "The product's one promise. A reader who cannot see the window cannot trust that nothing was skipped or read twice.",
+      "provenBy": "apps/teams-digest/src/layouts/ChatDetailPage.test.tsx"
+    },
+    {
+      "id": "nothing-new-offers-no-summary",
+      "given": "a chat where every message is already covered",
+      "when": "the reader opens it",
+      "then": "the screen says nothing is new and offers no summarise action at all",
+      "why": "A disabled-looking button that still spends a CLI run is how the same messages get summarised twice.",
+      "provenBy": "apps/teams-digest/src/layouts/ChatDetailPage.test.tsx"
+    },
+    {
+      "id": "summarise-the-window-not-the-ranking",
+      "given": "a window whose messages are shown ranked, with the loudest first",
+      "when": "the reader presses summarise",
+      "then": "every message in the window is sent, not the subset that happened to be ranked or displayed",
+      "why": "The list is a reading aid. If the ranking became the input, the watermark would move past messages no model ever saw.",
+      "provenBy": "apps/teams-digest/src/layouts/ChatDetailPage.test.tsx"
+    },
+    {
+      "id": "failure-moves-nothing",
+      "given": "a summarise run that the CLI fails",
+      "when": "the screen reports it",
+      "then": "the same messages are still listed as waiting, and the watermark has not moved",
+      "why": "The one failure this product must not have: messages marked read that were never summarised anywhere.",
+      "provenBy": "apps/teams-digest/src/layouts/ChatDetailPage.test.tsx"
+    },
+    {
+      "id": "oversized-window-warns",
+      "given": "a window longer than one pass can read",
+      "when": "the reader opens it",
+      "then": "the screen says so before the run rather than after it",
+      "why": "A truncated read that looks like a complete one is worse than no summary, because the watermark moves anyway.",
+      "provenBy": "apps/teams-digest/src/layouts/ChatDetailPage.test.tsx"
+    },
+    {
+      "id": "one-list-at-a-time",
+      "given": "a chat with both a waiting window and an archive of past summaries",
+      "when": "the reader switches between them",
+      "then": "exactly one list is shown, and the switch says which",
+      "why": "Two lists of messages side by side is how a reader loses track of which ones have been covered.",
+      "provenBy": "apps/teams-digest/src/layouts/ChatDetailPage.test.tsx"
+    }
+  ]
+}

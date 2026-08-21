@@ -1,0 +1,76 @@
+{
+  "ref": "PlanCard",
+  "level": "organism",
+  "description": "One plan in a pricing row: what it is called, what it costs, what it includes and the single action that takes it.",
+  "exports": [
+    "PlanCard"
+  ],
+  "main": "PlanCard",
+  "from": "@/components/PlanCard",
+  "slots": [],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "price",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "period",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "features",
+      "type": "string[]",
+      "required": true
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "recommended",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "recommendedLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/PlanCard/PlanCard.tsx",
+  "context": "region",
+  "variants": {
+    "recommended": {
+      "prop": "recommended",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Badge",
+    "Button",
+    "Card",
+    "Icon",
+    "Layout"
+  ],
+  "example": "<Grid gap={4}>\n  <PlanCard\n    name=\"Team\"\n    price=\"$12\"\n    period=\"per seat, per month\"\n    features={['Up to 20 seats', 'Shared workspaces', 'Email support']}\n    action={<Button variant=\"secondary\" block>Choose Team</Button>}\n  />\n  <PlanCard\n    name=\"Business\"\n    price=\"$29\"\n    period=\"per seat, per month\"\n    description=\"For organisations that need SSO and an audit trail.\"\n    features={['Unlimited seats', 'SSO and SCIM', 'Audit log', 'Priority support']}\n    action={<Button variant=\"primary\" block>Choose Business</Button>}\n    recommended\n  />\n</Grid>"
+}

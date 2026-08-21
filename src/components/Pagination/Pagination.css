@@ -1,0 +1,55 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pagination-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--control-height-sm);
+  block-size: var(--control-height-sm);
+  padding-inline: var(--space-2);
+  border: none;
+  /* The same radius as every other control. It used to be --radius-md, which in a system whose
+   * --control-radius is --radius-full made the current page the one rounded-rectangle among
+   * pills; on a 32px square the difference reads as a different component. */
+  border-radius: var(--control-radius);
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--font-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background var(--duration-fast);
+}
+.pagination-page:hover {
+  background: var(--accent-soft);
+}
+.pagination-page:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.pagination-page[data-current] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  cursor: default;
+}
+
+.pagination-gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--control-height-sm);
+  color: var(--muted-foreground);
+}

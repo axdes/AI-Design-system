@@ -1,0 +1,73 @@
+{
+  "ref": "Alert",
+  "level": "molecule",
+  "description": "Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible. Default role is status; pass role=\"alert\" for an error. Dismiss info and success, never an unresolved error.",
+  "exports": [
+    "Alert"
+  ],
+  "main": "Alert",
+  "from": "@/components/Alert",
+  "slots": [],
+  "props": [
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "values": [
+        "neutral",
+        "danger",
+        "warning",
+        "success",
+        "info"
+      ]
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Alert/Alert.tsx",
+  "context": "region",
+  "inherits": "HTMLAttributes<HTMLDivElement>",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "neutral",
+        "danger",
+        "warning",
+        "success",
+        "info"
+      ]
+    },
+    "compact": {
+      "prop": "compact",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "IconButton",
+    "Layout",
+    "Tooltip"
+  ],
+  "example": "const [showTip, setShowTip] = useState(true)\n\n<Stack gap={3}>\n  {/* An unfixed error stays: no onDismiss, and role=\"alert\" to interrupt. */}\n  <Alert tone=\"danger\" role=\"alert\">Couldn&apos;t save. Check your connection.</Alert>\n  {/* Dismissal is the consumer's: the alert never unmounts itself. */}\n  {showTip && <Alert tone=\"info\" onDismiss={() => setShowTip(false)}>Drafts save automatically.</Alert>}\n</Stack>"
+}

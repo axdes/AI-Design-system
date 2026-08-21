@@ -1,0 +1,56 @@
+{
+  "ref": "SettingsPageTemplate",
+  "level": "block",
+  "description": "The SETTINGS page skeleton: a deliberately narrow column of sections, each a Card of explained rows. Found by scanning, so the words carry it: group by who a knob affects, and every row says what it actually changes.",
+  "exports": [
+    "SettingsPageTemplate",
+    "SettingsSection",
+    "SettingRow"
+  ],
+  "main": "SettingsPageTemplate",
+  "from": "@/blocks/SettingsPageTemplate",
+  "slots": [
+    {
+      "name": "SettingsSection",
+      "line": 49
+    },
+    {
+      "name": "SettingRow",
+      "line": 82
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/SettingsPageTemplate/SettingsPageTemplate.tsx",
+  "context": "page",
+  "uses": [
+    "Badge",
+    "Button",
+    "Card",
+    "PageHeader",
+    "PasswordInput",
+    "Select",
+    "Switch"
+  ],
+  "example": "const [language, setLanguage] = useState('en')\nconst [digest, setDigest] = useState(true)\nconst [confirming, setConfirming] = useState(false)\n\n<SettingsPageTemplate title=\"Settings\">\n  <SettingsSection\n    title=\"Preferences\"\n    description=\"How this workspace looks and speaks, for you only.\"\n  >\n    <SettingRow\n      label=\"Language\"\n      description=\"The interface language. Documents keep the language they were written in.\"\n    >\n      {/* Select carries its own label, so the row's htmlFor stays unused here. */}\n      <Select\n        label=\"Language\"\n        value={language}\n        onChange={setLanguage}\n        options={[\n          { value: 'en', label: 'English' },\n          { value: 'ar', label: 'العربية' },\n        ]}\n      />\n    </SettingRow>\n    <SettingRow\n      label=\"Weekly digest\"\n      description=\"One summary mail on Monday morning. Applies the moment it is flipped.\"\n    >\n      <Switch checked={digest} onChange={setDigest} label=\"Weekly digest\" />\n    </SettingRow>\n  </SettingsSection>\n  <SettingsSection\n    title=\"Connections\"\n    description=\"Keys this workspace uses on your behalf. Values are write-only: paste to replace, never read back.\"\n    /* \"configured\" "
+}

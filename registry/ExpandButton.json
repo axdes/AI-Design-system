@@ -1,0 +1,52 @@
+{
+  "ref": "ExpandButton",
+  "level": "atom",
+  "description": "The chevron that opens and closes a row or a panel, with the rotation and the aria-expanded wiring already done.",
+  "exports": [
+    "ExpandButton"
+  ],
+  "main": "ExpandButton",
+  "from": "@/components/ExpandButton",
+  "slots": [],
+  "props": [
+    {
+      "name": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "withChevron",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "expanded",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ExpandButton/ExpandButton.tsx",
+  "inherits": "ButtonHTMLAttributes<HTMLButtonElement>",
+  "variants": {
+    "expanded": {
+      "prop": "expanded",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "<ExpandButton icon=\"add\" label=\"Create\" withChevron />"
+}

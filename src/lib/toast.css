@@ -1,0 +1,80 @@
+.toast-region {
+  position: fixed;
+  inset-block-end: var(--space-4);
+  inset-inline-end: var(--space-4);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 24rem;   /* toast-region knob */
+  max-width: calc(100vw - var(--space-4) * 2);
+  pointer-events: none;
+}
+
+.toast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-3);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-in var(--duration-normal) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tone lives in a tinted circular badge, not a colored border. */
+.toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;    /* 32px badge — fixed component size */
+  height: 2rem;
+  border-radius: var(--radius-full);
+}
+.toast[data-tone="success"] .toast-icon { background: var(--success-soft);     color: var(--success-soft-foreground); }
+.toast[data-tone="warning"] .toast-icon { background: var(--warning-soft);     color: var(--warning-soft-foreground); }
+.toast[data-tone="danger"]  .toast-icon { background: var(--destructive-soft); color: var(--destructive-soft-foreground); }
+.toast[data-tone="info"]    .toast-icon { background: var(--primary-soft);  color: var(--primary-soft-foreground); }
+
+.toast-body { min-width: 0; padding-block-start: var(--space-2xs); }
+.toast-title {
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-snug);
+}
+.toast-desc {
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  line-height: var(--leading-snug);
+  margin-block-start: var(--space-2xs);
+}
+
+/* The action sits under the message, not beside it: a toast is narrow, and a
+ * trailing button competes with the close control for the same corner. */
+.toast-action { margin-block-start: var(--space-2); }
+
+.toast-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;    /* 24px — fixed */
+  height: 1.5rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+.toast-close:hover { background: var(--accent-soft); color: var(--accent-foreground); }
+.toast-close:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(var(--space-2)) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}

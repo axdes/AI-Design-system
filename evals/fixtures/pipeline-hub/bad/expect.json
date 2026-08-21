@@ -1,0 +1,8 @@
+{
+  "mustFail": [
+    "no-hand-rolling",
+    "spec-valid",
+    "model-valid",
+    "acceptance-met"
+  ]
+}

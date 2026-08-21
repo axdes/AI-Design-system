@@ -1,0 +1,29 @@
+{
+  "id": "pipeline-settings",
+  "title": "Notification relay settings (full pipeline)",
+  "why": "The third pipeline brief, so the pair cannot be answered by a table prior OR a tiles prior: here the right answer is the SETTINGS archetype — grouped sections of explained rows, revisited rarely and changed deliberately — and the tempting wrong answer is a WIZARD: the brief smells like setup (host, token, test connection), but settings are scanned and changed one knob at a time in any order, while a wizard walks once and adds clicks forever after (Fiori's own warning). The secret adds the second discipline: a saved token is write-only, replace-not-read.",
+  "pipeline": true,
+  "required": [
+    "SettingsPageTemplate",
+    "SettingsSection",
+    "SettingRow",
+    "PasswordInput"
+  ],
+  "forbidden": [
+    {
+      "pattern": "<WizardTemplate",
+      "message": "a wizard for configuration — settings are revisited and scanned, one knob at a time in any order; a wizard walks once and adds clicks forever after (settings archetype vs wizard useWhen)"
+    },
+    {
+      "pattern": "<Stepper",
+      "message": "same as WizardTemplate: sequential steps impose an order the operator does not have"
+    }
+  ],
+  "entry": "Screen.tsx",
+  "acceptance": [
+    "The saved token value is never rendered: the secret field starts empty, typing replaces, and a configured mark (not the value) says one exists.",
+    "Every knob can change alone, in any order — no step sequence and no gating between sections.",
+    "Every row carries a description saying what changing it actually affects.",
+    "The connection test result names what failed and how to fix it, in words — never a bare pass/fail."
+  ]
+}

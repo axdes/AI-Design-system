@@ -1,0 +1,7 @@
+/* A wrapper, not a control: the button is Button or IconButton, and this only
+ * holds it next to the live region that announces the copy. */
+.copy-button { display: inline-flex; align-items: center; }
+
+/* Confirmed state — the tick goes green so the change reads at a glance and not
+ * only as a word swap. The label carries the meaning either way. */
+.copy-button[data-copied] .icon { color: var(--success-emphasis); }

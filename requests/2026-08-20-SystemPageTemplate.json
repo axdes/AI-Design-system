@@ -1,0 +1,24 @@
+{
+  "name": "SystemPageTemplate",
+  "level": "block",
+  "date": "2026-08-20",
+  "requestedBy": "agent (golden-screens G5)",
+  "need": "No app here has a proper not-found / unavailable / broken page: transcript hand-built one, airun redirects * to the cockpit, the rest have nothing. The GOV.UK triad answers the reader's real questions — what happened, did you keep my answers, what do I do — and each product reinvents that from zero or ships nothing.",
+  "consideredAlternatives": [
+    {
+      "ref": "components/EmptyState",
+      "whyNot": "An empty state lives INSIDE a working screen; a system page IS the screen, with its own narrow measure and no chrome assumptions."
+    },
+    {
+      "ref": "three separate blocks",
+      "whyNot": "The three pages differ in COPY, not structure: one narrow column, the fact as h1, body, contact, one action. The example carries the canonical copy; the block stays copy-free for i18n."
+    }
+  ],
+  "proposedApi": {
+    "SystemPageTemplate": "title (the plain fact — never a code, never Oops), children (the triage or the consequences; 'did you keep my answers' is the failure page's one obligatory sentence), contact, action"
+  },
+  "sources": "GOV.UK page-not-found (a triage script for the three ways users got there), service-unavailable (the date and the fate of the data), problem-with-the-service; USWDS 404 (search as recovery on content products)",
+  "status": "approved",
+  "decision": "Build as a block per the golden-screens G5 batch; the system archetype gains its carrier.",
+  "decidedBy": "owner (2026-08-20, approved the golden-screens batch)"
+}

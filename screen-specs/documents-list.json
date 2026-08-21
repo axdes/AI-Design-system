@@ -1,0 +1,86 @@
+{
+  "$schema": "./schema.json",
+  "id": "documents-list",
+  "title": "Documents library",
+  "goal": "Find a document and open it, or start a new one.",
+  "primaryQuestion": "Which document do I open?",
+  "audience": "mixed",
+  "archetype": "list",
+  "template": "AdaptiveListPage",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "Name the screen and offer the one creating action.",
+      "components": [
+        "Button variant=primary"
+      ]
+    },
+    {
+      "name": "toolbar",
+      "task": "find",
+      "purpose": "Narrow the list by text and by status. Laid out by the screen, not by <Row>.",
+      "components": [
+        "SearchInput",
+        "FilterDropdown"
+      ]
+    },
+    {
+      "name": "content",
+      "task": "browse",
+      "data": {
+        "item": "record",
+        "cardinality": "few",
+        "fields": 3
+      },
+      "answers": "Which document do I open?",
+      "purpose": "One card per document: title, status, when it was last touched. The grid is .document-grid, a container query in the page CSS rather than <Grid>, because the column count follows the content column and not the viewport.",
+      "components": [
+        "Card",
+        "CardTitle",
+        "CardMeta",
+        "MetaItem",
+        "Badge tone=warning"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState via the template's empty prop, icon=folder, offering to clear the filters",
+    "error": "Alert tone=danger above the grid, with a retry action"
+  },
+  "data": [
+    "documents: id, title, status (draft | review | published), updatedAt — mock data for now"
+  ],
+  "openQuestions": [
+    "Does the list need pagination, or is the working set small enough to render at once?",
+    "Make useSimpleFit measure against whatever wrapper it is inside, then move this screen onto <AdaptiveListPage>. The attempt is described in _templateNote."
+  ],
+  "implementation": "src/layouts/ContentLibraryPage.tsx",
+  "_templateNote": "The screen predates this block and still composes the shape by hand: it calls useSimpleFit itself and lays the welcome cluster out in .library markup rather than <ListCluster>. Moving it was TRIED on 2026-07-31 and reverted: the screen came up in the standard header layout instead of the welcome one, because the block measures the fit against its own wrapper rather than .page-content. That is a behaviour change on the design system's showcase screen, not a refactor. The block gained what the move showed it was missing (empty.reason='no-matches', so a filtered-empty list keeps its search box); the screen stays as it is until the fit measurement is made wrapper-agnostic.",
+  "behaviours": [
+    {
+      "id": "my-content-shows-only-mine",
+      "given": "several authors' documents existing, Mohammed signed in",
+      "when": "the library renders",
+      "then": "only Mohammed's documents appear — another author's work is absent from HIS library",
+      "why": "The screen is called My Content, and the name is the promise.",
+      "provenBy": "src/layouts/ContentLibraryPage.test.tsx"
+    },
+    {
+      "id": "search-narrows-by-title",
+      "given": "the standard library with its toolbar",
+      "when": "the author types part of a title",
+      "then": "the grid narrows to matching titles and non-matching cards leave",
+      "why": "Find is the toolbar zone's declared task.",
+      "provenBy": "src/layouts/ContentLibraryPage.test.tsx"
+    },
+    {
+      "id": "empty-search-offers-the-way-back",
+      "given": "a search that matches nothing",
+      "when": "the last card leaves the grid",
+      "then": "an empty state explains the situation instead of a blank grid",
+      "why": "Every list's empty case must speak (the states contract).",
+      "provenBy": "src/layouts/ContentLibraryPage.test.tsx"
+    }
+  ]
+}

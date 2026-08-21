@@ -1,0 +1,9 @@
+/* Inherits its type from whatever it sits in: a timestamp is metadata inside a
+ * row, a card head or a message, never a size of its own. The dotted underline
+ * is the only affordance it needs, and it only appears where a title tooltip
+ * actually shows (pointer devices). */
+.time { color: inherit; font-variant-numeric: tabular-nums; }
+
+@media (hover: hover) {
+  .time[title] { text-decoration: underline dotted var(--border-strong); text-underline-offset: 0.2em; }
+}

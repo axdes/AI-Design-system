@@ -1,0 +1,43 @@
+{
+  "$schema": "./schema.json",
+  "id": "admin-login",
+  "title": "Admin portal — sign in",
+  "goal": "Sign in and land directly on the user list, as the role decides what that list shows.",
+  "primaryQuestion": "Who am I signing in as?",
+  "audience": "expert",
+  "archetype": "auth",
+  "template": "AuthTemplate",
+  "zones": [
+    {
+      "name": "form",
+      "task": "input",
+      "answers": "Who am I signing in as?",
+      "purpose": "The prototype has no identity provider, so signing in IS choosing who you are: one Select of demo identities (the Superuser and one Area Admin per area), then the template's submit. No password field: inventing one would fake a credential check the prototype does not perform.",
+      "components": [
+        "Field",
+        "Select"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "Not a list. Submitting with no identity chosen renders the AuthTemplate's error slot (an Alert) asking for one.",
+    "error": "The same AuthTemplate error slot — with no identity provider behind it, an empty submit is the only error this screen can produce."
+  },
+  "data": [
+    "identities: id, name, role (superuser | area-admin), area (for area admins) — a fixed demo list in src/data/users.ts, one Superuser plus one Area Admin per area"
+  ],
+  "openQuestions": [
+    "The real deployment authenticates against the corporate identity provider; which one, and whether area assignment arrives as a claim or from the portal's own records, is a backend decision this prototype does not take."
+  ],
+  "implementation": "apps/admin-portal/src/layouts/LoginPage.tsx",
+  "behaviours": [
+    {
+      "id": "lands-on-user-list",
+      "given": "a signed-out visitor on the sign-in screen",
+      "when": "they choose an identity and sign in",
+      "then": "they land directly on the user list — no dashboard, no summary screen in between",
+      "why": "Requirements 4.1: no dashboard/KPI landing page; upon login, users land directly on the User List screen.",
+      "provenBy": "apps/admin-portal/src/layouts/LoginPage.test.tsx"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "ref": "Select",
+  "level": "molecule",
+  "description": "Single choice from a short list, built on Dropdown so the menu can match the trigger width. Combobox is the one for a long list.",
+  "exports": [
+    "Select"
+  ],
+  "main": "Select",
+  "from": "@/components/Select",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "V | undefined",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(next: V) => void",
+      "required": true
+    },
+    {
+      "name": "options",
+      "type": "readonly SelectOption<V>[]",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Select/Select.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  },
+  "uses": [
+    "Dropdown",
+    "Icon"
+  ],
+  "example": "const [type, setType] = useState<Leave>('annual')\n\n<Select<Leave>\n  label=\"Leave type\"\n  value={type}\n  onChange={setType}\n  options={[\n    { value: 'annual', label: 'Annual leave' },\n    { value: 'sick', label: 'Sick leave' },\n    { value: 'unpaid', label: 'Unpaid leave' },\n  ]}\n/>"
+}

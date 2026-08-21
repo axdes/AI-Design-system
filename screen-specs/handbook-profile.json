@@ -1,0 +1,57 @@
+{
+  "$schema": "./schema.json",
+  "id": "handbook-profile",
+  "project": "handbook",
+  "title": "Profile requirements",
+  "goal": "See what this profile requires per skill and per seniority level, and jump into any skill's card.",
+  "primaryQuestion": "What does this profile require at each seniority level?",
+  "audience": "expert",
+  "archetype": "detail",
+  "template": "DetailPageTemplate",
+  "_why": "The heart of the app and the screen the whole target data model exists for. Its one visual signature: seniority (the position axis) and proficiency (the mastery axis) are never merged — every matrix cell carries two separate marks, and the legend states the rule before the table shows it. The header carries the profile name ONLY (no text under titles, system rule); the descriptor is read on the profile's tile in the collection.",
+  "zones": [
+    {
+      "name": "legend",
+      "task": "read",
+      "purpose": "Always-visible legend ahead of the matrix, naming both axes: obligation (mandatory as a solid Badge, optional as a soft one, not applicable as muted N/A text) and expectations (expected proficiency — Novice, Intermediate, Advanced, Expert — as a plain Badge). Two encodings, two meanings, stated once and used everywhere below.",
+      "components": ["Card", "Badge"]
+    },
+    {
+      "name": "matrix",
+      "task": "compare",
+      "data": { "item": "record", "cardinality": "few", "fields": 5 },
+      "answers": "What does this profile require at each seniority level?",
+      "purpose": "The requirements matrix: one row per skill, rows grouped under their group headings, one column per seniority level (Junior, Middle, Senior, Lead). Each cell shows two separate marks side by side — the obligation Badge and the expected-proficiency Badge; a not-applicable cell is muted N/A text and carries NO proficiency — the always-visible legend says what it means. The skill name in each row links to that skill's card.",
+      "components": ["SectionLabel", "Card", "Table", "Badge", "Button variant=link"]
+    },
+    {
+      "name": "topics",
+      "task": "compare",
+      "data": { "item": "record", "cardinality": "few", "fields": 4 },
+      "purpose": "Topic requirements under the matrix: for each skill that is mandatory or optional in this profile, the topics of its card in a compact table of the same four seniority columns — an Icon check where the topic is expected at that level, a muted dash where it is not. Small on purpose: it is detail the matrix summarises.",
+      "components": ["SectionLabel", "Card", "Table", "Icon"]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState surface=page icon=folder when the profile id in the URL matches nothing in the current discipline: says so plainly and offers the way back to Profiles.",
+    "error": "The same EmptyState as the empty state: a bad deep link is the only broken state a static reader has."
+  },
+  "data": [
+    "profile: name, descriptor",
+    "requirements: (skill, level) → mandatory | optional | not applicable",
+    "expectations: (skill, level) → expected proficiency, absent when the requirement is not applicable",
+    "topic requirements: (skill, topic, level) → expected or not"
+  ],
+  "behaviours": [
+    {
+      "id": "na-cell-carries-no-proficiency",
+      "given": "a requirement that is not applicable at some seniority level",
+      "when": "the matrix looks up the expected proficiency for that cell",
+      "then": "no expected proficiency exists for it — the cell renders muted N/A text, and there is no badge to draw",
+      "why": "The data model's core invariant: obligation and expectation are two separate facts, and a level where the skill does not apply may not claim an expectation. The old format merged them into one string, which is the defect this whole app exists to disprove.",
+      "provenBy": "apps/handbook/src/data/queries.test.ts"
+    }
+  ],
+  "openQuestions": [],
+  "implementation": "apps/handbook/src/layouts/ProfilePage.tsx"
+}

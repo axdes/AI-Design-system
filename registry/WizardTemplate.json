@@ -1,0 +1,90 @@
+{
+  "ref": "WizardTemplate",
+  "level": "block",
+  "description": "The WIZARD page skeleton: a Stepper over one step at a time, Back/Next below, the last step submitting under the real event's name. Steps are freely navigable, and the final step is a `<WizardReview>` whose Change links jump straight back.",
+  "exports": [
+    "WizardTemplate",
+    "WizardReview",
+    "WizardReviewRow"
+  ],
+  "main": "WizardTemplate",
+  "from": "@/blocks/WizardTemplate",
+  "slots": [
+    {
+      "name": "WizardReview",
+      "line": 98
+    },
+    {
+      "name": "WizardReviewRow",
+      "line": 111
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "steps",
+      "type": "WizardStep[]",
+      "required": true
+    },
+    {
+      "name": "current",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "onStep",
+      "type": "(id: string) => void",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "backLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "nextLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "submitLabel",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "onSubmit",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "busy",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/WizardTemplate/WizardTemplate.tsx",
+  "context": "page",
+  "uses": [
+    "Button",
+    "Field",
+    "Input",
+    "PageHeader",
+    "Select",
+    "Stepper"
+  ],
+  "example": "const [step, setStep] = useState('details')\nconst [name, setName] = useState('Weekly export')\nconst [scope, setScope] = useState('all')\n\n<WizardTemplate\n  title=\"New export schedule\"\n  steps={STEPS}\n  current={step}\n  onStep={setStep}\n  submitLabel=\"Create schedule\"\n  onSubmit={() => setStep('details')}\n>\n  {step === 'details' && (\n    <Field label=\"Schedule name\" htmlFor=\"wiz-name\">\n      <Input id=\"wiz-name\" value={name} onChange={(e) => setName(e.target.value)} />\n    </Field>\n  )}\n  {step === 'scope' && (\n    <Select\n      label=\"Scope\"\n      value={scope}\n      onChange={setScope}\n      options={[\n        { value: 'all', label: 'Whole workspace' },\n        { value: 'mine', label: 'My documents' },\n      ]}\n    />\n  )}\n  {step === 'review' && (\n    <WizardReview>\n      <WizardReviewRow label=\"Schedule name\" onEdit={() => setStep('details')}>\n        {name}\n      </WizardReviewRow>\n      <WizardReviewRow label=\"Scope\" onEdit={() => setStep('scope')}>\n        {scope === 'all' ? 'Whole workspace' : 'My documents'}\n      </WizardReviewRow>\n    </WizardReview>\n  )}\n</WizardTemplate>"
+}

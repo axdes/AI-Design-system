@@ -1,0 +1,14 @@
+/* Boxes wrap rather than shrink: six of them at their readable size beat six
+ * squeezed onto one line of a narrow phone. */
+.code-input { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.code-input-box {
+  inline-size: var(--control-height);   /* square: same as the control height */
+  padding-inline: 0;
+  /* Not --control-radius: it is a full pill in this brand, and a pill as wide as
+   * it is tall is a circle. A code box is a box. */
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: var(--font-md);
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,87 @@
+{
+  "ref": "EmptyState",
+  "level": "molecule",
+  "description": "What a screen shows when it has nothing: an icon, a sentence about why it is empty, and the action that would fill it.",
+  "exports": [
+    "EmptyState"
+  ],
+  "main": "EmptyState",
+  "from": "@/components/EmptyState",
+  "slots": [],
+  "props": [
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "as",
+      "type": "Heading",
+      "required": false,
+      "values": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "surface",
+      "type": "'card' | 'page'",
+      "required": false,
+      "values": [
+        "card",
+        "page"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/EmptyState/EmptyState.tsx",
+  "context": "region",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "card",
+        "page"
+      ]
+    }
+  },
+  "uses": [
+    "Button",
+    "Icon"
+  ],
+  "example": "<EmptyState\n  icon=\"folder\"\n  title=\"No documents yet\"\n  description=\"Upload a file or create one from a template.\"\n  as=\"h2\"\n  action={<Button variant=\"primary\" iconEnd>New document<Icon name=\"add\" /></Button>}\n/>"
+}

@@ -1,0 +1,71 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-item {
+  border-block-end: 1px solid var(--border);
+}
+.accordion-item:first-child {
+  border-block-start: 1px solid var(--border);
+}
+
+.accordion-heading {
+  margin: 0;
+  font: inherit;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  inline-size: 100%;
+  padding: var(--space-3) var(--space-1);
+  border: none;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-medium);
+  text-align: start;
+  cursor: pointer;
+  transition: color var(--duration-fast);
+}
+.accordion-header:hover {
+  color: var(--primary-accent);
+}
+.accordion-header:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(var(--ring-offset) * -1);
+  border-radius: var(--radius-sm);
+}
+.accordion-header:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* A column of blocks whose headers ARE the section heads of the column they sit in: the same
+   voice as <SectionLabel>, so a block does not shrink its own title just because it gained a
+   chevron. */
+.accordion[data-size='lg'] .accordion-header {
+  font-family: var(--font-family-display);
+  font-size: var(--font-lg);
+  line-height: var(--leading-tight);
+}
+
+.accordion-chevron {
+  flex-shrink: 0;
+  color: var(--icon-muted);
+  transition: transform var(--duration-fast);
+}
+.accordion-item[data-open] .accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.accordion-panel {
+  padding: 0 var(--space-1) var(--space-4);
+  color: var(--muted-foreground);
+  font-size: var(--font-base);
+  line-height: var(--leading-normal);
+}

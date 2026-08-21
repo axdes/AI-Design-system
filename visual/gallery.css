@@ -1,0 +1,104 @@
+/* The gallery is a stand-in for the app, not a component sandbox: page blocks
+ * live inside AppShell, whose main column is painted --muted. Rendering cases on
+ * plain --background made interactive cards (borderless by design, they rely on
+ * the surface behind them) invisible, so the baselines showed a screen nobody
+ * ever sees. */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+/* Browse shell (only under ?browse). Structural layout, not decoration: the
+ * header keeps its height and the example fills the rest of the viewport and
+ * scrolls INSIDE, so a full-page template (min-height:100vh) can't push the
+ * page down and slide under the header. The screenshot harness never renders
+ * this shell. */
+.gallery-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+/* Scroll area under the header; centres the framed example, pads it off the edges. */
+.gallery-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space-8);
+}
+
+/* Frame the example by its declared context (browse only — the screenshot
+ * harness renders the raw example and must stay unframed). 'card' = a control
+ * that lives inside a card, so show it on a white card with padding; 'region'
+ * brings its own surface, so show it on the muted page at a wider measure. */
+.gallery-shell .visual-case { width: 100%; }
+.gallery-shell .visual-case[data-context="card"] {
+  max-width: 44rem;
+  background: var(--background);
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+}
+.gallery-shell .visual-case[data-context="region"] {
+  max-width: 60rem;
+}
+
+/* ── Variants spec sheet (browse only) ──────────────────────────────
+ * One stage per value, all the same size, so the captions line up instead of
+ * following each sample's box, and so two sizes are compared against the same
+ * frame rather than against each other. */
+.gallery-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: var(--space-4);
+}
+.gallery-sample { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.gallery-sample-stage {
+  display: grid;
+  place-items: center;
+  /* flex:1 inside a stretched grid row — the tallest sample sets the row, the
+   * rest match it, so the captions of one row sit on one line. */
+  flex: 1;
+  min-block-size: 7rem;
+  padding: var(--space-4);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+/* The stage is painted with the surface the component actually sits on: a
+ * control belongs on white, a card or a page block on the app's --muted canvas.
+ * Same surface rule as the cards themselves — a white stage on the muted page
+ * is separated by its fill, so it carries no outline; a muted stage on the
+ * muted page has no fill to separate it, so it gets the hairline. */
+.gallery-sample-stage[data-surface="card"] { background: var(--background); }
+.gallery-sample-stage[data-surface="region"],
+.gallery-sample-stage[data-surface="page"] { background: var(--muted); border: 1px solid var(--border); }
+/* Stand-in for the parent a `fill`-style prop sizes itself from. Dashed, so it
+ * reads as scaffolding rather than as part of the component. */
+.gallery-slot {
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+}
+.gallery-slot[data-shape="square"] { inline-size: 3rem; block-size: 3rem; }
+.gallery-slot[data-shape="tall"] { inline-size: 100%; block-size: 8rem; }
+
+.gallery-sample-label {
+  font-size: var(--font-xs);
+  font-family: var(--font-family-mono);
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+/* Floating picker for full-page examples: the example owns the viewport, so the
+ * controls float over the top-right corner (base surface = self-bordered, so
+ * they read over any app chrome). */
+.gallery-float {
+  position: fixed;
+  inset-block-start: var(--space-4);
+  inset-inline-end: var(--space-4);
+  z-index: var(--z-modal);
+}

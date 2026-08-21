@@ -1,0 +1,90 @@
+{
+  "$schema": "./schema.json",
+  "id": "renewals-window",
+  "project": "renewals-desk",
+  "title": "Renewals window",
+  "goal": "Work every contract in the window to a decision — send it for renewal or let it lapse — until the window is empty.",
+  "primaryQuestion": "Which contract do I handle first?",
+  "audience": "expert",
+  "archetype": "worklist",
+  "template": "ListPageTemplate",
+  "_why": "Nobody searches this screen (brief, verbatim) and the set is given, so this is the taxonomy's worklist: ListPageTemplate with no toolbar, no FilterBar, no SearchInput. The moment someone asks for a filter, the archetype flips to list and this spec is wrong on purpose, not silently.",
+  "zones": [
+    {
+      "name": "header",
+      "task": "read",
+      "purpose": "The screen's name, with the count of contracts still awaiting review as a Badge beside the title (title is ReactNode; nothing renders under it). No creating action — the window is fed by end dates, not by people — and no filters, which is what keeps this a worklist.",
+      "components": [
+        "Badge tone=warning"
+      ]
+    },
+    {
+      "name": "window",
+      "task": "process",
+      "data": { "item": "record", "cardinality": "many", "fields": 6 },
+      "answers": "Which contract do I handle first?",
+      "purpose": "One row per contract, ordered by endDate ascending — soonest first, so reading order IS priority order and comparing annualValue and endDate across the whole window is a glance down two columns. A table, not cards, by R8 (a queue of records wants density and status) and R1's reason (six comparable fields want columns; cards would make comparing two contracts mean reading two paragraphs). Columns: id, counterparty, accountManager, annualValue (align end), endDate, status as a Badge, and the decision. An awaiting-review row carries its two decisions in place — Send for renewal and Let lapse, small, neither primary: they are peers and there are many per screen; a decided row shows its status and nothing pressable. The table sits in a Card flush inside a TableScroll, on the template's panels mode with stickyHeader, so only the rows scroll and the column names survive the scroll.",
+      "components": [
+        "Card flush=true",
+        "TableScroll",
+        "Table stickyHeader=true nowrap=true",
+        "THead",
+        "TBody",
+        "Tr",
+        "Th",
+        "Td",
+        "Badge tone=warning",
+        "Badge tone=success",
+        "Badge tone=neutral",
+        "Row",
+        "Button size=sm variant=secondary",
+        "Button size=sm variant=ghost"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState via the template's empty prop, icon=check_circle. The GOOD state: a window worked down to zero is the week's job done, and the copy says so — no action button, because nothing here creates contracts.",
+    "error": "Not applicable while the rows are inline mock data; when the contract feed arrives this becomes an Alert tone=danger above the table with a retry, and this sentence is the reminder."
+  },
+  "data": [
+    "contracts: id, counterparty, accountManager, annualValue, endDate, status (awaiting-review | renewal-sent | lapsing) — 8-10 mock rows inline in the screen, spanning all three statuses so every row shape renders, decided in local state so the decisions really move a row"
+  ],
+  "acceptance": [
+    "Rows are ordered by endDate, soonest first, and nothing on the screen can reorder, filter or search them.",
+    "annualValue and endDate each line up in their own column; two contracts compare without moving the eyes off a column.",
+    "Both decisions sit on the row itself: deciding needs no dialog and no navigation, and the row's status changes where it stands.",
+    "Only awaiting-review rows carry the two decision buttons; decided rows show their status Badge and nothing pressable.",
+    "Only the rows scroll; the page header and the column header row stay put.",
+    "The empty window reads as the week's work done, never as an error."
+  ],
+  "behaviours": [
+    {
+      "id": "send-for-renewal-in-place",
+      "given": "a contract whose status is awaiting-review",
+      "when": "the specialist presses Send for renewal on its row",
+      "then": "the same row now shows the renewal-sent Badge, its two decision buttons are gone, and no navigation happened",
+      "why": "The brief's central promise: the two decisions are applied in place.",
+      "pendingReason": "Delivered as a single screen file ahead of the product's own repo and test harness; the test lands with the first vitest setup, named renewals-window#send-for-renewal-in-place."
+    },
+    {
+      "id": "let-lapse-in-place",
+      "given": "a contract whose status is awaiting-review",
+      "when": "the specialist presses Let lapse on its row",
+      "then": "the same row now shows the lapsing Badge, its two decision buttons are gone, and no navigation happened",
+      "why": "The other half of the same promise — lapsing is a decision taken, not an omission.",
+      "pendingReason": "Same harness gap as send-for-renewal-in-place; the test carries renewals-window#let-lapse-in-place."
+    },
+    {
+      "id": "empty-window-is-done",
+      "given": "a window with no contracts in it",
+      "when": "the screen renders",
+      "then": "the empty state says the week's work is done, styled as success of the process, not as missing data",
+      "why": "When the window is empty, that is the good state (brief, verbatim).",
+      "pendingReason": "Same harness gap; the test carries renewals-window#empty-window-is-done."
+    }
+  ],
+  "openQuestions": [
+    "Does a decided contract stay in the window with its new status until the week rolls, or leave the list at once? Built as: it stays, so the specialist keeps the week's record on screen; the model carries the same question.",
+    "Whether Let lapse ever needs a confirmation. Built without one — it is reversible upstream and the audience lives here daily — but the first mis-click story reopens it."
+  ]
+}

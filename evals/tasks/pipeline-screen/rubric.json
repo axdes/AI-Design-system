@@ -1,0 +1,37 @@
+{
+  "id": "pipeline-screen",
+  "title": "Contract renewals desk (full pipeline)",
+  "why": "The only task that measures the PIPELINE, not a file: brief in, model + spec + screen out, with the gate's own validators as the judge. It exists because the component tasks cannot fail an agent that skipped the decisions and went straight to plausible code — here a missing model, a spec whose zones contradict the selection rules, or a provenBy chain citing a behaviour that does not exist each fail their own dimension. The brief is shaped so the tempting wrong answer is a card per record and a search box: a worklist is worked, not searched (R8, and the worklist archetype's no-filter contract).",
+  "pipeline": true,
+  "required": [
+    "ListPageTemplate",
+    "Table",
+    "Badge",
+    "Button"
+  ],
+  "forbidden": [
+    {
+      "pattern": "<Card\\s[^>]*key=",
+      "message": "a Card per record — a window of records compared by value and date needs rows, not tiles (selection rules R1/R8): use <Table>"
+    },
+    {
+      "pattern": "<SearchInput",
+      "message": "nobody searches this screen (the brief, verbatim) — a worklist is worked down to zero, and a search box flips the archetype to list"
+    },
+    {
+      "pattern": "<FilterBar",
+      "message": "same as SearchInput: the window arrives given, filters are the list archetype's tool, not the worklist's"
+    },
+    {
+      "pattern": "\\bsortable\\b|\\bonSort\\b",
+      "message": "sortable headers on a worklist — the reading order IS the priority order, and a re-sort hands the ranking back to the user (selection-rules N-worklist-holds-its-order; the judge lane's first live catch)"
+    }
+  ],
+  "entry": "Screen.tsx",
+  "acceptance": [
+    "Rows are ordered by end date with the soonest first, and nothing on the screen lets the user reorder, filter or search them.",
+    "Both decisions act in place on the row — no dialog, no navigation — and the row's status changes where it stands.",
+    "Only awaiting-review rows carry decision controls; decided rows show their state and nothing pressable.",
+    "The empty window renders as success (the week's work done), never as an error or a bare gap."
+  ]
+}

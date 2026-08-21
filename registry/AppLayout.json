@@ -1,0 +1,49 @@
+{
+  "ref": "AppLayout",
+  "level": "organism",
+  "description": "The application shell: a sticky full-height nav column beside a scrolling main. Routing-agnostic — pass any nav in the `nav` slot. Below the drawer breakpoint the nav becomes an overlay drawer toggled by `navOpen`.",
+  "exports": [
+    "AppLayout"
+  ],
+  "main": "AppLayout",
+  "from": "@/components/AppLayout",
+  "slots": [],
+  "props": [
+    {
+      "name": "nav",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "navOpen",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "onNavClose",
+      "type": "() => void",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/AppLayout/AppLayout.tsx",
+  "context": "page",
+  "variants": {
+    "nav-open": {
+      "prop": "navOpen",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "PageHeader",
+    "SideNav"
+  ],
+  "example": "const [navOpen, setNavOpen] = useState(false)\n/* The app frame: a nav rail plus the scrolling main column. On narrow screens\n * the rail becomes an overlay, which is what navOpen/onNavClose drive. */\n\n<AppLayout\n  navOpen={navOpen}\n  onNavClose={() => setNavOpen(false)}\n  nav={\n    <SideNav\n      aria-label=\"Primary\"\n      logo={<><Icon name=\"auto_awesome\" size=\"md\" /><strong>Acme</strong></>}\n      logoMark={<Icon name=\"auto_awesome\" size=\"md\" />}\n      groups={[{ items: [{ id: 'library', label: 'Library', icon: 'folder', active: true }] }]}\n    />\n  }\n>\n  <PageHeader title=\"Content library\" />\n</AppLayout>"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "workspace-hub",
+  "project": "client-workspace",
+  "title": "Workspace hub",
+  "goal": "See the workspace's areas and their counts at a glance.",
+  "primaryQuestion": "Where do I go?",
+  "audience": "expert",
+  "archetype": "hub",
+  "template": "ListPageTemplate",
+  "zones": [
+    {
+      "name": "areas",
+      "task": "navigate",
+      "data": { "item": "record", "cardinality": "few" },
+      "answers": "Where do I go?",
+      "purpose": "One row per area so the counts line up in a sortable column, with an Open button at the end of each row.",
+      "components": ["Table", "THead", "TBody", "Tr", "Th", "Td", "AreaRow", "Button variant=secondary"]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState when the workspace has no areas."
+  },
+  "acceptance": [
+    "Counts line up in one sortable column."
+  ]
+}

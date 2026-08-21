@@ -1,0 +1,59 @@
+{
+  "ref": "Tree",
+  "level": "molecule",
+  "description": "Hierarchical expand/collapse list (files, categories). The WAI-ARIA tree: Up/Down move between VISIBLE rows, Right expands or steps into a group, Left collapses or steps out, Enter selects. Controlled selection and expansion, or self-managed.",
+  "exports": [
+    "Tree"
+  ],
+  "main": "Tree",
+  "from": "@/components/Tree",
+  "slots": [],
+  "props": [
+    {
+      "name": "nodes",
+      "type": "TreeNode[]",
+      "required": true
+    },
+    {
+      "name": "selectedId",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) => void",
+      "required": false
+    },
+    {
+      "name": "expandedIds",
+      "type": "string[]",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "type": "(ids: string[]) => void",
+      "required": false
+    },
+    {
+      "name": "defaultExpandedIds",
+      "type": "string[]",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Tree/Tree.tsx",
+  "context": "region",
+  "uses": [
+    "Icon"
+  ],
+  "example": "const [selected, setSelected] = useState<string>()\n/* Expand/collapse hierarchy with the WAI-ARIA tree keyboard (arrows + Enter).\n * Selection and expansion are controlled here, or self-managed if you omit\n * them. */\n\n<Tree\n  label=\"Files\"\n  selectedId={selected}\n  onSelect={setSelected}\n  defaultExpandedIds={['src']}\n  nodes={[\n    {\n      id: 'src', label: 'src', icon: 'folder', children: [\n        { id: 'app', label: 'App.tsx', icon: 'article' },\n        { id: 'components', label: 'components', icon: 'folder', children: [\n          { id: 'button', label: 'Button.tsx', icon: 'article' },\n        ] },\n      ],\n    },\n    { id: 'readme', label: 'README.md', icon: 'article' },\n  ]}\n/>"
+}

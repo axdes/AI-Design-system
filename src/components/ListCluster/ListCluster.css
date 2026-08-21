@@ -1,0 +1,111 @@
+/* The cluster's own styles, co-located with the component.
+ *
+ * They used to live in `apps/workshops/src/layouts/shared-chrome.css`, which
+ * made `ListCluster` a design-system component that only rendered correctly
+ * inside one app: any other consumer got the markup and none of the layout, and
+ * the gallery rendered it bare. A component whose CSS lives in a product is not
+ * in the system, it is on loan from it.
+ *
+ * The parent must be a flex column for `margin-block: auto` to centre anything;
+ * `<AdaptiveListPage>` does that for its own wrapper. */
+.list-cluster {
+  margin-block: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+/* When there are cards, the CARDS row is the centre anchor (1fr/auto/1fr):
+ * title sits just above, actions just below. */
+.list-cluster[data-cards] {
+  flex: 1;
+  margin-block: 0;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  align-items: stretch;
+}
+
+.list-cluster[data-cards] .list-cluster-head {
+  align-self: end;
+}
+
+.list-cluster[data-cards] .list-cluster-grid {
+  align-self: center;
+}
+
+.list-cluster[data-cards] .list-cluster-cta {
+  align-self: start;
+  margin-block-start: var(--space-2);
+}
+
+.list-cluster-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+/* The cluster only renders when it fits → hero type can be large. */
+.list-cluster-title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-3xl);
+  font-weight: var(--font-weight-light);
+  line-height: var(--leading-tight);
+  color: var(--foreground);
+}
+
+/* Capped to a reading measure. Uncapped it ran the full width of the hero — one 20px sentence
+ * stretched across 1100px, which is the widest line of text on any screen in the system and the
+ * one nobody can follow to its end. The transcript tool had already capped its own copy of this
+ * at 30rem; the block should not have needed each product to discover that. */
+.list-cluster-subtitle {
+  margin: 0;
+  max-inline-size: 34rem;
+  font-size: var(--font-lg);
+  color: var(--muted-foreground);
+  line-height: var(--leading-normal);
+}
+
+/* Fixed-cap columns that wrap and stay centred: a partial row centres
+ * instead of stretching (the DS document-grid pattern).
+ *
+ * `display` and `gap` belong here and were missing. The rule set columns on an element that was
+ * never told to be a grid, so the class only worked next to a second one the consumer wrote
+ * (workshops pairs it with its own `.tile-grid`). Anywhere else the tiles stacked at their natural
+ * height, flush to the start, touching each other — which is exactly how it landed in the first
+ * app that used the class on its own. A grid class that is not a grid is not a class. */
+.list-cluster .list-cluster-grid {
+  width: 100%;
+  display: grid;
+  gap: var(--space-4);
+  /* `1fr`, never a fixed max: see the page audit's `grid-fills-row` rule. */
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  justify-content: center;
+  /* KNOWN, and left alone here on purpose: `justify-content` does nothing while every track is
+   * `1fr`, so the sentence above about a partial row centring is not what this delivers — a list
+   * of one gets one card stretched across the page. Changing the track function is a behaviour
+   * change for the three Workshops lists that already override this rule, so it needs its own
+   * pass rather than being smuggled in beside a missing `display`. A consumer that wants the
+   * welcome layout's few cards CENTRED lays them out itself, as teams-digest does. */
+}
+
+/* Bright actions side by side, centred. The secondary one gets a card fill
+ * so it reads on the muted page. */
+.list-cluster-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.list-cluster-cta .btn[data-variant="secondary"] {
+  background: var(--card);
+}
+
+.list-cluster-cta .btn[data-variant="secondary"]:hover {
+  background: var(--accent);
+}

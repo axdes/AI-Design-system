@@ -1,0 +1,51 @@
+/* Static label token in a pill. Sizing/colours mirror .chip[secondary] so tokens
+ * and chips sit together 1:1; the trailing remove button is the only interactive
+ * part. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* min-height, not height: a fixed one is a promise the content keeps only while it is short.
+   * Hand-typed data does not oblige — one AI-tools cell in the AI/Run spreadsheet is a whole
+   * comma-separated sentence, and as a fixed-height pill it painted its text straight over the
+   * tags next to it. The pill grows instead, and the text wraps inside it. */
+  min-block-size: var(--control-height-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  padding-inline-end: var(--space-2);   /* tighter on the remove side */
+  border-radius: var(--radius-full);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  font-size: var(--font-sm);
+  font-weight: var(--control-font-weight);
+  /* A token is read as one thing, so it keeps its own words together rather than letting one
+   * long name break mid-word across the row. */
+  overflow-wrap: anywhere;
+  max-inline-size: 100%;
+}
+.tag[data-size="md"] {
+  min-block-size: var(--control-height);
+  padding-inline: var(--control-padding-x);
+  padding-inline-end: var(--space-3);
+  font-size: var(--control-font-size);
+}
+.tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: var(--space-1);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity var(--duration-fast), background var(--duration-fast);
+}
+.tag-remove:hover,
+.tag-remove:focus-visible {
+  opacity: 1;
+  background: color-mix(in oklch, var(--secondary-foreground) 15%, transparent);
+  outline: none;
+}

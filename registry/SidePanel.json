@@ -1,0 +1,63 @@
+{
+  "ref": "SidePanel",
+  "level": "organism",
+  "description": "Reusable side-panel chrome: header (title + optional close) over a scrolling body, with an optional pinned footer. The container's width/borders/radius are left to the consumer via `className`. Used by ContentSidePanel and form panels.",
+  "exports": [
+    "SidePanel"
+  ],
+  "main": "SidePanel",
+  "from": "@/components/SidePanel",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "headerActions",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SidePanel/SidePanel.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Field",
+    "IconButton",
+    "Input",
+    "Tooltip"
+  ],
+  "example": "<SidePanel\n  title=\"Request leave\"\n  onClose={() => undefined}\n  footer={\n    <>\n      <Button>Submit</Button>\n      <Button variant=\"secondary\">Cancel</Button>\n    </>\n  }\n>\n  <Field label=\"Dates\" htmlFor=\"dates\">\n    <Input id=\"dates\" placeholder=\"DD.MM.YYYY - DD.MM.YYYY\" />\n  </Field>\n</SidePanel>"
+}

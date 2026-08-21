@@ -1,0 +1,36 @@
+{
+  "extends": "./.stylelintrc.base.json",
+  "rules": {
+    "csstools/value-no-unknown-custom-properties": [
+      true,
+      {
+        "importFrom": [
+          "styles/settings.css",
+          "styles/primitives.css",
+          "styles/semantic.css",
+          "styles/fonts.css"
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "styles/primitives.css",
+        "styles/brands/*.css"
+      ],
+      "rules": {
+        "color-no-hex": null
+      }
+    },
+    {
+      "files": [
+        "styles/reset.css"
+      ],
+      "rules": {
+        "declaration-no-important": null
+      }
+    }
+  ],
+  "//": "A brand layer IS a primitive layer: it replaces the ramp primitives.css defines, which is the one place hex belongs. styles/brands/*.css is held to that same exception and to nothing else — a brand file that restates the spacing or type scale is a copied scale waiting to drift."
+}

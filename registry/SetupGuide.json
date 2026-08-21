@@ -1,0 +1,48 @@
+{
+  "ref": "SetupGuide",
+  "level": "organism",
+  "description": "The first-run checklist (Shopify's setup guide): steps with their state and the control that performs each, a counted progress line, and a dismiss that appears only when the work is done. Lives at the top of a product's home until it has earned its removal.",
+  "exports": [
+    "SetupGuide"
+  ],
+  "main": "SetupGuide",
+  "from": "@/components/SetupGuide",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "steps",
+      "type": "SetupStep[]",
+      "required": true
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "dismissLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SetupGuide/SetupGuide.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Card",
+    "Icon",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "const [connected, setConnected] = useState(false)\nconst [dismissed, setDismissed] = useState(false)\nif (dismissed) return <p>The guide is gone for good — the page is all work now.</p>\n\n<SetupGuide\n  title=\"Get set up\"\n  onDismiss={() => setDismissed(true)}\n  steps={[\n    { id: 'workspace', label: 'Name your workspace', done: true },\n    {\n      id: 'connect',\n      label: 'Connect the data source',\n      detail: 'Reports stay empty until one is connected.',\n      done: connected,\n      action: (\n        <Button size=\"sm\" variant=\"secondary\" onClick={() => setConnected(true)}>\n          Connect\n        </Button>\n      ),\n    },\n  ]}\n/>"
+}

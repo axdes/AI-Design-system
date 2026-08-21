@@ -1,0 +1,81 @@
+/* Narrow viewports: the row scrolls, the page does not. A table is the one
+ * layout that must not reflow (dropping columns drops data), so the answer to
+ * "what happens on a phone" is a scroll container, not a different structure.
+ * `contain` stops a sideways swipe at the table edge from paging the browser. */
+.table-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.table-scroll:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+.table { inline-size: 100%; border-collapse: collapse; font-size: var(--font-sm); }
+.table[data-size="sm"] { font-size: var(--font-xs); }
+
+.table-th, .table-td {
+  text-align: start; padding: var(--space-3) var(--space-4);
+  border-block-end: 1px solid var(--border); vertical-align: top;
+}
+.table[data-size="sm"] .table-th, .table[data-size="sm"] .table-td { padding: var(--space-2) var(--space-3); }
+
+.table-head .table-th {
+  /* The card surface, not `--muted`: a table lives inside a card, and a header
+   * painted in the PAGE colour read as a hole cut through it — worst at the top
+   * of a flush card, where the muted band sat flush against the muted page.
+   * The border and the label typography carry the head/body distinction. */
+  background: var(--card); color: var(--muted-foreground);
+  font-size: var(--font-xs); font-weight: var(--font-weight-semibold);
+  text-transform: uppercase; letter-spacing: var(--tracking-wide); white-space: nowrap;
+}
+.table[data-sticky] .table-head .table-th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-sticky);
+  /* With `border-collapse: collapse` the collapsed border stays with the ROW
+   * while the sticky cell travels, so a scrolled header arrived with no line
+   * under it and melted into the first row. An inset shadow is painted by the
+   * cell itself and travels with it. */
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+
+/* The data-table variant: one record per LINE. A value never wraps (block
+ * elements inside a cell still stack — a two-line identity cell is fine, a
+ * phone number broken in half is not) and rows centre their content. */
+.table[data-nowrap] .table-th,
+.table[data-nowrap] .table-td { white-space: nowrap; vertical-align: middle; }
+
+.table-row:last-child .table-td { border-block-end: 0; }
+/* The pointer's row reads without shouting: one whisper lighter than the page
+ * tint, so it never matches --muted and never fights the selected fill. */
+.table-row:hover .table-td { background: var(--surface-hover); }
+.table-row[data-selected] .table-td { background: var(--accent-soft); }
+
+/* Sortable header: a full-width button so the whole cell is the hit target. The
+ * sort arrow is faint until this column is the active sort. */
+.table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+.table-sort:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.table-sort-icon { opacity: 0; transition: opacity var(--duration-fast); }
+.table-sort:hover .table-sort-icon { opacity: 0.4; }
+.table-sort[data-active] .table-sort-icon { opacity: 1; color: var(--primary-accent); }
+
+.table-th[data-align="end"], .table-td[data-align="end"] { text-align: end; font-variant-numeric: tabular-nums; }
+.table-th[data-align="center"], .table-td[data-align="center"] { text-align: center; }
+
+.table-td[data-emphasis] { font-weight: var(--font-weight-semibold); color: var(--foreground); }
+.table-td[data-tone="success"] { background: var(--success-soft); color: var(--success-soft-foreground); }
+.table-td[data-tone="warning"] { background: var(--warning-soft); color: var(--warning-soft-foreground); }
+.table-td[data-tone="danger"] { background: var(--destructive-soft); color: var(--destructive-soft-foreground); }

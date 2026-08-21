@@ -1,0 +1,8 @@
+.label {
+  display: block;
+  font-size: var(--font-base);   /* md (default) — 15px */
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-tight);
+  color: var(--foreground);
+}
+.label[data-size="sm"] { font-size: var(--font-sm); }   /* 13px — matches small-button text */

@@ -1,0 +1,103 @@
+{
+  "ref": "FilterDropdown",
+  "level": "molecule",
+  "description": "One filter as a chip: the current selection reads on the trigger and the options are typed by their value.",
+  "exports": [
+    "FilterDropdown"
+  ],
+  "main": "FilterDropdown",
+  "from": "@/components/FilterDropdown",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "options",
+      "type": "readonly { value: V; label: string; icon?: IconName; count?: number }[]",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "readonly V[]",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(next: V[]) => void",
+      "required": true
+    },
+    {
+      "name": "multi",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "allLabel",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "allCount",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "allIcon",
+      "type": "IconName",
+      "required": false
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "valueText",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "menuExtra",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "searchable",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "showTags",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "searchPlaceholder",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/FilterDropdown/FilterDropdown.tsx",
+  "context": "region",
+  "variants": {
+    "active": {
+      "prop": "value",
+      "values": null
+    }
+  },
+  "uses": [
+    "Dropdown",
+    "Icon",
+    "SearchInput",
+    "Tag"
+  ],
+  "example": "const [status, setStatus] = useState<Status[]>([])\n/* Typed by the option value: `value`/`onChange` speak Status, not string.\n * An empty array means \"all\", which is what `allLabel` renders on the chip. */\n\n<FilterDropdown<Status>\n  label=\"Status\"\n  allLabel=\"All statuses\"\n  multi\n  options={[\n    { value: 'draft', label: 'Draft', count: 4 },\n    { value: 'review', label: 'In review', count: 2 },\n    { value: 'published', label: 'Published', count: 11 },\n  ]}\n  value={status}\n  onChange={setStatus}\n/>"
+}

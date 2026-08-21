@@ -1,0 +1,98 @@
+{
+  "ref": "AuthTemplate",
+  "level": "block",
+  "description": "Centered auth-page skeleton: one Card with a brand slot, the caller's content, an error slot, and a full-width submit when there is a form. Structure only.",
+  "exports": [
+    "AuthTemplate"
+  ],
+  "main": "AuthTemplate",
+  "from": "@/blocks/AuthTemplate",
+  "slots": [],
+  "props": [
+    {
+      "name": "brand",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "subtitle",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "error",
+      "type": "string | null",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "themeLock",
+      "type": "'light' | 'dark'",
+      "required": false,
+      "values": [
+        "light",
+        "dark"
+      ]
+    },
+    {
+      "name": "onSubmit",
+      "type": "(e: FormEvent) => void",
+      "required": false
+    },
+    {
+      "name": "submitLabel",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "busy",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "busyLabel",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/AuthTemplate/AuthTemplate.tsx",
+  "context": "page",
+  "variants": {
+    "theme-lock": {
+      "prop": "themeLock",
+      "values": [
+        "light",
+        "dark"
+      ]
+    }
+  },
+  "uses": [
+    "Alert",
+    "Button",
+    "Card",
+    "Field",
+    "Input",
+    "Layout",
+    "PasswordInput"
+  ],
+  "example": "const [email, setEmail] = useState('')\nconst [password, setPassword] = useState('')\nconst [error, setError] = useState<string | null>(null)\n/* `busy` stops a second press. Copy this shape. */\nconst [busy, setBusy] = useState(false)\nconst handleSubmit = (e: FormEvent) => {\n  e.preventDefault()\n  if (!email || !password) return setError('Enter your email and password.')\n  setError(null)\n  setBusy(true)\n  /* `finally`, not `then`: a rejected sign-in releases the button too. */\n  void signIn().finally(() => setBusy(false))\n}\n\n<AuthTemplate\n  brand={<strong>Acme</strong>}\n  title=\"Sign in\"\n  subtitle=\"Sign in to continue\"\n  error={error}\n  submitLabel=\"Sign in\"\n  busy={busy}\n  busyLabel=\"Signing in\"\n  onSubmit={handleSubmit}\n>\n  <Field label=\"Email\" htmlFor=\"auth-email\" required>\n    <Input id=\"auth-email\" type=\"email\" value={email} onChange={(e) => setEmail(e.target.value)} />\n  </Field>\n  <Field label=\"Password\" htmlFor=\"auth-password\" required>\n    <PasswordInput id=\"auth-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n  </Field>\n</AuthTemplate>"
+}

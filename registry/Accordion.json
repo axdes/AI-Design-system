@@ -1,0 +1,66 @@
+{
+  "ref": "Accordion",
+  "level": "molecule",
+  "description": "Disclosure list: a stack of headers that each reveal a panel. The header is a real <button> (Space/Enter toggle it, focus ring, disabled honoured); Arrow Up/Down/Home/End move between headers, matching the WAI-ARIA accordion. State is owned here — pass `multiple` to allow several panels open at once.",
+  "exports": [
+    "Accordion"
+  ],
+  "main": "Accordion",
+  "from": "@/components/Accordion",
+  "slots": [],
+  "props": [
+    {
+      "name": "items",
+      "type": "AccordionItem[]",
+      "required": true
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "defaultOpen",
+      "type": "string[]",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'md' | 'lg'",
+      "required": false,
+      "values": [
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "headingLevel",
+      "type": "2 | 3 | 4",
+      "required": false,
+      "values": [
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Accordion/Accordion.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "/* One panel open at a time by default; pass `multiple` to allow several.\n * `defaultOpen` seeds the initial state by item id. */\n\n<Accordion\n  defaultOpen={['shipping']}\n  items={[\n    { id: 'shipping', title: 'Shipping', content: 'Ships in 2 to 4 business days across the GCC.' },\n    { id: 'returns', title: 'Returns', content: 'Free returns within 30 days of delivery.' },\n    { id: 'warranty', title: 'Warranty', content: 'One year manufacturer warranty on all items.' },\n  ]}\n/>"
+}

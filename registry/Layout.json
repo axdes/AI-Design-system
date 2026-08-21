@@ -1,0 +1,61 @@
+{
+  "ref": "Layout",
+  "level": "atom",
+  "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for an auto-fitting set of cards. `gap` is a token step, never a raw px.",
+  "exports": [
+    "Grid",
+    "Row",
+    "Stack"
+  ],
+  "main": "Grid",
+  "from": "@/components/Layout",
+  "slots": [
+    {
+      "name": "Row",
+      "line": 13
+    },
+    {
+      "name": "Stack",
+      "line": 11
+    }
+  ],
+  "props": [
+    {
+      "name": "gap",
+      "type": "Gap",
+      "required": false,
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Layout/Grid.tsx",
+  "inherits": "HTMLAttributes<HTMLDivElement>",
+  "variants": {
+    "gap": {
+      "prop": "gap",
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ]
+    }
+  },
+  "uses": [
+    "Button",
+    "Card"
+  ],
+  "example": "const cards = ['Drafts', 'In review', 'Published']\n/* Spacing lives on the container (gap), never as child margins. `gap` takes a\n * step of the 4pt scale: 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16. */\n\n<Stack gap={6}>\n  <Grid gap={4}>\n    {cards.map((c) => (\n      <Card key={c}><CardTitle>{c}</CardTitle></Card>\n    ))}\n  </Grid>\n  <Row gap={2}>\n    <Button variant=\"secondary\">Cancel</Button>\n    <Button variant=\"primary\">Save</Button>\n  </Row>\n</Stack>"
+}

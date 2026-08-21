@@ -1,0 +1,41 @@
+{
+  "ref": "Textarea",
+  "level": "atom",
+  "description": "Multi-line counterpart to <Input> — reuses the `.input` field styling (border, radius, focus ring, hover, placeholder) and only overrides the height/resize behaviour.",
+  "exports": [
+    "Textarea"
+  ],
+  "main": "Textarea",
+  "from": "@/components/Textarea",
+  "slots": [],
+  "props": [
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Textarea/Textarea.tsx",
+  "inherits": "Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "example": "<Textarea aria-label=\"Remarks\" rows={4} placeholder=\"Add any remarks\" />"
+}

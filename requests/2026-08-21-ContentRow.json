@@ -1,0 +1,24 @@
+{
+  "name": "ContentRow",
+  "level": "molecule",
+  "date": "2026-08-21",
+  "requestedBy": "user (content representation catalogue, B2)",
+  "need": "The canonical content row — media, eyebrow, title, clamped excerpt, meta, trailing actions — did not exist; ListItem is a bare clickable row. Every feed from a repo list to a news teaser shares this anatomy (Bootstrap media object lineage through Polaris ResourceItem, GitHub, YouTube), and its absence is why the For Review queue rendered as half-empty tiles the user could not read as either cards or a list.",
+  "consideredAlternatives": [
+    {
+      "ref": "components/ListItem",
+      "whyNot": "Kept as the simple one-line clickable row; growing it into six slots would take its simplicity from the screens that want exactly a line."
+    },
+    {
+      "ref": "Card per record",
+      "whyNot": "The tempting wrong answer the queue-screen eval exists to fail: a decision list is read down, not browsed."
+    }
+  ],
+  "proposedApi": {
+    "ContentRow": "media, eyebrow, title + onOpen (the title's hit area stretches over the row — one accessible name, one focus stop), excerpt (clamped), meta, actions, density comfortable | compact | dense (rows degrade from the bottom up)"
+  },
+  "sources": "user's uui/grid-test lists-in-cards; Polaris ResourceItem, GitHub repo row, YouTube result row, SharePoint density views (research 2026-08-21)",
+  "status": "approved",
+  "decision": "Build; the For Review queue adopts it in the same batch as the proving consumer.",
+  "decidedBy": "owner (2026-08-21, approved the content catalogue plan)"
+}

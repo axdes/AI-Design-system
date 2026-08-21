@@ -1,0 +1,110 @@
+{
+  "$schema": "../schema.json",
+  "schemaVersion": 1,
+  "brand": {
+    "name": "System",
+    "colors": {
+      "primary": {
+        "primary": "#4638d3",
+        "scale": {
+          "50": "#edecfc",
+          "100": "#d8d5f9",
+          "200": "#b7b2f2",
+          "300": "#8680e7",
+          "400": "#4638d3",
+          "500": "#3b2fb6",
+          "600": "#33289c",
+          "700": "#2a2181",
+          "800": "#211a66",
+          "900": "#171247"
+        }
+      }
+    },
+    "typography": {
+      "display": {
+        "family": "Commissioner",
+        "fallbacks": [
+          "Onest",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif"
+        ],
+        "weights": [
+          400,
+          500,
+          600
+        ],
+        "source": {
+          "kind": "self-hosted",
+          "files": [
+            {
+              "weight": "400 600",
+              "path": "/fonts/Commissioner-latin.woff2",
+              "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+            },
+            {
+              "weight": "400 600",
+              "path": "/fonts/Commissioner-latin-ext.woff2",
+              "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+            },
+            {
+              "weight": "400 600",
+              "path": "/fonts/Commissioner-cyrillic.woff2",
+              "unicodeRange": "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116"
+            }
+          ]
+        }
+      },
+      "body": {
+        "family": "Onest",
+        "fallbacks": [
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif"
+        ],
+        "weights": [
+          300,
+          400,
+          500,
+          600
+        ],
+        "source": {
+          "kind": "self-hosted",
+          "files": [
+            {
+              "weight": "300 600",
+              "path": "/fonts/Onest-latin.woff2",
+              "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+            },
+            {
+              "weight": "300 600",
+              "path": "/fonts/Onest-latin-ext.woff2",
+              "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+            },
+            {
+              "weight": "300 600",
+              "path": "/fonts/Onest-cyrillic.woff2",
+              "unicodeRange": "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116"
+            }
+          ]
+        }
+      },
+      "mono": {
+        "family": "ui-monospace",
+        "fallbacks": [
+          "Menlo",
+          "monospace"
+        ],
+        "weights": [
+          400
+        ],
+        "source": {
+          "kind": "system"
+        }
+      }
+    },
+    "radius": {
+      "controls": "pill"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "ref": "SearchInput",
+  "level": "molecule",
+  "description": "The search field: the icon, the clear button and the debounce contract in one control.",
+  "exports": [
+    "SearchInput"
+  ],
+  "main": "SearchInput",
+  "from": "@/components/SearchInput",
+  "slots": [],
+  "props": [
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "expanded",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SearchInput/SearchInput.tsx",
+  "inherits": "InputHTMLAttributes<HTMLInputElement>",
+  "variants": {
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "const [query, setQuery] = useState('')\n/* Controlled like a plain input; `onClear` renders the clear affordance and\n * is what the surrounding list should reset on. */\n\n<SearchInput\n  placeholder=\"Search documents\"\n  value={query}\n  onChange={(e) => setQuery(e.target.value)}\n  onClear={() => setQuery('')}\n/>"
+}

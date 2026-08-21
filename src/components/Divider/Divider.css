@@ -1,0 +1,33 @@
+.divider[data-orientation='horizontal'] {
+  inline-size: 100%;
+  block-size: 1px;
+  background: var(--border);
+  border: none;
+}
+.divider[data-orientation='vertical'] {
+  inline-size: 1px;
+  align-self: stretch;
+  min-block-size: 1em;
+  background: var(--border);
+}
+
+/* Labelled: the rule runs on both sides of centred text. */
+.divider-labelled {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: none;
+  block-size: auto;
+}
+.divider-labelled::before,
+.divider-labelled::after {
+  content: '';
+  flex: 1;
+  block-size: 1px;
+  background: var(--border);
+}
+.divider-label {
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}

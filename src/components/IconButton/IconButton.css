@@ -1,0 +1,67 @@
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--control-radius);
+  background: transparent;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity var(--duration-fast), background var(--duration-fast), color var(--duration-fast);
+}
+/* Icon buttons are square buttons — heights match the regular control heights. */
+.icon-button[data-size="sm"] { width: var(--control-height-sm); height: var(--control-height-sm); }   /* 32px */
+.icon-button[data-size="md"] { width: var(--control-height); height: var(--control-height); }          /* 40px */
+.icon-button[data-size="lg"] { width: var(--control-height-lg); height: var(--control-height-lg); }    /* 52px */
+
+.icon-button:hover,
+.icon-button[data-open] {
+  background: var(--accent-soft);
+  color: var(--accent-foreground);
+}
+.icon-button:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.icon-button[data-loading] {
+  opacity: 1;
+  cursor: progress;
+  pointer-events: none;
+}
+
+/* Filled — for an icon button on a muted/grey surface (e.g. header back).
+ * Subtle fill at rest; lifts to an elevated (white in light) surface + primary
+ * accent on hover. Theme-correct via --accent → --card inversion. */
+.icon-button[data-variant="filled"] {
+  background: var(--accent);
+  color: var(--foreground);
+}
+.icon-button[data-variant="filled"]:hover,
+.icon-button[data-variant="filled"][data-open] {
+  background: var(--card);
+  color: var(--primary-accent);
+}
+
+/* Quiet — transparent, hover recolors only (no fill). Inline toolbar icons
+ * (chat search/filter/close, 3-dot menus) that shouldn't grow a background. */
+.icon-button[data-variant="quiet"]:hover,
+.icon-button[data-variant="quiet"][data-open] { background: transparent; color: var(--foreground); }
+
+/* Filled tones — solid brand / danger fill (e.g. composer send / stop). */
+.icon-button[data-variant="filled"][data-tone="primary"] { background: var(--primary); color: var(--primary-foreground); }
+.icon-button[data-variant="filled"][data-tone="primary"]:hover,
+.icon-button[data-variant="filled"][data-tone="primary"][data-open] { background: var(--primary-hover); color: var(--primary-foreground); }
+.icon-button[data-variant="filled"][data-tone="destructive"] { background: var(--destructive); color: var(--destructive-foreground); }
+.icon-button[data-variant="filled"][data-tone="destructive"]:hover { background: var(--destructive); color: var(--destructive-foreground); opacity: 0.9; }
+
+/* Hidden by default; container with :hover (or button itself open) makes it visible.
+ * The "show on parent hover" rule lives in the consumer (e.g. .card[data-interactive]:hover). */
+.icon-button[data-reveal] { opacity: 0; }
+.icon-button[data-reveal][data-open] { opacity: 1; }

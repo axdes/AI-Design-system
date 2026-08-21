@@ -1,0 +1,26 @@
+.auth-template {
+  /* Product knobs. A product overrides these in its own stylesheet instead of
+   * forking the block; the defaults are what an unbranded auth screen wants. */
+  --auth-card-width: 28rem;
+  --auth-card-padding: var(--space-8);
+
+  min-block-size: 100dvh; /* dvh, not vh: vh puts the card under the iOS toolbar */
+  display: grid;
+  place-items: center;
+  /* Tight on a phone, roomy on a desktop, without needing a breakpoint. */
+  padding: clamp(var(--space-2), 3vw, var(--space-4));
+  background: var(--muted);
+}
+
+.auth-template-card {
+  inline-size: 100%;
+  max-inline-size: var(--auth-card-width);
+  /* A hero card: more breathing room than the default card padding. */
+  padding: var(--auth-card-padding);
+}
+
+.auth-template-subtitle {
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  line-height: var(--leading-normal);
+}

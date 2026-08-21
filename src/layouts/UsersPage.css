@@ -1,0 +1,25 @@
+/* Users admin — directory of people as a card grid. Mirrors .document-grid from
+ * the content library: auto-fit columns, centred, capped card width. */
+/* Capped columns, left-aligned with the page-header title (admin grid, not
+ * a centred hero like the content library welcome). */
+.users-grid {
+  display: grid;
+  width: 100%;
+  /* `1fr`, never a fixed max: see the page audit's `grid-fills-row` rule. */
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  justify-content: start;
+  gap: var(--space-6);
+  /* Breathing room below the sticky page-header; the header gives 16px from
+   * its own padding-block-end, this adds another 8 for a clean break. */
+  padding-block-start: var(--space-2);
+}
+@container content (max-width: 30rem) {
+  .users-grid { grid-template-columns: 1fr; }
+}
+
+/* Menu sits top-right of the header row; wrapper just isolates its click. */
+.users-card-menu { display: inline-flex; }
+
+/* Editor modal: role Select should fill the field width like the inputs. */
+.users-form-role { width: 100%; }
+

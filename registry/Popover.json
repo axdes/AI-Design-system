@@ -1,0 +1,51 @@
+{
+  "ref": "Popover",
+  "level": "molecule",
+  "description": "Click-triggered floating panel for RICH content: a form, a group of controls, a detail card. <Tooltip> is text on hover, <Dropdown> is a menu of items; this is neither. Closes on outside click or Escape, returning focus to the trigger. The content is a labelled role=\"dialog\".",
+  "exports": [
+    "Popover"
+  ],
+  "main": "Popover",
+  "from": "@/components/Popover",
+  "slots": [],
+  "props": [
+    {
+      "name": "trigger",
+      "type": "(props: PopoverTriggerProps) => ReactNode",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "placement",
+      "type": "'top' | 'bottom'",
+      "required": false,
+      "values": [
+        "top",
+        "bottom"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Popover/Popover.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Field",
+    "Input",
+    "Layout"
+  ],
+  "example": "/* For RICH content on click (a form, a set of controls, a detail card). Use\n * <Tooltip> for text hints and <Dropdown> for a menu of actions. Spread the\n * given trigger props onto whatever opens it. */\n\n<Popover\n  label=\"Quick filter\"\n  trigger={(props) => <Button variant=\"secondary\" {...props}>Filter</Button>}\n>\n  <Stack gap={3}>\n    <Field label=\"Minimum amount\" htmlFor=\"min\">\n      <Input id=\"min\" type=\"number\" placeholder=\"0\" />\n    </Field>\n    <Button variant=\"primary\" block>Apply</Button>\n  </Stack>\n</Popover>"
+}

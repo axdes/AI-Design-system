@@ -1,0 +1,18 @@
+.tooltip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  max-width: 20rem;   /* tooltip-only knob */
+  padding: var(--space-1) var(--space-2);
+  background: var(--foreground);
+  color: var(--background);
+  border-radius: var(--radius-full);
+  font-size: var(--font-xs);
+  line-height: var(--leading-snug);
+  pointer-events: none;
+  animation: tooltip-fade var(--duration-fast) ease-out;
+}
+/* Wrapped (multi-line) tooltips: a stadium shape reads wrong, use a rect. */
+.tooltip[data-multiline] {
+  border-radius: var(--radius-md);
+}
+@keyframes tooltip-fade { from { opacity: 0 } to { opacity: 1 } }

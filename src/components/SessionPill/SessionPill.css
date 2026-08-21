@@ -1,0 +1,85 @@
+/* Floats above every screen; the app shell renders it once. Bottom-end corner,
+ * clear of content and of the concierge/side panels both apps hang there. */
+.session-pill {
+  position: fixed;
+  inset-block-end: var(--space-6);
+  inset-inline-end: var(--space-6);
+  z-index: var(--z-toast, 60);
+  display: flex;
+  align-items: stretch;
+  border-radius: var(--radius-full);
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.session-pill-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  border: 0;
+  background: none;
+  color: var(--foreground);
+  font: inherit;
+  cursor: pointer;
+}
+
+.session-pill-dot {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--destructive-emphasis);
+  animation: session-pill-pulse 1.6s ease-in-out infinite;
+}
+
+.session-pill[data-tone='warning'] .session-pill-dot {
+  background: var(--warning-emphasis);
+  animation: none;
+}
+
+.session-pill-label {
+  font-weight: var(--font-weight-medium);
+}
+
+.session-pill-timer {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+
+.session-pill-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.session-pill-dismiss {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--space-3);
+  border: 0;
+  border-inline-start: 1px solid var(--border);
+  background: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.session-pill-dismiss:hover {
+  color: var(--foreground);
+}
+
+@keyframes session-pill-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .session-pill-dot {
+    animation: none;
+  }
+}

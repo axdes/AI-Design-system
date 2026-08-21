@@ -1,0 +1,15 @@
+{
+ "truncated": 0,
+ "elements": {
+  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(241, 246, 253)","color":"rgb(31, 35, 40)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
+  "div@0": {"box":[0,0,1280,32],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.visual-case@0/0": {"box":[0,0,1280,32],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.row@0/0/0": {"box":[0,0,1280,32],"display":"flex","flex-direction":"row","flex-wrap":"wrap","align-items":"center","gap":"12px"},
+  "span.avatar@0/0/0/0": {"box":[0,0,32,32],"display":"grid","position":"relative","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","grid-template-columns":"32px","grid-template-rows":"32px","border-radius":"9999px","background-color":"rgb(95, 99, 105)","color":"rgb(255, 255, 255)","font-size":"13px","font-weight":"600","line-height":"19.5px"},
+  "span@0/0/0/0/0": {"box":[12,6,9,20],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "span.avatar@0/0/0/1": {"box":[44,0,32,32],"display":"grid","position":"relative","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","grid-template-columns":"32px","grid-template-rows":"32px","border-radius":"9999px","background-color":"rgb(95, 99, 105)","color":"rgb(255, 255, 255)","font-size":"13px","font-weight":"600","line-height":"19.5px"},
+  "span@0/0/0/1/0": {"box":[55,6,10,20],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "span.avatar-status@0/0/0/1/1": {"box":[67,23,9,9],"display":"block","position":"absolute","flex-direction":"row","flex-wrap":"nowrap","border-radius":"9999px","background-color":"rgb(82, 119, 0)","box-shadow":"rgb(255, 255, 255) 0px 0px 0px 2px"},
+  "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
+ }
+}

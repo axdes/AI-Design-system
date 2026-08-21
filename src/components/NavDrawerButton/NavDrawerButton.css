@@ -1,0 +1,16 @@
+/* In the flow, in the leading slot of whatever bar the screen has. Never fixed.
+ *
+ * It WAS `position: fixed` in the viewport corner, and that is exactly what put
+ * it under the page header: the header is `position: sticky` with an opaque
+ * background at the same `--z-sticky` level, so at equal z-index the later
+ * element in the DOM wins and painted over the top half of the button. A
+ * floating control and an opaque bar were competing for the same corner, and no
+ * z-index fixes that — one of them has to not be there.
+ *
+ * Above the drawer breakpoint the sidebar is on screen and the button has
+ * nothing to do, so it is not rendered at all. */
+.nav-drawer-button { display: none; }
+
+@media (max-width: 48rem) {
+  .nav-drawer-button { display: inline-flex; }
+}

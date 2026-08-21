@@ -1,0 +1,60 @@
+{
+  "ref": "ChatShell",
+  "level": "organism",
+  "description": "Shared chrome for chat screens: full-height column → padded region → one rounded card surface that lays its children out in a grid [history | thread | optional panel]. Lives inside <AppShell>.",
+  "exports": [
+    "ChatShell"
+  ],
+  "main": "ChatShell",
+  "from": "@/components/ChatShell",
+  "slots": [],
+  "props": [
+    {
+      "name": "collapsed",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "panel",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "noSidebar",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/components/ChatShell/ChatShell.tsx",
+  "context": "region",
+  "variants": {
+    "chat-collapsed": {
+      "prop": "collapsed",
+      "values": [
+        "true"
+      ]
+    },
+    "with-panel": {
+      "prop": "panel",
+      "values": [
+        "true"
+      ]
+    },
+    "no-sidebar": {
+      "prop": "noSidebar",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "ChatComposer",
+    "NavDrawerButton"
+  ],
+  "example": "<ChatShell noSidebar>\n  {/* A div: the page around this already has its main landmark, and the\n      registry publishes this snippet as the shape to copy. */}\n  <div className=\"chat-shell-thread\">\n    <h1>How can I help?</h1>\n    <ChatComposer placeholder=\"Ask anything\" onSend={() => undefined} />\n  </div>\n</ChatShell>"
+}

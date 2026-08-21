@@ -1,0 +1,81 @@
+{
+  "ref": "Table",
+  "level": "organism",
+  "description": "A styled, accessible table. Compose inside <Card flush> for an edge-to-edge surface. Sub-parts: THead, TBody, Tr, Th, Td.",
+  "exports": [
+    "Table",
+    "TableScroll",
+    "THead",
+    "TBody",
+    "Tr",
+    "Th",
+    "Td"
+  ],
+  "main": "Table",
+  "from": "@/components/Table",
+  "slots": [
+    {
+      "name": "TableScroll",
+      "line": 48
+    },
+    {
+      "name": "THead",
+      "line": 52
+    },
+    {
+      "name": "TBody",
+      "line": 56
+    },
+    {
+      "name": "Tr",
+      "line": 61
+    },
+    {
+      "name": "Th",
+      "line": 69
+    },
+    {
+      "name": "Td",
+      "line": 97
+    }
+  ],
+  "props": [
+    {
+      "name": "stickyHeader",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false
+    },
+    {
+      "name": "nowrap",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Table/Table.tsx",
+  "context": "region",
+  "inherits": "TableHTMLAttributes<HTMLTableElement>",
+  "variants": {
+    "sticky": {
+      "prop": "stickyHeader",
+      "values": [
+        "true"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": null
+    },
+    "nowrap": {
+      "prop": "nowrap",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "example": "/* Wrap when the columns will not fit a narrow viewport: the row scrolls\n   sideways instead of squeezing. `label` names the tab stop that creates. */\n<TableScroll label=\"Adoption by dimension\">\n  <Table>\n    <THead>\n      <Tr><Th>Dimension</Th><Th>Level 1</Th><Th>Level 2</Th></Tr>\n    </THead>\n    <TBody>\n      <Tr><Td emphasis>AI capabilities</Td><Td>Assisted</Td><Td tone=\"success\">Agentic</Td></Tr>\n      <Tr><Td emphasis>Daily active</Td><Td>Low</Td><Td tone=\"success\">&gt;80%</Td></Tr>\n    </TBody>\n  </Table>\n</TableScroll>"
+}

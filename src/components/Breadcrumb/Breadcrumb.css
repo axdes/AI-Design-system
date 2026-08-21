@@ -1,0 +1,47 @@
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-sm);
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumb-link {
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+.breadcrumb-link:hover {
+  color: var(--foreground);
+  background: var(--accent-soft);
+}
+.breadcrumb-link:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+.breadcrumb-current {
+  padding: var(--space-1) var(--space-2);
+  color: var(--foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+.breadcrumb-sep {
+  display: inline-flex;
+  align-items: center;
+  color: var(--icon-muted);
+}

@@ -1,0 +1,60 @@
+{
+  "ref": "CopyButton",
+  "level": "molecule",
+  "description": "Copy a value, and say so. The clipboard call, the two-second confirmation and the failure case in one place, because five apps had written all three.",
+  "exports": [
+    "CopyButton"
+  ],
+  "main": "CopyButton",
+  "from": "@/components/CopyButton",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "copiedLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md'",
+      "required": false,
+      "values": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "variant",
+      "type": "'ghost' | 'secondary'",
+      "required": false,
+      "values": [
+        "ghost",
+        "secondary"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/CopyButton/CopyButton.tsx",
+  "uses": [
+    "Button",
+    "Icon",
+    "IconButton",
+    "Layout",
+    "Tooltip"
+  ],
+  "example": "<Row gap={3}>\n  <CopyButton value=\"sk-live-2f8c41a9\" label=\"Copy key\" />\n  <CopyButton value=\"https://example.com/invite/8f2a\" />\n</Row>"
+}

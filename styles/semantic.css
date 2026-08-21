@@ -1,0 +1,338 @@
+/* SEMANTIC — role tokens.
+ *
+ * Light = values mirror the reference prototype:
+ *   bg-primary    = white         → --background
+ *   bg-secondary  = gray-50       → --muted (page surface in AppShell)
+ *   text-primary  = neutral-900   → --foreground  (dark gray ≈ this stop)
+ *   text-secondary= gray-700      → --secondary-foreground (in some contexts)
+ *   text-tertiary = gray-600      → --muted-foreground
+ *   primary       = brand-400     → --primary
+ *   border        = ~8% black     → --neutral-200 (visually equivalent)
+ *
+ * Dark = inverted with three-tier surface (bg < muted < card).
+ */
+
+/* `:root` holds the light defaults. `[data-theme-lock="light"]` shares them so a
+ * subtree (e.g. the login screen) can stay light even when the app is dark — it
+ * re-declares these tokens directly on the element, beating the inherited
+ * `[data-theme="dark"]` values from <html>. Shadows are reset just below. */
+:root { color-scheme: light dark; }
+
+:root,
+[data-theme-lock="light"] {
+  --background:             var(--neutral-0);     /* white body */
+  --foreground:             var(--neutral-900);   /* primary text — close to sa-dark-gray */
+
+  --card:                   var(--neutral-0);
+  --card-foreground:        var(--neutral-900);
+
+  --popover:                var(--neutral-0);
+  --popover-foreground:     var(--neutral-900);
+
+  --muted:                  var(--neutral-100);   /* page surface — body bg (gray-100) */
+  /* neutral-700, not -600: secondary text also sits on --muted surfaces (the
+   * app background, table heads, side panels), where -600 reached only 4.15:1
+   * and missed AA. -700 is 5.57:1 there and 6.04:1 on white, and still reads as
+   * clearly secondary against --foreground (neutral-900, 15.8:1). */
+  --muted-foreground:       var(--neutral-700);
+
+  --primary:                var(--brand-400);     /* #4638D3 brand indigo */
+  --primary-foreground:     var(--neutral-0);
+  --primary-hover:          var(--brand-500);
+  /* Primary used as TEXT / icon / border ON a page or card surface (not a fill).
+   * Same as --primary in light; the dark theme lightens it so brand-blue accents
+   * stay legible on the dark surface (brand-400 there sits at ~1.7:1 — it blends).
+   * Fills (buttons, the blue action band, primary badges) keep --primary. */
+  --primary-accent:         var(--brand-400);
+  /* Soft brand surface — tinted bg + saturated text (selected chips, soft badges, info toast). */
+  --primary-soft:           var(--brand-50);
+  --primary-soft-foreground: var(--brand-700);
+
+  /* AI accent — anything the assistant generated or is about to. Violet on purpose,
+   * so it never collides with the product's own brand colour after a re-skin. */
+  --ai:                     var(--violet-600);
+  --ai-foreground:          var(--neutral-0);
+  --ai-soft:                var(--violet-50);
+  --ai-soft-foreground:     var(--violet-700);
+
+  --icon-muted:             var(--neutral-500);
+
+  --secondary:              var(--neutral-100);   /* plain light grey on white surfaces; page-level contexts override to white */
+  --secondary-hover:        var(--neutral-200);
+  --secondary-foreground:   var(--neutral-700);   /* text-secondary */
+
+  --accent:                 var(--neutral-200);
+  --accent-foreground:      var(--neutral-900);
+  /* Softer hover/active fill for elements ON white/elevated surfaces (menus,
+   * lists, toolbar icon buttons) — lighter than --accent. */
+  --accent-soft:            var(--neutral-100);
+  /* Row/area hover on a card surface: one whisper lighter than the page tint,
+   * so a hovered table row reads without ever matching --muted (a hover that
+   * equals the page colour looks like a hole, not a highlight). */
+  --surface-hover:          var(--neutral-50);
+
+  /* Active nav item / icon (sidebar, content side-panel rail, chat history).
+   * Aliases resolve --muted/--primary lazily, so they stay theme-correct. */
+  /* Left as it was: ChatHistory is its consumer and paints hover/active with it.
+   * The sidebars keep their own --accent background — the two surfaces differ on
+   * purpose, and a contrast fix for dark mode is no reason to restyle either. */
+  --nav-active-bg:          var(--muted);
+  --nav-active-fg:          var(--primary-accent);
+
+  /* Over imagery the theme stops mattering: the scrim is dark and its text is
+   * light in BOTH themes, because the image underneath obeys neither. Declared
+   * once — the dark blocks deliberately do not restate these. */
+  --scrim-fade:             linear-gradient(to top, var(--scrim-85), var(--scrim-70) 40%, var(--scrim-0) 80%);
+  --scrim-strong:           var(--scrim-85);
+  --scrim-foreground:       var(--neutral-0);
+
+  --destructive:            var(--danger-800);
+  --destructive-foreground: var(--neutral-0);
+
+  /* Status roles — components use these, never the success/warning/danger
+   * primitive stops. Each tone: solid fill + on-fill text, a soft tint + its
+   * text, and an emphasis tone for icons/accents. (danger == --destructive.) */
+  --success:                     var(--success-800);
+  --success-foreground:          var(--neutral-0);
+  --success-soft:                var(--success-50);
+  --success-soft-foreground:     var(--success-800);
+  /* Ink, not fill: success-700 is 3.71:1 on white. success-800 is 5.25:1 and is
+   * already what the solid fill uses, so the two read as the same green. */
+  --success-emphasis:            var(--success-800);
+  --warning:                     var(--warning-700);
+  --warning-foreground:          var(--neutral-900);
+  --warning-soft:                var(--warning-100);
+  /* Dark ink on the yellow tint: warning-900 is a mid orange and only reached
+   * 2.3:1 on warning-100. Matches --warning-foreground on the solid fill. */
+  --warning-soft-foreground:     var(--neutral-900);
+  /* The INK, not the fill. warning-700 is the bright yellow the solid badge is
+   * filled with, and as text on white it sits at 1.54:1 — the `plain` warning
+   * badge was effectively invisible. warning-950 is the dark amber the palette
+   * already carried for exactly this, at 13.88:1. Found by axe in a real
+   * browser; the token-level contrast check never tested this pair. */
+  --warning-emphasis:            var(--warning-950);
+  --destructive-soft:            var(--danger-50);
+  --destructive-soft-foreground: var(--danger-900);
+  /* Ink, not fill: danger-500 is 3.29:1 on white. danger-800 is 4.98:1, the same
+   * stop --destructive already uses. */
+  --destructive-emphasis:        var(--danger-800);
+  /* Edge of a soft-tinted surface. A tint alone only reads on a surface it does
+   * not match: an info notice on --muted, or a success notice on a pale card,
+   * dissolved into the page. The border is what makes the shape survive any
+   * background, so every tinted status surface carries one. Chosen per ramp by
+   * eye, not by a fixed stop offset: the yellow ramp stays pale until 700, so
+   * two stops up from the tint would be invisible there. */
+  --success-border:              var(--success-300);
+  --warning-border:              var(--warning-700);
+  --destructive-border:          var(--danger-200);
+  --primary-border:              var(--brand-200);
+
+  --border:                 var(--neutral-200);
+  --border-strong:          var(--neutral-300);   /* visible against --muted bg (sidebar rail, etc) */
+  --input:                  var(--neutral-300);
+  --ring:                   var(--brand-400);
+
+  /* Switch track when off — semantic so dark theme can override cleanly. */
+  --switch-track-off:       var(--neutral-300);
+  --switch-thumb-bg:        var(--neutral-0);
+
+  /* Avatar fallback (no image) — distinctive surface with foreground contrast. */
+  --avatar-bg:              var(--neutral-700);
+  --avatar-foreground:      var(--neutral-0);
+
+  --overlay:                rgb(0 0 0 / 0.4);   /* modal/drawer backdrop */
+}
+
+/* Dark theme — elevation hierarchy:
+ *   bg          neutral-900 (#1f2328) — deepest, page surface
+ *   card        neutral-850 (#2a2e34) — slight elevation above bg
+ *   accent      neutral-800 (#40444a) — interactive hover surface
+ *   border/input neutral-700 (#5f6369) — visible separation lines
+ * Pattern follows GitHub/Linear/Notion dark: card is ~10% lighter than bg, not a hard 2-stop jump. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background:             var(--neutral-900);
+  --foreground:             var(--neutral-100);
+
+  --card:                   var(--neutral-850);
+  --card-foreground:        var(--neutral-100);
+
+  --popover:                var(--neutral-820);    /* lighter than card → visible elevation */
+  --popover-foreground:     var(--neutral-100);
+
+  --muted:                  var(--neutral-900);   /* page surface — same as bg in dark */
+  --muted-foreground:       var(--neutral-400);
+
+  --primary:                var(--brand-400);     /* brand blue fill, same in both themes (white text on it) */
+  --primary-foreground:     var(--neutral-0);     /* white on teal — brand-button consistency */
+  --primary-hover:          var(--brand-500);     /* darker on hover, same direction as light */
+  /* The brand as INK on dark. brand-300 clears the page and the muted surface
+   * (4.58:1) but only reaches 2.84:1 on --accent — and --accent is where this
+   * token actually lands most often: a dropdown item, a selected tree row, a
+   * filter trigger. brand-200 clears all three (4.77:1 on accent). Measured
+   * after axe in a real browser reported the filter trigger. */
+  --primary-accent:         var(--brand-200);
+  --primary-soft:           var(--brand-900);     /* deep tint readable in dark */
+  --primary-soft-foreground: var(--brand-200);
+
+  /* AI accent — lighter stop so violet stays legible on the dark surface. */
+  --ai:                     var(--violet-400);
+  --ai-foreground:          var(--neutral-900);
+  --ai-soft:                var(--violet-900);
+  --ai-soft-foreground:     var(--violet-200);
+
+  --icon-muted:             var(--neutral-400);
+
+  --secondary:              var(--neutral-850);
+  --secondary-hover:        var(--neutral-800);
+  --secondary-foreground:   var(--neutral-100);
+
+  --accent:                 var(--neutral-800);
+  --accent-foreground:      var(--neutral-100);
+  /* The nav's selected row. Defined per theme because the surface differs: on
+   * the dark accent (#40444a) the brand fill sits at 1.39:1 and --primary-accent
+   * at 2.84:1, both unreadable. brand-200 gives 4.77:1. Found by running axe in
+   * a real browser — jsdom cannot evaluate contrast, so this had been invisible
+   * to every check the repository had. */
+  --nav-active-bg:          var(--muted);
+  --nav-active-fg:          var(--brand-200);
+  --accent-soft:            var(--neutral-820);   /* subtle hover on dark cards */
+  --surface-hover:          var(--neutral-820);   /* row hover on dark cards */
+
+  --destructive:            var(--danger-800);    /* danger-800: brand red deep enough for AA on white text (4.98:1) */
+  --destructive-foreground: var(--neutral-0);
+
+  /* Status roles — dark. Solid fills stay; soft tints go deep + light text. */
+  --success:                     var(--success-800);
+  --success-foreground:          var(--neutral-0);
+  --success-soft:                var(--success-900);
+  --success-soft-foreground:     var(--success-200);
+  --success-emphasis:            var(--success-300);
+  --warning:                     var(--warning-700);
+  --warning-foreground:          var(--neutral-900);
+  --warning-soft:                var(--warning-950);
+  --warning-soft-foreground:     var(--warning-200);
+  --warning-emphasis:            var(--warning-300);
+  --destructive-soft:            var(--danger-950);
+  --destructive-soft-foreground: var(--danger-200);
+  --destructive-emphasis:        var(--danger-300);
+  /* Dark edges go LIGHTER than the deep tint, the mirror of the light theme. */
+  --success-border:              var(--success-700);
+  --warning-border:              var(--warning-900);
+  --destructive-border:          var(--danger-800);
+  --primary-border:              var(--brand-700);
+
+  --border:                 var(--neutral-820);   /* uniform subtle borders */
+  --border-strong:          var(--neutral-800);   /* sidebar rail, more visible on dark muted */
+  --input:                  var(--neutral-820);   /* same as --border for visual consistency */
+  --ring:                   var(--brand-300);   /* lighter so the focus outline reads on dark */
+
+  --switch-track-off:       var(--neutral-800);
+  --switch-thumb-bg:        var(--neutral-100);
+
+  --avatar-bg:              var(--neutral-700);
+  --avatar-foreground:      var(--neutral-100);
+
+  --overlay:                rgb(0 0 0 / 0.6);   /* stronger overlay on dark */
+
+  /* Shadows — black-on-dark needs much higher opacity to register. */
+  --shadow-sm:        0 1px 2px rgb(0 0 0 / 0.35);
+  --shadow-md:        0 4px 12px rgb(0 0 0 / 0.40);
+  --shadow-lg:        0 12px 32px rgb(0 0 0 / 0.50);
+  --shadow-popover:   0 4px 24px rgb(0 0 0 / 0.40);
+  --shadow-card-hover:0 0 24px rgb(0 0 0 / 0.30);
+}
+
+[data-theme="light"] { color-scheme: light; }
+
+/* Light-lock: render this subtree light regardless of the app theme. Tokens come
+ * from the shared `:root` block above; here we pin the appearance and restore the
+ * light shadow set (the dark block overrode --shadow-* on <html>, which would
+ * otherwise inherit in). Mirrors the light values in primitives.css / settings.css. */
+[data-theme-lock="light"] {
+  color-scheme: light;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
+  --shadow-md: 0 2px 16px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.14);
+  --shadow-popover: 0 4px 24px rgb(0 0 0 / 0.08);
+  --shadow-card-hover: 0 0 24px rgb(0 0 0 / 0.06);
+}
+
+/* System mode: respect OS preference when no explicit data-theme is set. */
+/* The SECOND dark definition: the one that applies when the visitor has chosen
+ * no theme and the OS says dark. It has to repeat the block above, and on
+ * 2026-07-31 five tokens had drifted apart — `--warning-soft` and
+ * `--destructive-soft` pointed at a mid stop here and a deep one there, and
+ * three tokens added later were missing entirely. The rendered page uses THIS
+ * block, so the drifted values were the ones people saw while
+ * `npm run contrast` measured the other block and reported green.
+ *
+ * The contrast check now reads both, so they cannot drift again silently. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+
+    --background:             var(--neutral-900);
+    --foreground:             var(--neutral-100);
+    --card:                   var(--neutral-850);
+    --card-foreground:        var(--neutral-100);
+    --popover:                var(--neutral-820);
+    --popover-foreground:     var(--neutral-100);
+    --muted:                  var(--neutral-900);
+    --muted-foreground:       var(--neutral-400);
+    --primary:                var(--brand-400);
+    --primary-foreground:     var(--neutral-0);
+    --primary-hover:          var(--brand-500);
+    --primary-accent:         var(--brand-200);
+    --primary-soft:           var(--brand-900);
+    --primary-soft-foreground: var(--brand-200);
+    --nav-active-bg:          var(--muted);
+    --nav-active-fg:          var(--brand-200);
+    --secondary-hover:        var(--neutral-800);
+    --ai:                     var(--violet-400);
+    --ai-foreground:          var(--neutral-900);
+    --ai-soft:                var(--violet-900);
+    --ai-soft-foreground:     var(--violet-200);
+    --icon-muted:             var(--neutral-400);
+    --secondary:              var(--neutral-850);
+    --secondary-foreground:   var(--neutral-100);
+    --accent:                 var(--neutral-800);
+    --accent-foreground:      var(--neutral-100);
+    --accent-soft:            var(--neutral-820);
+    --surface-hover:          var(--neutral-820);
+    --destructive:            var(--danger-800);
+    --destructive-foreground: var(--neutral-0);
+    --success:                     var(--success-800);
+    --success-foreground:          var(--neutral-0);
+    --success-soft:                var(--success-900);
+    --success-soft-foreground:     var(--success-200);
+    --success-emphasis:            var(--success-300);
+    --warning:                     var(--warning-700);
+    --warning-foreground:          var(--neutral-900);
+    --warning-soft:                var(--warning-950);
+    --warning-soft-foreground:     var(--warning-200);
+    --warning-emphasis:            var(--warning-300);
+    --destructive-soft:            var(--danger-950);
+    --destructive-soft-foreground: var(--danger-200);
+    --destructive-emphasis:        var(--danger-300);
+    --success-border:              var(--success-700);
+    --warning-border:              var(--warning-900);
+    --destructive-border:          var(--danger-800);
+    --primary-border:              var(--brand-700);
+    --border:                 var(--neutral-820);
+    --border-strong:          var(--neutral-800);
+    --input:                  var(--neutral-820);
+    --ring:                   var(--brand-300);
+    --switch-track-off:       var(--neutral-800);
+    --switch-thumb-bg:        var(--neutral-100);
+    --avatar-bg:              var(--neutral-700);
+    --avatar-foreground:      var(--neutral-100);
+    --overlay:                rgb(0 0 0 / 0.6);
+    --shadow-sm:        0 1px 2px rgb(0 0 0 / 0.35);
+    --shadow-md:        0 4px 12px rgb(0 0 0 / 0.40);
+    --shadow-lg:        0 12px 32px rgb(0 0 0 / 0.50);
+    --shadow-popover:   0 4px 24px rgb(0 0 0 / 0.40);
+    --shadow-card-hover:0 0 24px rgb(0 0 0 / 0.30);
+  }
+}

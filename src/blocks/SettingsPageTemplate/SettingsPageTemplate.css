@@ -1,0 +1,95 @@
+/* The block owns its page wrapper (ListPageTemplate's argument), and it is
+ * deliberately NARROWER than the page cap: settings are read line by line, and
+ * a row stretched across a wide monitor separates the label from its control
+ * by half a screen. Block-private knob, co-located per the token conventions. */
+.settings-shell {
+  --settings-max-width: 52rem;
+  flex: 1;
+  inline-size: 100%;
+  max-inline-size: min(var(--page-max-width), var(--settings-max-width));
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-page {
+  padding-block: 0 var(--space-4);
+  padding-inline: var(--space-8);
+  container-type: inline-size;
+  container-name: settings;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.settings-section-head {
+  margin-block-end: var(--space-4);
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--border);
+}
+
+.settings-section-title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.settings-section-desc {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+
+.settings-section-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Name + explanation left, control right; the hairline separates rows, never
+ * frames them. */
+.settings-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(14rem, 1fr);
+  gap: var(--space-3) var(--space-8);
+  align-items: start;
+  padding-block: var(--space-4);
+}
+
+.settings-row + .settings-row {
+  border-block-start: 1px solid var(--border);
+}
+
+.settings-row:first-child {
+  padding-block-start: 0;
+}
+
+.settings-row:last-child {
+  padding-block-end: 0;
+}
+
+.settings-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.settings-row-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-medium);
+}
+
+.settings-row-desc {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+
+/* One column when the settings column itself is narrow: the control drops
+ * under its explanation instead of squeezing beside it. */
+@container settings (max-inline-size: 40rem) {
+  .settings-row {
+    grid-template-columns: 1fr;
+  }
+}

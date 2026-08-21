@@ -1,0 +1,10 @@
+{
+  "id": "action-toolbar",
+  "title": "Document toolbar",
+  "why": "A toolbar is a row of small decisions each of which has a component: the filters are Chips, the icon actions are IconButtons that MUST carry both an aria-label and a Tooltip, and the overflow is a Dropdown with its keyboard and portal already solved. Its bad fixture is the only one in the set that invents a component and drops a required prop, so `components-exist` and `props-complete` are proven to still fire.",
+  "required": ["Chip", "IconButton", "Tooltip", "Dropdown"],
+  "forbidden": [
+    { "pattern": "className=\"[^\"]*\\b(toolbar-button|icon-btn|pill|menu-popup)\\b", "message": "hand-rolled toolbar control — use <IconButton> / <Chip> / <Dropdown>" }
+  ],
+  "entry": "Screen.tsx"
+}

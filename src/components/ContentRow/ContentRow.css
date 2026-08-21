@@ -1,0 +1,136 @@
+/* One content entry as a row. The row is position: relative so an `onOpen`
+ * title can stretch its hit area over the whole row (the .card-link idea,
+ * owned here); actions sit above that layer and stay clickable. */
+.content-row {
+  /* Component-private knobs, co-located per the token conventions. */
+  --content-row-media-size: 4.5rem;
+  --content-row-media-size-compact: 2.5rem;
+  --content-row-media-size-dense: 1.75rem;
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+}
+
+/* Rows separate with a hairline, never frames. */
+.content-row + .content-row {
+  border-block-start: 1px solid var(--border);
+}
+
+.content-row-media {
+  flex: none;
+  inline-size: var(--content-row-media-size);
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.content-row-media > img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.content-row-body {
+  flex: 1;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.content-row-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  color: var(--foreground);
+}
+
+.content-row-open {
+  cursor: pointer;
+}
+
+/* The whole row is the door; the title is its accessible name. */
+.content-row-open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.content-row-open:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+.content-row-excerpt {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.content-row-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.content-row-actions {
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Density: the anatomy degrades from the bottom up. */
+.content-row[data-density='compact'] {
+  padding-block: var(--space-3);
+}
+
+.content-row[data-density='compact'] .content-row-excerpt {
+  display: none;
+}
+
+.content-row[data-density='compact'] .content-row-media {
+  inline-size: var(--content-row-media-size-compact);
+}
+
+.content-row[data-density='dense'] {
+  padding-block: var(--space-2);
+  align-items: center;
+}
+
+.content-row[data-density='dense'] .content-row-excerpt,
+.content-row[data-density='dense'] .content-row-eyebrow {
+  display: none;
+}
+
+.content-row[data-density='dense'] .content-row-media {
+  inline-size: var(--content-row-media-size-dense);
+  aspect-ratio: 1;
+  background: none;
+}
+
+.content-row[data-density='dense'] .content-row-body {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+}

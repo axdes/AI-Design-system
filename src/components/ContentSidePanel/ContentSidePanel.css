@@ -1,0 +1,59 @@
+/* ContentSidePanel — slide-out content panel + icon rail, glued to the document
+ * card to form ONE white surface. No shadow; only the outer (end) corners round.
+ * Order in the surface: [document] [content panel] [rail]. */
+.content-side-panel {
+  display: flex;
+  align-items: stretch;
+  align-self: stretch;
+}
+
+/* Icon rail = white strip glued to the end; icons centered vertically. Rounds
+ * only the end (right) corners — the outer edge of the whole surface. */
+.content-side-panel-rail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding-inline: var(--space-2);
+  background: var(--card);
+  /* Divider from the content/document — also terminates the header underline. */
+  border-inline-start: 1px solid var(--border);
+  border-start-end-radius: var(--card-radius);
+  border-end-end-radius: var(--card-radius);
+}
+
+/* Active rail icon: light-grey circle (app-bg tone) + primary icon — matches
+ * the left sidebar's active treatment (the default --accent reads too heavy). */
+.content-side-panel-rail .icon-button:hover {
+  background: var(--nav-active-bg);
+}
+.content-side-panel-rail .icon-button[data-open] {
+  background: var(--nav-active-bg);
+  color: var(--nav-active-fg);
+}
+
+/* Slide-out panel (chrome via <SidePanel>) sits between document and rail —
+ * square, flush (glued). Only the container styling lives here. */
+.content-side-panel-content {
+  align-self: stretch;
+  width: var(--side-panel-width);
+  border-inline-start: 1px solid var(--border);   /* hairline divider from the document */
+}
+
+/* On mobile the panel stacks below the document — standalone surfaces again. */
+@media (max-width: 62rem) {
+  .content-side-panel { flex-direction: column-reverse; align-items: stretch; gap: var(--space-4); }
+  .content-side-panel-rail {
+    align-self: center;
+    flex-direction: row;
+    justify-content: center;
+    padding: var(--space-2);
+    border-inline-start: none;
+    border-radius: var(--radius-full);
+  }
+  .content-side-panel-content {
+    width: 100%;
+    border-inline-start: none;
+    border-radius: var(--card-radius);
+  }
+}

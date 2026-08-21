@@ -1,0 +1,13 @@
+/* The native widget, tamed the way .input[type='date'] already is: tabular
+ * digits so the value does not wobble, the clock glyph quiet until used. */
+.timeinput {
+  font-variant-numeric: tabular-nums;
+}
+.timeinput::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+.timeinput:hover::-webkit-calendar-picker-indicator,
+.timeinput:focus-visible::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}

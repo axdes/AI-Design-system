@@ -1,0 +1,18 @@
+{
+  "ref": "NavDrawerButton",
+  "level": "atom",
+  "description": "Opens the navigation drawer, in the leading slot of the screen's top bar and only below the drawer breakpoint. `<PageHeader>` renders it when the screen has no `onBack`; a screen with its own bar renders it there instead.",
+  "exports": [
+    "NavDrawerButton"
+  ],
+  "main": "NavDrawerButton",
+  "from": "@/components/NavDrawerButton",
+  "slots": [],
+  "props": [],
+  "sourcePath": "src/components/NavDrawerButton/NavDrawerButton.tsx",
+  "context": "page",
+  "uses": [
+    "IconButton"
+  ],
+  "example": "/* An app shell renders this once, next to its sidebar; it needs the provider\n * that owns the drawer state. Without one it renders nothing at all, which is\n * why the provider is part of the example rather than assumed. Below 48rem it\n * appears pinned to the corner; above it there is a sidebar already, so it does\n * not. */\n\n<SidebarProvider>\n  <NavDrawerButton />\n</SidebarProvider>"
+}

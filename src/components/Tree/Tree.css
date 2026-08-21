@@ -1,0 +1,30 @@
+.tree-list { margin: 0; padding: 0; list-style: none; }
+.tree-item { outline: none; }
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline-end: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--foreground);
+  font-size: var(--font-sm);
+  cursor: pointer;
+}
+.tree-row:hover { background: var(--accent-soft); }
+.tree-item:focus-visible > .tree-row { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * -1); }
+.tree-row[data-selected] { background: var(--accent-soft); color: var(--primary-accent); font-weight: var(--font-weight-medium); }
+
+.tree-caret {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  transition: transform var(--duration-fast);
+}
+.tree-row[data-open] .tree-caret { transform: rotate(90deg); }
+.tree-row[data-leaf] .tree-caret { visibility: hidden; }
+/* RTL: a collapsed group points INTO the reading direction, so mirror it.
+ * Expanded stays a 90deg turn (points down) in both directions. */
+[dir="rtl"] .tree-caret { transform: rotate(180deg); }
+[dir="rtl"] .tree-row[data-open] .tree-caret { transform: rotate(90deg); }
+.tree-icon { color: var(--muted-foreground); }
+.tree-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

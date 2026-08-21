@@ -1,0 +1,50 @@
+{
+  "ref": "Tooltip",
+  "level": "molecule",
+  "description": "Text on hover and focus, and the only right answer for naming an icon-only control. Popover is a card on click, Dropdown is a menu.",
+  "exports": [
+    "Tooltip"
+  ],
+  "main": "Tooltip",
+  "from": "@/components/Tooltip",
+  "slots": [],
+  "props": [
+    {
+      "name": "content",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "placement",
+      "type": "Placement",
+      "required": false,
+      "values": [
+        "top",
+        "bottom",
+        "end",
+        "start"
+      ]
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactElement<ChildProps>",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/components/Tooltip/Tooltip.tsx",
+  "context": "region",
+  "uses": [
+    "IconButton"
+  ],
+  "example": "<Tooltip content=\"Duplicate\">\n  <IconButton icon=\"content_copy\" aria-label=\"Duplicate\" />\n</Tooltip>"
+}

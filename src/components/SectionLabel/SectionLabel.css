@@ -1,0 +1,22 @@
+/* The section head: a plain, light heading — the same voice as a card title, one step larger.
+ *
+ * It was uppercase, tracked and grey, and a column of those read as shouted grey labels rather
+ * than headings (owner, 2026-08-07). The rank now comes from size and colour alone: caps and
+ * letter-spacing were doing the work that a heading does by being a heading, and they made a
+ * long label ("THE SQUAD · 2 PEOPLE") harder to read than the content under it. */
+.section-label {
+  font-family: var(--font-family-display);
+  font-size: var(--font-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  color: var(--foreground);
+}
+
+/* The label owns a small gap to the thing it introduces (reported 2026-08-20:
+ * headings sat glued to their cards wherever the wrapper was a plain <section>).
+ * A sibling margin rather than per-screen stacks, so the rhythm is the system's
+ * decision; where a flex parent already spaces children the margin adds a step,
+ * which is the same visual statement — the label belongs to what follows. */
+.section-label + * {
+  margin-block-start: var(--space-3);
+}

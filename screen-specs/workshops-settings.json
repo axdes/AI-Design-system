@@ -1,0 +1,84 @@
+{
+  "$schema": "./schema.json",
+  "id": "workshops-settings",
+  "project": "workshops",
+  "title": "Workshops settings",
+  "goal": "Point the workspace at the right AI providers and devices, prove the setup actually works, and leave — without ever seeing a secret echoed back.",
+  "primaryQuestion": "Is this workspace set up to work?",
+  "audience": "expert",
+  "archetype": "settings",
+  "template": "SettingsPageTemplate",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "The template's header, inside the narrow column: the screen's name and Save. Saving returns the user to the screen they came from, because settings are a detour, not a destination. (PageHeader arrives through SettingsPageTemplate, not as a direct import.)",
+      "components": [
+        "SettingsPageTemplate",
+        "Button variant=primary"
+      ]
+    },
+    {
+      "name": "check",
+      "task": "monitor",
+      "data": {
+        "item": "metric",
+        "cardinality": "few"
+      },
+      "answers": "Is this workspace set up to work?",
+      "purpose": "The self-test FIRST, before any knob: one press runs the environment check and the result names what failed and what fixes it. It answers the screen's question directly, which is why it outranks the configuration that follows — most visits are 'is it working', not 'change something'.",
+      "components": [
+        "Button variant=secondary",
+        "Badge"
+      ]
+    },
+    {
+      "name": "sections",
+      "task": "input",
+      "purpose": "Grouped panels of explained rows — models, AI provider, recording devices, usage — each row naming what it actually affects, because settings found by scanning live or die by their words. API keys are WRITE-ONLY: paste to replace, marked 'configured' by a Badge, never echoed; a secret a screen can display is a secret a screenshot leaks.",
+      "components": [
+        "Input",
+        "Select",
+        "Badge",
+        "Button"
+      ]
+    }
+  ],
+  "states": {
+    "loading": "Current values arrive from the server before the controls render; the Button loading state covers the save.",
+    "empty": "Not a list — an unconfigured workspace is the sections with empty Input and Select controls and no 'configured' Badge anywhere, plus the self-test saying what is missing. That is the honest empty state of a settings screen.",
+    "error": "A failed save keeps the Button out of its loading state with the reason beside the control that caused it; the self-test's result region names the environment failure and its fix, with the Badge carrying the verdict."
+  },
+  "acceptance": [
+    "Every row's description says what changing it affects — no control stands unexplained.",
+    "No secret is ever echoed: key fields are empty on open and marked configured when set.",
+    "The self-test result names the failing piece and the action that fixes it, in words.",
+    "Saving returns to the screen the user came from."
+  ],
+  "data": [
+    "current settings from the server (provider, models, devices, which keys are configured — as booleans, never values)",
+    "the self-test result: ok or the named failure with its fix"
+  ],
+  "implementation": "apps/workshops/src/layouts/SettingsPage.tsx",
+  "openQuestions": [
+    "RESOLVED 2026-08-21: migrated onto SettingsPageTemplate; the app-local SettingRow retired in favour of the part that was consolidated from it. check zone and the usage panel stay custom bodies inside SettingsSection — the template's sections take arbitrary children for exactly this."
+  ],
+  "behaviours": [
+    {
+      "id": "keys-are-write-only",
+      "given": "a saved API key on the server",
+      "when": "the screen asks for settings, or a save returns",
+      "then": "the key arrives as set / not-set — a boolean — and the secret value never crosses the API",
+      "why": "A secret a screen can display is a secret a screenshot leaks (the spec's own words).",
+      "provenBy": "apps/workshops/server/test/unit.test.mjs"
+    },
+    {
+      "id": "self-test-names-the-fix",
+      "given": "an environment with a missing prerequisite",
+      "when": "the facilitator runs the pre-flight check",
+      "then": "the result names the failing piece and the action that fixes it, in words — not a bare red",
+      "why": "Most visits are 'is it working'; an unnamed failure sends the facilitator hunting.",
+      "pendingReason": "The self-test runs the real capture pipeline (~15s, plays audio); its checks list is asserted nowhere headless yet — the test lands with a selftest fixture, named workshops-settings#self-test-names-the-fix."
+    }
+  ]
+}

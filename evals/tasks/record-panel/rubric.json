@@ -1,0 +1,11 @@
+{
+  "id": "record-panel",
+  "title": "Project detail side panel",
+  "why": "Three things agents rebuild from divs: a field/value list (a <dl>), a stack of overlapping avatars, and a dated event feed. Descriptions, AvatarGroup and Timeline own all three.",
+  "required": ["Descriptions", "AvatarGroup", "Timeline"],
+  "forbidden": [
+    { "pattern": "<dl[\\s>]", "message": "raw <dl> — use <Descriptions>" },
+    { "pattern": "className=\"[^\"]*\\b(timeline|avatar-stack|avatar-group)\\b", "message": "hand-rolled timeline/avatar stack — use <Timeline> / <AvatarGroup>" }
+  ],
+  "entry": "Screen.tsx"
+}

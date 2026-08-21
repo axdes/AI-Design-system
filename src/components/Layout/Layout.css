@@ -1,0 +1,18 @@
+/* Layout primitives — Stack (column), Row (horizontal), Grid (auto-fit) */
+.stack { display: flex; flex-direction: column; }
+.row   { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; }
+.grid  { display: grid; grid-template-columns: repeat(auto-fit, minmax(var(--min-item, 16rem), 1fr)); }
+
+.stack[data-gap="1"],  .row[data-gap="1"],  .grid[data-gap="1"]  { gap: var(--space-1); }
+.stack[data-gap="2"],  .row[data-gap="2"],  .grid[data-gap="2"]  { gap: var(--space-2); }
+.stack[data-gap="3"],  .row[data-gap="3"],  .grid[data-gap="3"]  { gap: var(--space-3); }
+.stack[data-gap="4"],  .row[data-gap="4"],  .grid[data-gap="4"]  { gap: var(--space-4); }
+.stack[data-gap="6"],  .row[data-gap="6"],  .grid[data-gap="6"]  { gap: var(--space-6); }
+.stack[data-gap="8"],  .row[data-gap="8"],  .grid[data-gap="8"]  { gap: var(--space-8); }
+.stack[data-gap="12"], .row[data-gap="12"], .grid[data-gap="12"] { gap: var(--space-12); }
+.stack[data-gap="16"], .row[data-gap="16"], .grid[data-gap="16"] { gap: var(--space-16); }
+
+.row[data-align="start"]     { align-items: flex-start; }
+.row[data-align="center"]    { align-items: center; }
+.row[data-align="end"]       { align-items: flex-end; }
+.row[data-justify="between"] { justify-content: space-between; }

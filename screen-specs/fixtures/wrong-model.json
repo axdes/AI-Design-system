@@ -1,0 +1,27 @@
+{
+  "$schema": "../content-model.schema.json",
+  "id": "wrong-app",
+  "title": "Wrong content model fixture",
+  "roles": ["operator"],
+  "objects": {
+    "ticket": {
+      "description": "A support ticket.",
+      "attributes": {
+        "core": ["subject", "severity", "assignee"]
+      },
+      "relations": [
+        { "to": "customer", "cardinality": "many-to-one", "why": "customer is never declared — planted defect" }
+      ],
+      "actions": [
+        { "verb": "close", "roles": ["operator", "manager"], "screen": "tickets", "provenBy": "tickets#never-agreed" },
+        { "verb": "escalate", "roles": ["operator"], "screen": "escalations" },
+        { "verb": "annotate", "roles": ["operator"] }
+      ],
+      "screens": { "collection": "tickets" }
+    },
+    "tag": {
+      "description": "A label with nothing of its own — fails the litmus test on purpose.",
+      "attributes": { "core": [] }
+    }
+  }
+}

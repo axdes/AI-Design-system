@@ -1,0 +1,41 @@
+/* Golden example. A real module: tsc compiles it, src/test/examples.test.tsx
+ * renders it, and the registry publishes the usage below to agents. */
+import { useState } from 'react'
+import { ListPageTemplate } from './ListPageTemplate'
+import { Button } from '../../components/Button'
+import { Card } from '../../components/Card'
+import { Icon } from '../../components/Icon'
+import { Grid } from '../../components/Layout'
+import { SearchInput } from '../../components/SearchInput'
+
+export function Example() {
+  const [query, setQuery] = useState('')
+  const rows = [{ id: '1', name: 'Onboarding' }, { id: '2', name: 'Payroll' }]
+  const shown = rows.filter((r) => r.name.toLowerCase().includes(query.toLowerCase()))
+
+  return (
+    <ListPageTemplate
+      title="Projects"
+      actions={<Button variant="primary" iconEnd>New<Icon name="add" /></Button>}
+      toolbar={
+        <SearchInput
+          placeholder="Search projects"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onClear={() => setQuery('')}
+        />
+      }
+      isEmpty={shown.length === 0}
+      empty={{ icon: 'folder', title: 'No projects match', description: 'Try a different search.' }}
+    >
+      {/* The block stacks its children; a card grid is one line of <Grid>, and
+          leaving that to the caller is what lets a table or a single reading
+          column live under the same template. */}
+      <Grid gap={4}>
+        {shown.map((r) => (
+          <Card key={r.id} interactive>{r.name}</Card>
+        ))}
+      </Grid>
+    </ListPageTemplate>
+  )
+}

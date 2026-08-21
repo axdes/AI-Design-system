@@ -1,0 +1,11 @@
+{
+  "id": "settings-panel",
+  "title": "Notification settings",
+  "why": "A settings form is where the native controls come back. A styled checkbox for the toggle, input[type=range] for the threshold, input[type=number] for the retention, an <hr> between the groups: each is one line, each looks approximately right, and none of them is themed, keyboard-labelled or RTL-correct. Switch, Slider, NumberInput, SegmentedControl and Divider exist so that line is never written.",
+  "required": ["Field", "Switch", "SegmentedControl", "NumberInput", "Slider", "Divider"],
+  "forbidden": [
+    { "pattern": "<hr[\\s/>]", "message": "raw <hr> — use <Divider>" },
+    { "pattern": "className=\"[^\"]*\\b(toggle|switch|range|stepper)\\b", "message": "hand-rolled control — use <Switch> / <Slider> / <NumberInput>" }
+  ],
+  "entry": "Screen.tsx"
+}

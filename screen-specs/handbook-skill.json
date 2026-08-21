@@ -1,0 +1,85 @@
+{
+  "$schema": "./schema.json",
+  "id": "handbook-skill",
+  "project": "handbook",
+  "title": "Skill card",
+  "goal": "Read one skill's card for one discipline: how to interpret answers, then what to ask.",
+  "primaryQuestion": "How do I interview for this skill in this discipline?",
+  "audience": "expert",
+  "archetype": "detail",
+  "template": "DetailPageTemplate",
+  "_why": "One long page read top to bottom, in the order of the card's two jobs: interpret first (descriptors, then topics as the bridge, then signals), ask second (questions, practical tasks), flags last. No tabs on purpose — an interviewer reads in sequence during preparation and mid-interview. The template's aside carries a plain-anchor 'on this page' list. The header carries the skill name ONLY (no text under titles, system rule); the global description, the card's group and which disciplines have cards live in the About section as content, shown with or without a card — the skill is global, only the card is per discipline. The discipline SegmentedControl repeats in the page actions because HERE it decides which card is open: same control, and on this screen its consequence is visible — switching to a discipline without a card lands on the explicit no-card state.",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "The discipline switch (SegmentedControl) in the page actions. Every discipline is offered even when it has no card for this skill: choosing it shows the no-card state, which is information, not a dead end.",
+      "components": ["SegmentedControl"]
+    },
+    {
+      "name": "about",
+      "task": "read",
+      "purpose": "The global half of the skill, as content rather than header text: the description, which disciplines have cards, and — when a card is open — its group. Rendered with or without a card, because the skill exists either way.",
+      "components": ["SectionLabel", "Card", "Descriptions"]
+    },
+    {
+      "name": "descriptors",
+      "task": "read",
+      "answers": "How do I interview for this skill in this discipline?",
+      "purpose": "Proficiency descriptors, the interpret job: a flat four-row Table, Novice to Expert, each row a short placeholder descriptor naming its field ('Descriptor for Novice: 2-3 sentences…'). Flat because it is read as a scale, not as four cards.",
+      "components": ["SectionLabel", "Card", "Table", "Badge"]
+    },
+    {
+      "name": "topics",
+      "task": "read",
+      "purpose": "The card's topics as a flat cloud of Tags — name only, exactly what the model stores in the first pass. No importance, no nesting, no expand.",
+      "components": ["SectionLabel", "Card", "Tag"]
+    },
+    {
+      "name": "signals",
+      "task": "read",
+      "purpose": "Behavioural signals in three blocks — strong, moderate, weak — each headed by a Badge carrying its proficiency range, over a plain list of placeholder signs.",
+      "components": ["SectionLabel", "Card", "Badge"]
+    },
+    {
+      "name": "questions",
+      "task": "scan",
+      "data": { "item": "prose", "cardinality": "few", "fields": 2 },
+      "purpose": "Questions, the ask job: filtered to one proficiency at a time by a SegmentedControl (All | Novice | Intermediate | Advanced | Expert), the items grouped under a proficiency subhead — no badge per row, a line-start label breaks the reading flow and the group says it once. Placeholder: two questions per proficiency, each naming its field.",
+      "components": ["SectionLabel", "Card", "SegmentedControl"]
+    },
+    {
+      "name": "tasks",
+      "task": "scan",
+      "data": { "item": "prose", "cardinality": "few", "fields": 2 },
+      "purpose": "Practical tasks, mirroring the questions block exactly: the same proficiency filter, the same grouped shape.",
+      "components": ["SectionLabel", "Card", "SegmentedControl"]
+    },
+    {
+      "name": "flags",
+      "task": "read",
+      "purpose": "Red flags and yellow flags as two plain lists under their subheads — the subhead names the colour once, the rows stay readable. The interpret job's last word.",
+      "components": ["SectionLabel", "Card"]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState surface=page icon=info when this skill has no card in the chosen discipline: names the disciplines that do have one, and the action switches to the first of them. The global skill header stays — the skill exists, only the card is absent.",
+    "error": "EmptyState surface=page icon=folder when the skill id in the URL matches nothing: offers the way back to the skill catalog."
+  },
+  "data": [
+    "skill: global name, description, group",
+    "card for (skill, current discipline): descriptors per proficiency, topics, signals with ranges, questions and tasks tagged by proficiency, red and yellow flags"
+  ],
+  "behaviours": [
+    {
+      "id": "no-card-is-a-state-not-an-error",
+      "given": "a skill that has a card in .NET and none in Java",
+      "when": "the reader switches the card screen to Java",
+      "then": "the card lookup returns nothing, the screen shows the explicit no-card state naming which disciplines have one, and the skill's own header stays in place",
+      "why": "The split the target model introduces: the skill is global, the card is per discipline. Hiding the skill or erroring would re-merge the two, which is the old model's defect.",
+      "provenBy": "apps/handbook/src/data/queries.test.ts"
+    }
+  ],
+  "openQuestions": [],
+  "implementation": "apps/handbook/src/layouts/SkillPage.tsx"
+}

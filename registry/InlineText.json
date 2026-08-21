@@ -1,0 +1,55 @@
+{
+  "ref": "InlineText",
+  "level": "molecule",
+  "description": "True inline editing (the vanilla `.editable` contract): the SAME element becomes editable on click — same font, same layout, no control chrome. Enter commits, Escape reverts, blur saves. Key it by `value` upstream so a server-confirmed update re-renders the committed text.",
+  "exports": [
+    "InlineText"
+  ],
+  "main": "InlineText",
+  "from": "@/components/InlineText",
+  "slots": [],
+  "props": [
+    {
+      "name": "as",
+      "type": "'h2' | 'p' | 'span'",
+      "required": false,
+      "values": [
+        "h2",
+        "p",
+        "span"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "onSave",
+      "type": "(next: string) => void",
+      "required": true
+    },
+    {
+      "name": "onAbort",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "autoFocus",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/InlineText/InlineText.tsx",
+  "example": "const [title, setTitle] = useState('Untitled document')\n/* Click-to-edit text: renders as `as` until activated, then as an input.\n * `label` is the accessible name of that input. */\n\n<InlineText as=\"h2\" value={title} label=\"Document title\" onSave={setTitle} />"
+}

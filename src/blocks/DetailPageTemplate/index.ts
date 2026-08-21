@@ -1,0 +1,1 @@
+export { DetailPageTemplate } from './DetailPageTemplate'

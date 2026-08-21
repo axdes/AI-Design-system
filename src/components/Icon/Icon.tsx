@@ -1,0 +1,185 @@
+import './Icon.css'
+import {
+  Plus, ChevronDown, ChevronLeft, ChevronRight, MoreVertical, Search, Clock, Folder, FolderPlus, FolderInput,
+  File, FileText, Film, Megaphone, Share2, Newspaper, Pencil, Copy, Trash2, Type,
+  Users, LayoutDashboard, MessageCircle, LogOut, User as UserIcon,
+  Check, X, Menu, ClipboardCheck, Eye, EyeOff,
+  ArrowLeft, History, Settings, ListChecks, ShieldCheck, Download, SlidersHorizontal,
+  Save, ArrowLeftToLine, ArrowRightToLine,
+  Mic, CalendarDays, Volume2, ThumbsUp, ThumbsDown, SendHorizontal, Timer,
+  UserPlus,
+  CircleCheck, TriangleAlert, CircleX, Info,
+  Pin, Archive, Square, LoaderCircle, SkipForward, Undo2,
+  Sun, Moon, Phone, PhoneOff, PhoneForwarded, MapPin,
+  Wind, Flame, HeartPulse, Shield, ZapOff, Droplet, Layers, Flag, Briefcase, Star,
+  IdCard, Gauge,
+  Play, Pause, RefreshCw, Upload, Compass, Lightbulb, Brain, Quote, Presentation,
+  ArrowUp, ArrowDown, Scale, HandMetal,
+  type LucideIcon,
+} from 'lucide-react'
+import { type SVGProps } from 'react'
+import { cn } from '../../lib/cn'
+
+/* Spark: the concave four-point star, filled. Local SVG — Lucide's stroked
+ * Sparkles read poorly at small sizes; this one stays crisp. Fills with
+ * currentColor like every other icon, so the CONSUMER decides what an
+ * AI-flavoured accent looks like; the DS does not ship one.
+ * Matches the LucideIcon call contract. */
+const AiSpark = ((props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="24"
+    height="24"
+    fill="currentColor"
+    stroke="none"
+    {...props}
+  >
+    <path d="M12 2c.74 5.45 4.55 9.26 10 10-5.45.74-9.26 4.55-10 10-.74-5.45-4.55-9.26-10-10 5.45-.74 9.26-4.55 10-10Z" />
+  </svg>
+)) as unknown as LucideIcon
+
+/* Material auto_awesome lookalike: one big concave star + two satellites,
+ * all FILLED with currentColor - reads crisply on solid surfaces (the FAB)
+ * where a stroked or gradient spark gets lost. */
+const AutoAwesome = ((props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="24"
+    height="24"
+    fill="currentColor"
+    stroke="none"
+    {...props}
+  >
+    <path
+      transform="translate(0 4.8) scale(0.72)"
+      d="M12 2c.74 5.45 4.55 9.26 10 10-5.45.74-9.26 4.55-10 10-.74-5.45-4.55-9.26-10-10 5.45-.74 9.26-4.55 10-10Z"
+    />
+    <path
+      transform="translate(13 1.5) scale(0.38)"
+      d="M12 2c.74 5.45 4.55 9.26 10 10-5.45.74-9.26 4.55-10 10-.74-5.45-4.55-9.26-10-10 5.45-.74 9.26-4.55 10-10Z"
+    />
+    <path
+      transform="translate(14.6 13.4) scale(0.3)"
+      d="M12 2c.74 5.45 4.55 9.26 10 10-5.45.74-9.26 4.55-10 10-.74-5.45-4.55-9.26-10-10 5.45-.74 9.26-4.55 10-10Z"
+    />
+  </svg>
+)) as unknown as LucideIcon
+
+const ICONS = {
+  add: Plus,
+  arrow_drop_down: ChevronDown,
+  chevron_left: ChevronLeft,
+  chevron_right: ChevronRight,
+  more_vert: MoreVertical,
+  search: Search,
+  schedule: Clock,
+  folder: Folder,
+  create_new_folder: FolderPlus,
+  drive_file_move: FolderInput,
+  drive_file_rename_outline: Type,
+  insert_drive_file: File,
+  description: FileText,
+  article: Newspaper,
+  movie: Film,
+  campaign: Megaphone,
+  share: Share2,
+  edit: Pencil,
+  content_copy: Copy,
+  visibility: Eye,
+  visibility_off: EyeOff,
+  delete: Trash2,
+  group: Users,
+  dashboard: LayoutDashboard,
+  rate_review: ClipboardCheck,
+  message: MessageCircle,
+  logout: LogOut,
+  person: UserIcon,
+  check: Check,
+  close: X,
+  menu: Menu,
+  arrow_left_to_line:  ArrowLeftToLine,
+  arrow_right_to_line: ArrowRightToLine,
+  arrow_back:       ArrowLeft,
+  history:          History,
+  settings:         Settings,
+  list_alt:         ListChecks,
+  verified:         ShieldCheck,
+  download:         Download,
+  tune:             SlidersHorizontal,
+  text_fields:      Type,
+  save:             Save,
+  mic:              Mic,
+  calendar:         CalendarDays,
+  timer:            Timer,
+  volume:           Volume2,
+  thumb_up:         ThumbsUp,
+  thumb_down:       ThumbsDown,
+  send:             SendHorizontal,
+  person_add:       UserPlus,
+  check_circle:     CircleCheck,
+  warning:          TriangleAlert,
+  error:            CircleX,
+  info:             Info,
+  pin:              Pin,
+  archive:          Archive,
+  progress_activity: LoaderCircle,
+  stop:             Square,
+  skip_forward:     SkipForward,
+  undo:             Undo2,
+  light_mode:       Sun,
+  dark_mode:        Moon,
+  phone:            Phone,
+  phone_off:        PhoneOff,
+  air:              Wind,
+  local_fire_department: Flame,
+  medical_services: HeartPulse,
+  security:         Shield,
+  power_off:        ZapOff,
+  water_drop:       Droplet,
+  phone_callback:   PhoneForwarded,
+  location_on:      MapPin,
+  layers:           Layers,
+  flag:             Flag,
+  work:             Briefcase,
+  star:             Star,
+  sparkles:         AiSpark,
+  auto_awesome:     AutoAwesome,
+  badge:            IdCard,
+  gauge:            Gauge,
+  play:             Play,
+  pause:            Pause,
+  refresh:          RefreshCw,
+  upload:           Upload,
+  explore:          Compass,
+  lightbulb:        Lightbulb,
+  psychology:       Brain,
+  quote:            Quote,
+  presentation:     Presentation,
+  arrow_upward:     ArrowUp,
+  arrow_downward:   ArrowDown,
+  balance:          Scale,
+  nudge:            HandMetal,
+} satisfies Record<string, LucideIcon>
+
+export type IconName = keyof typeof ICONS
+type Size = 'sm' | 'md' | 'lg' | 'xl'
+
+type Props = {
+  name: IconName
+  size?: Size
+  className?: string
+}
+
+/**
+ * Every icon in the system, addressed by Material-style name. Size comes from
+ * CSS through `size`, so changing an --icon-* token cascades everywhere at
+ * once.
+ */
+export function Icon({ name, size = 'sm', className }: Props) {
+  const Component = ICONS[name]
+  /* Size handled by CSS via data-size → --icon-* tokens. We don't pass `size`
+   * to Lucide so settings.css can drive icon size globally. */
+  return <Component className={cn('icon', className)} data-size={size} aria-hidden="true" />
+}

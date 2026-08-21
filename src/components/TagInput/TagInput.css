@@ -1,0 +1,36 @@
+/* The box reads as one field: control tokens for the frame, focus ring on
+ * :focus-within since the real input inside is borderless. */
+.taginput {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: var(--control-height);
+  padding-inline: var(--space-2);
+  padding-block: var(--space-1);
+  border: 1px solid var(--input);
+  border-radius: var(--control-radius);
+  background: var(--background);
+  transition: border-color var(--duration-fast);
+}
+.taginput:focus-within {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.taginput[data-invalid] { border-color: var(--destructive); }
+.taginput[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.taginput-field {
+  flex: 1;
+  min-inline-size: 6ch;
+  border: none;
+  outline: none; /* the frame's :focus-within ring is the visible focus */
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  padding: 0;
+}
+.taginput-field::placeholder { color: var(--muted-foreground); }

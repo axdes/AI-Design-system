@@ -1,0 +1,70 @@
+{
+  "ref": "Tabs",
+  "level": "molecule",
+  "description": "One panel at a time behind a labelled list, with full ARIA and arrow keys. SegmentedControl is the compact single choice with no panels.",
+  "exports": [
+    "Tabs",
+    "TabList",
+    "Tab",
+    "TabPanel"
+  ],
+  "main": "Tabs",
+  "from": "@/components/Tabs",
+  "slots": [
+    {
+      "name": "TabList",
+      "line": 42
+    },
+    {
+      "name": "Tab",
+      "line": 67
+    },
+    {
+      "name": "TabPanel",
+      "line": 86
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(v: string) => void",
+      "required": true
+    },
+    {
+      "name": "appearance",
+      "type": "'underline' | 'pills'",
+      "required": false,
+      "values": [
+        "underline",
+        "pills"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/components/Tabs/Tabs.tsx",
+  "context": "region",
+  "variants": {
+    "appearance": {
+      "prop": "appearance",
+      "values": [
+        "underline",
+        "pills"
+      ]
+    }
+  },
+  "example": "const [tab, setTab] = useState('overview')\n\n<Tabs value={tab} onChange={setTab}>\n  <TabList label=\"Document sections\">\n    <Tab value=\"overview\">Overview</Tab>\n    <Tab value=\"details\">Details</Tab>\n  </TabList>\n  <TabPanel value=\"overview\"><p>Overview panel.</p></TabPanel>\n  <TabPanel value=\"details\"><p>Details panel.</p></TabPanel>\n</Tabs>"
+}

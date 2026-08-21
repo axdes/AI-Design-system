@@ -1,0 +1,59 @@
+{
+  "ref": "Skeleton",
+  "level": "atom",
+  "description": "Loading placeholder: the shape of content before it arrives, so the layout does not jump when it does. Decorative by design (aria-hidden) — announce the loading state once, on the region, with a <Spinner> or aria-busy, not on every shimmer. The pulse animation is disabled under prefers-reduced-motion.",
+  "exports": [
+    "Skeleton"
+  ],
+  "main": "Skeleton",
+  "from": "@/components/Skeleton",
+  "slots": [],
+  "props": [
+    {
+      "name": "shape",
+      "type": "Shape",
+      "required": false,
+      "values": [
+        "text",
+        "block",
+        "circle"
+      ]
+    },
+    {
+      "name": "lines",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "width",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Skeleton/Skeleton.tsx",
+  "context": "region",
+  "variants": {
+    "shape": {
+      "prop": "shape",
+      "values": [
+        "text",
+        "block",
+        "circle"
+      ]
+    }
+  },
+  "uses": [
+    "Layout"
+  ],
+  "example": "/* The shape of a loading card: an avatar disc, a title line and a short\n * paragraph. Announce the loading state ONCE on the surrounding region\n * (aria-busy / a Spinner) — the skeletons themselves are decorative. */\n\n<Row gap={3} aria-busy=\"true\">\n  <Skeleton shape=\"circle\" />\n  <Stack gap={2} className=\"skeleton-lines\">\n    <Skeleton width=\"12rem\" height=\"1rem\" shape=\"block\" />\n    <Skeleton lines={3} />\n  </Stack>\n</Row>"
+}

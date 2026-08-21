@@ -1,0 +1,59 @@
+{
+  "ref": "Pagination",
+  "level": "molecule",
+  "description": "Pager for a known total: renders nothing for a single page and collapses long ranges with gaps. LoadMore is the one for a list with no total.",
+  "exports": [
+    "Pagination"
+  ],
+  "main": "Pagination",
+  "from": "@/components/Pagination",
+  "slots": [],
+  "props": [
+    {
+      "name": "page",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "pageCount",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(page: number) => void",
+      "required": true
+    },
+    {
+      "name": "siblingCount",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "prevLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "nextLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Pagination/Pagination.tsx",
+  "uses": [
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "const [page, setPage] = useState(3)\n/* Controlled: the parent owns the page number and slices its own data. The\n * component renders nothing when there is only one page. */\n\n<Pagination page={page} pageCount={12} onChange={setPage} />"
+}

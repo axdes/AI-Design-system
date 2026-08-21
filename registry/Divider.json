@@ -1,0 +1,46 @@
+{
+  "ref": "Divider",
+  "level": "atom",
+  "description": "The one hairline separator. A horizontal rule between sections, or a vertical one between inline items. With children it becomes a labelled divider (the rule runs either side of the text). Decorative unless labelled: role=separator only when it carries no text, so a screen reader is not told about a rule that is purely visual noise.",
+  "exports": [
+    "Divider"
+  ],
+  "main": "Divider",
+  "from": "@/components/Divider",
+  "slots": [],
+  "props": [
+    {
+      "name": "orientation",
+      "type": "'horizontal' | 'vertical'",
+      "required": false,
+      "values": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Divider/Divider.tsx",
+  "variants": {
+    "orientation": {
+      "prop": "orientation",
+      "values": [
+        "horizontal",
+        "vertical"
+      ]
+    }
+  },
+  "uses": [
+    "Layout"
+  ],
+  "example": "/* Plain rule between sections, and a labelled variant with centred text.\n * Vertical dividers need a sized flex parent (a <Row>). */\n\n<Stack gap={4}>\n  <p>Account details</p>\n  <Divider />\n  <p>Billing</p>\n  <Divider>OR</Divider>\n  <p>Continue with SSO</p>\n</Stack>"
+}

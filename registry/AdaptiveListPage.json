@@ -1,0 +1,79 @@
+{
+  "ref": "AdaptiveListPage",
+  "level": "block",
+  "description": "A list page that changes shape with its contents: a centred welcome (hero title, the cards, one big CTA) while everything fits on one screen, and the standard header layout once it outgrows it. Five states, in this order because each applies only once the ones above are ruled out: could not load, still loading, nothing yet, the welcome, the grid.",
+  "exports": [
+    "AdaptiveListPage"
+  ],
+  "main": "AdaptiveListPage",
+  "from": "@/blocks/AdaptiveListPage",
+  "slots": [],
+  "props": [
+    {
+      "name": "mark",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "subtitle",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "inline",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "cta",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "count",
+      "type": "number | null",
+      "required": true
+    },
+    {
+      "name": "empty",
+      "type": "{ icon?: IconName title: string description?: string action?: ReactNode reason?: 'no-data' | 'no-matches' }",
+      "required": true
+    },
+    {
+      "name": "error",
+      "type": "{ icon?: IconName; title: string; description?: string; action?: ReactNode }",
+      "required": false
+    },
+    {
+      "name": "notice",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "(gridRef: Ref<HTMLDivElement>) => ReactNode",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/blocks/AdaptiveListPage/AdaptiveListPage.tsx",
+  "context": "page",
+  "uses": [
+    "Button",
+    "Card",
+    "EmptyState",
+    "Icon",
+    "ListCluster",
+    "PageHeader"
+  ],
+  "example": "/* Same action twice, one size up for the welcome layout's big CTA. */\nconst add = (size?: 'lg') => (\n  <Button size={size} onClick={() => undefined}>\n    <Icon name=\"add\" />\n    New workshop\n  </Button>\n)\n\n<AdaptiveListPage\n  title=\"Workshops\"\n  subtitle=\"Run a session, or open one you already have.\"\n  count={ITEMS.length}\n  actions={add()}\n  cta={add('lg')}\n  empty={{ icon: 'presentation', title: 'No workshops yet', action: add('lg') }}\n>\n  {/* The ref goes on the grid: it is what the block measures to choose\n      between the welcome layout and the standard one. */}\n  {(gridRef) => (\n    <div className=\"list-cluster-grid\" ref={gridRef}>\n      {ITEMS.map((i) => (\n        <Card key={i.id} interactive fill tight>\n          <CardTitle as=\"h2\">{i.name}</CardTitle>\n        </Card>\n      ))}\n    </div>\n  )}\n</AdaptiveListPage>"
+}

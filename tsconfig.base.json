@@ -1,0 +1,21 @@
+{
+  "//": "Shared TypeScript settings for every package in the monorepo. A package extends this and adds ONLY what is genuinely its own: `paths`, `include`/`exclude`, and `types` when it needs to opt out of ambient @types. Do not copy compiler options down into a package.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

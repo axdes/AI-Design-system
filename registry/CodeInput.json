@@ -1,0 +1,53 @@
+{
+  "ref": "CodeInput",
+  "level": "molecule",
+  "description": "One box per character, for a verification code. A single field would work and would be less code. The boxes exist because a code arrives as separated characters in an SMS or an authenticator, and because checking six characters you have typed into one field means counting them. Paste still fills the whole thing in one go, which is how most people actually enter it.",
+  "exports": [
+    "CodeInput"
+  ],
+  "main": "CodeInput",
+  "from": "@/components/CodeInput",
+  "slots": [],
+  "props": [
+    {
+      "name": "length",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "numeric",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/CodeInput/CodeInput.tsx",
+  "uses": [
+    "Input"
+  ],
+  "example": "const [code, setCode] = useState('')\n\n<CodeInput value={code} onChange={setCode} label=\"Verification code\" />"
+}

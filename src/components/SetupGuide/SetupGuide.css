@@ -1,0 +1,76 @@
+.setup-guide > .card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.setup-guide-count {
+  margin-inline-start: auto;
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.setup-guide-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.setup-guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+}
+
+.setup-guide-step + .setup-guide-step {
+  border-block-start: 1px solid var(--border);
+}
+
+/* The mark: an empty ring for an open step, the success check for a done one.
+ * Sized to the icon so the column never shifts as steps complete. */
+.setup-guide-mark {
+  flex: none;
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--success);
+  margin-block-start: var(--space-1);
+}
+
+.setup-guide-step[data-done] .setup-guide-mark {
+  border-color: transparent;
+}
+
+.setup-guide-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.setup-guide-label {
+  font-weight: var(--font-weight-medium);
+}
+
+.setup-guide-step[data-done] .setup-guide-label {
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+}
+
+.setup-guide-detail {
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+
+.setup-guide-action {
+  margin-inline-start: auto;
+  flex: none;
+}

@@ -1,0 +1,42 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2xs) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-snug);
+  white-space: nowrap;
+}
+/* md — matches a small button: same height + horizontal padding. */
+.badge[data-size="md"] {
+  height: var(--control-height-sm);
+  padding-inline: var(--space-3);
+}
+/* Default style = solid (bold colored tag). */
+.badge[data-tone="neutral"] { background: transparent;       color: var(--muted-foreground); border-color: var(--border); }
+.badge[data-tone="primary"] { background: var(--primary);    color: var(--primary-foreground); }
+.badge[data-tone="success"] { background: var(--success); color: var(--success-foreground); }
+.badge[data-tone="warning"] { background: var(--warning); color: var(--warning-foreground); }
+.badge[data-tone="danger"]  { background: var(--destructive);  color: var(--destructive-foreground); }
+.badge[data-tone="ai"]      { background: var(--ai);           color: var(--ai-foreground); }
+
+/* Soft fill — light tinted bg + saturated text. shadcn-style. */
+.badge[data-fill="soft"][data-tone="primary"] { background: var(--primary-soft);  color: var(--primary-soft-foreground); }
+.badge[data-fill="soft"][data-tone="success"] { background: var(--success-soft);  color: var(--success-soft-foreground); }
+.badge[data-fill="soft"][data-tone="warning"] { background: var(--warning-soft); color: var(--warning-soft-foreground); }
+.badge[data-fill="soft"][data-tone="danger"]  { background: var(--destructive-soft);   color: var(--destructive-soft-foreground); }
+.badge[data-fill="soft"][data-tone="ai"]      { background: var(--ai-soft);           color: var(--ai-soft-foreground); }
+.badge[data-fill="soft"][data-tone="neutral"] { background: var(--muted);       color: var(--muted-foreground); border-color: transparent; }
+
+
+/* Plain fill — no background/border, just tone-coloured text (e.g. inline metrics). */
+.badge[data-fill="plain"] { background: transparent; border-color: transparent; padding-inline: 0; }
+.badge[data-fill="plain"][data-tone="neutral"] { color: var(--muted-foreground); }
+.badge[data-fill="plain"][data-tone="primary"] { color: var(--primary-accent); }
+.badge[data-fill="plain"][data-tone="success"] { color: var(--success-emphasis); }
+.badge[data-fill="plain"][data-tone="warning"] { color: var(--warning-emphasis); }
+.badge[data-fill="plain"][data-tone="danger"]  { color: var(--destructive-emphasis); }
+.badge[data-fill="plain"][data-tone="ai"]      { color: var(--ai); }

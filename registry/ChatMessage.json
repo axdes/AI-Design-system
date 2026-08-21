@@ -1,0 +1,55 @@
+{
+  "ref": "ChatMessage",
+  "level": "molecule",
+  "description": "One chat message: a right-aligned bubble for the user, a left block for the assistant with a working toolbar (read aloud, copy, thumbs up/down) + optional quick-reply chips. Shared by every chat surface.",
+  "exports": [
+    "ChatMessage"
+  ],
+  "main": "ChatMessage",
+  "from": "@/components/ChatMessage",
+  "slots": [],
+  "props": [
+    {
+      "name": "role",
+      "type": "'user' | 'assistant'",
+      "required": true,
+      "values": [
+        "user",
+        "assistant"
+      ]
+    },
+    {
+      "name": "text",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "choices",
+      "type": "readonly ChatChoice[]",
+      "required": false
+    },
+    {
+      "name": "hideActions",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "onDislike",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/components/ChatMessage/ChatMessage.tsx",
+  "context": "region",
+  "uses": [
+    "Chip",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "const answer = 'Your leave request was submitted for approval.'\n\n<ChatMessage role=\"assistant\" text={answer} onDislike={() => undefined}>\n  {answer}\n</ChatMessage>"
+}

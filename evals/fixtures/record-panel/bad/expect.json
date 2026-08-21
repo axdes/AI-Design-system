@@ -1,0 +1,4 @@
+{
+  "note": "What this fixture is for: if the scorers stop reporting these dimensions, the harness has gone blind and the eval numbers mean nothing.",
+  "mustFail": ["required-used", "no-hand-rolling", "style-hygiene"]
+}

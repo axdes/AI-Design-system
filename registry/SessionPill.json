@@ -1,0 +1,78 @@
+{
+  "ref": "SessionPill",
+  "level": "molecule",
+  "description": "The floating \"a session is live elsewhere\" pill: pulsing dot, what is running, the timer, one press back to it. Rendered once by the app shell so it survives navigation, and hidden on the session's own screen — the two rules both hand-rolled versions (Salim's LiveCallBar, workshops' RecordingPill) discovered independently. Presentational: state, polling and routing stay in the app.",
+  "exports": [
+    "SessionPill"
+  ],
+  "main": "SessionPill",
+  "from": "@/components/SessionPill",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "timer",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "actionLabel",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "dismissLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "'danger' | 'warning'",
+      "required": false,
+      "values": [
+        "danger",
+        "warning"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SessionPill/SessionPill.tsx",
+  "context": "page",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "danger",
+        "warning"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "Tooltip"
+  ],
+  "example": "<SessionPill\n  label=\"Recording: Design sprint\"\n  timer=\"12:47\"\n  actionLabel=\"Back to the board\"\n  icon=\"mic\"\n  onClick={() => undefined}\n/>"
+}

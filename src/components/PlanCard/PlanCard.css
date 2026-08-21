@@ -1,0 +1,27 @@
+/* The action is pinned to the bottom so a row of plans with different numbers of
+ * features still lines its buttons up: a ragged row of CTAs reads as a mistake
+ * and makes the plans hard to compare, which is the whole job of the row. */
+.plan-card { display: flex; flex-direction: column; }
+.plan-card-action { margin-block-start: auto; padding-block-start: var(--space-4); }
+
+.plan-card-head { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+
+/* The recommended plan is outlined, not filled: a filled one turns the row into
+ * one loud card and two grey ones, and the grey ones are still for sale. */
+.plan-card[data-recommended] { border-color: var(--primary); }
+
+.plan-card-price { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
+.plan-card-amount { font-size: var(--font-2xl); font-weight: var(--font-weight-semibold); }
+.plan-card-period { color: var(--muted-foreground); font-size: var(--font-sm); }
+.plan-card-desc { color: var(--muted-foreground); font-size: var(--font-sm); }
+
+.plan-card-features {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-sm);
+}
+.plan-card-features li { display: flex; align-items: flex-start; gap: var(--space-2); }
+.plan-card-tick { flex: none; margin-block-start: var(--space-2xs); color: var(--success-emphasis); }

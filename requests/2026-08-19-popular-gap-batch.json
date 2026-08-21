@@ -1,0 +1,26 @@
+{
+  "name": "popular-gap batch (6 components)",
+  "level": "mixed",
+  "date": "2026-08-19",
+  "requestedBy": "agent",
+  "status": "approved",
+  "decidedBy": "user",
+  "decision": "User asked for a production-readiness audit and to close the gaps against the most popular component sets. The gate was green and every component had a golden example, so the audit reduced to coverage: against shadcn/ui the system was already complete minus niche items (Menubar, Resizable, ScrollArea) and charts (a separate domain). These six are the components that Ant Design, Mantine, MUI and shadcn all carry and this system did not.",
+  "need": "Product screens keep needing a bounded pair (price/date filters), a time of day, free-typed tags, a ring gauge on dashboards, and a shortcut hint next to CommandPalette. Each of these is in at least three of the four reference libraries.",
+  "consideredAlternatives": [
+    { "ref": "Slider", "whyNot": "Single thumb; a bounded pair needs two, and a tuple value is a different contract." },
+    { "ref": "DatePicker twice (from/to fields)", "whyNot": "Two independent pickers cannot show the span, validate order, or select both ends in one calendar." },
+    { "ref": "Input for time", "whyNot": "Free text needs parsing and fails the way free-text dates failed; the native time control is themeable the way our Input already is." },
+    { "ref": "Combobox multiple", "whyNot": "Filters a fixed option list; tags are free text the user invents (emails, labels)." },
+    { "ref": "Meter / ProgressBar", "whyNot": "Both linear; a compact ring is the dashboard form and neither bends into it." },
+    { "ref": "Tag / Badge for shortcuts", "whyNot": "Neither renders <kbd> semantics nor the key-cap look." }
+  ],
+  "components": [
+    { "name": "Kbd", "level": "atom", "inLibraries": ["Mantine", "Chakra", "shadcn (registry)", "DaisyUI"] },
+    { "name": "ProgressCircle", "level": "atom", "inLibraries": ["MUI CircularProgress", "Mantine RingProgress", "Ant Progress type=circle"] },
+    { "name": "RangeSlider", "level": "atom", "inLibraries": ["Mantine RangeSlider", "MUI Slider range", "Ant Slider range"] },
+    { "name": "TimeInput", "level": "atom", "inLibraries": ["Mantine TimeInput", "Ant TimePicker", "MUI X TimeField"] },
+    { "name": "TagInput", "level": "molecule", "inLibraries": ["Mantine TagsInput", "Ant Select mode=tags", "Chakra TagInput"] },
+    { "name": "DateRangePicker", "level": "molecule", "inLibraries": ["Ant RangePicker", "MUI X DateRangePicker", "Mantine DatePicker type=range"], "note": "Calendar gains rangeStart/rangeEnd display props; the pick-two logic lives in the molecule." }
+  ]
+}

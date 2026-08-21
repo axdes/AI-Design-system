@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": [
+    "Mutation testing: does the suite NOTICE a break? Coverage says a line ran;",
+    "this says a wrong line would have failed something. Stryker edits the source",
+    "(flips a condition, drops a call, swaps an operator) and reports how many of",
+    "those edits the tests killed.",
+    "",
+    "Scope is the STATEFUL components — the ones whose promise is behaviour, where",
+    "a silent break is invisible: keyboard and ARIA contracts, focus traps, ranked",
+    "results. Mutating every presentational component would spend hours to prove",
+    "that a div still renders.",
+    "",
+    "Run: npm run mutation   (slow, minutes — not part of the per-turn gate)"
+  ],
+  "packageManager": "npm",
+  "testRunner": "vitest",
+  "vitest": { "configFile": "vite.config.ts" },
+  "reporters": ["progress", "clear-text", "html"],
+  "htmlReporter": { "fileName": "reports/mutation.html" },
+  "coverageAnalysis": "perTest",
+  "mutate": [
+    "src/components/Dropdown/Dropdown.tsx",
+    "src/components/Modal/Modal.tsx",
+    "src/components/Tabs/Tabs.tsx",
+    "src/components/Combobox/Combobox.tsx",
+    "src/components/Select/Select.tsx",
+    "src/components/Tree/Tree.tsx",
+    "src/lib/cn.ts",
+    "src/lib/formatDate.ts"
+  ],
+  "thresholds": { "high": 80, "low": 60, "break": null },
+  "timeoutMS": 20000,
+  "concurrency": 4
+}

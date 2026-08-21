@@ -1,0 +1,4 @@
+{
+  "note": "What this fixture is for: if the scorers stop reporting these dimensions, the harness has gone blind and the eval numbers mean nothing. This is the only fixture that exercises components-exist and props-complete, so it is also the guard on the two scorers nothing else proves.",
+  "mustFail": ["components-exist", "props-exist", "props-complete", "required-used"]
+}

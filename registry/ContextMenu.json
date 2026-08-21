@@ -1,0 +1,35 @@
+{
+  "ref": "ContextMenu",
+  "level": "molecule",
+  "description": "A right-click menu positioned at the pointer. Opens on contextmenu over the wrapped target, clamps to the viewport, closes on outside-click, Escape or selection. Arrow keys move between items. Distinct from <Dropdown> (a left-click trigger button).",
+  "exports": [
+    "ContextMenu"
+  ],
+  "main": "ContextMenu",
+  "from": "@/components/ContextMenu",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "items",
+      "type": "ContextMenuItem[]",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ContextMenu/ContextMenu.tsx",
+  "context": "region",
+  "uses": [
+    "Card",
+    "Icon"
+  ],
+  "example": "/* Right-click the target to open a menu at the pointer. For a left-click\n * trigger button use <Dropdown>. */\n\n<ContextMenu\n  items={[\n    { id: 'open', label: 'Open', icon: 'article', onSelect: () => undefined },\n    { id: 'rename', label: 'Rename', icon: 'edit', onSelect: () => undefined },\n    { id: 'delete', label: 'Delete', icon: 'delete', tone: 'destructive', onSelect: () => undefined },\n  ]}\n>\n  <Card>Right-click this card</Card>\n</ContextMenu>"
+}

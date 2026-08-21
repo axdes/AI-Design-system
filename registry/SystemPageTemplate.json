@@ -1,0 +1,44 @@
+{
+  "ref": "SystemPageTemplate",
+  "level": "block",
+  "description": "The SYSTEM page skeleton — not found, service unavailable, something broke: a narrow centred column with the fact as its h1, the triage or the consequences as body text, then contact and one onward action. No breadcrumbs, no error codes, no apology graphics: the reader's questions are \"what happened, did you keep my answers, what do I do\", in that order.",
+  "exports": [
+    "SystemPageTemplate"
+  ],
+  "main": "SystemPageTemplate",
+  "from": "@/blocks/SystemPageTemplate",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "contact",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/SystemPageTemplate/SystemPageTemplate.tsx",
+  "context": "page",
+  "uses": [
+    "Button"
+  ],
+  "example": "<SystemPageTemplate\n  title=\"Sorry, there is a problem with the service\"\n  contact={<p>If it keeps happening, contact the service desk and name this page.</p>}\n  action={<Button variant=\"secondary\">Back to the start</Button>}\n>\n  <p>Try again later.</p>\n  <p>We saved your answers. They will be available for 30 days.</p>\n</SystemPageTemplate>"
+}

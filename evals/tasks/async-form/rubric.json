@@ -1,0 +1,13 @@
+{
+  "id": "async-form",
+  "title": "Async save with busy + loading states",
+  "why": "Every real form saves over a network, and the system had no way to show it: no button busy state, no spinner, no skeleton. This task cannot be done conformantly until those exist.",
+  "required": ["Button", "Switch", "Skeleton"],
+  "forbidden": [
+    {
+      "pattern": "className=\"[^\"]*\\b(spinner|loader|skeleton)\\b",
+      "message": "hand-rolled loading affordance — use <Spinner> / <Skeleton>"
+    }
+  ],
+  "entry": "Screen.tsx"
+}

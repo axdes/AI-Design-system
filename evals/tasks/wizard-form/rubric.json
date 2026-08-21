@@ -1,0 +1,13 @@
+{
+  "id": "wizard-form",
+  "title": "Multi-step checkout header",
+  "why": "A wizard's progress bar and an expandable FAQ are two patterns agents rebuild from divs — a row of numbered circles and a set of toggling sections. Stepper and Accordion own both, keyboard and ARIA included.",
+  "required": ["Stepper", "Accordion"],
+  "forbidden": [
+    {
+      "pattern": "className=\"[^\"]*\\b(stepper|step-|accordion|wizard)\\b",
+      "message": "hand-rolled stepper/accordion — use <Stepper> / <Accordion>"
+    }
+  ],
+  "entry": "Screen.tsx"
+}

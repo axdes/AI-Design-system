@@ -1,0 +1,74 @@
+{
+  "ref": "Identity",
+  "level": "molecule",
+  "description": "A person as one glance: avatar beside name and secondary line — the face next to the name, never a face floating a row above it. Consolidated from the showcase's and admin-portal's hand-rolled identity blocks.",
+  "exports": [
+    "Identity"
+  ],
+  "main": "Identity",
+  "from": "@/components/Identity",
+  "slots": [],
+  "props": [
+    {
+      "name": "name",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "avatarName",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "secondary",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "src",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "vertical",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Identity/Identity.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "vertical": {
+      "prop": "vertical",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Avatar"
+  ],
+  "example": "<Identity name=\"Sarah Al-Mansouri\" secondary=\"Product designer\" size=\"lg\" />"
+}

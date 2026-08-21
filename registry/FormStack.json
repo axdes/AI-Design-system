@@ -1,0 +1,30 @@
+{
+  "ref": "FormStack",
+  "level": "molecule",
+  "description": "Vertical stack of Fields inside a modal or panel. The single shared layout for create/edit forms: every form gets identical rhythm from one place instead of each page hand-rolling its own flex column.",
+  "exports": [
+    "FormStack"
+  ],
+  "main": "FormStack",
+  "from": "@/components/FormStack",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/FormStack/FormStack.tsx",
+  "uses": [
+    "Field",
+    "Input",
+    "Select"
+  ],
+  "example": "const [name, setName] = useState('')\nconst [role, setRole] = useState('editor')\n/* FormStack owns the vertical rhythm between fields — do not add margins to\n * the <Field>s themselves. */\n\n<FormStack>\n  <Field label=\"Full name\" htmlFor=\"user-name\" required>\n    <Input id=\"user-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Role\" htmlFor=\"user-role\">\n    <Select\n      label=\"Role\"\n      value={role}\n      onChange={setRole}\n      options={[\n        { value: 'editor', label: 'Editor' },\n        { value: 'viewer', label: 'Viewer' },\n      ]}\n    />\n  </Field>\n</FormStack>"
+}

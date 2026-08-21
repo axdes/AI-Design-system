@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://design-system.local/content-model.schema.json",
+  "title": "Content model",
+  "description": "The step before the first screen spec of a project: the objects the product is about, their attributes, relations and actions (ORCA), agreed before any screen is invented. Screens are then DERIVED — each object gets its collection and/or detail, actions land on screens — and scripts/check-screen-spec.mjs verifies the derivation: every action names a spec that exists, every core attribute appears on the object's screen, and a spec of the project that no object claims is counted out loud.",
+  "type": "object",
+  "required": ["id", "title", "objects", "roles"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "The app folder name (apps/<id>) — it is how specs are traced back to this model."
+    },
+    "title": { "type": "string" },
+    "roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "Who acts on the objects. Every action's roles must come from this list — the CTA matrix's row headers."
+    },
+    "objects": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "The nouns that pass the litmus test: multiple instances, attributes of their own, purpose to the user. A noun that fails it is an attribute or a vocabulary, not an object.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "attributes"],
+        "additionalProperties": false,
+        "properties": {
+          "description": { "type": "string" },
+          "attributes": {
+            "type": "object",
+            "required": ["core"],
+            "additionalProperties": false,
+            "properties": {
+              "core": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "string" },
+                "description": "What makes an instance itself — the fields a screen about this object may not drop. Checked textually against the object's screen spec."
+              },
+              "meta": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Secondary facts. Not checked; recorded so the split core/meta is a decision, not an accident."
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["to", "cardinality"],
+              "additionalProperties": false,
+              "properties": {
+                "to": { "type": "string", "description": "Another object declared in this model." },
+                "cardinality": { "type": "string", "enum": ["one-to-one", "one-to-many", "many-to-one", "many-to-many"] },
+                "why": { "type": "string" }
+              }
+            }
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["verb", "roles"],
+              "additionalProperties": false,
+              "properties": {
+                "verb": { "type": "string", "description": "One cell of the CTA matrix: role does verb to object." },
+                "roles": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+                "screen": { "type": "string", "description": "The spec id where this action lives. An action with no screen is a requirement nobody placed — allowed while open, counted out loud." },
+                "constraint": { "type": "string", "description": "What limits the action, in one sentence (e.g. an Area Admin only within their own area)." },
+                "provenBy": { "type": "string", "pattern": "^[a-z0-9-]+#[a-z0-9-]+$", "description": "The behaviour that proves this action: <spec-id>#<behaviour-id>. Closes the chain requirement -> action -> behaviour -> test; the check fails when the behaviour does not exist." }
+              }
+            }
+          },
+          "screens": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Where this object lives: its collection and/or its detail. Both optional — but an object with neither is a model entry no screen carries, and the check says so.",
+            "properties": {
+              "collection": { "type": "string" },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "vocabularies": {
+      "type": "object",
+      "description": "Nouns that FAILED the litmus test, recorded with the reason — so the next session does not re-litigate why area is a field and not a screen.",
+      "additionalProperties": { "type": "string" }
+    },
+    "openQuestions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

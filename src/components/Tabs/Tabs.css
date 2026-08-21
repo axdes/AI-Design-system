@@ -1,0 +1,72 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tablist {
+  display: inline-flex;
+  gap: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  position: relative;
+  padding: var(--space-2) 0;
+  border: none;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--duration-fast);
+}
+.tab:hover { color: var(--foreground); }
+.tab[aria-selected="true"] { color: var(--foreground); }
+.tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -1px;
+  height: var(--space-2xs);
+  background: var(--primary);
+  border-radius: var(--radius-full);
+}
+.tab:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Pills appearance: a row of free-standing pills (filter-chip look), no
+ * baseline rule; the selected tab is a solid primary pill. */
+.tabs[data-appearance='pills'] .tablist {
+  gap: var(--space-2);
+  border-bottom: none;
+}
+.tabs[data-appearance='pills'] .tab {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--accent-foreground);
+  transition:
+    background var(--duration-fast),
+    color var(--duration-fast);
+}
+/* Hover lifts the pill to the elevated (white in light) surface, like the
+ * filled IconButton. Mixing the dark foreground into --accent via OKLCH drifts
+ * the hue through a muddy brown/red, so use the card surface instead. */
+.tabs[data-appearance='pills'] .tab:hover {
+  background: var(--card);
+  color: var(--accent-foreground);
+}
+.tabs[data-appearance='pills'] .tab[aria-selected='true'] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.tabs[data-appearance='pills'] .tab[aria-selected='true']::after {
+  content: none;
+}
+.tabs[data-appearance='pills'] .tab:focus-visible {
+  border-radius: var(--radius-full);
+}

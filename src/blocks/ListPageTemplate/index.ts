@@ -1,0 +1,1 @@
+export { ListPageTemplate } from './ListPageTemplate'

@@ -1,0 +1,98 @@
+/* Generic dropdown — used by UserMenu, CreateMenu, card action menus.
+ * Menu is rendered via Portal in document.body; position set inline by JS. */
+.dropdown { position: relative; }
+
+.dropdown-menu {
+  position: fixed;
+  z-index: var(--z-dropdown);
+  min-width: 13rem;   /* dropdown menu knob */
+  padding: var(--space-1);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border-radius: var(--popover-radius);
+  box-shadow: var(--shadow-popover);
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: none;
+  border-radius: var(--popover-item-radius);
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--font-base);
+  text-align: start;
+  cursor: pointer;
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+.dropdown-item:hover { background: var(--accent-soft); }
+.dropdown-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+/* aria-disabled, not the native attribute: pointer events stay on so a Tooltip
+ * can say why the action is unavailable. The click is blocked in the component. */
+.dropdown-item[data-disabled] { opacity: 0.45; cursor: not-allowed; }
+.dropdown-item[data-disabled]:hover { background: transparent; }
+.dropdown-item:focus-visible {
+  background: var(--accent-soft);
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(-1 * var(--ring-offset));
+}
+.dropdown-item .icon { color: var(--muted-foreground); }
+
+/* Destructive item (e.g. Delete) — danger text + icon. */
+.dropdown-item[data-tone="danger"],
+.dropdown-item[data-tone="danger"] .icon { color: var(--destructive); }
+.dropdown-item[data-tone="danger"]:hover { background: var(--destructive-soft); }
+
+/* Selection affordance — primary semibold label + trailing check pinned to
+ * the end. Reused by every select-style menu (Select, FilterDropdown,
+ * status menus). */
+.dropdown-item[data-selected] {
+  color: var(--primary-accent);
+  font-weight: var(--font-weight-semibold);
+}
+.dropdown-item[data-selected] .icon {
+  color: var(--primary-accent);
+}
+.dropdown-item .dropdown-item-check {
+  margin-inline-start: auto;
+  color: var(--primary-accent);
+}
+
+/* Shortcut hint — pushed to the trailing edge, quiet enough to read as a
+ * reminder rather than a second label. When an item is both selected and has a
+ * shortcut, the hint takes the auto margin and the check follows it. */
+.dropdown-item-shortcut {
+  margin-inline-start: auto;
+  color: var(--muted-foreground);
+  font-size: var(--font-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dropdown-item-shortcut ~ .dropdown-item-check { margin-inline-start: var(--space-2); }
+
+/* Section heading — reads as a label for the group under it, not as an item. */
+.dropdown-section-label {
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  color: var(--muted-foreground);
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+
+.dropdown-divider {
+  height: 1px;
+  margin: var(--space-1) 0;
+  background: var(--border);
+}

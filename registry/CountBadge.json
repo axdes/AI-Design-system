@@ -1,0 +1,75 @@
+{
+  "ref": "CountBadge",
+  "level": "molecule",
+  "description": "A count or dot pinned to the top-inline-end corner of whatever it wraps — notifications on a bell, unread on an avatar. Distinct from <Badge>, which is a standalone status pill. Hidden entirely when count is 0 and no dot.",
+  "exports": [
+    "CountBadge"
+  ],
+  "main": "CountBadge",
+  "from": "@/components/CountBadge",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "dot",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "values": [
+        "primary",
+        "danger",
+        "success"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/CountBadge/CountBadge.tsx",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "primary",
+        "danger",
+        "success"
+      ]
+    },
+    "dot": {
+      "prop": "dot",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "/* A count pinned to a control. Pass `label` so the number is announced; use\n * `dot` for a plain unread marker. This is NOT <Badge> (a standalone pill). */\n\n<CountBadge count={5} label=\"5 notifications\">\n  <Tooltip content=\"Notifications\">\n    <IconButton icon=\"message\" aria-label=\"Notifications\" />\n  </Tooltip>\n</CountBadge>"
+}

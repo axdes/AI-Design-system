@@ -1,0 +1,3193 @@
+{
+  "$description": "The design system token layer: settings (the knobs), primitives (the computed scales and the colour ramps) and the semantic roles. Dark-theme values ride on the token they belong to, under $extensions.",
+  "$extensions": {
+    "org.css-design-system": {
+      "generatedBy": "npm run tokens (scripts/gen-tokens.mjs)",
+      "source": "styles/*.css — edit the CSS, never this file",
+      "spec": "Design Tokens Community Group format, colors and dimensions as typed objects"
+    }
+  },
+  "space": {
+    "1": {
+      "$value": "calc(var(--grid-unit) * 1)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-1",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 4,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "2": {
+      "$value": "calc(var(--grid-unit) * 2)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-2",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 8,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "3": {
+      "$value": "calc(var(--grid-unit) * 3)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-3",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 12,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "4": {
+      "$value": "calc(var(--grid-unit) * 4)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-4",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 16,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "6": {
+      "$value": "calc(var(--grid-unit) * 6)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-6",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 24,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "8": {
+      "$value": "calc(var(--grid-unit) * 8)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-8",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 32,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "12": {
+      "$value": "calc(var(--grid-unit) * 12)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-12",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 48,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "16": {
+      "$value": "calc(var(--grid-unit) * 16)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-16",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 64,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "grid-unit": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--grid-unit",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "2xs": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$description": "sub-grid hairline (badge pad, switch thumb gap, dividers)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-2xs",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "section": {
+      "$value": "clamp(var(--space-8), 5vw, var(--space-16))",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--space-section",
+          "source": "styles/primitives.css",
+          "cssExpression": true
+        }
+      }
+    }
+  },
+  "font": {
+    "size": {
+      "xs": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "12px",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-xs",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "sm": {
+        "$value": {
+          "value": 0.8125,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "13px",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-sm",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "base": {
+        "$value": {
+          "value": 0.9375,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "15px — body / UI",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-base",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "md": {
+        "$value": {
+          "value": 1.0625,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "17px — large body / subheads (fills the base→lg gap)",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-md",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "lg": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "20px",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-lg",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "xl": {
+        "$value": {
+          "value": 1.5,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "24px",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-xl",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "2xl": {
+        "$value": {
+          "value": 1.875,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "30px",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-2xl",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "3xl": {
+        "$value": {
+          "value": 2.25,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "36px",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-3xl",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "4xl": {
+        "$value": {
+          "value": 2.75,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "44px",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-4xl",
+            "source": "styles/settings.css"
+          }
+        }
+      }
+    },
+    "family": {
+      "default": {
+        "$value": [
+          "Onest",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif"
+        ],
+        "$type": "fontFamily",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-family",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "display": {
+        "$value": [
+          "Commissioner",
+          "Onest",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif"
+        ],
+        "$type": "fontFamily",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-family-display",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "mono": {
+        "$value": [
+          "ui-monospace",
+          "Menlo",
+          "monospace"
+        ],
+        "$type": "fontFamily",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-family-mono",
+            "source": "styles/settings.css"
+          }
+        }
+      }
+    },
+    "weight": {
+      "light": {
+        "$value": 300,
+        "$type": "number",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-weight-light",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "regular": {
+        "$value": 400,
+        "$type": "number",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-weight-regular",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "medium": {
+        "$value": 500,
+        "$type": "number",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-weight-medium",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "semibold": {
+        "$value": 600,
+        "$type": "number",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--font-weight-semibold",
+            "source": "styles/settings.css"
+          }
+        }
+      }
+    }
+  },
+  "leading": {
+    "none": {
+      "$value": 1,
+      "$type": "number",
+      "$description": "single-line numerics",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--leading-none",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "tight": {
+      "$value": 1.15,
+      "$type": "number",
+      "$description": "headings",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--leading-tight",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "snug": {
+      "$value": 1.3,
+      "$type": "number",
+      "$description": "compact UI",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--leading-snug",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "normal": {
+      "$value": 1.5,
+      "$type": "number",
+      "$description": "body",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--leading-normal",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "relaxed": {
+      "$value": 1.65,
+      "$type": "number",
+      "$description": "long-form prose (report bodies)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--leading-relaxed",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "tracking": {
+    "wide": {
+      "$value": "0.08em",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--tracking-wide",
+          "source": "styles/settings.css",
+          "cssExpression": true
+        }
+      }
+    }
+  },
+  "radius": {
+    "default": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$description": "base (md) radius — keep a multiple of the grid",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--radius",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "rect": {
+      "$value": "calc( var(--radius) + var(--grid-unit) * 4 )",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--radius-rect",
+          "source": "styles/settings.css",
+          "cssExpression": true
+        }
+      }
+    },
+    "sm": {
+      "$value": "max(0px, calc(var(--radius) - var(--grid-unit)))",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--radius-sm",
+          "source": "styles/primitives.css",
+          "cssExpression": true
+        }
+      }
+    },
+    "md": {
+      "$value": "{radius.default}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--radius-md",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "lg": {
+      "$value": "calc(var(--radius) + var(--grid-unit))",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--radius-lg",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "resolved": {
+            "value": 12,
+            "unit": "px"
+          },
+          "resolvedType": "dimension"
+        }
+      }
+    },
+    "xl": {
+      "$value": "calc(var(--radius) + var(--grid-unit) * 2)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--radius-xl",
+          "source": "styles/primitives.css",
+          "cssExpression": true
+        }
+      }
+    },
+    "full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--radius-full",
+          "source": "styles/primitives.css"
+        }
+      }
+    }
+  },
+  "motion": {
+    "duration": {
+      "fast": {
+        "$value": {
+          "value": 120,
+          "unit": "ms"
+        },
+        "$type": "duration",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--duration-fast",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "normal": {
+        "$value": {
+          "value": 200,
+          "unit": "ms"
+        },
+        "$type": "duration",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--duration-normal",
+            "source": "styles/settings.css"
+          }
+        }
+      },
+      "slow": {
+        "$value": {
+          "value": 320,
+          "unit": "ms"
+        },
+        "$type": "duration",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--duration-slow",
+            "source": "styles/settings.css"
+          }
+        }
+      }
+    }
+  },
+  "ring": {
+    "width": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--ring-width",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "offset": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--ring-offset",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "bp": {
+    "sm": {
+      "$value": {
+        "value": 30,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "480px  — small phones up",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--bp-sm",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 48,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "768px  — tablets up",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--bp-md",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 62,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "992px  — laptops up",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--bp-lg",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 75,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "1200px — desktops up",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--bp-xl",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "2xl": {
+      "$value": {
+        "value": 100,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "1600px — wide screens up",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--bp-2xl",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "control": {
+    "height-sm": {
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "32px — compact buttons/chips",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-height-sm",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "height": {
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "40px",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-height",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "height-lg": {
+      "$value": {
+        "value": 3.25,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "52px — block/CTA buttons",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-height-lg",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "radius": {
+      "$value": "{radius.full}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-radius",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "padding-x": {
+      "$value": "{space.6}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-padding-x",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "font-size": {
+      "$value": "{font.size.base}",
+      "$description": "md (default)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-font-size",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "font-size-lg": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "lg — one modest notch up (16px)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-font-size-lg",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "font-weight": {
+      "$value": "{font.weight.semibold}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--control-font-weight",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "semantic": {
+    "shadow-popover": {
+      "$value": "0 4px 24px rgb(0 0 0 / 0.08)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--shadow-popover",
+          "source": "styles/settings.css",
+          "cssExpression": true,
+          "dark": "0 4px 24px rgb(0 0 0 / 0.40)",
+          "darkIsCssExpression": true
+        }
+      }
+    },
+    "shadow-card-hover": {
+      "$value": "0 0 24px rgb(0 0 0 / 0.06)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--shadow-card-hover",
+          "source": "styles/settings.css",
+          "cssExpression": true,
+          "dark": "0 0 24px rgb(0 0 0 / 0.30)",
+          "darkIsCssExpression": true
+        }
+      }
+    },
+    "shadow-sm": {
+      "$value": "0 1px 2px rgb(0 0 0 / 0.08)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--shadow-sm",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "dark": "0 1px 2px rgb(0 0 0 / 0.35)",
+          "darkIsCssExpression": true
+        }
+      }
+    },
+    "shadow-md": {
+      "$value": "0 2px 16px rgb(0 0 0 / 0.06)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--shadow-md",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "dark": "0 4px 12px rgb(0 0 0 / 0.40)",
+          "darkIsCssExpression": true
+        }
+      }
+    },
+    "shadow-lg": {
+      "$value": "0 12px 32px rgb(0 0 0 / 0.14)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--shadow-lg",
+          "source": "styles/primitives.css",
+          "cssExpression": true,
+          "dark": "0 12px 32px rgb(0 0 0 / 0.50)",
+          "darkIsCssExpression": true
+        }
+      }
+    },
+    "background": {
+      "$value": "{color.neutral.0}",
+      "$description": "white body",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--background",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.900}"
+        }
+      }
+    },
+    "foreground": {
+      "$value": "{color.neutral.900}",
+      "$description": "primary text — close to sa-dark-gray",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.100}"
+        }
+      }
+    },
+    "card": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--card",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.850}"
+        }
+      }
+    },
+    "card-foreground": {
+      "$value": "{color.neutral.900}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--card-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.100}"
+        }
+      }
+    },
+    "popover": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--popover",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.820}"
+        }
+      }
+    },
+    "popover-foreground": {
+      "$value": "{color.neutral.900}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--popover-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.100}"
+        }
+      }
+    },
+    "muted": {
+      "$value": "{color.neutral.100}",
+      "$description": "page surface — body bg (gray-100)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--muted",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.900}"
+        }
+      }
+    },
+    "muted-foreground": {
+      "$value": "{color.neutral.700}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--muted-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.400}"
+        }
+      }
+    },
+    "primary": {
+      "$value": "{color.brand.400}",
+      "$description": "#4638D3 brand indigo",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--primary",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.400}"
+        }
+      }
+    },
+    "primary-foreground": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--primary-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.0}"
+        }
+      }
+    },
+    "primary-hover": {
+      "$value": "{color.brand.500}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--primary-hover",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.500}"
+        }
+      }
+    },
+    "primary-accent": {
+      "$value": "{color.brand.400}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--primary-accent",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.200}"
+        }
+      }
+    },
+    "primary-soft": {
+      "$value": "{color.brand.50}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--primary-soft",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.900}"
+        }
+      }
+    },
+    "primary-soft-foreground": {
+      "$value": "{color.brand.700}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--primary-soft-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.200}"
+        }
+      }
+    },
+    "ai": {
+      "$value": "{violet.600}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--ai",
+          "source": "styles/semantic.css",
+          "dark": "{violet.400}"
+        }
+      }
+    },
+    "ai-foreground": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--ai-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.900}"
+        }
+      }
+    },
+    "ai-soft": {
+      "$value": "{violet.50}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--ai-soft",
+          "source": "styles/semantic.css",
+          "dark": "{violet.900}"
+        }
+      }
+    },
+    "ai-soft-foreground": {
+      "$value": "{violet.700}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--ai-soft-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{violet.200}"
+        }
+      }
+    },
+    "icon-muted": {
+      "$value": "{color.neutral.500}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--icon-muted",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.400}"
+        }
+      }
+    },
+    "secondary": {
+      "$value": "{color.neutral.100}",
+      "$description": "plain light grey on white surfaces; page-level contexts override to white",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--secondary",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.850}"
+        }
+      }
+    },
+    "secondary-hover": {
+      "$value": "{color.neutral.200}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--secondary-hover",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.800}"
+        }
+      }
+    },
+    "secondary-foreground": {
+      "$value": "{color.neutral.700}",
+      "$description": "text-secondary",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--secondary-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.100}"
+        }
+      }
+    },
+    "accent": {
+      "$value": "{color.neutral.200}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--accent",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.800}"
+        }
+      }
+    },
+    "accent-foreground": {
+      "$value": "{color.neutral.900}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--accent-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.100}"
+        }
+      }
+    },
+    "accent-soft": {
+      "$value": "{color.neutral.100}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--accent-soft",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.820}"
+        }
+      }
+    },
+    "surface-hover": {
+      "$value": "{color.neutral.50}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--surface-hover",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.820}"
+        }
+      }
+    },
+    "nav-active-bg": {
+      "$value": "{semantic.muted}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--nav-active-bg",
+          "source": "styles/semantic.css",
+          "dark": "{semantic.muted}"
+        }
+      }
+    },
+    "nav-active-fg": {
+      "$value": "{semantic.primary-accent}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--nav-active-fg",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.200}"
+        }
+      }
+    },
+    "scrim-fade": {
+      "$value": "linear-gradient(to top, var(--scrim-85), var(--scrim-70) 40%, var(--scrim-0) 80%)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--scrim-fade",
+          "source": "styles/semantic.css",
+          "cssExpression": true
+        }
+      }
+    },
+    "scrim-strong": {
+      "$value": "{scrim.85}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--scrim-strong",
+          "source": "styles/semantic.css"
+        }
+      }
+    },
+    "scrim-foreground": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--scrim-foreground",
+          "source": "styles/semantic.css"
+        }
+      }
+    },
+    "destructive": {
+      "$value": "{color.danger.800}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--destructive",
+          "source": "styles/semantic.css",
+          "dark": "{color.danger.800}"
+        }
+      }
+    },
+    "destructive-foreground": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--destructive-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.0}"
+        }
+      }
+    },
+    "success": {
+      "$value": "{color.success.800}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--success",
+          "source": "styles/semantic.css",
+          "dark": "{color.success.800}"
+        }
+      }
+    },
+    "success-foreground": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--success-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.0}"
+        }
+      }
+    },
+    "success-soft": {
+      "$value": "{color.success.50}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--success-soft",
+          "source": "styles/semantic.css",
+          "dark": "{color.success.900}"
+        }
+      }
+    },
+    "success-soft-foreground": {
+      "$value": "{color.success.800}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--success-soft-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.success.200}"
+        }
+      }
+    },
+    "success-emphasis": {
+      "$value": "{color.success.800}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--success-emphasis",
+          "source": "styles/semantic.css",
+          "dark": "{color.success.300}"
+        }
+      }
+    },
+    "warning": {
+      "$value": "{color.warning.700}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--warning",
+          "source": "styles/semantic.css",
+          "dark": "{color.warning.700}"
+        }
+      }
+    },
+    "warning-foreground": {
+      "$value": "{color.neutral.900}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--warning-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.900}"
+        }
+      }
+    },
+    "warning-soft": {
+      "$value": "{color.warning.100}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--warning-soft",
+          "source": "styles/semantic.css",
+          "dark": "{color.warning.950}"
+        }
+      }
+    },
+    "warning-soft-foreground": {
+      "$value": "{color.neutral.900}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--warning-soft-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.warning.200}"
+        }
+      }
+    },
+    "warning-emphasis": {
+      "$value": "{color.warning.950}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--warning-emphasis",
+          "source": "styles/semantic.css",
+          "dark": "{color.warning.300}"
+        }
+      }
+    },
+    "destructive-soft": {
+      "$value": "{color.danger.50}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--destructive-soft",
+          "source": "styles/semantic.css",
+          "dark": "{color.danger.950}"
+        }
+      }
+    },
+    "destructive-soft-foreground": {
+      "$value": "{color.danger.900}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--destructive-soft-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.danger.200}"
+        }
+      }
+    },
+    "destructive-emphasis": {
+      "$value": "{color.danger.800}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--destructive-emphasis",
+          "source": "styles/semantic.css",
+          "dark": "{color.danger.300}"
+        }
+      }
+    },
+    "success-border": {
+      "$value": "{color.success.300}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--success-border",
+          "source": "styles/semantic.css",
+          "dark": "{color.success.700}"
+        }
+      }
+    },
+    "warning-border": {
+      "$value": "{color.warning.700}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--warning-border",
+          "source": "styles/semantic.css",
+          "dark": "{color.warning.900}"
+        }
+      }
+    },
+    "destructive-border": {
+      "$value": "{color.danger.200}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--destructive-border",
+          "source": "styles/semantic.css",
+          "dark": "{color.danger.800}"
+        }
+      }
+    },
+    "primary-border": {
+      "$value": "{color.brand.200}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--primary-border",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.700}"
+        }
+      }
+    },
+    "border": {
+      "$value": "{color.neutral.200}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--border",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.820}"
+        }
+      }
+    },
+    "border-strong": {
+      "$value": "{color.neutral.300}",
+      "$description": "visible against --muted bg (sidebar rail, etc)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--border-strong",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.800}"
+        }
+      }
+    },
+    "input": {
+      "$value": "{color.neutral.300}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--input",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.820}"
+        }
+      }
+    },
+    "ring": {
+      "$value": "{color.brand.400}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--ring",
+          "source": "styles/semantic.css",
+          "dark": "{color.brand.300}"
+        }
+      }
+    },
+    "switch-track-off": {
+      "$value": "{color.neutral.300}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--switch-track-off",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.800}"
+        }
+      }
+    },
+    "switch-thumb-bg": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--switch-thumb-bg",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.100}"
+        }
+      }
+    },
+    "avatar-bg": {
+      "$value": "{color.neutral.700}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--avatar-bg",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.700}"
+        }
+      }
+    },
+    "avatar-foreground": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--avatar-foreground",
+          "source": "styles/semantic.css",
+          "dark": "{color.neutral.100}"
+        }
+      }
+    },
+    "overlay": {
+      "$value": "rgb(0 0 0 / 0.4)",
+      "$description": "modal/drawer backdrop",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--overlay",
+          "source": "styles/semantic.css",
+          "cssExpression": true,
+          "dark": "rgb(0 0 0 / 0.6)",
+          "darkIsCssExpression": true
+        }
+      }
+    }
+  },
+  "card": {
+    "radius": {
+      "$value": "{radius.xl}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--card-radius",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "padding": {
+      "$value": "{space.6}",
+      "$description": "24px",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--card-padding",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "padding-nested": {
+      "$value": "{space.3}",
+      "$description": "12px",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--card-padding-nested",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "shadow": {
+      "$value": "{semantic.shadow-popover}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--card-shadow",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "title-size": {
+      "$value": "{font.size.lg}",
+      "$description": "every <CardTitle> / section head. md read as body text beside 13px meta (owner, 2026-08-21); lg makes the rank visible at card-grid glance distance.",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--card-title-size",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "popover": {
+    "radius": {
+      "$value": "{radius.lg}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--popover-radius",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "item-radius": {
+      "$value": "{radius.md}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--popover-item-radius",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "icon": {
+    "sm": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "16px — inline with text, in buttons",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--icon-sm",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "20px — navigation, lists",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--icon-md",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "24px — emphasis, hero",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--icon-lg",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "40px — empty states",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--icon-xl",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "2xl": {
+      "$value": {
+        "value": 5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "80px — large empty-state illustrations",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--icon-2xl",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "stroke": {
+      "$value": 2,
+      "$type": "number",
+      "$description": "line thickness for all icons (= Lucide default; 1.5 read too thin)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--icon-stroke",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "avatar": {
+    "sm": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "24px",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--avatar-sm",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "32px",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--avatar-md",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "40px",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--avatar-lg",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "80px — hero",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--avatar-xl",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "2xl": {
+      "$value": {
+        "value": 8,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "128px — profile header",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--avatar-2xl",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "sidebar": {
+    "width": {
+      "$value": {
+        "value": 16.25,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "260px — expanded",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--sidebar-width",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "width-collapsed": {
+      "$value": {
+        "value": 5.625,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "icon pill rail",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--sidebar-width-collapsed",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "drawer-width": {
+      "$value": "min(20rem, 85vw)",
+      "$description": "mobile drawer",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--sidebar-drawer-width",
+          "source": "styles/settings.css",
+          "cssExpression": true
+        }
+      }
+    },
+    "rail-item-size": {
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "40px — collapsed icon button (fixed component size)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--sidebar-rail-item-size",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "page": {
+    "max-width": {
+      "$value": {
+        "value": 96,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "cap for header + main content (was 80rem; one tier up)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--page-max-width",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "prose": {
+    "max-width": {
+      "$value": {
+        "value": 32,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "narrative / error pages",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--prose-max-width",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "side": {
+    "panel-width": {
+      "$value": {
+        "value": 24,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "right rail content panel (Comments/Versions/etc)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--side-panel-width",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "chat": {
+    "sidebar-width": {
+      "$value": {
+        "value": 22.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "360px — chat-history list column",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--chat-sidebar-width",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "panel-width": {
+      "$value": {
+        "value": 24,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "right-side form panel",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--chat-panel-width",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "message-max-width": {
+      "$value": {
+        "value": 44,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "readable message column",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--chat-message-max-width",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "logo": {
+    "height": {
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "full wordmark",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--logo-height",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "mark-height": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "collapsed mark inside the primary cap",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--logo-mark-height",
+          "source": "styles/settings.css"
+        }
+      }
+    }
+  },
+  "color": {
+    "brand": {
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9294,
+            0.9255,
+            0.9882
+          ],
+          "alpha": 1,
+          "hex": "#edecfc"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-50",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "100": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8471,
+            0.8353,
+            0.9765
+          ],
+          "alpha": 1,
+          "hex": "#d8d5f9"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-100",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "200": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7176,
+            0.698,
+            0.949
+          ],
+          "alpha": 1,
+          "hex": "#b7b2f2"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-200",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5255,
+            0.502,
+            0.9059
+          ],
+          "alpha": 1,
+          "hex": "#8680e7"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-300",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2745,
+            0.2196,
+            0.8275
+          ],
+          "alpha": 1,
+          "hex": "#4638d3"
+        },
+        "$type": "color",
+        "$description": "Primary",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-400",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2314,
+            0.1843,
+            0.7137
+          ],
+          "alpha": 1,
+          "hex": "#3b2fb6"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-500",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2,
+            0.1569,
+            0.6118
+          ],
+          "alpha": 1,
+          "hex": "#33289c"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-600",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1647,
+            0.1294,
+            0.5059
+          ],
+          "alpha": 1,
+          "hex": "#2a2181"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-700",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "800": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1294,
+            0.102,
+            0.4
+          ],
+          "alpha": 1,
+          "hex": "#211a66"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-800",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "900": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0902,
+            0.0706,
+            0.2784
+          ],
+          "alpha": 1,
+          "hex": "#171247"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--brand-900",
+            "source": "styles/primitives.css"
+          }
+        }
+      }
+    },
+    "neutral": {
+      "0": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#ffffff"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-0",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9647,
+            0.9843,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#f6fbff"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-50",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "100": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9451,
+            0.9647,
+            0.9922
+          ],
+          "alpha": 1,
+          "hex": "#f1f6fd"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-100",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "200": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9216,
+            0.9412,
+            0.9686
+          ],
+          "alpha": 1,
+          "hex": "#ebf0f7"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-200",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8667,
+            0.8863,
+            0.9137
+          ],
+          "alpha": 1,
+          "hex": "#dde2e9"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-300",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7333,
+            0.749,
+            0.7765
+          ],
+          "alpha": 1,
+          "hex": "#bbbfc6"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-400",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6118,
+            0.6275,
+            0.6549
+          ],
+          "alpha": 1,
+          "hex": "#9ca0a7"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-500",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.451,
+            0.4667,
+            0.4902
+          ],
+          "alpha": 1,
+          "hex": "#73777d"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-600",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3725,
+            0.3882,
+            0.4118
+          ],
+          "alpha": 1,
+          "hex": "#5f6369"
+        },
+        "$type": "color",
+        "$description": "Primary (body text)",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-700",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "800": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.251,
+            0.2667,
+            0.2902
+          ],
+          "alpha": 1,
+          "hex": "#40444a"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-800",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "820": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1765,
+            0.1922,
+            0.2157
+          ],
+          "alpha": 1,
+          "hex": "#2d3137"
+        },
+        "$type": "color",
+        "$description": "dark-theme subtle border (between card and accent)",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-820",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "850": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1451,
+            0.1608,
+            0.1843
+          ],
+          "alpha": 1,
+          "hex": "#25292f"
+        },
+        "$type": "color",
+        "$description": "dark-theme card elevation step (subtle above bg)",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-850",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "900": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1216,
+            0.1373,
+            0.1569
+          ],
+          "alpha": 1,
+          "hex": "#1f2328"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-900",
+            "source": "styles/primitives.css"
+          }
+        }
+      }
+    },
+    "success": {
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9569,
+            0.9765,
+            0.902
+          ],
+          "alpha": 1,
+          "hex": "#f4f9e6"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-50",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "100": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8902,
+            0.9412,
+            0.7608
+          ],
+          "alpha": 1,
+          "hex": "#e3f0c2"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-100",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "200": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8039,
+            0.898,
+            0.6039
+          ],
+          "alpha": 1,
+          "hex": "#cde59a"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-200",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.702,
+            0.851,
+            0.4196
+          ],
+          "alpha": 1,
+          "hex": "#b3d96b"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-300",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6118,
+            0.7961,
+            0.2196
+          ],
+          "alpha": 1,
+          "hex": "#9ccb38"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-400",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5176,
+            0.7412,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#84bd00"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-500",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4627,
+            0.6627,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#76a900"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-600",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3961,
+            0.5725,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#659200"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-700",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "800": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3216,
+            0.4667,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#527700"
+        },
+        "$type": "color",
+        "$description": "Primary",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-800",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "900": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2353,
+            0.3451,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#3c5800"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--success-900",
+            "source": "styles/primitives.css"
+          }
+        }
+      }
+    },
+    "warning": {
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.9961,
+            0.9137
+          ],
+          "alpha": 1,
+          "hex": "#fffee9"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-50",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "100": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.9804,
+            0.7843
+          ],
+          "alpha": 1,
+          "hex": "#fffac8"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-100",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "200": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.9647,
+            0.6392
+          ],
+          "alpha": 1,
+          "hex": "#fff6a3"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-200",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9961,
+            0.9451,
+            0.498
+          ],
+          "alpha": 1,
+          "hex": "#fef17f"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-300",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9882,
+            0.9255,
+            0.3882
+          ],
+          "alpha": 1,
+          "hex": "#fcec63"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-400",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9765,
+            0.9059,
+            0.2902
+          ],
+          "alpha": 1,
+          "hex": "#f9e74a"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-500",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.8706,
+            0.302
+          ],
+          "alpha": 1,
+          "hex": "#ffde4d"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-600",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.7843,
+            0.2745
+          ],
+          "alpha": 1,
+          "hex": "#ffc846"
+        },
+        "$type": "color",
+        "$description": "Primary",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-700",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "800": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9882,
+            0.6902,
+            0.2431
+          ],
+          "alpha": 1,
+          "hex": "#fcb03e"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-800",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "900": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9647,
+            0.5373,
+            0.1882
+          ],
+          "alpha": 1,
+          "hex": "#f68930"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-900",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "950": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2275,
+            0.1647,
+            0.0196
+          ],
+          "alpha": 1,
+          "hex": "#3a2a05"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-950",
+            "source": "styles/primitives.css"
+          }
+        }
+      }
+    },
+    "danger": {
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9961,
+            0.9294,
+            0.9373
+          ],
+          "alpha": 1,
+          "hex": "#feedef"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-50",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "100": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9922,
+            0.8235,
+            0.8314
+          ],
+          "alpha": 1,
+          "hex": "#fdd2d4"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-100",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "200": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9255,
+            0.6392,
+            0.6235
+          ],
+          "alpha": 1,
+          "hex": "#eca39f"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-200",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8863,
+            0.5059,
+            0.4784
+          ],
+          "alpha": 1,
+          "hex": "#e2817a"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-300",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9216,
+            0.4078,
+            0.3451
+          ],
+          "alpha": 1,
+          "hex": "#eb6858"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-400",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9412,
+            0.3686,
+            0.2549
+          ],
+          "alpha": 1,
+          "hex": "#f05e41"
+        },
+        "$type": "color",
+        "$description": "Primary",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-500",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8824,
+            0.3333,
+            0.2471
+          ],
+          "alpha": 1,
+          "hex": "#e1553f"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-600",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8118,
+            0.2941,
+            0.2235
+          ],
+          "alpha": 1,
+          "hex": "#cf4b39"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-700",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "800": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7608,
+            0.2745,
+            0.2
+          ],
+          "alpha": 1,
+          "hex": "#c24633"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-800",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "900": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6941,
+            0.2431,
+            0.1608
+          ],
+          "alpha": 1,
+          "hex": "#b13e29"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-900",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "950": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2314,
+            0.0784,
+            0.0627
+          ],
+          "alpha": 1,
+          "hex": "#3b1410"
+        },
+        "$type": "color",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-950",
+            "source": "styles/primitives.css"
+          }
+        }
+      }
+    }
+  },
+  "scrim": {
+    "0": {
+      "$value": "rgb(16 19 24 / 0)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--scrim-0",
+          "source": "styles/primitives.css",
+          "cssExpression": true
+        }
+      }
+    },
+    "70": {
+      "$value": "rgb(16 19 24 / 0.72)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--scrim-70",
+          "source": "styles/primitives.css",
+          "cssExpression": true
+        }
+      }
+    },
+    "85": {
+      "$value": "rgb(16 19 24 / 0.85)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--scrim-85",
+          "source": "styles/primitives.css",
+          "cssExpression": true
+        }
+      }
+    }
+  },
+  "violet": {
+    "50": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9608,
+          0.9529,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#f5f3ff"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-50",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "100": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9294,
+          0.9137,
+          0.9961
+        ],
+        "alpha": 1,
+        "hex": "#ede9fe"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-100",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "200": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8667,
+          0.8392,
+          0.9961
+        ],
+        "alpha": 1,
+        "hex": "#ddd6fe"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-200",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "300": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7686,
+          0.7098,
+          0.9922
+        ],
+        "alpha": 1,
+        "hex": "#c4b5fd"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-300",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "400": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6549,
+          0.5451,
+          0.9804
+        ],
+        "alpha": 1,
+        "hex": "#a78bfa"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-400",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "500": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5451,
+          0.3608,
+          0.9647
+        ],
+        "alpha": 1,
+        "hex": "#8b5cf6"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-500",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "600": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4863,
+          0.2275,
+          0.9294
+        ],
+        "alpha": 1,
+        "hex": "#7c3aed"
+      },
+      "$type": "color",
+      "$description": "Primary",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-600",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "700": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4275,
+          0.1569,
+          0.851
+        ],
+        "alpha": 1,
+        "hex": "#6d28d9"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-700",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "800": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.3569,
+          0.1294,
+          0.7137
+        ],
+        "alpha": 1,
+        "hex": "#5b21b6"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-800",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "900": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.298,
+          0.1137,
+          0.5843
+        ],
+        "alpha": 1,
+        "hex": "#4c1d95"
+      },
+      "$type": "color",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--violet-900",
+          "source": "styles/primitives.css"
+        }
+      }
+    }
+  },
+  "gradient": {
+    "brand": {
+      "$value": "linear-gradient(-135deg, var(--brand-400) 0%, var(--brand-500) 50%, var(--brand-700) 100%)",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--gradient-brand",
+          "source": "styles/primitives.css",
+          "cssExpression": true
+        }
+      }
+    }
+  },
+  "z": {
+    "sticky": {
+      "$value": 50,
+      "$type": "number",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--z-sticky",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "modal": {
+      "$value": 100,
+      "$type": "number",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--z-modal",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "dropdown": {
+      "$value": 200,
+      "$type": "number",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--z-dropdown",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "toast": {
+      "$value": 300,
+      "$type": "number",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--z-toast",
+          "source": "styles/primitives.css"
+        }
+      }
+    },
+    "tooltip": {
+      "$value": 400,
+      "$type": "number",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--z-tooltip",
+          "source": "styles/primitives.css"
+        }
+      }
+    }
+  }
+}

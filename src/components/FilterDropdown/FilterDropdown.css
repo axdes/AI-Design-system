@@ -1,0 +1,167 @@
+/* Pill trigger (control family metrics): gray label, the selection reads inside
+ * the pill. Active state shows a circular count badge.
+ * Light: the white pill separates from the grey page on its own, so the edge
+ * stays transparent (a solid border read too heavy in review). Dark: card and
+ * page sit one neutral stop apart, so the pill needs an outline to read as a
+ * control. light-dark keeps this token-only, no per-theme selector. */
+.filter-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-height);
+  padding-inline: var(--space-4);
+  border: 1px solid light-dark(transparent, var(--border-strong));
+  border-radius: var(--radius-full);
+  background: var(--card);
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--duration-fast);
+}
+.filter-trigger:hover,
+.filter-trigger[data-open] {
+  color: var(--foreground);
+}
+.filter-trigger > .icon {     /* chevron only — keep badge X inheriting filter-count color */
+  color: var(--icon-muted);
+}
+
+/* Value-on-trigger mode ("Label: Today, 7 days"): the label keeps the muted
+ * trigger color, the selected values read as the strong part. */
+/* The value half of the trigger always reads as the current choice ("All"
+ * included): primary, semibold - only the "Label:" prefix stays muted. */
+.filter-value {
+  color: var(--primary-accent);
+  font-weight: var(--font-weight-semibold);
+  max-width: 16rem; /* long multi-select lists ellipsize, menu shows the rest */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Count badge — small primary circle with the active-filter count.
+ * Decorative only (aria-hidden); to clear, use the "Clear all" row in the menu. */
+.filter-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--icon-md);
+  height: var(--icon-md);
+  padding: 0 var(--space-1);
+  margin-inline-start: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-none);
+}
+
+/* Selection styling (primary semibold label + trailing check) is handled
+ * centrally by DropdownItem's `selected`; the All row has nothing custom. */
+
+/* Trigger statistics badge: the count for the current selection, shown on the
+ * closed trigger (e.g. "Status: All 28"). Soft pill so it reads as a stat, not
+ * an active-filter count (that is the primary-filled .filter-count). */
+.filter-trigger-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--icon-md);
+  height: var(--icon-md);
+  padding-inline: var(--space-2);
+  margin-inline-start: calc(-1 * var(--space-1)); /* trim the trigger's gap-2 to a tighter, even spacing */
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
+  color: var(--primary-soft-foreground);
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-none);
+}
+
+/* Per-row count badge: rolls the status statistics into the filter menu. Pinned
+ * to the end; on a selected row the trailing check follows it (gap-separated). */
+.filter-option-count {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: var(--icon-md);
+  height: var(--icon-md);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-none);
+}
+.dropdown-item[data-selected] .filter-option-count {
+  background: var(--primary-soft);
+  color: var(--primary-soft-foreground);
+}
+/* Selected affordance lives INSIDE the count badge (number + check together),
+ * so suppress the row's default trailing check whenever a count badge exists. */
+.filter-menu .dropdown-item:has(.filter-option-count) .dropdown-item-check {
+  display: none;
+}
+.filter-option-check {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: currentColor;
+}
+
+/* The search row of a `searchable` filter: pinned to the top of the menu so it
+ * stays reachable while the (long) option list scrolls under it. Painted in
+ * the popover surface or the rows slide through it. */
+.filter-menu-search {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-sticky);
+  background: var(--popover);
+  border-block-end: 1px solid var(--border);
+  margin-block-end: var(--space-1);
+}
+/* Built into the panel, not a control ON it: the menu itself is the surface,
+ * so the field drops its pill chrome — no border, no fill, no radius — and the
+ * hairline under the row is the only thing separating it from the options. */
+.filter-menu-search .search-input,
+.filter-menu-search .search-input[data-open] {
+  width: 100%;
+  border-color: transparent;
+  background: transparent;
+  border-radius: 0;
+}
+/* Focus reads on the row's own hairline, not a box: a border drawn around a
+ * flush row un-builds it from the panel. The line brightening is still a
+ * visible keyboard indicator, which focus must keep. */
+.filter-menu-search .search-input[data-open]:focus-within {
+  border-color: transparent;
+}
+.filter-menu-search:focus-within {
+  border-block-end-color: var(--primary-accent);
+}
+
+/* Not a menu item: there is nothing to pick, so it must not look pickable. */
+.filter-menu-empty {
+  padding: var(--space-2) var(--space-3);
+  color: var(--muted-foreground);
+  font-size: var(--font-sm);
+}
+
+/* The trigger with its own selection tags stacked under it (`showTags`). */
+.filter-dropdown-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

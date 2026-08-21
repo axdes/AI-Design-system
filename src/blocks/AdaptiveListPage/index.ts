@@ -1,0 +1,1 @@
+export { AdaptiveListPage } from './AdaptiveListPage'

@@ -1,0 +1,37 @@
+{
+  "$schema": "../schema.json",
+  "_why": "A deliberately WRONG spec, never listed by the gate (the runner reads only screen-specs/*.json, not this folder). src/test/screen-spec-rules.test.ts feeds it to check-screen-spec.mjs and demands a red result: a rules engine that cannot fail a cards-where-columns-belong screen is a hole, not a check. Three planted defects: cards for a compare task over 6-field records (R1), a Table over an unbounded set (H1), and a primaryQuestion the first answering zone does not answer.",
+  "id": "wrong-representation",
+  "title": "Wrong representation fixture",
+  "goal": "Trip the decision-layer checks on purpose.",
+  "primaryQuestion": "Which server is failing?",
+  "audience": "expert",
+  "archetype": "list",
+  "template": "ListPageTemplate",
+  "zones": [
+    {
+      "name": "toolbar",
+      "task": "find",
+      "purpose": "Narrow the fleet.",
+      "components": ["SearchInput", "FilterBar", "FilterDropdown"]
+    },
+    {
+      "name": "content",
+      "task": "compare",
+      "data": { "item": "record", "cardinality": "many", "fields": 6 },
+      "answers": "How is the fleet doing overall?",
+      "purpose": "One card per server with six metrics in prose — the comparison the user came for is impossible.",
+      "components": ["Card", "CardTitle", "MetaItem", "Badge"]
+    },
+    {
+      "name": "history",
+      "task": "scan",
+      "data": { "item": "record", "cardinality": "unbounded", "fields": 3 },
+      "purpose": "Every event ever, in a table that renders them all.",
+      "components": ["Table"]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState icon=search when nothing matches."
+  }
+}

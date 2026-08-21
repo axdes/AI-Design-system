@@ -1,0 +1,44 @@
+.progresscircle {
+  /* Ring diameter is a component-private knob; the stroke scales with the
+   * viewBox, so one number sizes everything. --pct is set inline from value. */
+  --progresscircle-size: 3rem;
+  --pct: 0;
+  display: inline-grid;
+  place-items: center;
+}
+.progresscircle[data-size="sm"] { --progresscircle-size: 2.25rem; }
+.progresscircle[data-size="lg"] { --progresscircle-size: 4rem; }
+
+.progresscircle-svg,
+.progresscircle-value { grid-area: 1 / 1; }
+
+.progresscircle-svg {
+  inline-size: var(--progresscircle-size);
+  block-size: var(--progresscircle-size);
+  /* Start at 12 o'clock; the dash itself runs clockwise. */
+  transform: rotate(-90deg);
+}
+
+.progresscircle-track,
+.progresscircle-fill {
+  fill: none;
+  stroke-width: 3.5;
+}
+.progresscircle-track { stroke: var(--accent); }
+.progresscircle-fill {
+  stroke: var(--primary);
+  stroke-linecap: round;
+  stroke-dasharray: var(--pct) 100;
+  transition: stroke-dasharray var(--duration-normal);
+}
+.progresscircle[data-tone="success"] .progresscircle-fill { stroke: var(--success); }
+.progresscircle[data-tone="warning"] .progresscircle-fill { stroke: var(--warning); }
+.progresscircle[data-tone="danger"] .progresscircle-fill { stroke: var(--destructive); }
+
+.progresscircle-value {
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+}
+.progresscircle[data-size="lg"] .progresscircle-value { font-size: var(--font-sm); }

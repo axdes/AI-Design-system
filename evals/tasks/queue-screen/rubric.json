@@ -1,0 +1,17 @@
+{
+  "id": "queue-screen",
+  "title": "Expense approvals queue",
+  "why": "The first task that measures APPROPRIATENESS, not only conformance: a given queue of records with comparable fields is a worklist — rows, density, status at a glance — and the plausible wrong answer (a tile per record) is fully DS-conformant code that still fails the user. Exists so the decision layer (screen-specs/selection-rules.json, R1/R8) has an eval number: every component in the wrong answer is real, every prop legal, and only the representation is wrong.",
+  "required": ["Table", "Badge", "Button", "EmptyState"],
+  "forbidden": [
+    {
+      "pattern": "<Card\\s[^>]*key=",
+      "message": "a Card per record — a queue is compared and worked through, which needs rows, not tiles (selection rules R1/R8): use <Table>"
+    },
+    {
+      "pattern": "<LinkTile",
+      "message": "tiles are for destinations (hub), not for records to process (selection rules R9 vs R8)"
+    }
+  ],
+  "entry": "Screen.tsx"
+}

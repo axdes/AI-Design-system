@@ -1,0 +1,26 @@
+{
+  "_": [
+    "Pairs that scripts/lint-twins.mjs flags as alike and that a person has looked at.",
+    "",
+    "An entry is not permission to duplicate. It is a claim that the two are",
+    "genuinely different, plus the condition under which that claim expires \u2014 so",
+    "the next person can check the claim instead of inheriting it.",
+    "",
+    "If a pair stops resembling its twin, the check fails on the stale entry: an",
+    "excuse nobody needs any more would silently waive a real duplicate later."
+  ],
+  "pairs": {
+    "DatePicker ~ DateRangePicker": {
+      "separated": "one date versus an inclusive span: DatePicker's value is a single Date and one pick closes the calendar; DateRangePicker's value is {start, end}, it needs two picks, orders a backwards pair, and its calendar paints the band between the edges. The trigger deliberately wears the same field styling, which is why the markup matches.",
+      "reopenIf": "DatePicker learns to accept a span, or DateRangePicker collapses to one pick - a single field doing both jobs is then the smaller thing."
+    },
+    "RangeSlider ~ Slider": {
+      "separated": "one thumb versus two on one track: Slider's value is a number, RangeSlider's is an ordered [start, end] tuple and each native input clamps against the other. Folding them would make value's type conditional on a prop, and a discriminated props union is exactly what the registry parser cannot express (the Combobox lesson).",
+      "reopenIf": "the registry learns to publish a union-typed value, or a third bounded-pair control appears - then one Slider with a range mode is the smaller thing."
+    },
+    "Meter ~ ProgressBar": {
+      "separated": "different ARIA roles: role=meter is a reading on a fixed scale, role=progressbar is advance toward completion. Screen readers announce them differently, and only Meter has a target marker and tick labels while only ProgressBar has an indeterminate state.",
+      "reopenIf": "either one grows the other's distinguishing feature \u2014 a target marker on ProgressBar, or an indeterminate state on Meter \u2014 because at that point one component with two roles is the smaller thing."
+    }
+  }
+}

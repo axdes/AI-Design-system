@@ -1,0 +1,61 @@
+{
+  "ref": "RenameDialog",
+  "level": "block",
+  "description": "Give one thing a new name. A `<FormModal>` with a single field, Enter to save; an empty name cannot submit and an unchanged one closes without `onSave`.",
+  "exports": [
+    "RenameDialog"
+  ],
+  "main": "RenameDialog",
+  "from": "@/blocks/RenameDialog",
+  "slots": [],
+  "props": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "initial",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "confirmLabel",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "cancelLabel",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "onSave",
+      "type": "(name: string) => void",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/blocks/RenameDialog/RenameDialog.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Field",
+    "Input"
+  ],
+  "example": "const [open, setOpen] = useState(false)\n/* The name lives with the row: `initial` seeds the field, `onSave` fires only\n * when the user actually changed it. */\nconst [name, setName] = useState('Kickoff call')\n\n<>\n  <Button variant=\"secondary\" onClick={() => setOpen(true)}>Rename</Button>\n  <RenameDialog\n    open={open}\n    title=\"Rename recording\"\n    label=\"Name\"\n    initial={name}\n    onClose={() => setOpen(false)}\n    onSave={(next) => { setName(next); setOpen(false) }}\n  />\n</>"
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "../content-model.schema.json",
+  "id": "admin-portal",
+  "title": "Genesys notification routing — admin portal",
+  "roles": ["superuser", "area-admin"],
+  "objects": {
+    "user": {
+      "description": "One person mapped to Genesys notification routing: the record the whole portal exists to keep correct. Identified to the operator by name and email; tied to Genesys by the Dynamic Group ID.",
+      "attributes": {
+        "core": [
+          "name",
+          "email",
+          "phone",
+          "employeeId",
+          "status",
+          "area",
+          "organization",
+          "organizationNumber",
+          "recipientRole",
+          "genesysGroupId"
+        ]
+      },
+      "relations": [
+        { "to": "identity", "cardinality": "many-to-one", "why": "every read and write of a user is scoped through the signed-in identity's role and area — row-level access is the product's second requirement" }
+      ],
+      "actions": [
+        { "verb": "find", "roles": ["superuser", "area-admin"], "screen": "admin-users", "constraint": "an Area Admin only ever sees their own area's users — not even the other areas' names or counts", "provenBy": "admin-users#area-admin-sees-only-own-area" },
+        { "verb": "add", "roles": ["superuser", "area-admin"], "screen": "admin-users", "constraint": "an Area Admin's Area field is pre-filled and disabled; the Superuser chooses among all five", "provenBy": "admin-users#area-locked-in-form" },
+        { "verb": "edit", "roles": ["superuser", "area-admin"], "screen": "admin-users", "constraint": "same area scoping as add; the store refuses what the UI never offers", "provenBy": "admin-users#cross-area-mutation-refused" },
+        { "verb": "delete", "roles": ["superuser", "area-admin"], "screen": "admin-users", "constraint": "confirmation first, destructive confirm colour — it may never look like a save", "provenBy": "admin-users#delete-confirms-first" }
+      ],
+      "screens": { "collection": "admin-users" }
+    },
+    "identity": {
+      "description": "Who is operating the portal: the Superuser, or one Area Admin per area. Not a record to manage but the lens every other record is read through — which is why it is an object and not a session detail.",
+      "attributes": {
+        "core": ["name", "role", "area"]
+      },
+      "actions": [
+        { "verb": "sign-in", "roles": ["superuser", "area-admin"], "screen": "admin-login", "constraint": "landing goes straight to the user list — no dashboard between (requirement 4.1)", "provenBy": "admin-login#lands-on-user-list" },
+        { "verb": "sign-out", "roles": ["superuser", "area-admin"], "screen": "admin-users", "constraint": "lives in the UserMenu at the header's far end, where every app here puts it" }
+      ],
+      "screens": {}
+    }
+  },
+  "vocabularies": {
+    "area": "five fixed values. Fails the litmus test: no screen shows an area as an instance with a life of its own — it is the scope on a user and on an identity.",
+    "organization": "eight fixed values plus a user-defined number; a field on the user, nothing more.",
+    "recipientRole": "21 fixed values — long enough for a Combobox, still a vocabulary: nobody views or edits a recipient role itself."
+  },
+  "openQuestions": [
+    "The real deployment authenticates against the corporate identity provider; whether area arrives as a claim or from the portal's records is a backend decision this model inherits from the login spec.",
+    "If a deployment ever manages areas themselves (rename, add a sixth), area stops being a vocabulary and becomes an object with its own collection screen — that is the condition that reopens this split."
+  ]
+}

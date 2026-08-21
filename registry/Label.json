@@ -1,0 +1,34 @@
+{
+  "ref": "Label",
+  "level": "atom",
+  "description": "The text that names a control and is tied to it by htmlFor. Field already composes one; reach for it directly only outside a Field.",
+  "exports": [
+    "Label"
+  ],
+  "main": "Label",
+  "from": "@/components/Label",
+  "slots": [],
+  "props": [
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Label/Label.tsx",
+  "inherits": "LabelHTMLAttributes<HTMLLabelElement>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md"
+      ]
+    }
+  },
+  "example": "<Label>Email address</Label>"
+}

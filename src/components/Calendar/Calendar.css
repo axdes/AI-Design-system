@@ -1,0 +1,57 @@
+.calendar {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  inline-size: 18rem;
+}
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.calendar-title {
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--foreground);
+}
+.calendar-weekdays,
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-2xs);
+}
+.calendar-grid { display: flex; flex-direction: column; gap: var(--space-2xs); }
+.calendar-weekday {
+  padding-block: var(--space-1);
+  text-align: center;
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--muted-foreground);
+}
+.calendar-day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: none;
+  /* Square cell + full radius = a circular day, so the selected/hover/today
+   * states read as circles like the rest of the system. */
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--font-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background var(--duration-fast);
+}
+.calendar-day:hover { background: var(--accent-soft); }
+.calendar-day:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * -1); }
+.calendar-day[data-outside] { color: var(--muted-foreground); opacity: 0.5; }
+.calendar-day[data-today]:not([data-selected]) { box-shadow: inset 0 0 0 1px var(--border-strong); }
+.calendar-day[data-selected] { background: var(--primary); color: var(--primary-foreground); font-weight: var(--font-weight-semibold); }
+/* A DateRangePicker's span: the days between the two selected edges read as a
+ * soft band, square so the band is continuous rather than a row of circles. */
+.calendar-day[data-inrange] { background: var(--accent-soft); border-radius: 0; }
+.calendar-day:disabled { opacity: 0.3; cursor: not-allowed; }

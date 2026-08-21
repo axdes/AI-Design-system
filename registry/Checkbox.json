@@ -1,0 +1,49 @@
+{
+  "ref": "Checkbox",
+  "level": "atom",
+  "description": "Custom checkbox: a real <input> (kept accessible + form-native) visually replaced by a themed box. Sizing/colors come from tokens, like the controls.",
+  "exports": [
+    "Checkbox"
+  ],
+  "main": "Checkbox",
+  "from": "@/components/Checkbox",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "indeterminate",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Checkbox/Checkbox.tsx",
+  "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "const [checked, setChecked] = useState(false)\n\n<Checkbox\n  label=\"Email me when a review is assigned\"\n  checked={checked}\n  onChange={(e) => setChecked(e.target.checked)}\n/>"
+}

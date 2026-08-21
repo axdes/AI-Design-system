@@ -1,0 +1,138 @@
+/* Page header — transparent, inherits muted bg from app-shell.
+ * Layout rule: content area is flush left to the sidebar column.
+ *
+ * Layout:  [title] [inline tools] (auto spacer) [trailing actions]
+ *   - inline sits right next to title (search, filters)
+ *   - actions are pinned to the far end via margin-inline-start: auto
+ */
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  padding-block: var(--space-4);   /* symmetric — same gap above title and below */
+  padding-inline: var(--space-8);  /* match .page-content so header + content align */
+  background: var(--muted);   /* opaque so content scrolls under, not through */
+}
+
+.page-header-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  /* No wrapping above the phone breakpoint, and this is the load-bearing half of the truncation
+   * below: flex wraps BEFORE it shrinks, so with wrap on, a long title jumped to its own line and
+   * dropped the actions underneath it while never once reaching the ellipsis. Below 48rem the
+   * media query turns wrapping back on, where a second row is the right answer. */
+  flex-wrap: nowrap;
+}
+
+/* Title + optional subtitle stack as one block, and it is the block that gives way: a long record
+ * name used to take the whole row and push the actions onto a second line, which looked like the
+ * header had come apart. The title truncates instead — the full text is still the heading, and the
+ * actions stay where a person looks for them. */
+.page-header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  /* Shrink, never grow. `1 1 0` was tried and pushed the inline slot (search, filters) away from
+   * the title it belongs beside, all the way over to the actions. What makes a long title give way
+   * is the ellipsis below plus min-width:0, not flex-grow. */
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.page-title {
+  font-size: var(--font-2xl);
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-light);
+  line-height: var(--leading-tight);
+  margin: 0;
+  color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.page-header-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.page-header-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  margin-inline-start: auto;   /* push to the far end */
+  /* Never squeezed. With the row set to nowrap, the actions were the flexible thing in it and a
+   * two-word button folded its label onto two lines rather than the title giving up a character.
+   * The title is what shrinks here; the buttons are already as small as their words. */
+  flex-shrink: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── *
+ * Title flexes to fill; search collapses to an icon and filters fold into a
+ * single "Filters" button + Modal sheet (FilterBar handles that), so the
+ * header stays a single row even on phones. */
+@media (max-width: 48rem) {
+  /* One row for as long as one row works, then a second one.
+   *
+   * This said `nowrap` and truncated the title instead. Truncating is right when what overflows is
+   * a long NAME — that is what the ellipsis below is for — and wrong when it is a second action: a
+   * detail screen carrying "Take this team" and "Turn it down" measured 412px against a 390px
+   * phone and pushed the whole document sideways, which no amount of title truncation fixes. Flex
+   * wraps only when the items genuinely do not fit, so every screen that fits today is untouched. */
+  .page-header-row { flex-wrap: wrap; gap: var(--space-2); }
+  .page-header-titles { flex: 0 1 auto; }
+  .page-title {
+    flex: 0 1 auto;
+    min-width: 0;   /* allow flex shrink → ellipsis */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .page-header-inline {
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+  /* Expanded search fills available space instead of a fixed width. */
+  .page-header-inline .search-input[data-open] {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  /* The auto margin STAYS. Resetting it to 0 here worked only on screens that
+   * also pass an `inline` slot, because that slot has `flex: 1 1 auto` and eats
+   * the free space itself; a header with just a title and one action had nothing
+   * to absorb it, so the button sat glued to the title with the rest of the row
+   * empty. An auto margin cannot fight the inline slot either: it only consumes
+   * space that is left over after the flexible items have grown. */
+  /* `0 1 auto` + wrap, not `0 0 auto`: once the actions have a line of their own they still have
+   * to fit ON it. Two labelled buttons came to 364px inside a 358px content column and the six
+   * pixels went out through the document. Shrinking lets the group re-flow instead. */
+  .page-header-actions { flex: 0 1 auto; min-width: 0; flex-wrap: wrap; }
+
+  /* When the search is open the row becomes two lines: title and actions stay
+   * where they are, the field takes a full row underneath.
+   *
+   * It used to `display: none` the title instead, which reads as a reasonable
+   * space trade until you notice WHAT is being hidden — `.page-title` is the
+   * page's only <h1>. Display none removes it from the accessibility tree too,
+   * so the screen lost its name, its landmark heading and its outline, and axe
+   * reports `page-has-heading-one` on every phone-width render with the search
+   * open. That was invisible while search was something you opened by hand for a
+   * moment; a screen that renders it EXPANDED has no h1 at all below 48rem.
+   * Vertical space on a list screen is the cheaper thing to spend. */
+  .page-header-row:has(.search-input[data-open]) { flex-wrap: wrap; }
+  .page-header-row:has(.search-input[data-open]) .page-header-inline {
+    flex: 1 1 100%;
+    order: 1;                    /* after the actions, i.e. onto the second line */
+    justify-content: stretch;
+  }
+}
+
+/* Very narrow: drop the title font a step. */
+@media (max-width: 30rem) {
+  .page-title { font-size: var(--font-xl); }
+}
+

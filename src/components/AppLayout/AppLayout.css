@@ -1,0 +1,38 @@
+.app-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-block-size: 100dvh;
+  background: var(--muted);
+  color: var(--foreground);
+}
+.app-layout-nav { position: sticky; inset-block-start: 0; block-size: 100dvh; }
+.app-layout-main { min-inline-size: 0; }
+
+/* A page whose columns scroll on their own needs the SHELL to stop scrolling first: two nested
+ * scrollers, one of them the document, means the inner one only starts moving after the outer
+ * has run out, which is the opposite of the intent. Keyed on the page's own opt-in
+ * (`[data-panels]`) rather than on a route, so the shell knows nothing about which screens do
+ * this. Desktop only — the panelled layout itself only exists from 62rem up. */
+@media (min-width: 62rem) {
+  .app-layout:has([data-panels]) { block-size: 100dvh; overflow: hidden; }
+  .app-layout:has([data-panels]) .app-layout-main {
+    min-block-size: 0;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Mobile: nav becomes an overlay drawer. */
+@media (max-width: 48rem) {
+  .app-layout { grid-template-columns: 1fr; }
+  .app-layout-nav {
+    position: fixed; inset-block: 0; inset-inline-start: 0; z-index: var(--z-modal);
+    background: var(--card); box-shadow: var(--shadow-lg);
+    transform: translateX(-100%); transition: transform var(--duration-normal);
+  }
+  .app-layout[data-nav-open] .app-layout-nav { transform: translateX(0); }
+  .app-layout-backdrop {
+    position: fixed; inset: 0; z-index: var(--z-sticky);
+    border: 0; padding: 0; background: var(--overlay); cursor: pointer;
+  }
+}

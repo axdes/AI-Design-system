@@ -1,0 +1,73 @@
+{
+  "ref": "DetailPageTemplate",
+  "level": "block",
+  "description": "The DETAIL page skeleton: a header with back + actions, then a main content column and an optional right SidePanel for metadata/related items. Structure only; the caller fills the columns with DS components. A page-template block the discovery picks for record/detail screens.",
+  "exports": [
+    "DetailPageTemplate"
+  ],
+  "main": "DetailPageTemplate",
+  "from": "@/blocks/DetailPageTemplate",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "onBack",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "backLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "aside",
+      "type": "{ title: string; content: ReactNode; collapsible?: boolean; defaultCollapsed?: boolean }",
+      "required": false
+    },
+    {
+      "name": "panels",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/DetailPageTemplate/DetailPageTemplate.tsx",
+  "context": "page",
+  "variants": {
+    "has-aside": {
+      "prop": "aside",
+      "values": null
+    },
+    "panels": {
+      "prop": "panels",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Button",
+    "Card",
+    "Icon",
+    "IconButton",
+    "MetaItem",
+    "PageHeader",
+    "SidePanel",
+    "Tooltip"
+  ],
+  "example": "const project = { id: 'p1', name: 'Onboarding revamp' }\n\n<DetailPageTemplate\n  title={project.name}\n  onBack={() => undefined}\n  actions={<Button variant=\"ghost\"><Icon name=\"edit\" />Edit</Button>}\n  aside={{ title: 'Details', content: <MetaItem icon=\"schedule\">Updated today</MetaItem> }}\n>\n  <Card>\n    <CardTitle>Overview</CardTitle>\n    <p>Two teams, four screens, shipping in March.</p>\n  </Card>\n</DetailPageTemplate>"
+}

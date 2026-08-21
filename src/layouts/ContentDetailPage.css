@@ -1,0 +1,142 @@
+/* Content detail page — document card on the left, icon rail on the right,
+ * status bar pinned to the bottom. Reuses page-content for outer gutters. */
+.content-detail-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.content-detail {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: stretch;
+  gap: 0;   /* document + panel + rail are glued into one surface */
+}
+@media (max-width: 62rem) {
+  .content-detail { grid-template-columns: 1fr; gap: var(--space-4); }
+  /* Stacked on mobile — nothing glued to the surface, round all corners. */
+  .content-surface { border-radius: var(--card-radius); }
+}
+
+.content-detail-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+/* Document content surface — flat white area (not a card). Fills the height and
+ * rounds only the start (left) corners; the panel + rail are glued to its end
+ * (right) edge to form one continuous surface. */
+.content-surface {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--card);
+  /* No inline padding here — the scrolling article spans the full width so the
+   * scrollbar sits at the block edge; padding lives on the inner content. */
+  border-radius: 0;
+  border-start-start-radius: var(--card-radius);
+  border-end-start-radius: var(--card-radius);
+}
+
+/* Desktop: lock to viewport (AppShell sets height/overflow on the shell) so only
+ * the article scrolls; the toolbar (top) and status bar (bottom) stay pinned via
+ * local flex (flex-shrink:0 on each). */
+@media (min-width: 62rem) {
+  .content-detail-page { min-height: 0; height: 100%; overflow: hidden; }
+  .content-detail { min-height: 0; }
+  .content-detail-main { min-height: 0; }
+  .content-article { min-height: 0; overflow-y: auto; }
+}
+
+/* Toolbar row inside the document surface (edit toggle etc.) — pinned at top.
+ * Padded to align with the article content. */
+.content-doc-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--card-padding) var(--card-padding) 0;
+  margin-block-end: var(--space-4);
+}
+
+/* Document's own title, shown large at the top of the prose. */
+.content-doc-title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-3xl);
+  font-weight: var(--font-weight-light);
+  line-height: var(--leading-tight);
+  color: var(--foreground);
+  margin: 0 0 var(--space-6);
+}
+
+/* Article — the scrolling region between toolbar and status bar. Spans the full
+ * surface width (scrollbar at the block edge); content gets inline padding. */
+.content-article {
+  flex: 1;
+  min-width: 0;
+  padding-inline: var(--card-padding);
+  padding-block-end: var(--card-padding);
+}
+.content-article h1,
+.content-article h2,
+.content-article h3 {
+  font-family: var(--font-family-display);
+  color: var(--foreground);
+}
+.content-article h2 {
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-tight);
+  margin-block: var(--space-4) var(--space-2);
+}
+.content-article h3 {
+  font-size: var(--font-lg);
+  font-weight: var(--font-weight-regular);
+  margin-block: var(--space-3) var(--space-1);
+}
+.content-article p {
+  margin: 0 0 var(--space-3);
+  line-height: var(--leading-normal);
+  color: var(--foreground);
+}
+.content-article ul,
+.content-article ol {
+  margin-block: 0 var(--space-3);
+  margin-inline-start: var(--space-4);   /* RTL-safe list indent */
+  padding: 0;
+  line-height: var(--leading-normal);
+}
+.content-article li { margin-block-end: var(--space-1); }
+.content-article blockquote {
+  margin: var(--space-4) 0;
+  padding: var(--space-2) var(--space-4);
+  border-inline-start: 3px solid var(--primary);
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+/* Status bar pinned at the bottom of the document surface. Full width so its
+ * top divider spans edge-to-edge; the items get inline padding. */
+.content-detail-statusbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--card-padding);
+  border-block-start: 1px solid var(--border);
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+
+/* Definition list used inside the Settings side panel. */
+.content-detail-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+  font-size: var(--font-sm);
+}
+.content-detail-meta dt { color: var(--muted-foreground); }
+.content-detail-meta dd { margin: 0; color: var(--foreground); }

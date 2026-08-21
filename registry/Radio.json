@@ -1,0 +1,47 @@
+{
+  "ref": "Radio",
+  "level": "atom",
+  "description": "Single custom radio, one option in a set where exactly one is chosen. Native <input type=\"radio\"> (so a shared `name` gives arrow-key navigation + form semantics for free), visually themed.",
+  "exports": [
+    "Radio",
+    "RadioGroup"
+  ],
+  "main": "Radio",
+  "from": "@/components/Radio",
+  "slots": [
+    {
+      "name": "RadioGroup",
+      "line": 18
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Radio/Radio.tsx",
+  "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "example": "const [plan, setPlan] = useState<Plan>('monthly')\n\n<RadioGroup<Plan>\n  name=\"plan\"\n  label=\"Billing period\"\n  value={plan}\n  onChange={setPlan}\n  options={[\n    { value: 'monthly', label: 'Monthly' },\n    { value: 'annual', label: 'Annual' },\n  ]}\n/>"
+}

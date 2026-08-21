@@ -1,0 +1,235 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://design-system.local/screen-spec.schema.json",
+  "title": "Screen spec",
+  "description": "A screen described in terms of THIS design system, agreed before any code is written. Validated by scripts/check-screen-spec.mjs against component-registry.json.",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "goal",
+    "template",
+    "zones",
+    "states"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Points editors at this schema."
+    },
+    "_why": {
+      "type": "string",
+      "description": "A note about a non-obvious decision the fields cannot carry."
+    },
+    "implementation": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      ],
+      "description": "Repo-relative path to the screen this spec describes — or a LIST of paths when the screen splits into modules, read as one screen. Optional: a spec is written before the screen exists. Once set, check:spec verifies the files really use the template and the components named here, so the spec stops being a wish and becomes a claim that can be wrong."
+    },
+    "_templateNote": {
+      "type": "string",
+      "description": "Why the named template is not (yet) the one the implementation uses."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Slug, matches the file name."
+    },
+    "project": {
+      "type": "string",
+      "description": "The app this screen belongs to (the apps/<name> folder). Optional once `implementation` is set — the path says it then. It matters BEFORE the code exists: a content model traces its screens by project, and a spec with neither project nor implementation is invisible to that check."
+    },
+    "title": {
+      "type": "string",
+      "description": "Screen name as a person would say it."
+    },
+    "goal": {
+      "type": "string",
+      "description": "What the user is here to do. One sentence, no feature list."
+    },
+    "primaryQuestion": {
+      "type": "string",
+      "description": "The question the user asks first when this screen opens. The screen answers it before anything else: the first zone that declares `answers` must answer exactly this question, which is what makes 'the answer comes first' checkable rather than a hope."
+    },
+    "audience": {
+      "type": "string",
+      "enum": ["expert", "public", "mixed"],
+      "description": "Who operates the screen. Experts switch fast and want density (GOV.UK's documented exception); public users get one thing at a time. Some selection rules read this."
+    },
+    "archetype": {
+      "type": "string",
+      "enum": ["overview", "list", "worklist", "analytical", "detail", "wizard", "form", "auth", "hub", "settings", "system"],
+      "description": "What KIND of screen this is, from the taxonomy in screen-specs/README.md (backbone: SAP Fiori floorplans). list = find-and-act over a filterable set; worklist = process a given queue (no filter bar — having one means the archetype is list); detail = one record in full; hub = entry points to other places; overview = glance across sources, action happens elsewhere. The archetype constrains the template and check-screen-spec.mjs verifies the pairing."
+    },
+    "template": {
+      "type": "string",
+      "description": "A block from src/blocks (ListPageTemplate, DetailPageTemplate, AuthTemplate, FormModal), or \"custom\" with customReason filled in."
+    },
+    "customReason": {
+      "type": "string",
+      "description": "Required when template is \"custom\": why no existing block fits. This is the escalation point, not a shortcut."
+    },
+    "zones": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The screen's regions, in reading order.",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "components"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "header / toolbar / content / aside / footer / …"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "task": {
+            "type": "string",
+            "enum": ["find", "compare", "scan", "browse", "monitor", "analyze", "process", "navigate", "read", "input", "act"],
+            "description": "What the user DOES in this zone, one verb. The collection tasks (find, compare, scan, browse, monitor, analyze, process, navigate) trigger the representation rules in selection-rules.json; read, input and act do not. This is the judgment the spec review approves — the gate then holds the components to it."
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The shape of what this zone shows. Required as soon as the zone has a collection task and a collection representation, because the rules cannot fire on adjectives.",
+            "properties": {
+              "item": {
+                "type": "string",
+                "enum": ["record", "prose", "visual", "metric"],
+                "description": "What one item is: structured fields (record), text to read (prose), an image or preview that carries the decision (visual), a number on a scale (metric)."
+              },
+              "cardinality": {
+                "type": "string",
+                "enum": ["one", "few", "many", "unbounded"],
+                "description": "How many items. unbounded forbids Table (DataGrid virtualizes)."
+              },
+              "fields": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "How many attributes per item actually matter to the task. 4+ comparable fields is what earns columns."
+              },
+              "editable": {
+                "type": "boolean",
+                "description": "true only when editing values IS the task, which demands DataGrid. Occasional inline edits on a table do not set this."
+              }
+            }
+          },
+          "answers": {
+            "type": "string",
+            "description": "The question this zone answers, in the words of primaryQuestion where it is that one. Zones are in reading order, so the order of `answers` is the order the screen answers questions in — and the first one must be the primaryQuestion."
+          },
+          "surface": {
+            "type": "string",
+            "pattern": "^(page|dialog|tab:[a-z0-9-]+)$",
+            "description": "When this zone is on screen: page zones are always visible together, each tab:<name> is its own context beside the page, a dialog covers the rest. Drives the one-primary-action check: two primaries on one surface are side by side and get named. Default: page, except a zone named \"dialogs\", which defaults to dialog."
+          },
+          "components": {
+            "type": "array",
+            "minItems": 1,
+            "description": "Registry components used here. Props may be pinned as \"Button variant=primary\".",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "states": {
+      "type": "object",
+      "required": [
+        "empty"
+      ],
+      "description": "What the screen looks like when it is not the happy path. Every state names the component that renders it.",
+      "additionalProperties": false,
+      "properties": {
+        "loading": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "noPermission": {
+          "type": "string"
+        }
+      }
+    },
+    "data": {
+      "type": "array",
+      "description": "The records the screen shows and where they come from. Mock is a valid source; say so.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "openQuestions": {
+      "type": "array",
+      "description": "What the spec cannot answer yet. Empty is a claim, not a default.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "acceptance": {
+      "type": "array",
+      "description": "What makes THIS screen succeed, as short yes/no statements a reviewer (human or judge) can verify by looking — not restatements of global rules the gate already checks. Per-screen criteria measurably beat a universal checklist (the SALT ablation: dropping them cost 17%); these are the rubric the future judge lane will score against, written while the intent is fresh rather than reconstructed later.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "behaviours": {
+      "type": "array",
+      "description": "What the screen DOES, in the words the requirement was written in. The zones above say what it is made of; these say what has to remain true about it. Each one names the test that proves it, and check:spec fails when a named test does not exist or does not claim the scenario, so a behaviour cannot be agreed to and then quietly not built.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "given",
+          "when",
+          "then"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Short, stable, unique within this spec. It is the string a test carries to claim this scenario."
+          },
+          "given": {
+            "type": "string",
+            "description": "The state of the world before, in plain language."
+          },
+          "when": {
+            "type": "string",
+            "description": "What the person does."
+          },
+          "then": {
+            "type": "string",
+            "description": "What must be true after. One observable outcome, not a list."
+          },
+          "why": {
+            "type": "string",
+            "description": "The requirement this comes from. A scenario with no why is a test looking for a reason."
+          },
+          "provenBy": {
+            "type": "string",
+            "description": "Repo-relative path to the test file that proves it. The test must carry `<specId>#<id>` in its name, which is what makes the link machine-checkable rather than a claim in prose."
+          },
+          "pendingReason": {
+            "type": "string",
+            "description": "Why this is agreed and not yet proven. Allowed instead of provenBy, counted as debt and printed on every run — never a way to keep it quiet."
+          }
+        }
+      }
+    }
+  }
+}

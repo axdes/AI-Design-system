@@ -1,0 +1,9 @@
+/* A tint, not a block of colour: the mark sits inside running text, so it has to
+ * stay readable at body size on both themes. The default browser <mark> is a
+ * saturated yellow that fails contrast in dark mode. */
+.highlight-hit {
+  border-radius: var(--radius-sm);
+  padding-inline: var(--space-2xs);
+  background: var(--warning-soft);
+  color: var(--warning-soft-foreground);
+}

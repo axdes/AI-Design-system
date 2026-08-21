@@ -1,0 +1,113 @@
+{
+  "ref": "DatePicker",
+  "level": "molecule",
+  "description": "A date field: a trigger that reads like an input and opens a <Calendar> in a <Popover>. Picking a day sets the value and closes. The shown date is formatted with Intl; the calendar carries the keyboard contract.",
+  "exports": [
+    "DatePicker"
+  ],
+  "main": "DatePicker",
+  "from": "@/components/DatePicker",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(date: Date) => void",
+      "required": true
+    },
+    {
+      "name": "min",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "Date",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/DatePicker/DatePicker.tsx",
+  "variants": {
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Calendar",
+    "Field",
+    "Icon",
+    "Popover"
+  ],
+  "example": "const [date, setDate] = useState<Date>()\n/* A field that opens a Calendar in a popover. Wrap in <Field> for a visible\n * label; `label` here names the trigger. Pass min/max to bound the range. */\n\n<Field label=\"Delivery date\" htmlFor=\"delivery\">\n  <DatePicker label=\"Delivery date\" value={date} onChange={setDate} />\n</Field>"
+}

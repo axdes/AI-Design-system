@@ -1,0 +1,49 @@
+{
+  "ref": "FilterBar",
+  "level": "organism",
+  "description": "The row of filters above a list: FilterDropdowns side by side on desktop, one icon that opens them in a Modal sheet on mobile.",
+  "exports": [
+    "FilterBar"
+  ],
+  "main": "FilterBar",
+  "from": "@/components/FilterBar",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "activeCount",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "collapsed",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/FilterBar/FilterBar.tsx",
+  "context": "region",
+  "variants": {
+    "active": {
+      "prop": "activeCount",
+      "values": null
+    }
+  },
+  "uses": [
+    "Button",
+    "FilterDropdown",
+    "IconButton",
+    "Modal",
+    "Tooltip"
+  ],
+  "example": "const [status, setStatus] = useState<Status[]>([])\n\n<FilterBar activeCount={status.length} onClear={() => setStatus([])}>\n  <FilterDropdown<Status>\n    label=\"Status\"\n    allLabel=\"All statuses\"\n    multi\n    options={[\n      { value: 'draft', label: 'Draft' },\n      { value: 'review', label: 'In review' },\n      { value: 'published', label: 'Published' },\n    ]}\n    value={status}\n    onChange={setStatus}\n  />\n</FilterBar>"
+}

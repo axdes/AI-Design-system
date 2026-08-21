@@ -1,0 +1,48 @@
+.checkbox {
+  --box-size: 1.25rem;   /* md default; sm/lg below */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  font-size: var(--font-base);
+  color: var(--foreground);
+  line-height: var(--leading-snug);
+}
+.checkbox[data-size="sm"] { --box-size: 1rem; font-size: var(--font-sm); }
+.checkbox[data-size="lg"] { --box-size: 1.5rem; font-size: var(--font-md); }
+.checkbox[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* Real input kept in the DOM (form-native + accessible), visually hidden. */
+.checkbox-input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }
+
+.checkbox-box {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--box-size);
+  height: var(--box-size);
+  border: 1.5px solid var(--border-strong, var(--border));
+  border-radius: var(--radius-sm);
+  background: var(--background);
+  color: var(--primary-foreground);
+  transition: background var(--duration-fast), border-color var(--duration-fast);
+}
+.checkbox-box .icon { opacity: 0; transition: opacity var(--duration-fast); }
+
+.checkbox-input:checked + .checkbox-box,
+.checkbox-input:indeterminate + .checkbox-box { background: var(--primary); border-color: var(--primary); }
+.checkbox-input:checked + .checkbox-box .icon { opacity: 1; }
+/* Indeterminate dash (no minus icon in the set, so draw a bar). */
+.checkbox-input:indeterminate + .checkbox-box::after {
+  content: "";
+  position: absolute;
+  width: 60%;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--primary-foreground);
+}
+.checkbox-input:focus-visible + .checkbox-box {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}

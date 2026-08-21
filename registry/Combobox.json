@@ -1,0 +1,107 @@
+{
+  "ref": "Combobox",
+  "level": "molecule",
+  "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Tag>s and the list stays open.",
+  "exports": [
+    "Combobox"
+  ],
+  "main": "Combobox",
+  "from": "@/components/Combobox",
+  "slots": [],
+  "props": [
+    {
+      "name": "options",
+      "type": "readonly ComboboxOption<V>[]",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "value",
+      "type": "V | readonly V[]",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "((next: V) => void) | ((next: V[]) => void)",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "filter",
+      "type": "(option: ComboboxOption<V>, query: string) => boolean",
+      "required": false
+    },
+    {
+      "name": "emptyLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Combobox/Combobox.tsx",
+  "variants": {
+    "multiple": {
+      "prop": "multiple",
+      "values": [
+        "true"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  },
+  "uses": [
+    "Field",
+    "Icon",
+    "Tag"
+  ],
+  "example": "const [country, setCountry] = useState<Country>()\n/* Reach for Combobox over Select when the list is long enough to want typing.\n * Wrap it in a <Field> for the visible label; `label` here is the input's\n * accessible name. */\n\n<Field label=\"Country\" htmlFor=\"country\">\n  <Combobox<Country>\n    label=\"Country\"\n    placeholder=\"Type to search\"\n    options={COUNTRIES}\n    value={country}\n    onChange={setCountry}\n  />\n</Field>"
+}

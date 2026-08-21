@@ -1,0 +1,73 @@
+{
+  "ref": "RangeSlider",
+  "level": "atom",
+  "description": "A bounded pair on one track: a price between two values, any filter with a \"from\" and a \"to\" on the same scale. Two native range inputs share the track, so the keyboard contract comes for free; each thumb clamps against the other instead of crossing it. Single value? That is <Slider>.",
+  "exports": [
+    "RangeSlider"
+  ],
+  "main": "RangeSlider",
+  "from": "@/components/RangeSlider",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "[number, number]",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: [number, number]) => void",
+      "required": true
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "formatValue",
+      "type": "(value: number) => string",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/RangeSlider/RangeSlider.tsx",
+  "variants": {
+    "disabled": {
+      "prop": "disabled",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "example": "const [budget, setBudget] = useState<[number, number]>([25, 70])\n/* A bounded filter: the tuple is [start, end] and each thumb clamps against\n * the other. `showValue` prints the span at the end of the label row. */\n\n<RangeSlider\n  label=\"Budget range\"\n  value={budget}\n  onChange={setBudget}\n  min={0}\n  max={100}\n  step={5}\n  showValue\n  formatValue={(v) => `SAR ${v}k`}\n/>"
+}

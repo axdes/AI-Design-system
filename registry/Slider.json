@@ -1,0 +1,56 @@
+{
+  "ref": "Slider",
+  "level": "atom",
+  "description": "Single-value range input. Built on the native <input type=\"range\">, so the keyboard contract (arrows, Home/End, Page Up/Down) and screen-reader support come for free; this adds the label row, the value read-out and the themed track. The filled portion is driven by a --pct custom property.",
+  "exports": [
+    "Slider"
+  ],
+  "main": "Slider",
+  "from": "@/components/Slider",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: number) => void",
+      "required": true
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "formatValue",
+      "type": "(value: number) => string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Slider/Slider.tsx",
+  "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step'>",
+  "example": "const [budget, setBudget] = useState(40)\n/* Controlled single value. `showValue` + `formatValue` put a live read-out at\n * the end of the label row. The native range keeps full keyboard support. */\n\n<Slider\n  label=\"Monthly budget\"\n  value={budget}\n  onChange={setBudget}\n  min={0}\n  max={100}\n  step={5}\n  showValue\n  formatValue={(v) => `SAR ${v}k`}\n/>"
+}

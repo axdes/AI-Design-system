@@ -1,0 +1,246 @@
+.sidebar {
+  display: grid;
+  grid-template-rows: auto 1fr auto;   /* logo / rail (nav+collapse) / footer (login) */
+  height: 100dvh;
+  position: sticky;
+  top: 0;
+  padding: var(--space-4) var(--space-3);
+  background: transparent;
+  overflow: visible;   /* let the rail panel's shadow show; nav scrolls itself */
+}
+
+/* Rail = nav + collapse. Always vertically centred (content-sized, between the
+ * top logo and bottom footer) so it never jumps when switching between pages
+ * that have content and pages that don't. Applies open and collapsed. */
+.sidebar-rail {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: var(--space-2);   /* same rhythm between nav and the collapse control */
+  align-self: center;
+}
+.sidebar-rail .sidebar-menu { flex: 0 0 auto; }
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-2) var(--space-6);
+}
+.sidebar-logo-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+.sidebar-logo-link:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * 2); }
+
+.sidebar-logo { width: auto; }
+/* The lockup: mark + wordmark. Gradient strokes read on any surface, so there
+ * is no dark-theme invert any more — the mark is the same mark everywhere. */
+.sidebar-logo-full { display: inline-flex; align-items: center; gap: var(--space-3); }
+.sidebar-wordmark {
+  font-family: var(--font-family-display);
+  font-size: var(--font-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--foreground);
+  white-space: nowrap;
+}
+.sidebar-logo-mark {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+}
+
+.sidebar-logo-mark:hover { background: var(--accent-soft); }
+
+/* Flat nav (no sub-category sections). */
+.sidebar-menu { display: flex; flex-direction: column; gap: var(--space-2); overflow-y: auto; }
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: background var(--duration-fast), color var(--duration-fast), box-shadow var(--duration-fast);
+  white-space: nowrap;
+  min-width: 0;
+}
+.sidebar-item-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+.sidebar-item:hover {
+  background: var(--accent);
+  color: var(--foreground);
+}
+.sidebar-item:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(-1 * var(--ring-offset));
+}
+/* Active = subtle pill (visible on the muted sidebar) + primary text + weight. */
+.sidebar-item.is-active {
+  background: var(--accent);
+  color: var(--nav-active-fg);
+  font-weight: var(--font-weight-semibold);
+}
+.sidebar-item.is-active:hover { background: var(--accent); }
+
+/* Collapse control — a menu row like the rest, set apart with a light border
+ * (same idea in the collapsed circle). Only button resets here; layout from
+ * .sidebar-item. */
+.sidebar-toggle {
+  width: 100%;
+  /* --border-strong reads on the muted rail; plain --border ≈ the bg here. */
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: start;
+}
+
+/* Footer — login row at the very bottom. */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-block-start: var(--space-2);
+}
+
+/* ── Collapsed state (icon rail) ─────────────────────────────── */
+.app-shell[data-sidebar-collapsed] .sidebar {
+  /* Equal gap on both sides of the pill: left padding = --space-4; right
+   * padding 0 so the gap to the first card comes entirely from page-content's
+   * own padding-inline-start (also --space-4). Net: symmetric margins. */
+  padding-inline: var(--space-4) 0;
+  overflow: visible;   /* let the pill's shadow show past the rail edge */
+}
+/* The rail (logo + nav + collapse) becomes ONE white, fully-rounded pill,
+ * centered vertically (align-self: center stops it filling the 1fr row). */
+.app-shell[data-sidebar-collapsed] .sidebar-rail {
+  align-self: center;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-2);
+  background: var(--card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--card-shadow);
+  overflow: visible;
+}
+.app-shell[data-sidebar-collapsed] .sidebar-rail .sidebar-menu { flex: 0 0 auto; }
+
+/* Logo caps the top of the pill: a full-width primary circle (negative margins
+ * cancel the pill padding so it sits flush) with a white mark. */
+.app-shell[data-sidebar-collapsed] .sidebar-header {
+  justify-self: center;
+  justify-content: center;
+  /* No primary cap any more: the gradient mark carries its own identity on the
+   * rail surface (the cap existed to whiten a black bitmap, and drowned the
+   * gradient glyph whole). Same footprint as a nav icon's pill. */
+  width: var(--sidebar-rail-item-size);
+  aspect-ratio: 1;
+  padding: 0;
+  margin: 0 0 var(--space-2);
+}
+.app-shell[data-sidebar-collapsed] .sidebar-logo-link { border-radius: var(--radius-full); }
+.app-shell[data-sidebar-collapsed] .sidebar-logo-full { display: none; }
+.app-shell[data-sidebar-collapsed] .sidebar-logo-mark {
+  display: inline-flex;
+}
+
+.app-shell[data-sidebar-collapsed] .sidebar-menu {
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Icon-only square. Label hidden (tooltip shows it on hover). Active = a solid
+ * primary circle with a white icon. */
+.app-shell[data-sidebar-collapsed] .sidebar-item {
+  width: var(--sidebar-rail-item-size);
+  height: var(--sidebar-rail-item-size);
+  min-height: 0;
+  max-width: none;
+  padding: 0;
+  justify-content: center;
+  border-radius: var(--radius-full);
+}
+.app-shell[data-sidebar-collapsed] .sidebar-item-label { display: none; }
+/* Active = solid primary circle + white icon (matches the logo cap). */
+.app-shell[data-sidebar-collapsed] .sidebar-item.is-active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: none;
+}
+.app-shell[data-sidebar-collapsed] .sidebar-item.is-active:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Footer in collapsed: just the login avatar, centered, no pill. */
+.app-shell[data-sidebar-collapsed] .sidebar-footer {
+  align-items: center;
+  padding-block-start: var(--space-2);
+}
+/* Collapse is a .sidebar-item, so the collapsed rule already makes it a circle;
+ * its border (from .sidebar-toggle) sets it apart from the nav icons. */
+
+/* On mobile drawer: always show full layout regardless of collapsed state. */
+@media (max-width: 48rem) {
+  .app-shell[data-sidebar-collapsed] .sidebar {
+    padding-inline: var(--space-3);
+    border-inline-end: none;
+  }
+  /* No pill in the drawer — rail is a plain full-height column again. */
+  .app-shell[data-sidebar-collapsed] .sidebar-rail {
+    align-self: stretch;
+    gap: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .app-shell[data-sidebar-collapsed] .sidebar-rail .sidebar-menu { flex: 1; }
+  /* Fully undo the collapsed primary-circle logo cap — back to the wordmark row. */
+  .app-shell[data-sidebar-collapsed] .sidebar-header {
+    justify-self: stretch;
+    justify-content: flex-start;
+    width: auto;
+    aspect-ratio: auto;
+    margin: 0;
+    padding: 0 var(--space-2) var(--space-6);
+    background: transparent;
+    border-radius: 0;
+  }
+  .app-shell[data-sidebar-collapsed] .sidebar-logo-full { display: block; }
+  .app-shell[data-sidebar-collapsed] .sidebar-logo-mark { display: none; }
+  .app-shell[data-sidebar-collapsed] .sidebar-menu { align-items: stretch; gap: var(--space-4); }
+  .app-shell[data-sidebar-collapsed] .sidebar-item {
+    width: auto;
+    max-width: none;
+    height: var(--control-height);
+    min-height: 0;
+    padding: 0 var(--space-3);
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    text-align: start;
+    border-radius: var(--radius-full);
+  }
+  .app-shell[data-sidebar-collapsed] .sidebar-item-label {
+    font-size: var(--font-base);
+    text-overflow: clip;
+    overflow: visible;
+  }
+  /* Drawer doesn't need a collapse toggle — close via backdrop or nav. */
+  .sidebar-toggle { display: none; }
+  .sidebar-footer { display: none; }
+}

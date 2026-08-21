@@ -1,0 +1,29 @@
+{
+  "ref": "Timeline",
+  "level": "molecule",
+  "description": "A vertical sequence of events joined by a connecting line — an audit trail, a delivery history, a changelog. Each node is a marker (dot or icon) with a title, an optional time and body. Presentational; the caller orders the items and formats the times.",
+  "exports": [
+    "Timeline"
+  ],
+  "main": "Timeline",
+  "from": "@/components/Timeline",
+  "slots": [],
+  "props": [
+    {
+      "name": "items",
+      "type": "TimelineItem[]",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Timeline/Timeline.tsx",
+  "context": "region",
+  "uses": [
+    "Icon"
+  ],
+  "example": "/* A vertical event history: audit trail, delivery status, changelog. Tone and\n * icon mark the important nodes; the caller orders and formats. */\n\n<Timeline\n  items={[\n    { id: '1', title: 'Order placed', time: '09:14', icon: 'check_circle', tone: 'success' },\n    { id: '2', title: 'Packed', time: '11:02', content: 'Warehouse 3, Riyadh' },\n    { id: '3', title: 'Out for delivery', time: '14:30', tone: 'primary' },\n    { id: '4', title: 'Delivered', time: 'pending', tone: 'neutral' },\n  ]}\n/>"
+}

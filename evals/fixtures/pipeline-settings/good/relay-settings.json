@@ -1,0 +1,74 @@
+{
+  "id": "relay-settings",
+  "project": "notify-relay",
+  "title": "Relay settings",
+  "goal": "Point the relay at the right mail host, keep its token replaceable but never readable, and prove the setup works — then leave.",
+  "primaryQuestion": "Is the relay set up to send?",
+  "audience": "expert",
+  "archetype": "settings",
+  "template": "SettingsPageTemplate",
+  "_why": "Configuration read rarely and changed deliberately — the settings archetype exactly. NOT a wizard, though the brief smells like setup: any knob changes alone, in any order, months apart; a wizard walks once and adds clicks forever after. The moment this screen grows a member list or per-recipient rows, that part is a collection and leaves for a list screen.",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "The template's header inside the narrow column: the screen's name and Save. Saving returns the operator to where they came from — settings are a detour, not a destination.",
+      "components": [
+        "SettingsPageTemplate",
+        "Button variant=primary"
+      ]
+    },
+    {
+      "name": "check",
+      "task": "monitor",
+      "data": {
+        "item": "metric",
+        "cardinality": "one"
+      },
+      "answers": "Is the relay set up to send?",
+      "purpose": "The connection test FIRST, before any knob: it answers the screen's question directly, and most visits are 'is it working', not 'change something'. The result names what failed and the action that fixes it.",
+      "components": [
+        "Button variant=secondary",
+        "Badge"
+      ]
+    },
+    {
+      "name": "sections",
+      "task": "input",
+      "purpose": "Grouped rows of explained knobs — delivery (host, sender), the secret (token: write-only, paste to replace, a Badge says configured, the value never renders), and cadence (digest frequency, quiet hours). Every row's description says what changing it affects, because the operator finds things by scanning labels.",
+      "components": [
+        "SettingsSection",
+        "SettingRow",
+        "Input",
+        "PasswordInput",
+        "Select",
+        "Switch",
+        "Badge"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "Not a list — an unconfigured relay is the sections with empty controls and no configured Badge anywhere, plus the connection test saying what is missing. That is a settings screen's honest empty state.",
+    "error": "A failed save keeps the Button out of its loading state with the reason beside the control that caused it; the test's result region names the failure and its fix, with the Badge carrying the verdict."
+  },
+  "acceptance": [
+    "Every row's description says what changing it affects — no control stands unexplained.",
+    "The token is never echoed: its field is empty on open, and a configured token shows as a Badge, not a value.",
+    "The connection test result names the failing piece and the action that fixes it, in words.",
+    "Any knob changes alone: no step order, no gating between sections."
+  ],
+  "behaviours": [
+    {
+      "id": "token-is-write-only",
+      "given": "a relay with a saved API token",
+      "when": "the screen opens",
+      "then": "the token field is empty with a configured Badge beside it; typing replaces, nothing reads back",
+      "why": "A secret a screen can display is a secret a screenshot leaks.",
+      "pendingReason": "Delivered as a single screen file ahead of the product's own repo and test harness; the test lands with the first vitest setup, named relay-settings#token-is-write-only."
+    }
+  ],
+  "data": [
+    "current settings: host, sender, digest frequency, quietHours as values; the token as a BOOLEAN (configured or not) — the value never crosses to the screen",
+    "the connection test result: ok, or the named failure with its fix — inline mock state so the button really flips it"
+  ]
+}

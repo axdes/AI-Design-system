@@ -1,0 +1,88 @@
+.combobox {
+  position: relative;
+  display: inline-block;
+  min-inline-size: 14rem;
+}
+
+.combobox-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.combobox-input {
+  inline-size: 100%;
+  /* room for the caret on the trailing side */
+  padding-inline-end: calc(var(--control-padding-x) + var(--icon-sm) + var(--space-2));
+}
+.combobox[data-size="sm"] .combobox-input { block-size: var(--control-height-sm); padding-inline-start: var(--space-3); padding-inline-end: calc(var(--space-3) + var(--icon-sm)); font-size: var(--font-sm); }
+.combobox[data-size="lg"] .combobox-input { block-size: var(--control-height-lg); font-size: var(--control-font-size-lg); }
+.combobox-caret {
+  position: absolute;
+  inset-inline-end: var(--control-padding-x);
+  color: var(--icon-muted);
+  pointer-events: none;
+}
+
+.combobox-list {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline: 0;
+  margin: 0;
+  padding: var(--space-1);
+  list-style: none;
+  max-block-size: 16rem;
+  overflow-y: auto;
+  background: var(--popover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-popover);
+}
+
+.combobox-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: var(--control-height);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--control-font-size);
+  color: var(--popover-foreground);
+  cursor: pointer;
+}
+/* Keyboard-active OR hovered option: one highlight, driven by data-active. */
+.combobox-option[data-active] {
+  background: var(--accent-soft);
+}
+.combobox-option[aria-selected="true"] {
+  font-weight: var(--font-weight-medium);
+  color: var(--primary-accent);
+}
+
+.combobox-empty {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+
+/* Multi-select: tags sit inline before the input; the field wraps. */
+.combobox[data-multiple] .combobox-field {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: var(--control-height);
+  block-size: auto;
+  padding: var(--space-1) var(--space-2);
+}
+.combobox[data-multiple] .combobox-input {
+  flex: 1;
+  min-inline-size: 6rem;
+  inline-size: auto;
+  border: none;
+  padding: 0;
+  block-size: auto;
+}
+.combobox-check {
+  margin-inline-start: auto;
+  color: var(--primary-accent);
+}

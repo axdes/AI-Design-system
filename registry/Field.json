@@ -1,0 +1,60 @@
+{
+  "ref": "Field",
+  "level": "molecule",
+  "description": "Form field: a label (with optional required marker) over its control, plus the hint or error underneath, wired to the control with `aria-describedby`.",
+  "exports": [
+    "Field"
+  ],
+  "main": "Field",
+  "from": "@/components/Field",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "htmlFor",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "hint",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Field/Field.tsx",
+  "variants": {
+    "error": {
+      "prop": "error",
+      "values": null
+    }
+  },
+  "uses": [
+    "Input",
+    "Label"
+  ],
+  "example": "const [email, setEmail] = useState('not-an-address')\nconst invalid = !email.includes('@')\n/* `htmlFor` ties the label to the control's id; `error` is wired to the same\n * control with aria-describedby, so the reason is read as part of the field\n * rather than as a stray sentence underneath it. */\n\n<Field\n  label=\"Email address\"\n  htmlFor=\"email\"\n  required\n  hint=\"We only use it to send the invitation.\"\n  error={invalid ? 'Enter an address with an @ in it.' : undefined}\n>\n  <Input\n    id=\"email\"\n    type=\"email\"\n    value={email}\n    invalid={invalid}\n    onChange={(e) => setEmail(e.target.value)}\n  />\n</Field>"
+}

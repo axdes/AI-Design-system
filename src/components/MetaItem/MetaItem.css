@@ -1,0 +1,28 @@
+/* Icon + text inline pair. Used for dates, counters, secondary info. */
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  /* Secondary by definition, so secondary in size. It used to inherit, which is right inside a card
+   * or a list row (both set it) and wrong everywhere else: on a plain surface a date and a counter
+   * came out the same size as the sentence they annotate. */
+  font-size: var(--font-sm);
+}
+/* Dim the icon via the muted-icon token (theme-aware: neutral-500 light /
+ * neutral-400 dark) rather than opacity, which crushed to near-invisible on the
+ * dark page surface. */
+.meta-item .icon {
+  color: var(--icon-muted);
+}
+
+/* Eyebrow appearance: a small, fully-muted kicker label above a title ("Document",
+ * content-type). The whole label (icon included) reads muted, so the icon
+ * inherits rather than taking the metadata icon-muted tone. */
+.meta-item[data-appearance="eyebrow"] {
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--muted-foreground);
+}
+.meta-item[data-appearance="eyebrow"] .icon {
+  color: inherit;
+}

@@ -1,0 +1,62 @@
+/* The browser moves the track, not JavaScript: scroll-snap means a swipe, a
+ * trackpad, a shift-wheel and the arrow buttons all land on the same slide, and
+ * the thing keeps working while the main thread is busy. */
+.carousel { display: grid; gap: var(--space-3); }
+
+.carousel-viewport {
+  display: grid;
+  grid-auto-flow: column;
+  /* Slightly narrower than the viewport so the next slide peeks in. That peek is
+   * the only thing on screen that says there IS a next slide before you reach
+   * the dots, and it is what makes the dimming below mean anything. */
+  grid-auto-columns: calc(100% - var(--space-12));
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  /* The scrollbar is redundant next to the dots and eats a slide's bottom edge. */
+  scrollbar-width: none;
+}
+.carousel-viewport::-webkit-scrollbar { display: none; }
+.carousel-viewport:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+.carousel-slide {
+  scroll-snap-align: start;
+  min-inline-size: 0;
+  /* Size, not transparency. The checklist offers both; transparency put the
+   * peeking card's title at half contrast and axe was right to fail it, so the
+   * inactive slide sits back a little instead of fading. */
+  transform: scale(0.96);
+  transition: transform var(--duration-normal) ease;
+}
+.carousel-slide[data-active] { transform: none; }
+
+.carousel-controls { display: flex; align-items: center; justify-content: center; gap: var(--space-3); }
+
+.carousel-dots { display: flex; align-items: center; gap: var(--space-2); }
+.carousel-dot {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: background var(--duration-fast), inline-size var(--duration-fast);
+}
+.carousel-dot:hover { background: var(--muted-foreground); }
+/* The current dot is wider AND darker: on a row of small circles a colour change
+ * alone is the kind of difference that disappears at a glance and in greyscale. */
+.carousel-dot[aria-current] { inline-size: var(--space-4); background: var(--primary); }
+.carousel-dot:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-viewport { scroll-behavior: auto; }
+  .carousel-slide { transition: none; }
+}

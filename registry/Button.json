@@ -1,0 +1,117 @@
+{
+  "ref": "Button",
+  "level": "atom",
+  "description": "The action control: `variant` sets its weight, `loading` swaps the icon for a spinner and disables it, `iconEnd` trails the label on add and create actions.",
+  "exports": [
+    "Button"
+  ],
+  "main": "Button",
+  "from": "@/components/Button",
+  "slots": [],
+  "props": [
+    {
+      "name": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "Variant",
+      "required": false,
+      "values": [
+        "primary",
+        "secondary",
+        "ghost",
+        "destructive",
+        "success",
+        "dark",
+        "link",
+        "ai"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "block",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "iconEnd",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "loadingLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Button/Button.tsx",
+  "inherits": "ButtonHTMLAttributes<HTMLButtonElement>",
+  "variants": {
+    "variant": {
+      "prop": "variant",
+      "values": [
+        "primary",
+        "secondary",
+        "ghost",
+        "destructive",
+        "success",
+        "dark",
+        "link",
+        "ai"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "block": {
+      "prop": "block",
+      "values": [
+        "true"
+      ]
+    },
+    "icon-end": {
+      "prop": "iconEnd",
+      "values": [
+        "true"
+      ]
+    },
+    "loading": {
+      "prop": "loading",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "IconButton",
+    "Spinner"
+  ],
+  "example": "<Button iconEnd>\n  Create document\n  <Icon name=\"add\" />\n</Button>"
+}

@@ -1,0 +1,60 @@
+{
+  "ref": "Input",
+  "level": "atom",
+  "description": "The single-line text field: label, invalid state and the shared control tokens. A screen never renders a bare input.",
+  "exports": [
+    "Input"
+  ],
+  "main": "Input",
+  "from": "@/components/Input",
+  "slots": [],
+  "props": [
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Input/Input.tsx",
+  "inherits": "Omit<ComponentPropsWithRef<'input'>, 'size'>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  },
+  "uses": [
+    "Textarea"
+  ],
+  "example": "<Input aria-label=\"Search\" placeholder=\"Search documents\" />"
+}

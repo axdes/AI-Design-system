@@ -1,0 +1,7 @@
+/* Centred under the list it extends, with enough room above that it reads as the
+ * end of the list rather than another row of it. */
+.load-more {
+  display: flex;
+  justify-content: center;
+  padding-block: var(--space-4);
+}

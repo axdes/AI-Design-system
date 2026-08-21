@@ -1,0 +1,108 @@
+{
+  "ref": "NumberInput",
+  "level": "molecule",
+  "description": "A number field with stepper buttons. The native <input type=\"number\"> keeps the spinbutton role, keyboard and validation; the -/+ buttons are the click affordance. Clamps to min/max. Wrap in <Field> for a visible label.",
+  "exports": [
+    "NumberInput"
+  ],
+  "main": "NumberInput",
+  "from": "@/components/NumberInput",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: number) => void",
+      "required": true
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "decrementLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "incrementLabel",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/NumberInput/NumberInput.tsx",
+  "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step'>",
+  "variants": {
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Field",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "const [qty, setQty] = useState(1)\n/* Clamps to min/max; the -/+ buttons and the native spinbutton stay in sync.\n * Wrap in a <Field> for the visible label. */\n\n<Field label=\"Quantity\" htmlFor=\"qty\">\n  <NumberInput label=\"Quantity\" value={qty} onChange={setQty} min={1} max={99} />\n</Field>"
+}

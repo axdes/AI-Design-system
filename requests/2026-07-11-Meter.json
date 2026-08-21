@@ -1,0 +1,21 @@
+{
+  "name": "Meter",
+  "level": "atom",
+  "date": "2026-07-11",
+  "requestedBy": "agent",
+  "need": "A horizontal progress/gauge to show a value on a fixed scale, with an optional target marker and tick labels. Needed for the AI/Run maturity score (value 1.4 of 3, target 2). No progress/meter primitive exists.",
+  "consideredAlternatives": [
+    { "ref": "components/Badge", "whyNot": "Shows the number, not the position on a scale." },
+    { "ref": "compose with a token bar", "whyNot": "That is exactly the hand-rolled inline JSX the constitution forbids; it recurs on every dashboard." }
+  ],
+  "proposedApi": {
+    "value": "number",
+    "max": "number (default 100)",
+    "target": "number? (renders a marker line + optional label)",
+    "tone": "'primary' | 'success' | 'warning' | 'danger' (default primary)",
+    "ticks": "number[] | boolean? (scale labels under the track)",
+    "size": "'sm' | 'md' (default md)",
+    "label": "string? (aria-label / visually-hidden description)"
+  },
+  "status": "pending"
+}

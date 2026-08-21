@@ -1,0 +1,28 @@
+.avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+.avatar-group-item {
+  display: inline-flex;
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 0 2px var(--background);
+}
+.avatar-group-item:not(:first-child) {
+  margin-inline-start: calc(var(--space-2) * -1);
+}
+
+.avatar-group-overflow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+.avatar-group-overflow[data-size='sm'] { inline-size: var(--avatar-sm); block-size: var(--avatar-sm); font-size: var(--font-xs); }
+.avatar-group-overflow[data-size='md'] { inline-size: var(--avatar-md); block-size: var(--avatar-md); font-size: var(--font-sm); }
+.avatar-group-overflow[data-size='lg'] { inline-size: var(--avatar-lg); block-size: var(--avatar-lg); font-size: var(--font-base); }
+
+/* `.sr-only` for the "+N more" text comes from styles/utilities.css. */

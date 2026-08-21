@@ -1,0 +1,366 @@
+{
+  "$comment": "The representation rules: which way of showing a collection fits which task and data shape. This is the 'Choosing between neighbours' section of AGENTS.md made machine-readable, consolidated from NN/g (data tables, cards, dashboards), uxpatterns.dev, Smart Interface Design Patterns, Pencil & Paper and SAP Fiori floorplans. check-screen-spec.mjs enforces it: a zone that declares its task and data shape may only use a representation some matching rule chooses. The division of labour is deliberate: the spec author (human or agent) names the task and the data, which is a judgment the reviewer approves; this file decides what that judgment permits, which is a computation. Sources and the audit behind every rule: the 2026-08-20 UX decision layer audit (memory: project-ux-decision-layer).",
+  "collectionTasks": [
+    "find",
+    "compare",
+    "scan",
+    "browse",
+    "monitor",
+    "analyze",
+    "process",
+    "navigate"
+  ],
+  "archetypes": {
+    "overview": {
+      "useWhen": "The entry point of a domain: a glance across two or more sources, and the action itself happens in the places you navigate to.",
+      "notWhen": "One data source, or the work happens here — that is a list or a detail.",
+      "templates": []
+    },
+    "list": {
+      "useWhen": "Find and act: search, filter and sort a large set to locate the items worth acting on.",
+      "notWhen": "The queue is given and needs processing (worklist), or the items are destinations (hub).",
+      "templates": [
+        "ListPageTemplate",
+        "AdaptiveListPage"
+      ],
+      "expectsOneOf": [
+        "FilterBar",
+        "SearchInput"
+      ],
+      "expectsNote": "a list archetype usually narrows, and nothing here searches or filters — if the queue is given, the archetype is \"worklist\""
+    },
+    "worklist": {
+      "useWhen": "Work through a given queue: every item needs a decision or a completion, and nobody goes looking for items.",
+      "notWhen": "The user still has to find the relevant items first — that is a list.",
+      "templates": [
+        "ListPageTemplate",
+        "AdaptiveListPage"
+      ],
+      "forbidComponents": [
+        "FilterBar"
+      ],
+      "forbidBecause": "a worklist processes a given queue — a FilterBar means the user still has to find, which is the \"list\" archetype (Fiori: worklist = list report minus the filter bar)"
+    },
+    "analytical": {
+      "useWhen": "One investigation loop: aggregate on top, the transactional rows under it, acted on where they are.",
+      "notWhen": "Pure monitoring (overview) or a plain transaction list (list).",
+      "templates": []
+    },
+    "detail": {
+      "useWhen": "One record in full: read it, decide about it, occasionally edit it, in sections.",
+      "notWhen": "Several records at once, or a guided first-time creation (wizard).",
+      "templates": [
+        "DetailPageTemplate"
+      ]
+    },
+    "wizard": {
+      "useWhen": "A long or unfamiliar creation task, split into sequential revealed steps with a summary at the end.",
+      "notWhen": "Two steps, or a routine the user already knows — a wizard there only adds clicks (Fiori).",
+      "templates": [
+        "WizardTemplate"
+      ]
+    },
+    "form": {
+      "useWhen": "A short or routine capture: one surface, submitted once.",
+      "notWhen": "Long and unfamiliar (wizard), or public users under load — they get one thing per page (GOV.UK).",
+      "templates": [
+        "FormModal"
+      ]
+    },
+    "auth": {
+      "useWhen": "Sign in or sign up: minimal distraction, guarded error copy.",
+      "notWhen": "Anything else — an auth page that also lists or explains is two screens.",
+      "templates": [
+        "AuthTemplate"
+      ]
+    },
+    "hub": {
+      "useWhen": "Entry points to other places: one tile per destination, saying what waits inside it.",
+      "notWhen": "The items are records to find or process rather than places to go.",
+      "templates": [
+        "AdaptiveListPage",
+        "ListPageTemplate"
+      ]
+    },
+    "settings": {
+      "useWhen": "Configuration read rarely and changed deliberately: grouped sections of explained knobs — every row says what it actually affects — found by scanning labels, not by searching.",
+      "notWhen": "The 'settings' are really a collection to manage (members, keys as records) — that is a list; or one preference living beside the work it affects, which stays on that screen.",
+      "templates": [
+        "SettingsPageTemplate"
+      ]
+    },
+    "system": {
+      "useWhen": "The screens around the product: empty start, 404, service unavailable, interruption.",
+      "notWhen": "A state a real screen should carry itself (every list already owes its own empty state).",
+      "templates": [
+        "SystemPageTemplate"
+      ]
+    }
+  },
+  "representations": {
+    "grid": {
+      "components": [
+        "DataGrid"
+      ],
+      "means": "virtualized table: unbounded rows, Excel-like manipulation"
+    },
+    "table": {
+      "components": [
+        "Table"
+      ],
+      "means": "columns over rows: side-by-side comparison, sort and filter by field"
+    },
+    "list": {
+      "components": [
+        "ListItem"
+      ],
+      "means": "one row per item, few attributes, linear scanning"
+    },
+    "stats": {
+      "components": [
+        "Stat",
+        "Meter",
+        "ProgressCircle",
+        "ProgressBar"
+      ],
+      "means": "KPI tiles and gauges: values read at a glance"
+    },
+    "cards": {
+      "components": [
+        "Card",
+        "LinkTile",
+        "PlanCard"
+      ],
+      "means": "self-contained tiles: each item read and judged on its own"
+    }
+  },
+  "precedence": [
+    "grid",
+    "table",
+    "list",
+    "stats",
+    "cards"
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "title": "Looking up and comparing records wants columns",
+      "when": {
+        "task": [
+          "find",
+          "compare"
+        ],
+        "item": "record",
+        "minFields": 4
+      },
+      "choose": [
+        "table",
+        "grid"
+      ],
+      "because": "Two adjacent data points in a column are compared without moving the eyes or holding values in working memory; cards force spatial reorientation per item and de-emphasize ranking (NN/g data tables, NN/g cards).",
+      "good": "<Table stickyHeader><THead>…10 sortable columns…</THead>…</Table>",
+      "bad": "a Card per user with ten MetaItems — comparing two users now means reading two paragraphs"
+    },
+    {
+      "id": "R2",
+      "title": "Editing at scale is a data grid",
+      "when": {
+        "editable": true
+      },
+      "choose": [
+        "grid"
+      ],
+      "because": "When cell-level editing is the primary task the surface is a data grid; a plain table carries occasional inline edits only (Smart Interface Design Patterns).",
+      "good": "<DataGrid> with editable cells",
+      "bad": "a Card per row with an Edit dialog behind every field"
+    },
+    {
+      "id": "R3",
+      "title": "Scanning a few attributes wants rows",
+      "when": {
+        "task": [
+          "find",
+          "scan"
+        ],
+        "item": "record",
+        "maxFields": 3
+      },
+      "choose": [
+        "list",
+        "table"
+      ],
+      "because": "With one to three attributes per item a linear list scans fastest; columns earn their chrome only when several fields are compared (uxpatterns.dev: start with list).",
+      "good": "<ListItem> title + one meta line + trailing action",
+      "bad": "a three-column Table whose header row labels the obvious"
+    },
+    {
+      "id": "R4",
+      "title": "Judging candidates one by one wants tiles",
+      "when": {
+        "task": [
+          "browse"
+        ]
+      },
+      "choose": [
+        "cards",
+        "list"
+      ],
+      "because": "Browsing has no single target: each item is read and judged on its own content, so it gets a self-contained surface. The moment the job becomes comparing fields across items, the task is compare and R1 applies (NN/g cards: browsing, not searching).",
+      "good": "<Card fill> per team: name, score Badge, the reasons as sentences",
+      "bad": "a Table whose cells hold sentences — comparison across rows of prose compares nothing"
+    },
+    {
+      "id": "R5",
+      "title": "Monitoring wants preattentive values",
+      "when": {
+        "task": [
+          "monitor"
+        ],
+        "item": "metric"
+      },
+      "choose": [
+        "stats"
+      ],
+      "because": "A monitoring surface is read at a glance and acted on elsewhere: encode quantity with length and position (Stat, Meter), never with prose or rows (NN/g dashboards).",
+      "good": "<Stat size=lg> beside a <Meter> with a target marker",
+      "bad": "a Table of KPI names and numbers that has to be read line by line"
+    },
+    {
+      "id": "R6",
+      "title": "Analysis drills from aggregate to rows",
+      "when": {
+        "task": [
+          "analyze"
+        ]
+      },
+      "choose": [
+        "stats",
+        "table"
+      ],
+      "because": "Analysis is one investigation loop: the aggregate on top, the transactional rows under it, acted on where they are (SAP Fiori analytical list page).",
+      "good": "Stat row above the Table it summarises",
+      "bad": "the aggregate on one screen and the rows behind a navigation"
+    },
+    {
+      "id": "R7",
+      "title": "Prose is never tabular",
+      "when": {
+        "item": "prose"
+      },
+      "choose": [
+        "cards",
+        "list"
+      ],
+      "because": "A collection of text-heavy items (questions, messages, findings) is read item by item; a table of paragraphs has columns that align nothing (NN/g data tables: tables are for discrete comparable values).",
+      "good": "<Card fill> per question: who asked, the text, the answer, the actions",
+      "bad": "<Table> with a 'Question' column four lines tall"
+    },
+    {
+      "id": "R8",
+      "title": "A queue is a worklist",
+      "when": {
+        "task": [
+          "process"
+        ],
+        "item": "record"
+      },
+      "choose": [
+        "table",
+        "list"
+      ],
+      "because": "Working through items that each need a decision is a worklist: the set is given, so it needs density and status, not discovery chrome (SAP Fiori worklist = list report minus the filter bar).",
+      "good": "<Table> of items with a status Badge and one action per row",
+      "bad": "a card grid the user has to graze over to find what is next"
+    },
+    {
+      "id": "R10",
+      "title": "A short queue reads as cards",
+      "when": {
+        "task": [
+          "process"
+        ],
+        "item": "record",
+        "cardinality": "few"
+      },
+      "choose": [
+        "cards",
+        "list",
+        "table"
+      ],
+      "because": "R8's density argument is about SCALE: with a handful of items, per-item actions and reading beat column density. Two live precedents: the DS ForReview queue (approve / request changes on each card) and airun's risk board. At cardinality many, R8 alone applies and cards fail again.",
+      "good": "<Card tight> per item: eyebrow, title, meta, two small actions",
+      "bad": "a three-row Table whose header chrome outweighs its rows"
+    },
+    {
+      "id": "R9",
+      "title": "Entry points are tiles",
+      "when": {
+        "task": [
+          "navigate"
+        ]
+      },
+      "choose": [
+        "cards",
+        "list"
+      ],
+      "because": "A hub's items are destinations, not records: a tile per destination with what is waiting inside it (SAP Fiori overview page; LinkTile exists for exactly this).",
+      "good": "<LinkTile> per chat: topic, what is waiting, when it arrived",
+      "bad": "a Table of destinations with sortable columns nobody sorts"
+    }
+  ],
+  "hard": [
+    {
+      "id": "H1",
+      "when": {
+        "cardinality": "unbounded"
+      },
+      "forbid": [
+        "table"
+      ],
+      "instead": "grid",
+      "because": "Table renders a known number of rows; an unbounded set is DataGrid, which virtualizes (AGENTS.md: choosing between neighbours)."
+    },
+    {
+      "id": "H2",
+      "when": {
+        "editable": true
+      },
+      "forbid": [
+        "cards",
+        "list"
+      ],
+      "instead": "grid",
+      "because": "Editing as the primary task across a collection needs cells, not a dialog behind every card (Smart Interface Design Patterns)."
+    }
+  ],
+  "notes": [
+    {
+      "id": "N1",
+      "when": {
+        "item": "record",
+        "maxFields": 3
+      },
+      "if": "table",
+      "say": "three fields rarely earn columns — a list scans faster (uxpatterns.dev); keep the table only if column sorting is really used"
+    },
+    {
+      "id": "N-view-switcher",
+      "when": {
+        "item": "record"
+      },
+      "if": "cards",
+      "say": "a view switcher (rows | cards | table over the SAME collection) is the exception, not the default: offer it only when the collection is both VISUAL (the media identifies the item) and COMPARABLE (fields worth columns) — files, media, products; otherwise fix the one representation these rules chose. When offered: an icon SegmentedControl at the toolbar's trailing edge, the rules' choice as the default, the choice remembered per collection, and every view truncating the same ordered field list rather than inventing its own (Fiori list report, SharePoint views, NN/g). The live reference is the showcase's content-patterns screen."
+    },
+    {
+      "id": "N-worklist-holds-its-order",
+      "when": {
+        "task": [
+          "process"
+        ],
+        "item": "record"
+      },
+      "if": "table",
+      "say": "a worklist's READING ORDER IS ITS PRIORITY ORDER: sortable headers (Th sortable/onSort) hand the ranking back to the user and un-decide what the screen decided. Keep headers static; re-sorting is the `list`/`compare` archetypes' tool. Codified 2026-08-21 from the judge lane's first live catch — a fully conformant queue with sortable columns that only the rubric failed."
+    }
+  ]
+}

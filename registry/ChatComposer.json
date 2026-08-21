@@ -1,0 +1,61 @@
+{
+  "ref": "ChatComposer",
+  "level": "molecule",
+  "description": "Rounded chat input bar: auto-growing textarea plus voice/send. A pill on one line, rounded-rect once it grows; the mic swaps to a brand-filled send as soon as there is text. Enter sends, Shift+Enter adds a newline. The consumer positions it.",
+  "exports": [
+    "ChatComposer"
+  ],
+  "main": "ChatComposer",
+  "from": "@/components/ChatComposer",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(next: string) => void",
+      "required": false
+    },
+    {
+      "name": "onSend",
+      "type": "(text: string) => void",
+      "required": false
+    },
+    {
+      "name": "streaming",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "onStop",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "aiSpark",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ChatComposer/ChatComposer.tsx",
+  "context": "region",
+  "uses": [
+    "Icon",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "<ChatComposer placeholder=\"Ask anything\" onSend={() => undefined} />"
+}

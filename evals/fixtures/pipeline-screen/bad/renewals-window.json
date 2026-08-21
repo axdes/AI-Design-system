@@ -1,0 +1,26 @@
+{
+  "id": "renewals-window",
+  "project": "renewals-desk",
+  "title": "Renewals window",
+  "goal": "Browse the contracts coming up for renewal.",
+  "primaryQuestion": "Which contract do I handle first?",
+  "audience": "expert",
+  "archetype": "worklist",
+  "template": "ListPageTemplate",
+  "zones": [
+    {
+      "name": "window",
+      "task": "process",
+      "data": { "item": "record", "cardinality": "many" },
+      "answers": "Which contract do I handle first?",
+      "purpose": "A tile per contract so each one feels like a page of its own, with a search box to find the one you want.",
+      "components": ["Card", "SearchInput", "DataCard", "Button variant=secondary"]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState when there are no contracts."
+  },
+  "acceptance": [
+    "Each contract renders as its own tile."
+  ]
+}

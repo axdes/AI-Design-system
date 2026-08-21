@@ -1,0 +1,92 @@
+{
+  "$schema": "./schema.json",
+  "id": "for-review",
+  "title": "For review",
+  "goal": "Work through everything waiting for the reviewer: approve it or send it back with a note, until the queue is empty.",
+  "primaryQuestion": "What is waiting for my review?",
+  "audience": "expert",
+  "archetype": "worklist",
+  "template": "ListPageTemplate",
+  "zones": [
+    {
+      "name": "header",
+      "task": "read",
+      "purpose": "The screen's name and nothing else: a worklist has no creating action (the queue is fed elsewhere) and no filters — the queue IS the selection. This is the taxonomy's one true worklist in the corpus: ListPageTemplate without its toolbar.",
+      "components": [
+        "Button"
+      ]
+    },
+    {
+      "name": "queue",
+      "task": "process",
+      "data": {
+        "item": "record",
+        "cardinality": "few",
+        "fields": 4
+      },
+      "answers": "What is waiting for my review?",
+      "purpose": "The queue as ROWS in one flush panel: a decision list is read down and acted on in place. Each row: the type as an icon tile and an eyebrow, the title as the door (its hit area is the whole row), author and date on the meta line, and the two decisions trailing — Approve first, Request changes as its quiet peer. The per-row status badge is gone on purpose: every row here is in review and the page title says so once; a badge repeated on every row is a column of noise. R10 still governs the representation (a short queue of records: cards | list | table) — this is its `list` answer, denser than tiles and calmer than a table, because two meta fields do not earn columns.",
+      "components": [
+        "Card flush=true",
+        "ContentRow density=compact",
+        "Icon",
+        "MetaItem appearance=eyebrow",
+        "Button size=sm",
+        "Button size=sm variant=ghost"
+      ]
+    },
+    {
+      "name": "dialogs",
+      "task": "input",
+      "purpose": "Request changes is the one write that needs words: the note is the payload the author acts on, so it is a small Modal with a Textarea, and sending it both drains the item and says so in a toast.",
+      "components": [
+        "Modal size=sm",
+        "Field",
+        "Textarea"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState via the template's empty prop, icon=rate_review, with the way to the content library. The GOOD state — a drained queue is the job done — and it says so instead of looking broken.",
+    "error": "Not applicable while the queue is seeded from mock data; when a backend arrives this gains an Alert with the reason and a retry, and this sentence is the reminder."
+  },
+  "acceptance": [
+    "Taking either decision removes the item at once — the queue visibly drains.",
+    "No search and no filters anywhere: the queue is given, not found.",
+    "The empty queue reads as success, with a route onward, never as an error.",
+    "Both decisions sit on the card itself; only the note needs a dialog.",
+    "No per-row status badge: the page's title carries the one state every row shares.",
+    "The two decisions sit on the row itself and act in place; opening the record is the row's own click, not a third button."
+  ],
+  "data": [
+    "the queue: every content item with status in-review, regardless of author — seeded from mockContent, drained in local state so the empty state is really reachable"
+  ],
+  "implementation": "src/layouts/ForReviewPage.tsx",
+  "openQuestions": [],
+  "behaviours": [
+    {
+      "id": "approve-clears-in-place",
+      "given": "the queue with items awaiting review",
+      "when": "the reviewer presses Approve on a row",
+      "then": "that row leaves the queue where it stands — no dialog, no navigation — and a toast names what was approved",
+      "why": "The queue's promise: decisions are applied in place, or it is not a worklist.",
+      "provenBy": "src/layouts/ForReviewPage.test.tsx"
+    },
+    {
+      "id": "request-changes-collects-a-note",
+      "given": "an item whose review found problems",
+      "when": "the reviewer presses Request changes and sends their note",
+      "then": "an empty note cannot be sent; with words in it the dialog closes and the item returns to its author, leaving the queue",
+      "why": "Sending work back without words is a rejection; the note is what makes it a review.",
+      "provenBy": "src/layouts/ForReviewPage.test.tsx"
+    },
+    {
+      "id": "drained-queue-is-done",
+      "given": "a queue with one item left",
+      "when": "the reviewer decides it",
+      "then": "the empty state renders as the GOOD state — inbox zero — never a blank page",
+      "why": "A drained worklist is the job done (same contract as every queue here).",
+      "provenBy": "src/layouts/ForReviewPage.test.tsx"
+    }
+  ]
+}

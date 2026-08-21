@@ -1,0 +1,88 @@
+{
+  "$schema": "../content-model.schema.json",
+  "id": "airun",
+  "title": "AiRun — the coach cockpit",
+  "roles": ["coach", "coordinator"],
+  "objects": {
+    "team": {
+      "description": "One AI/Run team from the workbook: a candidate to judge and take, then an engagement to run. The whole product exists to move teams from the first state to the second without losing what was learned on the way.",
+      "attributes": {
+        "core": ["code", "name", "project", "description", "tools", "contact", "headcount"],
+        "meta": ["timezone", "country", "grade", "confirmed"]
+      },
+      "relations": [
+        { "to": "coach", "cardinality": "many-to-one", "why": "the Coach column of the workbook is the single fact the catalog filters on: free, mine, or somebody's" },
+        { "to": "chat", "cardinality": "one-to-many", "why": "a team has several Teams chats (the group chat, the lead, the client) and the detail screen lists them as one collection" }
+      ],
+      "actions": [
+        { "verb": "monitor", "roles": ["coach"], "screen": "cockpit", "constraint": "ranked by risk band, reasons beside the verdict; evidence never moves the score" },
+        { "verb": "browse", "roles": ["coach"], "screen": "team-catalog", "constraint": "the default view hides teams other coaches already have and says how many it is hiding" },
+        { "verb": "save", "roles": ["coach"], "screen": "team-catalog", "constraint": "saving is not deciding: one local file, no workbook, instantly undone" },
+        { "verb": "take", "roles": ["coach"], "screen": "team-catalog", "constraint": "the workbook is written first and is the authority; a row somebody else took meanwhile is refused, not overwritten" },
+        { "verb": "decline", "roles": ["coach"], "screen": "team-catalog", "constraint": "the reason is the payload the org side reads; a decline with no reason is worth nothing" },
+        { "verb": "decide", "roles": ["coach"], "screen": "team-detail", "constraint": "the same two writes as the catalog, so a decision made here is the same event as one made there" }
+      ],
+      "screens": { "collection": "team-catalog", "detail": "team-detail" }
+    },
+    "coach": {
+      "description": "One AI/Run coach from the workbook's Coaches tab: to a coordinator a candidate for the group of ten, to the programme view a person carrying teams. One record, two readings — which is why the catalog card opens the SAME detail the programme view has, not a second one.",
+      "attributes": {
+        "core": ["name", "email", "location", "timezone", "wave", "languages", "tools", "coordinator", "workflow"],
+        "meta": ["teamsTarget", "confirmed"]
+      },
+      "relations": [
+        { "to": "team", "cardinality": "one-to-many", "why": "the load against target is the fact a coordinator judges, and the detail lists the teams by whether they need attention" }
+      ],
+      "actions": [
+        { "verb": "browse", "roles": ["coordinator"], "screen": "coach-catalog", "constraint": "take buttons appear only for a coordinator the workbook's Coordinators sheet names" },
+        { "verb": "save", "roles": ["coordinator"], "screen": "coach-catalog", "constraint": "the shortlist touches no workbook and no chat" },
+        { "verb": "take", "roles": ["coordinator"], "screen": "coach-catalog", "constraint": "written to the Coaches tab's Coordinator column first, guarded and read back; a coach already given away is refused" },
+        { "verb": "release", "roles": ["coordinator"], "screen": "coach-catalog", "constraint": "a form, because the reason is the signal the programme leads read" },
+        { "verb": "message", "roles": ["coordinator"], "screen": "coach-catalog", "constraint": "one group chat for everyone taken, editable before sending — it goes to real people over Graph" },
+        { "verb": "review", "roles": ["coordinator", "coach"], "screen": "program-coach", "constraint": "this screen reports, it does not reassign; per-team state exists only for the signed-in coach's own teams and it says which of the two it is looking at" }
+      ],
+      "screens": { "collection": "coach-catalog", "detail": "program-coach" }
+    },
+    "question": {
+      "description": "One question asked in the coaches' Teams chat, kept as an object with a status so it stops getting lost in the scroll: what was asked, whether anybody answered, and the draft built from what this tool already knows.",
+      "attributes": {
+        "core": ["text", "topic", "status", "answer"],
+        "meta": ["permalink"]
+      },
+      "relations": [
+        { "to": "coach", "cardinality": "many-to-one", "why": "who asked is half the routing: the same question from three coaches is one FAQ, not three tickets" }
+      ],
+      "actions": [
+        { "verb": "pull", "roles": ["coordinator"], "screen": "coach-questions", "constraint": "only what is newer than the watermark, with the coach's own token" },
+        { "verb": "answer", "roles": ["coordinator"], "screen": "coach-questions", "constraint": "the exact text is shown editable before it posts — nothing is sent to a room full of colleagues unread" },
+        { "verb": "copy", "roles": ["coordinator"], "screen": "coach-questions" }
+      ],
+      "screens": { "collection": "coach-questions" }
+    },
+    "chat": {
+      "description": "One Teams conversation with or about a team, read through the coach's own session. It has no page of its own: its home is the team detail's chats tab, where the list and the thread sit side by side.",
+      "attributes": {
+        "core": ["schedule", "unread", "link"]
+      },
+      "relations": [
+        { "to": "team", "cardinality": "many-to-one", "why": "the rules that suit the team's chat are wrong for the client's, so handling lives per chat inside the team" }
+      ],
+      "actions": [
+        { "verb": "read", "roles": ["coach"], "screen": "team-detail", "constraint": "the thread as it happened, from the archive on disk, never a rolling snapshot" },
+        { "verb": "add", "roles": ["coach"], "screen": "team-detail", "constraint": "following an existing chat by its Teams link; creating one is the outreach flow and the two are never confused" }
+      ],
+      "screens": { "detail": "team-detail" }
+    }
+  },
+  "vocabularies": {
+    "fit": "score, verdict and reasons are computed about a PAIR (this coach and this team, or this coordinator and this coach) by the rubric in tools/lib — a fact about a relation, not an object with a life of its own. Becomes an object only if a score ever needs its own history screen.",
+    "verdict": "strong | possible | weak — the word for a score band, rendered as a Badge.",
+    "shortlist": "a local, undoable mark on a team or a coach (one JSON file), not a thing with attributes; deliberately never written to the workbook.",
+    "workbook": "the SoT spreadsheet is the SOURCE, not a UI object: every object above is a reading of one of its tabs, and the tool's writes to it are actions on those objects, guarded and logged.",
+    "coordinator-as-record": "the Coordinators sheet row (name, tally) stays a role marker: the tally is derived from the Coaches tab's Coordinator column, and two writers of one number is how a number stops being trusted."
+  },
+  "openQuestions": [
+    "Meetings, check-ins and risk live in the signed-in coach's own instance files and have no spec'd screen yet; when the delivery journal grows one, it becomes this model's fifth object.",
+    "The programme overview screen (teams grid the walkthroughs used) predates the spec layer and has no spec, so no object claims it; writing that spec is the condition that closes this."
+  ]
+}

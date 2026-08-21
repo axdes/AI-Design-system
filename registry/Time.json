@@ -1,0 +1,43 @@
+{
+  "ref": "Time",
+  "level": "atom",
+  "description": "A timestamp said the way a reader says it, with the exact one underneath. The relative label is never the only copy of the fact: `dateTime` carries the machine-readable instant and `title` the full local date, so \"2 hours ago\" is hoverable and parseable rather than the only thing on the page.",
+  "exports": [
+    "Time"
+  ],
+  "main": "Time",
+  "from": "@/components/Time",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "string | number | Date",
+      "required": true
+    },
+    {
+      "name": "mode",
+      "type": "Mode",
+      "required": false,
+      "values": [
+        "auto",
+        "relative",
+        "absolute"
+      ]
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Time/Time.tsx",
+  "uses": [
+    "Layout"
+  ],
+  "example": "<Stack gap={1}>\n  {/* auto: relative while it is recent, the full date once it is not. */}\n  <Time value={EDITED} />\n  <Time value={JOINED} />\n</Stack>"
+}

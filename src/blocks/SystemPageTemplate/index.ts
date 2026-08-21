@@ -1,0 +1,1 @@
+export { SystemPageTemplate } from './SystemPageTemplate'

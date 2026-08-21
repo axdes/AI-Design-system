@@ -1,0 +1,52 @@
+.descriptions { margin: 0; }
+.descriptions[data-layout='stacked'] {
+  display: grid;
+  /* A list, not a set of sections: at space-4 the rows floated apart far enough that each pair
+     read as its own block. The name sits right on top of its value and the pairs are told apart
+     by the gap between them, which is what space-3 buys. */
+  gap: var(--space-3) var(--space-6);
+}
+.descriptions[data-layout='stacked'][data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.descriptions[data-layout='stacked'][data-columns='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.descriptions-row { min-inline-size: 0; }
+.descriptions[data-layout='stacked'] .descriptions-row { display: flex; flex-direction: column; gap: var(--space-1); }
+/* The list measures ITSELF, not the window: the same `inline` list sits in a 1300px card on one
+   screen and in a 20rem aside on the next, and a media query cannot tell those apart. */
+.descriptions[data-layout='inline'] { container-type: inline-size; }
+.descriptions[data-layout='inline'] .descriptions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  padding-block: var(--space-2);
+  border-block-end: 1px solid var(--border);
+}
+.descriptions[data-layout='inline'] .descriptions-row:last-child { border-block-end: none; }
+
+/* A FIELD NAME, not a heading.
+ *
+ * It used to borrow <SectionLabel>: display face, 17px, uppercase, tracked. That put a shouted
+ * heading on every row of what is meant to read as a quiet list — a column of WAVE / WHERE /
+ * CLOCK / COORDINATOR louder than the answers under them — and set the label in a different
+ * typeface from its own value, which is what made these lists look broken rather than styled.
+ * A field name is small, quiet, and in the same face as the text it names; the value carries the
+ * weight, because the value is the content. */
+.descriptions-term {
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--muted-foreground);
+}
+/* The label column is fixed so every value in the list starts on the same line, which is the
+   whole reason to put the term beside the value rather than above it. */
+.descriptions[data-layout='inline'] .descriptions-term { flex: 0 0 9rem; }
+/* Until the list is too narrow to afford it. 9rem of name against 7rem of value is a label eating
+   the content it names — every value wrapping to three lines while the column beside it stays
+   empty. Below 26rem the name goes back on top of its value, which is the `stacked` layout, and
+   the reason THIS is a container query and not a second prop: the caller should not have to know
+   how wide the box it dropped the list into happens to be. */
+@container (max-width: 26rem) {
+  .descriptions[data-layout='inline'] .descriptions-term { flex-basis: 100%; }
+}
+.descriptions-value { margin: 0; font-size: var(--font-base); color: var(--foreground); }
+.descriptions[data-layout='inline'] .descriptions-value { font-size: var(--font-sm); }

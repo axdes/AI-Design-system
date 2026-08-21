@@ -1,0 +1,43 @@
+{
+  "$schema": "../content-model.schema.json",
+  "id": "notify-relay",
+  "title": "Notification relay",
+  "roles": ["operator"],
+  "objects": {
+    "relay": {
+      "description": "The one sending pipe: where outgoing notifications go and under what name. There is exactly one per install — it is configured, never listed.",
+      "attributes": {
+        "core": ["host", "sender", "token", "digest", "quietHours"]
+      },
+      "actions": [
+        {
+          "verb": "configure",
+          "roles": ["operator"],
+          "screen": "relay-settings",
+          "constraint": "any knob alone, in any order — no step sequence exists"
+        },
+        {
+          "verb": "replace-token",
+          "roles": ["operator"],
+          "screen": "relay-settings",
+          "constraint": "write-only: the saved value never returns to any screen; the UI sees a boolean",
+          "provenBy": "relay-settings#token-is-write-only"
+        },
+        {
+          "verb": "test-connection",
+          "roles": ["operator"],
+          "screen": "relay-settings",
+          "constraint": "the result names what failed and the fix, never a bare red"
+        }
+      ],
+      "screens": { "detail": "relay-settings" }
+    }
+  },
+  "vocabularies": {
+    "digest": "three fixed cadences (immediately | hourly | daily) — how often, not a schedule editor. Reopens the day quiet hours grow ranges per weekday, which is a schedule and a different control.",
+    "token": "a secret the screen may test and replace but never read. Fails the litmus test as an object: no screen lists tokens, nothing owns more than one."
+  },
+  "openQuestions": [
+    "Whether a failed connection test should block Save. Built as: it does not — saving a config you are still fixing is normal; the test is advice, not a gate."
+  ]
+}

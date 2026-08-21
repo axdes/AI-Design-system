@@ -1,0 +1,80 @@
+{
+  "$schema": "./schema.json",
+  "id": "handbook-candidates",
+  "project": "handbook",
+  "title": "Candidates",
+  "goal": "Find a candidate and open their assessment.",
+  "primaryQuestion": "Which candidate am I reviewing?",
+  "audience": "expert",
+  "archetype": "list",
+  "template": "ListPageTemplate",
+  "zones": [
+    {
+      "name": "header",
+      "task": "act",
+      "purpose": "The same global discipline switch (SegmentedControl) in the page actions; the list shows the candidates interviewed against the current discipline's profiles.",
+      "components": [
+        "SegmentedControl"
+      ]
+    },
+    {
+      "name": "toolbar",
+      "task": "find",
+      "purpose": "SearchInput narrows by candidate name.",
+      "components": [
+        "SearchInput"
+      ]
+    },
+    {
+      "name": "list",
+      "task": "browse",
+      "data": {
+        "item": "record",
+        "cardinality": "few",
+        "fields": 3
+      },
+      "answers": "Which candidate am I reviewing?",
+      "purpose": "One tile per candidate, the same language as the profile tiles: the name as the link, the profile and the target seniority as two separate MetaItem facts (never one merged string), and the verdict seniority as a Badge in the tile header when a verdict exists.",
+      "components": [
+        "Card",
+        "CardTitle",
+        "CardMeta",
+        "Button variant=link",
+        "MetaItem",
+        "Badge"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "EmptyState via the template's empty prop, reason no-matches, icon=search: the search matched nobody, the action clears it. With no candidates at all in the discipline the same EmptyState reads reason no-data.",
+    "error": "Static seed data cannot fail to load; both empties above are the one EmptyState the template renders."
+  },
+  "data": [
+    "candidates of the current discipline: name, profile, target seniority, verdict decision if any"
+  ],
+  "openQuestions": [
+    "Whether one candidate can carry several independent assessments (an interview panel) is an open product question; the first pass stores exactly one."
+  ],
+  "implementation": [
+    "apps/handbook/src/layouts/CandidatesPage.tsx",
+    "apps/handbook/src/components/DisciplineSwitch.tsx"
+  ],
+  "behaviours": [
+    {
+      "id": "discipline-scopes-through-profile",
+      "given": "candidates whose profiles live in different disciplines",
+      "when": "the candidates list renders under one chosen discipline",
+      "then": "only candidates whose profile belongs to that discipline appear",
+      "why": "A candidate has no discipline of their own; the profile carries it, and the list obeys the same global scope.",
+      "provenBy": "apps/handbook/src/data/queries.test.ts"
+    },
+    {
+      "id": "empty-points-elsewhere",
+      "given": "a discipline with no candidates while another has them",
+      "when": "the list comes up empty",
+      "then": "the empty state names a discipline that actually has data, instead of a dead end",
+      "why": "An empty list with no way onward reads as a broken tool (the same rule as airun's empty cockpit).",
+      "provenBy": "apps/handbook/src/data/queries.test.ts"
+    }
+  ]
+}

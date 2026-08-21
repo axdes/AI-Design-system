@@ -1,0 +1,36 @@
+.number-input {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  block-size: var(--control-height);
+  padding-inline: var(--space-1);
+  background: var(--background);
+  border: 1px solid var(--input);
+  border-radius: var(--control-radius);
+}
+.number-input[data-size="sm"] { block-size: var(--control-height-sm); }
+.number-input[data-size="lg"] { block-size: var(--control-height-lg); }
+.number-input[data-size="sm"] .number-input-field { font-size: var(--font-sm); }
+.number-input[data-size="lg"] .number-input-field { font-size: var(--control-font-size-lg); }
+.number-input:focus-within { border-color: var(--ring); }
+.number-input[data-invalid] { border-color: var(--destructive); }
+/* --muted surface: drop the resting border; keep it on focus-within (the field's
+ * only focus indicator) and on invalid. */
+.number-input[data-surface="muted"]:not([data-invalid]):not(:focus-within) { border-color: transparent; }
+.number-input[data-disabled] { opacity: 0.5; }
+
+.number-input-field {
+  inline-size: 3.5rem;
+  border: none;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--control-font-size);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.number-input-field:focus { outline: none; }
+/* Hide the native spin arrows; our -/+ buttons replace them. */
+.number-input-field::-webkit-inner-spin-button,
+.number-input-field::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.number-input-field { appearance: textfield; }

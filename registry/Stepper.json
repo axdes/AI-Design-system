@@ -1,0 +1,44 @@
+{
+  "ref": "Stepper",
+  "level": "molecule",
+  "description": "Progress across an ordered set of steps (a wizard, a multi-step form). Shows which are done (check), which is active (aria-current=\"step\") and which are still ahead. Presentational: the parent owns `current` and what each step contains. Completed steps can be clickable to go back.",
+  "exports": [
+    "Stepper"
+  ],
+  "main": "Stepper",
+  "from": "@/components/Stepper",
+  "slots": [],
+  "props": [
+    {
+      "name": "steps",
+      "type": "Step[]",
+      "required": true
+    },
+    {
+      "name": "current",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "onStepClick",
+      "type": "(index: number) => void",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Stepper/Stepper.tsx",
+  "context": "region",
+  "uses": [
+    "Icon"
+  ],
+  "example": "const [step, setStep] = useState(1)\n/* Presentational: the parent owns `current`. Completed steps are clickable to\n * go back (upcoming ones are not); the wizard body lives next to this. */\n\n<Stepper\n  current={step}\n  onStepClick={setStep}\n  steps={[\n    { label: 'Account', description: 'Your details' },\n    { label: 'Shipping', description: 'Where to send it' },\n    { label: 'Payment', description: 'How to pay' },\n    { label: 'Review', description: 'Confirm and place' },\n  ]}\n/>"
+}

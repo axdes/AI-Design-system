@@ -1,0 +1,80 @@
+{
+  "ref": "ContentRow",
+  "level": "molecule",
+  "description": "One CONTENT entry as a row: media, eyebrow, title, excerpt, meta, trailing actions — the anatomy every feed from a repo list to a news teaser shares. Reach for it when an entry carries an excerpt or several meta fields; `ListItem` stays the simple one-line clickable row.",
+  "exports": [
+    "ContentRow"
+  ],
+  "main": "ContentRow",
+  "from": "@/components/ContentRow",
+  "slots": [],
+  "props": [
+    {
+      "name": "media",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "eyebrow",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "required": false
+    },
+    {
+      "name": "excerpt",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "meta",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "density",
+      "type": "'comfortable' | 'compact' | 'dense'",
+      "required": false,
+      "values": [
+        "comfortable",
+        "compact",
+        "dense"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ContentRow/ContentRow.tsx",
+  "variants": {
+    "density": {
+      "prop": "density",
+      "values": [
+        "comfortable",
+        "compact",
+        "dense"
+      ]
+    }
+  },
+  "uses": [
+    "Button",
+    "Icon",
+    "MetaItem"
+  ],
+  "example": "<ContentRow\n  media={<Icon name=\"description\" size=\"md\" />}\n  eyebrow={<MetaItem appearance=\"eyebrow\" icon=\"description\">Article</MetaItem>}\n  title=\"Quarterly safety review, summarised\"\n  onOpen={() => undefined}\n  excerpt=\"What changed since March, which sites closed their findings, and the two audits still open going into Q4.\"\n  meta={\n    <>\n      <MetaItem icon=\"person\">Sarah Al-Mansouri</MetaItem>\n      <MetaItem icon=\"schedule\">May 12, 2026</MetaItem>\n    </>\n  }\n  actions={<Button size=\"sm\" variant=\"secondary\">Share</Button>}\n/>"
+}

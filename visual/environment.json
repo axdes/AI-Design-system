@@ -1,0 +1,6 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "chromium": "151.0.7922.34",
+  "viewport": "1280x800@1"
+}

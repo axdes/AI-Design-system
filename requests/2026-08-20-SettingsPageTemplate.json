@@ -1,0 +1,30 @@
+{
+  "name": "SettingsPageTemplate",
+  "level": "block",
+  "date": "2026-08-20",
+  "requestedBy": "agent (golden-screens G2)",
+  "need": "The settings archetype has no carrier: workshops built the cleanest settings screen in the portfolio by hand (SettingRow with label+explanation left / control right, write-only secret fields marked 'configured', five grouped sections), both ProfilePages hand-assemble a lighter version, and energy-cloud outside the monorepo needed a whole multi-section settings area. Every next product will need one, and today each starts from a blank div.",
+  "consideredAlternatives": [
+    {
+      "ref": "blocks/ListPageTemplate",
+      "whyNot": "Settings are not a collection to narrow: no toolbar, no empty state driven by filters, and rows are explained knobs, not records."
+    },
+    {
+      "ref": "blocks/FormModal",
+      "whyNot": "Settings are a PAGE read by scanning group labels, not a submitted form; most rows apply on change and there is no single confirm."
+    },
+    {
+      "ref": "compose per screen",
+      "whyNot": "The status quo: workshops did it correctly once as app-local SettingRow, both ProfilePages did it again worse, and the next app starts from zero."
+    }
+  ],
+  "proposedApi": {
+    "SettingsPageTemplate": "title, actions, children — a deliberately NARROW column (52rem knob, co-located) with the header inside it, because a title flush to the page edge above a centred column reads as two screens",
+    "SettingsSection": "title, description, children — a Card whose head names the group; group by who a knob affects (Linear's lesson: me / workspace / admins)",
+    "SettingRow": "label, description, htmlFor, badge, children — name and what-it-actually-affects left, control right; the explanation is the point (workshops' proven contract). A destructive action is a plain row with a destructive Button, no red frame"
+  },
+  "sources": "workshops SettingsPage (live case, SettingRow contract), Shopify settings template (two-column bands, scannable left rail of labels), Linear settings architecture (grouping by scope)",
+  "status": "approved",
+  "decision": "Build as a block per the golden-screens G2 batch; workshops migrates onto it (and its app-local SettingRow retires) next time workshops is touched for feature work.",
+  "decidedBy": "owner (2026-08-20, approved the golden-screens batch)"
+}

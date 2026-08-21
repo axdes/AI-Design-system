@@ -1,0 +1,13 @@
+{
+  "id": "data-table",
+  "title": "Invoices table with sort and paging",
+  "why": "A real data table needs sortable headers, a pager and a breadcrumb — three things the system could not express before Table sort, Pagination and Breadcrumb existed. Agents otherwise rebuild all three from raw markup.",
+  "required": ["Table", "Pagination", "Breadcrumb", "Badge"],
+  "forbidden": [
+    {
+      "pattern": "className=\"[^\"]*\\b(pagination|breadcrumb|pager)\\b",
+      "message": "hand-rolled pager/breadcrumb — use <Pagination> / <Breadcrumb>"
+    }
+  ],
+  "entry": "Screen.tsx"
+}

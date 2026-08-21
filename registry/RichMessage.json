@@ -1,0 +1,30 @@
+{
+  "ref": "RichMessage",
+  "level": "molecule",
+  "description": "A message or AI answer as it was written: headings, quotes, code, lists and tables from TYPED blocks — never from HTML, so there is nothing to sanitise and nothing to inject. A table scrolls inside its own container; a thread that scrolls sideways has stopped being readable.",
+  "exports": [
+    "RichMessage"
+  ],
+  "main": "RichMessage",
+  "from": "@/components/RichMessage",
+  "slots": [],
+  "props": [
+    {
+      "name": "blocks",
+      "type": "RichBlock[]",
+      "required": false
+    },
+    {
+      "name": "text",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/RichMessage/RichMessage.tsx",
+  "example": "<RichMessage blocks={BLOCKS} text=\"Quarterly numbers: usage doubled, beta holds.\" />"
+}

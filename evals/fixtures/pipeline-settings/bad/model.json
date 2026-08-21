@@ -1,0 +1,22 @@
+{
+  "id": "notify-relay",
+  "title": "Notification relay",
+  "roles": ["operator"],
+  "objects": {
+    "relay": {
+      "description": "The sending pipe.",
+      "attributes": {
+        "core": ["host", "sender", "token", "digest", "quietHours"]
+      },
+      "actions": [
+        {
+          "verb": "replace-token",
+          "roles": ["operator"],
+          "screen": "relay-settings",
+          "provenBy": "relay-settings#token-is-write-only"
+        }
+      ],
+      "screens": { "detail": "relay-settings" }
+    }
+  }
+}

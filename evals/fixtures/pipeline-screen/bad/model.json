@@ -1,0 +1,22 @@
+{
+  "id": "renewals-desk",
+  "title": "Contract renewals desk",
+  "roles": ["legal-ops-specialist"],
+  "objects": {
+    "contract": {
+      "description": "One agreement approaching its end date.",
+      "attributes": {
+        "core": ["id", "counterparty", "annualValue", "endDate", "status"]
+      },
+      "actions": [
+        {
+          "verb": "send-for-renewal",
+          "roles": ["legal-ops-specialist"],
+          "screen": "renewals-window",
+          "provenBy": "renewals-window#send-for-renewal-in-place"
+        }
+      ],
+      "screens": { "collection": "renewals-window" }
+    }
+  }
+}

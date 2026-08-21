@@ -1,0 +1,78 @@
+{
+  "ref": "SideNav",
+  "level": "organism",
+  "description": "The application navigation column: sections, the active route, and the collapse to an icon rail.",
+  "exports": [
+    "SideNav"
+  ],
+  "main": "SideNav",
+  "from": "@/components/SideNav",
+  "slots": [],
+  "props": [
+    {
+      "name": "groups",
+      "type": "SideNavGroup[]",
+      "required": true
+    },
+    {
+      "name": "logo",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "logoMark",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "collapsible",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "collapseControl",
+      "type": "CollapseControl",
+      "required": false
+    },
+    {
+      "name": "collapsed",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "defaultCollapsed",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "onCollapsedChange",
+      "type": "(collapsed: boolean) => void",
+      "required": false
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SideNav/SideNav.tsx",
+  "context": "page",
+  "variants": {
+    "collapsed": {
+      "prop": "collapsed",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Badge",
+    "Icon"
+  ],
+  "example": "const [active, setActive] = useState('library')\n/* Routing-agnostic: pass `href` for anchors, `onSelect` for buttons. The rail\n * owns its collapsed state unless you control it from outside.\n *\n * Brand: the SAME mark in both states, the wordmark only when expanded. That\n * is the whole rule — the collapsed rail is too narrow for a wordmark, and a\n * mark that changes shape or colour between states reads as a different\n * product. Swap the <Icon> for your <img src={logo} alt=\"\" />. */\n\n<SideNav\n  aria-label=\"Primary\"\n  logo={<><Icon name=\"auto_awesome\" size=\"md\" /><strong>Acme</strong></>}\n  logoMark={<Icon name=\"auto_awesome\" size=\"md\" />}\n  groups={[\n    {\n      label: 'Workspace',\n      items: [\n        { id: 'library', label: 'Library', icon: 'folder', active: active === 'library', onSelect: () => setActive('library') },\n        /* `usage` is the name this entry answers to in a product's usage log. It is\n           worth setting wherever `trailing` carries a number: without it the entry\n           is read from its visible text, so the same row is \"For review 3\" one day\n           and \"For review 4\" the next, and one control becomes two rows. */\n        { id: 'review', label: 'F"
+}

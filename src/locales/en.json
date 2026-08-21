@@ -1,0 +1,364 @@
+{
+  "login": {
+    "title": "Sign in to AI Design System",
+    "subtitle": "Welcome to AI Design System. Please sign in with your credentials to access your workspace.",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign In",
+    "demoAccounts": "Demo accounts",
+    "invalidCredentials": "Invalid username or password"
+  },
+  "sidebar": {
+    "workspace": "Workspace",
+    "administration": "Administration",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "openMenu": "Open menu",
+    "myContent": "My Content",
+    "forReview": "For Review",
+    "files": "Files",
+    "contentTypes": "Content Types",
+    "users": "Users",
+    "assistant": "Assistant",
+    "patterns": "Content Patterns"
+  },
+  "placeholder": {
+    "forReview": {
+      "title": "Inbox zero, reviewer style",
+      "desc": "Nothing waiting on your verdict right now. When teammates send work your way, it'll show up here. Enjoy the quiet while it lasts.",
+      "cta": "Browse content"
+    },
+    "files": {
+      "title": "A clean, empty shelf",
+      "desc": "No files yet, no clutter either. Drag things in, organize them your way, and find anything in seconds later on.",
+      "cta": "Upload file"
+    },
+    "contentTypes": {
+      "title": "Your building blocks await",
+      "desc": "Content types decide what your team can create. None defined yet, so think of this as a blank canvas for the structure you want.",
+      "cta": "New content type"
+    },
+    "users": {
+      "title": "A team of one… for now",
+      "desc": "Invite people, hand out roles, and build your crew. The best content rarely happens solo, so bring some friends along.",
+      "cta": "Invite people"
+    }
+  },
+  "detail": {
+    "back": "Back to library",
+    "changeStatus": "Status",
+    "statusChanged": "Status changed",
+    "export": "Export",
+    "saved": "Saved",
+    "panel": {
+      "comments": "Comments",
+      "commentsEmpty": "No comments yet.",
+      "versions": "Versions",
+      "versionsEmpty": "No revisions saved yet.",
+      "settings": "Properties",
+      "activity": "Activity",
+      "activityEmpty": "No activity yet.",
+      "validation": "Validation",
+      "validationPass": "All checks pass.",
+      "author": "Author",
+      "type": "Type",
+      "status": "Status",
+      "updatedAt": "Updated"
+    },
+    "startEditing": "Start Editing",
+    "editUnavailable": "Editing is not available in this demo.",
+    "wordCount_one": "{{count}} word",
+    "wordCount_other": "{{count}} words"
+  },
+  "library": {
+    "title": "My Content",
+    "search": "Search content…",
+    "newContent": "New Content",
+    "newFolder": "New Folder",
+    "create": "Create",
+    "moreActions": "More actions",
+    "edit": "Edit",
+    "move": "Move",
+    "rename": "Rename",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "filters": {
+      "type": "Type",
+      "status": "Status",
+      "allTypes": "All types",
+      "allStatuses": "All statuses"
+    },
+    "empty": {
+      "title": "Blank slate, big plans",
+      "desc": "Nothing here yet, and that's the fun part. Hit New Content and let's make something worth sharing.",
+      "searchTitle": "No matches",
+      "searchDesc": "Try a different search or clear the filters."
+    },
+    "welcome": {
+      "title": "Let's make something great",
+      "desc": "Your content, files and folders, all in one place. Pick a type and get started."
+    }
+  },
+  "user": {
+    "menu": "User menu",
+    "lightTheme": "Light theme",
+    "darkTheme": "Dark theme",
+    "signOut": "Sign out",
+    "language": "Language"
+  },
+  "status": {
+    "in-progress": "In Progress",
+    "in-review": "In Review",
+    "reviewed": "Reviewed",
+    "in-use": "Ready for Use"
+  },
+  "contentType": {
+    "article": "Article",
+    "video": "Video",
+    "document": "Document",
+    "campaign": "Campaign",
+    "social": "Social"
+  },
+  "role": {
+    "admin": "Admin",
+    "editor": "Editor",
+    "reviewer": "Reviewer",
+    "brand-manager": "Brand Manager",
+    "content-creator": "Content Creator"
+  },
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit profile",
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "tabs": {
+      "personal": "Personal info",
+      "password": "Change password"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "username": "Username",
+      "email": "Email",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "empty": "No recent activity yet.",
+      "viewAll": "View all",
+      "event": {
+        "created": "Created <0>{{subject}}</0>",
+        "sentForReview": "Sent <0>{{subject}}</0> for review",
+        "reviewed": "Reviewed <0>{{subject}}</0>",
+        "inUse": "<0>{{subject}}</0> is ready for use",
+        "commented": "Commented on <0>{{subject}}</0>",
+        "shared": "Shared <0>{{subject}}</0>"
+      },
+      "time": {
+        "justNow": "just now",
+        "minutesAgo": "{{count}}m ago",
+        "hoursAgo": "{{count}}h ago",
+        "daysAgo": "{{count}}d ago",
+        "weeksAgo": "{{count}}w ago"
+      }
+    },
+    "permissions": {
+      "title": "Your permissions",
+      "manageContent": "Manage content",
+      "uploadFiles": "Upload files",
+      "reviewContent": "Review content",
+      "manageUsers": "Manage users",
+      "manageRoles": "Manage roles",
+      "manageContentTypes": "Manage content types"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "theme": "Theme",
+      "themeDesc": "Light or dark UI.",
+      "language": "Language",
+      "languageDesc": "Interface and date formatting."
+    },
+    "toasts": {
+      "saved": "Profile updated",
+      "passwordChanged": "Password changed",
+      "passwordMismatch": "Passwords do not match",
+      "passwordShort": "Password must be at least 8 characters"
+    }
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "filter": {
+    "clearAll": "Clear all",
+    "filters": "Filters",
+    "done": "Done"
+  },
+  "a11y": {
+    "search": "Search",
+    "clear": "Clear",
+    "close": "Close",
+    "dismiss": "Dismiss",
+    "notifications": "Notifications",
+    "clearFilter": "{{count}} selected, click to clear",
+    "back": "Back",
+    "openMenu": "Open menu",
+    "copy": "Copy",
+    "copied": "Copied",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "next": "Next"
+  },
+  "agent": {
+    "allChats": "All Chats",
+    "newChat": "New chat",
+    "search": "Search chats",
+    "filter": "Filter chats",
+    "noResults": "No chats found",
+    "menu": "Chat options",
+    "rowMenu": {
+      "pin": "Pin",
+      "rename": "Rename",
+      "archive": "Archive",
+      "delete": "Delete"
+    },
+    "inputPlaceholder": "Type your message or question…",
+    "voiceInput": "Voice input",
+    "voiceMessage": "Voice message",
+    "listening": "Listening",
+    "cancel": "Cancel",
+    "send": "Send",
+    "action": {
+      "listen": "Read aloud",
+      "stop": "Stop",
+      "copy": "Copy",
+      "copied": "Copied",
+      "like": "Good response",
+      "dislike": "Bad response"
+    },
+    "feedback": {
+      "title": "What went wrong?",
+      "desc": "Your feedback helps us improve. You can pick a reason below or add details (optional).",
+      "reasons": {
+        "wrong": "Wrong or outdated information",
+        "incomplete": "Incomplete answer",
+        "unclear": "Unclear or confusing",
+        "other": "Other"
+      },
+      "detailsLabel": "Additional details (optional)",
+      "detailsPlaceholder": "Describe what went wrong or what you expected…",
+      "send": "Send feedback",
+      "close": "Close without sending",
+      "sent": "Feedback sent"
+    },
+    "panel": {
+      "title": "Leave Request",
+      "section": "Request",
+      "leaveType": "Leave Type",
+      "dateLabel": "Last Working Day to Return to Work Date",
+      "remarks": "Remarks (optional)",
+      "remarksPlaceholder": "Any additional information…",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "leaveType": {
+      "regular": "Regular Leave",
+      "sick": "Sick Leave",
+      "personal": "Personal Leave"
+    }
+  },
+  "assistant": {
+    "hello": "Hello",
+    "subtitle": "How can I help you today?",
+    "reply": "Got it, here's a quick draft to get you started. (Demo response. Wire this to your model to make it real.)",
+    "leavePrompt": "Request annual leave",
+    "leaveReply": "Happy to help with your leave request. Fill in the form on the right, or tell me which leave type you prefer (Regular, Sick, or Personal)."
+  },
+  "users": {
+    "title": "Users",
+    "search": "Search by name or email…",
+    "invite": "Invite people",
+    "moreActions": "More actions",
+    "edit": "Edit",
+    "remove": "Remove",
+    "permissions": "permissions",
+    "invited": "Invitation sent",
+    "updated": "User updated",
+    "removed": "User removed",
+    "removeTitle": "Remove user",
+    "removeMessage": "{{name}} loses access to this workspace. You can invite them again later.",
+    "removeCancel": "Keep user",
+    "inviteTitle": "Invite a teammate",
+    "editTitle": "Edit user",
+    "filters": {
+      "role": "Role",
+      "allRoles": "All roles"
+    },
+    "empty": {
+      "title": "A team of one… for now",
+      "desc": "Invite people and hand out roles. The best content rarely happens solo.",
+      "searchTitle": "No matches",
+      "searchDesc": "Try a different search or clear the filters."
+    },
+    "form": {
+      "fullName": "Full name",
+      "fullNamePlaceholder": "e.g. Noura Al-Otaibi",
+      "email": "Email",
+      "emailPlaceholder": "name@company.example",
+      "role": "Role",
+      "save": "Save changes",
+      "sendInvite": "Send invite",
+      "cancel": "Cancel",
+      "nameRequired": "Please enter a full name.",
+      "emailInvalid": "Please enter a valid email address."
+    }
+  },
+  "review": {
+    "title": "For review",
+    "subtitle": "Content from your teammates waiting for your decision.",
+    "approve": "Approve",
+    "requestChanges": "Request changes",
+    "changesTitle": "Request changes",
+    "changesLabel": "What should the author revisit?",
+    "changesPlaceholder": "Point to the sections that need another pass",
+    "cancel": "Cancel",
+    "send": "Send feedback",
+    "approvedToast": "Approved",
+    "changesToast": "Sent back with feedback"
+  },
+  "patterns": {
+    "title": "Content patterns",
+    "collection": "One collection, three views",
+    "view": "View",
+    "viewRows": "Rows",
+    "viewCards": "Cards",
+    "viewTable": "Table",
+    "colType": "Type",
+    "colTitle": "Title",
+    "colAuthor": "Author",
+    "colUpdated": "Updated",
+    "colStatus": "Status",
+    "kinds": "Content kinds",
+    "kindArticle": "Article",
+    "articleTitle": "Quarterly safety review, summarised",
+    "articleExcerpt": "What changed since March, which sites closed their findings, and the two audits still open going into Q4.",
+    "kindCourse": "Training",
+    "courseTitle": "Working safely at height",
+    "courseMeta": "6 lessons, about 2 hours",
+    "kindPerson": "Person",
+    "personRole": "Editor",
+    "personAction": "View profile",
+    "kindProfile": "Profile hero",
+    "profileRole": "Content creator",
+    "kindEvent": "Event",
+    "eventMonth": "Sep",
+    "eventTitle": "Editorial planning day",
+    "eventPlace": "Riyadh HQ",
+    "kindFile": "Files"
+  }
+}

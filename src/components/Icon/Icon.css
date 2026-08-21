@@ -1,0 +1,10 @@
+.icon {
+  flex-shrink: 0;
+  vertical-align: middle;
+  stroke-width: var(--icon-stroke);   /* CSS overrides Lucide's stroke-width attr */
+}
+/* Size driven by --icon-* tokens (CSS overrides Lucide's default width/height). */
+.icon[data-size="sm"] { width: var(--icon-sm); height: var(--icon-sm); }
+.icon[data-size="md"] { width: var(--icon-md); height: var(--icon-md); }
+.icon[data-size="lg"] { width: var(--icon-lg); height: var(--icon-lg); }
+.icon[data-size="xl"] { width: var(--icon-xl); height: var(--icon-xl); }

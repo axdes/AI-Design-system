@@ -1,0 +1,105 @@
+{
+  "ref": "Avatar",
+  "level": "atom",
+  "description": "A person or a team as an image with an initial fallback. `status` adds a presence dot whose meaning lives in `statusLabel`, not in its colour; `shape=\"square\"` reads as a team rather than a person.",
+  "exports": [
+    "Avatar"
+  ],
+  "main": "Avatar",
+  "from": "@/components/Avatar",
+  "slots": [],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "2xl"
+      ]
+    },
+    {
+      "name": "fill",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "src",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "shape",
+      "type": "Shape",
+      "required": false,
+      "values": [
+        "circle",
+        "square"
+      ]
+    },
+    {
+      "name": "status",
+      "type": "Status",
+      "required": false,
+      "values": [
+        "online",
+        "away",
+        "busy",
+        "offline"
+      ]
+    },
+    {
+      "name": "statusLabel",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Avatar/Avatar.tsx",
+  "inherits": "HTMLAttributes<HTMLSpanElement>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "2xl"
+      ]
+    },
+    "fill": {
+      "prop": "fill",
+      "values": [
+        "true"
+      ]
+    },
+    "shape": {
+      "prop": "shape",
+      "values": [
+        "circle",
+        "square"
+      ]
+    },
+    "status": {
+      "prop": "status",
+      "values": [
+        "online",
+        "away",
+        "busy",
+        "offline"
+      ]
+    }
+  },
+  "uses": [
+    "Layout"
+  ],
+  "example": "<Row gap={3}>\n  <Avatar name=\"Sarah Al-Mansouri\" />\n  <Avatar name=\"Omar Haddad\" status=\"online\" statusLabel=\"Online\" />\n</Row>"
+}

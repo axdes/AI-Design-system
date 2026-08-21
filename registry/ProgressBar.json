@@ -1,0 +1,62 @@
+{
+  "ref": "ProgressBar",
+  "level": "atom",
+  "description": "Linear progress, the bar that says how far along something is. With `value` it is determinate (a known fraction, ARIA progressbar with valuenow); without, it is indeterminate — a sliding bar for \"working, duration unknown\". For a spinning busy marker use <Spinner>; for a value on a fixed scale (a gauge with a target) use <Meter>.",
+  "exports": [
+    "ProgressBar"
+  ],
+  "main": "ProgressBar",
+  "from": "@/components/ProgressBar",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "values": [
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ProgressBar/ProgressBar.tsx",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
+    }
+  },
+  "example": "/* Determinate: a known fraction. Omit `value` for an indeterminate bar when\n * the duration is unknown. For a spinner use <Spinner>, for a gauge <Meter>. */\n\n<ProgressBar label=\"Uploading files\" value={62} showValue />"
+}

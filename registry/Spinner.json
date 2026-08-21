@@ -1,0 +1,50 @@
+{
+  "ref": "Spinner",
+  "level": "atom",
+  "description": "The one busy indicator for the whole system: a rotating loader icon. Inline by default (sits next to text or inside a button); center it with the layout around it. Animation is paused under prefers-reduced-motion (reset.css).",
+  "exports": [
+    "Spinner"
+  ],
+  "main": "Spinner",
+  "from": "@/components/Spinner",
+  "slots": [],
+  "props": [
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Spinner/Spinner.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "/* `label` is the accessible name a screen reader announces — a spinner\n * without one is a silent \"something is happening\". Inline by default; the\n * layout around it does the centering. */\n\n<Spinner label=\"Loading your workspace\" />"
+}

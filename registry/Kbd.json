@@ -1,0 +1,43 @@
+{
+  "ref": "Kbd",
+  "level": "atom",
+  "description": "One key as a key cap, with real <kbd> semantics: the shortcut hint next to a CommandPalette trigger, a menu row, a help sheet. One Kbd per key; compose a combination as siblings with a plain \"+\" between them.",
+  "exports": [
+    "Kbd"
+  ],
+  "main": "Kbd",
+  "from": "@/components/Kbd",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md'",
+      "required": false,
+      "values": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Kbd/Kbd.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md"
+      ]
+    }
+  },
+  "example": "/* One Kbd per key; the \"+\" between them is plain text. This is the hint that\n * sits next to a CommandPalette trigger or in a shortcuts help sheet. */\n\n<p>\n  Press <Kbd>Ctrl</Kbd>+<Kbd>K</Kbd> to open the command palette.\n</p>"
+}

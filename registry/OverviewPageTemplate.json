@@ -1,0 +1,84 @@
+{
+  "ref": "OverviewPageTemplate",
+  "level": "block",
+  "description": "The OVERVIEW page skeleton, read at a glance and acted on elsewhere: header (freshness lives in its actions), conditional notices, a context band, a prime row read first, then a grid of `<OverviewWidget>`s — zones in priority order because attention is spent top to bottom.",
+  "exports": [
+    "OverviewPageTemplate",
+    "OverviewWidget"
+  ],
+  "main": "OverviewPageTemplate",
+  "from": "@/blocks/OverviewPageTemplate",
+  "slots": [
+    {
+      "name": "OverviewWidget",
+      "line": 135
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "notices",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "band",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "prime",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "board",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "isEmpty",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "empty",
+      "type": "{ icon?: IconName title: string description?: string action?: ReactNode }",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/OverviewPageTemplate/OverviewPageTemplate.tsx",
+  "context": "page",
+  "uses": [
+    "Alert",
+    "Badge",
+    "Button",
+    "Card",
+    "EmptyState",
+    "Icon",
+    "Layout",
+    "Meter",
+    "PageHeader",
+    "Stat"
+  ],
+  "example": "const setupGap = false /* the notices contract: nothing when healthy */\n\n<OverviewPageTemplate\n  title=\"Operations overview\"\n  actions={<Button variant=\"secondary\">Refresh</Button>}\n  notices={setupGap && <Alert tone=\"warning\">The export connector is signed out.</Alert>}\n  prime={\n    <>\n      <Stat value={2} label=\"Waiting on you\" tone=\"warning\" size=\"lg\" />\n      <Stat value={14} label=\"Handled this week\" size=\"lg\" />\n    </>\n  }\n>\n  <OverviewWidget\n    title=\"Approvals queue\"\n    footer={<Button variant=\"link\">View all 9</Button>}\n  >\n    {QUEUE.map((r) => (\n      <Row key={r.id} gap={3}>\n        <strong>{r.id}</strong>\n        <span>{r.who}</span>\n        <Badge tone=\"warning\" fill=\"soft\">waiting {r.waiting}</Badge>\n      </Row>\n    ))}\n  </OverviewWidget>\n  <OverviewWidget title=\"Monthly budget\">\n    {/* A value on a fixed scale is a Meter, not a sentence. */}\n    <Meter value={72} max={100} label=\"72% of the review budget used\" />\n  </OverviewWidget>\n</OverviewPageTemplate>"
+}

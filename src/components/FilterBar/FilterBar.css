@@ -1,0 +1,79 @@
+/* FilterBar — inline filter dropdowns on desktop; a single "Filters" button
+ * that opens a Modal sheet on mobile. */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* The "Filters" icon trigger (mobile) — count badge pinned to the corner. */
+.filter-bar-trigger {
+  position: relative;
+  display: inline-flex;
+}
+.filter-bar-trigger .icon-button[data-active] { color: var(--primary-accent); }
+/* The collapsed trigger reads as a CONTROL in the family of the search pill
+ * beside it — white surface at rest — and commits on hover: primary fill,
+ * glyph in white. A bare glyph on the muted header looked like decoration.
+ * The border exists in BOTH states and every property rides one transition:
+ * a border that pops in before the fill fades reads as a glitch, and a border
+ * that appears only on hover shifts the glyph by a pixel. */
+.filter-bar-trigger .icon-button {
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition:
+    background var(--duration-fast),
+    border-color var(--duration-fast),
+    color var(--duration-fast);
+}
+.filter-bar-trigger .icon-button:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.filter-bar-count {
+  position: absolute;
+  inset-block-start: calc(-1 * var(--space-2xs));
+  inset-inline-end: calc(-1 * var(--space-2xs));
+  display: grid;
+  place-items: center;
+  min-width: var(--icon-sm);
+  height: var(--icon-sm);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  /* A ring in the card colour: invisible on the resting white trigger, and the
+   * thing that keeps the badge a separate object once the hovered trigger
+   * fills primary — primary-on-primary was a number melting into its button. */
+  box-shadow: 0 0 0 2px var(--card);
+  color: var(--primary-foreground);
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-none);
+  pointer-events: none;
+}
+
+/* Inside the modal — each filter rendered as a full-width select-style box. */
+.filter-bar-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.filter-bar-sheet .filter-dropdown { display: block; }
+.filter-bar-sheet .filter-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: var(--control-height);
+  padding-inline: var(--control-padding-x);
+  background: var(--background);
+  /* --border-strong stays visible on the modal's --popover surface in dark
+   * (regular --input == --popover there → border would vanish). */
+  border: 1px solid var(--border-strong);
+  border-radius: var(--control-radius);
+  color: var(--foreground);
+}
+.filter-bar-sheet .filter-trigger:hover { border-color: var(--ring); }
+.filter-bar-sheet .filter-trigger > .icon { margin-inline-start: auto; }
+

@@ -1,0 +1,92 @@
+{
+  "ref": "Modal",
+  "level": "organism",
+  "description": "Dialog in a portal: focus trap, ESC, body scroll lock and a footer for the actions. `size` widens it, and sm is for a yes/no confirmation only.",
+  "exports": [
+    "Modal"
+  ],
+  "main": "Modal",
+  "from": "@/components/Modal",
+  "slots": [],
+  "props": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": true
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "placement",
+      "type": "Placement",
+      "required": false,
+      "values": [
+        "center",
+        "drawer"
+      ]
+    },
+    {
+      "name": "dismissible",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Modal/Modal.tsx",
+  "context": "region",
+  "variants": {
+    "placement": {
+      "prop": "placement",
+      "values": [
+        "center",
+        "drawer"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Button",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "const [open, setOpen] = useState(true)\n\n<>\n  <Button onClick={() => setOpen(true)}>Edit profile</Button>\n  <Modal\n    open={open}\n    onClose={() => setOpen(false)}\n    title=\"Edit profile\"\n    size=\"md\"\n    footer={\n      <>\n        <Button variant=\"ghost\" onClick={() => setOpen(false)}>Cancel</Button>\n        <Button onClick={() => setOpen(false)}>Save</Button>\n      </>\n    }\n  >\n    <p>Update your name and contact details.</p>\n  </Modal>\n</>"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "NavList",
+  "level": "molecule",
+  "date": "2026-07-11",
+  "requestedBy": "agent",
+  "need": "A reusable vertical navigation list (NavList + NavItem) decoupled from router/auth/i18n. The only navigation in the repo is shell/Sidebar, which is hard-wired to react-router NavLink, AuthProvider roles, SidebarProvider and i18n, so it cannot be reused by another app (the AI/Run cockpit had to hand-roll its nav). NavItem should support active state, a leading icon, a label + optional sub-label, and an optional trailing slot (e.g. a Badge). shell/Sidebar can later be refactored to compose it.",
+  "consideredAlternatives": [
+    { "ref": "shell/Sidebar", "whyNot": "App-coupled (router, auth roles, sidebar context, i18n); not a reusable primitive." },
+    { "ref": "components/ListItem", "whyNot": "ListItem is a content row (avatar/meta/actions), not a nav item with active state + route semantics + trailing slot." },
+    { "ref": "components/Button (ghost, block)", "whyNot": "No active state, no sub-label, no trailing slot, no group semantics/aria." }
+  ],
+  "proposedApi": {
+    "NavList": { "children": "NavItem[]", "aria-label": "string" },
+    "NavItem": {
+      "active": "boolean?",
+      "icon": "IconName?",
+      "label": "string (or children)",
+      "sublabel": "string?",
+      "trailing": "ReactNode? (e.g. a Badge)",
+      "onClick": "() => void  // consumer wires routing; component is routing-agnostic",
+      "as": "'button' | 'a' (default button)"
+    }
+  },
+  "status": "withdrawn",
+  "note": "Navigation DOES exist as shell/AppShell + shell/Sidebar. Not a missing component. The only real question is whether to decouple Sidebar into a routing-agnostic primitive so a non-app project can reuse it; deferred. For the cockpit, reuse AppShell/Sidebar directly (build inside the app) rather than add a new primitive."
+}

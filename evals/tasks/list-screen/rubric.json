@@ -1,0 +1,13 @@
+{
+  "id": "list-screen",
+  "title": "Documents list screen",
+  "why": "The most common product screen, and the one an agent is most likely to hand-roll: page chrome, a toolbar, a card grid and an empty state all exist as DS parts.",
+  "required": ["ListPageTemplate", "SearchInput", "FilterDropdown", "Card", "Button"],
+  "forbidden": [
+    {
+      "pattern": "className=\"[^\"]*\\b(page-header|page-title|empty-state|toolbar)\\b",
+      "message": "hand-rolled page chrome — the structure comes from <ListPageTemplate>"
+    }
+  ],
+  "entry": "Screen.tsx"
+}

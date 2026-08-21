@@ -1,0 +1,73 @@
+{
+  "ref": "FileUpload",
+  "level": "molecule",
+  "description": "A drop area plus a native file picker, with a removable list of attached files. Wraps the raw <input type=\"file\"> (the one control with no DS equivalent) and adds drag-and-drop. The input stays the accessible control; the drop area is a labelled convenience on top.",
+  "exports": [
+    "FileUpload"
+  ],
+  "main": "FileUpload",
+  "from": "@/components/FileUpload",
+  "slots": [],
+  "props": [
+    {
+      "name": "onFiles",
+      "type": "(files: File[]) => void",
+      "required": true
+    },
+    {
+      "name": "files",
+      "type": "File[]",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(index: number) => void",
+      "required": false
+    },
+    {
+      "name": "accept",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/FileUpload/FileUpload.tsx",
+  "variants": {
+    "disabled": {
+      "prop": "disabled",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "const [files, setFiles] = useState<File[]>([])\n/* Drop area + native picker + removable list. The one component that owns a\n * raw <input type=\"file\"> (no other DS control covers uploads). */\n\n<FileUpload\n  multiple\n  hint=\"PDF or PNG, up to 10 MB\"\n  files={files}\n  onFiles={(picked) => setFiles((cur) => [...cur, ...picked])}\n  onRemove={(i) => setFiles((cur) => cur.filter((_, x) => x !== i))}\n/>"
+}

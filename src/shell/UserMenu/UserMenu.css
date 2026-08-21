@@ -1,0 +1,72 @@
+/* User menu lives in the sidebar footer. Expanded: name/role only (no avatar
+ * circle — client preference). Collapsed (icon rail): avatar only, as the menu
+ * trigger (there's no room for the name). */
+.user-menu { min-width: 0; }
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background var(--duration-fast);
+}
+.user-menu-trigger:hover,
+.user-menu-trigger[data-open] { background: var(--accent); }
+.user-menu-trigger:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+/* Avatar hidden in the expanded login (client doesn't want the circle here). */
+.user-menu-avatar { display: none; }
+
+.user-menu-trigger-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.user-menu-trigger-name {
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-menu-trigger-role {
+  font-size: var(--font-xs);
+  color: var(--muted-foreground);
+  line-height: var(--leading-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Collapsed rail: show the avatar (menu trigger), drop the name; sized to match
+ * the nav icon circles exactly. */
+.app-shell[data-sidebar-collapsed] .user-menu {
+  display: flex;
+  justify-content: center;
+}
+.app-shell[data-sidebar-collapsed] .user-menu-avatar {
+  display: grid;
+  width: var(--sidebar-rail-item-size);
+  height: var(--sidebar-rail-item-size);
+}
+.app-shell[data-sidebar-collapsed] .user-menu-trigger-text { display: none; }
+.app-shell[data-sidebar-collapsed] .user-menu-trigger {
+  width: var(--sidebar-rail-item-size);
+  height: var(--sidebar-rail-item-size);
+  padding: 0;
+  justify-content: center;
+}

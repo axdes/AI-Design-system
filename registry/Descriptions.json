@@ -1,0 +1,64 @@
+{
+  "ref": "Descriptions",
+  "level": "molecule",
+  "description": "A read-only list of field/value pairs — a record's metadata, a summary panel. Real <dl>/<dt>/<dd> so it reads as a description list to a screen reader. Distinct from a form (no inputs) and from a Table (no rows of records).",
+  "exports": [
+    "Descriptions"
+  ],
+  "main": "Descriptions",
+  "from": "@/components/Descriptions",
+  "slots": [],
+  "props": [
+    {
+      "name": "items",
+      "type": "Description[]",
+      "required": true
+    },
+    {
+      "name": "layout",
+      "type": "'stacked' | 'inline'",
+      "required": false,
+      "values": [
+        "stacked",
+        "inline"
+      ]
+    },
+    {
+      "name": "columns",
+      "type": "1 | 2 | 3",
+      "required": false,
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Descriptions/Descriptions.tsx",
+  "variants": {
+    "layout": {
+      "prop": "layout",
+      "values": [
+        "stacked",
+        "inline"
+      ]
+    },
+    "columns": {
+      "prop": "columns",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "uses": [
+    "Badge"
+  ],
+  "example": "/* Read-only field/value metadata (a real <dl>). Use a Table for rows of\n * records, a form for editing. Values can be any node, e.g. a Badge. */\n\n<Descriptions\n  columns={2}\n  items={[\n    { term: 'Invoice', value: 'INV-1042' },\n    { term: 'Status', value: <Badge tone=\"warning\" fill=\"soft\">Due</Badge> },\n    { term: 'Client', value: 'Sabic' },\n    { term: 'Amount', value: 'SAR 8,600.00' },\n  ]}\n/>"
+}

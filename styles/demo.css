@@ -1,0 +1,200 @@
+/* DEMO — styles for the playground page only. */
+
+.playground {
+  min-height: 100dvh;
+  padding: var(--space-section) var(--space-4);
+  /* Grey page surface so the white (--card) spec cards stand out. */
+  background: var(--muted);
+  display: grid;
+  grid-template-columns: minmax(0, 64rem);
+  justify-content: center;
+  gap: var(--space-section);
+}
+
+.playground-title { font-size: var(--font-3xl); }
+.playground-lead { color: var(--muted-foreground); }
+.playground-hint { color: var(--muted-foreground); font-size: var(--font-sm); }
+
+/* Gallery — section anchors, nav, icon cells. */
+.pg-section {
+  display: grid;
+  gap: var(--space-4);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--border);
+  scroll-margin-top: calc(var(--space-12) + var(--space-4));   /* clear the sticky nav */
+}
+.pg-section-title { font-size: var(--font-xl); font-weight: var(--font-weight-semibold); }
+
+/* Each section is a single column of component "spec" cards (one per row). */
+.pg-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+.pg-spec {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  background: var(--card);
+}
+.pg-spec--wide { grid-column: 1 / -1; }   /* full-width cards (color, chat, etc.) */
+.pg-spec-title { font-size: var(--font-md); font-weight: var(--font-weight-semibold); }
+.pg-spec-body { display: grid; gap: var(--space-4); }
+.pg-demo { display: grid; gap: var(--space-2); }
+/* Meters need a width to be readable as a gauge; the demo card would otherwise
+ * stretch them across the whole column. */
+.pg-gauge-column { inline-size: 18rem; }
+
+/* Sticky section nav. */
+.pg-nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-block: var(--space-3);
+  background: var(--muted);
+}
+.pg-nav-link {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: var(--font-sm);
+  text-transform: capitalize;
+}
+.pg-nav-link:hover { border-color: var(--primary); color: var(--primary); }
+.pg-icon-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--grid-unit) * 11);
+  height: calc(var(--grid-unit) * 11);
+  border-radius: var(--radius-md);
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+/* Live-settings controls. */
+.pg-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  background: var(--card);
+}
+.pg-control { display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--font-sm); color: var(--muted-foreground); }
+.pg-control b { color: var(--foreground); font-weight: var(--font-weight-semibold); }
+.pg-control input[type="range"] { width: 100%; accent-color: var(--primary); }
+.pg-control input[type="color"] { width: var(--space-8); height: var(--space-6); padding: 0; border: 1px solid var(--border); border-radius: var(--radius-md); background: none; cursor: pointer; }
+
+/* Theme toggle */
+.theme-toggle {
+  position: fixed;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: var(--z-sticky);
+}
+
+/* Row of items */
+.row { display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center; }
+
+/* Color swatches — driven by data-token attribute */
+.swatch-grid { display: flex; gap: var(--space-1); flex-wrap: wrap; }
+
+.swatch {
+  flex: 1;
+  min-width: var(--space-8);
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.swatch[data-token="neutral-0"]   { background: var(--neutral-0); }
+.swatch[data-token="neutral-50"]  { background: var(--neutral-50); }
+.swatch[data-token="neutral-100"] { background: var(--neutral-100); }
+.swatch[data-token="neutral-200"] { background: var(--neutral-200); }
+.swatch[data-token="neutral-300"] { background: var(--neutral-300); }
+.swatch[data-token="neutral-400"] { background: var(--neutral-400); }
+.swatch[data-token="neutral-500"] { background: var(--neutral-500); }
+.swatch[data-token="neutral-600"] { background: var(--neutral-600); }
+.swatch[data-token="neutral-700"] { background: var(--neutral-700); }
+.swatch[data-token="neutral-800"] { background: var(--neutral-800); }
+.swatch[data-token="neutral-900"] { background: var(--neutral-900); }
+
+.swatch[data-token="brand-50"]  { background: var(--brand-50); }
+.swatch[data-token="brand-100"] { background: var(--brand-100); }
+.swatch[data-token="brand-200"] { background: var(--brand-200); }
+.swatch[data-token="brand-300"] { background: var(--brand-300); }
+.swatch[data-token="brand-400"] { background: var(--brand-400); }
+.swatch[data-token="brand-500"] { background: var(--brand-500); }
+.swatch[data-token="brand-600"] { background: var(--brand-600); }
+.swatch[data-token="brand-700"] { background: var(--brand-700); }
+.swatch[data-token="brand-800"] { background: var(--brand-800); }
+.swatch[data-token="brand-900"] { background: var(--brand-900); }
+
+.swatch[data-token="success-50"]  { background: var(--success-50); }
+.swatch[data-token="success-300"] { background: var(--success-300); }
+.swatch[data-token="success-500"] { background: var(--success-500); }
+.swatch[data-token="success-700"] { background: var(--success-700); }
+.swatch[data-token="success-900"] { background: var(--success-900); }
+
+.swatch[data-token="warning-50"]  { background: var(--warning-50); }
+.swatch[data-token="warning-300"] { background: var(--warning-300); }
+.swatch[data-token="warning-500"] { background: var(--warning-500); }
+.swatch[data-token="warning-700"] { background: var(--warning-700); }
+.swatch[data-token="warning-900"] { background: var(--warning-900); }
+
+.swatch[data-token="danger-50"]  { background: var(--danger-50); }
+.swatch[data-token="danger-300"] { background: var(--danger-300); }
+.swatch[data-token="danger-500"] { background: var(--danger-500); }
+.swatch[data-token="danger-700"] { background: var(--danger-700); }
+.swatch[data-token="danger-900"] { background: var(--danger-900); }
+
+/* Space scale demo — boxes driven by data-step */
+.space-scale { display: flex; align-items: end; gap: var(--space-2); }
+
+.space-block { background: var(--primary); border-radius: var(--radius-sm); }
+.space-block[data-step="1"]  { width: var(--space-1);  height: var(--space-1); }
+.space-block[data-step="2"]  { width: var(--space-2);  height: var(--space-2); }
+.space-block[data-step="3"]  { width: var(--space-3);  height: var(--space-3); }
+.space-block[data-step="4"]  { width: var(--space-4);  height: var(--space-4); }
+.space-block[data-step="6"]  { width: var(--space-6);  height: var(--space-6); }
+.space-block[data-step="8"]  { width: var(--space-8);  height: var(--space-8); }
+.space-block[data-step="12"] { width: var(--space-12); height: var(--space-12); }
+.space-block[data-step="16"] { width: var(--space-16); height: var(--space-16); }
+
+/* Playground chrome. It is a page reachable by URL, so it needs the one thing
+ * every page needs on a phone: a way back. Sticky, above the content, and the
+ * theme toggle rides along instead of floating loose in the corner. */
+.pg-topbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  background: var(--background);
+  border-block-end: 1px solid var(--border);
+}
+.pg-topbar-home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--foreground);
+  font-size: var(--font-sm);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-2);
+}
+.pg-topbar-home:hover { background: var(--accent); }
+.pg-topbar .theme-toggle { position: static; }

@@ -1,0 +1,368 @@
+{
+  "login": {
+    "title": "تسجيل الدخول إلى منصة المحتوى المؤسسية",
+    "subtitle": "مرحباً بك في منصة المحتوى المؤسسية. يرجى تسجيل الدخول للوصول إلى مساحة العمل.",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "submit": "تسجيل الدخول",
+    "demoAccounts": "حسابات تجريبية",
+    "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة"
+  },
+  "sidebar": {
+    "workspace": "مساحة العمل",
+    "administration": "الإدارة",
+    "expand": "توسيع الشريط الجانبي",
+    "collapse": "طي الشريط الجانبي",
+    "openMenu": "فتح القائمة",
+    "myContent": "محتواي",
+    "forReview": "للمراجعة",
+    "files": "الملفات",
+    "contentTypes": "أنواع المحتوى",
+    "users": "المستخدمون",
+    "assistant": "المساعد",
+    "patterns": "أنماط المحتوى"
+  },
+  "placeholder": {
+    "forReview": {
+      "title": "لا شيء بانتظار مراجعتك",
+      "desc": "لا يوجد ما ينتظر قرارك الآن. عندما يرسل زملاؤك أعمالهم إليك ستظهر هنا. استمتع بالهدوء ما دام مستمرًا.",
+      "cta": "تصفّح المحتوى"
+    },
+    "files": {
+      "title": "رفّ نظيف وفارغ",
+      "desc": "لا ملفات بعد، ولا فوضى أيضًا. اسحب الأشياء إلى هنا، ونظّمها بطريقتك، ثم اعثر على أي شيء خلال ثوانٍ لاحقًا.",
+      "cta": "رفع ملف"
+    },
+    "contentTypes": {
+      "title": "لبنات البناء بانتظارك",
+      "desc": "تحدد أنواع المحتوى ما يمكن لفريقك إنشاؤه. لم تُعرّف أي منها بعد، فاعتبرها لوحة فارغة للبنية التي تريدها.",
+      "cta": "نوع محتوى جديد"
+    },
+    "users": {
+      "title": "فريق من شخص واحد… حتى الآن",
+      "desc": "ادعُ أشخاصًا، ووزّع الأدوار، وكوّن فريقك. نادرًا ما يحدث أفضل محتوى بمفردك، فأحضر بعض الأصدقاء.",
+      "cta": "دعوة أشخاص"
+    }
+  },
+  "detail": {
+    "back": "العودة إلى المكتبة",
+    "changeStatus": "الحالة",
+    "statusChanged": "تم تغيير الحالة",
+    "export": "تصدير",
+    "saved": "تم الحفظ",
+    "panel": {
+      "comments": "التعليقات",
+      "commentsEmpty": "لا توجد تعليقات بعد.",
+      "versions": "الإصدارات",
+      "versionsEmpty": "لا توجد مراجعات محفوظة بعد.",
+      "settings": "الخصائص",
+      "activity": "النشاط",
+      "activityEmpty": "لا يوجد نشاط بعد.",
+      "validation": "التحقق",
+      "validationPass": "كل الفحوصات ناجحة.",
+      "author": "المؤلف",
+      "type": "النوع",
+      "status": "الحالة",
+      "updatedAt": "آخر تحديث"
+    },
+    "startEditing": "بدء التحرير",
+    "editUnavailable": "التحرير غير متاح في هذا العرض.",
+    "wordCount_zero": "لا كلمات",
+    "wordCount_one": "كلمة واحدة",
+    "wordCount_two": "كلمتان",
+    "wordCount_few": "{{count}} كلمات",
+    "wordCount_many": "{{count}} كلمة",
+    "wordCount_other": "{{count}} كلمة"
+  },
+  "library": {
+    "title": "محتواي",
+    "search": "البحث في المحتوى…",
+    "newContent": "محتوى جديد",
+    "newFolder": "مجلد جديد",
+    "create": "إنشاء",
+    "moreActions": "إجراءات إضافية",
+    "edit": "تعديل",
+    "move": "نقل",
+    "rename": "إعادة تسمية",
+    "duplicate": "تكرار",
+    "delete": "حذف",
+    "filters": {
+      "type": "النوع",
+      "status": "الحالة",
+      "allTypes": "كل الأنواع",
+      "allStatuses": "كل الحالات"
+    },
+    "empty": {
+      "title": "صفحة بيضاء، خطط كبيرة",
+      "desc": "لا شيء هنا بعد، وهذا هو الجزء الممتع. اضغط على «محتوى جديد» ولنصنع شيئًا يستحق المشاركة.",
+      "searchTitle": "لا توجد نتائج",
+      "searchDesc": "جرّب بحثًا آخر أو امسح المرشحات."
+    },
+    "welcome": {
+      "title": "لنصنع شيئًا رائعًا",
+      "desc": "محتواك وملفاتك ومجلداتك في مكان واحد. اختر نوعًا وابدأ."
+    }
+  },
+  "user": {
+    "menu": "قائمة المستخدم",
+    "lightTheme": "الوضع الفاتح",
+    "darkTheme": "الوضع الداكن",
+    "signOut": "تسجيل الخروج",
+    "language": "اللغة"
+  },
+  "status": {
+    "in-progress": "قيد التنفيذ",
+    "in-review": "قيد المراجعة",
+    "reviewed": "تمت المراجعة",
+    "in-use": "جاهز للاستخدام"
+  },
+  "contentType": {
+    "article": "مقال",
+    "video": "فيديو",
+    "document": "مستند",
+    "campaign": "حملة",
+    "social": "تواصل اجتماعي"
+  },
+  "role": {
+    "admin": "مسؤول",
+    "editor": "محرر",
+    "reviewer": "مراجع",
+    "brand-manager": "مدير العلامة التجارية",
+    "content-creator": "صانع محتوى"
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "edit": "تعديل الملف",
+    "save": "حفظ التغييرات",
+    "cancel": "إلغاء",
+    "tabs": {
+      "personal": "المعلومات الشخصية",
+      "password": "تغيير كلمة المرور"
+    },
+    "fields": {
+      "fullName": "الاسم الكامل",
+      "username": "اسم المستخدم",
+      "email": "البريد الإلكتروني",
+      "currentPassword": "كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور"
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "empty": "لا يوجد نشاط حديث بعد.",
+      "viewAll": "عرض الكل",
+      "event": {
+        "created": "أنشأت <0>{{subject}}</0>",
+        "sentForReview": "أرسلت <0>{{subject}}</0> للمراجعة",
+        "reviewed": "راجعت <0>{{subject}}</0>",
+        "inUse": "<0>{{subject}}</0> جاهز للاستخدام",
+        "commented": "علّقت على <0>{{subject}}</0>",
+        "shared": "شاركت <0>{{subject}}</0>"
+      },
+      "time": {
+        "justNow": "الآن",
+        "minutesAgo": "قبل {{count}} د",
+        "hoursAgo": "قبل {{count}} س",
+        "daysAgo": "قبل {{count}} ي",
+        "weeksAgo": "قبل {{count}} أ"
+      }
+    },
+    "permissions": {
+      "title": "صلاحياتك",
+      "manageContent": "إدارة المحتوى",
+      "uploadFiles": "رفع الملفات",
+      "reviewContent": "مراجعة المحتوى",
+      "manageUsers": "إدارة المستخدمين",
+      "manageRoles": "إدارة الأدوار",
+      "manageContentTypes": "إدارة أنواع المحتوى"
+    },
+    "preferences": {
+      "title": "التفضيلات",
+      "theme": "السمة",
+      "themeDesc": "واجهة فاتحة أو داكنة.",
+      "language": "اللغة",
+      "languageDesc": "الواجهة وتنسيق التاريخ."
+    },
+    "toasts": {
+      "saved": "تم تحديث الملف",
+      "passwordChanged": "تم تغيير كلمة المرور",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "passwordShort": "يجب ألا تقل كلمة المرور عن 8 أحرف"
+    }
+  },
+  "theme": {
+    "label": "السمة",
+    "light": "فاتح",
+    "dark": "داكن"
+  },
+  "filter": {
+    "clearAll": "مسح الكل",
+    "filters": "المرشحات",
+    "done": "تم"
+  },
+  "a11y": {
+    "search": "بحث",
+    "clear": "مسح",
+    "close": "إغلاق",
+    "dismiss": "تجاهل",
+    "notifications": "الإشعارات",
+    "clearFilter": "تم تحديد {{count}}، انقر للمسح",
+    "back": "رجوع",
+    "openMenu": "فتح القائمة",
+    "copy": "نسخ",
+    "copied": "تم النسخ",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "next": "التالي"
+  },
+  "agent": {
+    "allChats": "كل المحادثات",
+    "newChat": "محادثة جديدة",
+    "search": "بحث في المحادثات",
+    "filter": "تصفية المحادثات",
+    "noResults": "لا توجد محادثات",
+    "menu": "خيارات المحادثة",
+    "rowMenu": {
+      "pin": "تثبيت",
+      "rename": "إعادة تسمية",
+      "archive": "أرشفة",
+      "delete": "حذف"
+    },
+    "inputPlaceholder": "اكتب رسالتك أو سؤالك…",
+    "voiceInput": "إدخال صوتي",
+    "voiceMessage": "رسالة صوتية",
+    "listening": "جارٍ الاستماع",
+    "cancel": "إلغاء",
+    "send": "إرسال",
+    "action": {
+      "stop": "إيقاف",
+      "copied": "تم النسخ",
+      "listen": "قراءة بصوت عالٍ",
+      "copy": "نسخ",
+      "like": "رد جيد",
+      "dislike": "رد سيئ"
+    },
+    "feedback": {
+      "title": "ما الخطأ الذي حدث؟",
+      "desc": "ملاحظاتك تساعدنا على التحسّن. يمكنك اختيار سبب أدناه أو إضافة تفاصيل (اختياري).",
+      "reasons": {
+        "wrong": "معلومات خاطئة أو قديمة",
+        "incomplete": "إجابة غير مكتملة",
+        "unclear": "غير واضحة أو مربكة",
+        "other": "أخرى"
+      },
+      "detailsLabel": "تفاصيل إضافية (اختياري)",
+      "detailsPlaceholder": "صف ما الذي حدث أو ما الذي توقعته…",
+      "send": "إرسال الملاحظة",
+      "close": "إغلاق دون إرسال",
+      "sent": "تم إرسال الملاحظة"
+    },
+    "panel": {
+      "title": "طلب إجازة",
+      "section": "الطلب",
+      "leaveType": "نوع الإجازة",
+      "dateLabel": "آخر يوم عمل إلى تاريخ العودة للعمل",
+      "remarks": "ملاحظات (اختياري)",
+      "remarksPlaceholder": "أي معلومات إضافية…",
+      "submit": "إرسال",
+      "cancel": "إلغاء",
+      "close": "إغلاق"
+    },
+    "leaveType": {
+      "regular": "إجازة اعتيادية",
+      "sick": "إجازة مرضية",
+      "personal": "إجازة شخصية"
+    }
+  },
+  "assistant": {
+    "hello": "مرحبًا",
+    "subtitle": "كيف يمكنني مساعدتك اليوم؟",
+    "reply": "تمام، إليك مسودة سريعة للبدء. (رد تجريبي.)",
+    "leavePrompt": "طلب إجازة سنوية",
+    "leaveReply": "يسعدني مساعدتك في طلب الإجازة. املأ النموذج على اليمين، أو أخبرني بنوع الإجازة المفضّل (عادية، مرضية، أو شخصية)."
+  },
+  "users": {
+    "title": "المستخدمون",
+    "search": "ابحث بالاسم أو البريد…",
+    "invite": "دعوة أشخاص",
+    "moreActions": "إجراءات أخرى",
+    "edit": "تعديل",
+    "remove": "إزالة",
+    "permissions": "صلاحيات",
+    "invited": "تم إرسال الدعوة",
+    "updated": "تم تحديث المستخدم",
+    "removed": "تمت إزالة المستخدم",
+    "removeTitle": "إزالة المستخدم",
+    "removeMessage": "سيفقد {{name}} صلاحية الوصول إلى مساحة العمل. يمكنك دعوته مجددًا لاحقًا.",
+    "removeCancel": "الإبقاء على المستخدم",
+    "inviteTitle": "دعوة زميل",
+    "editTitle": "تعديل المستخدم",
+    "filters": {
+      "role": "الدور",
+      "allRoles": "كل الأدوار"
+    },
+    "empty": {
+      "title": "فريق من شخص واحد… حتى الآن",
+      "desc": "ادعُ أشخاصًا ووزّع الأدوار. نادرًا ما يُنجَز أفضل محتوى بمفردك.",
+      "searchTitle": "لا نتائج",
+      "searchDesc": "جرّب بحثًا مختلفًا أو امسح عوامل التصفية."
+    },
+    "form": {
+      "fullName": "الاسم الكامل",
+      "fullNamePlaceholder": "مثال: نورة العتيبي",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "name@company.example",
+      "role": "الدور",
+      "save": "حفظ التغييرات",
+      "sendInvite": "إرسال الدعوة",
+      "cancel": "إلغاء",
+      "nameRequired": "يرجى إدخال الاسم الكامل.",
+      "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح."
+    }
+  },
+  "review": {
+    "title": "بانتظار المراجعة",
+    "subtitle": "محتوى من زملائك بانتظار قرارك.",
+    "approve": "اعتماد",
+    "requestChanges": "طلب تعديلات",
+    "changesTitle": "طلب تعديلات",
+    "changesLabel": "ما الذي يجب على الكاتب مراجعته؟",
+    "changesPlaceholder": "أشر إلى الأقسام التي تحتاج إلى مراجعة إضافية",
+    "cancel": "إلغاء",
+    "send": "إرسال الملاحظات",
+    "approvedToast": "تم الاعتماد",
+    "changesToast": "أعيد إلى الكاتب مع الملاحظات"
+  },
+  "patterns": {
+    "title": "أنماط المحتوى",
+    "collection": "مجموعة واحدة، ثلاث طرق عرض",
+    "view": "طريقة العرض",
+    "viewRows": "صفوف",
+    "viewCards": "بطاقات",
+    "viewTable": "جدول",
+    "colType": "النوع",
+    "colTitle": "العنوان",
+    "colAuthor": "الكاتب",
+    "colUpdated": "آخر تحديث",
+    "colStatus": "الحالة",
+    "kinds": "أنواع المحتوى",
+    "kindArticle": "مقال",
+    "articleTitle": "ملخص مراجعة السلامة الفصلية",
+    "articleExcerpt": "ما الذي تغير منذ مارس، وأي المواقع أغلقت ملاحظاتها، والمراجعتان المفتوحتان قبل الربع الرابع.",
+    "kindCourse": "تدريب",
+    "courseTitle": "العمل الآمن على المرتفعات",
+    "courseMeta": "6 دروس، حوالي ساعتين",
+    "kindPerson": "شخص",
+    "personRole": "محرر",
+    "personAction": "عرض الملف",
+    "kindProfile": "بطاقة الملف الشخصي",
+    "profileRole": "منشئ محتوى",
+    "kindEvent": "فعالية",
+    "eventMonth": "سبتمبر",
+    "eventTitle": "يوم التخطيط التحريري",
+    "eventPlace": "المقر الرئيسي، الرياض",
+    "kindFile": "ملفات"
+  }
+}

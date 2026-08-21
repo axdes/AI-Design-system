@@ -1,0 +1,54 @@
+{
+  "$schema": "../content-model.schema.json",
+  "id": "renewals-desk",
+  "title": "Contract renewals desk",
+  "roles": ["legal-ops-specialist"],
+  "objects": {
+    "contract": {
+      "description": "One agreement approaching its end date: the record the desk exists to decide about. Enters the window as its endDate approaches, and every one of them is looked at — the window is worked down to zero every week, so a contract is never searched for, only reached in order.",
+      "attributes": {
+        "core": [
+          "id",
+          "counterparty",
+          "accountManager",
+          "annualValue",
+          "endDate",
+          "status"
+        ]
+      },
+      "actions": [
+        {
+          "verb": "review",
+          "roles": ["legal-ops-specialist"],
+          "screen": "renewals-window",
+          "constraint": "every contract in the window is looked at — nothing is skipped and nothing is searched for; ordering by endDate is how the team decides what to handle first"
+        },
+        {
+          "verb": "send-for-renewal",
+          "roles": ["legal-ops-specialist"],
+          "screen": "renewals-window",
+          "constraint": "only from status awaiting-review, applied in place on the row",
+          "provenBy": "renewals-window#send-for-renewal-in-place"
+        },
+        {
+          "verb": "let-lapse",
+          "roles": ["legal-ops-specialist"],
+          "screen": "renewals-window",
+          "constraint": "only from status awaiting-review, applied in place on the row; a decision, not a deletion — the contract keeps its record",
+          "provenBy": "renewals-window#let-lapse-in-place"
+        }
+      ],
+      "screens": { "collection": "renewals-window" }
+    }
+  },
+  "vocabularies": {
+    "status": "three fixed values (awaiting-review | renewal-sent | lapsing) — where a contract stands, not a thing with a life of its own. Becomes richer the day the renewal itself gets tracked (sent, countersigned, filed), which would be a new object, not more stops on this field.",
+    "accountManager": "a name carried on the contract so the specialist knows who to talk to. Fails the litmus test: no screen shows a manager, nothing edits one. Reopens if the desk ever assigns contracts to managers or views a manager's book.",
+    "counterparty": "the company name as text on the contract. Reopens the day contracts are read grouped by company or a company gets a detail screen of its own."
+  },
+  "openQuestions": [
+    "Where the stream comes from: which system feeds the window, and how wide the window is (how many days before endDate a contract enters) — the feed's decision, inherited here as given data.",
+    "What happens downstream of renewal-sent: who picks the renewal up, and whether that handoff ever needs a screen on this desk.",
+    "Whether a decided contract leaves the window at once or stays visible with its status until the week rolls — built as staying visible, so the week's record is on screen; the first week of real use decides."
+  ]
+}

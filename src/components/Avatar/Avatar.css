@@ -1,0 +1,51 @@
+.avatar {
+  display: grid;
+  place-items: center;
+  /* Anchor for the status dot, which sits ON the edge and so must not be
+   * clipped: the round crop lives on the image (border-radius: inherit)
+   * instead of on this box. */
+  position: relative;
+  border-radius: var(--radius-full);
+  background: var(--avatar-bg);
+  color: var(--avatar-foreground);
+  font-weight: var(--font-weight-semibold);
+  /* Never let a flex parent squash the circle into an oval (e.g. next to a
+   * long name in a HoverCard/Row). The avatar keeps its intrinsic size. */
+  flex-shrink: 0;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+/* Discrete sizes */
+.avatar[data-size="sm"]  { width: var(--avatar-sm);  height: var(--avatar-sm);  font-size: var(--font-xs); }
+.avatar[data-size="md"]  { width: var(--avatar-md);  height: var(--avatar-md);  font-size: var(--font-sm); }
+.avatar[data-size="lg"]  { width: var(--avatar-lg);  height: var(--avatar-lg);  font-size: var(--font-base); }
+.avatar[data-size="xl"]  { width: var(--avatar-xl);  height: var(--avatar-xl);  font-size: var(--font-2xl); }
+.avatar[data-size="2xl"] { width: var(--avatar-2xl); height: var(--avatar-2xl); font-size: var(--font-3xl); }
+
+/* Fill parent (e.g. when nested in an icon button) */
+.avatar[data-fill] { width: 100%; height: 100%; font-size: var(--font-base); }
+
+/* Rounded rect — a team or an organisation, not a person. */
+.avatar[data-shape="square"] { border-radius: var(--radius-md); }
+
+/* Presence dot. Sized as a share of the avatar so it stays proportional across
+ * the size scale, with a floor so it does not vanish at `sm`. The ring is the
+ * page colour, which is what separates it from the photo underneath. */
+.avatar-status {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  inline-size: max(28%, var(--space-2));
+  block-size: max(28%, var(--space-2));
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 0 var(--space-2xs) var(--background);
+}
+.avatar-status[data-status="online"]  { background: var(--success); }
+.avatar-status[data-status="away"]    { background: var(--warning); }
+.avatar-status[data-status="busy"]    { background: var(--destructive); }
+.avatar-status[data-status="offline"] { background: var(--border-strong); }

@@ -1,0 +1,27 @@
+{
+  "id": "pipeline-hub",
+  "title": "Client workspace hub (full pipeline)",
+  "why": "The mirror of pipeline-screen, and the reason the pair exists: one brief where the right answer is a table and one where it is tiles proves an agent follows the RULES, not a table prior. Here the screen is left through a door, never worked through — navigate is the task, and R9 chooses tiles — while the tempting wrong answer is a tidy Table of areas with a count column, fully conformant and wrong: rows invite comparing five numbers nobody compares, and a destination rendered as a row stops looking enterable. Required is deliberately just the template and the tile: WHERE the count rides (CountBadge on the tile, or the Card anatomy's meta line) is a choice the registry's own example blesses both ways, and the first baseline proved that requiring one of them fails agents for following the docs.",
+  "pipeline": true,
+  "required": [
+    "ListPageTemplate",
+    "Card"
+  ],
+  "forbidden": [
+    {
+      "pattern": "<Table",
+      "message": "a table of destinations — entry points are entered, not compared (selection rules R9): one tile per area, its count riding on the tile"
+    },
+    {
+      "pattern": "<SearchInput",
+      "message": "five fixed areas never need searching — a hub is left through a door, not queried"
+    }
+  ],
+  "entry": "Screen.tsx",
+  "acceptance": [
+    "Each area is exactly one press: the whole tile is the interactive target, not a link inside it.",
+    "No area's count renders as a table column or a count strip — the number rides its own tile.",
+    "Nothing on the screen sorts, filters or searches the areas.",
+    "All five areas render, each with its name, its one-line description and its count."
+  ]
+}

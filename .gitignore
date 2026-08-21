@@ -1,0 +1,16 @@
+
+# Mutation testing: instrumented sandbox + its report
+.stryker-tmp
+evals/.traces/
+evals/.work/
+evals/.drift/
+reports
+src/__eval__/
+src/__verify__/
+
+# Derived from registry/, which is what git carries: one file per component, so a
+# branch that adds a component does not rewrite a 171KB file that every other
+# branch also touched. Every tool still reads this one; `npm run gen-registry`
+# writes it, predev/prebuild run that, and `gen-registry:check` rebuilds it when a
+# fresh checkout has not.
+component-registry.json

@@ -1,0 +1,23 @@
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 1.4em;
+  padding-inline: var(--space-1);
+  padding-block: 0;
+  border: 1px solid var(--border);
+  border-block-end-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-normal);
+  white-space: nowrap;
+}
+.kbd[data-size="md"] {
+  min-inline-size: 1.6em;
+  padding-inline: var(--space-2);
+  font-size: var(--font-sm);
+}

@@ -1,0 +1,99 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: var(--overlay);
+  /* simple fade-in; respects prefers-reduced-motion via reset.css */
+  animation: modal-fade var(--duration-fast) ease-out;
+}
+
+.modal {
+  /* Modal-local size knobs (not shared, so they live with the component). */
+  --modal-width-sm: 24rem;
+  --modal-width-md: 36rem;
+  --modal-width-lg: 56rem;
+  --modal-drawer-width: 30rem;
+  --modal-max-height: 48rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: min(90vh, var(--modal-max-height));
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-lg);
+  animation: modal-pop var(--duration-normal) ease-out;
+}
+.modal[data-size="sm"] { max-width: var(--modal-width-sm); }
+.modal[data-size="md"] { max-width: var(--modal-width-md); }
+.modal[data-size="lg"] { max-width: var(--modal-width-lg); }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6) var(--space-2);
+}
+.modal-title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-tight);
+}
+.modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--space-2) var(--space-6);
+  font-size: var(--font-base);
+}
+/* The body's small bottom padding assumes a footer follows. With no footer, the body is the
+   last child and needs a full bottom pad so content doesn't touch the modal edge. */
+.modal-body:last-child {
+  padding-bottom: var(--space-6);
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6) var(--space-4);
+}
+
+/* Drawer: panel docked to the inline-end edge, full height, sliding in from the
+ * side. Reuses the modal's portal / focus-trap / scroll-lock; only the layout
+ * and entrance animation change. */
+.modal-overlay[data-placement="drawer"] {
+  place-items: stretch;
+  justify-items: end;
+  padding: 0;
+}
+.modal[data-placement="drawer"] {
+  width: min(100%, var(--modal-drawer-width));
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+  border-block: none;
+  border-inline-end: none;
+  animation: drawer-slide var(--duration-normal) ease-out;
+}
+[dir="rtl"] .modal[data-placement="drawer"] { animation-name: drawer-slide-rtl; }
+
+@keyframes modal-fade { from { opacity: 0 } to { opacity: 1 } }
+@keyframes drawer-slide {
+  from { transform: translateX(100%); }
+  to   { transform: none; }
+}
+@keyframes drawer-slide-rtl {
+  from { transform: translateX(-100%); }
+  to   { transform: none; }
+}
+@keyframes modal-pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}

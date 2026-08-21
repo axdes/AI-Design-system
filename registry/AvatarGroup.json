@@ -1,0 +1,53 @@
+{
+  "ref": "AvatarGroup",
+  "level": "molecule",
+  "description": "Overlapping stack of avatars with a \"+N\" overflow — a team, the people on a thread. Presentational; the caller supplies the list. The overflow disc carries the hidden count so it is not silent to a screen reader.",
+  "exports": [
+    "AvatarGroup"
+  ],
+  "main": "AvatarGroup",
+  "from": "@/components/AvatarGroup",
+  "slots": [],
+  "props": [
+    {
+      "name": "items",
+      "type": "AvatarGroupItem[]",
+      "required": true
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/AvatarGroup/AvatarGroup.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Avatar"
+  ],
+  "example": "/* Overlapping team stack. Anything past `max` collapses into a \"+N\" disc that\n * still announces the hidden count. */\n\n<AvatarGroup\n  max={3}\n  items={[\n    { name: 'Sarah Al-Mansouri' },\n    { name: 'Ahmed Al-Saud' },\n    { name: 'Fatima Al-Zahra' },\n    { name: 'Mohammed Al-Khalid' },\n    { name: 'Noura Al-Otaibi' },\n  ]}\n/>"
+}

@@ -1,0 +1,63 @@
+{
+  "ref": "Rating",
+  "level": "molecule",
+  "description": "A star rating, a score out of `max` stars. Interactive when `onChange` is given (a radiogroup: click or Arrow keys set the score), read-only otherwise (an img with the score as its name). Half values render a half-filled star.",
+  "exports": [
+    "Rating"
+  ],
+  "main": "Rating",
+  "from": "@/components/Rating",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: number) => void",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Rating/Rating.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "const [score, setScore] = useState(4)\n/* Interactive when onChange is given (click or Arrow keys). Omit onChange for\n * a read-only display of an existing score. */\n\n<Rating label=\"Rate this article\" value={score} onChange={setScore} />"
+}

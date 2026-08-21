@@ -1,0 +1,31 @@
+{
+  "$schema": "../content-model.schema.json",
+  "id": "client-workspace",
+  "title": "Client workspace",
+  "roles": ["consultant"],
+  "objects": {
+    "area": {
+      "description": "One door of the workspace: a named destination saying what waits inside and how much of it. The five areas are the workspace's SHAPE, provisioned with it — a consultant never creates or deletes one, only enters it.",
+      "attributes": {
+        "core": ["name", "whatWaits", "count"]
+      },
+      "actions": [
+        {
+          "verb": "open",
+          "roles": ["consultant"],
+          "screen": "workspace-hub",
+          "constraint": "the whole tile is the target — one press, no inner link",
+          "provenBy": "workspace-hub#tile-opens-area"
+        }
+      ],
+      "screens": { "collection": "workspace-hub" }
+    }
+  },
+  "vocabularies": {
+    "count": "what the number counts differs per area (files, sessions this month, open decisions, teammates, published reports) and belongs to the area that shows it. Fails the litmus test as an object: nothing edits a count, no screen shows one alone. Reopens if counts ever gain their own history or targets.",
+    "whatWaits": "one line of copy per area, written once at provisioning. Reopens the day it becomes live activity (last edited, next meeting) — which is the overview archetype's territory and retires the hub spec, not this field."
+  },
+  "openQuestions": [
+    "Whether provisioning ever becomes partial (a workspace born with three areas of five) — the spec's empty state is written for that day and unreachable until it."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "ref": "Icon",
+  "level": "atom",
+  "description": "Every icon in the system, addressed by Material-style name. Size comes from CSS through `size`, so changing an --icon-* token cascades everywhere at once.",
+  "exports": [
+    "Icon"
+  ],
+  "main": "Icon",
+  "from": "@/components/Icon",
+  "slots": [],
+  "props": [
+    {
+      "name": "name",
+      "type": "IconName",
+      "required": true
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Icon/Icon.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ]
+    }
+  },
+  "example": "<Icon name=\"calendar\" />"
+}

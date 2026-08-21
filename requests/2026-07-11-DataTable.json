@@ -1,0 +1,18 @@
+{
+  "name": "DataTable",
+  "level": "molecule",
+  "date": "2026-07-11",
+  "requestedBy": "agent",
+  "need": "A styled, accessible table. Today the guidance is 'drop a semantic <table> inside <Card flush> and style it inline' — which every dashboard re-implements differently (the AI/Run rubric matrix, portfolio table, etc.). A canonical Table standardizes header/row/cell styling, tokened borders, tabular-nums, sticky header, and an optional highlighted column.",
+  "consideredAlternatives": [
+    { "ref": "components/Card (flush) + <table>", "whyNot": "Not a component: no shared header/cell/border/zebra styling; re-hand-rolled per page." },
+    { "ref": "components/ListItem / ListCluster", "whyNot": "Lists are single-column rows, not multi-column tabular data with a header." }
+  ],
+  "proposedApi": {
+    "compositional": "Table, THead, TBody, Tr, Th, Td",
+    "Table": { "stickyHeader": "boolean?", "flush": "boolean? (edge-to-edge in a Card)", "size": "'sm' | 'md'" },
+    "Th": { "align": "'start' | 'end' | 'center'", "scope": "'col' | 'row'" },
+    "Td": { "align": "'start' | 'end' | 'center'", "emphasis": "boolean?", "tone": "'success' | 'warning' | 'danger' | 'ai'?" }
+  },
+  "status": "pending"
+}

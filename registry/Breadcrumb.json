@@ -1,0 +1,33 @@
+{
+  "ref": "Breadcrumb",
+  "level": "molecule",
+  "description": "The trail back up a record hierarchy, e.g. Library / Reports / Q3. Routing agnostic: pass `href` for anchors, `onSelect` for buttons. The last item is always the current page (aria-current), not a link. Replaces the old habit of faking a breadcrumb with a subtitle string.",
+  "exports": [
+    "Breadcrumb"
+  ],
+  "main": "Breadcrumb",
+  "from": "@/components/Breadcrumb",
+  "slots": [],
+  "props": [
+    {
+      "name": "items",
+      "type": "Crumb[]",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Breadcrumb/Breadcrumb.tsx",
+  "uses": [
+    "Icon"
+  ],
+  "example": "/* The trail back up the hierarchy. The last item is the current page and\n * renders as plain text, not a link — pass href or onSelect for the rest. */\n\n<Breadcrumb\n  items={[\n    { label: 'Library', onSelect: () => undefined },\n    { label: 'Reports', onSelect: () => undefined },\n    { label: 'Q3 revenue' },\n  ]}\n/>"
+}

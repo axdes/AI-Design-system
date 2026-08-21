@@ -1,0 +1,41 @@
+.datagrid {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--card);
+}
+.datagrid-header {
+  display: grid;
+  background: var(--muted);
+  border-block-end: 1px solid var(--border);
+}
+.datagrid-body {
+  overflow-y: auto;
+  position: relative;
+}
+.datagrid-spacer { position: relative; }
+.datagrid-window { position: absolute; inset-inline: 0; inset-block-start: 0; }
+.datagrid-row {
+  display: grid;
+  align-items: center;
+  border-block-end: 1px solid var(--border);
+}
+.datagrid-cell {
+  padding: 0 var(--space-4);
+  font-size: var(--font-sm);
+  color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.datagrid-cell[data-align='end'] { text-align: end; justify-self: end; font-variant-numeric: tabular-nums; }
+.datagrid-cell[data-align='center'] { text-align: center; justify-self: center; }
+.datagrid-th {
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--muted-foreground);
+  padding-block: var(--space-3);
+  white-space: nowrap;
+}

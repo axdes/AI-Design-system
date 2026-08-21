@@ -1,0 +1,55 @@
+/* Side-panel chrome — white surface, header / scrolling body / pinned footer.
+ * Outer width/borders/radius come from the consumer's className. */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--card);
+  overflow: hidden;
+}
+
+.side-panel-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+.side-panel-title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-tight);
+}
+
+/* Controls in the header. `margin-inline-start: auto` puts them at the far end when there is no
+   close button beside them, which is the common case (a collapse toggle alone). */
+.side-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: auto;
+}
+
+.side-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--space-4) var(--space-4);
+  font-size: var(--font-base);
+  line-height: var(--leading-normal);
+}
+
+.side-panel-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-block-start: 1px solid var(--border);
+}

@@ -1,0 +1,67 @@
+{
+  "ref": "TimeInput",
+  "level": "atom",
+  "description": "A time-of-day field: the native <input type=\"time\"> in the system's Input clothes, so the picker, the validation and the keyboard stay the browser's. The value is always 24-hour \"HH:MM\"; the browser shows it in the user's own clock convention. Wrap it in <Field> for its label, like <Input>.",
+  "exports": [
+    "TimeInput"
+  ],
+  "main": "TimeInput",
+  "from": "@/components/TimeInput",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/TimeInput/TimeInput.tsx",
+  "inherits": "Omit<ComponentPropsWithRef<'input'>, 'size' | 'type' | 'value' | 'onChange'>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    }
+  },
+  "example": "const [start, setStart] = useState('09:30')\n\n<TimeInput aria-label=\"Starts at\" value={start} onChange={setStart} />"
+}

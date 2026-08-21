@@ -1,0 +1,58 @@
+.segmented {
+  display: inline-flex;
+  padding: var(--space-2xs);
+  /* Light theme shows elevation as grey-vs-white; dark theme has --muted ===
+   * --background (both neutral-900), so it lifts with the --card/--popover
+   * elevation stops instead. Encoding both here keeps the control visible on
+   * its surface in either theme with no border or shadow. */
+  background: light-dark(var(--muted), var(--card));
+  border-radius: var(--control-radius);
+}
+.segmented-option {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-block-size: calc(var(--control-height) - var(--space-2xs) * 2);
+  border: none;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  /* Same type as the rest of the control family (Button/Select) so a segmented
+   * toggle next to them reads as one system, not a smaller sibling. */
+  font-size: var(--control-font-size);
+  font-weight: var(--font-weight-regular);
+  padding-block: 0;
+  padding-inline: var(--space-4);
+  border-radius: calc(var(--control-radius) - var(--space-2xs));
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+.segmented[data-size='sm'] .segmented-option { min-block-size: calc(var(--control-height-sm) - var(--space-2xs) * 2); padding-block: 0; padding-inline: var(--space-3); font-size: var(--font-sm); }
+.segmented[data-size='lg'] .segmented-option { min-block-size: calc(var(--control-height-lg) - var(--space-2xs) * 2); padding-block: 0; padding-inline: var(--space-6); font-size: var(--control-font-size-lg); }
+.segmented-option:hover { color: var(--foreground); }
+.segmented-option:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(var(--ring-offset) * -1);
+}
+/* Selected = a lifted pill AND brand-coloured text.
+ *
+ * The lift alone was the whole signal until 2026-08-03, which is the iOS/shadcn
+ * convention and reads fine in isolation — but on a page whose primary action is
+ * a filled brand button, a grey-on-white pill is the quietest thing in the row
+ * and the selection has to be looked for. Text only, not a filled pill: a second
+ * solid brand block would compete with the button for "the thing to press". */
+.segmented-option[data-selected] {
+  background: light-dark(var(--background), var(--popover));
+  color: var(--primary-accent);
+  font-weight: var(--font-weight-medium);
+}
+
+/* On a --muted surface (app main column, PageHeader) the fills invert in light
+ * so the control still reads: white track, grey selected pill. In dark, --muted
+ * and --background collapse, so the same --card/--popover elevation is used as
+ * the base surface. No border, no shadow. */
+.segmented[data-surface="muted"] { background: light-dark(var(--background), var(--card)); }
+.segmented[data-surface="muted"] .segmented-option[data-selected] { background: light-dark(var(--muted), var(--popover)); }

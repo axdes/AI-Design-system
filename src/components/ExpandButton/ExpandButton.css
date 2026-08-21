@@ -1,0 +1,44 @@
+/* Pill button that's icon-only by default and expands to icon+label on hover
+ * (and while `data-expanded` is set — useful when a dropdown is open). */
+.expand-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  height: var(--control-height);
+  min-width: var(--control-height);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-regular);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--duration-fast), gap var(--duration-fast), padding var(--duration-fast), min-width var(--duration-fast);
+  overflow: hidden;
+}
+.expand-button:hover,
+.expand-button[data-expanded] {
+  background: var(--primary-hover);
+  padding: 0 var(--space-3);
+  min-width: 0;
+  gap: var(--space-1);
+}
+
+.expand-button-label,
+.expand-button-chevron {
+  max-width: 0;
+  opacity: 0;
+  transition: max-width var(--duration-fast), opacity var(--duration-fast);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.expand-button:hover .expand-button-label,
+.expand-button:hover .expand-button-chevron,
+.expand-button[data-expanded] .expand-button-label,
+.expand-button[data-expanded] .expand-button-chevron {
+  max-width: 8rem;   /* label reveal cap */
+  opacity: 1;
+}

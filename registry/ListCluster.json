@@ -1,0 +1,51 @@
+{
+  "ref": "ListCluster",
+  "level": "organism",
+  "description": "Centered \"welcome\" list: big title + subtitle, the tile grid, a large CTA under the cards. Shown while everything fits the viewport (useSimpleFit). ONE component for Workshops, Transcripts and Discovery — the three lists must always look and behave the same.",
+  "exports": [
+    "ListCluster"
+  ],
+  "main": "ListCluster",
+  "from": "@/components/ListCluster",
+  "slots": [],
+  "props": [
+    {
+      "name": "mark",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "subtitle",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "cta",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "clusterRef",
+      "type": "Ref<HTMLDivElement>",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/components/ListCluster/ListCluster.tsx",
+  "uses": [
+    "Button",
+    "Card",
+    "Icon",
+    "Layout"
+  ],
+  "example": "const items = [{ id: '1', name: 'Kickoff' }, { id: '2', name: 'Retro' }]\n/* The centered \"welcome\" list: one shape shared by every list screen, so they\n * cannot drift apart. Cards go in the middle, the primary CTA underneath. */\n\n<ListCluster\n  title=\"Workshops\"\n  subtitle=\"Pick a workshop or start a new one.\"\n  cta={<Button variant=\"primary\" size=\"lg\" iconEnd>New workshop<Icon name=\"add\" /></Button>}\n>\n  <Grid gap={4}>\n    {items.map((i) => (\n      <Card key={i.id} interactive><CardTitle>{i.name}</CardTitle></Card>\n    ))}\n  </Grid>\n</ListCluster>"
+}

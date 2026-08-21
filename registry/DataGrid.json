@@ -1,0 +1,56 @@
+{
+  "ref": "DataGrid",
+  "level": "organism",
+  "description": "A virtualized table: only the rows in view (plus a small overscan) are in the DOM, so tens of thousands of rows scroll smoothly. Rows are a fixed height (the windowing needs it); a spacer sizes the scroll area to the full list. For a short, static table use <Table>; reach for this when the row count is large.",
+  "exports": [
+    "DataGrid"
+  ],
+  "main": "DataGrid",
+  "from": "@/components/DataGrid",
+  "slots": [],
+  "props": [
+    {
+      "name": "columns",
+      "type": "readonly DataGridColumn<Row>[]",
+      "required": true
+    },
+    {
+      "name": "rows",
+      "type": "readonly Row[]",
+      "required": true
+    },
+    {
+      "name": "rowKey",
+      "type": "(row: Row) => string",
+      "required": true
+    },
+    {
+      "name": "rowHeight",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "overscan",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/DataGrid/DataGrid.tsx",
+  "context": "region",
+  "example": "<DataGrid<Row>\n  label=\"Customers\"\n  rows={ROWS}\n  rowKey={(r) => r.id}\n  height={320}\n  columns={[\n    { key: 'name', header: 'Name', cell: (r) => r.name, width: '1.5fr' },\n    { key: 'email', header: 'Email', cell: (r) => r.email, width: '2fr' },\n    { key: 'amount', header: 'Amount', align: 'end', cell: (r) => `SAR ${r.amount.toLocaleString()}` },\n  ]}\n/>"
+}

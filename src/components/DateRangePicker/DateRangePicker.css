@@ -1,0 +1,5 @@
+/* The trigger wears DatePicker's field styling (imported from its CSS, the way
+ * Textarea wears Input's); only the span-specific bits live here. */
+.daterangepicker-trigger {
+  font-variant-numeric: tabular-nums;
+}

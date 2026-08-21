@@ -1,0 +1,26 @@
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--warning-emphasis);
+}
+.rating[data-size='sm'] { font-size: var(--font-sm); }
+.rating[data-size='lg'] { font-size: var(--font-lg); }
+
+.rating-star[data-fill='empty'] { color: var(--border-strong); }
+.rating-star[data-fill='full'] { color: var(--warning-emphasis); }
+.rating-star[data-fill='half'] { color: var(--warning-emphasis); opacity: 0.55; }
+
+.rating-star-button {
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.rating-interactive:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-sm);
+}

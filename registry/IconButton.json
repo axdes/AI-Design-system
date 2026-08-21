@@ -1,0 +1,107 @@
+{
+  "ref": "IconButton",
+  "level": "atom",
+  "description": "A button whose label is an icon, which is why it always takes an aria-label and a Tooltip. `quiet` for inline toolbars, `filled` plus `tone` for send and stop.",
+  "exports": [
+    "IconButton"
+  ],
+  "main": "IconButton",
+  "from": "@/components/IconButton",
+  "slots": [],
+  "props": [
+    {
+      "name": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": true
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "variant",
+      "type": "Variant",
+      "required": false,
+      "values": [
+        "ghost",
+        "filled",
+        "quiet"
+      ]
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "values": [
+        "primary",
+        "destructive"
+      ]
+    },
+    {
+      "name": "reveal",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/IconButton/IconButton.tsx",
+  "inherits": "Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "variant": {
+      "prop": "variant",
+      "values": [
+        "ghost",
+        "filled",
+        "quiet"
+      ]
+    },
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "primary",
+        "destructive"
+      ]
+    },
+    "reveal": {
+      "prop": "reveal",
+      "values": [
+        "true"
+      ]
+    },
+    "loading": {
+      "prop": "loading",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "Spinner",
+    "Tooltip"
+  ],
+  "example": "/* Icon-only controls carry BOTH an aria-label (the accessible name) and a\n * Tooltip (the visible name on hover/focus). Neither is optional. */\n\n<Tooltip content=\"Delete\">\n  <IconButton icon=\"delete\" tone=\"destructive\" aria-label=\"Delete\" onClick={() => undefined} />\n</Tooltip>"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "CardMedia",
+  "level": "part of Card (organism)",
+  "date": "2026-08-21",
+  "requestedBy": "user (content representation catalogue, B1)",
+  "need": "The card had NO media slot at all: no image-top article card, no horizontal media card, no text-over-image cover — the whole visual half of content display. Every major system models this as slots on one card (Material media block, Fluent CardPreview + orientation, Ant cover, Polaris MediaCard, Fiori card shell).",
+  "consideredAlternatives": [
+    {
+      "ref": "a separate MediaCard component",
+      "whyNot": "Fluent proves top-vs-side is one orientation decision on one component; a second card is a second anatomy to keep true."
+    },
+    {
+      "ref": "apps placing <img> in card children",
+      "whyNot": "Media needs what content must not inherit: full-bleed against the padding, cover cropping, and the scrim — placed by hand it is wrong somewhere every time."
+    }
+  ],
+  "proposedApi": {
+    "CardMedia": "placement top | side | cover; tone brand | ink for photograph-less covers; children = the media. `cover` overlays the card's own content on the image and ALWAYS brings the scrim (--scrim-fade over the text band, --scrim-foreground text): text never sits on raw imagery."
+  },
+  "sources": "user's uui/grid-test reference (photo cards, tinted covers, horizontal cards); Material 3 / Fluent 2 / Ant / Polaris / Fiori research 2026-08-21; WCAG worst-point contrast + Material scrim guidance",
+  "status": "approved",
+  "decision": "Build as a Card part with scrim tokens in primitives/semantic (theme-invariant: the image obeys neither theme).",
+  "decidedBy": "owner (2026-08-21, approved the content catalogue plan)"
+}

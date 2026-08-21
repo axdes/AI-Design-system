@@ -1,0 +1,91 @@
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each step takes an equal share and grows a connecting line to its right. */
+.stepper-step {
+  position: relative;
+  flex: 1;
+  min-inline-size: 0;
+}
+.stepper-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--space-6) / 2);
+  inset-inline-start: calc(50% + var(--space-4));
+  inline-size: calc(100% - var(--space-8));
+  block-size: 2px;
+  background: var(--border);
+}
+.stepper-step[data-state='complete']:not(:last-child)::after {
+  background: var(--primary);
+}
+
+.stepper-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  inline-size: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+button.stepper-button {
+  cursor: pointer;
+}
+button.stepper-button:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-md);
+}
+
+.stepper-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border);
+  background: var(--background);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  z-index: 1;
+}
+.stepper-step[data-state='complete'] .stepper-marker {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.stepper-step[data-state='current'] .stepper-marker {
+  border-color: var(--primary);
+  color: var(--primary-accent);
+}
+
+.stepper-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+.stepper-label {
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
+}
+.stepper-step[data-state='current'] .stepper-label,
+.stepper-step[data-state='complete'] .stepper-label {
+  color: var(--foreground);
+}
+.stepper-description {
+  font-size: var(--font-xs);
+  color: var(--muted-foreground);
+}

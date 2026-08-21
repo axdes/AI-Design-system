@@ -1,0 +1,73 @@
+/* The block owns its page wrapper for ListPageTemplate's reason (see that
+ * file's header comment): `.page-content` is app chrome a block cannot import,
+ * and the token-identical rules are restated here once. */
+.overview-page {
+  flex: 1;
+  inline-size: 100%;
+  max-inline-size: var(--page-max-width);
+  margin-inline: auto;
+  padding-block: 0 var(--space-4);
+  padding-inline: var(--space-8);
+  container-type: inline-size;
+  container-name: content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Notices stack tight: each is an Alert that renders only when something is
+ * actually wrong, so most days this element holds nothing and costs nothing. */
+.overview-notices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.overview-notices:empty,
+.overview-band:empty,
+.overview-prime:empty,
+.overview-board:empty {
+  display: none;
+}
+
+/* The board is the one zone that is never a column: it owns its full width and
+ * lays its own cards out (the cockpit's ranked tiles are the reference). */
+.overview-board {
+  inline-size: 100%;
+}
+
+/* The prime row: what is read first. A row of Stats/Meters that wraps rather
+ * than squeezes — a KPI that has to shrink to fit stops being glanceable. */
+.overview-prime {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--space-4);
+}
+
+/* auto-fill, not media queries: the column count follows the content column,
+ * and a widget never renders narrower than it can carry. */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.overview-widget[data-wide] {
+  grid-column: 1 / -1;
+}
+
+/* The widget's header keeps title and its one action on a line. */
+.overview-widget > .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.overview-widget-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}

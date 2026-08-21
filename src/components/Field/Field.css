@@ -1,0 +1,15 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.field-required { color: var(--destructive); }
+
+/* The line under the control: a quiet hint, or the reason it was rejected. */
+.field-message {
+  margin: 0;
+  font-size: var(--font-sm);
+  line-height: var(--leading-normal);
+  color: var(--muted-foreground);
+}
+.field-message[data-error] { color: var(--destructive); }

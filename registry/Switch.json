@@ -1,0 +1,31 @@
+{
+  "ref": "Switch",
+  "level": "atom",
+  "description": "An on/off setting that applies the moment it is flipped (role=\"switch\"). A checkbox is for something that applies when a form is submitted.",
+  "exports": [
+    "Switch"
+  ],
+  "main": "Switch",
+  "from": "@/components/Switch",
+  "slots": [],
+  "props": [
+    {
+      "name": "checked",
+      "type": "boolean",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(next: boolean) => void",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/components/Switch/Switch.tsx",
+  "inherits": "Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'onChange'>",
+  "example": "const [on, setOn] = useState(true)\n/* `label` is the accessible name, not a visible caption — pair the switch with\n * a <Label> or a <Field> when the screen needs visible text. */\n\n<Switch checked={on} onChange={setOn} label=\"Weekly digest\" />"
+}

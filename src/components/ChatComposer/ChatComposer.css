@@ -1,0 +1,85 @@
+/* Rounded chat input bar. Consumer positions it (margin/width).
+ * Follows --control-radius (pill when Pill is on, rounded otherwise) on a single
+ * line; rounds to a rect once the textarea grows. 2px border (emphasis). */
+.chat-composer {
+  display: flex;
+  /* Single line: centre the field and the voice/send button to each other.
+   * Once the textarea grows (stretched) the button drops to the bottom edge. */
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4);
+  border: 2px solid var(--input);
+  border-radius: var(--control-radius);
+  background: var(--background);
+  transition: border-color var(--duration-fast), border-radius var(--duration-fast);
+}
+.chat-composer:focus-within { border-color: var(--primary-accent); }
+.chat-composer[data-stretched] {
+  align-items: flex-end;
+  border-radius: var(--radius-rect);
+}
+
+.chat-composer-field {
+  flex: 1;
+  min-width: 0;
+  /* Single line vertically centred to the control height; grows to max then scrolls. */
+  min-height: var(--control-height);
+  max-height: 12rem;
+  padding-block: calc((var(--control-height) - 1em * var(--leading-normal)) / 2);
+  border: none;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: var(--font-base);
+  line-height: var(--leading-normal);
+  resize: none;
+  overflow-y: auto;
+}
+.chat-composer-field:focus-visible { outline: none; }
+.chat-composer-field::placeholder { color: var(--muted-foreground); }
+
+/* Send / stop use IconButton variant="filled" tone — no local overrides needed. */
+
+/* Decorative AI spark at the inline start (opt-in via the aiSpark prop).
+ * Matches the field height so the single-line centring holds. */
+.chat-composer-spark {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+}
+
+/* Recording cancel — danger-tinted (the waveform conveys the live state). */
+.chat-composer-voice.is-recording,
+.chat-composer-voice.is-recording:hover { color: var(--destructive); background: transparent; }
+
+/* Voice waveform — animated bars while recording (replaces the field). */
+.chat-composer-waveform {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--control-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+}
+.chat-composer-waveform span {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--muted-foreground);
+  transform-origin: bottom;
+  animation: composer-voice-bar 1s ease-in-out infinite;
+}
+.chat-composer-waveform span:nth-child(1) { height: 12px; animation-delay: 0ms; }
+.chat-composer-waveform span:nth-child(2) { height: 20px; animation-delay: 90ms; }
+.chat-composer-waveform span:nth-child(3) { height: 8px;  animation-delay: 180ms; }
+.chat-composer-waveform span:nth-child(4) { height: 24px; animation-delay: 270ms; }
+.chat-composer-waveform span:nth-child(5) { height: 16px; animation-delay: 360ms; }
+.chat-composer-waveform span:nth-child(6) { height: 10px; animation-delay: 450ms; }
+.chat-composer-waveform span:nth-child(7) { height: 22px; animation-delay: 540ms; }
+.chat-composer-waveform span:nth-child(8) { height: 14px; animation-delay: 630ms; }
+.chat-composer-waveform span:nth-child(9) { height: 18px; animation-delay: 720ms; }
+.chat-composer-waveform span:nth-child(10){ height: 6px;  animation-delay: 810ms; }
+@keyframes composer-voice-bar {
+  0%, 100% { opacity: 0.4; transform: scaleY(0.4); }
+  50%      { opacity: 1;   transform: scaleY(1); }
+}

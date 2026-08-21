@@ -1,0 +1,18 @@
+.meter { display: flex; flex-direction: column; gap: var(--space-1); min-inline-size: 0; }
+.meter-track {
+  position: relative; block-size: 10px; border-radius: var(--radius-full);
+  background: var(--accent); overflow: visible;
+}
+.meter[data-size="sm"] .meter-track { block-size: 6px; }
+.meter-fill { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: var(--radius-full); background: var(--primary); }
+.meter[data-tone="success"] .meter-fill { background: var(--success); }
+.meter[data-tone="warning"] .meter-fill { background: var(--warning); }
+.meter[data-tone="danger"] .meter-fill { background: var(--destructive); }
+.meter-target {
+  position: absolute; inset-block-start: -3px; inline-size: 2px; block-size: 16px;
+  background: var(--foreground); border-radius: var(--radius-full);
+}
+.meter-ticks {
+  display: flex; justify-content: space-between;
+  font-size: var(--font-xs); color: var(--muted-foreground); font-variant-numeric: tabular-nums;
+}

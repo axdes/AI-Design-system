@@ -1,0 +1,9 @@
+{
+  "//": "Shared Stylelint rules for every package. A package extends this and adds ONLY its own token sources (`importFrom` points at its own styles/) and its own overrides. Do not restate the rules below.",
+  "plugins": ["stylelint-value-no-unknown-custom-properties"],
+  "ignoreFiles": ["**/dist/**", "**/node_modules/**"],
+  "rules": {
+    "color-no-hex": true,
+    "declaration-no-important": true
+  }
+}

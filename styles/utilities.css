@@ -1,0 +1,117 @@
+/* UTILITIES — the few cross-cutting behaviours that are not worth a component.
+ *
+ * A component earns a folder, a golden example, a registry entry and ~280 tokens
+ * of context on every future task. A fifteen-line animation does not: it earns a
+ * class. Keep this file small, and prefer a component the moment something needs
+ * props, state or markup of its own.
+ *
+ * Loaded by index.css, so every app that consumes the design system has it. */
+
+/* Live-status pulse — "this is happening right now": a recording dot, a live
+ * call marker, an active session. Eight separate @keyframes for this existed
+ * across the products before it moved here, all doing the same fade.
+ *
+ * Tune per use through the two custom properties rather than redefining it:
+ *   .my-dot { --pulse-duration: 2s; --pulse-dim: 0.5; }
+ */
+.pulse {
+  animation: pulse var(--pulse-duration, 1.2s) ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: var(--pulse-dim, 0.3);
+  }
+}
+
+/* Ecosystem symbol — the documented CONTRACT behind each product's mark, moved
+ * here the day the third app drew one (the closing condition recorded in the
+ * promotion scout). The drawing is the whole point and must differ per app
+ * (transcript: a waveform; teams-digest: a chat condensing; admin-portal: a
+ * bell), so no component: each app keeps its own <svg class="eco-symbol">.
+ * What repeats is the contract — a 48x48 viewBox with an even ~7px safe area,
+ * strokes in the brand gradient (var(--primary-accent) → var(--primary)), no
+ * background tile, and any animation stops here under reduced motion. */
+.eco-symbol {
+  display: block;
+}
+@media (prefers-reduced-motion: reduce) {
+  .eco-symbol * {
+    animation: none;
+  }
+}
+
+/* Visually hidden, still read aloud. For the text that carries a meaning the
+ * layout carries visually: a live region confirming a copy, the "+3 more" behind
+ * an avatar stack. Not `display: none` — that removes it from the accessibility
+ * tree too, which is the opposite of the point. */
+.sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── The railless shell — the contract a no-rail app owes its pages ──────────
+ *
+ * Promoted 2026-08-21 from teams-digest and admin-portal, the second no-rail
+ * app being the trigger the scout recorded. A CONTRACT here rather than a
+ * component on purpose: admin-portal places its <main> per route (AuthTemplate
+ * brings its own, and a second one is a duplicate landmark), so a shell that
+ * renders <main> for you cannot serve it — and the two apps genuinely differ
+ * on --page-max-width, which therefore stays per app, set in its own CSS.
+ *
+ * What IS one contract, restated twice until now:
+ *   - the muted page surface (white cards read on it; --background is the
+ *     CARD colour) on a flex column that fills the viewport;
+ *   - the height release for a panelled page, same rule AppLayout carries:
+ *     two nested scrollers, one of them the document, mean the inner column
+ *     only starts moving once the outer has run out — the opposite of the
+ *     intent. Keyed on the page's own opt-in ([data-panels]);
+ *   - the shared PageHeader capped and centred to the content column, scoped
+ *     for specificity over the bare .page-header rule so the winner does not
+ *     depend on which stylesheet the bundler emitted second. Transparent,
+ *     because a welcome screen that does not scroll reads an opaque bar as a
+ *     grey band cut across the wash. */
+.app-bare {
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.app-bare-main {
+  flex: 1;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  padding-block-start: var(--space-4);
+}
+
+@media (min-width: 62rem) {
+  .app-bare:has([data-panels]) {
+    block-size: 100dvh;
+    overflow: hidden;
+  }
+
+  .app-bare:has([data-panels]) .app-bare-main {
+    min-block-size: 0;
+  }
+}
+
+.app-bare .page-header {
+  inline-size: 100%;
+  max-inline-size: var(--page-max-width);
+  margin-inline: auto;
+  background: transparent;
+}

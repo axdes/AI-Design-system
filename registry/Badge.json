@@ -1,0 +1,76 @@
+{
+  "ref": "Badge",
+  "level": "atom",
+  "description": "Status chip: a small standalone pill that labels state through `tone`. Not CountBadge, which pins a number to another element's corner.",
+  "exports": [
+    "Badge"
+  ],
+  "main": "Badge",
+  "from": "@/components/Badge",
+  "slots": [],
+  "props": [
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "danger",
+        "ai"
+      ]
+    },
+    {
+      "name": "fill",
+      "type": "Fill",
+      "required": false,
+      "values": [
+        "solid",
+        "soft",
+        "plain"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Badge/Badge.tsx",
+  "inherits": "HTMLAttributes<HTMLSpanElement>",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "danger",
+        "ai"
+      ]
+    },
+    "fill": {
+      "prop": "fill",
+      "values": [
+        "solid",
+        "soft",
+        "plain"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md"
+      ]
+    }
+  },
+  "example": "<Badge tone=\"success\">Published</Badge>"
+}

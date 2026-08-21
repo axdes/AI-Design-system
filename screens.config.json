@@ -1,0 +1,94 @@
+{
+  "_why": "Screens that must be shot whole, at three widths. Not every route: one of each SHAPE (list, detail, form, chat, centred welcome), because what breaks is the page skeleton, not the content. 390 is a phone, 768 the tablet edge where the nav becomes a drawer, 1440 a laptop.",
+  "widths": [
+    {
+      "label": "phone",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "seedLocalStorage": {
+    "auth.user": "{\"id\":\"u1\",\"username\":\"mohammed\",\"fullName\":\"Mohammed Al-Khalid\",\"role\":\"admin\",\"email\":\"mohammed@example.com\"}"
+  },
+  "screens": [
+    {
+      "name": "login",
+      "path": "/login",
+      "anonymous": true,
+      "hasNav": false
+    },
+    {
+      "name": "content-library",
+      "path": "/content"
+    },
+    {
+      "name": "content-detail",
+      "path": "/content/c1"
+    },
+    {
+      "name": "for-review",
+      "path": "/for-review"
+    },
+    {
+      "name": "users",
+      "path": "/users"
+    },
+    {
+      "name": "profile",
+      "path": "/profile"
+    },
+    {
+      "name": "assistant",
+      "path": "/assistant"
+    },
+    {
+      "name": "content-library-dark",
+      "path": "/content",
+      "theme": "dark"
+    },
+    {
+      "name": "content-library-rtl",
+      "path": "/content",
+      "dir": "rtl"
+    },
+    {
+      "name": "users-rtl",
+      "path": "/users",
+      "dir": "rtl"
+    },
+    {
+      "name": "playground",
+      "path": "/playground",
+      "anonymous": true
+    },
+    {
+      "name": "files",
+      "path": "/files"
+    },
+    {
+      "name": "content-types",
+      "path": "/content-types"
+    },
+    {
+      "name": "patterns",
+      "path": "/patterns"
+    }
+  ],
+  "auditAllow": {
+    "_why": "A screen may break a page rule only with a reason and a name. Empty is the goal.",
+    "_controls-same-height": "playground — the playground IS the size showcase: it puts sm, md and lg of the same control in one row on purpose, so a rule asking for one height per row has to be wrong here and only here. The rule stays on for every real screen. This entry goes away if the showcase ever labels its rows as separate examples.",
+    "controls-same-height": [
+      "playground"
+    ]
+  }
+}
