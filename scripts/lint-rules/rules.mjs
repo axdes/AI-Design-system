@@ -190,6 +190,31 @@ export function rRawControls(c) {
   return out
 }
 
+/** raw <button> in a SCREEN — the system has Button, with the variants
+ *  screens actually reach for.
+ *
+ *  Scoped to screens on purpose. A component may legitimately build its own
+ *  control (a Tab, a menu item, the thumb of a switch): that is what a component
+ *  IS. A screen has no such excuse — a bare <button> there is either the Button
+ *  primitive re-typed by hand, or a control that quietly skips every variant,
+ *  size and focus treatment the system already decided. Written 2026-08-21 after
+ *  a raw <button className="card-link"> shipped with the browser's own border
+ *  around it; the golden example on Card had shown `<Button variant="link">`
+ *  since the day the class was written.
+ */
+export function rRawButtons(c) {
+  const out = []
+  for (const f of c.usageFiles) {
+    if (c.allowedPath(f, 'rawButtons')) continue
+    if (!/\/layouts\//.test(c.rel(f))) continue
+    c.read(f).split('\n').forEach((ln, i) => {
+      if (!/<button\b/.test(ln)) return
+      out.push(`${c.rel(f)}:${i + 1}  raw <button> in a screen — use <Button> (variant="link" for a title that navigates)`)
+    })
+  }
+  return out
+}
+
 /** icon-only <button> with no text and no aria-label */
 export function rIconButtonA11y(c) {
   const out = []
@@ -567,6 +592,7 @@ export const SHARED_RULES = {
   'components use semantic status roles (no tonal primitives)': rSemanticOnly,
   'logical properties for RTL (no left/right)': rLogicalProps,
   'no raw form controls outside primitives': rRawControls,
+  'no raw <button> in a screen': rRawButtons,
   'icon-only buttons have aria-label': rIconButtonA11y,
   'icon-only buttons wrapped in <Tooltip>': rIconButtonTooltip,
   'no reaching into primitive class+data contract': rPrimitiveInternals,

@@ -16,6 +16,12 @@ export function runLintRules({ title, context, rules }) {
   const c = createContext(context)
 
   const wanted = rules ?? Object.keys(SHARED_RULES)
+  /* A package may pin its rule list, in an order that reads well next to its own
+   * structural rules. The cost is silence: a shared rule added later reaches
+   * every package that did NOT pin, and quietly skips the ones that did. Naming
+   * the gap is the whole fix — deciding to skip a rule is fine, not knowing you
+   * skipped it is not. */
+  const missing = Object.keys(SHARED_RULES).filter((r) => !wanted.includes(r))
   const unknown = wanted.filter((r) => typeof r === 'string' && !SHARED_RULES[r])
   if (unknown.length) {
     console.error(`\x1b[31mUnknown rule(s): ${unknown.join(', ')}\x1b[0m`)
@@ -39,6 +45,9 @@ export function runLintRules({ title, context, rules }) {
     console.log(`  \x1b[31m✗ ${name}\x1b[0m (${v.length})`)
     v.slice(0, 12).forEach((x) => console.log(`      ${x}`))
     if (v.length > 12) console.log(`      … +${v.length - 12} more`)
+  }
+  if (missing.length) {
+    console.log(`  \x1b[2mnot run here: ${missing.join(', ')} — this package pins its rule list\x1b[0m`)
   }
   console.log('')
   if (failed) {
