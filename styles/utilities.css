@@ -31,7 +31,7 @@
 /* Ecosystem symbol — the documented CONTRACT behind each product's mark, moved
  * here the day the third app drew one (the closing condition recorded in the
  * promotion scout). The drawing is the whole point and must differ per app
- * (transcript: a waveform; teams-digest: a chat condensing; admin-portal: a
+ * (a waveform, a chat condensing, a
  * bell), so no component: each app keeps its own <svg class="eco-symbol">.
  * What repeats is the contract — a 48x48 viewBox with an even ~7px safe area,
  * strokes in the brand gradient (var(--primary-accent) → var(--primary)), no
@@ -63,9 +63,9 @@
 
 /* ── The railless shell — the contract a no-rail app owes its pages ──────────
  *
- * Promoted 2026-08-21 from teams-digest and admin-portal, the second no-rail
+ * Promoted 2026-08-21 from two products, the second of them the no-rail
  * app being the trigger the scout recorded. A CONTRACT here rather than a
- * component on purpose: admin-portal places its <main> per route (AuthTemplate
+ * component on purpose: one of them places its <main> per route (AuthTemplate
  * brings its own, and a second one is a duplicate landmark), so a shell that
  * renders <main> for you cannot serve it — and the two apps genuinely differ
  * on --page-max-width, which therefore stays per app, set in its own CSS.

@@ -3,7 +3,7 @@
   "level": "molecule",
   "date": "2026-08-20",
   "requestedBy": "agent (promotion queue, second-use rule)",
-  "need": "Rendering a chat message or an AI answer with structure (headings, quotes, code, lists, tables) is rebuilt wherever a model or a chat server talks to a user. teams-digest built it twice in one app: MessageBody renders typed blocks from the server, the inline Summary renders the digest's markdown-ish output. The safe pattern both converged on — typed shapes in, never HTML — is worth owning once.",
+  "need": "Rendering a chat message or an AI answer with structure (headings, quotes, code, lists, tables) is rebuilt wherever a model or a chat server talks to a user. An app built it twice in one app: MessageBody renders typed blocks from the server, the inline Summary renders the digest's markdown-ish output. The safe pattern both converged on — typed shapes in, never HTML — is worth owning once.",
   "consideredAlternatives": [
     {
       "ref": "dangerouslySetInnerHTML + sanitiser",
@@ -17,8 +17,8 @@
   "proposedApi": {
     "RichMessage": "blocks? (RichBlock[]: p | h | hr | quote | code | li | table), text (flat fallback, always present), className — inline marks **bold**, `code`, *em*; a wide table scrolls in its own container, never the page"
   },
-  "sources": "apps/teams-digest MessageBody (typed blocks from the server, 'nothing here ever receives HTML'), apps/teams-digest Summary (digest output rendering, same marks)",
+  "sources": "apps/an app MessageBody (typed blocks from the server, 'nothing here ever receives HTML'), apps/an app Summary (digest output rendering, same marks)",
   "status": "approved",
-  "decision": "Promote as a molecule (card surface); teams-digest adopts it for both call sites at its next feature touch (closing condition recorded in scout).",
+  "decision": "Promote as a molecule (card surface); an app adopts it for both call sites at its next feature touch (closing condition recorded in scout).",
   "decidedBy": "owner (2026-08-20, approved the promotion queue)"
 }

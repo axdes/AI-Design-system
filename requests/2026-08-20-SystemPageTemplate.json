@@ -3,7 +3,7 @@
   "level": "block",
   "date": "2026-08-20",
   "requestedBy": "agent (golden-screens G5)",
-  "need": "No app here has a proper not-found / unavailable / broken page: transcript hand-built one, airun redirects * to the cockpit, the rest have nothing. The GOV.UK triad answers the reader's real questions — what happened, did you keep my answers, what do I do — and each product reinvents that from zero or ships nothing.",
+  "need": "No app here has a proper not-found / unavailable / broken page: another app hand-built one, one app redirects * to the cockpit, the rest have nothing. The GOV.UK triad answers the reader's real questions — what happened, did you keep my answers, what do I do — and each product reinvents that from zero or ships nothing.",
   "consideredAlternatives": [
     {
       "ref": "components/EmptyState",

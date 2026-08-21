@@ -4,7 +4,7 @@
  *
  * It was missing. The component shipped writing these three class names and no stylesheet ever
  * defined them, so the head stacked: the ⋮ trigger sat on its own line under the title, in every
- * app that adopted the tile. Caught the first time a screen outside Workshops used it. */
+ * app that adopted the tile. Caught the first time a screen outside the first app used it. */
 
 .ws-tile-head {
   display: flex;

@@ -102,7 +102,7 @@ export const strictSource = {
     /* A pane that SCROLLS must be a tab stop, or its content is unreachable to
      * anyone not using a mouse (WCAG 2.1.1, and axe fails it as serious). This
      * rule allows a tab stop only on role="tabpanel" by default, which puts it
-     * directly at odds with that: salim's call attributes and transcript panes
+     * directly at odds with that: a product's call attributes and another's panes
      * both scroll, both were unreachable, and both needed a disable comment to
      * be fixed. Allowing `region` — the role a named scroll container should
      * carry anyway — is the decision, written once here instead of four times

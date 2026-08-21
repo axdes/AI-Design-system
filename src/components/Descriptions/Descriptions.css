@@ -27,7 +27,7 @@
  *
  * It used to borrow <SectionLabel>: display face, 17px, uppercase, tracked. That put a shouted
  * heading on every row of what is meant to read as a quiet list — a column of WAVE / WHERE /
- * CLOCK / COORDINATOR louder than the answers under them — and set the label in a different
+ * the LABELS louder than the answers under them — and set the label in a different
  * typeface from its own value, which is what made these lists look broken rather than styled.
  * A field name is small, quiet, and in the same face as the text it names; the value carries the
  * weight, because the value is the content. */

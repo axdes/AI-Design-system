@@ -287,7 +287,7 @@
         "list",
         "table"
       ],
-      "because": "R8's density argument is about SCALE: with a handful of items, per-item actions and reading beat column density. Two live precedents: the DS ForReview queue (approve / request changes on each card) and airun's risk board. At cardinality many, R8 alone applies and cards fail again.",
+      "because": "R8's density argument is about SCALE: with a handful of items, per-item actions and reading beat column density. Two live precedents: the DS ForReview queue (approve / request changes on each card) and a real risk board. At cardinality many, R8 alone applies and cards fail again.",
       "good": "<Card tight> per item: eyebrow, title, meta, two small actions",
       "bad": "a three-row Table whose header chrome outweighs its rows"
     },

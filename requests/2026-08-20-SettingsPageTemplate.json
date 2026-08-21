@@ -3,7 +3,7 @@
   "level": "block",
   "date": "2026-08-20",
   "requestedBy": "agent (golden-screens G2)",
-  "need": "The settings archetype has no carrier: workshops built the cleanest settings screen in the portfolio by hand (SettingRow with label+explanation left / control right, write-only secret fields marked 'configured', five grouped sections), both ProfilePages hand-assemble a lighter version, and energy-cloud outside the monorepo needed a whole multi-section settings area. Every next product will need one, and today each starts from a blank div.",
+  "need": "The settings archetype has no carrier: another app built the cleanest settings screen in the portfolio by hand (SettingRow with label+explanation left / control right, write-only secret fields marked 'configured', five grouped sections), both ProfilePages hand-assemble a lighter version, and energy-cloud outside the monorepo needed a whole multi-section settings area. Every next product will need one, and today each starts from a blank div.",
   "consideredAlternatives": [
     {
       "ref": "blocks/ListPageTemplate",
@@ -15,16 +15,16 @@
     },
     {
       "ref": "compose per screen",
-      "whyNot": "The status quo: workshops did it correctly once as app-local SettingRow, both ProfilePages did it again worse, and the next app starts from zero."
+      "whyNot": "The status quo: another app did it correctly once as app-local SettingRow, both ProfilePages did it again worse, and the next app starts from zero."
     }
   ],
   "proposedApi": {
     "SettingsPageTemplate": "title, actions, children — a deliberately NARROW column (52rem knob, co-located) with the header inside it, because a title flush to the page edge above a centred column reads as two screens",
     "SettingsSection": "title, description, children — a Card whose head names the group; group by who a knob affects (Linear's lesson: me / workspace / admins)",
-    "SettingRow": "label, description, htmlFor, badge, children — name and what-it-actually-affects left, control right; the explanation is the point (workshops' proven contract). A destructive action is a plain row with a destructive Button, no red frame"
+    "SettingRow": "label, description, htmlFor, badge, children — name and what-it-actually-affects left, control right; the explanation is the point (another app' proven contract). A destructive action is a plain row with a destructive Button, no red frame"
   },
-  "sources": "workshops SettingsPage (live case, SettingRow contract), Shopify settings template (two-column bands, scannable left rail of labels), Linear settings architecture (grouping by scope)",
+  "sources": "another app SettingsPage (live case, SettingRow contract), Shopify settings template (two-column bands, scannable left rail of labels), Linear settings architecture (grouping by scope)",
   "status": "approved",
-  "decision": "Build as a block per the golden-screens G2 batch; workshops migrates onto it (and its app-local SettingRow retires) next time workshops is touched for feature work.",
+  "decision": "Build as a block per the golden-screens G2 batch; another app migrates onto it (and its app-local SettingRow retires) next time another app is touched for feature work.",
   "decidedBy": "owner (2026-08-20, approved the golden-screens batch)"
 }

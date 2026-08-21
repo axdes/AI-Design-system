@@ -57,8 +57,8 @@ paths and the check reads them as one screen:
 
 ```json
 "implementation": [
-  "apps/airun/src/layouts/TeamCatalogPage.tsx",
-  "apps/airun/src/components/catalog/TeamCatalogCard.tsx"
+  "apps/<app>/src/layouts/TeamCatalogPage.tsx",
+  "apps/<app>/src/components/catalog/TeamCatalogCard.tsx"
 ]
 ```
 
@@ -146,7 +146,7 @@ copy the primaryQuestion string, or the check calls it a different question.
 The decision fields judge a screen someone already invented. The layer above
 them stops screens being invented at all: for a new project,
 `models/<app>.json` (schema: [content-model.schema.json](content-model.schema.json),
-worked example: [models/admin-portal.json](models/admin-portal.json)) is written
+one per project, in `models/`) is written
 first, from the requirements — the objects the product is about, their core
 attributes, relations, and the role-verb-object action matrix. Screens are then
 DERIVED: each object gets its collection and/or detail, each action lands on a
@@ -191,7 +191,7 @@ actually written in: given, when, then, and the reason it matters.
     "when": "the screen reports it",
     "then": "the same messages are still listed as waiting, and the watermark has not moved",
     "why": "The one failure this product must not have: messages marked read that were never summarised anywhere.",
-    "provenBy": "apps/teams-digest/src/layouts/ChatDetailPage.test.tsx"
+    "provenBy": "apps/<app>/src/layouts/ChatDetailPage.test.tsx"
   }
 ]
 ```

@@ -4,7 +4,7 @@ import { createContext, SHARED_RULES } from './rules.mjs'
 
 /**
  * @param {object} opts
- * @param {string} opts.title    banner, e.g. "Salim lint-rules"
+ * @param {string} opts.title    banner, e.g. "<package> lint-rules"
  * @param {object} opts.context  config for createContext()
  * @param {Array<string | [string, Function]>} opts.rules
  *        The rule set IN THE ORDER it should be reported. A string names a shared

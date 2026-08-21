@@ -3,7 +3,7 @@
   "level": "organism",
   "date": "2026-08-20",
   "requestedBy": "agent (golden-screens G6)",
-  "need": "First-run is an archetype with only half a carrier: AdaptiveListPage handles the empty welcome, but the 'get set up' checklist — the thing that turns a first run into a working install — is rebuilt per product (airun's Readiness under the login, SetupNeeded on the cockpit; JuAI and VP-easy outside the monorepo). Shopify's setup guide is the proven shape: steps with state, a counted progress line, and a dismissal that never returns.",
+  "need": "First-run is an archetype with only half a carrier: AdaptiveListPage handles the empty welcome, but the 'get set up' checklist — the thing that turns a first run into a working install — is rebuilt per product (one app's Readiness under the login, SetupNeeded on the cockpit; JuAI and VP-easy outside the monorepo). Shopify's setup guide is the proven shape: steps with state, a counted progress line, and a dismissal that never returns.",
   "consideredAlternatives": [
     {
       "ref": "components/Stepper",
@@ -11,13 +11,13 @@
     },
     {
       "ref": "components/Alert per gap",
-      "whyNot": "That is airun's SetupNeeded — right for what STOPS work, wrong for guiding a first run: three alerts stacked read as three failures, not one path."
+      "whyNot": "That is one app's SetupNeeded — right for what STOPS work, wrong for guiding a first run: three alerts stacked read as three failures, not one path."
     }
   ],
   "proposedApi": {
     "SetupGuide": "title, steps [{id, label, detail, done, action}], onDismiss + dismissLabel — the dismiss renders only when every step is done, and a dismissed guide never returns (the caller persists it): first-run and steady-state are ONE page with a section that retires itself"
   },
-  "sources": "Shopify app-home setup guide (checklist card, counted progress, dismissed-forever), airun SetupNeeded (the render-nothing-when-healthy contract the notices slot inherits)",
+  "sources": "Shopify app-home setup guide (checklist card, counted progress, dismissed-forever), one app SetupNeeded (the render-nothing-when-healthy contract the notices slot inherits)",
   "status": "approved",
   "decision": "Build as an organism per the golden-screens G6 batch; pairs with OverviewPageTemplate's notices slot and AdaptiveListPage's welcome for the full onboarding story.",
   "decidedBy": "owner (2026-08-20, approved the golden-screens batch)"

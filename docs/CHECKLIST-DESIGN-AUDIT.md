@@ -293,8 +293,8 @@ hook and in formatting functions rather than in component folders:
 
 | Added | What the code showed | Named by |
 | --- | --- | --- |
-| `CopyButton` | `clipboard.writeText` in 6 places across 5 apps, plus salim's own `useCopy` hook | api-keys, 2FA, invite, press-media |
-| `Time` | four independent "N min ago" implementations (airun in three places, salim, teams-digest, and a DS lib nothing reaches) | notifications, feed, chat, comments, version-history |
+| `CopyButton` | `clipboard.writeText` in 6 places across 5 apps, plus one app's own `useCopy` hook | api-keys, 2FA, invite, press-media |
+| `Time` | four independent "N min ago" implementations (one app in three places, another, one app, and a DS lib nothing reaches) | notifications, feed, chat, comments, version-history |
 | `PasswordInput` | `type="password"` in 10 places, none of them revealable | login in all three lists, sign-up, settings |
 
 Five more were added where the checklists name them repeatedly and there was
@@ -303,7 +303,7 @@ nothing to build a screen out of: `CodeInput`, `Highlight`, `LoadMore`,
 
 Checked and NOT added, because nothing anywhere hand-rolls them and no checklist
 asks twice: a status dot, a settings-row shape, a "danger zone" section, a QR
-code, a Gantt view. A kanban board exists once (workshops, about 5,500 lines)
+code, a Gantt view. A kanban board exists once (one app, about 5,500 lines)
 and one use is not the promotion trigger.
 
 ### What it cost
@@ -318,6 +318,6 @@ match (registry 42k, total 50k).
 
 Everything unticked in Part B, plus the app-side migration this pass did not
 do: the six clipboard call sites, the four relative-time implementations and
-workshops' four password fields are still hand-written. Those live in four
-separate repositories with their own gates, and airun and salim only see any of
+One app's four password fields are still hand-written. Those live in four
+separate repositories with their own gates, and two of them only see any of
 this after `npm run vendor-ds`.

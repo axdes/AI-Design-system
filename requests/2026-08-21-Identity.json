@@ -3,7 +3,7 @@
   "level": "molecule",
   "date": "2026-08-21",
   "requestedBy": "user (content representation catalogue, B3)",
-  "need": "A person as one glance — avatar beside name and secondary line — was being hand-rolled per screen: the showcase's UsersPage built it this morning, admin-portal built it earlier (the deferred EntityCell candidate). Second use is the trigger, and the research rule is firm: a person is recognised face-beside-name, never face floating a row above it.",
+  "need": "A person as one glance — avatar beside name and secondary line — was being hand-rolled per screen: the showcase's UsersPage built it this morning, a second app built it earlier (the deferred EntityCell candidate). Second use is the trigger, and the research rule is firm: a person is recognised face-beside-name, never face floating a row above it.",
   "consideredAlternatives": [
     {
       "ref": "Avatar alone",
@@ -17,8 +17,8 @@
   "proposedApi": {
     "Identity": "name (ReactNode — a card passes its CardTitle), avatarName for the Avatar fallback when name is rich, secondary (role OR email, one), src, size sm | md | lg, vertical for the one profile-hero case (never lists)"
   },
-  "sources": "Fluent 2 Persona (fixed line order, sizes drop lines); showcase UsersPage + admin-portal users card",
+  "sources": "Fluent 2 Persona (fixed line order, sizes drop lines); showcase UsersPage + a second app users card",
   "status": "approved",
-  "decision": "Build; UsersPage adopts it in the same batch. admin-portal adopts at next feature touch (its repo).",
+  "decision": "Build; UsersPage adopts it in the same batch. A second app adopts at next feature touch (its repo).",
   "decidedBy": "owner (2026-08-21, approved the content catalogue plan)"
 }

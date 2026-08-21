@@ -3,7 +3,7 @@
   "level": "block",
   "date": "2026-08-20",
   "requestedBy": "agent (golden-screens G1)",
-  "need": "The overview/dashboard archetype has NO carrier: airun's cockpit hand-assembles PageHeader + a page-content div, Salim's prototype s10 and the ai-maturity dashboards are the same shape outside the monorepo, and every 'make me a dashboard' request lands on an archetype with no template and no example — the most common generation failure the golden-screens inventory found.",
+  "need": "The overview/dashboard archetype has NO carrier: one app's cockpit hand-assembles PageHeader + a page-content div, one app's prototype s10 and the ai-maturity dashboards are the same shape outside the monorepo, and every 'make me a dashboard' request lands on an archetype with no template and no example — the most common generation failure the golden-screens inventory found.",
   "consideredAlternatives": [
     {
       "ref": "blocks/ListPageTemplate",
@@ -22,7 +22,7 @@
     "OverviewPageTemplate": "title, actions (freshness lives here, never under the title), notices (conditional, nothing when healthy), band (time/context strip), prime (what is read first, full width), children (the widget grid), isEmpty + empty (no-data only: an overview has no filters)",
     "OverviewWidget": "title, action, footer (the 'view all' line via CardMeta), wide, children — one fixed anatomy so a grid of widgets reads as one surface"
   },
-  "sources": "airun CockpitPage (live case: notices/band/board zone order), Cloudscape service dashboard (three priority bands, one widget anatomy, ~seven visual elements), SAP Fiori OVP (typed card grid)",
+  "sources": "one app CockpitPage (live case: notices/band/board zone order), Cloudscape service dashboard (three priority bands, one widget anatomy, ~seven visual elements), SAP Fiori OVP (typed card grid)",
   "status": "approved",
   "decision": "Build as a block per the golden-screens G1 batch: the archetype gap is real, three live cases exist, and the API above is the consolidation of what the cockpit already proved.",
   "decidedBy": "owner (2026-08-20, approved the golden-screens batch)"

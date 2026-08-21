@@ -17,7 +17,7 @@
       "name": "CopyButton",
       "level": "molecule",
       "tier": 1,
-      "evidence": "clipboard.writeText in 6 places across 5 apps (teams-digest/ChatDetailPage, salim/lib/useCopy.ts, workshops Share + Deliverables + TranscriptReaderPage, transcript/SessionPage). salim already extracted its own hook.",
+      "evidence": "clipboard.writeText in 6 places across 5 apps (an app/ChatDetailPage, one app/lib/useCopy.ts, another app Share + Deliverables + one app's reader page, another app's session page). One app already extracted its own hook.",
       "checklists": ["web-app/api-keys", "web-app/2-factor-authentication", "mobile/invite", "website/press-media"],
       "proposedApi": {
         "value": "string (what goes on the clipboard)",
@@ -31,7 +31,7 @@
       "name": "Time",
       "level": "atom",
       "tier": 1,
-      "evidence": "Four independent implementations: airun computes min/h/d ago in cockpit/RiskBoard.tsx and 'pulled N days ago' in both catalog pages, salim has a localized one in ProfilePage, teams-digest has @lib/relativeTime, and the design system has src/lib/relativeTime.ts that no app reaches.",
+      "evidence": "Four independent implementations: one app computes min/h/d ago in cockpit/RiskBoard.tsx and 'pulled N days ago' in both catalog pages, one app has a localized one in ProfilePage, an app has @lib/relativeTime, and the design system has src/lib/relativeTime.ts that no app reaches.",
       "checklists": ["web-app/notifications", "web-app/feed", "web-app/chat", "web-app/comments", "web-app/version-history", "mobile/in-app-notifications"],
       "proposedApi": {
         "value": "string | number | Date",
@@ -43,7 +43,7 @@
       "name": "PasswordInput",
       "level": "molecule",
       "tier": 1,
-      "evidence": "type=\"password\" in 10 places (workshops LoginPage/SettingsPage/ProfilePage.EditModal, DS LoginPage/ProfilePage.EditModal/AuthTemplate example) and not one of them can be revealed.",
+      "evidence": "type=\"password\" in 10 places (another app LoginPage/SettingsPage/ProfilePage.EditModal, DS LoginPage/ProfilePage.EditModal/AuthTemplate example) and not one of them can be revealed.",
       "checklists": ["web-app/login", "website/login", "mobile/login", "website/sign-up", "web-app/settings"],
       "proposedApi": {
         "revealLabel": "string (aria-label for the toggle)",
@@ -69,7 +69,7 @@
       "name": "Highlight",
       "level": "atom",
       "tier": 2,
-      "evidence": "salim wraps matches in <mark> by hand in ActiveCallPage.helpers.tsx. One use, so not a promotion trigger on its own; the checklists name it twice.",
+      "evidence": "one app wraps matches in <mark> by hand in ActiveCallPage.helpers.tsx. One use, so not a promotion trigger on its own; the checklists name it twice.",
       "checklists": ["website/search", "web-app/search-results"],
       "proposedApi": { "text": "string", "query": "string", "caseSensitive": "boolean?" }
     },

@@ -3,7 +3,7 @@
   "level": "block",
   "date": "2026-08-20",
   "requestedBy": "agent (golden-screens G3)",
-  "need": "The wizard archetype was the taxonomy's only entry with no carrier at all: Salim's call wrap-up built a 4-step stepper flow by hand, Stellar (outside the monorepo) built a 15-step flow engine, RADAR built a modal wizard — three independent hand-rollings of one shape, and the DS had a Stepper atom with no page to live on.",
+  "need": "The wizard archetype was the taxonomy's only entry with no carrier at all: one app's call wrap-up built a 4-step stepper flow by hand, Stellar (outside the monorepo) built a 15-step flow engine, RADAR built a modal wizard — three independent hand-rollings of one shape, and the DS had a Stepper atom with no page to live on.",
   "consideredAlternatives": [
     {
       "ref": "components/Stepper alone",
@@ -19,11 +19,11 @@
     }
   ],
   "proposedApi": {
-    "WizardTemplate": "title, steps (3-5; a 2-step wizard is a form with extra clicks), current + onStep (parent-owned, URL-mirrored), backLabel/nextLabel (plain Next — steps are freely navigable, Salim's lesson), submitLabel naming the real event, onSubmit, busy. No Cancel on purpose: leaving belongs to the screen's chrome, and the live case never had one.",
+    "WizardTemplate": "title, steps (3-5; a 2-step wizard is a form with extra clicks), current + onStep (parent-owned, URL-mirrored), backLabel/nextLabel (plain Next — steps are freely navigable, one app's lesson), submitLabel naming the real event, onSubmit, busy. No Cancel on purpose: leaving belongs to the screen's chrome, and the live case never had one.",
     "WizardReview + WizardReviewRow": "the check-answers step (GOV.UK): label/value rows in flow order, Change links that jump back to their step, accessible names carrying the field, empty optionals reading 'Not provided'"
   },
-  "sources": "Salim ActiveCallPage wrap-up (live case: free navigation, plain Next), Cloudscape multipage create (review mirrors flow order, bottom action row), GOV.UK check answers (round-trip edit contract)",
+  "sources": "one app ActiveCallPage wrap-up (live case: free navigation, plain Next), Cloudscape multipage create (review mirrors flow order, bottom action row), GOV.UK check answers (round-trip edit contract)",
   "status": "approved",
-  "decision": "Build as a block per the golden-screens G3 batch. The wizard archetype gains its carrier in the taxonomy. Salim's wrap-up stays as is — it is a live-tool hybrid inside its own repo, and its spec belongs to a future Salim spec-corpus pass, not to this block's landing.",
+  "decision": "Build as a block per the golden-screens G3 batch. The wizard archetype gains its carrier in the taxonomy. One app's wrap-up stays as is — it is a live-tool hybrid inside its own repo, and its spec belongs to a future one app spec-corpus pass, not to this block's landing.",
   "decidedBy": "owner (2026-08-20, approved the golden-screens batch)"
 }
