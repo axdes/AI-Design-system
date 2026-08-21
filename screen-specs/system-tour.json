@@ -1,0 +1,155 @@
+{
+  "$schema": "./schema.json",
+  "id": "system-tour",
+  "project": "design-system",
+  "title": "This system, in its own words",
+  "goal": "Make the case for the system out of the system: one screen that states what it is for, proves every claim with a number it reads from its own files, and demonstrates its central idea by letting the reader watch a rule choose a representation.",
+  "primaryQuestion": "What is this design system, and why should I let it decide?",
+  "audience": "public",
+  "archetype": "detail",
+  "template": "DetailPageTemplate",
+  "_why": "The subject is a single thing — the system — read start to finish, with its facts beside it: that is the detail archetype, and DetailPageTemplate gives exactly the shape (header, one reading column, an aside for the metadata). Not `hub`: a hub sends you somewhere, and this screen's job is to be read. Not `overview`: nothing here is monitored or acted on. The reading column is prose and demonstrations; the aside is the census, because a claim about size belongs next to the argument, not inside it.",
+  "data": "Every number and every quotation on this screen is READ, never typed: component-registry.json for the census, registry/_tokens.json for the token count, screen-specs/selection-rules.json for the rules quoted verbatim, scripts/gates.mjs for the checks. A screen that argues for a measured system cannot itself be a claim.",
+  "zones": [
+    {
+      "name": "thesis",
+      "task": "read",
+      "data": {
+        "item": "record",
+        "cardinality": "one"
+      },
+      "answers": "What is this design system, and why should I let it decide?",
+      "purpose": "Three sentences and no more: what the system is, who it is for, and the one promise it makes — that an agent asks it what exists instead of inventing. Body copy is plain markup on purpose, the way the system's own rules put it: a paragraph is not a component. What IS a component here is the pair of badges naming the two audiences, because an audience is a status the reader checks themselves against. No hero, no gradient, no slogan.",
+      "components": [
+        "SectionLabel",
+        "Badge"
+      ]
+    },
+    {
+      "name": "census",
+      "task": "read",
+      "data": {
+        "item": "record",
+        "cardinality": "one"
+      },
+      "answers": "How big is this thing, actually?",
+      "purpose": "The aside: the system's own size as five figures — components, blocks, tokens, agreed screens, gate steps — each read from the file that owns it at build time. Stat, not a sentence: a number the reader can check beats an adjective they have to trust. It sits in the aside rather than the reading column because it is metadata about the subject, which is what an aside is for.",
+      "components": [
+        "Stat",
+        "Descriptions"
+      ]
+    },
+    {
+      "name": "layers",
+      "task": "read",
+      "data": {
+        "item": "record",
+        "cardinality": "few"
+      },
+      "answers": "What is actually in it?",
+      "purpose": "The five layers as terms with definitions — content model, screen spec, selection rules, components, checks — because that is what they are: a vocabulary. Descriptions renders a term/definition pair natively, which is why this is not a row of cards: cards would say these are five things to choose between, and they are five layers that stack.",
+      "components": [
+        "Descriptions",
+        "SectionLabel"
+      ]
+    },
+    {
+      "name": "decision",
+      "task": "compare",
+      "data": {
+        "item": "record",
+        "cardinality": "few",
+        "fields": 4
+      },
+      "answers": "What does it mean that the system decides?",
+      "purpose": "The demonstration the whole screen exists for. One small collection, rendered the way a real rule chose and the way the same rule rejects, with the rule's own words quoted underneath — the reader flips between them and sees the argument rather than reading it. The rules are read from selection-rules.json, so this exhibit cannot drift away from the rules it is quoting. The exhibit declares its own data shape — six records, four comparable fields — so the spec checker runs the very rule the exhibit is about and agrees with it: the screen is held to the decision it demonstrates.",
+      "components": [
+        "SegmentedControl",
+        "Table",
+        "Card",
+        "Alert",
+        "Badge"
+      ]
+    },
+    {
+      "name": "discovery",
+      "task": "read",
+      "data": {
+        "item": "record",
+        "cardinality": "few"
+      },
+      "answers": "How do I ask it what exists?",
+      "purpose": "The three commands an agent runs before writing any UI, each with the question it answers. Kbd for the command because it is a thing you type, and a table because command-plus-answer is two comparable fields on a handful of rows.",
+      "components": [
+        "Table",
+        "Kbd"
+      ]
+    },
+    {
+      "name": "proof",
+      "task": "read",
+      "data": {
+        "item": "record",
+        "cardinality": "many"
+      },
+      "answers": "Why should I believe any of this?",
+      "purpose": "The gate, read from scripts/gates.mjs: every step and the sentence saying what it proves. The point is not the list, it is that the list is not written here — this screen would show a step the day one is added, and lose one the day it is removed.",
+      "components": [
+        "Table",
+        "Badge"
+      ]
+    },
+    {
+      "name": "onward",
+      "task": "navigate",
+      "data": {
+        "item": "record",
+        "cardinality": "few"
+      },
+      "answers": "Where do I look next?",
+      "purpose": "Three doors, in the order a newcomer needs them: the parts (playground), the arrangements (patterns), a screen built from both (the library). Interactive Card with the title carrying `card-link`, not LinkTile: LinkTile exists for a record with an overflow menu, and there is nothing to overflow here — a door has one action, which is to open.",
+      "components": [
+        "Card",
+        "Grid",
+        "Icon"
+      ]
+    }
+  ],
+  "states": {
+    "empty": "Unreachable: every zone reads a file that is part of the package, and a missing one fails the build rather than the screen. The deliberate absence of an EmptyState is recorded here so the validator and this screen agree out loud.",
+    "error": "No error state on purpose: nothing is fetched. A broken import is a build failure, and Alert appears on this screen only as the quoted reason under a demonstration, never as a runtime state.",
+    "loading": "None: the data is bundled, so there is no moment where it has not arrived and a Skeleton would be a lie."
+  },
+  "behaviours": [
+    {
+      "id": "numbers-are-read-not-typed",
+      "given": "the tour screen",
+      "when": "it renders the census",
+      "then": "the component count equals the number of components the registry actually carries",
+      "why": "A screen arguing that the system is measured cannot state its own size from memory: the day a component is added, this number moves by itself or the screen is lying.",
+      "provenBy": "apps/showcase/src/layouts/SystemTourPage.test.tsx"
+    },
+    {
+      "id": "the-rule-speaks-for-itself",
+      "given": "the decision exhibit",
+      "when": "a rule is on screen",
+      "then": "the reason shown is the `because` of that rule in selection-rules.json, word for word",
+      "why": "The exhibit's whole claim is that the system decided and can say why. Paraphrasing the reason here would put a second, drifting copy of the rules on a screen whose subject is that there is only one.",
+      "provenBy": "apps/showcase/src/layouts/SystemTourPage.test.tsx"
+    },
+    {
+      "id": "the-rejected-view-is-shown-as-rejected",
+      "given": "the decision exhibit with the rejected representation selected",
+      "when": "the reader looks at it",
+      "then": "it is labelled as the one the rule rejects, not offered as an equal alternative",
+      "why": "A switcher with two unlabelled options teaches that both are fine, which is the opposite of the point. The exhibit is an argument, and an argument names its loser.",
+      "provenBy": "apps/showcase/src/layouts/SystemTourPage.test.tsx"
+    }
+  ],
+  "acceptance": [
+    "A reader who knows nothing about this system can say, after one pass, what it is for and what it decides on their behalf.",
+    "Every number on the screen can be traced to a file in the package, and none of them is written in the screen's source.",
+    "The screen is built only from registry components and one page block; nothing on it is hand-rolled chrome."
+  ],
+  "implementation": "apps/showcase/src/layouts/SystemTourPage.tsx"
+}
