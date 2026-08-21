@@ -142,7 +142,107 @@ function measure({ slack, contentSelectors }) {
     }
   }
 
+  /* ── COMPOSITION, not conformance ─────────────────────────────────────────
+   * Everything above asks whether an element is CORRECT. These ask whether the
+   * page is worth looking at, which had no check at all: a screen using 66% of
+   * its column with a dead right rail passed 480 of them (2026-08-21, the tour
+   * screen the owner called ugly). Emptiness only exists in a real browser, so
+   * this is the only place it can be measured. */
+  const compositionOf = () => {
+    const contentEl = contentSelectors.map((s) => document.querySelector(s)).find(Boolean)
+    if (!contentEl) return null
+    const cr = contentEl.getBoundingClientRect()
+    /* "Painted" = something a reader can see: a surface, a border, or its own
+     * text. A wrapper that only groups children is not content, and counting it
+     * would make an empty page look full. */
+    const painted = []
+    for (const el of contentEl.querySelectorAll('*')) {
+      const r = el.getBoundingClientRect()
+      if (r.width < 8 || r.height < 8) continue
+      const cs = getComputedStyle(el)
+      const surface = cs.backgroundColor !== 'rgba(0, 0, 0, 0)' || cs.borderTopWidth !== '0px'
+      const ownText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 1)
+      if (!surface && !ownText) continue
+      painted.push({ top: r.top, bottom: r.bottom, width: r.width, left: r.left, right: r.right, tag: el.tagName.toLowerCase(), cls: String(el.className).slice(0, 24) })
+    }
+    /* The SPAN the content occupies, not the widest single element. A grid of
+     * three cards fills its row while no card is wide, and measuring the widest
+     * element called that screen 30% full. What matters is where the content
+     * starts and where it ends. */
+    let spanL = Infinity, spanR = 0
+    for (const b of painted) { spanL = Math.min(spanL, b.left); spanR = Math.max(spanR, b.right) }
+    const widest = painted.length ? spanR - spanL : 0
+    const widestEl = painted.reduce((a, b) => (b.width > (a?.width ?? 0) ? b : a), null)
+    /* The tallest run of pixels with nothing painted in it. Walking a frontier
+     * is enough: an element starting inside the previous one cannot open a gap. */
+    let frontier = cr.top, dead = 0, deadAt = 0
+    for (const b of [...painted].sort((a, b2) => a.top - b2.top)) {
+      if (b.top - frontier > dead) { dead = b.top - frontier; deadAt = Math.round(frontier) }
+      frontier = Math.max(frontier, b.bottom)
+    }
+    /* Consecutive paragraphs with nothing between them: a wall of prose is the
+     * shape of a page nobody composed. */
+    /* SIBLINGS, not document order. A transcript is a dozen paragraphs each in its
+     * own row with its own speaker and time — a repeated structure, which is the
+     * content doing its job. A wall is paragraphs stacked as siblings under one
+     * parent with nothing between them, which is a page that talks instead of
+     * showing. Same distinction the icon rule makes. */
+    let wall = 0
+    for (const parent of [contentEl, ...contentEl.querySelectorAll('*')]) {
+      let run = 0
+      for (const el of parent.children) {
+        if (el.tagName === 'P') { run += 1; wall = Math.max(wall, run) } else run = 0
+      }
+    }
+    /* The same glyph twice inside one row or card: the row saying one thing in
+     * two places (For Review shipped exactly that, 2026-08-21). */
+    const repeatedIcons = []
+    const ITEM = '.content-row, .card, .list-item'
+    /* LEAF items only. A card that contains four rows is not an item, it is a
+     * container, and counting glyphs across it reports four Approve buttons as a
+     * duplicate — which is the rule crying wolf on a correct list. */
+    for (const item of [...contentEl.querySelectorAll(ITEM)].filter((el) => !el.querySelector(ITEM))) {
+      /* Same glyph, DIFFERENT role. A checklist repeats one tick per row and that
+       * is the list working; the defect is one glyph appearing twice in two
+       * different places of the same item — a media tile and the eyebrow under
+       * it saying the identical thing. The two are told apart by where the icon
+       * sits: identical ancestor chains mean a repeated structure, different
+       * chains mean the item said it twice. */
+      const sig = (el) => {
+        const parts = []
+        for (let n = el.parentElement; n && n !== item; n = n.parentElement) parts.push(String(n.className).replace(/\s+/g, '.'))
+        return parts.join('>')
+      }
+      const seen = new Map(), dupe = new Set()
+      for (const s of item.querySelectorAll('svg')) {
+        const name = s.getAttribute('data-icon') ?? s.querySelector('path')?.getAttribute('d')?.slice(0, 24) ?? ''
+        if (!name) continue
+        const where = sig(s)
+        const prev = seen.get(name)
+        if (prev !== undefined && prev !== where) dupe.add(name)
+        else seen.set(name, where)
+      }
+      if (dupe.size) repeatedIcons.push(`${String(item.className).slice(0, 24)} “${(item.textContent ?? '').trim().replace(/\s+/g, ' ').slice(0, 40)}”`)
+    }
+    /* The template's aside, not the app's navigation: <aside> is also what the
+     * shell wraps its sidebar in, and measuring that reported a full-height rail
+     * on every screen. */
+    const aside = contentEl.querySelector('.detail-aside, [class*="-aside"]')
+    return {
+      columnWidth: Math.round(cr.width),
+      widestPainted: Math.round(widest),
+      widestTag: widestEl ? `${widestEl.tag}.${widestEl.cls}` : '-',
+      contentHeight: Math.round(contentEl.scrollHeight),
+      deadBand: Math.round(dead),
+      deadAt,
+      proseRun: wall,
+      repeatedIcons,
+      emptyState: !!contentEl.querySelector('.empty-state'),
+      asideHeight: aside ? Math.round(aside.getBoundingClientRect().height) : null,
+    }
+  }
   return {
+    composition: compositionOf(),
     docScrollWidth: doc.scrollWidth,
     docClientWidth: doc.clientWidth,
     worst,
@@ -287,7 +387,7 @@ let checks = 0
  * and this repository has already shipped one linter rule that silently checked
  * nothing for weeks. A rule at zero is a coverage gap, not a clean bill. */
 const ran = new Map()
-const RULES = ['axe', 'no-overflow', 'header-aligns', 'column-not-centred', 'actions-flush-end', 'card-text-aligns', 'one-page-heading', 'heading-order', 'grid-fills-row', 'controls-same-height', 'nav-reachable', 'nav-not-doubled', 'nav-one-leading-control', 'nav-trigger-hittable']
+const RULES = ['axe', 'no-overflow', 'header-aligns', 'column-not-centred', 'actions-flush-end', 'card-text-aligns', 'one-page-heading', 'heading-order', 'grid-fills-row', 'controls-same-height', 'nav-reachable', 'nav-not-doubled', 'nav-one-leading-control', 'nav-trigger-hittable', 'width-used', 'no-dead-band', 'prose-not-a-wall', 'no-repeated-icon']
 for (const r of RULES) ran.set(r, 0)
 
 console.log(`${BOLD}Page audit${RESET} ${DIM}${screens.length} screen(s) x ${widths.length} width(s)${RESET}\n`)
@@ -353,6 +453,49 @@ async function auditScreen({ name, path, theme = 'light', anonymous = false, has
       failures.push(`${at}  ${rule}: ${detail}`)
     }
     const pass = (rule) => { tally(rule) }
+
+    /* ── COMPOSITION ────────────────────────────────────────────────────────
+     * The four above this line ask whether an element is correct. These ask
+     * whether the page is worth looking at. Thresholds are set from what the
+     * screens MEASURED on 2026-08-21, not from a number that sounded right:
+     * the spread ran 30% to 95% of the column, dead bands to 279px, one prose
+     * run of four, and eleven rows carrying the same glyph twice. */
+    if (m.composition) {
+      const c = m.composition
+      if (process.env.REPORT_COMPOSITION) {
+        console.log(`  ~ ${at}  empty ${c.emptyState}  width ${Math.round((c.widestPainted / c.columnWidth) * 100)}%  dead ${c.deadBand}px  prose ${c.proseRun}  icons ${c.repeatedIcons.length}  aside ${c.asideHeight ?? '-'}/${c.contentHeight}`)
+      }
+      /* Width is only a question where there is width to waste: at phone and
+       * tablet everything is full-bleed by construction. */
+      /* A screen showing an empty state has no content to lay out, and its copy
+       * is deliberately a narrow centred column. */
+      if (width >= 1200 && !c.emptyState) {
+        const used = c.widestPainted / c.columnWidth
+        if (used < 0.65) {
+          fail('width-used', `content uses ${Math.round(used * 100)}% of its ${c.columnWidth}px column (widest: ${c.widestTag}) — the rest is not breathing room, it is unused screen`)
+        } else pass('width-used')
+      }
+      /* A quarter of the viewport with nothing painted in it is a hole, not
+       * rhythm. */
+      /* An EmptyState is a centred block by design: the gap above it is the
+       * pattern, not a hole. Every other screen owes its vertical space. */
+      if (!c.emptyState && c.deadBand > height * 0.25) {
+        fail('no-dead-band', `${c.deadBand}px of nothing at y=${c.deadAt} (${Math.round((c.deadBand / height) * 100)}% of the viewport)`)
+      } else pass('no-dead-band')
+      /* Four paragraphs in a row is a document, not a screen. */
+      if (c.proseRun > 3) {
+        fail('prose-not-a-wall', `${c.proseRun} paragraphs in a row with nothing between them — show it instead of saying it`)
+      } else pass('prose-not-a-wall')
+      /* The same glyph twice inside one row: the row saying one thing twice. */
+      if (c.repeatedIcons.length) {
+        fail('no-repeated-icon', `${c.repeatedIcons.length} item(s) render the same icon twice (${c.repeatedIcons.slice(0, 3).join(', ')})`)
+      } else pass('no-repeated-icon')
+      /* An aside is metadata beside the content. Shorter than a third of it and
+       * it is a card that left a dead column behind. */
+      if (c.asideHeight !== null && c.contentHeight > 0 && c.asideHeight / c.contentHeight < 0.33) {
+        fail('width-used', `the aside covers ${Math.round((c.asideHeight / c.contentHeight) * 100)}% of the content height — that is a dead column, not a sidebar`)
+      }
+    }
 
     // 1. Nothing may stick out sideways.
     if (m.docScrollWidth > m.docClientWidth + SLACK) {
