@@ -1,12 +1,12 @@
 ---
-description: Create or change a component in packages/design-system. Use when the user says "add a component", "new component", "build a Toggle/Slider/Table", "change the Button props", "add a variant", or asks for UI that no registry component covers. Covers the full contract: registry check first, levels.json, surfaces.json, golden example, tests, gen-registry, gate.
+description: Create or change a component in the design system. Use when the user says "add a component", "new component", "build a Toggle/Slider/Table", "change the Button props", "add a variant", or asks for UI that no registry component covers. Covers the full contract: registry check first, levels.json, surfaces.json, golden example, tests, gen-registry, gate.
 allowed-tools: Read, Grep, Glob, Edit, Write, Bash
 argument-hint: [component name or the need]
 ---
 
 # Adding or changing a design-system component
 
-The design system is `packages/design-system`. Every path here is relative to it.
+Every path here is relative to the design-system package root — `packages/design-system` in the monorepo, the repository root in the published copy.
 
 ## Before writing anything: does it already exist?
 

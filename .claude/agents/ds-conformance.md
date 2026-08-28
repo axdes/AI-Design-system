@@ -11,12 +11,12 @@ still re-implements something the system already provides.
 
 ## Ground truth, read it first
 
-- `packages/design-system/component-registry.json` — every component and block,
+- `component-registry.json` — every component and block,
   their real props and the allowed values of every variant. If a prop or a value is
   not there, it does not exist.
-- `packages/design-system/AGENTS.md` — the contract, including the "Reusable
+- `AGENTS.md` — the contract, including the "Reusable
   primitives" table that maps a need to the component that covers it.
-- `packages/design-system/src/components/levels.json` and `surfaces.json`.
+- `src/components/levels.json` and `surfaces.json`.
 
 Never assume an API. Grep the component source before claiming a prop exists.
 

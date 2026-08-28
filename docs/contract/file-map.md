@@ -1,6 +1,6 @@
 # Where everything lives
 
-*Reference for `packages/design-system/AGENTS.md`. The contract stays short enough to read
+*Reference for `AGENTS.md`. The contract stays short enough to read
 in full on every task; this is what it points at when a task needs it.*
 
 ## File map

@@ -7,10 +7,10 @@ argument-hint: [failing step, optional]
 # The gate, and what each failure actually means
 
 ```bash
-cd packages/design-system && npm run check
+npm run check   # from this package root; in the monorepo, `cd packages/design-system` first
 ```
 
-The steps, in order, live in `packages/design-system/scripts/gates.mjs` — one
+The steps, in order, live in `scripts/gates.mjs` — one
 list, from which both `check` and `check:ci` are derived. Print it rather than
 remembering it:
 
@@ -24,7 +24,7 @@ npm run check -- --serial           # one stream of output, for reading live
 The steps run in four lanes at once, so the output arrives per step as it
 finishes rather than live; a failure prints its whole output.
 
-Node is not on PATH in a non-interactive shell here: `. packages/design-system/scripts/node-path.sh` first.
+Node is not on PATH in a non-interactive shell here: `. scripts/node-path.sh` first.
 
 ## Failure playbook
 

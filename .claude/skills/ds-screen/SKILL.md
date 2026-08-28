@@ -9,7 +9,7 @@ argument-hint: [screen name or the flow]
 ## New PROJECT? Content model before the first spec
 
 The first screen of a new app starts one step earlier: write
-`packages/design-system/screen-specs/models/<app>.json` (schema in
+`screen-specs/models/<app>.json` (schema in
 `screen-specs/content-model.schema.json`, `models/admin-portal.json` is the
 worked example). Objects with their core attributes, relations, and the
 role-verb-object action matrix — screens are then DERIVED from it: each object
@@ -26,7 +26,7 @@ retroactively without the user asking.
 
 A tweak to an existing screen does not need a spec. A new screen does.
 
-1. Write `packages/design-system/screen-specs/<id>.json` (format in that folder's README).
+1. Write `screen-specs/<id>.json` (format in that folder's README).
    It names the template, the zones, the components in each zone, what the screen
    does when it is empty or broken — and the decisions: `archetype`,
    `primaryQuestion`, per-zone `task` + `data`. When unsure which representation a
@@ -56,7 +56,7 @@ page width or re-implements a header is a finding, not a style choice.
 
 - Pick components from `component-registry.json`. Never invent a prop or a variant
   value: if it is not in the entry's `props[].values`, it does not exist.
-- Reach for the primitives table in `packages/design-system/AGENTS.md` before writing
+- Reach for the primitives table in `AGENTS.md` before writing
   any `<div>` that behaves like a control: there is already a Chip, a Badge, a Spinner,
   a Skeleton, an EmptyState, a Pagination, a Breadcrumb, a Descriptions, a DataGrid.
 - Announce a busy region ONCE (`aria-busy` or one `<Spinner>`), not per shimmer.

@@ -3,8 +3,12 @@
 Math-driven CSS + React component library for LLM-assisted development.
 Tune via `styles/settings.css`; never hardcode in components.
 
-This is `packages/design-system`; **every path below is relative to it**. The
-products in `apps/*` consume it through `@ds` / `@blocks` / `@styles`.
+**Every path below is relative to this package root** — which is
+`packages/design-system` in the monorepo it is developed in, and the repository
+root in the published copy. Write paths that way and they resolve in both; the
+skills did not, and shipped instructions naming a folder that does not exist
+where a stranger reads them (2026-08-28). Products consume the package through
+`@ds` / `@blocks` / `@styles`.
 
 ## MUST: Discovery first — ask the index, read it only when you must
 

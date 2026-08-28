@@ -18,10 +18,46 @@ const ROOT = fileURLToPath(new URL('../../..', import.meta.url)).replace(/\/$/, 
 const SKILLS = `${ROOT}/.claude/skills`
 const AGENTS = `${ROOT}/.claude/agents`
 
+/* THE PACKAGE'S OWN skills, agents and contract travel to the published repo,
+ * where this package IS the repository root. A path written `design-system/x`
+ * resolves here and points at nothing there, and the reader who hits it is a
+ * stranger following instructions on their first day. AGENTS.md states the rule
+ * — every path is relative to the package root — and nothing enforced it: eleven
+ * such paths shipped in the skills and the agent (2026-08-28).
+ *
+ * This runs BEFORE the standalone exit, because it is the standalone case it is
+ * about. */
+const PKG = `${ROOT}/packages/design-system`
+const pkgRoot = existsSync(PKG) ? PKG : ROOT
+const stale = []
+for (const dir of [`${pkgRoot}/.claude`, `${pkgRoot}/docs/contract`]) {
+  if (!existsSync(dir)) continue
+  const walk = (d) => {
+    for (const name of readdirSync(d)) {
+      const f = `${d}/${name}`
+      if (statSync(f).isDirectory()) { walk(f); continue }
+      if (!name.endsWith('.md')) continue
+      readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+        /* A mention that EXPLAINS the two layouts names them both; one that
+           instructs names only the monorepo and breaks in the other. */
+        if (!/packages\/design-system\//.test(line)) return
+        if (/monorepo|published|repository root/i.test(line)) return
+        stale.push(`${f.replace(ROOT + '/', '')}:${i + 1}  path is monorepo-only — write it relative to the package root, or name both layouts`)
+      })
+    }
+  }
+  walk(dir)
+}
+if (stale.length) {
+  console.error(`\x1b[31m✗ ${stale.length} path(s) that resolve here and nowhere else:\x1b[0m`)
+  for (const s of stale) console.error(`    ${s}`)
+  process.exit(1)
+}
+
 /* Standalone clone (the published design-system repo): no monorepo above it,
  * so there are no monorepo skills, agents or app AGENTS.md files to check. */
 if (!existsSync(`${ROOT}/apps`)) {
-  console.log('check-skills: no monorepo around this checkout (standalone) — nothing to check.')
+  console.log('check-skills: the package\'s own skills and contract check out; no monorepo around this checkout.')
   process.exit(0)
 }
 
