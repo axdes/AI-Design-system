@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "truncate",
+  "type": "registry:ui",
+  "title": "Truncate",
+  "description": "A value that does not fit, cut with an ellipsis, with the whole of it in a tooltip. The tooltip appears only when the text is ACTUALLY clipped, so a column of short values has no hover behaviour at all. A table gets one of three answers to a long value: wrap it (and lose the scan), widen the row (and lose the page), or this. Never use it on a column header: a header nobody can read is a column nob",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Truncate/Truncate.css",
+      "content": "/* One line, cut with an ellipsis. `min-inline-size: 0` is what lets it shrink\n * inside a flex or grid parent, which is where a truncation silently stops\n * working. */\n.truncate {\n  display: block;\n  min-inline-size: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n/* Two lines: the one description column a table is allowed. The line clamp\n * needs a block container, so white-space goes back to normal. */\n.truncate[data-lines=\"2\"] {\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 2;\n  line-clamp: 2;\n  white-space: normal;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Truncate/Truncate.css"
+    },
+    {
+      "path": "src/components/Truncate/Truncate.tsx",
+      "content": "import './Truncate.css'\nimport { useEffect, useRef, useState } from 'react'\nimport { cn } from '../lib/cn'\nimport { Tooltip } from '../Tooltip'\n\n/** Named rather than inline for the same reason `Heat` is on `<Td>`: the\n *  registry compares the CSS's data-* values against the prop union as strings,\n *  and an inline numeric union fails a comparison it should never have made. */\ntype Lines = 1 | 2\n\ntype Props = {\n  /** The whole value. What is shown is whatever fits; the tooltip carries the\n   *  rest, so the text has to be a string. */\n  children: string\n  /** One line (the default) or two. Two is for the one description column a\n   *  table is allowed; three is a paragraph, and a paragraph is not a cell. */\n  lines?: Lines\n  className?: string\n}\n\n/**\n * A value that does not fit, cut with an ellipsis, with the whole of it in a\n * tooltip. The tooltip appears only when the text is ACTUALLY clipped, so a\n * column of short values has no hover behaviour at all.\n *\n * A table gets one of three answers to a long value: wrap it (and lose the\n * scan), widen the row (and lose the page), or this. Never use it on a column\n * header: a header nobody can read is a column nobody can use.\n */\nexport function Truncate({ children, lines = 1, className }: Props) {\n  const ref = useRef<HTMLSpanElement>(null)\n  const [clipped, setClipped] = useState(false)\n\n  /* Measured, not guessed: whether a value is clipped depends on the column\n   * width, which depends on every other value in the column. Re-measured on\n   * resize, because a column that grows stops needing the tooltip. */\n  useEffect(() => {\n    const el = ref.current\n    if (!el) return\n    const measure = () => setClipped(el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1)\n    measure()\n    const observer = new ResizeObserver(measure)\n    observer.observe(el)\n    return () => observer.disconnect()\n  }, [children, lines])\n\n  return (\n    <Tooltip content={children} enabled={clipped}>\n      <span ref={ref} className={cn('truncate', className)} data-lines={lines}>{children}</span>\n    </Tooltip>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Truncate/Truncate.tsx"
+    },
+    {
+      "path": "src/components/Truncate/index.ts",
+      "content": "export { Truncate } from './Truncate'\n",
+      "type": "registry:ui",
+      "target": "@ui/Truncate/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Truncate.json"
+}

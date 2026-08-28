@@ -23,7 +23,12 @@ type Props = {
  *  code arrives as separated characters in an SMS or an authenticator, and
  *  because checking six characters you have typed into one field means counting
  *  them. Paste still fills the whole thing in one go, which is how most people
- *  actually enter it. */
+ *  actually enter it. 
+ *
+ * Copy: the label says where the code came from — "The 6-digit code we sent to
+ * ada@example.com" — because a reader who cannot find the message cannot
+ * type it.
+ */
 export function CodeInput({ length = 6, value, onChange, label, invalid, numeric = true, className }: Props) {
   const boxesRef = useRef<(HTMLInputElement | null)[]>([])
 

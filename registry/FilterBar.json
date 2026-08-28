@@ -12,22 +12,26 @@
     {
       "name": "children",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Filter dropdowns to show inline (desktop)."
     },
     {
       "name": "activeCount",
       "type": "number",
-      "required": true
+      "required": true,
+      "description": "Total active filter count across all filters — shows on mobile trigger."
     },
     {
       "name": "onClear",
       "type": "() => void",
-      "required": true
+      "required": true,
+      "description": "Clears every filter."
     },
     {
       "name": "collapsed",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Always the icon + slide-out panel, at every width — for a screen that keeps its filters beside the search in the header row, where a row of chips has no room. The panel is the drawer Modal, sliding in from the inline end. Selections read per row: give each FilterDropdown `showTags`."
     }
   ],
   "sourcePath": "src/components/FilterBar/FilterBar.tsx",
@@ -45,5 +49,5 @@
     "Modal",
     "Tooltip"
   ],
-  "example": "const [status, setStatus] = useState<Status[]>([])\n\n<FilterBar activeCount={status.length} onClear={() => setStatus([])}>\n  <FilterDropdown<Status>\n    label=\"Status\"\n    allLabel=\"All statuses\"\n    multi\n    options={[\n      { value: 'draft', label: 'Draft' },\n      { value: 'review', label: 'In review' },\n      { value: 'published', label: 'Published' },\n    ]}\n    value={status}\n    onChange={setStatus}\n  />\n</FilterBar>"
+  "example": "const [status, setStatus] = useState<Status[]>([])\n\n<FilterBar activeCount={status.length} onClear={() => setStatus([])}>\n  <FilterDropdown<Status>\n    label=\"Status\"\n    allLabel=\"All statuses\"\n    multiple\n    options={[\n      { value: 'draft', label: 'Draft' },\n      { value: 'review', label: 'In review' },\n      { value: 'published', label: 'Published' },\n    ]}\n    value={status}\n    onChange={setStatus}\n  />\n</FilterBar>"
 }

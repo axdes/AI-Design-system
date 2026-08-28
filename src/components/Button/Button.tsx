@@ -12,8 +12,11 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant
   size?: Size
   block?: boolean
-  /** Put the icon on the trailing side. Use for "add/create" actions; leave off
-   *  (icon leading) for plain/navigational buttons. */
+  /**
+   * @deprecated Inert. Every icon in a button trails the label from one line of
+   * CSS (`.btn > .icon { order: 1 }`, owner 2026-06-10), and nothing reads this.
+   * It survived the rule it belonged to. Do not pass it in new code.
+   */
   iconEnd?: boolean
   /** In-flight action: shows a spinner in place of the icon and blocks further
    *  clicks. The label stays so the button keeps its width. Set the accessible
@@ -26,8 +29,12 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 /**
  * The action control: `variant` sets its weight, `loading` swaps the icon for
- * a spinner and disables it, `iconEnd` trails the label on add and create
+ * a spinner and disables it (`iconEnd` is a deprecated no-op: icons always trail)
  * actions.
+ *
+ * Copy: the verb the reader is about to perform, with its object when the screen
+ * has more than one — "Send invoice", not "Submit", never "OK". The label
+ * is a promise about what happens next.
  */
 export function Button({
   variant, size, block, iconEnd, loading, loadingLabel = 'Loading', disabled, className, ref, children, ...rest

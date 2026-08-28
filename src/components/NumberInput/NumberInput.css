@@ -1,5 +1,12 @@
+/* A QUANTITY IS SHORT, SO THE CONTROL IS SHORT.
+ * `inline-flex` alone does not say that: as a flex item of `<Field>` — which is
+ * where the component's own doc string tells you to put it — `align-self:
+ * stretch` won, and a stepper for "1" was as wide as the form (owner,
+ * 2026-08-24). A stated width is definite, so stretching has nothing left to
+ * do, and the field keeps the measure its value actually needs. */
 .number-input {
   display: inline-flex;
+  inline-size: max-content;
   align-items: center;
   gap: var(--space-1);
   block-size: var(--control-height);
@@ -12,12 +19,21 @@
 .number-input[data-size="lg"] { block-size: var(--control-height-lg); }
 .number-input[data-size="sm"] .number-input-field { font-size: var(--font-sm); }
 .number-input[data-size="lg"] .number-input-field { font-size: var(--control-font-size-lg); }
-.number-input:focus-within { border-color: var(--ring); }
+.number-input:hover:not([data-disabled]) { border-color: var(--ring); }
+/* The ring, not a recoloured border. Every sibling field draws 2px on focus;
+ * this one drew 1px in a different colour, so the same keypress produced a
+ * four-times-fainter answer depending on which field you were in. */
+.number-input:focus-within {
+  border-color: var(--ring);
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.number-input[data-invalid]:focus-within { outline-color: var(--destructive); }
 .number-input[data-invalid] { border-color: var(--destructive); }
 /* --muted surface: drop the resting border; keep it on focus-within (the field's
  * only focus indicator) and on invalid. */
 .number-input[data-surface="muted"]:not([data-invalid]):not(:focus-within) { border-color: transparent; }
-.number-input[data-disabled] { opacity: 0.5; }
+.number-input[data-disabled] { opacity: 0.5; cursor: not-allowed; }
 
 .number-input-field {
   inline-size: 3.5rem;
@@ -30,7 +46,7 @@
   font-variant-numeric: tabular-nums;
 }
 .number-input-field:focus { outline: none; }
-/* Hide the native spin arrows; our -/+ buttons replace them. */
+/* Hide the native spin arrows; our minus/plus buttons replace them. */
 .number-input-field::-webkit-inner-spin-button,
 .number-input-field::-webkit-outer-spin-button { appearance: none; margin: 0; }
 .number-input-field { appearance: textfield; }

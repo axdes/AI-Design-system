@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cell-stack",
+  "type": "registry:ui",
+  "title": "CellStack",
+  "description": "Two facts in one cell, stacked: a title over its path, an invoice over its supplier, a product over its SKU. The one place a table row is allowed two lines, and only in ONE column of the table. `Identity` is this for a person (it brings the face). `MetaItem` is one piece of secondary information with its icon, under a title rather than beside it. Copy: the secondary line is the first line's contex",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/CellStack/CellStack.css",
+      "content": "/* Two lines, and a hard stop at two: the second line is quieter and smaller so\n * the column still scans as one value per row. */\n.cell-stack {\n  display: flex;\n  flex-direction: column;\n  gap: var(--space-2xs);\n  min-inline-size: 0;\n}\n\n.cell-stack-secondary {\n  font-size: var(--font-xs);\n  color: var(--muted-foreground);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/CellStack/CellStack.css"
+    },
+    {
+      "path": "src/components/CellStack/CellStack.tsx",
+      "content": "import './CellStack.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** The value the column is about. */\n  children: ReactNode\n  /** The line under it: the address, the path, the code, the owner. One line,\n   *  smaller and quieter, and never a second fact the column also sorts by. */\n  secondary?: ReactNode\n  className?: string\n}\n\n/**\n * Two facts in one cell, stacked: a title over its path, an invoice over its\n * supplier, a product over its SKU. The one place a table row is allowed two\n * lines, and only in ONE column of the table.\n *\n * `Identity` is this for a person (it brings the face). `MetaItem` is one piece\n * of secondary information with its icon, under a title rather than beside it.\n *\n * Copy: the secondary line is the first line's context, never a repeat of it: an\n * invoice over its supplier, a file over its folder.\n */\nexport function CellStack({ children, secondary, className }: Props) {\n  return (\n    <span className={cn('cell-stack', className)}>\n      <span className=\"cell-stack-value\">{children}</span>\n      {secondary === undefined ? null : <span className=\"cell-stack-secondary\">{secondary}</span>}\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/CellStack/CellStack.tsx"
+    },
+    {
+      "path": "src/components/CellStack/index.ts",
+      "content": "export { CellStack } from './CellStack'\n",
+      "type": "registry:ui",
+      "target": "@ui/CellStack/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/CellStack.json"
+}

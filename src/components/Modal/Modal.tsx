@@ -4,11 +4,42 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/cn'
 import { useLatest } from '../../lib/useLatest'
+import { Button } from '../Button'
 import { IconButton } from '../IconButton'
 import { Tooltip } from '../Tooltip'
 
 type Size = 'sm' | 'md' | 'lg'
 type Placement = 'center' | 'drawer'
+
+/**
+ * THE DECISION ROW. A dialog that asks for something ends in cancel and
+ * confirm, and this is where their order, their variants and their two
+ * different kinds of "not yet" are decided once.
+ *
+ * It exists because <FormModal> and <ConfirmDialog> were two blocks that each
+ * hand-built this row (2026-08-26). They carried no behaviour — the portal, the
+ * focus trap, ESC and the scroll lock were always Modal's — so they were the
+ * same four slots in the same order, twice, differing only in the values they
+ * passed. A modal is a surface with content in it, and a decision is one of the
+ * things content can be.
+ */
+type Actions = {
+  /** The commitment. */
+  onConfirm: () => void
+  confirmLabel?: ReactNode
+  cancelLabel?: ReactNode
+  /** `destructive` for anything that deletes or cannot be undone, so a delete
+   *  never looks like a save. */
+  tone?: 'primary' | 'destructive'
+  /**
+   * The action is IN FLIGHT: the confirm shows a spinner. Not the same as
+   * `confirmDisabled`, and the two used to share one `busy` prop across the two
+   * blocks — one disabled the button and the other spun it, for the same word.
+   */
+  busy?: boolean
+  /** Nothing to confirm YET: the form is empty or invalid. Greys the button. */
+  confirmDisabled?: boolean
+}
 
 type Props = {
   open: boolean
@@ -22,6 +53,14 @@ type Props = {
   dismissible?: boolean
   className?: string
   children: ReactNode
+  /**
+   * The decision this dialog asks for. Cancel is a ghost on the leading side,
+   * confirm on the trailing one — one order, decided here, so no caller
+   * re-decides it. Use `footer` instead for a foot that is not a decision.
+   */
+  actions?: Actions
+  /** Anything in the foot that is NOT a cancel/confirm pair. Ignored when
+   *  `actions` is given: a dialog has one foot. */
   footer?: ReactNode
 }
 
@@ -65,11 +104,22 @@ function releaseBodyLock() {
 }
 
 /**
- * Dialog in a portal: focus trap, ESC, body scroll lock and a footer for the
- * actions. `size` widens it, and sm is for a yes/no confirmation only.
+ * Dialog in a portal: focus trap, ESC, body scroll lock and a foot for the
+ * actions. `size` widens it, and `sm` is for a yes/no confirmation only — a
+ * dialog that collects anything needs `md` or wider.
+ *
+ * ONE dialog, any content. A confirmation is this with a sentence in it; a form
+ * is this with a <FormStack> of Fields in it. Both used to be blocks of their
+ * own and neither carried behaviour, so both are now `actions` plus children.
+ *
+ * Copy: the title is the question or the job, not the widget — "Delete this
+ * recording?", not "Confirmation". The confirm button repeats the verb
+ * from the title, so a reader who skipped the sentence still knows what
+ * the button does.
  */
 export function Modal({
-  open, onClose, title, size = 'md', placement = 'center', dismissible = true, className, children, footer,
+  open, onClose, title, size = 'md', placement = 'center', dismissible = true, className, children,
+  actions, footer,
 }: Props) {
   const { t } = useTranslation()
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -150,7 +200,7 @@ export function Modal({
          * moves focus inside itself and announces its title. */
         tabIndex={-1}
         aria-labelledby={title ? titleId : undefined}
-        className={cn('modal', className)}
+        className={cn('modal', className)} data-raised="popover"
         data-size={size}
         data-placement={placement}
       >
@@ -170,7 +220,25 @@ export function Modal({
           </header>
         )}
         <div className="modal-body">{children}</div>
-        {footer && <div className="modal-footer">{footer}</div>}
+        {/* One foot. `actions` is the decision row and wins, because a dialog
+            that asks a question and also carries a loose footer is asking two. */}
+        {actions ? (
+          <div className="modal-footer">
+            <Button variant="ghost" onClick={onClose}>
+              {actions.cancelLabel ?? t('modal.cancel')}
+            </Button>
+            <Button
+              variant={actions.tone ?? 'primary'}
+              onClick={actions.onConfirm}
+              loading={actions.busy}
+              disabled={actions.confirmDisabled}
+            >
+              {actions.confirmLabel ?? t('modal.confirm')}
+            </Button>
+          </div>
+        ) : (
+          footer && <div className="modal-footer">{footer}</div>
+        )}
       </div>
     </div>,
     document.body,

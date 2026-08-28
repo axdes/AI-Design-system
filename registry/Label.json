@@ -13,6 +13,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "md (default) = 15px; sm = 13px, matching small-button text.",
       "values": [
         "sm",
         "md"

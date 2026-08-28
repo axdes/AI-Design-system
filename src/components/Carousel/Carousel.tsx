@@ -28,7 +28,11 @@ type Props = {
  *  trackpad, shift-wheel and the arrow buttons all end up at the same snap point,
  *  and the whole thing still works with JavaScript busy. The buttons and the dots
  *  are the accessible half; scroll position is the source of truth for which
- *  slide is current, which is why the dots follow a swipe and not only a click. */
+ *  slide is current, which is why the dots follow a swipe and not only a click. 
+ *
+ * Copy: the accessible name says what is being scrolled through — "Customer
+ * stories", not "Carousel".
+ */
 export function Carousel({ items, label, autoPlay, className }: Props) {
   const { t } = useTranslation()
   const viewportRef = useRef<HTMLDivElement | null>(null)

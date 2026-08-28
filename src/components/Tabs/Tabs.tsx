@@ -27,6 +27,10 @@ type Props = {
 /**
  * One panel at a time behind a labelled list, with full ARIA and arrow keys.
  * SegmentedControl is the compact single choice with no panels.
+ *
+ * Copy: nouns, not verbs — a tab is a place, not an action. One or two words
+ * each, and parallel: "Overview, Findings, People", not "Overview, Show
+ * findings, The team".
  */
 export function Tabs({ value, onChange, appearance, className, children }: Props) {
   const baseId = useId()
@@ -39,7 +43,17 @@ export function Tabs({ value, onChange, appearance, className, children }: Props
   )
 }
 
-export function TabList({ children, label }: { children: ReactNode; label: string }) {
+export function TabList({
+  children,
+  label,
+  justify,
+}: {
+  children: ReactNode
+  label: string
+  /** Where the tabs sit on the row. Left by default, which is right on a page;
+   *  a card whose content is centred wants its tabs centred too (owner, 23.08). */
+  justify?: 'center' | 'end'
+}) {
   const ref = useRef<HTMLDivElement>(null)
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -58,7 +72,14 @@ export function TabList({ children, label }: { children: ReactNode; label: strin
 
   return (
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus -- tablist uses roving tabindex on its tabs; the container is not itself a focus target
-    <div ref={ref} className="tablist" role="tablist" aria-label={label} onKeyDown={onKeyDown}>
+    <div
+      ref={ref}
+      className="tablist"
+      role="tablist"
+      aria-label={label}
+      data-justify={justify}
+      onKeyDown={onKeyDown}
+    >
       {children}
     </div>
   )
@@ -85,13 +106,21 @@ export function Tab({ value, children }: { value: string; children: ReactNode })
 
 export function TabPanel({ value, children }: { value: string; children: ReactNode }) {
   const { value: active, baseId } = useTabsCtx()
-  if (value !== active) return null
+  const selected = value === active
+  /* Every panel stays in the layout and they share one grid cell, so the tab
+   * strip sits over the height of the TALLEST panel and the content below it
+   * does not jump when the reader switches (owner, 23.08). The inactive ones
+   * are `inert` and aria-hidden, so nothing in them is reachable by pointer,
+   * keyboard or screen reader — hidden, not merely invisible. */
   return (
     <div
       role="tabpanel"
       id={`${baseId}-panel-${value}`}
       aria-labelledby={`${baseId}-tab-${value}`}
       className="tabpanel"
+      data-selected={selected ? '' : undefined}
+      aria-hidden={selected ? undefined : true}
+      inert={!selected}
     >
       {children}
     </div>

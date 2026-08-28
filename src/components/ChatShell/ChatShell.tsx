@@ -28,7 +28,7 @@ export function ChatShell({ collapsed, panel, noSidebar, children }: Props) {
         <NavDrawerButton />
       </div>
       <div className="chat-shell-content">
-        <div className="chat-shell-body" data-with-panel={panel || undefined} data-no-sidebar={noSidebar || undefined}>
+        <div className="chat-shell-body" data-raised="card" data-with-panel={panel || undefined} data-no-sidebar={noSidebar || undefined}>
           {children}
         </div>
       </div>

@@ -1,3 +1,21 @@
+/* THE FIELD FRAME — one recipe, six wearers.
+ *
+ * `.input`, `.select-trigger`, `.datepicker-trigger`, `.number-input`,
+ * `.taginput` and `.search-input` each draw their own box, and they had drifted:
+ * NumberInput answered focus by recolouring its 1px border while every sibling
+ * drew a 2px ring, two of them had no hover at all, SearchInput hard-coded
+ * --radius-full past --control-radius, and only two turned the ring red when the
+ * value was invalid. In one form that reads as six controls from six systems.
+ *
+ * The recipe every one of them now keeps, in this order:
+ *   resting   1px solid var(--input) on var(--background), --control-radius
+ *   hover     border-color -> var(--ring)
+ *   focus     outline var(--ring-width) solid var(--ring), offset --ring-offset
+ *   invalid   border-color -> var(--destructive); the ring turns red too
+ *   muted     resting border dropped; invalid and focus still show
+ *   disabled  opacity 0.5, cursor not-allowed, pointer events KEPT so a
+ *             Tooltip can say why
+ * Change the recipe here and carry it to all six. */
 .input {
   display: block;
   width: 100%;

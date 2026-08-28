@@ -19,6 +19,9 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 /**
  * The chevron that opens and closes a row or a panel, with the rotation and
  * the aria-expanded wiring already done.
+ *
+ * Copy: the label names what opens, not the direction — "Show the transcript",
+ * not "Expand".
  */
 export function ExpandButton({ icon, label, withChevron, expanded, className, type = 'button', ref, ...rest }: Props) {
   return (

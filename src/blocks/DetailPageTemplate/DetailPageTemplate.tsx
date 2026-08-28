@@ -1,7 +1,7 @@
 import './DetailPageTemplate.css'
 import { useState, type ReactNode } from 'react'
 import { IconButton } from '../../components/IconButton'
-import { PageHeader } from '../../components/PageHeader'
+import { Page } from '../Page'
 import { SidePanel } from '../../components/SidePanel'
 import { Tooltip } from '../../components/Tooltip'
 
@@ -26,7 +26,21 @@ type Props = {
    * panel is context, and context the reader has finished with should not go on taking a fifth
    * of the page.
    */
-  aside?: { title: string; content: ReactNode; collapsible?: boolean; defaultCollapsed?: boolean }
+  /**
+   * The supporting pane. `hideBelow` drops it entirely under that width, for a
+   * pane that is a WIDE-SCREEN affordance and nothing else: a table of contents
+   * wrapped under the article on a phone is a jump list you reach after you have
+   * already scrolled past everything it points at, and the page audit calls that
+   * a dead column (handbook's skill page, 2026-08-26). The word and its two
+   * values are the system's own — `<Th hideBelow>` drops a column the same way.
+   */
+  aside?: {
+    title: string
+    content: ReactNode
+    collapsible?: boolean
+    defaultCollapsed?: boolean
+    hideBelow?: 'sm' | 'md'
+  }
   /**
    * Put each column on its own white card, fill the height, and let each one scroll on its own.
    *
@@ -44,17 +58,28 @@ type Props = {
  * column and an optional right SidePanel for metadata/related items. Structure
  * only; the caller fills the columns with DS components. A page-template block the
  * discovery picks for record/detail screens.
+ *
+ * Copy: the title is the record's own name, not its type — "Northwind Paper",
+ * not "Supplier". Nothing goes under it; what would have is content and
+ * belongs in the body.
  */
 export function DetailPageTemplate({ title, onBack, backLabel, actions, children, aside, panels }: Props) {
   const [asideCollapsed, setAsideCollapsed] = useState(aside?.defaultCollapsed ?? false)
   const collapsed = !!aside?.collapsible && asideCollapsed
 
   return (
-    <>
-      <PageHeader title={title} onBack={onBack} backLabel={backLabel} actions={actions} />
-      <div className="detail-page" data-has-aside={aside ? '' : undefined} data-panels={panels || undefined}>
-        <div className="detail-page-main">{children}</div>
-        {aside && (collapsed ? (
+    <Page
+      archetype="detail"
+      className="detail-page"
+      panels={panels}
+      /* Collapsed, the panel is a rail one control wide. <Page> takes that as a
+         WIDTH, so the block keeps the state and the page keeps the geometry. */
+      asideWidth={collapsed ? 'rail' : 'default'}
+      title={title}
+      onBack={onBack}
+      backLabel={backLabel}
+      actions={actions}
+      aside={aside && (collapsed ? (
           /* Collapsed: a rail the width of one control, and the control says what it opens. The
              panel is NOT removed from the page — a reader who folded it away still needs to see
              that there is something there, or the width just silently changed. */
@@ -73,6 +98,7 @@ export function DetailPageTemplate({ title, onBack, backLabel, actions, children
           <SidePanel
             title={aside.title}
             className="detail-page-aside"
+            hideBelow={aside.hideBelow}
             headerActions={aside.collapsible && (
               <Tooltip content="Collapse">
                 <IconButton
@@ -88,7 +114,8 @@ export function DetailPageTemplate({ title, onBack, backLabel, actions, children
             {aside.content}
           </SidePanel>
         ))}
-      </div>
-    </>
+    >
+      {children}
+    </Page>
   )
 }

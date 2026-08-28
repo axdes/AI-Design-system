@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "time",
+  "type": "registry:ui",
+  "title": "Time",
+  "description": "A timestamp said the way a reader says it, with the exact one underneath. The relative label is never the only copy of the fact: `dateTime` carries the machine-readable instant and `title` the full local date, so \"2 hours ago\" is hoverable and parseable rather than the only thing on the page.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Time/Time.css",
+      "content": "/* Inherits its type from whatever it sits in: a timestamp is metadata inside a\n * row, a card head or a message, never a size of its own. The dotted underline\n * is the only affordance it needs, and it only appears where a title tooltip\n * actually shows (pointer devices). */\n.time { color: inherit; font-variant-numeric: tabular-nums; }\n\n@media (hover: hover) {\n  .time[title] { text-decoration: underline dotted var(--border-strong); text-underline-offset: 0.2em; }\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Time/Time.css"
+    },
+    {
+      "path": "src/components/Time/Time.tsx",
+      "content": "import './Time.css'\nimport { useEffect, useState } from 'react'\nimport { cn } from '../lib/cn'\nimport { relativeLabel } from '../lib/relativeTime'\n\ntype Mode = 'auto' | 'relative' | 'absolute'\n\ntype Props = {\n  /** ISO string, epoch milliseconds, or a Date. */\n  value: string | number | Date\n  /** `auto` (default) reads relative under a week and absolute after, which is\n   *  what a notification list, a feed and a comment thread all want. */\n  mode?: Mode\n  /** BCP-47 tag. Omit to follow the browser. */\n  locale?: string\n  className?: string\n}\n\nconst WEEK = 7 * 24 * 60 * 60 * 1000\nconst HOUR = 60 * 60 * 1000\n\n/** A timestamp said the way a reader says it, with the exact one underneath.\n *\n *  The relative label is never the only copy of the fact: `dateTime` carries the\n *  machine-readable instant and `title` the full local date, so \"2 hours ago\" is\n *  hoverable and parseable rather than the only thing on the page. */\nexport function Time({ value, mode = 'auto', locale, className }: Props) {\n  const ts = new Date(value).getTime()\n  /* Lazily, so render stays pure; the effect below keeps it honest afterwards. */\n  const [now, setNow] = useState(() => Date.now())\n\n  useEffect(() => {\n    if (mode === 'absolute' || Number.isNaN(ts)) return\n    let id = 0\n    const tick = () => {\n      setNow(Date.now())\n      /* A minute-old message needs a new label twice a minute; a three-day-old\n       * one does not. Reschedule from the age rather than polling everything on\n       * the page at the same rate. */\n      id = window.setTimeout(tick, Date.now() - ts < HOUR ? 30_000 : 24 * HOUR)\n    }\n    id = window.setTimeout(tick, 30_000)\n    return () => { window.clearTimeout(id) }\n  }, [mode, ts])\n\n  /* An unparseable date is a data bug, not a rendering one. Printing what was\n   * passed makes it visible; printing \"Invalid Date\" or nothing hides it. */\n  if (Number.isNaN(ts)) return <span className={cn('time', className)}>{String(value)}</span>\n\n  const iso = new Date(ts).toISOString()\n  const absolute = new Date(ts).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })\n  const relative = relativeLabel(ts, now, locale)\n  const useRelative = mode === 'relative' || (mode === 'auto' && Math.abs(now - ts) < WEEK)\n\n  return (\n    <time className={cn('time', className)} dateTime={iso} title={absolute}>\n      {useRelative ? relative : absolute}\n    </time>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Time/Time.tsx"
+    },
+    {
+      "path": "src/components/Time/index.ts",
+      "content": "export { Time } from './Time'\n",
+      "type": "registry:ui",
+      "target": "@ui/Time/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Time.json"
+}

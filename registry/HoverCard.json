@@ -12,17 +12,20 @@
     {
       "name": "children",
       "type": "ReactElement<ChildProps>",
-      "required": true
+      "required": true,
+      "description": "The element that reveals the card on hover/focus."
     },
     {
       "name": "content",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Rich content of the card."
     },
     {
       "name": "openDelay",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Delay before it opens (ms). Default 200."
     },
     {
       "name": "className",
@@ -36,5 +39,5 @@
     "Avatar",
     "Layout"
   ],
-  "example": "/* Rich card on hover OR focus. For a plain text hint use <Tooltip>; for a\n * click-opened panel use <Popover>. The trigger stays keyboard-reachable. */\n\n<HoverCard\n  content={\n    <Row gap={3}>\n      <Avatar name=\"Sarah Al-Mansouri\" />\n      <Stack gap={1}>\n        <strong>Sarah Al-Mansouri</strong>\n        <span>Brand manager, joined 2023</span>\n      </Stack>\n    </Row>\n  }\n>\n  <button type=\"button\">@sarah</button>\n</HoverCard>"
+  "example": "/* Rich card on hover OR focus. For a plain text hint use <Tooltip>; for a\n * click-opened panel use <Popover>. The trigger stays keyboard-reachable. */\n\n<HoverCard\n  content={\n    <Row gap={3}>\n      <Avatar name=\"Ada Meridian\" />\n      <Stack gap={1}>\n        <strong>Ada Meridian</strong>\n        <span>Brand manager, joined 2023</span>\n      </Stack>\n    </Row>\n  }\n>\n  <button type=\"button\">@sarah</button>\n</HoverCard>"
 }

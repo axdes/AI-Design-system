@@ -1,0 +1,22 @@
+/* The indent is the hierarchy: it is the only thing in the row that says how
+ * deep the record sits, so it is a step per level rather than a decoration. */
+.tree-table-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tree-table-name[data-level="1"] { padding-inline-start: var(--space-4); }
+.tree-table-name[data-level="2"] { padding-inline-start: var(--space-8); }
+.tree-table-name[data-level="3"] { padding-inline-start: var(--space-12); }
+
+/* A leaf keeps the chevron's room, so names in one branch start on one line. */
+.tree-table-leaf { inline-size: var(--icon-sm); }
+
+.tree-table-chevron { color: var(--muted-foreground); }
+
+/* The rows are the widget's stops, so the focused row has to be visible as a
+ * row rather than as a cell outline. */
+.tree-table tr:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(var(--ring-offset) * -1);
+}

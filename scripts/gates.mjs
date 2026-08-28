@@ -47,18 +47,25 @@ export const GATES = [
   { run: 'lint', why: 'TS/React correctness, hooks, a11y' , lane: 'main' },
   { run: 'lint:css', why: 'undefined tokens, !important, raw hex' , lane: 'main' },
   { run: 'lint:rules', why: 'the project rules nothing off-the-shelf knows' , lane: 'main' },
+  { run: 'check:copy', why: 'every key a component asks for has words in every locale — a missing one RENDERS as the key' , lane: 'main' },
   { run: 'lint:graph', why: 'the resolved import graph: layer direction and no cycles, a second opinion on architecture' , lane: 'main' },
   { run: 'typecheck:next', why: 'the same project through TypeScript 7, a second opinion' , lane: 'main' },
   { run: 'lint:dup', why: 'copy-paste across the package' , lane: 'main' },
   { run: 'lint:vocab', why: 'one word for one meaning across every component API' , lane: 'main' },
+  { run: 'lint:tokens', why: 'one word for one meaning across every token suffix — the same rule, one layer down', lane: 'main' },
   { run: 'lint:twins', why: 'the 74th component is not the 30th again' , lane: 'main' },
   { run: 'lint:behaviour', why: 'a component that DOES something has a test doing it' , lane: 'main' },
   { run: 'scout', why: 'what belongs here but sits in an app' , lane: 'main' },
   { run: 'check:harness', why: 'every app copy of the shared test harness is byte-identical to the canonical one' , lane: 'main' },
   { run: 'contrast', why: 'WCAG pairs in both themes, from the token files' , lane: 'main' },
+  { run: 'boundary', why: 'SC 1.4.11 — a control edge against every surface it can land on', lane: 'main' },
+  { run: 'states', why: 'one control, one set of answers: hover, press, focus, disabled, invalid', lane: 'main' },
   { run: 'context', why: 'what the must-read context costs every agent on every task' , lane: 'main' },
   { run: 'check:spec', why: 'screen specs match the system, and their behaviours name a test that claims them' , lane: 'main' },
+  { run: 'gen:data:check', why: 'public/data still says what the package says — the account an agent fetches may not drift', lane: 'main' },
+  { run: 'gen:shadcn:check', why: 'r/ still installs what src/ contains — the one path a stranger uses to get this' },
   { run: 'llms:check', why: 'llms.txt still says what the registry says — the non-MCP outlet may not drift' , lane: 'main' },
+  { run: 'check:claims', why: 'the contract may not say a number the system disagrees with — a rule can be true when written and stop being true with nothing near it changing' },
   { run: 'check:skills', why: 'skills, agents and the seven AGENTS.md files still name commands and paths that exist' , lane: 'main' },
   { run: 'check:lang', why: 'the package is published in English — no working-language text in what git carries' , lane: 'main' },
   { run: 'check:requests', why: 'an escalation nobody answered stops being a process' , lane: 'main' },
@@ -73,6 +80,7 @@ export const GATES = [
    * which is the sort of thing a sequential gate hides for years. */
   { run: 'test:cov', why: 'the suite, with a coverage floor that can only be raised', lane: 'eval', needs: 'eval' },
   { run: 'redteam', why: 'and they still bite when the code is broken the nine ways agents break it' , lane: 'eval' },
+  { run: 'mutate:check', why: 'and the TESTS still bite: a mutant that used to die may not start surviving', lane: 'eval' },
   /* build:gate, not build. `prebuild` regenerates the registry and the index, and
    * with the lanes running at once that rewrite raced `gen-registry:check` in the
    * main lane, which read a file being written underneath it and called the

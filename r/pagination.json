@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pagination",
+  "type": "registry:ui",
+  "title": "Pagination",
+  "description": "Pager for a known total: renders nothing for a single page and collapses long ranges with gaps. LoadMore is the one for a list with no total. Copy: the accessible name says WHICH collection is paged — \"Invoices pages\", not \"Pagination\". A screen with two paged lists is otherwise two identical controls.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Pagination/Pagination.css",
+      "content": ".pagination {\n  display: flex;\n  align-items: center;\n  gap: var(--space-1);\n}\n\n.pagination-pages {\n  display: flex;\n  align-items: center;\n  gap: var(--space-1);\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n\n.pagination-page {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-inline-size: var(--control-height-sm);\n  block-size: var(--control-height-sm);\n  padding-inline: var(--space-2);\n  border: none;\n  /* The same radius as every other control. It used to be --radius-md, which in a system whose\n   * --control-radius is --radius-full made the current page the one rounded-rectangle among\n   * pills; on a 32px square the difference reads as a different component. */\n  border-radius: var(--control-radius);\n  background: transparent;\n  color: var(--foreground);\n  font-family: inherit;\n  font-size: var(--font-sm);\n  font-variant-numeric: tabular-nums;\n  cursor: pointer;\n  transition: background var(--duration-fast);\n}\n/* Pressed: one stop past hover, the third answer every control now gives. */\n.pagination-page:active:not(:disabled) { background: var(--accent); }\n.pagination-page:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n.pagination-page:hover {\n  background: var(--accent-soft);\n}\n.pagination-page:focus-visible {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n.pagination-page[data-current] {\n  background: var(--primary);\n  color: var(--primary-foreground);\n  cursor: default;\n}\n\n.pagination-gap {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-inline-size: var(--control-height-sm);\n  color: var(--muted-foreground);\n}\n\n",
+      "type": "registry:ui",
+      "target": "@ui/Pagination/Pagination.css"
+    },
+    {
+      "path": "src/components/Pagination/Pagination.tsx",
+      "content": "import './Pagination.css'\nimport { cn } from '../lib/cn'\nimport { IconButton } from '../IconButton'\nimport { Tooltip } from '../Tooltip'\n\ntype Props = {\n  /** 1-based current page. */\n  page: number\n  /** Total number of pages. */\n  pageCount: number\n  onChange: (page: number) => void\n  /** How many numbered buttons to show around the current page. Default 1\n   *  (so: first … prev-cur-next … last). */\n  siblingCount?: number\n  /** Accessible names — the control is a labelled navigation landmark. */\n  label?: string\n  prevLabel?: string\n  nextLabel?: string\n  className?: string\n}\n\n/* Build the visible page list with gaps: always the first and last page, a\n * window of `siblingCount` either side of the current one, and an ellipsis\n * marker (rendered as a non-interactive gap) where pages are skipped. */\nfunction pages(page: number, pageCount: number, siblings: number): (number | 'gap')[] {\n  const out: (number | 'gap')[] = []\n  const push = (n: number | 'gap') => out.push(n)\n  const first = 1\n  const last = pageCount\n  const start = Math.max(first, page - siblings)\n  const end = Math.min(last, page + siblings)\n\n  push(first)\n  if (start > first + 1) push('gap')\n  for (let n = start; n <= end; n++) if (n !== first && n !== last) push(n)\n  if (end < last - 1) push('gap')\n  if (last !== first) push(last)\n  return out\n}\n\n/**\n * Pager for a known total: renders nothing for a single page and collapses\n * long ranges with gaps. LoadMore is the one for a list with no total.\n *\n * Copy: the accessible name says WHICH collection is paged — \"Invoices pages\",\n * not \"Pagination\". A screen with two paged lists is otherwise two\n * identical controls.\n */\nexport function Pagination({\n  page, pageCount, onChange, siblingCount = 1, label = 'Pagination', prevLabel = 'Previous page', nextLabel = 'Next page', className,\n}: Props) {\n  if (pageCount <= 1) return null\n  const items = pages(page, pageCount, siblingCount)\n\n  return (\n    <nav className={cn('pagination', className)} aria-label={label}>\n      <Tooltip content={prevLabel}>\n        <IconButton\n          icon=\"chevron_left\"\n          variant=\"quiet\"\n          aria-label={prevLabel}\n          disabled={page <= 1}\n          onClick={() => onChange(page - 1)}\n        />\n      </Tooltip>\n\n      <ul className=\"pagination-pages\">\n        {items.map((item, i) =>\n          item === 'gap' ? (\n            // eslint-disable-next-line @eslint-react/no-array-index-key -- gaps have no stable id; position is their identity\n            <li key={`gap-${i}`} className=\"pagination-gap\" aria-hidden=\"true\">…</li>\n          ) : (\n            <li key={item}>\n              <button\n                type=\"button\"\n                className=\"pagination-page\"\n                data-current={item === page || undefined}\n                aria-current={item === page ? 'page' : undefined}\n                aria-label={`Page ${item}`}\n                onClick={() => onChange(item)}\n              >\n                {item}\n              </button>\n            </li>\n          ),\n        )}\n      </ul>\n\n      <Tooltip content={nextLabel}>\n        <IconButton\n          icon=\"chevron_right\"\n          variant=\"quiet\"\n          aria-label={nextLabel}\n          disabled={page >= pageCount}\n          onClick={() => onChange(page + 1)}\n        />\n      </Tooltip>\n    </nav>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Pagination/Pagination.tsx"
+    },
+    {
+      "path": "src/components/Pagination/index.ts",
+      "content": "export { Pagination } from './Pagination'\n",
+      "type": "registry:ui",
+      "target": "@ui/Pagination/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Pagination.json"
+}

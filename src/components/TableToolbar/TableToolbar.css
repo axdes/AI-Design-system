@@ -1,0 +1,45 @@
+/* The row above a table. */
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+}
+
+
+.table-toolbar-title {
+  margin: 0;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--foreground);
+}
+
+.table-toolbar-count {
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The narrowing controls sit next to what they narrow; the actions take the
+ * trailing edge, which is where a table's own verbs live. */
+/* Wraps, and may shrink below its content: at 390 the search plus two filter
+ * chips ran two pixels past the card, which the page audit calls a spill and
+ * which is one. */
+.table-toolbar-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.table-toolbar-actions { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }
+/* The density switch is a view control, not an action: it sits with the
+ * narrowing controls, before the margin that pushes the verbs to the edge. */
+.table-toolbar-density { margin-inline-start: auto; }
+.table-toolbar-density + .table-toolbar-actions { margin-inline-start: var(--space-2); }
+
+/* In the batch state the bar IS the batch bar: no title, no filters, no room
+ * for an action that does not act on the selection. */
+.table-toolbar-batch { padding-block: 0; }

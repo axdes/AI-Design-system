@@ -1,0 +1,38 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "filter-bar",
+  "type": "registry:ui",
+  "title": "FilterBar",
+  "description": "The row of filters above a list: FilterDropdowns side by side on desktop, one icon that opens them in a Modal sheet on mobile.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/modal.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/FilterBar/FilterBar.css",
+      "content": "/* FilterBar — inline filter dropdowns on desktop; a single \"Filters\" button\n * that opens a Modal sheet on mobile. */\n.filter-bar {\n  display: flex;\n  align-items: center;\n  gap: var(--space-4);\n}\n\n/* The \"Filters\" icon trigger (mobile) — count badge pinned to the corner. */\n.filter-bar-trigger {\n  position: relative;\n  display: inline-flex;\n}\n.filter-bar-trigger .icon-button[data-active] { color: var(--primary-accent); }\n/* The collapsed trigger reads as a CONTROL in the family of the search pill\n * beside it — white surface at rest — and commits on hover: primary fill,\n * glyph in white. A bare glyph on the muted header looked like decoration.\n * The border exists in BOTH states and every property rides one transition:\n * a border that pops in before the fill fades reads as a glitch, and a border\n * that appears only on hover shifts the glyph by a pixel. */\n.filter-bar-trigger .icon-button {\n  background: var(--card);\n  border: 1px solid var(--border);\n  transition:\n    background var(--duration-fast),\n    border-color var(--duration-fast),\n    color var(--duration-fast);\n}\n.filter-bar-trigger .icon-button:hover {\n  background: var(--primary);\n  border-color: var(--primary);\n  color: var(--primary-foreground);\n}\n.filter-bar-count {\n  position: absolute;\n  inset-block-start: calc(-1 * var(--space-2xs));\n  inset-inline-end: calc(-1 * var(--space-2xs));\n  display: grid;\n  place-items: center;\n  min-width: var(--icon-sm);\n  height: var(--icon-sm);\n  padding: 0 var(--space-1);\n  border-radius: var(--radius-full);\n  background: var(--primary);\n  /* A ring in the card colour: invisible on the resting white trigger, and the\n   * thing that keeps the badge a separate object once the hovered trigger\n   * fills primary — primary-on-primary was a number melting into its button. */\n  box-shadow: 0 0 0 2px var(--card);\n  color: var(--primary-foreground);\n  font-size: var(--font-xs);\n  font-weight: var(--font-weight-semibold);\n  line-height: var(--leading-none);\n  pointer-events: none;\n}\n\n/* Inside the modal — each filter rendered as a full-width select-style box. */\n.filter-bar-sheet {\n  display: flex;\n  flex-direction: column;\n  gap: var(--space-3);\n}\n.filter-bar-sheet .filter-dropdown { display: block; }\n.filter-bar-sheet .filter-trigger {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  width: 100%;\n  height: var(--control-height);\n  padding-inline: var(--control-padding-x);\n  background: var(--background);\n  /* --border-strong stays visible on the modal's --popover surface in dark\n   * (regular --input == --popover there → border would vanish). */\n  border: 1px solid var(--border-strong);\n  border-radius: var(--control-radius);\n  color: var(--foreground);\n}\n.filter-bar-sheet .filter-trigger:hover { border-color: var(--ring); }\n.filter-bar-sheet .filter-trigger > .icon { margin-inline-start: auto; }\n\n",
+      "type": "registry:ui",
+      "target": "@ui/FilterBar/FilterBar.css"
+    },
+    {
+      "path": "src/components/FilterBar/FilterBar.tsx",
+      "content": "import './FilterBar.css'\nimport { useState, type ReactNode } from 'react'\nimport { useTranslation } from 'react-i18next'\nimport { useMediaQuery } from '../lib/useMediaQuery'\nimport { FilterBarContext } from '../lib/filterBarContext'\nimport { Button } from '../Button'\nimport { IconButton } from '../IconButton'\nimport { Tooltip } from '../Tooltip'\nimport { Modal } from '../Modal'\n\ntype Props = {\n  /** Filter dropdowns to show inline (desktop). */\n  children: ReactNode\n  /** Total active filter count across all filters — shows on mobile trigger. */\n  activeCount: number\n  /** Clears every filter. */\n  onClear: () => void\n  /** Always the icon + slide-out panel, at every width — for a screen that\n   *  keeps its filters beside the search in the header row, where a row of\n   *  chips has no room. The panel is the drawer Modal, sliding in from the\n   *  inline end. Selections read per row: give each FilterDropdown `showTags`. */\n  collapsed?: boolean\n}\n\n/* Below this width filters collapse into a \"Filters\" button + Modal sheet. */\nconst MOBILE_QUERY = '(max-width: 48rem)'\n\n/**\n * The row of filters above a list: FilterDropdowns side by side on desktop,\n * one icon that opens them in a Modal sheet on mobile.\n */\nexport function FilterBar({ children, activeCount, onClear, collapsed }: Props) {\n  const { t } = useTranslation()\n  const isMobile = useMediaQuery(MOBILE_QUERY)\n  const [open, setOpen] = useState(false)\n\n  if (!collapsed && !isMobile) {\n    return <div className=\"filter-bar\">{children}</div>\n  }\n\n  return (\n    <>\n      <span className=\"filter-bar-trigger\">\n        <Tooltip content={t('filter.filters', { defaultValue: 'Filters' })}>\n          <IconButton\n            icon=\"tune\"\n            size=\"md\"\n            aria-label={t('filter.filters', { defaultValue: 'Filters' })}\n            data-active={activeCount > 0 || undefined}\n            onClick={() => setOpen(true)}\n          />\n        </Tooltip>\n        {activeCount > 0 && <span className=\"filter-bar-count\">{activeCount}</span>}\n      </span>\n\n      {/* A drawer, not a centred dialog: the panel slides in from the inline\n        * end and the list stays visible behind it, so narrowing and watching\n        * the result happen together. */}\n      <Modal\n        open={open}\n        onClose={() => setOpen(false)}\n        title={t('filter.filters', { defaultValue: 'Filters' })}\n        placement=\"drawer\"\n        footer={\n          /* No \"Done\": every filter applies the moment it is picked, so a\n           * confirm button would only be a second Close. Clearing is the one\n           * action that belongs down here. */\n          <Button variant=\"secondary\" onClick={onClear} disabled={activeCount === 0}>\n            {t('filter.clearAll', { defaultValue: 'Clear all' })}\n          </Button>\n        }\n      >\n        <div className=\"filter-bar-sheet\">\n          <FilterBarContext value={{ inSheet: true }}>\n            {children}\n          </FilterBarContext>\n        </div>\n      </Modal>\n    </>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/FilterBar/FilterBar.tsx"
+    },
+    {
+      "path": "src/components/FilterBar/index.ts",
+      "content": "export { FilterBar } from './FilterBar'\n",
+      "type": "registry:ui",
+      "target": "@ui/FilterBar/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/FilterBar.json"
+}

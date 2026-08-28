@@ -28,7 +28,12 @@ type Props = {
 /** Rounded chat input bar: auto-growing textarea plus voice/send. A pill on one
  *  line, rounded-rect once it grows; the mic swaps to a brand-filled send as
  *  soon as there is text. Enter sends, Shift+Enter adds a newline. The consumer
- *  positions it. */
+ *  positions it. 
+ *
+ * Copy: the placeholder is an invitation, not an instruction manual: one short
+ * line naming what this assistant can be asked. It disappears the moment
+ * anyone types, so nothing a reader needs may live only there.
+ */
 export function ChatComposer({ value, onChange, onSend, streaming, onStop, placeholder, aiSpark, className }: Props) {
   const { t } = useTranslation()
   const [inner, setInner] = useState('')

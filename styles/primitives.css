@@ -10,6 +10,12 @@
   --space-2: calc(var(--grid-unit) * 2);
   --space-3: calc(var(--grid-unit) * 3);
   --space-4: calc(var(--grid-unit) * 4);
+  /* 20. Added 2026-08-26 on the owner's call, and the reason is a real gap: the
+     ladder doubled after 4 and jumped 16 → 24, so a distance a screen genuinely
+     wanted between those two could only be reached by stacking two tokens — and
+     a sum is not a decision. The page audit reads the scale rather than a copy
+     of it, so it accepted this step the moment it existed. */
+  --space-5: calc(var(--grid-unit) * 5);
   --space-6: calc(var(--grid-unit) * 6);
   --space-8: calc(var(--grid-unit) * 8);
   --space-12: calc(var(--grid-unit) * 12);
@@ -50,6 +56,14 @@
   --neutral-300: #dde2e9;
   --neutral-400: #bbbfc6;
   --neutral-500: #9ca0a7;
+  /* THE EDGE STOP. The one neutral that clears 3:1 against every surface this
+   * system paints, in both themes: white 3.48, page 3.20, accent 3.04, popover
+   * 3.76, card 4.20, dark page 4.54. Added because the top of this ramp is
+   * compressed — white to neutral-300 is 1.30:1 — so no existing stop could
+   * carry the boundary of a control (WCAG 1.4.11 wants 3:1). Everything that
+   * says "this is a control, and it ends here" resolves to this: --input,
+   * --switch-track-off, --control-edge. */
+  --neutral-550: #858a91;
   --neutral-600: #73777d;
   --neutral-700: #5f6369;  /* Primary (body text) */
   --neutral-800: #40444a;
@@ -122,6 +136,40 @@
   --violet-900: #4c1d95;
 
   /* Shadows */
+  /* ════ CHART SERIES ════════════════════════════════════════════════
+   * Six hues for CATEGORICAL data — one series, one hue, assigned in this fixed
+   * order and never cycled. Slot 1 is the brand indigo, so a single-series
+   * chart is the brand's own colour; the other five are picked to stay apart
+   * under protanopia and deuteranopia, not by eye.
+   *
+   * Measured, not chosen: the set passes the lightness band, the chroma floor,
+   * adjacent-pair CVD separation (worst 9.1 light / 8.4 dark, OKLab x100,
+   * target >= 8) and the normal-vision floor (19.6 light / 19.3 dark, floor 15)
+   * on white and on the dark card surface. Three light-mode hues sit under 3:1
+   * against white, which is why every chart in this system carries direct
+   * labels or a legend rather than colour alone.
+   *
+   * The `-dark` steps are the same six hues restepped for the dark surface —
+   * not an automatic lightening, and validated as their own set. */
+  /* Series 1 IS the brand, and now says so rather than repeating its hex. The
+     comment always claimed the relationship; the code did not, so a rebrand
+     moved the brand and left chart series 1 on the old indigo (audit,
+     2026-08-26). Same for its dark step. */
+  --series-1:      var(--brand-400);
+  --series-2:      #eb6834;  /* orange */
+  --series-3:      #1baf7a;  /* aqua */
+  --series-4:      #eda100;  /* yellow */
+  --series-5:      #e87ba4;  /* magenta */
+  --series-6:      #008300;  /* green */
+  --series-1-dark: var(--brand-300);
+  --series-2-dark: #d95926;
+  --series-3-dark: #199e70;
+  --series-4-dark: #c98500;
+  --series-5-dark: #d55181;
+  /* This green reads on both surfaces, so its dark step is the light one —
+     stated, not coincidentally retyped. */
+  --series-6-dark: var(--series-6);
+
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
   --shadow-md: 0 2px 16px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.14);

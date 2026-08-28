@@ -34,7 +34,10 @@ import { fileURLToPath } from 'node:url'
 import { createInterface } from 'node:readline'
 import { staticScore, DIMENSIONS } from '../evals/scorers.mjs'
 import { indexRow, renderRow } from '../scripts/lib/index-rows.mjs'
-import { makeRuleEngine, TASKS, ITEM_KINDS, CARDINALITIES } from '../scripts/lib/spec-rules.mjs'
+/* The tool SCHEMAS moved to ./tools.mjs and took four of these enums with them,
+ * which is why the import shrank: what is left is what this file still reasons
+ * with rather than what it advertises. */
+import { makeRuleEngine, makeCardEngine, makeFormEngine, makeLifecycleEngine, makeTableEngine, TASKS, COMMIT_MODELS, ROW_UNITS } from '../scripts/lib/spec-rules.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const PROTOCOL_VERSION = '2025-06-18'
@@ -43,6 +46,23 @@ const read = (rel) => JSON.parse(readFileSync(`${ROOT}/${rel}`, 'utf8'))
 const registry = read('component-registry.json')
 const rulesDoc = read('screen-specs/selection-rules.json')
 const engine = makeRuleEngine(rulesDoc)
+/* The layer under "cards": which family, chosen by what the card carries. */
+const cardDoc = read('screen-specs/card-rules.json')
+const cards = makeCardEngine(cardDoc, { collectionTasks: rulesDoc.collectionTasks })
+const CONTENT_KINDS = Object.keys(cardDoc.contentKinds ?? {})
+
+/* The layer on the other side of the screen: once the zone TAKES input rather
+ * than showing it, which kind of form, built from what, committing how. */
+const formDoc = read('screen-specs/form-rules.json')
+const forms = makeFormEngine(formDoc)
+
+/* And once the answer is a table, WHICH table: the same question one level
+ * down, answered from what a row is and what the reader does with it. */
+const tableDoc = read('screen-specs/table-rules.json')
+const tables = makeTableEngine(tableDoc)
+const lifeDoc = read('screen-specs/lifecycle-rules.json')
+const life = makeLifecycleEngine(lifeDoc)
+const FORM_KINDS = Object.keys(formDoc.formKinds ?? {})
 const all = { ...registry.components, ...registry.blocks }
 /* Built from the registry, not parsed out of component-index.md: that file is a
  * rendering for an agent that reads files, and this server answers the same
@@ -152,9 +172,20 @@ function renderVerify(files) {
   const named = {}
   for (const f of files) named[f.name ?? 'Screen.tsx'] = f.code ?? ''
 
+  /* Names imported from somewhere that is NOT this system. The exemption below
+     turns on the specifier, not on the mere presence of an import: `@ds/…`,
+     `@blocks/…` and a relative path inside the package are THIS system's
+     namespaces, and a name that is not in the registry there is invented — which
+     is the single failure class this whole harness exists for, and the one an
+     agent walks into by doing the most natural thing available (writing the
+     import for the component it just made up). Found 2026-08-26 by asking the
+     tool to verify `import { DataTable } from '@ds/DataTable'`, which is not a
+     component and was reported clean. */
+  const SYSTEM_SPECIFIER = /^(@ds|@blocks|@shell)\b/
   const imported = new Set()
   for (const src of Object.values(named)) {
-    for (const m of src.matchAll(/import\s+(?:type\s+)?(?:(\w+)\s*,\s*)?(?:\{([^}]*)\}|(\w+))\s+from\s+["'][^"']+["']/g)) {
+    for (const m of src.matchAll(/import\s+(?:type\s+)?(?:(\w+)\s*,\s*)?(?:\{([^}]*)\}|(\w+))\s+from\s+["']([^"']+)["']/g)) {
+      if (SYSTEM_SPECIFIER.test(m[4])) continue
       for (const n of [m[1], m[3], ...(m[2] ?? '').split(',')].filter(Boolean)) {
         const id = n.trim().split(/\s+as\s+/).pop()
         if (/^[A-Z]/.test(id)) imported.add(id)
@@ -184,7 +215,7 @@ function renderVerify(files) {
 
 /* The decision layer, served as an answer instead of a rejection: the same
  * rules check:spec enforces on specs, asked BEFORE anything is written. */
-function renderDecide({ task, data, components, archetype } = {}) {
+function renderDecide({ task, data, components, archetype, lifecycle } = {}) {
   const out = []
 
   if (archetype) {
@@ -197,11 +228,50 @@ function renderDecide({ task, data, components, archetype } = {}) {
       a.templates?.length ? `  carried by: ${a.templates.join(' or ')}` : '  carried by: no single block — template "custom" with a customReason',
     )
     if (a.forbidComponents?.length) out.push(`  forbids: ${a.forbidComponents.join(', ')}`)
+    const stages = lifeDoc.archetypeStages?.[archetype]
+    if (stages?.length) out.push(`  serves: ${stages.join(' + ')} (screen-specs/lifecycle-rules.json)`)
+  }
+
+  /* The LIFECYCLE answer: what the screen does to the resource, and the three
+   * decisions that hang off it. Asked for on its own, because "how hard should
+   * this delete be to confirm" is a question nobody thinks to phrase as a task
+   * over a data shape — and it is exactly the one that gets decided by taste. */
+  if (lifecycle) {
+    const stage = lifecycle.stage
+    if (stage && !life.stageIds.includes(stage)) return `No lifecycle stage "${stage}". The four: ${life.stageIds.join(' | ')}.`
+    if (out.length) out.push('')
+    const answer = (label, kinds, verdict, doc) => {
+      out.push(`${label}:`)
+      if (!verdict.matched.length) {
+        out.push('  no rule matches what you described — say more, or the rules file is missing a rule and should gain one.')
+        return
+      }
+      for (const r of verdict.matched) out.push(`  ${r.id} ${r.title}: ${r.choose.join(' or ')}`, `      ${r.because}`)
+      for (const h of verdict.forbidden) out.push(`  ${h.id} forbids ${h.forbid.join(', ')} — use ${h.instead}. ${h.because}`)
+      for (const id of verdict.permitted) {
+        const k = doc[id]
+        if (!k) continue
+        const built = k.status === 'planned'
+          ? `PLANNED — ${k.opensWhen}`
+          : `built from ${[...(k.components?.required ?? []), ...(k.components?.oneOf ?? [])].map((c) => `<${c}>`).join(' + ') || 'the parts you compose'}`
+        out.push(`  → ${id}: ${k.means}`, `      ${built}`)
+      }
+    }
+    if (stage === 'delete' || lifecycle.reversible !== undefined || lifecycle.blastRadius) {
+      answer('deleting', life.deleteIds, life.chooseDelete(lifecycle), lifeDoc.deleteKinds)
+    }
+    if (stage === 'update' || lifecycle.scope) {
+      answer('editing', life.editIds, life.chooseEdit(lifecycle), lifeDoc.editKinds)
+    }
+    if (lifecycle.sections !== undefined || lifecycle.acts) {
+      answer('which detail page', life.detailIds, life.chooseDetail(lifecycle), lifeDoc.detailVariants)
+    }
   }
 
   if (task) {
     if (!TASKS.includes(task)) return `No task "${task}". One verb per zone: ${TASKS.join(' | ')}.`
     const d = data ?? {}
+    const carries = d.carries
     const { matched, allowed, forbidden } = engine.decide(task, d)
     if (out.length) out.push('')
     const shape = [d.item, d.cardinality, d.fields !== undefined ? `${d.fields} fields` : null, d.editable ? 'editable' : null]
@@ -225,13 +295,109 @@ function renderDecide({ task, data, components, archetype } = {}) {
     }
     for (const h of forbidden) out.push(`  ruled out: ${h.forbid.join(', ')} — ${h.because} Use ${h.instead}.`)
 
+    /* Once the answer is cards, the next question is WHICH card. It is only
+     * answerable when the caller says what one card carries, so an answer
+     * without `carries` ends by asking for it rather than guessing. */
+    if (allowed.includes('cards') || carries) {
+      const kind = carries
+      if (!kind) {
+        out.push(
+          `  cards are on the table here — say what one card CARRIES to get the family:`,
+          `      ${CONTENT_KINDS.join(' | ')}`,
+        )
+      } else if (!CONTENT_KINDS.includes(kind)) {
+        out.push(`  no content kind "${kind}". One card carries one of: ${CONTENT_KINDS.join(' | ')}.`)
+      } else {
+        const v = cards.chooseFamily(task, kind, d)
+        out.push(`  carrying ${kind}: ${cardDoc.contentKinds[kind].means}`)
+        if (!v.families.length) {
+          out.push('    no card rule matches this task and content kind — card-rules.json should gain one.')
+        }
+        for (const f of v.families) {
+          const built = [...(f.components?.required ?? []), ...(f.components?.oneOf ? [f.components.oneOf.join(' or ')] : [])]
+          out.push(`    ${f.id} (${f.name}${f.status === 'planned' ? ', PLANNED — not built yet' : ''}): ${f.intent}`)
+          out.push(`        parts: ${f.anatomy.required.join(' + ')}${f.anatomy.optional?.length ? ` (+ ${f.anatomy.optional.join(', ')})` : ''}`)
+          if (built.length) out.push(`        built from: ${built.join(' + ')}`)
+          if (f.notWhen) out.push(`        not when: ${f.notWhen}`)
+        }
+        for (const h of v.forbidden) out.push(`    ruled out: ${h.forbid.join(', ')} — ${h.because} Use "${h.instead}".`)
+        out.push(`    every family owes three states: ${Object.entries(cardDoc.states).filter(([k]) => k !== '$comment').map(([k, t]) => `${k} — ${t}`).join(' ')}`)
+      }
+    }
+
+    /* Once the answer is a table or a grid, the next question is WHICH table.
+     * It is answerable from what the caller already said (the task, the data
+     * shape), so unlike cards it does not have to ask for anything first. */
+    if (allowed.includes('table') || allowed.includes('grid')) {
+      const shapeIn = {
+        task,
+        cardinality: d.cardinality,
+        fields: d.fields,
+        editable: d.editable,
+        rowUnit: d.rowUnit,
+        axes: d.axes,
+        cells: d.cells,
+        select: d.select,
+        nesting: d.nesting,
+        aggregate: d.aggregate,
+        rowDetail: d.rowDetail,
+      }
+      const v = tables.chooseKind(shapeIn)
+      if (!d.rowUnit) out.push(`  a table is on the table here — rows default to \`record\`; say data.rowUnit if they are not (${ROW_UNITS.join(' | ')}).`)
+      if (!v.matched.length) out.push('    no table rule matches this shape — table-rules.json should gain one.')
+      for (const id of v.permitted) {
+        const k = tables.kind(id)
+        if (!k) continue
+        out.push(`    ${id}${k.status === 'planned' ? ' (PLANNED — not built yet)' : ''}: ${k.means}`)
+        out.push(`        use when: ${k.useWhen}`)
+        out.push(`        not when: ${k.notWhen}`)
+        if (k.components?.required?.length) out.push(`        built from: ${k.components.required.join(' + ')}`)
+        for (const owed of k.owes ?? []) out.push(`        owes: ${owed}`)
+      }
+      for (const h of v.forbidden) out.push(`    ruled out: ${h.forbid.join(', ')} — ${h.because} Use "${h.instead}".`)
+    }
+
+    /* task=input is the other side of the screen: nothing is being shown, so
+     * the representation rules have nothing to say and the form rules have
+     * everything. */
+    if (task === 'input') {
+      const shapeOut = forms.chooseKind({
+        fields: d.fields, commit: d.commit, context: d.context, familiarity: d.familiarity, audience: d.audience,
+      })
+      if (!d.commit) {
+        out.push(`  say how it commits (data.commit: ${COMMIT_MODELS.join(' | ')}) — it is what most of these rules fire on.`)
+      }
+      if (!shapeOut.matched.length) {
+        out.push('  no form rule matches this shape — say more (data.fields, data.commit, data.context, data.familiarity),')
+        out.push('  or screen-specs/form-rules.json is missing a rule and should gain one.')
+      }
+      for (const r of shapeOut.matched) {
+        out.push(`  ${r.id}: use ${r.choose.join(' or ')}`)
+        out.push(`      ${r.because}`)
+      }
+      for (const h of shapeOut.forbidden) out.push(`  ruled out: ${h.forbid.join(', ')} — ${h.because} Use ${h.instead}.`)
+      for (const k of shapeOut.kinds) {
+        const id = FORM_KINDS.find((n) => formDoc.formKinds[n] === k)
+        const built = [...(k.components?.required ?? []), ...(k.components?.oneOf ? [k.components.oneOf.join(' or ')] : [])]
+        out.push(`    ${id}${k.status === 'planned' ? ' (PLANNED — not built yet)' : ''}: ${k.means}`)
+        out.push(`        use when: ${k.useWhen}`)
+        out.push(`        not when: ${k.notWhen}`)
+        if (built.length) out.push(`        built from: ${built.join(' + ')}`)
+        for (const owed of k.owes ?? []) out.push(`        owes: ${owed}`)
+      }
+    }
+
     if (components?.length) {
-      const zone = { name: 'zone', task, data: d, components }
+      const zone = { name: 'zone', task, form: d.form, table: d.table, data: d, components }
       const { problems, notes } = engine.checkZone(zone)
+      const f = task === 'input' ? forms.checkFormZone(zone) : { problems: [], notes: [] }
+      const t = tables.checkTableZone(zone, engine.detect(zone))
+      const allProblems = [...problems, ...f.problems, ...t.problems]
+      const allNotes = [...notes, ...f.notes, ...t.notes]
       out.push('', 'your plan:')
-      if (!problems.length) out.push(`  ✓ ${components.join(', ')} — passes these rules.`)
-      for (const p of problems) out.push(`  ✗ ${p}`)
-      for (const n of notes) out.push(`  ! ${n}`)
+      if (!allProblems.length) out.push(`  ✓ ${components.join(', ')} — passes these rules.`)
+      for (const p of allProblems) out.push(`  ✗ ${p}`)
+      for (const n of allNotes) out.push(`  ! ${n}`)
     }
   }
 
@@ -247,89 +413,7 @@ function renderDecide({ task, data, components, archetype } = {}) {
 
 /* ── the protocol ────────────────────────────────────────────────────── */
 
-const TOOLS = [
-  {
-    name: 'design_system_index',
-    description:
-      'Every component and block in the design system, one line each: what it is for, its atomic level, the surface it belongs on. Start here before writing any UI. Optionally filter by a search term, a level or a surface context.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        query: { type: 'string', description: 'Match against the name and the one-line purpose, e.g. "table", "date", "empty".' },
-        level: { type: 'string', enum: ['atom', 'molecule', 'organism', 'block'], description: 'Atomic level.' },
-        context: { type: 'string', enum: ['page', 'region', 'card'], description: 'Surface it may live on: page owns the viewport, region brings its own surface, card sits inside one.' },
-      },
-    },
-  },
-  {
-    name: 'component',
-    description:
-      'The full contract for named components: props with their types, the allowed values of every union, the data-* variants the CSS really styles, what it composes, and a golden example that is real compiled code. Ask for the two or three you are about to write, not for everything.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        names: { type: 'array', items: { type: 'string' }, description: 'Component names exactly as the index spells them.' },
-        dense: { type: 'boolean', description: 'Drop the examples and prop descriptions. Half the tokens, same contract.' },
-      },
-      required: ['names'],
-    },
-  },
-  {
-    name: 'tokens',
-    description:
-      'The token catalogue: semantic roles, spacing, type, radius, motion. A component uses these; a raw px or hex is a defect the linter rejects. Filter by name or by intent.',
-    inputSchema: {
-      type: 'object',
-      properties: { filter: { type: 'string', description: 'e.g. "space", "danger", "radius", "muted".' } },
-    },
-  },
-  {
-    name: 'decide',
-    description:
-      'Which representation fits this zone, BEFORE you write it: pass the user task (one verb) and the shape of the data, get what the selection rules choose — table, list, cards, grid or stats — with the reason and a right/wrong pair. Optionally pass the components you plan to use to have the plan checked, or an archetype name for when-to-use guidance. The same rules check:spec enforces on screen specs, so an answer here is a rejection avoided.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        task: { type: 'string', enum: TASKS, description: 'What the user DOES in the zone, one verb.' },
-        data: {
-          type: 'object',
-          description: 'The shape of what the zone shows.',
-          properties: {
-            item: { type: 'string', enum: ITEM_KINDS, description: 'What one item is: structured fields (record), text to read (prose), an image that carries the decision (visual), a number on a scale (metric).' },
-            cardinality: { type: 'string', enum: CARDINALITIES, description: 'How many items. unbounded forbids Table.' },
-            fields: { type: 'number', description: 'How many attributes per item matter to the task. 4+ comparable fields is what earns columns.' },
-            editable: { type: 'boolean', description: 'true only when editing values IS the task.' },
-          },
-        },
-        components: { type: 'array', items: { type: 'string' }, description: 'The components you plan for the zone — checked against the rules.' },
-        archetype: { type: 'string', description: 'A screen archetype (list, worklist, detail, hub, …) for use-when / not-when guidance.' },
-      },
-    },
-  },
-  {
-    name: 'verify',
-    description:
-      'Check code against the design system BEFORE anyone reviews it: invented components, props that do not exist, values outside a union, inline styles, raw px and hex. Answers in a tenth of a second and does not need the file to exist. Run it on what you just wrote.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        files: {
-          type: 'array',
-          description: 'The files that together make one screen or component.',
-          items: {
-            type: 'object',
-            properties: {
-              name: { type: 'string', description: 'File name, e.g. Screen.tsx or Screen.css.' },
-              code: { type: 'string', description: 'The file contents.' },
-            },
-            required: ['code'],
-          },
-        },
-      },
-      required: ['files'],
-    },
-  },
-]
+import { TOOLS } from './tools.mjs'
 
 function call(name, args = {}) {
   switch (name) {

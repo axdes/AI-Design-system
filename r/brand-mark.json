@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "brand-mark",
+  "type": "registry:ui",
+  "title": "BrandMark",
+  "description": "The brand mark in its cap: a filled circle the size of a rail item, with the mark inside it cross-fading to an arrow when the pointer or the keyboard arrives. It lives here rather than inside `<SideNav>` for the reason SideNav's own CSS gives: a component that capped whatever logo it was handed would turn a wordmark into white text in a coloured disc. Capping is the product's choice. It lives here",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/BrandMark/BrandMark.css",
+      "content": "/* One cell for both glyphs, so the circle never resizes and nothing beside it\n * moves when the pointer arrives. */\n.brand-mark {\n  display: grid;\n  place-items: center;\n  inline-size: var(--sidebar-rail-item-size);\n  block-size: var(--sidebar-rail-item-size);\n  border-radius: var(--radius-full);\n  background: var(--primary);\n  color: var(--primary-foreground);\n  transition: background var(--duration-fast);\n}\n.brand-mark > * {\n  grid-area: 1 / 1;\n  transition: opacity var(--duration-fast);\n}\n.brand-mark-swap { opacity: 0; }\n\n/* The swap is keyed on the mark itself and on the FOCUS of whatever button\n * wraps it. Reaching for the wrapper's class would tie this component to one\n * particular parent, which is the contract-reaching the linter refuses; the\n * `:focus-within` half is how the keyboard still gets the same answer. */\n.brand-mark:hover,\n.brand-mark:focus-within { background: var(--primary-hover); }\n.brand-mark:hover > :not(.brand-mark-swap),\n.brand-mark:focus-within > :not(.brand-mark-swap) { opacity: 0; }\n.brand-mark:hover .brand-mark-swap,\n.brand-mark:focus-within .brand-mark-swap { opacity: 1; }\n",
+      "type": "registry:ui",
+      "target": "@ui/BrandMark/BrandMark.css"
+    },
+    {
+      "path": "src/components/BrandMark/BrandMark.tsx",
+      "content": "import './BrandMark.css'\nimport { type ReactNode } from 'react'\nimport { Icon } from '../Icon'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** The mark itself, drawn in ink that reads on a brand fill (`<Logo tone=\"inverse\" />`). */\n  children: ReactNode\n  /**\n   * Which way the swap arrow points, and therefore what pressing it does.\n   * `collapse` for the expanded rail's lockup, `expand` for the collapsed\n   * rail's mark. The slot cannot ask the rail which state it is in, so it is\n   * told: the two slots are two different pictures of the same control.\n   */\n  direction?: 'collapse' | 'expand'\n  className?: string\n}\n\n/**\n * The brand mark in its cap: a filled circle the size of a rail item, with the\n * mark inside it cross-fading to an arrow when the pointer or the keyboard\n * arrives.\n *\n * It lives here rather than inside `<SideNav>` for the reason SideNav's own CSS\n * gives: a component that capped whatever logo it was handed would turn a\n * wordmark into white text in a coloured disc. Capping is the product's choice.\n * It lives here rather than in each product because two of them had already\n * written the same fifteen lines — the circle, the rail-item size, the brand\n * fill, the inverse ink — which is the second use that moves a thing into the\n * system.\n *\n * Pass it in BOTH slots. Expanded it caps the mark beside the wordmark and its\n * arrow points inward — press to collapse. Collapsed it is the whole of what\n * the rail shows, the biggest target on it, and its arrow points outward. The\n * circle never leaves, so the brand does not change shape when the rail does.\n */\nexport function BrandMark({ children, direction = 'collapse', className }: Props) {\n  return (\n    <span className={cn('brand-mark', className)}>\n      {children}\n      <Icon name={direction === 'expand' ? 'arrow_right_to_line' : 'arrow_left_to_line'} size=\"md\" className=\"brand-mark-swap\" />\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/BrandMark/BrandMark.tsx"
+    },
+    {
+      "path": "src/components/BrandMark/index.ts",
+      "content": "export { BrandMark } from './BrandMark'\n",
+      "type": "registry:ui",
+      "target": "@ui/BrandMark/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/BrandMark.json"
+}

@@ -1,7 +1,7 @@
 {
   "ref": "Tabs",
   "level": "molecule",
-  "description": "One panel at a time behind a labelled list, with full ARIA and arrow keys. SegmentedControl is the compact single choice with no panels.",
+  "description": "One panel at a time behind a labelled list, with full ARIA and arrow keys. SegmentedControl is the compact single choice with no panels. Copy: nouns, not verbs — a tab is a place, not an action. One or two words each, and parallel: \"Overview, Findings, People\", not \"Overview, Show findings, The team\".",
   "exports": [
     "Tabs",
     "TabList",
@@ -13,15 +13,58 @@
   "slots": [
     {
       "name": "TabList",
-      "line": 42
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "justify",
+          "type": "'center' | 'end'",
+          "required": false,
+          "description": "Where the tabs sit on the row. Left by default, which is right on a page; a card whose content is centred wants its tabs centred too (owner, 23.08).",
+          "values": [
+            "center",
+            "end"
+          ]
+        }
+      ]
     },
     {
       "name": "Tab",
-      "line": 67
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ]
     },
     {
       "name": "TabPanel",
-      "line": 86
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ]
     }
   ],
   "props": [
@@ -39,6 +82,7 @@
       "name": "appearance",
       "type": "'underline' | 'pills'",
       "required": false,
+      "description": "Default underline strip, or free-standing pills (filter-chip look).",
       "values": [
         "underline",
         "pills"
@@ -66,5 +110,8 @@
       ]
     }
   },
-  "example": "const [tab, setTab] = useState('overview')\n\n<Tabs value={tab} onChange={setTab}>\n  <TabList label=\"Document sections\">\n    <Tab value=\"overview\">Overview</Tab>\n    <Tab value=\"details\">Details</Tab>\n  </TabList>\n  <TabPanel value=\"overview\"><p>Overview panel.</p></TabPanel>\n  <TabPanel value=\"details\"><p>Details panel.</p></TabPanel>\n</Tabs>"
+  "uses": [
+    "Layout"
+  ],
+  "example": "const [tab, setTab] = useState('overview')\nconst [view, setView] = useState('week')\n\n<Stack gap={6}>\n  <Tabs value={tab} onChange={setTab}>\n    <TabList label=\"Document sections\">\n      <Tab value=\"overview\">Overview</Tab>\n      <Tab value=\"details\">Details</Tab>\n      <Tab value=\"history\">History</Tab>\n    </TabList>\n    <TabPanel value=\"overview\"><p>What the document is, and who owns it.</p></TabPanel>\n    <TabPanel value=\"details\"><p>Every field, in full.</p></TabPanel>\n    <TabPanel value=\"history\"><p>Who changed what, and when.</p></TabPanel>\n  </Tabs>\n  <Tabs value={view} onChange={setView} appearance=\"pills\">\n    <TabList label=\"Activity range\">\n      <Tab value=\"week\">This week</Tab>\n      <Tab value=\"month\">This month</Tab>\n    </TabList>\n    <TabPanel value=\"week\"><p>Seven days of activity.</p></TabPanel>\n    <TabPanel value=\"month\"><p>Thirty days of activity.</p></TabPanel>\n  </Tabs>\n</Stack>"
 }

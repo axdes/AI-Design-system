@@ -79,7 +79,7 @@ the published package ships only the System brand.
 - no token is declared twice in the same theme with two different values
 
 That last one is not theoretical. It found `--shadow-md` disagreeing between
-`:root` and the light-lock block, and `--nav-active-bg` disagreeing between the
+`:root` and the light-lock block, and `--nav-active` disagreeing between the
 two dark blocks, which meant a visitor whose OS was dark and who had chosen no
 theme saw a different navigation highlight from everyone else. Both were fixed on
 2026-08-13, and the check is why they will not come back.

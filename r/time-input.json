@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "time-input",
+  "type": "registry:ui",
+  "title": "TimeInput",
+  "description": "A time-of-day field: the native <input type=\"time\"> in the system's Input clothes, so the picker, the validation and the keyboard stay the browser's. The value is always 24-hour \"HH:MM\"; the browser shows it in the user's own clock convention. Wrap it in <Field> for its label, like <Input>.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/TimeInput/TimeInput.css",
+      "content": "/* The native widget, tamed the way .input[type='date'] already is: tabular\n * digits so the value does not wobble, the clock glyph quiet until used. */\n.timeinput {\n  font-variant-numeric: tabular-nums;\n}\n.timeinput::-webkit-calendar-picker-indicator {\n  opacity: 0.6;\n  cursor: pointer;\n}\n.timeinput:hover::-webkit-calendar-picker-indicator,\n.timeinput:focus-visible::-webkit-calendar-picker-indicator {\n  opacity: 1;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/TimeInput/TimeInput.css"
+    },
+    {
+      "path": "src/components/TimeInput/TimeInput.tsx",
+      "content": "import '../Input/Input.css'\nimport './TimeInput.css'\nimport type { ComponentPropsWithRef } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = Omit<ComponentPropsWithRef<'input'>, 'size' | 'type' | 'value' | 'onChange'> & {\n  /** 24-hour \"HH:MM\" (the native time value). Empty string = not set yet. */\n  value?: string\n  onChange?: (value: string) => void\n  invalid?: boolean\n  /** Which surface the field sits on; same contract as <Input>. */\n  surface?: 'base' | 'muted'\n  /** Control height: sm / md (default) / lg — matches the button/control scale. */\n  size?: 'sm' | 'md' | 'lg'\n}\n\n/* A time-of-day field: the native <input type=\"time\"> in the system's Input\n * clothes, so the picker, the validation and the keyboard stay the browser's.\n * The value is always 24-hour \"HH:MM\"; the browser shows it in the user's own\n * clock convention. Wrap it in <Field> for its label, like <Input>. */\nexport function TimeInput({ value, onChange, invalid, surface = 'base', size, className, ...rest }: Props) {\n  return (\n    <input\n      type=\"time\"\n      className={cn('input', 'timeinput', className)}\n      data-size={size}\n      data-surface={surface}\n      aria-invalid={invalid || undefined}\n      value={value}\n      onChange={onChange ? (e) => onChange(e.target.value) : undefined}\n      {...rest}\n    />\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/TimeInput/TimeInput.tsx"
+    },
+    {
+      "path": "src/components/TimeInput/index.ts",
+      "content": "export { TimeInput } from './TimeInput'\n",
+      "type": "registry:ui",
+      "target": "@ui/TimeInput/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/TimeInput.json"
+}

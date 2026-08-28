@@ -3,6 +3,7 @@ import { type ReactNode } from 'react'
 import { EmptyState } from '../../components/EmptyState'
 import { type IconName } from '../../components/Icon'
 import { PageHeader } from '../../components/PageHeader'
+import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 
 type Props = {
@@ -79,6 +80,10 @@ type Props = {
 /**
  * The LIST page skeleton, the most common product screen: a header (title +
  * actions), an optional toolbar, then either the content or an empty state.
+ *
+ * Copy: the title is the collection in the plural, in the reader's word for it —
+ * "Invoices", not "Invoice list". The empty state names what is missing
+ * and what would fill it.
  */
 export function ListPageTemplate({
   title,
@@ -95,28 +100,33 @@ export function ListPageTemplate({
   if (isEmpty && empty) {
     const filtered = empty.reason === 'no-matches'
     return (
-      <>
-        {/* Nothing here yet: the header bar stays, without its title, because an
+      <Page
+        archetype="list"
+        className={cn('list-page', className)}
+        /* `data-panels` stays on through the empty state: the shell keys its
+          * height release on the attribute, and dropping it the moment a filter
+          * matches nothing would bounce the whole layout under the user's
+          * pointer. */
+        panels={panels}
+        /* An empty state centred in the leftover height pushes the controls to
+          * the top of a tall blank page and reads as a toolbar belonging to
+          * nothing, so a filtered-empty screen that kept its toolbar starts at
+          * the top like any other. */
+        align={filtered && toolbar ? undefined : 'center'}
+        /* Nothing here yet: the header bar stays, without its title, because an
           * empty screen still belongs to a page but repeating the title above
           * "nothing yet" reads as an error. Nothing MATCHES: the full header
           * stays, since the search and filters that emptied the screen live in
-          * it and removing them would trap the user. */}
-        {filtered
+          * it and removing them would trap the user. */
+        header={filtered
           ? <PageHeader title={title} inline={inline} actions={actions} />
           : <PageHeader />}
-        {/* `data-panels` stays on through the empty state: the shell keys its
-          * height release on the attribute, and dropping it the moment a filter
-          * matches nothing would bounce the whole layout under the user's
-          * pointer. */}
-        <div className={cn('list-page', className)} data-panels={panels || undefined} data-center={filtered && toolbar ? undefined : ''}>
-          {/* And the TOOLBAR stays too, for exactly the same reason the header does.
-            * It did not, and a screen whose search lives in the toolbar rather than in the
-            * header slot lost its search box the moment a query matched nothing: the user
-            * typed one letter too many and the field they were typing into disappeared.
-            * `data-center` is dropped in that case — an empty state centred in the leftover
-            * height pushes the controls to the top of a tall blank page and reads as the
-            * toolbar belonging to nothing. */}
-          {filtered && toolbar && <div className="list-page-toolbar">{toolbar}</div>}
+        /* And the TOOLBAR stays too, for exactly the same reason the header does.
+          * It did not, and a screen whose search lives in the toolbar rather than in the
+          * header slot lost its search box the moment a query matched nothing: the user
+          * typed one letter too many and the field they were typing into disappeared. */
+        toolbar={filtered && toolbar ? toolbar : undefined}
+      >
           <EmptyState
             size="lg"
             surface="page"
@@ -131,18 +141,21 @@ export function ListPageTemplate({
             description={empty.description}
             action={empty.action}
           />
-        </div>
-      </>
+      </Page>
     )
   }
 
   return (
-    <>
-      <PageHeader title={title} inline={inline} actions={actions} />
-      <div className={cn('list-page', className)} data-panels={panels || undefined}>
-        {toolbar && <div className="list-page-toolbar">{toolbar}</div>}
-        <div className={cn('list-page-content', contentClassName)}>{children}</div>
-      </div>
-    </>
+    <Page
+      archetype="list"
+      className={cn('list-page', className)}
+      panels={panels}
+      title={title}
+      inline={inline}
+      actions={actions}
+      toolbar={toolbar}
+    >
+      <div className={cn('list-page-content', contentClassName)}>{children}</div>
+    </Page>
   )
 }

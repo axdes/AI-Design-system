@@ -1,7 +1,7 @@
 {
   "ref": "AdaptiveListPage",
   "level": "block",
-  "description": "A list page that changes shape with its contents: a centred welcome (hero title, the cards, one big CTA) while everything fits on one screen, and the standard header layout once it outgrows it. Five states, in this order because each applies only once the ones above are ruled out: could not load, still loading, nothing yet, the welcome, the grid.",
+  "description": "A list page that changes shape with its contents: a centred welcome (hero title, the cards, one big CTA) while everything fits on one screen, and the standard header layout once it outgrows it. Five states, in this order because each applies only once the ones above are ruled out: could not load, still loading, nothing yet, the welcome, the grid. Copy: the hero title welcomes and names the product; the subtitle says in one sentence what a first-time reader can do here — the one place a line under a title is allowed, because it IS the screen. The empty state names what is missing, not that something is.",
   "exports": [
     "AdaptiveListPage"
   ],
@@ -12,57 +12,74 @@
     {
       "name": "mark",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Brand mark above the hero title, welcome layout only. See ListCluster."
     },
     {
       "name": "title",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Hero title in the welcome layout, page title in the standard one. ReactNode: see ListCluster."
     },
     {
       "name": "subtitle",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Under the hero title, and only in the welcome layout. Optional: a heading that needs a sentence under it is usually the wrong heading, and requiring one produced screens that explained their own title back to the reader."
     },
     {
       "name": "actions",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Header action in the standard layout."
     },
     {
       "name": "inline",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Beside the title in the header row: the list's search."
     },
     {
       "name": "cta",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The large call to action under the cards in the welcome layout."
     },
     {
       "name": "count",
       "type": "number | null",
-      "required": true
+      "required": true,
+      "description": "How many items there are, or `null` while they load."
     },
     {
       "name": "empty",
       "type": "{ icon?: IconName title: string description?: string action?: ReactNode reason?: 'no-data' | 'no-matches' }",
-      "required": true
+      "required": true,
+      "description": "Shown when `count` is 0. `reason: 'no-matches'` means a filter emptied the list rather than there being nothing: the header keeps its title, its search and its filters, because those are what the user has to undo."
     },
     {
       "name": "error",
       "type": "{ icon?: IconName; title: string; description?: string; action?: ReactNode }",
-      "required": false
+      "required": false,
+      "description": "Shown instead of everything else when the list could not be loaded."
     },
     {
       "name": "notice",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "A banner above the list, kept in every state."
     },
     {
       "name": "children",
       "type": "(gridRef: Ref<HTMLDivElement>) => ReactNode",
-      "required": true
+      "required": true,
+      "description": "The grid. Attach the ref it hands you to the grid element."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false,
+      "description": "A class on the page, for a product that paints its own ground behind the welcome — transcript's animated wash is the case that asked for it. Every other page block already took one; this one did not, and a product moving onto it would have had to drop its background to fit (2026-08-26)."
     }
   ],
   "sourcePath": "src/blocks/AdaptiveListPage/AdaptiveListPage.tsx",

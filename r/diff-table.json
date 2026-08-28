@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "diff-table",
+  "type": "registry:ui",
+  "title": "DiffTable",
+  "description": "What changed, side by side: an audit trail, a review of an edit, a settings history. The row is a change rather than a record, which is why the two columns are the same field at two times instead of two fields. Colour marks the kind of change and never carries it alone: every row says added, removed or changed in words too. Copy: column headers name the two versions the reader is comparing — \"Befo",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/table.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/DiffTable/DiffTable.css",
+      "content": "/* The old value is struck through only where a value was really replaced: a\n * strike on an unchanged line reads as a deletion that did not happen. */\n.diff-table .diff-before { color: var(--muted-foreground); }\n\n/* The change word is the row's own label, not a badge: four of them in a\n * column of forty rows would be forty pills and no table. */\n.diff-kind { text-transform: capitalize; color: var(--muted-foreground); }\n",
+      "type": "registry:ui",
+      "target": "@ui/DiffTable/DiffTable.css"
+    },
+    {
+      "path": "src/components/DiffTable/DiffTable.tsx",
+      "content": "import './DiffTable.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\nimport { Table, TableScroll, THead, TBody, Tr, Th, Td } from '../Table'\n\nexport type DiffChange = {\n  /** What changed: the field, the setting, the line. */\n  field: ReactNode\n  before?: ReactNode\n  after?: ReactNode\n  /** Defaults to `changed`. `added` has no before, `removed` has no after. */\n  kind?: 'added' | 'removed' | 'changed'\n}\n\ntype Props = {\n  label: string\n  captionHidden?: boolean\n  changes: readonly DiffChange[]\n  /** Column headings, when \"Before\" and \"After\" are not the words this domain\n   *  uses (a review says Submitted and Approved). */\n  beforeHeader?: ReactNode\n  afterHeader?: ReactNode\n  /** The word for a side that does not exist: an added field had no before. */\n  noneLabel?: string\n  className?: string\n}\n\n/**\n * What changed, side by side: an audit trail, a review of an edit, a settings\n * history. The row is a change rather than a record, which is why the two\n * columns are the same field at two times instead of two fields.\n *\n * Colour marks the kind of change and never carries it alone: every row says\n * added, removed or changed in words too.\n *\n * Copy: column headers name the two versions the reader is comparing — \"Before\"\n * and \"After\", or the two dates — never \"Old\" and \"New\" when the reader\n * thinks in dates.\n */\nexport function DiffTable({\n  label, captionHidden, changes, beforeHeader = 'Before', afterHeader = 'After', noneLabel = 'None', className,\n}: Props) {\n  const tone = (kind: DiffChange['kind']) => {\n    if (kind === 'added') return 'success' as const\n    if (kind === 'removed') return 'danger' as const\n    return undefined\n  }\n\n  return (\n    <TableScroll label={label}>\n      <Table caption={label} captionHidden={captionHidden} className={cn('diff-table', className)}>\n        <THead>\n          <Tr>\n            <Th scope=\"col\">Field</Th>\n            <Th scope=\"col\">{beforeHeader}</Th>\n            <Th scope=\"col\">{afterHeader}</Th>\n            <Th scope=\"col\">Change</Th>\n          </Tr>\n        </THead>\n        <TBody>\n          {changes.map((c, i) => {\n            const kind = c.kind ?? 'changed'\n            return (\n              <Tr key={i}>\n                <Th scope=\"row\" emphasis>{c.field}</Th>\n                <Td tone={kind === 'removed' ? tone(kind) : undefined} className=\"diff-before\">\n                  {c.before ?? noneLabel}\n                </Td>\n                <Td tone={kind === 'added' ? tone(kind) : undefined}>{c.after ?? noneLabel}</Td>\n                {/* The word, always. A row read in greyscale or out loud says\n                    the same thing as a row read in colour. */}\n                <Td className=\"diff-kind\">{kind}</Td>\n              </Tr>\n            )\n          })}\n        </TBody>\n      </Table>\n    </TableScroll>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/DiffTable/DiffTable.tsx"
+    },
+    {
+      "path": "src/components/DiffTable/index.ts",
+      "content": "export { DiffTable, type DiffChange } from './DiffTable'\n",
+      "type": "registry:ui",
+      "target": "@ui/DiffTable/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/DiffTable.json"
+}

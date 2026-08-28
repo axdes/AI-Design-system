@@ -12,12 +12,14 @@
     {
       "name": "value",
       "type": "string | number | Date",
-      "required": true
+      "required": true,
+      "description": "ISO string, epoch milliseconds, or a Date."
     },
     {
       "name": "mode",
       "type": "Mode",
       "required": false,
+      "description": "`auto` (default) reads relative under a week and absolute after, which is what a notification list, a feed and a comment thread all want.",
       "values": [
         "auto",
         "relative",
@@ -27,7 +29,8 @@
     {
       "name": "locale",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "BCP-47 tag. Omit to follow the browser."
     },
     {
       "name": "className",

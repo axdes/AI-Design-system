@@ -78,6 +78,7 @@ export function HoverCard({ children, content, openDelay = 200, className }: Pro
           id={id}
           role="tooltip"
           className={cn('hover-card', className)}
+          data-raised="popover"
           style={{ top: pos.top, left: pos.left }}
           onMouseEnter={() => { overCardRef.current = true }}
           onMouseLeave={() => { overCardRef.current = false; scheduleClose() }}

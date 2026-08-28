@@ -1,0 +1,1 @@
+export { LogoWall } from "./LogoWall";

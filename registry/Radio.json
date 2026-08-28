@@ -1,7 +1,7 @@
 {
   "ref": "Radio",
   "level": "atom",
-  "description": "Single custom radio, one option in a set where exactly one is chosen. Native <input type=\"radio\"> (so a shared `name` gives arrow-key navigation + form semantics for free), visually themed.",
+  "description": "Single custom radio, one option in a set where exactly one is chosen. Native <input type=\"radio\"> (so a shared `name` gives arrow-key navigation + form semantics for free), visually themed. Copy: options are parallel: same part of speech, same length, same grain. \"Weekly\" beside \"Every Monday at 9\" reads as two different questions.",
   "exports": [
     "Radio",
     "RadioGroup"
@@ -10,25 +10,32 @@
   "from": "@/components/Radio",
   "slots": [
     {
-      "name": "RadioGroup",
-      "line": 18
+      "name": "RadioGroup"
     }
   ],
   "props": [
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Visible label beside the dot."
     },
     {
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "Dot size: sm / md (default) / lg.",
       "values": [
         "sm",
         "md",
         "lg"
       ]
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false,
+      "description": "The form rejected this set. Draws the red circle and the red focus ring — the VISUAL half only. The announcement belongs to `<RadioGroup invalid>`, because a single radio cannot carry `aria-invalid`: ARIA does not support it on `role=\"radio\"`, and \"nothing is chosen\" is a fact about the set, not about any one option in it."
     }
   ],
   "sourcePath": "src/components/Radio/Radio.tsx",
@@ -40,6 +47,12 @@
         "sm",
         "md",
         "lg"
+      ]
+    },
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
       ]
     }
   },

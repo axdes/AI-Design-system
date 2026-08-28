@@ -1,7 +1,8 @@
 import { useId, useRef, useState, type ReactNode } from 'react'
 import { Field } from '../../components/Field'
+import { FormStack } from '../../components/FormStack'
 import { Input } from '../../components/Input'
-import { FormModal } from '../FormModal'
+import { Modal } from '../../components/Modal'
 
 type Props = {
   open: boolean
@@ -23,8 +24,16 @@ type Props = {
  * puts a bare trash icon on a card. */
 
 /**
- * Give one thing a new name. A `<FormModal>` with a single field, Enter to save;
- * an empty name cannot submit and an unchanged one closes without `onSave`.
+ * Give one thing a new name: a dialog with a single field, Enter to save; an
+ * empty name cannot submit and an unchanged one closes without `onSave`.
+ *
+ * It stays a block of its own where <FormModal> and <ConfirmDialog> did not,
+ * because it carries BEHAVIOUR a Modal cannot: the reseed on open, the
+ * focus-and-select exactly once, Enter, and those submit semantics. Arrangement
+ * belongs in Modal; behaviour is what earns a name (2026-08-26).
+ *
+ * Copy: the title names the thing being renamed — "Rename recording" — and the
+ * field label is the value, not the act: "Name", not "New name".
  */
 export function RenameDialog(props: Props) {
   /* Remounting IS the reseed. The state has to start from `initial` every time a
@@ -59,15 +68,20 @@ function RenameBody({
   }
 
   return (
-    <FormModal
+    <Modal
       open={open}
       title={title}
-      confirmLabel={confirmLabel}
-      cancelLabel={cancelLabel}
       onClose={onClose}
-      onConfirm={submit}
-      busy={!name.trim()}
+      actions={{
+        onConfirm: submit,
+        confirmLabel,
+        cancelLabel,
+        /* Not `busy`: an empty name is "nothing to confirm yet", not "in
+           flight". The two shared one word until Modal split them. */
+        confirmDisabled: !name.trim(),
+      }}
     >
+      <FormStack>
       <Field label={label} htmlFor={fieldId}>
         <Input
           id={fieldId}
@@ -92,6 +106,7 @@ function RenameBody({
           }}
         />
       </Field>
-    </FormModal>
+      </FormStack>
+    </Modal>
   )
 }

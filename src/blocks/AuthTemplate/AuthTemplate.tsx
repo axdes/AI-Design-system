@@ -64,7 +64,12 @@ type Props = {
  * `--auth-card-width` and `--auth-card-padding`. */
 
 /** Centered auth-page skeleton: one Card with a brand slot, the caller's content,
- *  an error slot, and a full-width submit when there is a form. Structure only. */
+ *  an error slot, and a full-width submit when there is a form. Structure only. 
+ *
+ * Copy: the title is what the reader is here to do — "Sign in", not the
+ * product's name over again. The error says what to try, and never whether
+ * it was the address or the password that was wrong.
+ */
 export function AuthTemplate({
   brand,
   title,

@@ -17,6 +17,9 @@ type Props = HTMLAttributes<HTMLSpanElement> & {
 /**
  * Status chip: a small standalone pill that labels state through `tone`. Not
  * CountBadge, which pins a number to another element's corner.
+ *
+ * Copy: one word for a state the reader recognises — "Active", "Overdue". A
+ * badge that needs three words is a sentence, and belongs in the body.
  */
 export function Badge({ tone = 'neutral', fill, size, className, ...rest }: Props) {
   return (

@@ -64,12 +64,14 @@ describe('AdaptiveListPage', () => {
   })
 
   it('centres the empty and loading states, and stops centring once there are rows', () => {
+    /* The centring is <Page>'s `align` now, so the attribute is data-align
+       rather than the block's old data-center. Same behaviour, one owner. */
     const { container, unmount } = render(<Page count={0} />)
-    expect(container.querySelector('.adaptive-list-page')).toHaveAttribute('data-center')
+    expect(container.querySelector('.adaptive-list-page')).toHaveAttribute('data-align', 'center')
     unmount()
 
     const { container: withRows } = render(<Page count={3} />)
-    expect(withRows.querySelector('.adaptive-list-page')).not.toHaveAttribute('data-center')
+    expect(withRows.querySelector('.adaptive-list-page')).toHaveAttribute('data-align', 'start')
   })
 
   it('renders the rows the caller supplies, and hands them the ref it measures', () => {

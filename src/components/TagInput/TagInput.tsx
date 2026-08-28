@@ -19,7 +19,11 @@ type Props = {
  * choosing from a KNOWN option list use <Combobox multiple>; this one is for
  * values the user invents (emails, labels, keywords). Duplicates are dropped
  * case-insensitively, blur commits what was typed, and Backspace in the empty
- * field removes the last tag. */
+ * field removes the last tag. 
+   *
+   * Copy: the placeholder says how to add one — "Type and press Enter" — because a
+   * field that accepts many values does not look like one that does.
+   */
 export function TagInput({ value, onChange, label, placeholder, invalid, disabled, className }: Props) {
   const [draft, setDraft] = useState('')
 

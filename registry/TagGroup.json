@@ -1,0 +1,36 @@
+{
+  "ref": "TagGroup",
+  "level": "molecule",
+  "description": "Several labels in one cell, with the ones that do not fit counted rather than wrapped: a wall of pills makes every row a different height and the column unreadable. The overflow says how many are left and names them on hover. The twin of `AvatarGroup`, which does the same for faces.",
+  "exports": [
+    "TagGroup"
+  ],
+  "main": "TagGroup",
+  "from": "@/components/TagGroup",
+  "slots": [],
+  "props": [
+    {
+      "name": "items",
+      "type": "readonly string[]",
+      "required": true,
+      "description": "Every label on the record, in the order it should be read."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false,
+      "description": "How many are shown before the overflow. Two in a table cell, more in a panel where the row height is not shared with two hundred other rows."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/TagGroup/TagGroup.tsx",
+  "uses": [
+    "Tag",
+    "Tooltip"
+  ],
+  "example": "<TagGroup items={['Finance', 'Q3', 'Reviewed', 'Frankfurt']} />"
+}

@@ -4,7 +4,11 @@ import type { ReactNode, Ref } from 'react'
 /* Centered "welcome" list: big title + subtitle, the tile grid, a large CTA
  * under the cards. Shown while everything fits the viewport (useSimpleFit).
  * ONE component for Workshops, Transcripts and Discovery — the three lists
- * must always look and behave the same. */
+ * must always look and behave the same.
+ *
+ * Copy: the hero title welcomes and names the product; the subtitle says in
+ * one sentence what a first-time reader can do here. This is the one place a
+ * line under a title is allowed, and it earns it by being the whole screen. */
 export function ListCluster({
   mark,
   title,

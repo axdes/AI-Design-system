@@ -1,0 +1,91 @@
+{
+  "ref": "ActionCard",
+  "level": "organism",
+  "description": "A question put to THIS reader, answered on the spot: the ask, the context it needs, the answers, and — once given — the outcome in place of them. Reach for <Alert> when the card only informs, and for a plain <Card> when the decision really happens on another screen. Copy: the title is the question put to THIS reader, phrased as a question. The body carries only what the answer needs; anything else belongs behind the record.",
+  "exports": [
+    "ActionCard"
+  ],
+  "main": "ActionCard",
+  "from": "@/components/ActionCard",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The question, in the words the reader would use to answer it."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The answers, as <Button>s. Two is the usual number; three is the limit before the card is really a form."
+    },
+    {
+      "name": "eyebrow",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What kind of request this is: \"Approval\", \"Access request\"."
+    },
+    {
+      "name": "meta",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Facts the decision needs: who asked, when, how much."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The context of the request — a Descriptions of fields, a paragraph, an Identity of who is asking."
+    },
+    {
+      "name": "resolved",
+      "type": "Resolved",
+      "required": false,
+      "description": "Once answered, the card states the outcome instead of the actions, so nobody answers twice and nobody wonders whether it went through.",
+      "fields": [
+        {
+          "name": "tone",
+          "type": "Tone",
+          "required": true,
+          "description": "What the answer was: success for the affirmative one, danger for the refusal, neutral for anything that expired or was withdrawn.",
+          "values": [
+            "success",
+            "danger",
+            "neutral"
+          ]
+        },
+        {
+          "name": "text",
+          "type": "ReactNode",
+          "required": true,
+          "description": "The outcome as a sentence in the past tense: \"Approved by you, 10:24\"."
+        }
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ActionCard/ActionCard.tsx",
+  "context": "region",
+  "variants": {
+    "resolved": {
+      "prop": "resolved",
+      "values": null
+    },
+    "tone": {
+      "prop": "resolved",
+      "values": null
+    }
+  },
+  "uses": [
+    "Button",
+    "Descriptions",
+    "MetaItem"
+  ],
+  "example": "const [outcome, setOutcome] = useState<'success' | 'danger' | null>(null)\n\n<ActionCard\n  eyebrow=\"Access request\"\n  title=\"Give Maksim Barysau access to the coach cockpit?\"\n  meta={<MetaItem icon=\"schedule\">Asked 2 hours ago</MetaItem>}\n  resolved={\n    outcome\n      ? { tone: outcome, text: outcome === 'success' ? 'Approved by you' : 'Declined by you' }\n      : undefined\n  }\n  actions={\n    <>\n      <Button onClick={() => setOutcome('success')}>Approve</Button>\n      <Button variant=\"secondary\" onClick={() => setOutcome('danger')}>\n        Decline\n      </Button>\n    </>\n  }\n>\n  <Descriptions\n    layout=\"inline\"\n    items={[\n      { term: 'Role', value: 'Front-end Engineer' },\n      { term: 'Team', value: 'Wave 3, Warsaw' },\n      { term: 'Access until', value: '31 Dec 2026' },\n    ]}\n  />\n</ActionCard>"
+}

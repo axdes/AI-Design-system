@@ -21,7 +21,11 @@ type Props = {
 /* The trail back up a record hierarchy, e.g. Library / Reports / Q3. Routing
  * agnostic: pass `href` for anchors, `onSelect` for buttons. The last item is
  * always the current page (aria-current), not a link. Replaces the old habit of
- * faking a breadcrumb with a subtitle string. */
+ * faking a breadcrumb with a subtitle string. 
+   *
+   * Copy: each crumb is the page's own title, unshortened. A trail that renames
+   * its steps is a trail the reader cannot match to where they have been.
+   */
 export function Breadcrumb({ items, label = 'Breadcrumb', className }: Props) {
   return (
     <nav className={cn('breadcrumb', className)} aria-label={label}>

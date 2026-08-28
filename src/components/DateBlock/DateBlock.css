@@ -1,0 +1,68 @@
+/* A DATE THE EYE LANDS ON — TYPE, NOT A BADGE.
+ *
+ * It shipped as a tinted lavender tile with a blue month over a blue day, which
+ * is the 2014 event-badge and reads as one (owner, 23.08: this does not look
+ * modern). The tint was also the thing the system already refuses elsewhere: an
+ * accent fill behind a piece of text that is not a status. What makes a date
+ * land is SIZE and rank — a big day over a small month, in ink — so that is
+ * what the default is now. `tone` still fills the tile for the case that wants
+ * a coloured chip; it is opt-in rather than the resting state.
+ */
+.date-block {
+  /* Local to this component: the tile's two sizes, used only when a tone fills
+   * it. Unfilled, the block is as wide as its own digits. */
+  --date-block-size: var(--space-12);
+
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--space-1);
+  min-inline-size: var(--date-block-size);
+  flex: none;
+  line-height: var(--leading-none);
+}
+
+.date-block-month {
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--muted-foreground);
+}
+.date-block-day {
+  font-size: var(--font-2xl);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+}
+.date-block[data-size="sm"] { --date-block-size: var(--space-8); }
+.date-block[data-size="sm"] .date-block-day { font-size: var(--font-lg); }
+
+/* THE FILLED TILE: opt in with a tone. Same two lines, boxed and coloured — for
+ * a calendar strip where the block is the only thing in its column, or a status
+ * the date itself carries (overdue). Not the default, and never just to make a
+ * card look busier. */
+.date-block[data-tone] {
+  place-content: center;
+  justify-items: center;
+  inline-size: var(--date-block-size);
+  block-size: var(--date-block-size);
+  border-radius: var(--radius-md);
+  background: var(--muted);
+}
+.date-block[data-tone] .date-block-day { font-size: var(--font-lg); }
+.date-block[data-tone][data-size="sm"] .date-block-day { font-size: var(--font-base); }
+.date-block[data-tone] .date-block-month,
+.date-block[data-tone] .date-block-day { color: inherit; }
+
+.date-block[data-tone="primary"] { background: var(--primary-soft); color: var(--primary-accent); }
+.date-block[data-tone="neutral"] { background: var(--muted); color: var(--foreground); }
+/* The *-soft-foreground inks, not the *-emphasis ones: emphasis is the ink for
+ * a role on the PAGE, and on its own soft fill it measures 4.29:1 in light and
+ * 3.75:1 in dark. The soft-foreground role exists for exactly this pairing.
+ * (Caught by the handbook's contrast gate once the vendored copy grew this
+ * component, 23.08.) */
+.date-block[data-tone="success"] { background: var(--success-soft); color: var(--success-soft-foreground); }
+.date-block[data-tone="warning"] { background: var(--warning-soft); color: var(--warning-soft-foreground); }
+.date-block[data-tone="danger"]  { background: var(--destructive-soft); color: var(--destructive-soft-foreground); }

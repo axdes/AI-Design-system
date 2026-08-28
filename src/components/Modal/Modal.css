@@ -22,6 +22,7 @@
   width: 100%;
   max-height: min(90vh, var(--modal-max-height));
   background: var(--popover);
+
   color: var(--popover-foreground);
   border: 1px solid var(--border);
   border-radius: var(--card-radius);

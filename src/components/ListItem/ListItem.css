@@ -16,11 +16,20 @@
   cursor: pointer;
   transition: background var(--duration-fast), color var(--duration-fast);
 }
-.list-item:hover,
-.list-item:focus-visible {
-  background: var(--accent-soft);
+.list-item:hover {
+  background: var(--surface-hover);
   color: var(--foreground);
-  outline: none;
+}
+.list-item:active { background: var(--accent-soft); }
+/* The ring, not a tint. Swapping the outline for a background made the keyboard
+ * position identical to hover — the same pixels for "the pointer is here" and
+ * "this is where you are", and at 1.09:1 neither read. SC 2.4.11 wants 3:1, and
+ * only the ring delivers it on every surface a list can sit on. */
+.list-item:focus-visible {
+  background: var(--surface-hover);
+  color: var(--foreground);
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(-1 * var(--ring-offset));
 }
 .list-item strong {
   color: var(--foreground);
@@ -35,3 +44,19 @@
   color: var(--accent-foreground);
   font-weight: var(--font-weight-medium);
 }
+
+/* THE MARKED ROW. The glyph is a bullet with a direction: it sits on the first
+ * line of the row (never centred in a two-line one) and keeps its size while
+ * the words wrap. */
+.list-item[data-icon] {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+.list-item-marker {
+  flex: none;
+  color: var(--icon-muted);
+}
+.list-item-body { min-inline-size: 0; }
+.list-item[data-icon]:hover .list-item-marker,
+.list-item[data-icon]:focus-visible .list-item-marker { color: inherit; }

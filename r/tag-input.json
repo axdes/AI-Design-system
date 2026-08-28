@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tag-input",
+  "type": "registry:ui",
+  "title": "TagInput",
+  "description": "Free-text tags: type, press Enter or comma, get a removable <Tag>. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag. Copy: the placeholder says how to add one — \"Type and press Enter\" — becaus",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tag.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/TagInput/TagInput.css",
+      "content": "/* The box reads as one field: control tokens for the frame, focus ring on\n * :focus-within since the real input inside is borderless. */\n.taginput {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: var(--space-1);\n  min-block-size: var(--control-height);\n  padding-inline: var(--space-2);\n  padding-block: var(--space-1);\n  border: 1px solid var(--input);\n  border-radius: var(--control-radius);\n  background: var(--background);\n  transition: border-color var(--duration-fast);\n}\n.taginput:hover:not([data-disabled]) { border-color: var(--ring); }\n.taginput[data-invalid]:focus-within { outline-color: var(--destructive); }\n.taginput:focus-within {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n.taginput[data-invalid] { border-color: var(--destructive); }\n.taginput[data-disabled] {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n.taginput-field {\n  flex: 1;\n  min-inline-size: 6ch;\n  border: none;\n  outline: none; /* the frame's :focus-within ring is the visible focus */\n  background: transparent;\n  color: var(--foreground);\n  font: inherit;\n  padding: 0;\n}\n.taginput-field::placeholder { color: var(--muted-foreground); }\n",
+      "type": "registry:ui",
+      "target": "@ui/TagInput/TagInput.css"
+    },
+    {
+      "path": "src/components/TagInput/TagInput.tsx",
+      "content": "import './TagInput.css'\nimport { useState, type KeyboardEvent } from 'react'\nimport { cn } from '../lib/cn'\nimport { Tag } from '../Tag'\n\ntype Props = {\n  /** The committed tags, in order. */\n  value: string[]\n  onChange: (value: string[]) => void\n  /** Accessible name for the text field. */\n  label: string\n  placeholder?: string\n  invalid?: boolean\n  disabled?: boolean\n  className?: string\n}\n\n/* Free-text tags: type, press Enter or comma, get a removable <Tag>. For\n * choosing from a KNOWN option list use <Combobox multiple>; this one is for\n * values the user invents (emails, labels, keywords). Duplicates are dropped\n * case-insensitively, blur commits what was typed, and Backspace in the empty\n * field removes the last tag. \n   *\n   * Copy: the placeholder says how to add one — \"Type and press Enter\" — because a\n   * field that accepts many values does not look like one that does.\n   */\nexport function TagInput({ value, onChange, label, placeholder, invalid, disabled, className }: Props) {\n  const [draft, setDraft] = useState('')\n\n  const commit = () => {\n    const tag = draft.trim()\n    if (!tag) return\n    if (!value.some((t) => t.toLowerCase() === tag.toLowerCase())) onChange([...value, tag])\n    setDraft('')\n  }\n\n  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {\n    if (e.key === 'Enter' || e.key === ',') {\n      e.preventDefault()\n      commit()\n    } else if (e.key === 'Backspace' && draft === '' && value.length > 0) {\n      onChange(value.slice(0, -1))\n    }\n  }\n\n  return (\n    <div className={cn('taginput', className)} data-invalid={invalid || undefined} data-disabled={disabled || undefined}>\n      {value.map((tag) => (\n        <Tag\n          key={tag}\n          size=\"sm\"\n          onRemove={disabled ? undefined : () => onChange(value.filter((t) => t !== tag))}\n          removeLabel={`Remove ${tag}`}\n        >\n          {tag}\n        </Tag>\n      ))}\n      <input\n        className=\"taginput-field\"\n        value={draft}\n        placeholder={value.length === 0 ? placeholder : undefined}\n        disabled={disabled}\n        aria-label={label}\n        aria-invalid={invalid || undefined}\n        onChange={(e) => setDraft(e.target.value)}\n        onKeyDown={onKeyDown}\n        onBlur={commit}\n      />\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/TagInput/TagInput.tsx"
+    },
+    {
+      "path": "src/components/TagInput/index.ts",
+      "content": "export { TagInput } from './TagInput'\n",
+      "type": "registry:ui",
+      "target": "@ui/TagInput/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/TagInput.json"
+}

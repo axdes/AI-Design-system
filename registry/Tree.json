@@ -1,7 +1,7 @@
 {
   "ref": "Tree",
   "level": "molecule",
-  "description": "Hierarchical expand/collapse list (files, categories). The WAI-ARIA tree: Up/Down move between VISIBLE rows, Right expands or steps into a group, Left collapses or steps out, Enter selects. Controlled selection and expansion, or self-managed.",
+  "description": "Hierarchical expand/collapse list (files, categories). The WAI-ARIA tree: Up/Down move between VISIBLE rows, Right expands or steps into a group, Left collapses or steps out, Enter selects. Controlled selection and expansion, or self-managed. Copy: node labels are the things' own names, and the level is carried by the structure, so a label never repeats its parent.",
   "exports": [
     "Tree"
   ],
@@ -17,7 +17,8 @@
     {
       "name": "selectedId",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Selected node id (single-select)."
     },
     {
       "name": "onSelect",
@@ -27,7 +28,8 @@
     {
       "name": "expandedIds",
       "type": "string[]",
-      "required": false
+      "required": false,
+      "description": "Expanded node ids; omit to let the tree manage them."
     },
     {
       "name": "onExpandedChange",
@@ -42,7 +44,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the tree."
     },
     {
       "name": "className",

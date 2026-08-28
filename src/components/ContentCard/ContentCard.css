@@ -1,0 +1,429 @@
+/* The card answers to its OWN width, which is what a container query is for: a
+ * card in a sidebar and the same card in a feature strip are the same component
+ * with the same six slots, and only the arrangement differs. The wrapper is the
+ * container because an element cannot query itself. */
+.content-card {
+  container-type: inline-size;
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+.content-card[data-fill] { block-size: 100%; }
+
+.content-card-head { display: flex; flex-direction: column; gap: var(--space-1); min-inline-size: 0; }
+
+.content-card-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Clamped, not cut: the excerpt keeps whole words and every card in a row keeps
+ * the same height for it. Two lines in a column, three when the card is wide. */
+.content-card-excerpt {
+  margin: 0;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.content-card-actions { display: inline-flex; gap: var(--space-2); margin-inline-start: auto; }
+
+/* ── auto: three shapes, one component ─────────────────────────────────────
+ * The numbers are the card's own widths, not the viewport's: 360 is where a
+ * headline stops fitting beside a thumbnail, 560 where a picture beside the
+ * words stops crowding them. */
+
+@container (max-width: 359px) {
+  .content-card[data-layout="auto"] > .card {
+    display: grid;
+    grid-template-columns: var(--content-card-thumb) minmax(0, 1fr);
+    grid-template-areas: "media head" "media meta";
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+
+    /* Component-private knob, co-located per the token conventions: the
+     * narrowest square that still reads as a picture beside two lines. */
+    --content-card-thumb: 4rem;
+  }
+  .content-card[data-layout="auto"] > .card > .card-media {
+    grid-area: media;
+    margin: 0;
+    block-size: var(--content-card-thumb);
+    inline-size: var(--content-card-thumb);
+    border-radius: var(--radius-md);
+    align-self: start;
+  }
+  .content-card[data-layout="auto"] .content-card-head { grid-area: head; }
+  /* Dropped, not shrunk: at this width the excerpt is the level that goes. */
+  .content-card[data-layout="auto"] .content-card-excerpt { display: none; }
+  .content-card[data-layout="auto"] > .card > .card-meta {
+    grid-area: meta;
+    margin-block-start: 0;
+    padding-block-start: 0;
+    border-block-start: none;
+  }
+}
+
+@container (min-width: 360px) and (max-width: 559px) {
+  .content-card[data-layout="auto"] .content-card-excerpt {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}
+
+@container (min-width: 560px) {
+  .content-card[data-layout="auto"] > .card {
+    display: grid;
+    grid-template-columns: var(--content-card-side) minmax(0, 1fr);
+    grid-template-areas: "media head" "media excerpt" "media meta";
+    align-content: start;
+    gap: var(--space-2) var(--space-4);
+
+    /* The same share Card's own side layout uses, so a fixed `side` card and an
+     * auto card that grew into one look like the same card. */
+    --content-card-side: clamp(8.5rem, 28%, 16rem);
+  }
+  .content-card[data-layout="auto"] > .card > .card-media {
+    grid-area: media;
+    grid-row: 1 / -1;
+    margin: 0;
+    block-size: 100%;
+    /* The ratio belongs to the TOP placement, where the width is given and the
+     * height follows. Here the height is given by the row and the width by the
+     * track, so a surviving `aspect-ratio` computes the width from the height
+     * instead — measured at a 693px card: a 180.7px track holding a 256px
+     * picture, which then lay across the title (owner, 2026-08-25). */
+    aspect-ratio: auto;
+    inline-size: 100%;
+    border-radius: var(--radius-md);
+  }
+  .content-card[data-layout="auto"] .content-card-head { grid-area: head; }
+  .content-card[data-layout="auto"] .content-card-excerpt { grid-area: excerpt; }
+  .content-card[data-layout="auto"] > .card > .card-meta { grid-area: meta; }
+}
+
+/* ── a row of cards lines up ───────────────────────────────────────────────
+ * Inside a <Grid alignRows>, every card sits on the parent's row tracks, so
+ * titles of different lengths no longer push the excerpts and metas of their
+ * neighbours out of line. The rows are assigned explicitly, which is what lets
+ * a card with no excerpt leave that track empty and still line up.
+ *
+ * The two features are alternatives, and the rule says so rather than leaving
+ * it to the author: a card that MEASURES ITSELF is a container, containment
+ * makes it an independent formatting context, and an independent formatting
+ * context cannot adopt its parent's tracks. So inside an aligned row the card
+ * stops querying itself and is a tile — which is what a card in a grid of
+ * equals is anyway. Measured, not assumed: with `container-type` left on,
+ * `grid-template-rows: subgrid` computes to `none` and every part lands in
+ * row 1 on top of the media. */
+.grid[data-align-rows] > .content-card { container-type: normal; }
+
+.grid[data-align-rows] > .content-card {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+}
+.grid[data-align-rows] > .content-card > .card {
+  display: grid;
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+}
+.grid[data-align-rows] > .content-card > .card > .card-media { grid-row: 1; }
+.grid[data-align-rows] > .content-card .content-card-head { grid-row: 2; }
+.grid[data-align-rows] > .content-card .content-card-excerpt { grid-row: 3; }
+.grid[data-align-rows] > .content-card > .card > .card-meta { grid-row: 4; margin-block-start: 0; }
+
+/* ══ layout="row": THE LIST FORM ═══════════════════════════════════════════
+ * Merged in from ContentRow on 2026-08-26. It was a separate component with
+ * the same six slots in the same order, which is one thing in two forms. The
+ * reasoning below is that component's, kept because it is all owner rulings
+ * measured on real screens, not preference.
+ *
+ * The row is position: relative so an `onOpen` title can stretch its hit area
+ * over the whole row (the .card-link idea); actions sit above that layer and
+ * stay clickable. */
+.content-card[data-layout='row'] {
+  /* Component-private knobs, co-located per the token conventions. */
+  --content-card-row-media: 4.5rem;
+  --content-card-row-media-compact: 2.5rem;
+  --content-card-row-media-dense: 1.75rem;
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  /* The row may become two lines rather than lose a control off the edge: on a
+   * 390px phone "Approve" + "Request changes" beside a title do not fit, and
+   * `flex: none` on the actions meant they hung 26px past the card instead of
+   * dropping under it (page audit, card-holds-its-content, 22.08). */
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  /* 16 above and below, so the hairline sits in the middle of 32 and the rows
+   * read as separated rather than stacked (owner, 2026-08-23: they look stuck
+   * together). The number is a RATIO, not a taste: the two lines inside a row
+   * are 4 apart, so the space between rows has to stay several times that or
+   * the pair stops looking like a pair. */
+  padding-block: var(--space-4);
+}
+
+/* A LIST OF ROWS IS A TABLE OF ONE COLUMN, so it answers the pointer the way a
+ * table does: the whole row takes the surface hover. `--surface-hover` is the
+ * neutral one stop off the card that every table row already uses; with the
+ * rows two lines tall the pointer has to say which pair of lines it is on
+ * (owner, 2026-08-23). One hover, one token, both forms. */
+.content-card[data-layout='row']:has(.content-card-open):hover {
+  background: var(--surface-hover);
+}
+
+/* No underline under the title on top of that. The band IS the answer, and a
+ * title that also underlines gives one pointer two replies for the same event
+ * (owner, 2026-08-23). */
+
+/* Rows separate with a HAIRLINE, the same one a table draws between its rows.
+ * Space alone held while a row was one line of text; it stopped holding when
+ * the footnote moved under the title, because a two-line row separated only by
+ * space reads as four loose lines (owner, 2026-08-23). Drawn between rows and
+ * never under the last one — a list should not look fenced. */
+.content-card[data-layout='row'] + .content-card[data-layout='row'] {
+  border-block-start: 1px solid var(--border);
+}
+
+/* A row inside a FLUSH card gives itself back the padding the card gave up.
+ * `flush` exists so rows can span edge to edge and draw their own hairlines; it
+ * does not mean the content should touch the panel (owner, 2026-08-22 —
+ * measured: row left 292, card left 292). */
+.card[data-flush] .content-card[data-layout='row'] {
+  padding-inline: var(--card-padding);
+}
+
+/* ...and the ends of the list stand off the frame by the same amount, since a
+ * list of rows is not a table with a header (owner, 2026-08-23: no padding top
+ * or bottom in the card). */
+.card[data-flush] .content-card[data-layout='row']:first-child { padding-block-start: var(--card-padding); }
+.card[data-flush] .content-card[data-layout='row']:last-child  { padding-block-end: var(--card-padding); }
+
+.content-card[data-layout='row'] .content-card-media {
+  flex: none;
+  inline-size: var(--content-card-row-media);
+  aspect-ratio: 1;
+  /* Round, because everything at this scale in this system is: the avatar, the
+   * badge, the button. An 8px tile beside them was a fourth radius that matched
+   * nothing. A tile holding a PICTURE keeps the rectangle below — a circular
+   * video poster is a crop, not a shape decision. */
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+/* On the hover band the tile takes `--surface-contrast`. A tile is `--muted`
+ * and the band is `--surface-hover`, one stop apart, so a hovered row swallowed
+ * its own icons (owner, 2026-08-23). `--surface-contrast` is the system's
+ * existing answer to exactly that question, and it is answered by the surface.
+ * Painting `--card` here was the first try and `npm run boundary` was right to
+ * reject it — in light that IS `--background`. */
+.content-card[data-layout='row']:has(.content-card-open):hover .content-card-media {
+  background: var(--surface-contrast);
+}
+
+.content-card[data-layout='row'] .content-card-media > img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.content-card[data-layout='row'] .content-card-body {
+  /* A basis, not a share: with `flex: 1` the body kept shrinking to nothing and
+   * the actions stayed beside it. 12rem is the narrowest a title plus a meta
+   * line reads at; under that the actions wrap to their own line. */
+  flex: 1 1 12rem;
+  min-inline-size: 0;
+  /* A COLUMN: the footnote belongs under the title at every width.
+   *
+   * This box used to be a wrapping row with a container query that sent the
+   * footnote to the far end once the body passed 34rem. The render disproved
+   * it: at 2560 the title sat at the left edge and the author and the date at
+   * the right with ~1100px of nothing between them, and the two stopped reading
+   * as one record (owner, 2026-08-23). Worse, a footnote flushed to the end
+   * starts at a different x on every row, so the leading icons formed a torn
+   * column. The author and the date are attributes OF the title, so they sit
+   * with it. Only `dense`, one reading line by definition, keeps the footnote
+   * on the title's line (below). */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* The naming block stretches, so the actions land at the far end on their own
+ * rather than being pushed there by a margin: free space exists on their own
+ * line too, so `margin-inline-start: auto` floated a WRAPPED pair of buttons to
+ * the right edge with the record's text far to their left (owner, 2026-08-23:
+ * when the buttons move to a second line they should be on the left). */
+.content-card[data-layout='row'] .content-card-head {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.content-card-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  color: var(--foreground);
+}
+
+.content-card-open { cursor: pointer; }
+
+/* The whole row is the door; the title is its accessible name. */
+.content-card-open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.content-card-open:active { color: var(--primary-accent); }
+.content-card-open:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* The row's excerpt is a footnote-scale two lines, not the card's three. */
+.content-card[data-layout='row'] .content-card-excerpt {
+  font-size: var(--font-sm);
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.content-card[data-layout='row'] .content-card-meta {
+  display: flex;
+  align-items: center;
+  /* 16 between the fields, 4 between the LINES they wrap onto. One gap for both
+   * put a wrapped badge 16 below the author and 12 above the buttons, so it
+   * floated between two groups instead of belonging to one (owner, 2026-08-23,
+   * on the phone). Wrapping must not promote a field to its own paragraph. */
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  flex-wrap: wrap;
+  /* The footnote of row three sits directly under the footnote of row two, so
+   * its dates and counts are read as a column whether or not anyone drew one.
+   * Proportional digits make that column ripple; tabular ones do not. */
+  font-variant-numeric: tabular-nums;
+}
+
+.content-card[data-layout='row'] .content-card-actions {
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Two named actions do not fit beside a title on a phone: measured at 390px,
+   * "Approve" + "Request changes" hung 26px past the card. They wrap onto their
+   * own line instead of hanging off the edge — the row is allowed to be two
+   * lines tall, it is not allowed to lose a control. */
+  flex-wrap: wrap;
+  min-inline-size: 0;
+  margin-inline-start: 0;
+}
+
+/* ── density: the anatomy degrades from the bottom up ──────────────────────
+ * Orthogonal to the layout, so it reads on a tile as well as on a row: the
+ * excerpt goes first, then the eyebrow. What `auto` already does by width, any
+ * layout can now be told to do outright. */
+.content-card[data-density='compact'] .content-card-excerpt,
+.content-card[data-density='dense'] .content-card-excerpt { display: none; }
+.content-card[data-density='dense'] .content-card-eyebrow { display: none; }
+
+/* On a row each step down takes one step off the vertical air as well —
+ * 16 / 12 / 8 — so `compact` is tighter than `comfortable` without ever going
+ * as tight as the row's own line spacing. */
+.content-card[data-layout='row'][data-density='compact'] {
+  padding-block: var(--space-3);
+  /* Two lines beside a 40px tile: centred, not top-aligned. Top alignment is
+   * for `comfortable`, where the excerpt makes the text column tall enough that
+   * a centred tile would float in the middle of a paragraph. */
+  align-items: center;
+}
+
+.content-card[data-layout='row'][data-density='compact'] .content-card-media {
+  inline-size: var(--content-card-row-media-compact);
+}
+
+.content-card[data-layout='row'][data-density='dense'] {
+  padding-block: var(--space-2);
+  align-items: center;
+}
+
+.content-card[data-layout='row'][data-density='dense'] .content-card-media {
+  inline-size: var(--content-card-row-media-dense);
+  aspect-ratio: 1;
+  background: none;
+}
+
+/* A dense row is ONE reading line at every width — that is the whole difference
+ * between it and `compact`, which stacks. So its body turns back into a row and
+ * the footnote follows the title immediately, separated by a single gap.
+ * Immediately, not at the far end: pushing it to the end is what produced the
+ * 1100px void the stacked densities were just fixed for. */
+.content-card[data-layout='row'][data-density='dense'] .content-card-body {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.content-card[data-layout='row'][data-density='dense'] .content-card-head { flex: 0 1 auto; }
+
+.content-card[data-layout='row'][data-density='dense'] .content-card-meta {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+/* One line is a promise, so a long title ends in an ellipsis rather than
+ * wrapping and making the row two lines tall. The other densities keep their
+ * titles whole — they have the room. */
+.content-card[data-layout='row'][data-density='dense'] .content-card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-inline-size: 100%;
+}
+
+/* ── NARROW: the row is a stack, so it has to read as one ──────────────────
+ *
+ * Below 30rem the actions cannot sit beside the body, so the row becomes four
+ * stacked lines — and on a phone those came out with equal gaps between
+ * everything and a tile floating at the vertical middle of a block it was
+ * supposed to label (owner, 2026-08-23: on mobile the content is stuck
+ * together, the buttons worst of all). Two corrections, both about grouping:
+ * the tile pins to the TITLE instead of centring on the whole stack, and the
+ * actions take the whole line from the row's own edge — indenting them to the
+ * text column measured 28px past the card, since a 100% basis plus a 52px
+ * margin is 52px more than the line has. */
+@container (max-width: 30rem) {
+  /* `dense` is exempt: it is a deliberate choice to fit many rows in a screen,
+   * and it stays one line at every width, so it has nothing to pin and nothing
+   * to pull apart. */
+  .content-card[data-layout='row']:not([data-density='dense']) {
+    align-items: flex-start;
+    padding-block: var(--space-4);
+  }
+
+  .content-card[data-layout='row'] .content-card-actions {
+    flex-basis: 100%;
+    margin-block-start: var(--space-3);
+  }
+}

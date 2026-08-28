@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "title": "Label",
+  "description": "The text that names a control and is tied to it by htmlFor. Field already composes one; reach for it directly only outside a Field.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Label/Label.css",
+      "content": ".label {\n  display: block;\n  font-size: var(--font-base);   /* md (default) — 15px */\n  font-weight: var(--font-weight-regular);\n  line-height: var(--leading-tight);\n  color: var(--foreground);\n}\n.label[data-size=\"sm\"] { font-size: var(--font-sm); }   /* 13px — matches small-button text */\n",
+      "type": "registry:ui",
+      "target": "@ui/Label/Label.css"
+    },
+    {
+      "path": "src/components/Label/Label.tsx",
+      "content": "import './Label.css'\nimport type { LabelHTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Size = 'sm' | 'md'\n\ntype Props = LabelHTMLAttributes<HTMLLabelElement> & {\n  /** md (default) = 15px; sm = 13px, matching small-button text. */\n  size?: Size\n}\n\n/**\n * The text that names a control and is tied to it by htmlFor. Field already\n * composes one; reach for it directly only outside a Field.\n */\nexport function Label({ size, className, ...rest }: Props) {\n  // eslint-disable-next-line jsx-a11y/label-has-associated-control -- reusable Label primitive; the control association (htmlFor) is supplied by the consumer\n  return <label className={cn('label', className)} data-size={size} {...rest} />\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Label/Label.tsx"
+    },
+    {
+      "path": "src/components/Label/index.ts",
+      "content": "export { Label } from './Label'\n",
+      "type": "registry:ui",
+      "target": "@ui/Label/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Label.json"
+}

@@ -1,0 +1,304 @@
+{
+  "$comment": "The LIFECYCLE axis. selection-rules.json answers what SHAPE a collection takes, page-rules.json what shape the page takes, card-rules.json which card, form-rules.json which form. All four ask what the screen LOOKS like. This one asks what it DOES to the resource — create, read, update, delete — and decides the three things that hang off that question and were decided by taste until now: which variant of a detail page, which shape an edit takes, and how hard a destruction is to confirm. Sources: AWS Cloudscape's resource-management patterns (the lifecycle taxonomy itself, the three details pages, the three edits and the three deletes), NN/g on destructive actions and undo. Measured against the registry on 2026-08-23; the audit is in docs/RESEARCH-SCREENS.md section 8.5.",
+  "stages": {
+    "create": {
+      "means": "The resource does not exist yet and the screen brings it into being.",
+      "decidedBy": "form-rules.json — which KIND of form the capture is"
+    },
+    "read": {
+      "means": "The resource exists and the screen shows it: a collection to find in, or one record in full.",
+      "decidedBy": "selection-rules.json for the collection, detailVariants below for the record"
+    },
+    "update": {
+      "means": "The resource exists and the screen changes it. Not the same question as create: the values are already there, and the smallest correct edit is often not a form at all.",
+      "decidedBy": "editKinds below, then form-rules.json once the answer is a form"
+    },
+    "delete": {
+      "means": "The resource stops existing. The only stage whose mistake cannot be undone by doing it again.",
+      "decidedBy": "deleteKinds below"
+    }
+  },
+  "archetypeStages": {
+    "overview": [
+      "read"
+    ],
+    "list": [
+      "read"
+    ],
+    "worklist": [
+      "read",
+      "update"
+    ],
+    "analytical": [
+      "read"
+    ],
+    "detail": [
+      "read",
+      "update"
+    ],
+    "hub": [
+      "read"
+    ],
+    "form": [
+      "create",
+      "update"
+    ],
+    "wizard": [
+      "create"
+    ],
+    "settings": [
+      "update"
+    ],
+    "auth": [
+      "read"
+    ],
+    "system": [
+      "read"
+    ]
+  },
+  "detailVariants": {
+    "plain": {
+      "means": "One record read top to bottom: sections in a column, reference in the aside.",
+      "components": {
+        "required": [
+          "DetailPageTemplate"
+        ]
+      },
+      "status": "built"
+    },
+    "tabs": {
+      "means": "One record with sections too long to stack: the sections become tabs and only one is on screen.",
+      "components": {
+        "required": [
+          "DetailPageTemplate",
+          "Tabs"
+        ]
+      },
+      "region": "subnav",
+      "status": "built",
+      "note": "Six screens across the products hand-roll this today by putting <Tabs> in the body. The region exists on <Page> (`subnav`); what was missing was the rule saying when it is earned."
+    },
+    "hub": {
+      "means": "A record whose job is to route onward: the page names what it is and then hands over to the places you act.",
+      "components": {
+        "required": [
+          "DetailPageTemplate",
+          "LinkTile"
+        ]
+      },
+      "status": "built"
+    }
+  },
+  "detailRules": [
+    {
+      "id": "D1",
+      "title": "Sections that fit stay stacked",
+      "when": {
+        "sections": {
+          "max": 4
+        }
+      },
+      "choose": [
+        "plain"
+      ],
+      "because": "Tabs hide content behind a click and cost a page's worth of scanning; under about four sections the whole record is cheaper to read at once (Cloudscape details page).",
+      "bad": "four tabs with two fields behind each"
+    },
+    {
+      "id": "D2",
+      "title": "Too many sections to stack becomes tabs",
+      "when": {
+        "sections": {
+          "min": 5
+        }
+      },
+      "choose": [
+        "tabs",
+        "plain"
+      ],
+      "because": "Past roughly five sections the page stops being readable in one pass and the reader is scrolling to navigate. Tabs turn that scrolling back into a choice (Cloudscape details page with tabs).",
+      "good": "<Page archetype=\"detail\" subnav={<Tabs …/>}>"
+    },
+    {
+      "id": "D3",
+      "title": "A record that is a doorway is a hub",
+      "when": {
+        "acts": "elsewhere"
+      },
+      "choose": [
+        "hub"
+      ],
+      "because": "When nothing is decided on the record itself and every action lives on another screen, the page's job is to say what is inside each door (Cloudscape details page as a hub).",
+      "bad": "a details page whose every section ends in a link"
+    }
+  ],
+  "editKinds": {
+    "attribute": {
+      "means": "One value, changed where it is read: click it, type, commit on blur.",
+      "components": {
+        "required": [
+          "InlineText"
+        ],
+        "oneOf": [
+          "SaveStatus",
+          "Tooltip"
+        ]
+      },
+      "status": "built",
+      "builtBecause": "InlineText is the part this was waiting for, and it was already in the registry: the SAME element becomes editable on click, Enter commits, Escape reverts, blur saves — which is this kind, word for word. The record asked for \"an InlineEdit component\" and the system built one under another name, so the status outlived the gap it described (found 2026-08-27, the same way four form kinds were found on 2026-08-26). `Input` was never right here: a control with its own chrome is the thing this kind exists NOT to be."
+    },
+    "inline": {
+      "means": "A row edited in its own place in the collection, the rest of the rows staying put.",
+      "components": {
+        "required": [
+          "DataGrid"
+        ]
+      },
+      "status": "built",
+      "note": "DataGrid's editable cells are this kind at collection scale; selection-rules R2 and H2 already send editing-as-the-primary-task here."
+    },
+    "page": {
+      "means": "The whole record edited at once, on its own screen or in its own dialog.",
+      "components": {
+        "required": [
+          "FormPageTemplate"
+        ]
+      },
+      "status": "built",
+      "note": "Which kind of form it then is, is form-rules.json's decision, not this one."
+    }
+  },
+  "editRules": [
+    {
+      "id": "E1",
+      "title": "One value is not a form",
+      "when": {
+        "fields": {
+          "max": 1
+        },
+        "context": "in-place"
+      },
+      "choose": [
+        "attribute"
+      ],
+      "because": "Opening a dialog to change one value costs two clicks and a context switch for a change the reader was already looking at (Cloudscape attribute editing).",
+      "bad": "an Edit button that opens a modal with a single Input"
+    },
+    {
+      "id": "E2",
+      "title": "Editing across rows is a grid",
+      "when": {
+        "scope": "collection"
+      },
+      "choose": [
+        "inline"
+      ],
+      "because": "When the work is changing the same field on many records, a dialog per record is the whole task done the slow way (Smart Interface Design Patterns).",
+      "bad": "an Edit dialog behind every row"
+    },
+    {
+      "id": "E3",
+      "title": "Changing the record is a form",
+      "when": {
+        "scope": "record"
+      },
+      "choose": [
+        "page"
+      ],
+      "because": "Several fields committed together need one submit, one error summary and one unsaved-changes guard, which is what the form layer already owns."
+    }
+  ],
+  "deleteKinds": {
+    "undo": {
+      "means": "It just happens, and a Toast offers the way back for as long as it is on screen.",
+      "components": {
+        "required": [
+          "Toast"
+        ]
+      },
+      "status": "built",
+      "note": "Toast carries `action: { label, onAction }`, so this kind is buildable today and nothing in the products uses it yet."
+    },
+    "confirm": {
+      "means": "A yes/no dialog naming the thing and what goes with it.",
+      "components": {
+        "required": [
+          "Modal"
+        ]
+      },
+      "props": {
+        "Modal": {
+          "confirmVariant": "destructive"
+        }
+      },
+      "status": "built"
+    },
+    "confirm-typed": {
+      "means": "A dialog that will not arm its button until the reader types the resource's name.",
+      "components": {
+        "required": [
+          "Modal",
+          "Field",
+          "Input"
+        ]
+      },
+      "status": "built",
+      "note": "Unblocked on 2026-08-26 by folding <FormModal> and <ConfirmDialog> into <Modal>. The blocker was that one dialog took input and the other coloured its commitment, and no dialog did both; one Modal with `children` and `actions.tone` does. Arm it with `actions.confirmDisabled` until the typed name matches."
+    }
+  },
+  "deleteRules": [
+    {
+      "id": "X1",
+      "title": "Reversible destruction needs no dialog",
+      "when": {
+        "reversible": true
+      },
+      "choose": [
+        "undo"
+      ],
+      "because": "A confirmation that guards something reversible trains the reader to click through confirmations, which is how the unreversible one gets clicked through too (NN/g).",
+      "good": "the row goes, a Toast says \"Deleted. Undo\"",
+      "bad": "\"Are you sure?\" for removing a filter chip"
+    },
+    {
+      "id": "X2",
+      "title": "The ordinary case is a yes/no",
+      "when": {
+        "reversible": false,
+        "blastRadius": "one"
+      },
+      "choose": [
+        "confirm"
+      ],
+      "because": "One record, gone for good: the reader needs to see WHICH record and what goes with it, and then say yes once.",
+      "good": "<Modal size=\"sm\" actions={{ tone: 'destructive' }}> naming the record"
+    },
+    {
+      "id": "X3",
+      "title": "Destruction that reaches other people is typed",
+      "when": {
+        "reversible": false,
+        "blastRadius": "many"
+      },
+      "choose": [
+        "confirm-typed",
+        "confirm"
+      ],
+      "because": "When the act removes other people's work, or a container with things inside it, the cost of a mis-click is not the reader's alone. Typing the name is the one guard that a habitual clicker cannot do by reflex (Cloudscape delete with additional confirmation).",
+      "bad": "the same Are-you-sure that deletes one row also deletes the workspace"
+    }
+  ],
+  "hard": [
+    {
+      "id": "XH1",
+      "when": {
+        "reversible": false
+      },
+      "forbid": [
+        "undo"
+      ],
+      "instead": "confirm",
+      "because": "An undo affordance for something that cannot be undone is a lie in the interface."
+    }
+  ]
+}

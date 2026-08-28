@@ -10,7 +10,7 @@ export function Example() {
   return (
     <PageHeader
       title="Content library"
-      actions={<Button variant="primary" iconEnd>New document<Icon name="add" /></Button>}
+      actions={<Button variant="primary">New document<Icon name="add" /></Button>}
     />
   )
 }

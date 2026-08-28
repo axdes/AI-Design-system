@@ -1,7 +1,7 @@
 {
   "ref": "Spinner",
   "level": "atom",
-  "description": "The one busy indicator for the whole system: a rotating loader icon. Inline by default (sits next to text or inside a button); center it with the layout around it. Animation is paused under prefers-reduced-motion (reset.css).",
+  "description": "The one busy indicator for the whole system: a rotating loader icon. Inline by default (sits next to text or inside a button); center it with the layout around it. Animation is paused under prefers-reduced-motion (reset.css). Copy: the label says what is being waited for — \"Loading invoices\" — and it is announced, so it is a sentence a person can hear.",
   "exports": [
     "Spinner"
   ],
@@ -13,6 +13,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "Matches the icon scale: sm 16 / md 20 / lg 24 / xl 40. Default 'md'.",
       "values": [
         "sm",
         "md",
@@ -23,7 +24,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name announced to screen readers. A spinner with no label is a silent \"something is happening\" — always say what."
     },
     {
       "name": "className",

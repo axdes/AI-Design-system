@@ -1,0 +1,12 @@
+{
+ "truncated": 0,
+ "elements": {
+  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(241, 246, 253)","color":"rgb(31, 35, 40)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
+  "div@0": {"box":[0,0,1280,46],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.visual-case@0/0": {"box":[0,0,1280,46],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "time.date-block@0/0/0": {"box":[0,0,1280,46],"display":"grid","flex-direction":"row","flex-wrap":"nowrap","gap":"4px","grid-template-columns":"1280px","grid-template-rows":"12px 30px","line-height":"15px"},
+  "span.date-block-month@0/0/0/0": {"box":[627,0,26,12],"display":"block","flex-direction":"row","flex-wrap":"nowrap","color":"rgb(95, 99, 105)","font-size":"12px","font-weight":"500","line-height":"12px","letter-spacing":"0.96px"},
+  "span.date-block-day@0/0/0/1": {"box":[620,16,39,30],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-size":"30px","font-weight":"600","line-height":"30px","letter-spacing":"-0.6px"},
+  "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
+ }
+}

@@ -6,6 +6,12 @@
   justify-content: space-between;
   gap: var(--space-2);
   min-width: 10rem;   /* select-only knob */
+  /* ...but never wider than what is holding it. The trigger sizes itself to the longest option it
+   * can display, and inside a card that is 20rem wide an option of sixty characters simply left
+   * the card — measured on a team whose week status is "5-Already testing / using it with real
+   * users or in a real workflow". A control that grows past its parent is the parent's problem
+   * everywhere it is used, so it is fixed once, here. */
+  max-inline-size: 100%;
   height: var(--control-height);
   padding: 0 var(--control-padding-x);   /* match btn/input */
   background: var(--background);
@@ -28,6 +34,8 @@
   outline: var(--ring-width) solid var(--ring);
   outline-offset: var(--ring-offset);
 }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.select-trigger:active:not(:disabled) { border-color: var(--primary-active); }
 .select-trigger[data-open] { border-color: var(--ring); }
 .select-trigger[data-placeholder] { color: var(--muted-foreground); }
 .select-trigger[data-invalid] { border-color: var(--destructive); }
@@ -45,3 +53,13 @@
 .select-trigger .icon { color: var(--icon-muted); }
 
 /* Selection (trailing primary check) is handled centrally by DropdownItem. */
+
+/* The chosen value, which is the part that can be any length. It shortens with an ellipsis rather
+ * than pushing the trigger wider: the whole value is one click away in the menu, and the trigger's
+ * aria-label carries it for anyone not looking at the pixels. */
+.select-value {
+  overflow: hidden;
+  min-inline-size: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,7 +1,7 @@
 {
   "ref": "Slider",
   "level": "atom",
-  "description": "Single-value range input. Built on the native <input type=\"range\">, so the keyboard contract (arrows, Home/End, Page Up/Down) and screen-reader support come for free; this adds the label row, the value read-out and the themed track. The filled portion is driven by a --pct custom property.",
+  "description": "Single-value range input. Built on the native <input type=\"range\">, so the keyboard contract (arrows, Home/End, Page Up/Down) and screen-reader support come for free; this adds the label row, the value read-out and the themed track. The filled portion is driven by a --pct custom property. Copy: the label carries the unit; the value is announced as the reader would say it, not as a raw number.",
   "exports": [
     "Slider"
   ],
@@ -37,17 +37,20 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name."
     },
     {
       "name": "showValue",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Show the current value at the inline-end of the label row."
     },
     {
       "name": "formatValue",
       "type": "(value: number) => string",
-      "required": false
+      "required": false,
+      "description": "Formats the shown value (e.g. `(v) => `${v}%``). Default is the raw number."
     }
   ],
   "sourcePath": "src/components/Slider/Slider.tsx",

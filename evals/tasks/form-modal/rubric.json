@@ -2,7 +2,14 @@
   "id": "form-modal",
   "title": "Create-user dialog",
   "why": "Forms are where hand-rolled markup creeps back in: a label, an input and a native select are easy to type and quietly bypass the whole control layer.",
-  "required": ["FormModal", "Field", "Input", "Select", "Button"],
+  "required": [
+    "Modal",
+    "FormStack",
+    "Field",
+    "Input",
+    "Select",
+    "Button"
+  ],
   "forbidden": [
     {
       "pattern": "<label[\\s>]",

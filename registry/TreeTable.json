@@ -1,0 +1,48 @@
+{
+  "ref": "TreeTable",
+  "level": "organism",
+  "description": "Hierarchy WITH columns: a bill of materials, an org rollup, a folder tree with size and owner. `<Tree>` is the same hierarchy with one column of labels, and `<Table>` is the same columns with no nesting. The ARIA pattern is `treegrid`, and it is a contract: the rows are the widget's stops, Right opens a branch or steps into it, Left closes it or steps out, and the whole thing is one tab stop. Copy: the first column carries the name and the nesting; the rest are fields, headed by the field's own name.",
+  "exports": [
+    "TreeTable"
+  ],
+  "main": "TreeTable",
+  "from": "@/components/TreeTable",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true,
+      "description": "The name of the table. A treegrid without one is an unnamed widget."
+    },
+    {
+      "name": "columns",
+      "type": "readonly TreeTableColumn[]",
+      "required": true,
+      "description": "The first column (the hierarchy) plus one entry per value column."
+    },
+    {
+      "name": "nodes",
+      "type": "readonly TreeTableNode[]",
+      "required": true
+    },
+    {
+      "name": "defaultExpandedIds",
+      "type": "readonly string[]",
+      "required": false,
+      "description": "Open at first paint: the branches whose children the reader needs."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/TreeTable/TreeTable.tsx",
+  "context": "region",
+  "uses": [
+    "Icon",
+    "Table"
+  ],
+  "example": "<TreeTable\n  label=\"Revenue by region\"\n  defaultExpandedIds={['eu']}\n  columns={[{ header: 'Region' }, { header: 'Revenue', align: 'end' }, { header: 'Accounts', align: 'end' }]}\n  nodes={NODES}\n/>"
+}

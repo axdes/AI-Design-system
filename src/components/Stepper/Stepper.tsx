@@ -23,7 +23,11 @@ type Props = {
 /* Progress across an ordered set of steps (a wizard, a multi-step form). Shows
  * which are done (check), which is active (aria-current="step") and which are
  * still ahead. Presentational: the parent owns `current` and what each step
- * contains. Completed steps can be clickable to go back. */
+ * contains. Completed steps can be clickable to go back. 
+   *
+   * Copy: step names are nouns, short and parallel, and they stay the same word in
+   * the step and in its page title.
+   */
 export function Stepper({ steps, current, onStepClick, label = 'Progress', className }: Props) {
   return (
     <ol className={cn('stepper', className)} aria-label={label}>

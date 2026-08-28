@@ -25,11 +25,11 @@
 /* Active rail icon: light-grey circle (app-bg tone) + primary icon — matches
  * the left sidebar's active treatment (the default --accent reads too heavy). */
 .content-side-panel-rail .icon-button:hover {
-  background: var(--nav-active-bg);
+  background: var(--nav-active);
 }
 .content-side-panel-rail .icon-button[data-open] {
-  background: var(--nav-active-bg);
-  color: var(--nav-active-fg);
+  background: var(--nav-active);
+  color: var(--nav-active-foreground);
 }
 
 /* Slide-out panel (chrome via <SidePanel>) sits between document and rail —

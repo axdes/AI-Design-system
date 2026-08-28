@@ -20,7 +20,12 @@ type Props = {
 }
 
 /** The end of a list that has more of it. `<Pagination>` pages a known total;
- *  this is for the ones where the total is not known and may not be finite. */
+ *  this is for the ones where the total is not known and may not be finite. 
+ *
+ * Copy: name what arrives, with the number when it is known — "Show 20 more
+ * invoices". "Load more" tells the reader nothing about what they are
+ * about to wait for.
+ */
 export function LoadMore({ onLoad, loading, hasMore, label, loadingLabel, auto, className }: Props) {
   const anchorRef = useRef<HTMLDivElement | null>(null)
   const loadRef = useLatest(onLoad)

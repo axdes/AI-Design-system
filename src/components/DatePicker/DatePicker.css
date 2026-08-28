@@ -18,7 +18,10 @@
 .datepicker-trigger[data-size="lg"] { block-size: var(--control-height-lg); font-size: var(--control-font-size-lg); }
 .datepicker-trigger:hover { border-color: var(--ring); }
 .datepicker-trigger:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.datepicker-trigger:active:not(:disabled) { border-color: var(--primary-active); }
 .datepicker-trigger[data-invalid] { border-color: var(--destructive); }
+.datepicker-trigger[data-invalid]:focus-visible { outline-color: var(--destructive); }
 /* --muted surface: drop the resting border (invalid + focus outline still show). */
 .datepicker-trigger[data-surface="muted"]:not([data-invalid]),
 .datepicker-trigger[data-surface="muted"]:not([data-invalid]):hover { border-color: transparent; }

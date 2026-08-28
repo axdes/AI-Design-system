@@ -19,6 +19,9 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 /**
  * The search field: the icon, the clear button and the debounce contract in
  * one control.
+ *
+ * Copy: the placeholder names the field being searched — "Search invoices" — so
+ * a screen with two searches is two different controls.
  */
 export function SearchInput({ className, value, onBlur, onClear, expanded, surface = 'base', ...rest }: Props) {
   const { t } = useTranslation()
@@ -59,9 +62,16 @@ export function SearchInput({ className, value, onBlur, onClear, expanded, surfa
       >
         <Icon name="search" />
       </button>
+      {/* A SEARCH BOX IS NEVER A CREDENTIAL FIELD, and it has to say so: a page
+          holding any password field is a sign-in to a browser, which then fills
+          the nearest username-ish box from its saved accounts. The components
+          page filled its own search with a person's name the moment the
+          PasswordInput example opened (owner, 2026-08-24). Stated here rather
+          than at each call site, because every search in the system has it. */}
       <input
         ref={inputRef}
         type="search"
+        autoComplete="off"
         className="search-input-field"
         value={value}
         onBlur={handleBlur}

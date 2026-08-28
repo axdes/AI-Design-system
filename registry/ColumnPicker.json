@@ -1,0 +1,58 @@
+{
+  "ref": "ColumnPicker",
+  "level": "molecule",
+  "description": "Which columns a table shows, and in what order. A card of controls on click, so it is a `<Popover>` rather than a menu: the reader ticks several boxes in one visit and the table changes under it. The choice belongs to the reader and to this collection, so persist it per table (localStorage or the user's settings) rather than resetting it on every visit.",
+  "exports": [
+    "ColumnPicker"
+  ],
+  "main": "ColumnPicker",
+  "from": "@/components/ColumnPicker",
+  "slots": [],
+  "props": [
+    {
+      "name": "columns",
+      "type": "readonly PickableColumn[]",
+      "required": true,
+      "description": "Every column the table CAN show, in the order it shows them."
+    },
+    {
+      "name": "visible",
+      "type": "readonly string[]",
+      "required": true,
+      "description": "The keys currently shown."
+    },
+    {
+      "name": "onChange",
+      "type": "(keys: string[]) => void",
+      "required": true
+    },
+    {
+      "name": "onMove",
+      "type": "(key: string, direction: -1 | 1) => void",
+      "required": false,
+      "description": "Moves a column one place, so the order is reachable without dragging. Leave it out and the picker only hides and shows."
+    },
+    {
+      "name": "onReset",
+      "type": "() => void",
+      "required": false,
+      "description": "Back to the columns the table shipped with. A picker with no way back is a picker nobody tries twice."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ColumnPicker/ColumnPicker.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Checkbox",
+    "Icon",
+    "IconButton",
+    "Popover",
+    "Tooltip"
+  ],
+  "example": "const [columns, setColumns] = useState(ALL)\nconst [visible, setVisible] = useState<string[]>(DEFAULT)\n/* Order is reachable without a drag, which is also the only version of it a\n   keyboard can use. */\nconst move = (key: string, direction: -1 | 1) => {\n  setColumns((prev) => {\n    const from = prev.findIndex((c) => c.key === key)\n    const to = from + direction\n    if (from < 0 || to < 0 || to >= prev.length) return prev\n    const next = [...prev]\n    const [moved] = next.splice(from, 1)\n    next.splice(to, 0, moved)\n    return next\n  })\n}\n\n<ColumnPicker\n  columns={columns}\n  visible={visible}\n  onChange={setVisible}\n  onMove={move}\n  onReset={() => { setColumns(ALL); setVisible(DEFAULT) }}\n/>"
+}

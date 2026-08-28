@@ -33,6 +33,12 @@
   cursor: pointer;
   transition: background var(--duration-fast);
 }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.pagination-page:active:not(:disabled) { background: var(--accent); }
+.pagination-page:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .pagination-page:hover {
   background: var(--accent-soft);
 }
@@ -53,3 +59,4 @@
   min-inline-size: var(--control-height-sm);
   color: var(--muted-foreground);
 }
+

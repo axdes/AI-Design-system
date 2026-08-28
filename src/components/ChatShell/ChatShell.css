@@ -24,6 +24,9 @@
   display: grid;
   grid-template-columns: var(--chat-sidebar-width) 1fr;
   background: var(--card);
+  /* A white surface that is not `.card`, so it owes its own answer — see
+   * --surface-contrast in semantic.css. Without these a quiet control on it
+   * takes the PAGE's answer, which is white, and stands white on white. */
   border-radius: var(--card-radius);
   overflow: hidden;
 }

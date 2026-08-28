@@ -1,7 +1,7 @@
 {
   "ref": "Chip",
   "level": "atom",
-  "description": "Rounded selectable label. A Button with a toggle state, always pill-shaped: quick actions, quick replies, pick-a-reason chips, filters, etc.",
+  "description": "Rounded selectable label. A Button with a toggle state, always pill-shaped: quick actions, quick replies, pick-a-reason chips, filters, etc. Copy: names the filter it applies, not the act of filtering — \"Overdue\", not \"Filter by overdue\".",
   "exports": [
     "Chip"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "ref",
       "type": "Ref<HTMLButtonElement>",
-      "required": false
+      "required": false,
+      "description": "Forwarded to the underlying <button>."
     },
     {
       "name": "variant",
@@ -39,12 +40,14 @@
     {
       "name": "selected",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Toggled/active state for pick-one or multi-select chip groups (primary fill)."
     },
     {
       "name": "icon",
       "type": "IconName",
-      "required": false
+      "required": false,
+      "description": "Optional leading icon."
     }
   ],
   "sourcePath": "src/components/Chip/Chip.tsx",

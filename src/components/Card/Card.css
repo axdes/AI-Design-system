@@ -1,3 +1,23 @@
+/* THE SCRIM, over imagery. Four roles read by this component and nothing else,
+ * so they live here rather than in the global role layer: a word every other
+ * component has to read past is a word it pays for. They moved down on
+ * 2026-08-26, and they could move because the theme does not touch them — the
+ * scrim is dark and its text light in BOTH themes, since the image underneath
+ * obeys neither, which is why they were declared once even upstairs. The four
+ * that stayed upstairs stayed for the opposite reason: `--avatar-foreground`,
+ * `--switch-*` and `--shadow-card-hover` each carry three declarations, one per
+ * theme, and pushing those into a component would put theme logic in the one
+ * place the role layer exists to keep it out of.
+ *
+ * Second component that needs a scrim promotes them back. That is the system's
+ * own rule, and this is the cheap direction to be wrong in. */
+.card {
+  --scrim-fade: linear-gradient(to top, var(--scrim-85), var(--scrim-70) 40%, var(--scrim-0) 80%);
+  --scrim: var(--scrim-70);
+  --scrim-strong: var(--scrim-85);
+  --scrim-foreground: var(--neutral-0);
+}
+
 /* Unified card surface. Variants via data-attributes:
  *   data-interactive  — clickable card (hover shadow)
  *   data-flat         — non-clickable display card
@@ -25,15 +45,50 @@
 
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  /* 8, not 12: eyebrow, title and the first sentences are ONE block and read as
+   * one. The distance that matters is the one before the footer, and CardMeta
+   * owns that (16 below). A single even gap between every part is what made the
+   * card read as a stack of unrelated lines. */
+  gap: var(--space-2);
   padding: var(--card-padding);
   border-radius: var(--card-radius);
   background: var(--card);
   color: var(--card-foreground);
+  /* The anchor for `.card-link` and for `.card-corner`: EVERY card may carry a
+   * menu in its top-right corner (owner, 23.08), not only the clickable ones. */
+  position: relative;
+  /* ONE GESTURE, ONE SPEED. Every part of the card that answers the pointer —
+   * this shadow, the media zoom, the cover scrim, the play glyph — runs on
+   * --card-motion, so they arrive together instead of in a queue. */
+  --card-motion: var(--duration-normal) var(--ease-out);
+
+  transition: box-shadow var(--card-motion);
+
+  /* THE CARD'S TWO INKS, as tokens rather than as colours written into each
+   * part. Setting a colour on a DESCENDANT beats anything the card inherits, so
+   * `.card-header` and `.card-title` were overriding the cover's scrim ink from
+   * below and every word on a photo card came out dark on dark (owner,
+   * 2026-08-23). A part asks for the ink; the surface answers. */
+  --card-ink: var(--card-foreground);
+  --card-ink-muted: var(--muted-foreground);
+
+  /* --accent (neutral-200), not a step darker: the owner asked for "greys, but
+   * not as dark as you made them" (2026-08-23) after a shade deeper was tried. */
+
 }
+
 /* No resting shadow by design: a card lifts (via --shadow-card-hover) only when
  * it is interactive AND hovered. A flat display card never lifts. */
 .card[data-tight] { gap: var(--space-1); }
+
+/* FLUSH IS FOR THE CONTENT, NOT FOR THE CARD.
+ *
+ * `flush` exists so a table's rules can meet the card frame. It used to zero the
+ * padding for EVERYTHING in the card, which put the title hard against the left
+ * edge while the table's own cells sat 16px in — a card with two different left
+ * edges and neither of them the card's own (owner, 23.08: the paddings and the
+ * borders are off the grid). The parts that are not full-bleed take the card
+ * padding back, and the table below aligns its outer columns to the same line. */
 .card[data-flush] {
   padding: 0;
   /* Full-bleed content owns ALL of its spacing - no card gap between its
@@ -42,18 +97,89 @@
   /* Square content (sticky table headers) must not poke past the radius. */
   overflow: hidden;
 }
-.card[data-fill]            { height: 100%; }
-/* flat = the resting card. Kept as an explicit opt-out of the hover lift now
- * that the base card carries no outline either. */
-.card[data-flat] { box-shadow: none; }
-.card[data-interactive] {
-  box-shadow: none;
-  cursor: pointer;
-  transition: box-shadow var(--duration-fast);
-  /* The anchor for `.card-link` below. */
-  position: relative;
+
+/* WHAT IS FULL-BLEED IS THE SHORT LIST; EVERYTHING ELSE TAKES THE PADDING BACK.
+ *
+ * This was an allow-list of children that get the padding (header, title,
+ * meta), and an allow-list can never be complete: a table toolbar, a pager and
+ * a "See all" link each arrived on the card's outer edge in turn, one clipped
+ * character from the frame (owner, 23.08, three times). Inverting it makes the
+ * default right and the exception explicit, and the exception is knowable: a
+ * table, a grid and a media frame are the things that are SUPPOSED to meet the
+ * card. Listed first so the block-padding rules below still win. */
+.card[data-flush] > *:not(.table, .table-scroll, .datagrid, .card-media, .divider) {
+  padding-inline: var(--card-padding);
 }
-.card[data-interactive]:hover { box-shadow: var(--shadow-card-hover); }
+
+.card[data-flush] > *:not(.table, .table-scroll, .datagrid, .card-media, .divider):last-child {
+  padding-block-end: var(--card-padding);
+}
+
+/* And the same at the top: a search field or a toolbar that opens a flush card
+ * was pinned to the frame, half a pixel from the radius (owner, 23.08: what is
+ * stuck here). The card's distance from its own frame is the card's to give. */
+.card[data-flush] > *:not(.table, .table-scroll, .datagrid, .card-media, .divider):first-child {
+  padding-block-start: var(--card-padding);
+}
+
+/* AND WHAT FOLLOWS A TABLE IS A FOOTER, SO IT CARRIES THE LINE.
+ * The last row of a table draws no rule (the table meets the card), which is
+ * right until something comes after it: a pager, a "see all" link, a button.
+ * Then the rows and the footer ran into each other with nothing between them
+ * (owner, 23.08: there is no border at the bottom when there is a button or a
+ * link under the table). The separator belongs to whatever follows, because
+ * only it knows it is there. */
+.card[data-flush] > :is(.table, .table-scroll, .datagrid) + *:not(.table, .table-scroll, .datagrid, .card-media, .divider) {
+  border-block-start: 1px solid var(--border);
+  padding-block-start: var(--space-3);
+}
+
+.card[data-flush] > .card-header,
+.card[data-flush] > .card-title,
+.card[data-flush] > .card-meta {
+  padding-inline: var(--card-padding);
+}
+
+/* The head keeps the card's distance from the frame above it and a text step
+ * from the content below: the full padding on both sides put 36px between the
+ * title and a table's header row, since the header row brings its own (owner,
+ * 23.08: here the gap is too big instead). */
+.card[data-flush] > .card-header,
+.card[data-flush] > .card-title:first-child {
+  padding-block-start: var(--card-padding);
+  padding-block-end: var(--space-2);
+}
+
+.card[data-flush] > .card-meta {
+  padding-block: var(--card-padding);
+}
+
+.card[data-fill]            { height: 100%; }
+
+/* THE hover, and there is one of it.
+ *
+ * The lift used to be `data-interactive` only, so a card the pointer could act
+ * on lifted and a card of the same content beside it did not — the owner's
+ * note, 2026-08-22: it works in some places, and it has to be one thing. Every
+ * card lifts a little under the pointer; `flat` is how a card says it does not,
+ * and it is the only way. Nested cards lift too, which is why the nested rule
+ * below no longer pins the shadow off. */
+/* THE CARD DOES NOT MOVE UNDER THE POINTER. Only the shadow answers.
+ *
+ * A 2px lift was tried on 23.08 and the owner called it within the hour: cards
+ * jumping. In a grid, a tile that hops as the pointer crosses it drags the eye
+ * with it, and the eye is meant to be on the card the reader is going TO. The
+ * shadow says "live" without moving anything, and it says it on the same curve
+ * and the same duration as every other part of the card. */
+.card:hover { box-shadow: var(--shadow-card-hover); }
+
+/* flat = the resting card: the one explicit opt-out of the lift. */
+.card[data-flat],
+.card[data-flat]:hover { box-shadow: none; }
+
+.card[data-interactive] {
+  cursor: pointer;
+}
 
 /* A CARD THAT IS A LINK.
  *
@@ -74,10 +200,44 @@
   inset: 0;
   z-index: 0;
 }
+
 .card-above {
   position: relative;
   z-index: 1;
 }
+
+/* THE CORNER. Pinned to the card's own padding box, so it lines up with the
+ * title's cap line whatever the card holds — a header, a title, a picture. It
+ * sits above the link layer, which is what makes the menu clickable on a card
+ * whose title already covers the whole tile. */
+.card-corner {
+  position: absolute;
+  inset-block-start: var(--card-padding);
+  inset-inline-end: var(--card-padding);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* A card with media at the top has no padding up there: the corner sits ON the
+ * picture, where it needs the smaller inset the media's own controls use. */
+.card[data-flush] > .card-corner,
+.card:has(> .card-media:first-child) > .card-corner {
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-3);
+}
+
+/* AND THE TITLE MAKES ROOM. An absolutely positioned corner does not reserve
+ * any, so without this a long name runs under the menu button — the one thing
+ * a corner slot must never cost. Only the top block needs the inset. */
+.card:has(> .card-corner) > .card-header,
+.card:has(> .card-corner) > .card-title,
+.card:has(> .card-corner) > .card-media + .card-title {
+  padding-inline-end: var(--space-8);
+}
+
+.card:has(> .card-corner) > .card-media ~ .card-title { padding-inline-end: 0; }
+
 /* A TITLE THAT HAPPENS TO BE THE CONTROL still looks like a title.
  *
  * Left alone, a link-styled control here painted the name blue at body size, so
@@ -91,17 +251,46 @@
   text-align: start;
   block-size: auto;
   padding: 0;
+  /* A BUTTON does not wrap; a TITLE must. Every control in this system sets
+   * `white-space: nowrap` so a label never breaks in half, and the moment the
+   * title became the control that rule followed it in: measured at 390px, a
+   * seven-word headline ran 142px past its own card and took the page's
+   * sideways scroll with it (page audit, 23.08). */
+  white-space: normal;
 }
+
 .card-title .card-link:hover { text-decoration: underline; }
+
+/* THE PICTURE MOVES WHEN THE CARD IS LIVE.
+ *
+ * An interactive card already lifts under the pointer. On a card whose subject IS
+ * a photograph the lift alone is easy to miss, so the image itself answers: it
+ * grows a little inside its frame, which the frame crops. Scale, never size — the
+ * layout must not move a pixel, or a grid of cards would reflow under the mouse.
+ * `prefers-reduced-motion` is honoured globally in reset.css, which turns this
+ * into an instant state change rather than removing the feedback. */
+.card[data-interactive] .card-media > img,
+.card[data-interactive] .card-media > video {
+  transition: transform var(--card-motion);
+}
+
+.card[data-interactive]:hover .card-media > img,
+.card[data-interactive]:hover .card-media > video {
+  transform: scale(1.06);
+}
 
 /* Reveal-on-hover children (e.g. card-corner IconButton menu) */
 .card[data-interactive]:hover [data-reveal] { opacity: 1; }
 
-/* A card ON a card: white on white needs the separation the page surface gave
- * it, so the fill drops one tier instead of an outline going on. */
+/* A card ON a card: white on white needs separation, and it takes the OUTLINE,
+ * not a tier of fill. The tinted version shipped until 2026-08-22 and the owner
+ * called it: three tinted tiles inside a white card read as a panel of disabled
+ * things — muted is the fill this system paints DISABLED with, which is exactly
+ * the note DetailPageTemplate.css already carried about a card on a panel. It
+ * keeps the card's own fill and draws a hairline round itself. */
 .card .card {
-  background: var(--muted);
-  box-shadow: none;
+  background: var(--card);
+  border: 1px solid var(--border);
   padding: var(--card-padding-nested);
   border-radius: calc(var(--card-radius) - var(--grid-unit));   /* one grid step tighter (concentric) */
 }
@@ -122,12 +311,21 @@
  * A card with only a title and one line still uses it: it just stops at level 2. */
 
 /* Card slots */
+/* LEVEL 1 READS LEFT TO RIGHT, AND NOTHING IS PUSHED TO THE FAR EDGE.
+ *
+ * It was `space-between`, which sent the status chip or the period label to the
+ * card's right edge. Two things were wrong with that (owner, 23.08): the right
+ * corner is the MENU's — every card may carry one — and a label parked there
+ * eats the width the title needs, so a name wrapped to two lines with 90px of
+ * white beside it. The kicker and the status now sit together at the start,
+ * which is also what the anatomy note below has always said they do. */
 .card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
+
 /* Level 2. One size step above body, so the weight is what carries the rank rather than a
  * 24px name shouting over 13px metadata. (Families without a 500 face render this as 400 and
  * lose nothing: the size step is still there.) */
@@ -137,9 +335,26 @@
   font-size: var(--card-title-size);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-tight);
+  /* At 20px the display face needs its tracking pulled in. */
+  letter-spacing: -0.01em;
+  /* A TITLE FILLS ITS CARD. Plain `wrap`, which is the one value that does.
+   *
+   * It shipped as `balance`: every line the same length, so a two-line title
+   * stopped a third short of the card it sits in and no two cards in a row
+   * broke at the same place (owner, 23.08: why is the title not the full
+   * width). `pretty` was tried and is not the answer either — measured in
+   * Chromium, the same title came out 164px + 151px inside a 313px card, i.e.
+   * still balanced, because avoiding a short LAST line on a two-line title is
+   * balancing it. `wrap` fills the first line and lets the rest fall where the
+   * measure puts it: 313px + the remainder. */
+  text-wrap: wrap;
 }
-/* Level 4. Pinned to the bottom of the card whatever is above it, behind a hairline: it is the
- * footer of the card, and without the rule it read as one more grey line in the stack. */
+
+/* Level 4. Pinned to the bottom of the card whatever is above it. It used to sit behind a
+ * hairline; the rule is gone (owner, 2026-08-22) and the same surface rule that keeps a card
+ * from wearing an outline applies inside it — separation is space and colour, not a line. On a
+ * card that fills its row the footer is already at the foot with room above it, which is the
+ * separation the hairline was drawn to provide. */
 .card-meta {
   display: flex;
   justify-content: space-between;
@@ -147,30 +362,105 @@
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-3);
   margin-block-start: auto;
-  padding-block-start: var(--space-3);
-  border-block-start: 1px solid var(--border);
+  /* 8, not 12. Same arithmetic as the rows: the hairline used to sit between the
+   * card's own 12px gap and this padding, so the footer read as "gap, line,
+   * gap". With the line gone the two add up to one 24px void above a line of
+   * small grey text. 20px still says footer and no longer says gap. */
+  padding-block-start: var(--space-4);
   font-size: var(--font-sm);
-  color: var(--muted-foreground);
+  color: var(--card-ink-muted);
+  /* Dates and counts line up under each other rather than dancing by a pixel
+   * per glyph. */
+  font-variant-numeric: tabular-nums;
 }
-/* A tight card is a dense tile; the footer keeps its own breathing room anyway, or the hairline
- * lands on the text above it. */
-.card[data-tight] .card-meta { padding-block-start: var(--space-2); }
+
+/* A tight card is a dense tile; the footer keeps its own breathing room anyway. */
+.card[data-tight] .card-meta { padding-block-start: var(--space-1); }
 
 /* Level 1. The kind, and the status beside it — above the name, not competing with it. */
 .card-header {
-  color: var(--muted-foreground);
+  color: var(--card-ink-muted);
 }
 
-/* ── The media slot ──────────────────────────────────────────────────────────
- * Three placements, one part. The slot owns everything media needs and the
- * content must not inherit: full-bleed against the card's padding, cover
- * cropping, and — for `cover` — the scrim, so text NEVER sits on raw imagery
- * (the contrast is checked at the image's worst point, which nobody can
- * promise; the scrim is the promise). */
-.card-media {
-  /* Component-private knobs, co-located per the token conventions. */
-  --card-media-height: 9rem;
-  overflow: hidden;
+/* A TITLE inside the header is still a title. The muted colour above is for the
+ * kicker and the status that ride with it; inherited by a CardTitle it painted
+ * the name grey, so a card whose title sat in a header row read as secondary
+ * beside an identical card whose title stood alone. */
+.card-header > .card-title {
+  color: var(--card-ink);
+}
+
+/* ── ONE RHYTHM INSIDE THE CARD ───────────────────────────────────────────────
+ * The card's own gap (8) is the distance between LINES that belong together:
+ * the eyebrow, the title, the sentence under it. A COMPONENT is not a line — a
+ * table, a timeline, a chart, a field, a column of rows — and it starts one
+ * step further down.
+ *
+ * One rule, in one place, because the alternative was drifting into every
+ * guest's own stylesheet: the same three cards side by side showed a table
+ * 36px under its title, a timeline 8px under its own, and a list of rows at 12
+ * (owner, 23.08: check that the distances from the titles are the same
+ * everywhere and that this is reusable). A component that lands in a card gets
+ * the card's rhythm without knowing it is in a card. */
+.card > :is(.timeline, .table-scroll, .accordion, .descriptions, .field, .tabs,
+    .sparkline, .bar-chart, .donut-chart, .meter, .progressbar, .list-item,
+    .selectable-tile, .quote, .logo-wall, .grid, .empty-state,
+    .content-card[data-layout='row']) {
+  margin-block-start: var(--space-2);
+}
+
+/* Unless it opens the card: then the card's padding is the distance. */
+.card > :is(.timeline, .table-scroll, .accordion, .descriptions, .field, .tabs,
+    .sparkline, .bar-chart, .donut-chart, .meter, .progressbar, .list-item,
+    .selectable-tile, .quote, .logo-wall, .grid, .empty-state,
+    .content-card[data-layout='row']):first-child {
+  margin-block-start: 0;
+}
+
+/* A wall of marks centres itself in what the row leaves. It is the card's
+ * subject, not a line under the title, and in a row of equal heights the spare
+ * space reads as a frame around it rather than as a hole beneath it. */
+.card > .logo-wall {
+  margin-block: auto;
+}
+
+/* A picture already ends at the card's own distance (the media slot sets it),
+ * so a component that follows it does not add a step on top: a tab strip under
+ * a photograph stood 32px off it while a title under the same photograph stood
+ * 24. */
+.card > .card-media + * {
+  margin-block-start: 0;
+}
+
+/* A COLUMN OF ROWS IS ONE BLOCK.
+ *
+ * Row components carry their own vertical padding, and that padding IS the
+ * rhythm of a list. The card's gap must not be added on top of it: with it the
+ * same three rows stood 8px further apart inside a padded card than inside a
+ * flush one — one component, two rhythms, which is exactly what the owner asked
+ * us to stop doing (23.08). */
+.card > :is(.list-item, .content-card[data-layout='row'])
+    + :is(.list-item, .content-card[data-layout='row']) {
+  margin-block-start: calc(-1 * var(--space-2));
+}
+
+.card[data-tight] > :is(.list-item, .content-card[data-layout='row'])
+    + :is(.list-item, .content-card[data-layout='row']) {
+  margin-block-start: calc(-1 * var(--space-1));
+}
+
+.card[data-flush] > :is(.list-item, .content-card[data-layout='row'])
+    + :is(.list-item, .content-card[data-layout='row']) {
+  margin-block-start: 0;
+}
+
+/* Rows of a list line up with the card's own title. The row keeps its padding —
+ * that is what makes the hover tint a band rather than a box around the words —
+ * and bleeds it back over the card's, so the words start on the card's left
+ * line instead of 12px inside it. */
+.card > .list-item {
+  width: auto;
+  margin-inline: calc(-1 * var(--space-3));
 }
 
 .card-media > img,
@@ -181,75 +471,69 @@
   object-fit: cover;
 }
 
-/* Top: bleeds to the card's edges above the content. */
-.card-media[data-placement='top'] {
-  margin-block-start: calc(-1 * var(--card-padding));
-  margin-inline: calc(-1 * var(--card-padding));
-  block-size: var(--card-media-height);
-  border-start-start-radius: var(--card-radius);
-  border-start-end-radius: var(--card-radius);
-}
-
-/* Side: the card turns horizontal — a fixed media column, content beside it.
- * The media spans the card's full height (grid row -1). */
-.card:has(> .card-media[data-placement='side']) {
-  display: grid;
-  grid-template-columns: 8.5rem 1fr;
-  column-gap: var(--card-padding);
-}
-
-.card-media[data-placement='side'] {
-  grid-column: 1;
-  grid-row: 1 / 20;
-  margin-block: calc(-1 * var(--card-padding));
-  margin-inline-start: calc(-1 * var(--card-padding));
-  border-start-start-radius: var(--card-radius);
-  border-end-start-radius: var(--card-radius);
-}
-
-.card:has(> .card-media[data-placement='side']) > :not(.card-media) {
-  grid-column: 2;
-}
-
-/* Cover: media behind, content on top, pushed to the card's foot, scrim
- * between them. The card speaks in the scrim's foreground while covered. */
-.card:has(> .card-media[data-placement='cover']) {
-  --card-cover-min-height: 12rem;
-
-  position: relative;
-  justify-content: flex-end;
-  min-block-size: var(--card-cover-min-height);
-  color: var(--scrim-foreground);
-}
-
-.card-media[data-placement='cover'] {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-}
-
-/* The scrim: a gradient over the text band, not a tint over the whole frame. */
-.card-media[data-placement='cover']::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--scrim-fade);
-}
-
-.card:has(> .card-media[data-placement='cover']) > :not(.card-media) {
-  position: relative;
-}
-
 .card:has(> .card-media[data-placement='cover']) .card-title {
   color: inherit;
 }
 
-/* Tinted media: the cover for content that has no photograph — a training,
- * a category tile. Brand gradient or ink, from tokens. */
-.card-media[data-wash='brand'] {
-  background: linear-gradient(135deg, var(--primary-accent), var(--primary));
+/* EVERY line on a cover speaks in the scrim's foreground, not just the title.
+ *
+ * MetaItem paints itself with --muted-foreground, which is a grey chosen against
+ * a page, and over a dark cover it failed contrast outright (axe, serious, on the
+ * wash-only card — 2026-08-22). The scrim promises legibility for the whole band
+ * or for nothing. */
+.card:has(> .card-media[data-placement='cover']) .card-meta,
+.card:has(> .card-media[data-placement='cover']) .meta-item {
+  color: inherit;
 }
 
-.card-media[data-wash='ink'] {
-  background: var(--scrim-strong);
+/* The ICON on the band speaks in the same voice as the words beside it. It kept
+ * --icon-muted, a grey chosen against a page, so on a coloured ground the label
+ * read white and its glyph read grey — the pair looked broken rather than
+ * secondary (owner, 23.08, on the primary wash). */
+.card:has(> .card-media[data-placement='cover']) .meta-item .icon {
+  color: inherit;
+  opacity: 0.75;
 }
+
+/* A chip ON a colour belongs to the colour: a white pill with a purple label,
+ * which is what a soft Badge is on a page, reads as a sticker from another
+ * screen once the ground is the brand. On a wash it takes the scrim's own
+ * surface and foreground, like every other line in the band. */
+.card:has(> .card-media[data-wash]) .badge {
+  background: var(--scrim);
+  color: var(--scrim-foreground);
+  border-color: transparent;
+}
+
+/* On a cover the meta must NOT pin itself to the foot.
+ *
+ * CardMeta earns its place at the bottom of an ordinary card with an auto
+ * margin. On a cover that margin fights `justify-content: flex-end` and wins:
+ * the title is pushed to the TOP of the card, over raw photograph, while the
+ * scrim sits at the bottom under the meta — the one arrangement this card exists
+ * to prevent (seen 2026-08-22: a title over a laptop screen, unreadable). The
+ * band stays together at the foot, where the scrim is. */
+.card:has(> .card-media[data-placement='cover']) .card-meta {
+  margin-block-start: 0;
+}
+
+/* THE GROUND ANSWERS TOO — by getting DARKER, and by nothing else.
+ *
+ * It used to swap the ink wash for the brand gradient on hover. Two things were
+ * wrong with that: a card changed COLOUR under the pointer, which reads as a
+ * different card rather than as the same one being live, and the swap animated
+ * a gradient, which no browser can interpolate — it sat still for 200ms and
+ * then snapped (owner, 23.08: the wash card jerks and the gradient is strange).
+ * The darkening now lives in one opacity on the cover's overlay, above, and it
+ * treats a photograph and a colour alike. */
+.card[data-interactive] .card-media[data-wash] > img {
+  transition: transform var(--card-motion), opacity var(--card-motion);
+}
+
+.card[data-interactive]:hover .card-media[data-wash] > img {
+  opacity: 0.55;
+}
+
+.card-media[data-ratio] > iframe,
+.card-media[data-ratio] > video,
+.card-media[data-ratio] > img { inline-size: 100%; block-size: 100%; object-fit: cover; }

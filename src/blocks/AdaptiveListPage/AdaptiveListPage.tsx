@@ -4,6 +4,8 @@ import { EmptyState } from '../../components/EmptyState'
 import { type IconName } from '../../components/Icon'
 import { ListCluster } from '../../components/ListCluster'
 import { PageHeader } from '../../components/PageHeader'
+import { cn } from '../../lib/cn'
+import { Page } from '../Page'
 import { useSimpleFit } from '../../lib/useSimpleFit'
 
 /* Why the props look like this — kept out of the JSDoc because the registry
@@ -61,6 +63,11 @@ type Props = {
   notice?: ReactNode
   /** The grid. Attach the ref it hands you to the grid element. */
   children: (gridRef: Ref<HTMLDivElement>) => ReactNode
+  /** A class on the page, for a product that paints its own ground behind the
+   *  welcome — transcript's animated wash is the case that asked for it. Every
+   *  other page block already took one; this one did not, and a product moving
+   *  onto it would have had to drop its background to fit (2026-08-26). */
+  className?: string
 }
 
 /* Where it came from: this existed five times before it existed once — the four
@@ -76,8 +83,13 @@ type Props = {
  *
  * Five states, in this order because each applies only once the ones above are
  * ruled out: could not load, still loading, nothing yet, the welcome, the grid.
+ *
+ * Copy: the hero title welcomes and names the product; the subtitle says in one
+ * sentence what a first-time reader can do here — the one place a line
+ * under a title is allowed, because it IS the screen. The empty state
+ * names what is missing, not that something is.
  */
-export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, count, empty, error, notice, children }: Props) {
+export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, count, empty, error, notice, children, className }: Props) {
   /* `centered` covers both "still loading" and "nothing yet": neither has a grid
    * to measure, and both belong in the middle of the page rather than under a
    * header. `simple` is the welcome layout, which only applies once there IS
@@ -131,15 +143,19 @@ export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, 
   }
 
   return (
-    <>
-      {/* The welcome layout carries its own hero title, so the header bar stays
+    <Page
+      archetype="hub"
+      className={cn('adaptive-list-page', className)}
+      /* Loading and empty have nothing to put under a header, so they sit in
+         the middle of the page. That is the `center` alignment <Page> owns. */
+      align={centered ? 'center' : undefined}
+      /* The welcome layout carries its own hero title, so the header bar stays
         * but empty — repeating the title directly above it reads as a mistake.
-        * Same reasoning as ListPageTemplate's empty branch. */}
-      {centered || simple ? <PageHeader /> : <PageHeader title={title} inline={inline} actions={actions} />}
-      <div className="adaptive-list-page" data-center={centered || undefined}>
-        {notice}
-        {content}
-      </div>
-    </>
+        * Same reasoning as ListPageTemplate's empty branch. */
+      header={centered || simple ? <PageHeader /> : <PageHeader title={title} inline={inline} actions={actions} />}
+    >
+      {notice}
+      {content}
+    </Page>
   )
 }

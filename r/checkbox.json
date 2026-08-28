@@ -1,0 +1,44 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "type": "registry:ui",
+  "title": "Checkbox",
+  "description": "Custom checkbox: a real <input> (kept accessible + form-native) visually replaced by a themed box. Sizing/colors come from tokens, like the controls. Copy: the label is the positive statement the tick makes true — \"Send me the weekly digest\", never \"Do not send…\". A negative label makes an unticked box mean yes.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Checkbox/Checkbox.css",
+      "content": ".checkbox {\n  --box-size: 1.25rem;   /* md default; sm/lg below */\n  /* The label IS the target, and at 20px (17 on sm) it was under the SC 2.5.8\n   * floor — and checkboxes stack, so the spacing exception does not apply. */\n  min-block-size: var(--space-6);\n  /* The hidden input below is absolutely positioned, so the label has to be its\n   * containing block. Without this it resolves against the page instead, escapes\n   * the clip of any scroll container it sits in, and stretches the DOCUMENT down\n   * to its own offset — a page-tall form scrolled a few pixels and showed a white\n   * strip under a shell that is exactly 100dvh tall. */\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  gap: var(--space-2);\n  cursor: pointer;\n  font-size: var(--font-base);\n  color: var(--foreground);\n  line-height: var(--leading-snug);\n}\n.checkbox[data-size=\"sm\"] { --box-size: 1rem; font-size: var(--font-sm); }\n.checkbox[data-size=\"lg\"] { --box-size: 1.5rem; font-size: var(--font-md); }\n.checkbox[data-disabled] { opacity: 0.5; cursor: not-allowed; }\n/* The same three answers every other control gives. The selection family gave\n * none of them: a checkbox did not acknowledge the pointer, did not answer the\n * press, and had no way to be marked wrong — so a required consent box could be\n * rejected by a form with nothing on screen saying which box was the problem. */\n.checkbox:hover:not([data-disabled]) .checkbox-box { border-color: var(--ring); }\n.checkbox:active:not([data-disabled]) .checkbox-box { border-color: var(--primary-active); }\n.checkbox[data-invalid] .checkbox-box { border-color: var(--destructive); }\n.checkbox[data-invalid] .checkbox-input:focus-visible + .checkbox-box { outline-color: var(--destructive); }\n\n\n/* Real input kept in the DOM (form-native + accessible), visually hidden. */\n.checkbox-input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }\n\n.checkbox-box {\n  position: relative;\n  display: inline-grid;\n  place-items: center;\n  flex-shrink: 0;\n  width: var(--box-size);\n  height: var(--box-size);\n  border: 1.5px solid var(--border-strong, var(--border));\n  border-radius: var(--radius-sm);\n  background: var(--background);\n  color: var(--primary-foreground);\n  transition: background var(--duration-fast), border-color var(--duration-fast);\n}\n.checkbox-box .icon { opacity: 0; transition: opacity var(--duration-fast); }\n\n.checkbox-input:checked + .checkbox-box,\n.checkbox-input:indeterminate + .checkbox-box { background: var(--primary); border-color: var(--primary); }\n.checkbox-input:checked + .checkbox-box .icon { opacity: 1; }\n/* Indeterminate dash (no minus icon in the set, so draw a bar). */\n.checkbox-input:indeterminate + .checkbox-box::after {\n  content: \"\";\n  position: absolute;\n  width: 60%;\n  height: 2px;\n  border-radius: 1px;\n  background: var(--primary-foreground);\n}\n.checkbox-input:focus-visible + .checkbox-box {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Checkbox/Checkbox.css"
+    },
+    {
+      "path": "src/components/Checkbox/Checkbox.tsx",
+      "content": "import './Checkbox.css'\nimport type { InputHTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\nimport { Icon } from '../Icon'\n\ntype Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> & {\n  /** Visible label beside the box. */\n  label?: string\n  /** Mixed state (e.g. \"select all\" when only some children are checked). */\n  indeterminate?: boolean\n  /** Box size: sm / md (default) / lg. */\n  size?: 'sm' | 'md' | 'lg'\n  /** The form rejected this box (an unticked required consent). Red border and\n   *  a red focus ring; the message belongs to the `<Field>` around it. */\n  invalid?: boolean\n}\n\n/* Custom checkbox: a real <input> (kept accessible + form-native) visually\n * replaced by a themed box. Sizing/colors come from tokens, like the controls. \n   *\n   * Copy: the label is the positive statement the tick makes true — \"Send me the\n   * weekly digest\", never \"Do not send…\". A negative label makes an unticked\n   * box mean yes.\n   */\nexport function Checkbox({ label, indeterminate = false, size, invalid, className, disabled, ...rest }: Props) {\n  return (\n    <label\n      className={cn('checkbox', className)}\n      data-size={size}\n      data-disabled={disabled || undefined}\n      data-invalid={invalid || undefined}\n    >\n      <input\n        ref={(el) => { if (el) el.indeterminate = indeterminate }}\n        type=\"checkbox\"\n        className=\"checkbox-input\"\n        disabled={disabled}\n        aria-invalid={invalid || undefined}\n        {...rest}\n      />\n      <span className=\"checkbox-box\" aria-hidden=\"true\"><Icon name=\"check\" /></span>\n      {label && <span className=\"checkbox-label\">{label}</span>}\n    </label>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Checkbox/Checkbox.tsx"
+    },
+    {
+      "path": "src/components/Checkbox/CheckboxGroup.css",
+      "content": "/* Same rhythm as .radio-group: the two are read as one family and a different\n * gap on each is the kind of drift nobody sees until they sit side by side. */\n.checkbox-group { display: flex; flex-direction: column; gap: var(--space-2); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Checkbox/CheckboxGroup.css"
+    },
+    {
+      "path": "src/components/Checkbox/CheckboxGroup.tsx",
+      "content": "import './CheckboxGroup.css'\nimport { cn } from '../lib/cn'\nimport { Checkbox } from './Checkbox'\n\ntype Option = { value: string; label: string; disabled?: boolean }\n\ntype Props = {\n  /** The ticked values. */\n  value: string[]\n  onChange: (value: string[]) => void\n  options: Option[]\n  /** Accessible group label. A group of boxes with no name is a list of\n   *  unrelated questions to a screen reader. */\n  label: string\n  /** The form rejected the group as a whole (nothing ticked in a required set). */\n  invalid?: boolean\n  size?: 'sm' | 'md' | 'lg'\n  className?: string\n}\n\n/* The multi-select twin of `<RadioGroup>`: several boxes, one value array, one\n * group name. Kept beside Checkbox because it is the same control, grouped —\n * and because a set of boxes hand-stacked in a screen is the version that\n * always ships without the group label. */\n\n/** A labelled group of checkboxes over one value array. Reach for it whenever\n *  more than one box answers the same question. */\nexport function CheckboxGroup({ value, onChange, options, label, invalid, size, className }: Props) {\n  const toggle = (v: string) =>\n    onChange(value.includes(v) ? value.filter((x) => x !== v) : [...value, v])\n\n  return (\n    /* `group`, not `radiogroup`: several answers are legal here, and the\n     * keyboard model is plain Tab per box rather than arrow keys across one. */\n    <div className={cn('checkbox-group', className)} role=\"group\" aria-label={label}>\n      {options.map((o) => (\n        <Checkbox\n          key={o.value}\n          value={o.value}\n          size={size}\n          invalid={invalid}\n          checked={value.includes(o.value)}\n          disabled={o.disabled}\n          onChange={() => toggle(o.value)}\n          label={o.label}\n        />\n      ))}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Checkbox/CheckboxGroup.tsx"
+    },
+    {
+      "path": "src/components/Checkbox/index.ts",
+      "content": "export { Checkbox } from './Checkbox'\nexport { CheckboxGroup } from './CheckboxGroup'\n",
+      "type": "registry:ui",
+      "target": "@ui/Checkbox/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Checkbox.json"
+}

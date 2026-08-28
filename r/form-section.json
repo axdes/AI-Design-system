@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "form-section",
+  "type": "registry:ui",
+  "title": "FormSection",
+  "description": "One named group of fields inside a form: a `fieldset` with a visible legend, an optional sentence, and a `<FormStack>` of Fields inside. Copy: the section title groups the questions under it in the reader's terms, and the description says why they are asked together.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/form-stack.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/FormSection/FormSection.css",
+      "content": "/* A fieldset with the browser's frame removed: the grouping is semantic, and a\n * second box inside a card or a form column is noise. */\n.form-section {\n  border: 0;\n  margin: 0;\n  padding: 0;\n  min-inline-size: 0;\n  display: flex;\n  flex-direction: column;\n  /* The legend and its sentence belong to each other; the fields are a step\n   * away. So the section's own gap is the SMALL one and the distance to the\n   * fields is set once, below — rather than a negative margin pulling the\n   * description back up under its legend. */\n  gap: var(--space-1);\n}\n\n.form-section-title {\n  padding: 0;\n  font-size: var(--font-md);\n  font-weight: var(--font-weight-semibold);\n  color: var(--foreground);\n  line-height: var(--leading-snug);\n}\n\n.form-section-desc {\n  margin: 0;\n  font-size: var(--font-sm);\n  line-height: var(--leading-normal);\n  color: var(--muted-foreground);\n}\n\n.form-section .form-stack { margin-block-start: var(--space-4); }\n",
+      "type": "registry:ui",
+      "target": "@ui/FormSection/FormSection.css"
+    },
+    {
+      "path": "src/components/FormSection/FormSection.tsx",
+      "content": "import './FormSection.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\nimport { FormStack } from '../FormStack'\n\ntype Props = {\n  /** The group's name: who or what these fields are about. */\n  title: ReactNode\n  /** One sentence on why the group exists, when the title cannot carry it. */\n  description?: ReactNode\n  /** The Field rows. */\n  children: ReactNode\n  className?: string\n}\n\n/* A form longer than a handful of fields is read in groups, and a group only\n * exists if it has a name. `<fieldset>` + `<legend>` is what makes that name\n * reach a screen reader: it is announced with every field inside, which a plain\n * heading above a div never is. This is the part hand-rolled sections always\n * drop, and the reason a hand-rolled section reads as one long undifferentiated\n * column to anyone not looking at it. */\n\n/** One named group of fields inside a form: a `fieldset` with a visible legend,\n *  an optional sentence, and a `<FormStack>` of Fields inside. \n *\n * Copy: the section title groups the questions under it in the reader's terms,\n * and the description says why they are asked together.\n */\nexport function FormSection({ title, description, children, className }: Props) {\n  return (\n    <fieldset className={cn('form-section', className)}>\n      <legend className=\"form-section-title\">{title}</legend>\n      {description && <p className=\"form-section-desc\">{description}</p>}\n      <FormStack>{children}</FormStack>\n    </fieldset>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/FormSection/FormSection.tsx"
+    },
+    {
+      "path": "src/components/FormSection/index.ts",
+      "content": "export { FormSection } from './FormSection'\n",
+      "type": "registry:ui",
+      "target": "@ui/FormSection/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/FormSection.json"
+}

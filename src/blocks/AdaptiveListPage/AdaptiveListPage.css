@@ -1,28 +1,6 @@
-/* The block owns its page wrapper, the same contract as `.list-page` and
- * `.detail-page`, and for the same reason: the `<PageHeader>` above it is capped
- * to `--page-max-width` and centred, so a content area that is neither drifts
- * away from its own title. `.page-content` is not usable here — it is declared
- * separately inside each app's shell, and a block cannot depend on a stylesheet
- * it does not import. The values are tokens, so they resolve per app. */
-.adaptive-list-page {
-  flex: 1;
-  inline-size: 100%;
-  max-inline-size: var(--page-max-width);
-  margin-inline: auto;
-  /* Top gap comes from PageHeader's own padding-block-end; only bottom here. */
-  padding-block: 0 var(--space-4);
-  padding-inline: var(--space-8);
-  container-type: inline-size;
-  container-name: content;
-}
-
-/* Loading and empty: nothing to put under a header, so it sits in the middle. */
-.adaptive-list-page[data-center] {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+/* The page wrapper and the centred branch both come from
+ * <Page archetype="hub"> now: the cap, the padding, the container context and
+ * `align="center"` for the states that have nothing to put under a header. */
 
 /* The welcome layout centres itself with `margin-block: auto`, which only does
  * anything inside a flex column. */

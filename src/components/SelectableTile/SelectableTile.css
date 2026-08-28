@@ -1,0 +1,99 @@
+.selectable-tile {
+  position: relative;
+  display: grid;
+  /* glyph · words · mark. The mark sits with the name it answers, not in a far
+   * corner, and the detail lines indent under the name like an option row in
+   * any list of choices. The old layout put the glyph on a line of its own and
+   * spread four short lines over 130px, which is a tile with nothing in it. */
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  background: var(--card);
+  color: var(--card-foreground);
+  cursor: pointer;
+  transition: border-color var(--duration-fast);
+}
+.selectable-tile:hover { border-color: var(--border-strong, var(--border)); }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.selectable-tile:active:not([data-disabled]) { background: var(--surface-hover); }
+.selectable-tile[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* The real control, kept in the DOM so the keyboard, the radio group and the
+ * form all work, and visually replaced by the mark. */
+.selectable-tile-input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  margin: 0;
+}
+
+/* THE MARK IS THE SYSTEM'S RADIO AND CHECKBOX, TO THE PIXEL.
+ *
+ * It was a filled primary circle with a white dot — the inverse of what <Radio>
+ * draws, so a tile and a radio in the same form disagreed about what "chosen"
+ * looks like (owner, 23.08: make sure this is our radio button). These are the
+ * values from Radio.css and Checkbox.css: 1.5px --border-strong on --background,
+ * the accent border when checked, a 50% dot in --primary for the single choice
+ * and the tick in --primary-foreground on --primary for the multiple one. If
+ * those files move, this moves with them. */
+.selectable-tile-mark {
+  grid-column: 3;
+  grid-row: 1;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: 1.5px solid var(--border-strong, var(--border));
+  border-radius: var(--radius-full);
+  background: var(--background);
+  color: var(--primary-foreground);
+  transition: background var(--duration-fast), border-color var(--duration-fast);
+}
+.selectable-tile[data-multiple] .selectable-tile-mark { border-radius: var(--radius-sm); }
+.selectable-tile-mark .icon { opacity: 0; }
+
+/* Chosen is a BORDER and a mark, not a fill (owner, 23.08). A tinted tile reads
+ * as a disabled or a highlighted surface, and in a set of them the colour is
+ * the loudest thing on the screen while the actual answer — which one is
+ * ticked — is the smallest. */
+.selectable-tile[data-selected] { border-color: var(--primary); }
+.selectable-tile[data-selected] .selectable-tile-mark { border-color: var(--primary-accent); }
+/* Multiple: the box fills and the tick shows, exactly as <Checkbox> does. */
+.selectable-tile[data-selected][data-multiple] .selectable-tile-mark {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.selectable-tile[data-selected][data-multiple] .selectable-tile-mark .icon { opacity: 1; }
+/* Single: a 50% dot in the middle, exactly as <Radio> does — a tick would
+   promise it can be un-ticked. */
+.selectable-tile[data-selected]:not([data-multiple]) .selectable-tile-mark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  inline-size: 50%;
+  block-size: 50%;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+
+.selectable-tile:has(.selectable-tile-input:focus-visible) {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+.selectable-tile-icon { grid-column: 1; grid-row: 1; color: var(--muted-foreground); }
+.selectable-tile[data-selected] .selectable-tile-icon { color: var(--primary-accent); }
+.selectable-tile-title { grid-column: 2; grid-row: 1; font-weight: var(--font-weight-medium); }
+.selectable-tile-description { grid-column: 2 / -1; font-size: var(--font-sm); color: var(--muted-foreground); }
+.selectable-tile-meta {
+  grid-column: 2 / -1;
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "title": "Spinner",
+  "description": "The one busy indicator for the whole system: a rotating loader icon. Inline by default (sits next to text or inside a button); center it with the layout around it. Animation is paused under prefers-reduced-motion (reset.css). Copy: the label says what is being waited for — \"Loading invoices\" — and it is announced, so it is a sentence a person can hear.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Spinner/Spinner.css",
+      "content": ".spinner {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  color: currentColor; /* inherits the surrounding text/icon colour */\n}\n\n.spinner .icon {\n  animation: spinner-rotate var(--duration-slow) linear infinite;\n  /* slow the default a touch: a loader spins calmer than a 320ms transition */\n  animation-duration: 900ms;\n}\n\n@keyframes spinner-rotate {\n  to {\n    transform: rotate(360deg);\n  }\n}\n\n/* Screen-reader-only label: present in the a11y tree, invisible on screen. */\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Spinner/Spinner.css"
+    },
+    {
+      "path": "src/components/Spinner/Spinner.tsx",
+      "content": "import './Spinner.css'\nimport { cn } from '../lib/cn'\nimport { Icon } from '../Icon'\n\ntype Size = 'sm' | 'md' | 'lg' | 'xl'\n\ntype Props = {\n  /** Matches the icon scale: sm 16 / md 20 / lg 24 / xl 40. Default 'md'. */\n  size?: Size\n  /** Accessible name announced to screen readers. A spinner with no label is a\n   *  silent \"something is happening\" — always say what. */\n  label: string\n  className?: string\n}\n\n/* The one busy indicator for the whole system: a rotating loader icon. Inline by\n * default (sits next to text or inside a button); center it with the layout\n * around it. Animation is paused under prefers-reduced-motion (reset.css). \n   *\n   * Copy: the label says what is being waited for — \"Loading invoices\" — and it is\n   * announced, so it is a sentence a person can hear.\n   */\nexport function Spinner({ size = 'md', label, className }: Props) {\n  return (\n    <span className={cn('spinner', className)} role=\"status\" data-size={size}>\n      <Icon name=\"progress_activity\" size={size} aria-hidden=\"true\" />\n      <span className=\"sr-only\">{label}</span>\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Spinner/Spinner.tsx"
+    },
+    {
+      "path": "src/components/Spinner/index.ts",
+      "content": "export { Spinner } from './Spinner'\n",
+      "type": "registry:ui",
+      "target": "@ui/Spinner/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Spinner.json"
+}

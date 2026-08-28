@@ -1,7 +1,7 @@
 {
   "ref": "Stepper",
   "level": "molecule",
-  "description": "Progress across an ordered set of steps (a wizard, a multi-step form). Shows which are done (check), which is active (aria-current=\"step\") and which are still ahead. Presentational: the parent owns `current` and what each step contains. Completed steps can be clickable to go back.",
+  "description": "Progress across an ordered set of steps (a wizard, a multi-step form). Shows which are done (check), which is active (aria-current=\"step\") and which are still ahead. Presentational: the parent owns `current` and what each step contains. Completed steps can be clickable to go back. Copy: step names are nouns, short and parallel, and they stay the same word in the step and in its page title.",
   "exports": [
     "Stepper"
   ],
@@ -17,17 +17,20 @@
     {
       "name": "current",
       "type": "number",
-      "required": true
+      "required": true,
+      "description": "0-based index of the step in progress. Earlier steps read as complete."
     },
     {
       "name": "onStepClick",
       "type": "(index: number) => void",
-      "required": false
+      "required": false,
+      "description": "Lets the user jump back to a completed step. Only completed steps are interactive; the current and future ones are not."
     },
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Accessible name for the ordered list. Default \"Progress\"."
     },
     {
       "name": "className",

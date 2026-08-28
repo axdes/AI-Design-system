@@ -2,6 +2,13 @@
  * Sizing and colors are IDENTICAL to .btn so chips and buttons match 1:1;
  * only [data-selected] (pick-one / multi-select groups) is chip-specific. */
 .chip {
+  /* Sizes to its label, never to its container. `display: inline-flex` is not
+     enough: as a flex or grid child with the default `stretch`, the cross size
+     is set by the parent and the pill runs the full width — a badge that reads
+     as a text input, which is exactly how it shipped on the patterns screen
+     (measured 2026-08-22: 219px of pill around 48px of text). An explicit
+     inline-size opts out of stretch, in both axes' worth of cases. */
+  inline-size: fit-content;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -13,12 +20,19 @@
   font-family: inherit;
   font-weight: var(--control-font-weight);
   font-size: var(--control-font-size);
-  background: var(--secondary);            /* default: subtle (like btn secondary) */
+  /* --surface-contrast, not --secondary. --secondary IS --muted (both
+   * neutral-100), so on the page surface the pill was painting itself the
+   * colour of the page and there was no pill — just a word floating in a row of
+   * controls that all had shapes. Same one-line rule the secondary button
+   * follows: on grey go white, on white go grey. */
+  background: var(--surface-contrast);
   color: var(--secondary-foreground);
   cursor: pointer;
   transition: background var(--duration-fast), color var(--duration-fast);
 }
-.chip:hover { background: var(--secondary-hover); }
+.chip:hover { background: var(--surface-contrast-hover); }
+/* Pressed — one stop past hover. */
+.chip:active { background: var(--surface-contrast-active); }
 .chip:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
 .chip:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
@@ -29,9 +43,11 @@
 /* ── Variants — identical colors to .btn ───── */
 .chip[data-variant="primary"] { background: var(--primary); color: var(--primary-foreground); }
 .chip[data-variant="primary"]:hover { background: var(--primary-hover); }
+.chip[data-variant="primary"]:active { background: var(--primary-active); }
 
 .chip[data-variant="ghost"] { background: transparent; color: var(--foreground); }
 .chip[data-variant="ghost"]:hover { background: var(--accent-soft); }
+.chip[data-variant="ghost"]:active { background: var(--accent); }
 
 .chip[data-variant="destructive"] { background: var(--destructive); color: var(--destructive-foreground); }
 
@@ -42,3 +58,4 @@
  * Placed last so it wins over variant rules at equal specificity. ───── */
 .chip[data-selected] { background: var(--primary); color: var(--primary-foreground); }
 .chip[data-selected]:hover { background: var(--primary-hover); }
+.chip[data-selected]:active { background: var(--primary-active); }

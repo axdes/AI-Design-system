@@ -1,0 +1,86 @@
+{
+  "ref": "Sparkline",
+  "level": "atom",
+  "description": "The shape of a number over time: a line with no axes, no grid and no tooltip — the trend part of a KPI card, not a chart. Reach for <Meter> when the value is judged against a target instead of against its own past. Copy: the accessible label says what the trend is OF and over what, because the shape alone is unreadable to anyone who cannot see it.",
+  "exports": [
+    "Sparkline"
+  ],
+  "main": "Sparkline",
+  "from": "@/components/Sparkline",
+  "slots": [],
+  "props": [
+    {
+      "name": "values",
+      "type": "number[]",
+      "required": true,
+      "description": "The series, oldest first. Two points is the minimum that has a shape."
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
+    },
+    {
+      "name": "area",
+      "type": "boolean",
+      "required": false,
+      "description": "Fills the area under the line — for a card that carries only this one series."
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": "What the series measures. Given, the chart is an image to a screen reader; omitted, it is decoration beside a value that already says it."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Sparkline/Sparkline.tsx",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "area": {
+      "prop": "area",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "example": "<Sparkline values={week} tone=\"success\" area />"
+}

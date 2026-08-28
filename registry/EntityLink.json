@@ -1,0 +1,73 @@
+{
+  "ref": "EntityLink",
+  "level": "molecule",
+  "description": "One entity that lives ELSEWHERE, shown with enough of itself to be recognised: inline inside a sentence, or as a card with its state and its meta. Wrap it in <HoverCard> when the preview should appear on hover instead of on the page. Copy: the title is the record's name; the meta says what is waiting inside it, which is the reason to follow the link at all.",
+  "exports": [
+    "EntityLink"
+  ],
+  "main": "EntityLink",
+  "from": "@/components/EntityLink",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true,
+      "description": "What it is called where it lives — the issue key, the document title."
+    },
+    {
+      "name": "href",
+      "type": "string",
+      "required": true,
+      "description": "Where it goes."
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false,
+      "description": "Which system it lives in, as an icon: an audit, a document, a chat."
+    },
+    {
+      "name": "view",
+      "type": "View",
+      "required": false,
+      "description": "How much context the sentence owes: `inline` reads as a link inside running text, `card` gives the entity its own surface with the meta under it. The AUTHOR picks the view; the entity is the same either way.",
+      "values": [
+        "inline",
+        "card"
+      ]
+    },
+    {
+      "name": "status",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The entity's state — a <Badge>, kept out of the title so it can be read separately."
+    },
+    {
+      "name": "meta",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Owner, date, size: shown in the card view, dropped inline."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/EntityLink/EntityLink.tsx",
+  "variants": {
+    "view": {
+      "prop": "view",
+      "values": [
+        "inline",
+        "card"
+      ]
+    }
+  },
+  "uses": [
+    "Badge",
+    "MetaItem"
+  ],
+  "example": "<>\n  <p>\n    The finding was raised against{' '}\n    <EntityLink icon=\"rate_review\" title=\"AUD-142\" href=\"#aud-142\" /> last Tuesday.\n  </p>\n  <EntityLink\n    view=\"card\"\n    icon=\"rate_review\"\n    title=\"AUD-142 · Working at height, Site 14\"\n    href=\"#aud-142\"\n    status={<Badge tone=\"warning\" fill=\"soft\">Open</Badge>}\n    meta={\n      <>\n        <MetaItem icon=\"person\">Dev Okonkwo</MetaItem>\n        <MetaItem icon=\"schedule\">Due 30 Sep 2026</MetaItem>\n      </>\n    }\n  />\n</>"
+}

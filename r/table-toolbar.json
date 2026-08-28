@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table-toolbar",
+  "type": "registry:ui",
+  "title": "TableToolbar",
+  "description": "The row above a table: what it is called, how many rows it has, what narrows it, and what acts on it. Distinct from `<FilterBar>`, which is one of the things that goes inside it, and from `<PageHeader>`, which belongs to the screen rather than to this table. While a selection exists the toolbar is replaced by `batch`, which is the one arrangement that cannot mislead: an Export next to a \"3 selecte",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/segmented-control.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/TableToolbar/TableToolbar.css",
+      "content": "/* The row above a table. */\n.table-toolbar {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: var(--space-3);\n  padding-block: var(--space-3);\n}\n\n\n.table-toolbar-title {\n  margin: 0;\n  font-size: var(--font-base);\n  font-weight: var(--font-weight-semibold);\n  color: var(--foreground);\n}\n\n.table-toolbar-count {\n  font-size: var(--font-sm);\n  color: var(--muted-foreground);\n  font-variant-numeric: tabular-nums;\n}\n\n/* The narrowing controls sit next to what they narrow; the actions take the\n * trailing edge, which is where a table's own verbs live. */\n/* Wraps, and may shrink below its content: at 390 the search plus two filter\n * chips ran two pixels past the card, which the page audit calls a spill and\n * which is one. */\n.table-toolbar-filters {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: var(--space-2);\n  min-inline-size: 0;\n  max-inline-size: 100%;\n}\n.table-toolbar-actions { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }\n/* The density switch is a view control, not an action: it sits with the\n * narrowing controls, before the margin that pushes the verbs to the edge. */\n.table-toolbar-density { margin-inline-start: auto; }\n.table-toolbar-density + .table-toolbar-actions { margin-inline-start: var(--space-2); }\n\n/* In the batch state the bar IS the batch bar: no title, no filters, no room\n * for an action that does not act on the selection. */\n.table-toolbar-batch { padding-block: 0; }\n",
+      "type": "registry:ui",
+      "target": "@ui/TableToolbar/TableToolbar.css"
+    },
+    {
+      "path": "src/components/TableToolbar/TableToolbar.tsx",
+      "content": "import './TableToolbar.css'\nimport type { ReactNode } from 'react'\nimport { useTranslation } from 'react-i18next'\nimport { SegmentedControl } from '../SegmentedControl'\nimport { cn } from '../lib/cn'\n\n/** The two row densities `<Table>` has, in the system's own words: comfortable\n *  is a table read and acted on, compact is a reference table or a log, where\n *  more rows on screen is worth the smaller type. (`<ContentCard layout=\"row\">` uses the same\n *  words for the same question, and adds `dense`.) */\ntype Density = 'comfortable' | 'compact'\n\ntype Props = {\n  /** What this table is called. Leave it out when the page heading above the\n   *  table already says the same words. */\n  title?: ReactNode\n  /** Which heading level the title is. A level is a property of the DOCUMENT,\n   *  not of the toolbar: under a section heading it is h3, directly under the\n   *  page title it is h2. Default h3. */\n  as?: 'h2' | 'h3' | 'h4'\n  /** How many rows the table holds AFTER filtering. A count is orientation:\n   *  without it a filtered table and a small table look identical. */\n  count?: number\n  /** The narrowing controls: a SearchInput, a FilterBar, a ColumnPicker. */\n  children?: ReactNode\n  /** The table's own actions (create, export, import), at the trailing edge. */\n  actions?: ReactNode\n  /** The row density this table is read at. Given with `onDensityChange`, the\n   *  toolbar renders the switch. Density is a decision of the screen and of the\n   *  reader, so remember the choice per collection rather than resetting it. */\n  density?: Density\n  onDensityChange?: (density: Density) => void\n  /** Replaces the whole toolbar while rows are selected: pass\n   *  `<BatchActions>`. One bar, two states, so the actions that apply to a\n   *  selection never sit beside the ones that do not. */\n  batch?: ReactNode\n  className?: string\n}\n\n/**\n * The row above a table: what it is called, how many rows it has, what narrows\n * it, and what acts on it. Distinct from `<FilterBar>`, which is one of the\n * things that goes inside it, and from `<PageHeader>`, which belongs to the\n * screen rather than to this table.\n *\n * While a selection exists the toolbar is replaced by `batch`, which is the\n * one arrangement that cannot mislead: an Export next to a \"3 selected\" bar\n * has to say which three it means (Carbon batch action bar).\n *\n * Copy: the title names the collection and the count says how many are in it\n * after filtering, not before.\n */\nexport function TableToolbar({ title, as: Title = 'h3', count, children, actions, batch, density, onDensityChange, className }: Props) {\n  const { t } = useTranslation()\n  if (batch) return <div className={cn('table-toolbar', 'table-toolbar-batch', className)}>{batch}</div>\n\n  return (\n    <div className={cn('table-toolbar', className)}>\n      {title ? <Title className=\"table-toolbar-title\">{title}</Title> : null}\n      {count === undefined ? null : (\n        /* Polite, because the count changes when a filter is applied and the\n         * user who cannot see the rows shorten has no other way to know. */\n        <span className=\"table-toolbar-count\" aria-live=\"polite\">\n          {t('table.rows', { count })}\n        </span>\n      )}\n      {children ? <div className=\"table-toolbar-filters\">{children}</div> : null}\n      {density && onDensityChange\n        ? (\n          <SegmentedControl<Density>\n            size=\"sm\"\n            label={t('table.density')}\n            value={density}\n            onChange={onDensityChange}\n            options={[\n              { value: 'comfortable', label: t('table.densityDefault') },\n              { value: 'compact', label: t('table.densityCompact') },\n            ]}\n            className=\"table-toolbar-density\"\n          />\n        )\n        : null}\n      {actions ? <div className=\"table-toolbar-actions\">{actions}</div> : null}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/TableToolbar/TableToolbar.tsx"
+    },
+    {
+      "path": "src/components/TableToolbar/index.ts",
+      "content": "export { TableToolbar } from './TableToolbar'\n",
+      "type": "registry:ui",
+      "target": "@ui/TableToolbar/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/TableToolbar.json"
+}

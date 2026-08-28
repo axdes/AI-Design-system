@@ -1,7 +1,7 @@
 {
   "ref": "PlanCard",
   "level": "organism",
-  "description": "One plan in a pricing row: what it is called, what it costs, what it includes and the single action that takes it.",
+  "description": "One plan in a pricing row: what it is called, what it costs, what it includes and the single action that takes it. Copy: the name is what the reader will call it afterwards, not a tier number. Features are outcomes, not switches: \"Everyone sees the same board\", not \"Shared board: yes\". The price says its period every time.",
   "exports": [
     "PlanCard"
   ],
@@ -17,12 +17,14 @@
     {
       "name": "price",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Already formatted, including the currency: this component does not know the locale, the currency or whether the number is per seat."
     },
     {
       "name": "period",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "What the price is per, e.g. \"per month\"."
     },
     {
       "name": "description",
@@ -37,12 +39,14 @@
     {
       "name": "action",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The one thing to do with this plan. A `<Button>`, usually."
     },
     {
       "name": "recommended",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Marks the plan being steered toward. One per row, or it steers nowhere."
     },
     {
       "name": "recommendedLabel",

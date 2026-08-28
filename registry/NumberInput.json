@@ -1,7 +1,7 @@
 {
   "ref": "NumberInput",
   "level": "molecule",
-  "description": "A number field with stepper buttons. The native <input type=\"number\"> keeps the spinbutton role, keyboard and validation; the -/+ buttons are the click affordance. Clamps to min/max. Wrap in <Field> for a visible label.",
+  "description": "A number field with stepper buttons. The native <input type=\"number\"> keeps the spinbutton role, keyboard and validation; the -/+ buttons are the click affordance. Clamps to min/max. Wrap in <Field> for a visible label. Copy: the label carries the unit, so the number never has to — \"Weight in kg\", not \"Weight\" with a kg inside the box.",
   "exports": [
     "NumberInput"
   ],
@@ -37,7 +37,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name (there is no visible label; wrap in <Field> for one)."
     },
     {
       "name": "invalid",
@@ -48,6 +49,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on. On `muted` (a page/PageHeader) the border is dropped since the white fill separates it; `base` (default, a white card or form) keeps the border. Invalid + focus stay visible on both.",
       "values": [
         "base",
         "muted"
@@ -57,6 +59,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "sm / md (default) / lg — matches the shared control height/padding scale.",
       "values": [
         "sm",
         "md",

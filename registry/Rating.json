@@ -1,7 +1,7 @@
 {
   "ref": "Rating",
   "level": "molecule",
-  "description": "A star rating, a score out of `max` stars. Interactive when `onChange` is given (a radiogroup: click or Arrow keys set the score), read-only otherwise (an img with the score as its name). Half values render a half-filled star.",
+  "description": "A star rating, a score out of `max` stars. Interactive when `onChange` is given (a radiogroup: click or Arrow keys set the score), read-only otherwise (an img with the score as its name). Half values render a half-filled star. Copy: the label says what is being rated, and the value is spoken as a fraction — \"4 out of 5\" — because a row of marks says nothing to a reader who cannot see it.",
   "exports": [
     "Rating"
   ],
@@ -17,7 +17,8 @@
     {
       "name": "onChange",
       "type": "(value: number) => void",
-      "required": false
+      "required": false,
+      "description": "Omit to render read-only (display of an existing score)."
     },
     {
       "name": "max",
@@ -27,7 +28,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name, e.g. \"Rate this article\"."
     },
     {
       "name": "size",

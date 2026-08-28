@@ -32,7 +32,7 @@ Either way that file is the system: if a thing is not in it, it does not exist.
   per component, and that is what git carries; `component-registry.json` is the
   same thing combined, derived and gitignored, and it is what the linters read.
   Never edit either by hand and do not read the combined one whole (44k tokens for
-  93 components you will not use). `npm run gen-registry` writes all of it;
+  131 components you will not use). `npm run gen-registry` writes all of it;
   `gen-registry:check` fails on drift, undefined tokens, or a CSS variant missing
   from a prop union.
 - If no component (or composition of them, or a new data-variant on one) covers
@@ -49,8 +49,27 @@ Either way that file is the system: if a thing is not in it, it does not exist.
 
 ## Button icon placement
 
-- Default: icon leads (left). Plain or navigational buttons keep the icon on the left.
-- "Add/create" actions: pass `iconEnd` so the icon trails (right), and use a meaningful add-type icon (`add`, `create_new_folder`, `person_add`, etc.) that signals creation.
+Every icon in a button trails the label — one line of CSS, not a choice.
+`iconEnd` is an inert leftover; passing it does nothing (owner, 2026-06-10).
+
+## What this contract points at
+
+Everything below is binding. Everything a task needs only SOMETIMES lives beside
+it, one file each, and is named here so any tool can open it by path:
+
+| When you are | Read |
+|---|---|
+| working out why the gate is red | `docs/contract/enforcement.md` — every check and what it catches |
+| looking for where something lives | `docs/contract/file-map.md` |
+| choosing between two components that both compile | `docs/contract/choosing.md` |
+| writing a component | `docs/contract/component-patterns.md` |
+| touching colour or the dark theme | `docs/contract/theme.md` |
+| about to propose a change to the system's shape | `docs/contract/trade-offs.md` |
+
+This file was 514 lines on 2026-08-27, which is past the point where a model
+stops reconciling instructions and starts picking one. It cost us three months
+of a contract teaching a rule the owner had reversed. Keep it short: a fact that
+is needed on SOME tasks belongs in the table above, not here.
 
 ## MUST: Copy / writing style (UI text, i18n, commits)
 
@@ -71,65 +90,6 @@ log the next session loses the reasoning and the user cannot trace a decision.
 Vite + React 19 + TypeScript strict, React Router v7, plain co-located CSS (no
 Tailwind, no CSS modules), `lucide-react` behind `src/components/Icon`, and
 `react-i18next` (en + ar, RTL through `<html dir>`).
-
-## File map
-```
-styles/                  ← foundation only
-  settings.css           ← THE place to tune the system (knobs)
-  primitives.css         ← computed tokens (do not edit)
-  semantic.css           ← role tokens (--primary, --background) via light-dark()
-  reset.css              ← + prefers-reduced-motion
-  fonts.css              ← @font-face, written by rebrand
-  demo.css               ← only loaded on /playground
-  index.css              ← imports the foundation in order
-
-src/components/          ← FLAT component layer (one folder per component)
-  levels.json            ← the atomic level of every component (atom/molecule/
-                           organism). Level is METADATA, not a folder: the
-                           registry and the linter both read this file, so a new
-                           component MUST be classified here.
-  surfaces.json          ← surface context per component: `page` (owns viewport) /
-                           `region` (own surface) / `card` (inside a card/form).
-                           Registry emits it as `context`; linter requires it.
-  <Name>/                ← one folder per component. component-registry.json is
-                           the authoritative list; it is not repeated here.
-                           Each folder: Name.tsx + Name.css + Name.example.tsx
-                           + index.ts. Card / Dropdown / Tabs / Table / Layout
-                           export several parts — see their index.ts
-
-src/blocks/              ← product-agnostic COMPOSITIONS bigger than a component
-  AuthTemplate/ DetailPageTemplate/ FormModal/ ListPageTemplate/
-  Page structure lives here; build screens from these, do not hand-roll chrome.
-
-src/shell/               ← app chrome wired to routing/providers (not the DS)
-  AppShell/ ChatHistory/ Sidebar/ ThemeToggle/ UserMenu/
-
-src/lib/                 ← utilities, providers, hooks. filterBarContext.ts lets
-                            FilterBar (organism) and FilterDropdown (molecule)
-                            talk without an atomic-direction violation.
-
-src/test/                ← the harness and the system-wide tests: every golden
-                            example renders and is axe-clean, and every variant
-                            the registry advertises lands as `data-*`.
-
-evals/                   ← does an agent's output actually use this system?
-                            One-shot scores in run.mjs, the long-session drift
-                            curve in drift.mjs, measured runs in BASELINE.md.
-
-visual/                  ← pixel baselines for every golden example, both themes.
-
-tokens/                  ← the DTCG export, generated from styles/ by
-                            `npm run tokens`. How anything outside this repo
-                            (Style Dictionary, Tokens Studio, Figma) reads the
-                            system. Never edit it.
-
-screen-specs/            ← agreed screen structure, validated against the registry
-  schema.json  documents-list.json          (see screen-specs/README.md)
-
-src/layouts/             ← route-level layout templates named `*Page`. The
-                            routes ARE the template demos; Playground is the
-                            gallery.
-```
 
 ## Path aliases
 `@/` = `src/`. Prefer `@/components/Button` over `../../Button`.
@@ -170,10 +130,9 @@ export function Example() {
 ```
 
 Why a module and not a string: the example is what an agent copies, so it has to
-be true. Being real code means `tsc` breaks when a prop is renamed, the test
-suite renders it, and axe checks it — the docs cannot drift away from the
-component. `npm run gen-registry` strips the imports and the wrapper and puts the
-usage into `component-registry.json`.
+be true. Real code means `tsc` breaks when a prop is renamed, the suite renders
+it and axe checks it, so the docs cannot drift. `gen-registry` strips the
+imports and publishes the usage.
 
 Rules for writing one:
 - Show the component the way it is meant to be used, including its required
@@ -197,6 +156,32 @@ writing components: `screen-specs/<id>.json`, format in
   `task` + `data`; `check:spec` computes "table or cards" from
   screen-specs/selection-rules.json. New project? Model first:
   screen-specs/models/. Details: screen-specs/README.md.
+- Once the answer IS cards, WHICH card is computed too: the zone declares
+  `data.carries` (the content type: entity, metric, request, destination, …)
+  and `card` (the family: object, kpi, action, entry, …) from
+  screen-specs/card-rules.json, and the gate holds it to the family's parts,
+  components and rules.
+- A zone that TAKES INPUT is decided the same way: `task: "input"` plus
+  `data.commit` (explicit / per-row / autosave / none), `fields`, `context` and
+  `familiarity` choose the `form` kind (dialog, panel, page, wizard, draft, …)
+  from screen-specs/form-rules.json, and the gate holds it to its parts.
+- Once the answer is a TABLE, which table is computed too: the zone declares
+  `table` (list, worklist, selection, analytical, pivot, comparison, tree,
+  schedule, diff, …) and, when the rows are not plain records, `data.rowUnit`
+  plus whichever of `axes`, `cells`, `select`, `nesting`, `aggregate` and
+  `rowDetail` apply. screen-specs/table-rules.json picks the kind, names what
+  builds it and what it owes; the survey behind it is docs/RESEARCH-TABLES.md.
+  A zone may also declare its `columns`, and then screen-specs/cell-rules.json
+  applies: each column says what it CARRIES (identifier, identity, money,
+  status, measure, actions, …) and the rules decide its alignment, whether its
+  width is fixed, whether it may sort and what it owes
+  (docs/RESEARCH-TABLE-CONTENT.md).
+- A screen may declare `lifecycle` (create / read / update / delete), checked
+  against the archetype, and screen-specs/lifecycle-rules.json then decides what
+  used to be taste: which detail page (plain / tabs / hub), which shape an edit
+  takes (attribute / inline / form), and how hard a destruction is to confirm.
+  Reversible deletes get an undo and NOT a dialog — a confirmation over
+  something reversible trains people to click through the one that matters.
 - `npm run check:spec` rejects a spec that names a component, prop or value the
   system does not have, so an impossible screen cannot be agreed to.
 - **The user approves the spec, then the code gets written.** Arguing about zones
@@ -208,136 +193,15 @@ writing components: `screen-specs/<id>.json`, format in
   The test carries `<specId>#<id>` in its name, so an agreed behaviour that was
   never built shows up red rather than staying a sentence in a file.
 
-## Enforcement (linters + gate + hooks) — ALWAYS ON, not optional
+## MUST: one heading outline per screen, and never skip a level
 
-The rules above are not honour-system. They run automatically on every change.
-Industry-standard tools do the general work; one small custom linter covers the
-project-specific rules nothing off-the-shelf knows about.
-
-- **`gen-registry:check`** — the registry matches the source, every token a
-  component uses is defined, every CSS variant exists in the prop union.
-- **ESLint** (`lint`) — TS/React correctness, hooks, jsx-a11y, sonarjs.
-- **Stylelint** (`lint:css`) — every `var(--token)` is defined, no `!important`,
-  no hex outside `primitives.css`.
-- **`scripts/lint-rules.mjs`** (`lint:rules`) — the only custom linter: tokens
-  instead of raw px, semantic status roles instead of tonal stops, logical
-  properties for RTL, levels.json completeness, atomic import direction, no raw
-  form controls, aria-label + Tooltip on icon-only buttons, no reaching into a
-  primitive's class+`data-*` contract, no static inline styles, folder shape and
-  index re-exports, a golden example per component, dead exports, dead CSS,
-  `@media` widths on the `--bp-*` scale, file size. Debt sits in its `ALLOW`
-  map — shrink it, never weaken a rule.
-- **`lint:graph`** — the RESOLVED import graph (dependency-cruiser): layers
-  components → blocks → shell → layouts, atomic ranks, no cycles.
-- **`lint:vocab`** — one word per meaning; a union prop name on 2+ components
-  must itself be declared in `config/prop-vocabulary.json`.
-- **`npm test`** (vitest + Testing Library + axe) — what only running code can
-  prove: every golden example renders and is axe-clean, every variant the
-  registry advertises lands as `data-*` in the DOM, and the keyboard/ARIA
-  contract of every stateful component (its own `.test.tsx`).
-- **`npm run contrast`** — WCAG pairs in both themes, from the token files: the
-  curated role pairs AND every pair the CSS paints, since a pair nobody listed is
-  a pair nobody measures. Misses are recorded with their ratio and may not get
-  worse; a painted pair held lower needs a reason in `exempt`.
-- **`size`** — a gzipped bundle budget.
-- **`visual`** — every golden example screenshotted in a real browser, both
-  themes, against committed baselines (`visual/README.md`). Accept with
-  `npm run visual:update`.
-- **`lint:dup`** (jscpd) copy-paste, and **`lint:dead`** (knip) dead code — the
-  second is a triage tool, not a gate step.
-- **`npm run scout`** — what belongs here but sits in an app (see the promotion
-  rule). Findings carry a reason and a closing condition, like `ALLOW`.
-- **`audit` + `scan:secrets`, and `lint:sast` in every app** —
-  advisories with a written decision each; secrets in what git CARRIES; semgrep
-  over `src` and over whatever spawns processes or holds keys. A local server
-  binds loopback and checks `Origin` on upgrade: WebSockets ignore CORS.
-- **`typecheck:next`** — the same project through TypeScript 7, a second opinion
-  in every package's gate. `tsc` 5.9 stays THE compiler.
-- **`check:spec`** — screen specs match the system (see below).
-- **`tokens:check`** — the DTCG export in `tokens/` still matches `styles/`:
-  every alias resolves, every value survives a round trip back to CSS, and no
-  token is declared twice in one theme with two values.
-- **`npm run context`** — the must-read context (AGENTS.md +
-  `component-index.md`) has a budget like bundle size; the registry is held to
-  a per-entry ceiling.
-- **`npm run registry -- <Name>`** — the entry for a component, on demand (see
-  "Discovery first"); the whole file is for the linters. The same five answers
-  are served over MCP (`npm run mcp`, `mcp/README.md`).
-- **`redteam`** — breaks the reference solutions the nine ways agents
-  really break code and fails if a break survives. Every other check asks whether
-  the code is right; this one asks whether we would notice if it were not. A
-  surviving mutation is a hole in the scorer, never a mutation to delete.
-- **`eval`** — scores a candidate solution against the system
-  (`evals/README.md`): how we tell whether a change to the rules, the registry or
-  the examples improved anything.
-
-- **`verify -- <files>`** — instant: real components, real props, no
-  inline styles. `--deep` (6s) adds types, render and axe, where two thirds of
-  measured failures are. Run it on what you just wrote.
-
-**Wiring — runs always, automatically:**
-- `npm run check` runs THE gate: one list in `scripts/gates.mjs`, four lanes at
-  once, 37 seconds. `check:ci` comes off the same list, and a step leaves CI only
-  by carrying a written reason (today two do: `visual` and `screens`, committed
-  PNGs of rendered text). `--list` prints every step and its lane, `--timings`
-  where the seconds went, `--from <step>` resumes after a fix, `--serial` puts
-  the output back in one stream.
-- Edit hook (`.claude/settings.json` → PostToolUse) lints on every `.ts/.tsx/.css`
-  edit and blocks the edit on failure.
-- Stop hook (`scripts/claude-stop-gate.mjs`) blocks finishing a turn while red.
-- git `pre-commit` (`.githooks/pre-commit`, enable with
-  `git config core.hooksPath .githooks`) runs the full `npm run check`.
-
-## Component patterns
-
-```tsx
-// Wrapping a CSS class with a React component
-export function Button({ variant, size, className, ...rest }: Props) {
-  return <button
-    className={cn('btn', className)}
-    data-variant={variant}
-    data-size={size}
-    {...rest}
-  />
-}
-```
-CSS does the work:
-```css
-.btn { /* base */ }
-.btn[data-variant="secondary"] { /* override */ }
-.btn[data-size="lg"]           { /* override */ }
-```
-
-## Choosing between neighbours
-
-`component-index.md` says what each component is for. These are the pairs that
-get confused, where picking the wrong one still compiles, still passes review and
-is still wrong:
-
-- Text on hover or focus is `Tooltip`; a card of controls on click is `Popover`;
-  a menu is `Dropdown`; a rich card on hover is `HoverCard`.
-- `Spinner` marks busy, `Skeleton` holds the shape of content that has not
-  arrived, `ProgressBar` shows how far along something is, `Meter` shows a value
-  on a fixed scale. Inside a button it is `<Button loading>`, never a bare spinner.
-- `Table` (wrapped in `TableScroll`) for a known number of rows, `DataGrid` when
-  the count is unbounded.
-- `Pagination` when the total is known, `LoadMore` when it is not.
-- `Select` for a short list, `Combobox` when it is long enough to type into, and
-  `Combobox multiple` for multi-select. A filter above a LIST is neither: that is
-  `FilterDropdown`, inside a `FilterBar`.
-- `Chip` when each option toggles on its own, `SegmentedControl` when exactly one
-  of them can be chosen at a time.
-- `Tabs` when there are panels, `SegmentedControl` when there is only a choice.
-- `Badge` is a standalone status pill, `CountBadge` pins a number to another
-  element's corner, `Chip` is a pill you can select or press.
-- `Alert` stays on the page until resolved, a toast from `useToast()` does not.
-- `Divider` is the one hairline rule; `DropdownDivider` only exists inside a menu.
-- `Field` wraps a label and a control together; reach for `Label` alone only
-  outside a Field.
-- Page chrome comes from `src/blocks/*Template` plus `PageHeader`. A screen that
-  sets its own width, padding or centering is doing the template's job by hand.
-- Layout inside a screen is `Stack`, `Row` and `Grid` with token gaps, not raw
-  flex or grid declarations in the screen's CSS.
+The page title is the only `h1`. Every section heading goes down exactly one step
+from what contains it; a level is never skipped to get a size. Size comes from
+the component, the LEVEL is the outline, and the outline is how a screen reader
+finds anything. Both parts that take it default to safe rather than right:
+`<SectionLabel as>` is a plain div without it, `<CardTitle as>` defaults to `h2`
+— give both explicitly. A live eval lost 12 points on exactly this before the
+contract said it (2026-08-26); `audit:pages` fails on `heading-order`.
 
 ## MUST: built in an app twice means it belongs here
 
@@ -357,10 +221,16 @@ components live. So the rule is mechanical:
 - **Promotion follows the rules above**: registry entry, `levels.json`,
   `surfaces.json`, a golden example, `gen-registry` in the same turn.
 
-**Creating a new component:** only when none of the above fit. New folder with
-`Name.tsx + Name.css + Name.example.tsx + index.ts`, its level added to
-`src/components/levels.json`, then `npm run gen-registry` in the same turn. The
-linter fails on a component that skips the level or the golden example.
+**Creating a new component:** only when none of the above fit — and then not by
+hand. A part lands in twelve places, from the folder to three regenerations; one
+command writes all of them and prints the rest in order, and `--remove` reverses
+the same pass. Hand-building it half-registers it.
+
+```bash
+npm run new -- Name --level molecule --surface card --category actions \
+               --about "What it is for and when to reach for it."
+npm run new -- Name --remove          # --layer blocks for a block
+```
 
 ## Component knobs (in settings.css)
 
@@ -370,25 +240,6 @@ For families of components, expose shared knobs:
 - `--sidebar-width`
 
 Changing `--control-radius: var(--radius-full)` makes ALL buttons & inputs pills globally.
-
-## Theme
-
-Two blocks in `styles/semantic.css`, not `light-dark()` in the token layer:
-`:root` (shared with `[data-theme-lock="light"]`) holds the light role values,
-`[data-theme="dark"]` holds the dark ones, and an `@media (prefers-color-scheme:
-dark)` block repeats the dark set for a visitor who has chosen no theme.
-`ThemeProvider` sets `data-theme` on `<html>`.
-
-```css
-:root { color-scheme: light dark; }
-[data-theme="light"] { color-scheme: light; }
-[data-theme="dark"]  { color-scheme: dark; }
-```
-
-That third block is a duplicate by necessity and has drifted twice, which is why
-`npm run tokens:check` now fails when the same token is declared twice in one
-theme with two different values. `light-dark()` is still the right tool INSIDE a
-component's own CSS, where a single declaration needs both values.
 
 ## Color naming convention
 
@@ -458,11 +309,3 @@ so changing `--icon-sm` in settings actually cascades).
 - Make new things configurable via CSS variables.
 - When porting from another design system, write a hex→our-stop mapping table first.
 
-## Known trade-offs
-
-- **Inverted stop naming** vs. Tailwind. Convention is correct but unfamiliar.
-- **Single brand-c** for whole brand scale — for two-color brands, use `--gradient-hue-shift` OR hardcode hex.
-- **Pixel baselines are machine-specific; the structure baseline is not**
-  (`visual/README.md`).
-- **The evals are a small sample.** Twelve tasks: evidence, not statistics, and
-  one run per task scored ~20 points above three (`evals/BASELINE.md`).

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "copy-button",
+  "type": "registry:ui",
+  "title": "CopyButton",
+  "description": "Copy a value, and say so. The clipboard call, the two-second confirmation and the failure case in one place, because five apps had written all three. Copy: the label says what will be copied, not that copying happens — \"Copy the invoice number\". The confirmation is past tense and short.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/CopyButton/CopyButton.css",
+      "content": "/* A wrapper, not a control: the button is Button or IconButton, and this only\n * holds it next to the live region that announces the copy. */\n.copy-button { display: inline-flex; align-items: center; }\n\n/* Confirmed state — the tick goes green so the change reads at a glance and not\n * only as a word swap. The label carries the meaning either way. */\n.copy-button[data-copied] .icon { color: var(--success-emphasis); }\n",
+      "type": "registry:ui",
+      "target": "@ui/CopyButton/CopyButton.css"
+    },
+    {
+      "path": "src/components/CopyButton/CopyButton.tsx",
+      "content": "import './CopyButton.css'\nimport { useEffect, useRef, useState } from 'react'\nimport { useTranslation } from 'react-i18next'\nimport { cn } from '../lib/cn'\nimport { Button } from '../Button'\nimport { Icon } from '../Icon'\nimport { IconButton } from '../IconButton'\nimport { Tooltip } from '../Tooltip'\n\ntype Props = {\n  /** What lands on the clipboard. */\n  value: string\n  /** Visible label. Without one the control is icon-only, in a Tooltip. */\n  label?: string\n  /** What the label becomes for two seconds after a successful copy.\n   *  Defaults to the translated \"Copied\". */\n  copiedLabel?: string\n  size?: 'sm' | 'md'\n  variant?: 'ghost' | 'secondary'\n  className?: string\n}\n\nconst HELD = 2000\n\n/** Copy a value, and say so. The clipboard call, the two-second confirmation and\n *  the failure case in one place, because five apps had written all three. \n *\n * Copy: the label says what will be copied, not that copying happens — \"Copy the\n * invoice number\". The confirmation is past tense and short.\n */\nexport function CopyButton({ value, label, copiedLabel, size = 'sm', variant = 'ghost', className }: Props) {\n  const { t } = useTranslation()\n  const [copied, setCopied] = useState(false)\n  const timerRef = useRef(0)\n\n  useEffect(() => () => { window.clearTimeout(timerRef.current) }, [])\n\n  const copy = () => {\n    /* No optimistic tick. An insecure origin has no `navigator.clipboard` at\n     * all, and a rejected write means the value is NOT on the clipboard, so\n     * saying \"Copied\" there is a lie the user only finds out about on paste. */\n    const written = navigator.clipboard?.writeText(value)\n    if (!written) return\n    void written.then(\n      () => {\n        setCopied(true)\n        window.clearTimeout(timerRef.current)\n        timerRef.current = window.setTimeout(() => setCopied(false), HELD)\n      },\n      () => undefined,\n    )\n  }\n\n  const done = copiedLabel ?? t('a11y.copied')\n  const idle = label ?? t('a11y.copy')\n  const icon = copied ? 'check' : 'content_copy'\n\n  return (\n    <span className={cn('copy-button', className)} data-copied={copied || undefined}>\n      {label ? (\n        <Button variant={variant} size={size} onClick={copy}>\n          <Icon name={icon} />\n          {copied ? done : label}\n        </Button>\n      ) : (\n        <Tooltip content={copied ? done : idle}>\n          <IconButton icon={icon} size={size} aria-label={copied ? done : idle} onClick={copy} />\n        </Tooltip>\n      )}\n      {/* The label change is enough for the eye. A live region is what tells a\n          screen-reader user the copy actually happened, since nothing moves\n          focus and nothing else on the page changes. */}\n      <span className=\"sr-only\" role=\"status\">{copied ? done : ''}</span>\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/CopyButton/CopyButton.tsx"
+    },
+    {
+      "path": "src/components/CopyButton/index.ts",
+      "content": "export { CopyButton } from './CopyButton'\n",
+      "type": "registry:ui",
+      "target": "@ui/CopyButton/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/CopyButton.json"
+}

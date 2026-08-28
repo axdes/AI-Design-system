@@ -1,0 +1,56 @@
+{
+  "ref": "DiffTable",
+  "level": "organism",
+  "description": "What changed, side by side: an audit trail, a review of an edit, a settings history. The row is a change rather than a record, which is why the two columns are the same field at two times instead of two fields. Colour marks the kind of change and never carries it alone: every row says added, removed or changed in words too. Copy: column headers name the two versions the reader is comparing — \"Before\" and \"After\", or the two dates — never \"Old\" and \"New\" when the reader thinks in dates.",
+  "exports": [
+    "DiffTable"
+  ],
+  "main": "DiffTable",
+  "from": "@/components/DiffTable",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "captionHidden",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "changes",
+      "type": "readonly DiffChange[]",
+      "required": true
+    },
+    {
+      "name": "beforeHeader",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Column headings, when \"Before\" and \"After\" are not the words this domain uses (a review says Submitted and Approved)."
+    },
+    {
+      "name": "afterHeader",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "noneLabel",
+      "type": "string",
+      "required": false,
+      "description": "The word for a side that does not exist: an added field had no before."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/DiffTable/DiffTable.tsx",
+  "context": "region",
+  "uses": [
+    "Table"
+  ],
+  "example": "<DiffTable\n  label=\"Changes in this revision\"\n  captionHidden\n  beforeHeader=\"Approved version\"\n  afterHeader=\"This revision\"\n  changes={CHANGES}\n/>"
+}

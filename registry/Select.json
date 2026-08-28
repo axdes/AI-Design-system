@@ -1,7 +1,7 @@
 {
   "ref": "Select",
   "level": "molecule",
-  "description": "Single choice from a short list, built on Dropdown so the menu can match the trigger width. Combobox is the one for a long list.",
+  "description": "Single choice from a short list, built on Dropdown so the menu can match the trigger width. Combobox is the one for a long list. Copy: the label names the value, the placeholder names the choice not yet made — \"Choose a region\". Options are parallel and never restate the label.",
   "exports": [
     "Select"
   ],
@@ -32,7 +32,14 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible label — applied to the trigger button."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "description": "Lands on the trigger, so `<Field htmlFor>` reaches it and an `ErrorSummary` row can put focus on it. Without one the field is unreachable by name: a failed submit listed \"Choose who takes this request\", the row linked to an id nothing carried, and clicking it did nothing at all (owner, 2026-08-23)."
     },
     {
       "name": "className",
@@ -43,6 +50,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "sm / md (default) / lg — matches the control scale.",
       "values": [
         "sm",
         "md",
@@ -52,17 +60,20 @@
     {
       "name": "disabled",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Not editable and not openable."
     },
     {
       "name": "invalid",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Failed validation: paints the red border. It does NOT announce anything, and the description here used to claim `aria-invalid`, which the component never set — and could not: the trigger is a `<button>`, and `aria-invalid` is not supported on that role. Nor is the widget a real ARIA combobox: its popup is a `menu` of `menuitem`s, so calling the trigger a combobox would be a different lie. Until a listbox-based select exists, the error TEXT is what carries the meaning, and the caller has to associate it — `<Field>` has no error slot yet, which is the actual gap."
     },
     {
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on. On `muted` (a page/PageHeader) the border is dropped since the white fill separates it; `base` (default, a white card or form) keeps the border. Invalid + focus stay visible on both.",
       "values": [
         "base",
         "muted"
@@ -95,7 +106,8 @@
   },
   "uses": [
     "Dropdown",
-    "Icon"
+    "Icon",
+    "Layout"
   ],
-  "example": "const [type, setType] = useState<Leave>('annual')\n\n<Select<Leave>\n  label=\"Leave type\"\n  value={type}\n  onChange={setType}\n  options={[\n    { value: 'annual', label: 'Annual leave' },\n    { value: 'sick', label: 'Sick leave' },\n    { value: 'unpaid', label: 'Unpaid leave' },\n  ]}\n/>"
+  "example": "const [type, setType] = useState<Leave>('annual')\nconst [second, setSecond] = useState<Leave>('sick')\n\n<Row gap={3} align=\"end\">\n  <Select<Leave> label=\"Leave type\" value={type} onChange={setType} options={LEAVE} />\n  <Select<Leave> label=\"On a card\" surface=\"muted\" size=\"sm\" value={second} onChange={setSecond} options={LEAVE} />\n</Row>"
 }

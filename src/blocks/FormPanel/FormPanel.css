@@ -1,0 +1,11 @@
+/* The panel's own width is the consumer's call (SidePanel leaves it open), but
+ * a form panel narrower than its controls is unusable, so the block states the
+ * floor it needs. */
+.form-panel {
+  --form-panel-width: 24rem;
+  inline-size: min(100%, var(--form-panel-width));
+}
+
+/* The summary belongs above the first field, with the fields' own rhythm
+ * between them. */
+.form-panel .error-summary { margin-block-end: var(--space-6); }

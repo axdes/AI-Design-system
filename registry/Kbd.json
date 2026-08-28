@@ -18,6 +18,7 @@
       "name": "size",
       "type": "'sm' | 'md'",
       "required": false,
+      "description": "sm (default) sits inline with body text; md is for standalone shortcut lists.",
       "values": [
         "sm",
         "md"

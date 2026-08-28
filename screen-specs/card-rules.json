@@ -1,0 +1,1653 @@
+{
+  "$comment": "The layer under selection-rules.json. Those rules answer WHICH REPRESENTATION a zone gets — table, list, cards, grid, stats. This file answers the next question, the one that used to be taste: once the answer is cards, WHICH CARD. A card family is chosen by what the card carries (contentKinds: the content type) and what the reader does with it (the same task verbs), and every family names the parts it may not ship without, the components that build it, and the states it owes. Consolidated 2026-08-22 from SAP Fiori overview-page cards (object, list, table, analytical, timeline, stack, component), Salesforce Lightning cards, IBM Carbon tiles (clickable, selectable, expandable), Atlassian Smart Links (inline / card / embed), Microsoft Adaptive Cards (hero, thumbnail, list, digest, media, people, request), Shopify Polaris (header / body / footer roles), USWDS card variants, Material 3 surface levels, and the promo survey behind the same research. check-screen-spec.mjs enforces it: a zone whose representation is cards must say what it carries and which family it is, and may only use a family some matching rule chooses.",
+  "contentKinds": {
+    "entity": {
+      "means": "A record with fields of its own: an order, a team, a document, a user.",
+      "test": "It has an id somewhere and a page it can be opened on."
+    },
+    "person": {
+      "means": "A human as the subject: face, role, ways to reach them.",
+      "test": "Replacing the portrait with a field label loses the point of the card."
+    },
+    "metric": {
+      "means": "A number on a scale, read for its level and its direction.",
+      "test": "The reader asks 'is that good?', not 'what is it?'."
+    },
+    "request": {
+      "means": "Something waiting for THIS reader's decision or input.",
+      "test": "Doing nothing is itself an outcome someone is waiting on."
+    },
+    "event": {
+      "means": "Something that happens at a time: a session, a webinar, a deadline.",
+      "test": "The date is the first thing the reader looks for."
+    },
+    "story": {
+      "means": "Prose with a picture: an article, a post, a case write-up.",
+      "test": "The item is read, not compared."
+    },
+    "media": {
+      "means": "A recording, a video, a board, a document preview: the frame is the content.",
+      "test": "The card's job is to start playback or open the thing, not to describe it."
+    },
+    "destination": {
+      "means": "A place to go rather than a record to read.",
+      "test": "The card says what is waiting inside, not what the item is."
+    },
+    "option": {
+      "means": "One choice in a set the reader picks from.",
+      "test": "Choosing one changes what happens next; not choosing blocks the flow."
+    },
+    "offer": {
+      "means": "What we give and what it costs: a plan, a promotion, an upgrade.",
+      "test": "There is a price, a term, or a condition attached."
+    },
+    "proof": {
+      "means": "Evidence for a claim: a quote, a customer logo, a result in a number.",
+      "test": "Removing it weakens an argument rather than losing information."
+    },
+    "capability": {
+      "means": "One thing the product can do, named and explained in a line.",
+      "test": "It belongs to a set of four to six shown together."
+    },
+    "progress": {
+      "means": "Something the reader is partway through: a course, a checklist, an onboarding.",
+      "test": "The card is different on the second visit than on the first."
+    },
+    "collection": {
+      "means": "Several items shown INSIDE one card, under a name for the set.",
+      "test": "The card is the set; the items inside it are not cards."
+    },
+    "change": {
+      "means": "What happened since last time: an audit trail, a digest, a history.",
+      "test": "Time is the organising axis."
+    }
+  },
+  "parts": {
+    "eyebrow": {
+      "component": "MetaItem appearance=\"eyebrow\"",
+      "means": "what kind of thing this is, above the title"
+    },
+    "title": {
+      "component": "CardTitle",
+      "means": "what it is, in the reader's words"
+    },
+    "media": {
+      "component": "CardMedia",
+      "means": "picture, video frame, icon tile or wash"
+    },
+    "status": {
+      "component": "Badge",
+      "means": "the state, as a word and a tone"
+    },
+    "fields": {
+      "component": "Descriptions",
+      "means": "the record's own field/value pairs"
+    },
+    "meta": {
+      "component": "CardMeta",
+      "means": "secondary facts and the card's own actions, pinned to the foot"
+    },
+    "excerpt": {
+      "component": "ContentCard excerpt",
+      "means": "the first sentences, clamped by the layout rather than cut by hand"
+    },
+    "value": {
+      "component": "Stat",
+      "means": "the number the card exists for"
+    },
+    "delta": {
+      "component": "Stat delta",
+      "means": "the comparison that makes the number mean something"
+    },
+    "trend": {
+      "component": "Sparkline | BarChart | DonutChart",
+      "means": "the shape of the number: over time, per category, or as shares of a whole"
+    },
+    "scale": {
+      "component": "Meter",
+      "means": "where the value sits between a floor, a target and a ceiling"
+    },
+    "progress": {
+      "component": "Progress",
+      "means": "how far through the reader is"
+    },
+    "rows": {
+      "component": "ListItem",
+      "means": "the items of a set, inside the card"
+    },
+    "table": {
+      "component": "Table",
+      "means": "three columns of comparable values, inside the card"
+    },
+    "events": {
+      "component": "Timeline",
+      "means": "what happened, when, by whom"
+    },
+    "actions": {
+      "component": "Button",
+      "means": "what can be done, named"
+    },
+    "selection": {
+      "component": "SelectableTile",
+      "means": "the mark that says this one is chosen, on a card that IS the control"
+    },
+    "person": {
+      "component": "Identity",
+      "means": "face beside or over name and role"
+    },
+    "quote": {
+      "component": "Quote",
+      "means": "the words of someone who is not us, with the attribution that makes them evidence"
+    },
+    "price": {
+      "component": "text",
+      "means": "what it costs, and per what"
+    },
+    "date": {
+      "component": "DateBlock",
+      "means": "when it happens, as a block the eye finds first"
+    },
+    "link": {
+      "component": "Card interactive",
+      "means": "the whole surface is the way in"
+    }
+  },
+  "states": {
+    "$comment": "What a family owes besides its happy path. A card that has no answer for these three gets them invented per screen, which is how one system grows four empty states.",
+    "loading": "Skeleton in the card's own shape, so the layout does not jump.",
+    "empty": "EmptyState inside the card, saying WHY it is empty and what to do.",
+    "error": "Alert tone=\"danger\" inside the card, with the retry, never a blank surface."
+  },
+  "families": [
+    {
+      "id": "object",
+      "name": "Object card",
+      "carries": [
+        "entity"
+      ],
+      "intent": "One record as a summary: what it is, what state it is in, the few fields that decide, one way in.",
+      "anatomy": {
+        "required": [
+          "title",
+          "fields"
+        ],
+        "optional": [
+          "eyebrow",
+          "status",
+          "meta",
+          "actions",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "CardTitle"
+        ],
+        "optional": [
+          "ContentCard",
+          "Descriptions",
+          "MetaItem",
+          "Badge",
+          "CardHeader",
+          "CardMeta",
+          "Button"
+        ]
+      },
+      "maxFields": 6,
+      "notWhen": "Four or more fields are COMPARED across items — that is R1, and columns win.",
+      "because": "Fiori's object card and Salesforce's record card are the same shape for the same reason: the reader is judging one record at a time, and pairs of label and value read faster than sentences.",
+      "source": "SAP Fiori object card; Salesforce Lightning record card",
+      "status": "composed"
+    },
+    {
+      "id": "collection",
+      "name": "List card",
+      "carries": [
+        "collection"
+      ],
+      "intent": "A few items of one kind inside one card, under a name for the set and a way to the full list.",
+      "anatomy": {
+        "required": [
+          "title",
+          "rows"
+        ],
+        "optional": [
+          "meta",
+          "actions"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card"
+        ],
+        "expect": [
+          "ListItem",
+          "ContentCard"
+        ],
+        "optional": [
+          "CardTitle",
+          "CardMeta",
+          "SectionLabel",
+          "Button",
+          "LoadMore"
+        ]
+      },
+      "notWhen": "The set IS the screen — then it is a list page, not a card.",
+      "because": "The card names the set and bounds it; without the name the rows are a list that happens to sit on a surface (Fiori list card).",
+      "source": "SAP Fiori list card; Adaptive Cards list",
+      "status": "built",
+      "reference": "showcase content-patterns, structures 12 and 13"
+    },
+    {
+      "id": "dataset",
+      "name": "Table card",
+      "carries": [
+        "collection"
+      ],
+      "intent": "A few rows with two or three comparable values each, inside a card.",
+      "anatomy": {
+        "required": [
+          "title",
+          "table"
+        ],
+        "optional": [
+          "meta",
+          "actions"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Table"
+        ],
+        "optional": [
+          "CardTitle",
+          "CardMeta",
+          "Button"
+        ]
+      },
+      "maxColumns": 3,
+      "notWhen": "More than three columns or more than a handful of rows — that is a table zone of its own.",
+      "because": "Fiori caps the table card at three columns for the same reason a card is a summary: past that it is a table wearing a card.",
+      "source": "SAP Fiori table card",
+      "status": "composed"
+    },
+    {
+      "id": "analytical",
+      "name": "Analytical card",
+      "carries": [
+        "metric"
+      ],
+      "intent": "A value in a shape: over time, or split by a dimension, with the period it covers.",
+      "anatomy": {
+        "required": [
+          "title",
+          "trend"
+        ],
+        "optional": [
+          "value",
+          "delta",
+          "meta",
+          "actions"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card"
+        ],
+        "oneOf": [
+          "Sparkline",
+          "BarChart",
+          "DonutChart"
+        ],
+        "optional": [
+          "Stat",
+          "CardTitle",
+          "CardMeta",
+          "SegmentedControl",
+          "MetaItem"
+        ]
+      },
+      "notWhen": "One number with no shape — that is the kpi family and does not need a chart.",
+      "because": "A chart card without its period and its freshness is a picture, not a measurement (Fiori analytical card). Three forms cover what a card can hold: a value over time (Sparkline), a value per category (BarChart), a whole split into named shares (DonutChart).",
+      "source": "SAP Fiori analytical card",
+      "status": "built"
+    },
+    {
+      "id": "kpi",
+      "name": "KPI card",
+      "carries": [
+        "metric"
+      ],
+      "intent": "One number that says whether things are good: the value, what it is compared to, and where it sits against the target.",
+      "anatomy": {
+        "required": [
+          "value",
+          "delta"
+        ],
+        "optional": [
+          "trend",
+          "scale",
+          "meta",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "Stat"
+        ],
+        "optional": [
+          "Card",
+          "Sparkline",
+          "Meter",
+          "Badge"
+        ]
+      },
+      "notWhen": "The number is not judged, only read — then it is a field of an object card.",
+      "because": "Four layers make a KPI: the label, the value, the comparison and a visual anchor. Without the third the reader cannot tell good from bad, and the card is decoration.",
+      "source": "Fiori KPI cards; BI practice 2026",
+      "status": "built"
+    },
+    {
+      "id": "health",
+      "name": "Status card",
+      "carries": [
+        "metric",
+        "entity"
+      ],
+      "intent": "The state of one thing against its promise: healthy, at risk, breached, and why.",
+      "anatomy": {
+        "required": [
+          "title",
+          "status"
+        ],
+        "optional": [
+          "scale",
+          "meta",
+          "actions"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Badge"
+        ],
+        "optional": [
+          "Meter",
+          "Progress",
+          "CardTitle",
+          "CardMeta",
+          "Button"
+        ]
+      },
+      "notWhen": "The state is one field among many — that belongs on the object card.",
+      "because": "A status card exists to be acted on: the tone carries the verdict, the scale carries the distance to it, and the action is in the card because that is where the decision is made.",
+      "source": "Fiori; Carbon; operations dashboards",
+      "status": "composed"
+    },
+    {
+      "id": "action",
+      "name": "Action card",
+      "carries": [
+        "request"
+      ],
+      "intent": "A question put to this reader, answered without leaving the surface, and the answer shown in place.",
+      "anatomy": {
+        "required": [
+          "title",
+          "actions"
+        ],
+        "optional": [
+          "excerpt",
+          "fields",
+          "status",
+          "person"
+        ]
+      },
+      "components": {
+        "oneOf": [
+          "ActionCard",
+          "Card"
+        ],
+        "expect": [
+          "ActionCard"
+        ],
+        "optional": [
+          "Button",
+          "Badge",
+          "Descriptions",
+          "Identity",
+          "Field"
+        ]
+      },
+      "maxActions": 3,
+      "notWhen": "The decision needs the full record — then the card links to it and the decision happens there.",
+      "because": "Adaptive Cards exist for this shape: the answer is given in the feed and the card then states the outcome, so nobody wonders whether it went through.",
+      "source": "Microsoft Adaptive Cards; Outlook actionable messages",
+      "status": "built"
+    },
+    {
+      "id": "history",
+      "name": "Timeline card",
+      "carries": [
+        "change"
+      ],
+      "intent": "What happened to one thing, in order, with who and when.",
+      "anatomy": {
+        "required": [
+          "title",
+          "events"
+        ],
+        "optional": [
+          "meta",
+          "actions"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Timeline"
+        ],
+        "optional": [
+          "CardTitle",
+          "CardMeta",
+          "Button"
+        ]
+      },
+      "notWhen": "The events belong to many different things — that is a digest.",
+      "because": "One subject, one axis: the timeline card is the audit trail of the record the screen is about (Fiori timeline card).",
+      "source": "SAP Fiori timeline card",
+      "status": "composed"
+    },
+    {
+      "id": "preview",
+      "name": "Entity preview",
+      "carries": [
+        "entity"
+      ],
+      "intent": "A pointer to something that lives elsewhere, shown with enough of itself to be recognised.",
+      "anatomy": {
+        "required": [
+          "title",
+          "meta"
+        ],
+        "optional": [
+          "eyebrow",
+          "status",
+          "media",
+          "link"
+        ]
+      },
+      "components": {
+        "oneOf": [
+          "EntityLink",
+          "HoverCard"
+        ],
+        "optional": [
+          "Card",
+          "Badge",
+          "MetaItem",
+          "Identity",
+          "Icon"
+        ]
+      },
+      "notWhen": "The entity is the screen's own subject — it does not need previewing, it needs showing.",
+      "because": "Atlassian ships one entity in three views because how much context a link owes depends on the sentence it sits in, not on the entity. EntityLink carries the inline and card views; HoverCard is the same preview on hover.",
+      "source": "Atlassian Smart Links",
+      "status": "built"
+    },
+    {
+      "id": "person",
+      "name": "Person card",
+      "carries": [
+        "person"
+      ],
+      "intent": "A human as one glance: face, name, role, and the ways to reach them.",
+      "anatomy": {
+        "required": [
+          "person"
+        ],
+        "optional": [
+          "eyebrow",
+          "meta",
+          "actions",
+          "status"
+        ]
+      },
+      "components": {
+        "required": [
+          "Identity"
+        ],
+        "optional": [
+          "Card",
+          "CardTitle",
+          "CardMeta",
+          "IconButton",
+          "Tooltip",
+          "Button",
+          "Tabs"
+        ]
+      },
+      "notWhen": "The people are compared by attributes (rate, availability, load) — that is a table.",
+      "because": "The portrait is what identifies the item; a field list of the same facts identifies nobody.",
+      "source": "Adaptive Cards people card; corporate directories",
+      "status": "built",
+      "reference": "showcase content-patterns, structures 1 to 4"
+    },
+    {
+      "id": "stack",
+      "name": "Stack card",
+      "carries": [
+        "collection"
+      ],
+      "intent": "Many cards of one kind shown as one, with the count, a way into the pile and — when the pile is a queue — a way to put the top card behind it and work through the rest in place.",
+      "anatomy": {
+        "required": [
+          "title",
+          "link"
+        ],
+        "optional": [
+          "meta",
+          "status",
+          "actions"
+        ]
+      },
+      "components": {
+        "required": [
+          "CardStack"
+        ],
+        "optional": [
+          "CardTitle",
+          "CardMeta",
+          "MetaItem",
+          "Badge",
+          "Button"
+        ]
+      },
+      "notWhen": "The set is small enough to show — a stack of three hides nothing and costs a click.",
+      "because": "An overview page has room for one card per topic; when a topic has twenty instances the topic keeps its slot and the instances go behind it (Fiori stack card, capped at 20).",
+      "source": "SAP Fiori stack card",
+      "status": "built"
+    },
+    {
+      "id": "option",
+      "name": "Selectable tile",
+      "carries": [
+        "option"
+      ],
+      "intent": "One choice in a set, chosen by clicking the card itself, single or multiple.",
+      "anatomy": {
+        "required": [
+          "title",
+          "selection"
+        ],
+        "optional": [
+          "media",
+          "excerpt",
+          "status",
+          "price"
+        ]
+      },
+      "components": {
+        "required": [
+          "SelectableTile"
+        ],
+        "optional": [
+          "Icon",
+          "Badge",
+          "Descriptions"
+        ]
+      },
+      "notWhen": "The choice is a short list of words — that is Select, Radio or SegmentedControl, and a grid of tiles is chrome around a radio group.",
+      "because": "Carbon separates selectable tiles from clickable ones because the two look alike and behave nothing alike: one navigates, one changes a value in a form.",
+      "source": "IBM Carbon selectable / radio / multi-select tile",
+      "status": "built"
+    },
+    {
+      "id": "entry",
+      "name": "Entry tile",
+      "carries": [
+        "destination"
+      ],
+      "intent": "A place to go, saying what is waiting inside it.",
+      "anatomy": {
+        "required": [
+          "title",
+          "link"
+        ],
+        "optional": [
+          "meta",
+          "status",
+          "media",
+          "actions"
+        ]
+      },
+      "components": {
+        "oneOf": [
+          "LinkTile",
+          "Card"
+        ],
+        "expect": [
+          "LinkTile"
+        ],
+        "optional": [
+          "Badge",
+          "MetaItem",
+          "CountBadge",
+          "Dropdown",
+          "CardTitle",
+          "CardMeta",
+          "Icon",
+          "Grid",
+          "Button"
+        ]
+      },
+      "notWhen": "The items are records to find or process — R9 already says a hub's items are destinations, and these are not.",
+      "because": "A destination tile is judged by what is inside it, so the freshness and the count belong on the tile, not behind it.",
+      "source": "SAP Fiori overview page; our own LinkTile",
+      "status": "built"
+    },
+    {
+      "id": "expandable",
+      "name": "Expandable card",
+      "carries": [
+        "entity"
+      ],
+      "intent": "Summary in place, detail on demand, without leaving the screen.",
+      "anatomy": {
+        "required": [
+          "title",
+          "link"
+        ],
+        "optional": [
+          "fields",
+          "meta",
+          "actions",
+          "status"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card"
+        ],
+        "oneOf": [
+          "Accordion",
+          "ExpandButton"
+        ],
+        "optional": [
+          "Descriptions",
+          "CardMeta",
+          "CardTitle",
+          "MetaItem"
+        ]
+      },
+      "notWhen": "Every card ends up open — then the detail was never optional and belongs in the card.",
+      "because": "Carbon's expandable tile keeps the grid scannable while letting one item answer a follow-up question in place. The disclosure is <Accordion>, which owns the header semantics and the keyboard; <ExpandButton> is the pill for a rail or a toolbar, not a quiet in-card reveal.",
+      "source": "IBM Carbon expandable tile",
+      "status": "composed"
+    },
+    {
+      "id": "embed",
+      "name": "Embed card",
+      "carries": [
+        "media"
+      ],
+      "intent": "The card lends its chrome to content that is not ours: a video, a board, a document.",
+      "anatomy": {
+        "required": [
+          "title",
+          "media"
+        ],
+        "optional": [
+          "meta",
+          "actions"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "CardMedia"
+        ],
+        "optional": [
+          "CardHeader",
+          "CardMeta",
+          "IconButton"
+        ]
+      },
+      "notWhen": "We own the content — then it is the media family and keeps our padding.",
+      "because": "Foreign content brings its own aspect ratio and its own padding; the card has to decide whose wins before the first one lands. `CardMedia ratio` is that decision, made once.",
+      "source": "SAP UI5 component card; Atlassian embed",
+      "status": "composed"
+    },
+    {
+      "id": "checklist",
+      "name": "Checklist card",
+      "carries": [
+        "progress"
+      ],
+      "intent": "The steps of a first run or a routine, with the state of each and one active action.",
+      "anatomy": {
+        "required": [
+          "title",
+          "progress",
+          "rows"
+        ],
+        "optional": [
+          "actions",
+          "meta"
+        ]
+      },
+      "components": {
+        "required": [
+          "SetupGuide"
+        ],
+        "optional": [
+          "Card",
+          "Progress",
+          "Button"
+        ]
+      },
+      "notWhen": "The steps must be done in order and block each other — that is a wizard, a page not a card.",
+      "because": "Shopify's setup guide works because the card holds the whole sequence: progress, state per step, and exactly one thing to do next.",
+      "source": "Shopify setup guide",
+      "status": "built"
+    },
+    {
+      "id": "digest",
+      "name": "Digest card",
+      "carries": [
+        "change"
+      ],
+      "intent": "What changed in a period, as a few unlike items under one date.",
+      "anatomy": {
+        "required": [
+          "title",
+          "rows"
+        ],
+        "optional": [
+          "meta",
+          "actions",
+          "eyebrow"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card"
+        ],
+        "expect": [
+          "ListItem",
+          "ContentCard"
+        ],
+        "optional": [
+          "Time",
+          "CardTitle",
+          "CardMeta",
+          "Button",
+          "Badge"
+        ]
+      },
+      "notWhen": "The items are all of one kind and belong to one subject — that is a timeline card.",
+      "because": "A digest is defined by its watermark: it says what is new since a moment, so the period is part of the card, not a filter above it.",
+      "source": "Adaptive Cards digest card",
+      "status": "composed"
+    },
+    {
+      "id": "plan",
+      "name": "Plan card",
+      "carries": [
+        "offer"
+      ],
+      "intent": "One plan in a row: what it is called, what it costs, what is included, one action.",
+      "anatomy": {
+        "required": [
+          "title",
+          "price",
+          "actions"
+        ],
+        "optional": [
+          "rows",
+          "status",
+          "excerpt"
+        ]
+      },
+      "components": {
+        "required": [
+          "PlanCard"
+        ],
+        "optional": [
+          "Badge",
+          "Button"
+        ]
+      },
+      "notWhen": "There is a deadline or a condition rather than a tier — that is the offer family.",
+      "because": "Plans are compared down the row, so every card carries the same fields in the same order; the featured one is marked, not enlarged.",
+      "source": "SaaS pricing convention; our PlanCard",
+      "status": "built"
+    },
+    {
+      "id": "cover",
+      "name": "Cover card",
+      "carries": [
+        "story",
+        "media"
+      ],
+      "intent": "The picture is the card: title over the image, legibility from the scrim.",
+      "anatomy": {
+        "required": [
+          "media",
+          "title"
+        ],
+        "optional": [
+          "eyebrow",
+          "meta",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "CardMedia"
+        ],
+        "optional": [
+          "ContentCard",
+          "CardTitle",
+          "CardMeta",
+          "MetaItem",
+          "Badge",
+          "Identity",
+          "SectionLabel",
+          "Grid",
+          "Button"
+        ]
+      },
+      "notWhen": "The picture is decoration — a cover with a stock photograph behind the title costs contrast and buys nothing.",
+      "because": "A cover promises that the image carries part of the meaning; the scrim is what makes the promise keepable over any photograph.",
+      "source": "editorial practice; USWDS card",
+      "status": "built",
+      "reference": "showcase content-patterns, structures 6 and 7"
+    },
+    {
+      "id": "story",
+      "name": "Story card",
+      "carries": [
+        "story"
+      ],
+      "intent": "Picture, headline, the first sentences, one way in.",
+      "anatomy": {
+        "required": [
+          "title",
+          "excerpt"
+        ],
+        "optional": [
+          "media",
+          "eyebrow",
+          "meta",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "ContentCard"
+        ],
+        "optional": [
+          "Card",
+          "CardMedia",
+          "CardTitle",
+          "CardMeta",
+          "MetaItem",
+          "ContentCard",
+          "Button"
+        ]
+      },
+      "notWhen": "The items are compared by fields — prose in columns compares nothing (R7).",
+      "because": "The excerpt is the working part: it is what lets the reader skip the item without opening it. <ContentCard> carries the whole set — media, eyebrow, title, excerpt, meta, actions — and reads its own width, so the same story is a row in a sidebar and a tile in a grid without a second component.",
+      "source": "USWDS card, flag and header-first variants",
+      "status": "built",
+      "reference": "showcase content-patterns, structures 5, 8, 9, 10"
+    },
+    {
+      "id": "feature",
+      "name": "Feature tile",
+      "carries": [
+        "capability"
+      ],
+      "intent": "One thing the product does: icon, name, one line. Lives in a set of four to six.",
+      "anatomy": {
+        "required": [
+          "title",
+          "excerpt"
+        ],
+        "optional": [
+          "media",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card"
+        ],
+        "optional": [
+          "ContentCard",
+          "Icon",
+          "CardTitle",
+          "CardMedia"
+        ]
+      },
+      "notWhen": "The line needs a paragraph — then it is a story card and the set is smaller.",
+      "because": "The set is read as one sentence about the product, so the tiles are parallel in length and grammar or the set stops reading as a set.",
+      "source": "bento grids; SaaS feature sections",
+      "status": "composed"
+    },
+    {
+      "id": "media",
+      "name": "Media card",
+      "carries": [
+        "media"
+      ],
+      "intent": "A recording: the frame, how long it runs, and the way to start it.",
+      "anatomy": {
+        "required": [
+          "media",
+          "title"
+        ],
+        "optional": [
+          "meta",
+          "status",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "CardMedia"
+        ],
+        "optional": [
+          "ContentCard",
+          "IconButton",
+          "Badge",
+          "CardTitle",
+          "CardMeta"
+        ]
+      },
+      "notWhen": "Nothing plays — a document with a thumbnail is a story card.",
+      "because": "Duration and the play affordance are what separate a recording from a picture; without them the card lies about what a click does. CardMedia carries both (`playable`, `duration`), so the affordance is one shape across every screen.",
+      "source": "Adaptive Cards media card",
+      "status": "built"
+    },
+    {
+      "id": "case",
+      "name": "Case card",
+      "carries": [
+        "proof"
+      ],
+      "intent": "Client, task, result in a number.",
+      "anatomy": {
+        "required": [
+          "title",
+          "value"
+        ],
+        "optional": [
+          "media",
+          "excerpt",
+          "meta",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Stat"
+        ],
+        "optional": [
+          "CardMedia",
+          "CardTitle",
+          "CardMeta",
+          "ContentCard"
+        ]
+      },
+      "notWhen": "There is no number — an unquantified case is a story card and should not pretend otherwise.",
+      "because": "The number is the whole argument; a case card that buries it in the excerpt is a story with a logo.",
+      "source": "B2B marketing practice",
+      "status": "composed"
+    },
+    {
+      "id": "proof",
+      "name": "Proof stat",
+      "carries": [
+        "proof",
+        "metric"
+      ],
+      "intent": "One number as an argument, in a row of three or four.",
+      "anatomy": {
+        "required": [
+          "value"
+        ],
+        "optional": [
+          "meta",
+          "link"
+        ]
+      },
+      "components": {
+        "required": [
+          "Stat"
+        ],
+        "optional": [
+          "Card",
+          "MetaItem"
+        ]
+      },
+      "notWhen": "The number is monitored rather than claimed — that is the kpi family.",
+      "because": "A promotional number needs its source in the card or it reads as a decoration nobody checked.",
+      "source": "marketing pages; annual reports",
+      "status": "composed"
+    },
+    {
+      "id": "testimonial",
+      "name": "Testimonial card",
+      "carries": [
+        "proof"
+      ],
+      "intent": "The words of someone who used the thing, with who they are.",
+      "anatomy": {
+        "required": [
+          "quote",
+          "person"
+        ],
+        "optional": [
+          "media",
+          "meta"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Quote"
+        ],
+        "optional": [
+          "Identity",
+          "Avatar",
+          "CardMeta",
+          "Rating"
+        ]
+      },
+      "notWhen": "The quote has no attributable human — an anonymous testimonial proves nothing and should be cut, not styled.",
+      "because": "Attribution is the evidence; the quote alone is copy we wrote about ourselves.",
+      "source": "marketing practice",
+      "status": "built"
+    },
+    {
+      "id": "logos",
+      "name": "Logo wall",
+      "carries": [
+        "proof"
+      ],
+      "intent": "Customer logos in one optical weight.",
+      "anatomy": {
+        "required": [
+          "media"
+        ],
+        "optional": [
+          "title"
+        ]
+      },
+      "components": {
+        "required": [
+          "LogoWall"
+        ],
+        "optional": [
+          "Card",
+          "SectionLabel"
+        ]
+      },
+      "notWhen": "Fewer than four logos — a short row reads as a gap, not as proof.",
+      "because": "Normalising the optical weight of unlike logos is systems work; done per page it is done by eye and looks it.",
+      "source": "B2B marketing practice",
+      "status": "built"
+    },
+    {
+      "id": "offer",
+      "name": "Offer card",
+      "carries": [
+        "offer"
+      ],
+      "intent": "What we give, on what condition, until when, with one action.",
+      "anatomy": {
+        "required": [
+          "title",
+          "actions"
+        ],
+        "optional": [
+          "eyebrow",
+          "price",
+          "date",
+          "excerpt",
+          "status"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Button"
+        ],
+        "optional": [
+          "Badge",
+          "Time",
+          "DateBlock",
+          "CardTitle",
+          "CardMeta"
+        ]
+      },
+      "notWhen": "It is a tier in a range — that is the plan family.",
+      "because": "The term is what makes it an offer; without the deadline the card is a plan and should be compared like one.",
+      "source": "e-commerce and campaign practice",
+      "status": "composed"
+    },
+    {
+      "id": "event",
+      "name": "Event card",
+      "carries": [
+        "event"
+      ],
+      "intent": "When it happens, what it is, where, and how to be there.",
+      "anatomy": {
+        "required": [
+          "date",
+          "title",
+          "actions"
+        ],
+        "optional": [
+          "person",
+          "meta",
+          "status",
+          "media"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "DateBlock"
+        ],
+        "optional": [
+          "Button",
+          "Identity",
+          "Badge",
+          "CardMeta",
+          "MetaItem",
+          "CardTitle"
+        ]
+      },
+      "notWhen": "The date is one field among equals — that is an object card.",
+      "because": "Readers scan events by date, so the date is a block the eye lands on, not a line of meta under the title.",
+      "source": "event listings; learning platforms",
+      "status": "built"
+    },
+    {
+      "id": "course",
+      "name": "Course card",
+      "carries": [
+        "progress"
+      ],
+      "intent": "A learning unit: what it is, how long, how far the reader got, continue or start.",
+      "anatomy": {
+        "required": [
+          "title",
+          "progress",
+          "actions"
+        ],
+        "optional": [
+          "media",
+          "meta",
+          "status"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Progress"
+        ],
+        "optional": [
+          "CardMedia",
+          "Button",
+          "MetaItem",
+          "Badge",
+          "CardTitle"
+        ]
+      },
+      "notWhen": "Nobody's progress is stored — then it is a story card with a duration.",
+      "because": "The card is different on the second visit, and that difference is the product: continue is not the same offer as start.",
+      "source": "learning platforms",
+      "status": "composed"
+    },
+    {
+      "id": "comparison",
+      "name": "Comparison card",
+      "carries": [
+        "option"
+      ],
+      "intent": "Two columns in one card: before and after, ours and theirs, base and extended.",
+      "anatomy": {
+        "required": [
+          "title",
+          "fields"
+        ],
+        "optional": [
+          "actions",
+          "status"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Descriptions"
+        ],
+        "optional": [
+          "Table",
+          "Badge",
+          "Button",
+          "CardTitle"
+        ]
+      },
+      "maxRows": 6,
+      "notWhen": "More than six rows or more than two columns — that is a table.",
+      "because": "Two columns of six rows is the size at which a card still reads at a glance; past it the card is a table that lost its header.",
+      "source": "marketing and migration pages",
+      "status": "composed"
+    },
+    {
+      "id": "capture",
+      "name": "Capture card",
+      "carries": [
+        "request"
+      ],
+      "intent": "One promise, one field, one button, and the truth about what arrives afterwards.",
+      "anatomy": {
+        "required": [
+          "title",
+          "actions"
+        ],
+        "optional": [
+          "excerpt",
+          "fields"
+        ]
+      },
+      "components": {
+        "required": [
+          "Card",
+          "Field",
+          "Button"
+        ],
+        "optional": [
+          "Input",
+          "CardTitle"
+        ]
+      },
+      "notWhen": "More than one field — that is a form, and a form on a promo page is a page.",
+      "because": "The line about frequency is part of the card: it is the only place the reader learns what they are agreeing to.",
+      "source": "newsletter and lead capture practice",
+      "status": "composed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "K1",
+      "title": "A judged number is a KPI card",
+      "when": {
+        "task": [
+          "monitor"
+        ],
+        "carries": "metric"
+      },
+      "choose": [
+        "kpi",
+        "health",
+        "analytical"
+      ],
+      "because": "Monitoring asks whether things are good, which is a comparison: the value alone cannot answer it (NN/g dashboards; BI practice).",
+      "good": "<Stat value delta=\"+12%\" trend={…}> in a Card",
+      "bad": "a big number with a label and nothing to judge it against"
+    },
+    {
+      "id": "K2",
+      "title": "Analysis wants the shape, not the point",
+      "when": {
+        "task": [
+          "analyze"
+        ],
+        "carries": "metric"
+      },
+      "choose": [
+        "analytical",
+        "kpi"
+      ],
+      "because": "An investigation starts from the curve; the single value is the headline of a chart that has to be there (Fiori analytical list page).",
+      "good": "Card with a Sparkline over the period and the value beside it",
+      "bad": "one number per period as separate Stat tiles"
+    },
+    {
+      "id": "K3",
+      "title": "A record read one at a time is an object card",
+      "when": {
+        "task": [
+          "browse",
+          "scan"
+        ],
+        "carries": "entity"
+      },
+      "choose": [
+        "object",
+        "expandable",
+        "preview",
+        "health"
+      ],
+      "because": "Label and value pairs are what let a reader judge one record without the header row of a table (Fiori object card).",
+      "good": "Card with a Descriptions of four fields and one action",
+      "bad": "a Card holding ten MetaItems in a paragraph"
+    },
+    {
+      "id": "K4",
+      "title": "Something waiting on the reader is an action card",
+      "when": {
+        "task": [
+          "process",
+          "act"
+        ],
+        "carries": "request"
+      },
+      "choose": [
+        "action",
+        "capture"
+      ],
+      "because": "The answer is given where the question is asked, and the card then states the outcome (Adaptive Cards).",
+      "good": "<ActionCard> with approve and decline, and a resolved state after either",
+      "bad": "a card whose only action navigates to the screen where the decision really happens"
+    },
+    {
+      "id": "K5",
+      "title": "Destinations are entry tiles",
+      "when": {
+        "task": [
+          "navigate"
+        ],
+        "carries": "destination"
+      },
+      "choose": [
+        "entry",
+        "stack"
+      ],
+      "because": "A hub's item is a place, so the tile carries what is waiting inside it (R9; Fiori overview page).",
+      "good": "<LinkTile> with the topic, the count and when it last moved",
+      "bad": "an object card whose fields describe a page rather than a record"
+    },
+    {
+      "id": "K6",
+      "title": "Prose with a picture is a story",
+      "when": {
+        "task": [
+          "browse",
+          "read"
+        ],
+        "carries": "story"
+      },
+      "choose": [
+        "story",
+        "cover",
+        "case"
+      ],
+      "because": "A text item is read and judged on its own content (R7), and the excerpt is what lets it be skipped.",
+      "good": "Card with CardMedia, CardTitle, two sentences and a meta line",
+      "bad": "a story card with no excerpt, which forces every item open"
+    },
+    {
+      "id": "K7",
+      "title": "A choice in a set is a selectable tile",
+      "when": {
+        "task": [
+          "compare",
+          "act"
+        ],
+        "carries": "option"
+      },
+      "choose": [
+        "option",
+        "comparison",
+        "plan"
+      ],
+      "because": "Selecting changes a value in a flow, so the whole surface is the control and its state has to be visible (Carbon selectable tile).",
+      "good": "<SelectableTile> per region with a checked state and keyboard support",
+      "bad": "a clickable card that navigates when the user meant to choose"
+    },
+    {
+      "id": "K8",
+      "title": "A set inside a card is a list card",
+      "when": {
+        "task": [
+          "browse",
+          "scan",
+          "monitor",
+          "process"
+        ],
+        "carries": "collection"
+      },
+      "choose": [
+        "collection",
+        "dataset",
+        "stack"
+      ],
+      "because": "The card names the set and bounds it, which is what separates it from a list that happens to sit on a surface (Fiori list card).",
+      "good": "Card titled 'Waiting on you' over five ListItems and a way to the full list",
+      "bad": "a card with twenty rows and no way out of it"
+    },
+    {
+      "id": "K9",
+      "title": "What changed is a digest or a history",
+      "when": {
+        "task": [
+          "scan",
+          "read",
+          "monitor"
+        ],
+        "carries": "change"
+      },
+      "choose": [
+        "digest",
+        "history"
+      ],
+      "because": "Time is the axis: one subject in order is a timeline, many subjects since a moment is a digest.",
+      "good": "Card headed by the period, five unlike items, each with its own way in",
+      "bad": "a digest with no period, which cannot say what is new"
+    },
+    {
+      "id": "K10",
+      "title": "A person is a face, not a row of fields",
+      "when": {
+        "task": [
+          "browse",
+          "scan",
+          "navigate"
+        ],
+        "carries": "person"
+      },
+      "choose": [
+        "person"
+      ],
+      "because": "The portrait is what identifies the item; the same facts as a field list identify nobody.",
+      "good": "<Identity vertical size=\"xl\"> in a Card with two named actions",
+      "bad": "a Descriptions list whose first row is 'Name'"
+    },
+    {
+      "id": "K11",
+      "title": "Evidence is not an object",
+      "when": {
+        "task": [
+          "browse",
+          "read"
+        ],
+        "carries": "proof"
+      },
+      "choose": [
+        "testimonial",
+        "case",
+        "proof",
+        "logos"
+      ],
+      "because": "Proof carries attribution rather than fields: who said it, for whom, measured how.",
+      "good": "a quote with the person, their role and their company",
+      "bad": "an unattributed quote styled as a testimonial"
+    },
+    {
+      "id": "K12",
+      "title": "An offer is a plan plus a term",
+      "when": {
+        "task": [
+          "compare",
+          "browse"
+        ],
+        "carries": "offer"
+      },
+      "choose": [
+        "plan",
+        "offer"
+      ],
+      "because": "Tiers are compared across the row; an offer is judged against its deadline. Same surface, different reading.",
+      "good": "<PlanCard> for the range, an offer card for the campaign",
+      "bad": "a promotional card in the pricing row that cannot be compared with its neighbours"
+    },
+    {
+      "id": "K13",
+      "title": "The date leads an event",
+      "when": {
+        "task": [
+          "browse",
+          "scan",
+          "navigate"
+        ],
+        "carries": "event"
+      },
+      "choose": [
+        "event"
+      ],
+      "because": "Readers scan an event list by date, so the date is a block, not a line of meta.",
+      "good": "a date block beside the title, place and time under it, one action",
+      "bad": "the date as the fourth MetaItem in the footer"
+    },
+    {
+      "id": "K14",
+      "title": "Progress changes the offer",
+      "when": {
+        "task": [
+          "browse",
+          "scan",
+          "process"
+        ],
+        "carries": "progress"
+      },
+      "choose": [
+        "course",
+        "checklist"
+      ],
+      "because": "Continue and start are different promises; the card has to know which one it is making.",
+      "good": "Card with a ProgressBar and a Continue button when there is progress",
+      "bad": "the same Start button whether or not the reader is halfway through"
+    },
+    {
+      "id": "K15",
+      "title": "Playable media says so",
+      "when": {
+        "task": [
+          "browse",
+          "scan"
+        ],
+        "carries": "media"
+      },
+      "choose": [
+        "media",
+        "cover",
+        "embed"
+      ],
+      "because": "Duration and the play affordance are what tell the reader what a click does.",
+      "good": "a frame with a play control and a duration badge",
+      "bad": "a thumbnail that opens a player nobody expected"
+    },
+    {
+      "id": "K16",
+      "title": "A capability is one line",
+      "when": {
+        "task": [
+          "browse",
+          "read"
+        ],
+        "carries": "capability"
+      },
+      "choose": [
+        "feature"
+      ],
+      "because": "The set of tiles is read as one sentence about the product, so the tiles stay parallel in length and grammar.",
+      "good": "four tiles, each an icon, a two-word name and one line",
+      "bad": "one tile with a paragraph and three with a phrase"
+    }
+  ],
+  "hard": [
+    {
+      "id": "HK1",
+      "when": {
+        "carries": "request"
+      },
+      "forbid": [
+        "object",
+        "story",
+        "entry",
+        "preview"
+      ],
+      "instead": "action",
+      "because": "A card that carries a decision and only links away hands the work back to the reader; the answer belongs where the question is (Adaptive Cards)."
+    },
+    {
+      "id": "HK2",
+      "when": {
+        "carries": "option"
+      },
+      "forbid": [
+        "entry",
+        "story",
+        "object"
+      ],
+      "instead": "option",
+      "because": "A clickable card navigates and a selectable one changes a value; using the first for the second loses the choice on the next click (Carbon)."
+    },
+    {
+      "id": "HK3",
+      "when": {
+        "carries": "metric",
+        "cardinality": "one"
+      },
+      "forbid": [
+        "collection",
+        "dataset"
+      ],
+      "instead": "kpi",
+      "because": "One measured value is a KPI card; wrapping it in a set of rows buries the only thing on the card."
+    }
+  ],
+  "notes": [
+    {
+      "id": "NK-states",
+      "when": {},
+      "if": "any",
+      "say": "every card family owes three states besides its happy path: Skeleton in its own shape while loading, EmptyState with the reason when there is nothing, Alert tone=\"danger\" with the retry when it broke. A screen that invents them per card is how one system grows four empty states."
+    },
+    {
+      "id": "NK-fill",
+      "when": {},
+      "if": "any",
+      "say": "cards in a row are the SAME HEIGHT (owner's rule, 23.08). The grid stretches them by default and that default stays: a card that runs out of content gives the extra height to the space above its foot, because CardMeta pins to the bottom. Do not answer a ragged row with `align=\"start\"`; answer it by giving the short card the part it is missing. `fill` is how a card takes its cell's height when something (a GridItem, a flex row) sits between it and the grid."
+    },
+    {
+      "id": "NK-one-way-in",
+      "when": {},
+      "if": "any",
+      "say": "one primary way in per card. A card that is itself a link (Card interactive) may not also carry a primary Button — the two compete for the same click and the nested one usually loses."
+    }
+  ],
+  "$componentsNote": "A family's components say what it is BUILT from: `required` must all be named by the zone, `oneOf` means at least one of them (the purpose-built component or the honest composition), `expect` is a note rather than a verdict — the part that has a component nobody remembered to use. `optional` is documentation."
+}

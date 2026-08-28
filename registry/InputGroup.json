@@ -1,0 +1,102 @@
+{
+  "ref": "InputGroup",
+  "level": "molecule",
+  "description": "A field with something attached to it: `https://` before the value, `kg` after it, a Copy button on the end. The GROUP wears the field frame and owns the focus ring; the input inside goes frameless, so the whole thing reads and behaves as one control rather than a box beside a box.",
+  "exports": [
+    "InputGroup"
+  ],
+  "main": "InputGroup",
+  "from": "@/components/InputGroup",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "Exactly one field — an `<Input>`, `<NumberInput>` or `<Textarea>`."
+    },
+    {
+      "name": "prefix",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Sits before the value: a unit, a scheme, a currency. Text, or a control."
+    },
+    {
+      "name": "suffix",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Sits after it: a unit, a Button, an IconButton."
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false,
+      "description": "Red frame + red focus ring. The message belongs to the `<Field>` around it."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "description": "Which surface the group sits on — same contract as `<Input surface>`.",
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/InputGroup/InputGroup.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
+    },
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
+      ]
+    },
+    "disabled": {
+      "prop": "disabled",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Field",
+    "Input"
+  ],
+  "example": "const [value, setValue] = useState('acme-handbook')\n/* The scheme is not something anyone types, so it is an affix rather than\n * part of the value — the field holds the slug and nothing else. `Field`\n * around it still owns the label and any message. */\n\n<Field label=\"Workspace address\" htmlFor=\"workspace-slug\">\n  <InputGroup prefix=\"https://\" suffix=\".example.com\">\n    <Input\n      id=\"workspace-slug\"\n      value={value}\n      onChange={(e) => { setValue(e.target.value) }}\n    />\n  </InputGroup>\n</Field>"
+}

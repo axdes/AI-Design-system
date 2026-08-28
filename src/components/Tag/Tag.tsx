@@ -17,7 +17,11 @@ type Props = {
 /* A static, non-interactive label token in a pill — the read-only counterpart to
  * <Chip> (which is a button). Optionally removable: the label does nothing, only
  * the trailing X drops the token, so the remove control can be its own button
- * (a remove button nested inside a Chip button would be invalid HTML). */
+ * (a remove button nested inside a Chip button would be invalid HTML). 
+   *
+   * Copy: the value as the reader wrote or chose it, unaltered. A tag is data;
+   * rewording it makes it un-findable.
+   */
 export function Tag({ children, onRemove, removeLabel, size = 'sm', className }: Props) {
   return (
     <span className={cn('tag', className)} data-size={size}>

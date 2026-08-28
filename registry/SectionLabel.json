@@ -1,15 +1,27 @@
 {
   "ref": "SectionLabel",
   "level": "atom",
-  "description": "The heading that names a section inside a page or a panel: the voice of a card title, one step larger. Rank comes from size and colour, not from caps.",
+  "description": "The heading that names a section inside a page or a panel: the voice of a card title, one step larger. Rank comes from size and colour, not from caps. Copy: names what the section holds, in the reader's words. It is a heading and reads like one — not a shouted category.",
   "exports": [
     "SectionLabel"
   ],
   "main": "SectionLabel",
   "from": "@/components/SectionLabel",
   "slots": [],
-  "props": [],
+  "props": [
+    {
+      "name": "as",
+      "type": "Heading",
+      "required": false,
+      "description": "The heading level, and whether this is a heading at all. Give it on a page: a section nobody can reach by walking the outline is a section a screen reader has to scroll for. Pick the level from the page, not from the look — one step under whatever heading contains it, never skipping one. Left off it renders a div, which is right inside a card, where the card's own title is already the heading.",
+      "values": [
+        "h2",
+        "h3",
+        "h4"
+      ]
+    }
+  ],
   "sourcePath": "src/components/SectionLabel/SectionLabel.tsx",
-  "inherits": "HTMLAttributes<HTMLDivElement>",
+  "inherits": "HTMLAttributes<HTMLElement>",
   "example": "<SectionLabel>Leave details</SectionLabel>"
 }

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kbd",
+  "type": "registry:ui",
+  "title": "Kbd",
+  "description": "One key as a key cap, with real <kbd> semantics: the shortcut hint next to a CommandPalette trigger, a menu row, a help sheet. One Kbd per key; compose a combination as siblings with a plain \"+\" between them.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Kbd/Kbd.css",
+      "content": ".kbd {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-inline-size: 1.4em;\n  padding-inline: var(--space-1);\n  padding-block: 0;\n  border: 1px solid var(--border);\n  border-block-end-width: 2px;\n  border-radius: var(--radius-sm);\n  background: var(--muted);\n  color: var(--muted-foreground);\n  font-family: inherit;\n  font-size: var(--font-xs);\n  font-weight: var(--font-weight-medium);\n  line-height: var(--leading-normal);\n  white-space: nowrap;\n}\n.kbd[data-size=\"md\"] {\n  min-inline-size: 1.6em;\n  padding-inline: var(--space-2);\n  font-size: var(--font-sm);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Kbd/Kbd.css"
+    },
+    {
+      "path": "src/components/Kbd/Kbd.tsx",
+      "content": "import './Kbd.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  children: ReactNode\n  /** sm (default) sits inline with body text; md is for standalone shortcut lists. */\n  size?: 'sm' | 'md'\n  className?: string\n}\n\n/* One key as a key cap, with real <kbd> semantics: the shortcut hint next to a\n * CommandPalette trigger, a menu row, a help sheet. One Kbd per key; compose a\n * combination as siblings with a plain \"+\" between them. */\nexport function Kbd({ children, size = 'sm', className }: Props) {\n  return (\n    <kbd className={cn('kbd', className)} data-size={size}>\n      {children}\n    </kbd>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Kbd/Kbd.tsx"
+    },
+    {
+      "path": "src/components/Kbd/index.ts",
+      "content": "export { Kbd } from './Kbd'\n",
+      "type": "registry:ui",
+      "target": "@ui/Kbd/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Kbd.json"
+}

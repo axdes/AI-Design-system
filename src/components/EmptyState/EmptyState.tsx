@@ -26,6 +26,11 @@ type Props = {
 /**
  * What a screen shows when it has nothing: an icon, a sentence about why it is
  * empty, and the action that would fill it.
+ *
+ * Copy: the title says what is missing, not that something is missing — "No
+ * invoices yet", never "No results". The description says WHY it is empty
+ * and what would fill it; if the reason is a filter, say so, because that
+ * is a different screen from a first run.
  */
 export function EmptyState({ icon, title, description, action, as = 'h2', size = 'md', surface = 'card' }: Props) {
   return (

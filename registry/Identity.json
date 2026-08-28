@@ -1,7 +1,7 @@
 {
   "ref": "Identity",
   "level": "molecule",
-  "description": "A person as one glance: avatar beside name and secondary line — the face next to the name, never a face floating a row above it. Consolidated from the showcase's and a second product's hand-rolled identity blocks.",
+  "description": "A person as one glance: avatar beside name and secondary line — the face next to the name, never a face floating a row above it. Consolidated from the showcase's and a second product's hand-rolled identity blocks. Copy: the name as the person writes it, and the secondary line is what they do here, not their whole title. Two lines, both short: this is a face with a name, not a profile.",
   "exports": [
     "Identity"
   ],
@@ -12,17 +12,20 @@
     {
       "name": "name",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The person's (or team's) name — the identity's strongest line. ReactNode so a card can pass its own CardTitle."
     },
     {
       "name": "avatarName",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "The plain-string name the Avatar falls back to when `name` is rich markup. Required then."
     },
     {
       "name": "secondary",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Under the name: a role, an email. One line below `2xl`, where the row has to stay one row; at `2xl` the identity IS the subject of the page and the lines stack, because a profile shows the role AND the address and neither is the other's tail."
     },
     {
       "name": "src",
@@ -31,18 +34,28 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
       "required": false,
+      "description": "How big the face is. `xl` is the hero: a portrait a card is built around, which is what the vertical form is for. Avatar carries the scale; Identity only refused to ask for the top of it (owner, 2026-08-22).",
       "values": [
         "sm",
         "md",
-        "lg"
+        "lg",
+        "xl",
+        "2xl"
       ]
     },
     {
       "name": "vertical",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "A person is recognised face-BESIDE-name; `vertical` is for the one place a profile is the hero (a profile card), never for lists."
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "required": false,
+      "description": "One control pinned to the face's trailing-bottom corner — changing the picture, and nothing else. It carries a ring in the surface colour so it reads as sitting ON the avatar rather than beside it. Three products had hand-rolled the same overlay before this existed."
     },
     {
       "name": "className",
@@ -57,7 +70,9 @@
       "values": [
         "sm",
         "md",
-        "lg"
+        "lg",
+        "xl",
+        "2xl"
       ]
     },
     "vertical": {
@@ -70,5 +85,5 @@
   "uses": [
     "Avatar"
   ],
-  "example": "<Identity name=\"Sarah Al-Mansouri\" secondary=\"Product designer\" size=\"lg\" />"
+  "example": "<Identity src=\"/demo/avatar-ben.jpg\" name=\"Ada Meridian\" secondary=\"Product designer\" size=\"lg\" />"
 }

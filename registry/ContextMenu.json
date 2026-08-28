@@ -12,7 +12,8 @@
     {
       "name": "children",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The target that opens the menu on right-click."
     },
     {
       "name": "items",

@@ -12,3 +12,45 @@
 .stat[data-tone="success"] .stat-value { color: var(--success-emphasis); }
 .stat[data-tone="warning"] .stat-value { color: var(--warning-emphasis); }
 .stat[data-tone="ai"] .stat-value      { color: var(--ai); }
+
+/* The comparison rides the value's baseline: it is read WITH the number, never
+ * as a second fact under it. */
+.stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: var(--space-2);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: normal;
+  color: var(--muted-foreground);
+  vertical-align: middle;
+}
+.stat-delta[data-delta-tone="success"] { color: var(--success-emphasis); }
+.stat-delta[data-delta-tone="danger"]  { color: var(--destructive-emphasis); }
+/* THE TREND SITS AT THE FOOT OF THE CARD.
+ *
+ * Cards in a row are the same height (owner's rule, 23.08), so a KPI card
+ * beside a chart card gets a lot of room. Two things were tried with it: leave
+ * it as white under a 24px line (a hole), and stretch the trend into it (a
+ * sparkline blown up to 300px, which is a different chart — the slopes come out
+ * exaggerated because the shape is drawn without an aspect ratio). The spare
+ * height goes BETWEEN the number and the trend instead: the value at the top,
+ * the shape along the bottom, which is the KPI tile every dashboard draws. */
+.stat-trend { margin-block-start: var(--space-1); }
+.card > .stat { flex: 1 1 auto; }
+/* The trend takes the spare height, up to a ceiling, and whatever is left over
+ * goes ABOVE it — the value at the top of the tile, the shape along the bottom.
+ * Both halves matter: without the growth a short card kept a 50px hole under
+ * the label, and without the ceiling a tall one blew a 32px sparkline up to
+ * 230px, which is a different chart (the shape is drawn without an aspect
+ * ratio, so every slope came out exaggerated). */
+.card > .stat > .stat-trend {
+  flex: 1 1 auto;
+  max-block-size: calc(var(--space-16) * 1.5);
+  margin-block-start: auto;
+  padding-block-start: var(--space-4);
+  display: flex;
+  align-items: stretch;
+}
+.card > .stat > .stat-trend > * { flex: 1 1 auto; block-size: auto; }

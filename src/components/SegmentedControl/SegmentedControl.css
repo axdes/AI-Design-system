@@ -1,11 +1,12 @@
 .segmented {
   display: inline-flex;
   padding: var(--space-2xs);
-  /* Light theme shows elevation as grey-vs-white; dark theme has --muted ===
-   * --background (both neutral-900), so it lifts with the --card/--popover
-   * elevation stops instead. Encoding both here keeps the control visible on
-   * its surface in either theme with no border or shadow. */
-  background: light-dark(var(--muted), var(--card));
+  /* The same grey a quiet button fills itself with, and for the same reason:
+   * this rail used to be `light-dark(--muted, --card)`, and --muted IS the page,
+   * so on a page the rail was the exact colour of the page — 1.00:1, no control
+   * at all — while on a card it read fine. One grey, both surfaces, both
+   * themes, and it is the grey the rest of the control family already uses. */
+  background: var(--surface-contrast);
   border-radius: var(--control-radius);
 }
 .segmented-option {
@@ -22,7 +23,12 @@
   /* Same type as the rest of the control family (Button/Select) so a segmented
    * toggle next to them reads as one system, not a smaller sibling. */
   font-size: var(--control-font-size);
-  font-weight: var(--font-weight-regular);
+  /* ONE WEIGHT FOR EVERY SEGMENT, selected or not. `medium` on the selected one
+   * only made the label WIDER the moment it was chosen, so each segment and the
+   * whole control resized on every click and the row jumped under the pointer
+   * (owner, 2026-08-24). Selection is said by the pill and the brand ink, which
+   * cost no width. */
+  font-weight: var(--font-weight-medium);
   padding-block: 0;
   padding-inline: var(--space-4);
   border-radius: calc(var(--control-radius) - var(--space-2xs));
@@ -33,6 +39,9 @@
 .segmented[data-size='sm'] .segmented-option { min-block-size: calc(var(--control-height-sm) - var(--space-2xs) * 2); padding-block: 0; padding-inline: var(--space-3); font-size: var(--font-sm); }
 .segmented[data-size='lg'] .segmented-option { min-block-size: calc(var(--control-height-lg) - var(--space-2xs) * 2); padding-block: 0; padding-inline: var(--space-6); font-size: var(--control-font-size-lg); }
 .segmented-option:hover { color: var(--foreground); }
+/* Pressed: the segment tints rather than only darkening its label, so the press
+ * is legible on a control whose resting state is bare text. */
+.segmented-option:active { background: var(--surface-contrast-active); color: var(--foreground); }
 .segmented-option:focus-visible {
   outline: var(--ring-width) solid var(--ring);
   outline-offset: calc(var(--ring-offset) * -1);
@@ -47,7 +56,6 @@
 .segmented-option[data-selected] {
   background: light-dark(var(--background), var(--popover));
   color: var(--primary-accent);
-  font-weight: var(--font-weight-medium);
 }
 
 /* On a --muted surface (app main column, PageHeader) the fills invert in light

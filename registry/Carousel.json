@@ -1,7 +1,7 @@
 {
   "ref": "Carousel",
   "level": "organism",
-  "description": "A slideshow that scrolls rather than animates. The track is a scroll-snap container, so the browser owns the movement: swipe, trackpad, shift-wheel and the arrow buttons all end up at the same snap point, and the whole thing still works with JavaScript busy. The buttons and the dots are the accessible half; scroll position is the source of truth for which slide is current, which is why the dots follow a swipe and not only a click.",
+  "description": "A slideshow that scrolls rather than animates. The track is a scroll-snap container, so the browser owns the movement: swipe, trackpad, shift-wheel and the arrow buttons all end up at the same snap point, and the whole thing still works with JavaScript busy. The buttons and the dots are the accessible half; scroll position is the source of truth for which slide is current, which is why the dots follow a swipe and not only a click. Copy: the accessible name says what is being scrolled through — \"Customer stories\", not \"Carousel\".",
   "exports": [
     "Carousel"
   ],
@@ -17,12 +17,14 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "What the whole carousel is, e.g. \"Customer stories\"."
     },
     {
       "name": "autoPlay",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Milliseconds between slides. Off by default, and ignored entirely under prefers-reduced-motion; pauses while the pointer or the keyboard is inside."
     },
     {
       "name": "className",

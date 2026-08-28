@@ -1,7 +1,7 @@
 {
   "ref": "ExpandButton",
   "level": "atom",
-  "description": "The chevron that opens and closes a row or a panel, with the rotation and the aria-expanded wiring already done.",
+  "description": "The chevron that opens and closes a row or a panel, with the rotation and the aria-expanded wiring already done. Copy: the label names what opens, not the direction — \"Show the transcript\", not \"Expand\".",
   "exports": [
     "ExpandButton"
   ],
@@ -12,27 +12,32 @@
     {
       "name": "ref",
       "type": "Ref<HTMLButtonElement>",
-      "required": false
+      "required": false,
+      "description": "Forwarded to the underlying <button>."
     },
     {
       "name": "icon",
       "type": "IconName",
-      "required": true
+      "required": true,
+      "description": "Icon shown always (collapsed and expanded state)."
     },
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Label shown when expanded (hover or active)."
     },
     {
       "name": "withChevron",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Show a chevron indicating dropdown / disclosure."
     },
     {
       "name": "expanded",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Force expanded state (for use inside open dropdowns)."
     }
   ],
   "sourcePath": "src/components/ExpandButton/ExpandButton.tsx",

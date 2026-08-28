@@ -5,6 +5,7 @@
   flex-direction: column;
   min-height: 0;
   background: var(--card);
+
   overflow: hidden;
 }
 
@@ -52,4 +53,22 @@
   gap: var(--space-2);
   padding: var(--space-4);
   border-block-start: 1px solid var(--border);
+}
+
+/* A panel that is a wide-screen affordance drops out below its width rather
+ * than wrapping under the content, where it is a jump list pointing at what the
+ * reader already passed. The numbers are repeated because a media query cannot
+ * read a custom property; the linter holds them to the breakpoint scale. */
+@media (max-width: 30rem) {
+  .side-panel[data-hide-below='sm'],
+  /* And the region that holds it. <Page> renders `<aside class="page-aside">`
+     around whatever it is given; leaving that in the flow around a hidden panel
+     keeps a zero-height column on the page, which is what the audit measures
+     and reports (2026-08-26). Hiding the panel without its region is half a
+     fix. */
+  .page-aside:has(> .side-panel[data-hide-below='sm']) { display: none; }
+}
+@media (max-width: 48rem) {
+  .side-panel[data-hide-below='md'],
+  .page-aside:has(> .side-panel[data-hide-below='md']) { display: none; }
 }

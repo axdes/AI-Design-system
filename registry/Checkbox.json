@@ -1,33 +1,47 @@
 {
   "ref": "Checkbox",
   "level": "atom",
-  "description": "Custom checkbox: a real <input> (kept accessible + form-native) visually replaced by a themed box. Sizing/colors come from tokens, like the controls.",
+  "description": "Custom checkbox: a real <input> (kept accessible + form-native) visually replaced by a themed box. Sizing/colors come from tokens, like the controls. Copy: the label is the positive statement the tick makes true — \"Send me the weekly digest\", never \"Do not send…\". A negative label makes an unticked box mean yes.",
   "exports": [
-    "Checkbox"
+    "Checkbox",
+    "CheckboxGroup"
   ],
   "main": "Checkbox",
   "from": "@/components/Checkbox",
-  "slots": [],
+  "slots": [
+    {
+      "name": "CheckboxGroup"
+    }
+  ],
   "props": [
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Visible label beside the box."
     },
     {
       "name": "indeterminate",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Mixed state (e.g. \"select all\" when only some children are checked)."
     },
     {
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "Box size: sm / md (default) / lg.",
       "values": [
         "sm",
         "md",
         "lg"
       ]
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false,
+      "description": "The form rejected this box (an unticked required consent). Red border and a red focus ring; the message belongs to the `<Field>` around it."
     }
   ],
   "sourcePath": "src/components/Checkbox/Checkbox.tsx",
@@ -40,10 +54,16 @@
         "md",
         "lg"
       ]
+    },
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
+      ]
     }
   },
   "uses": [
     "Icon"
   ],
-  "example": "const [checked, setChecked] = useState(false)\n\n<Checkbox\n  label=\"Email me when a review is assigned\"\n  checked={checked}\n  onChange={(e) => setChecked(e.target.checked)}\n/>"
+  "example": "const [assigned, setAssigned] = useState(false)\nconst [channels, setChannels] = useState(['email'])\n\n<>\n  <Checkbox\n    label=\"Email me when a review is assigned\"\n    checked={assigned}\n    onChange={(e) => setAssigned(e.target.checked)}\n  />\n  <CheckboxGroup\n    label=\"How should we reach you?\"\n    options={CHANNELS}\n    value={channels}\n    onChange={setChannels}\n  />\n</>"
 }

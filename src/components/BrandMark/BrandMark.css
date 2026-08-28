@@ -1,0 +1,28 @@
+/* One cell for both glyphs, so the circle never resizes and nothing beside it
+ * moves when the pointer arrives. */
+.brand-mark {
+  display: grid;
+  place-items: center;
+  inline-size: var(--sidebar-rail-item-size);
+  block-size: var(--sidebar-rail-item-size);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  transition: background var(--duration-fast);
+}
+.brand-mark > * {
+  grid-area: 1 / 1;
+  transition: opacity var(--duration-fast);
+}
+.brand-mark-swap { opacity: 0; }
+
+/* The swap is keyed on the mark itself and on the FOCUS of whatever button
+ * wraps it. Reaching for the wrapper's class would tie this component to one
+ * particular parent, which is the contract-reaching the linter refuses; the
+ * `:focus-within` half is how the keyboard still gets the same answer. */
+.brand-mark:hover,
+.brand-mark:focus-within { background: var(--primary-hover); }
+.brand-mark:hover > :not(.brand-mark-swap),
+.brand-mark:focus-within > :not(.brand-mark-swap) { opacity: 0; }
+.brand-mark:hover .brand-mark-swap,
+.brand-mark:focus-within .brand-mark-swap { opacity: 1; }

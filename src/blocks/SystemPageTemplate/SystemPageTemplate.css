@@ -1,23 +1,20 @@
-/* Narrower than every other template: this page holds a few sentences, and a
- * wide measure makes them look lost. Block-private knob, co-located. */
+/* The narrow column, the cap, the centring and the container context all come
+ * from <Page archetype="status"> now — this page holds a few sentences and a
+ * wide measure makes them look lost, and that decision lives in
+ * screen-specs/page-rules.json as the `narrow` width. What is left is the one
+ * thing that is this page's own: it starts well down the viewport, because a
+ * failure message pinned to the top edge reads as a toolbar. */
 .system-page {
-  --system-page-max-width: 38rem;
-  flex: 1;
-  inline-size: 100%;
-  max-inline-size: min(var(--page-max-width), var(--system-page-max-width));
-  margin-inline: auto;
-  padding-block: var(--space-16) var(--space-8);
-  padding-inline: var(--space-8);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  padding-block-start: var(--space-16);
 }
 
 .system-page-title {
   margin: 0;
   font-size: var(--font-2xl);
   font-weight: var(--font-weight-semibold);
-  text-wrap: balance;
+  /* Start-aligned, so it fills its measure — the same rule as <CardTitle>,
+   * for the same reason. */
+  text-wrap: wrap;
 }
 
 .system-page-body {

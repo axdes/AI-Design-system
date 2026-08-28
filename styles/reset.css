@@ -72,3 +72,40 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb, *::-webkit-scrollb
     scroll-behavior: auto !important;
   }
 }
+
+/* FORCED COLOURS (Windows High Contrast). The OS replaces every colour with its
+ * own palette and drops background images — so every state this system draws as
+ * a FILL disappears, and the ones drawn as an outline survive. That is the whole
+ * rule: in this mode the fill is gone, so anything that meant something has to
+ * also say it with a line.
+ *
+ * Selected rows, the active menu item and the current nav entry were the ones
+ * that vanished completely; `opacity` for disabled stops reading too, because
+ * the forced palette has no half-tones — GrayText is how the mode says it. */
+@media (forced-colors: active) {
+  [data-selected],
+  [data-active],
+  [aria-selected="true"],
+  [aria-current] {
+    outline: 1px solid CanvasText;
+    outline-offset: -1px;
+  }
+  /* A filled control keeps an edge, so a button is still a button. */
+  .btn,
+  .icon-button,
+  .chip,
+  .switch,
+  .segmented-option[data-selected] {
+    border: 1px solid ButtonText;
+  }
+  :disabled,
+  [data-disabled],
+  [aria-disabled="true"] {
+    color: GrayText;
+  }
+  /* The focus ring is the one indicator the mode must never lose. */
+  :focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

@@ -36,6 +36,10 @@ type Props = {
  * the control that performs each, a counted progress line, and a dismiss that
  * appears only when the work is done. Lives at the top of a product's home
  * until it has earned its removal.
+ *
+ * Copy: every step starts with a verb and describes one action — "Connect a
+ * calendar". The detail says why it is worth doing, not how the control
+ * works.
  */
 export function SetupGuide({ title, steps, onDismiss, dismissLabel = 'Dismiss the guide', className }: Props) {
   const done = steps.filter((s) => s.done).length

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "prose",
+  "type": "registry:ui",
+  "title": "Prose",
+  "description": "A sentence, at a measure. The measure is the whole reason it exists. Text set to whatever width its container happens to be is text the eye loses the start of, and every screen that noticed re-wrote the same `max-inline-size` with a slightly different number: four files in this repository's own site arrived at 62, 68, 70 and \"none\" before this component did (2026-08-23). One number, once, and it i",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Prose/Prose.css",
+      "content": "/* 68ch: the measure typography has agreed on for a century of body text, and\n * the number four separate files here reached for independently before this\n * existed. `ch` and not rem, because the measure is about CHARACTERS — it has\n * to hold when the reader changes the face or the size. */\n.prose {\n  margin: 0;\n  max-inline-size: 68ch;\n  line-height: var(--leading-relaxed);\n}\n.prose[data-size='sm'] { font-size: var(--font-sm); }\n.prose[data-appearance='muted'] { color: var(--muted-foreground); }\n.prose[data-appearance='plain'] { color: var(--foreground); }\n\n/* A phrase inside prose may carry weight without becoming a heading: the one\n * clause that is the point of the sentence. Ink, not size — a bold run at a\n * larger size would read as a title that lost its line. */\n.prose strong {\n  color: var(--foreground);\n  font-weight: var(--font-weight-medium);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Prose/Prose.css"
+    },
+    {
+      "path": "src/components/Prose/Prose.tsx",
+      "content": "import './Prose.css'\nimport type { HTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = HTMLAttributes<HTMLElement> & {\n  /** `p` by default. `div` when the text wraps other elements. */\n  as?: 'p' | 'div'\n  /** `md` reads at the body size; `sm` is a hint under a control. */\n  size?: 'sm' | 'md'\n  /**\n   * Which of this component's own looks. `muted` is the default, because prose\n   * on a screen is almost always context around the thing the reader came for;\n   * `plain` is for the case where the sentence IS the content.\n   *\n   * Not `tone`: in this system `tone` answers what a thing's STATE is\n   * (success, danger, info), and how loud the ink is is a different question.\n   */\n  appearance?: 'muted' | 'plain'\n}\n\n/**\n * A sentence, at a measure.\n *\n * The measure is the whole reason it exists. Text set to whatever width its\n * container happens to be is text the eye loses the start of, and every screen\n * that noticed re-wrote the same `max-inline-size` with a slightly different\n * number: four files in this repository's own site arrived at 62, 68, 70 and\n * \"none\" before this component did (2026-08-23). One number, once, and it is\n * 68ch — long enough for a real sentence, short enough that the return sweep\n * lands on the right line.\n *\n * Not for a paragraph inside a card that is already narrow: there the card is\n * the measure. For the sentences that sit on a page, under a heading, beside a\n * control — the ones that would otherwise run the width of the screen.\n */\nexport function Prose({ as: As = 'p', size = 'md', appearance = 'muted', className, ...rest }: Props) {\n  return <As className={cn('prose', className)} data-size={size} data-appearance={appearance} {...rest} />\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Prose/Prose.tsx"
+    },
+    {
+      "path": "src/components/Prose/index.ts",
+      "content": "export { Prose } from './Prose'\n",
+      "type": "registry:ui",
+      "target": "@ui/Prose/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Prose.json"
+}

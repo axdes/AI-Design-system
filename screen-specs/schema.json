@@ -24,8 +24,16 @@
     },
     "implementation": {
       "oneOf": [
-        { "type": "string" },
-        { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
       ],
       "description": "Repo-relative path to the screen this spec describes — or a LIST of paths when the screen splits into modules, read as one screen. Optional: a spec is written before the screen exists. Once set, check:spec verifies the files really use the template and the components named here, so the spec stops being a wish and becomes a claim that can be wrong."
     },
@@ -56,17 +64,33 @@
     },
     "audience": {
       "type": "string",
-      "enum": ["expert", "public", "mixed"],
+      "enum": [
+        "expert",
+        "public",
+        "mixed"
+      ],
       "description": "Who operates the screen. Experts switch fast and want density (GOV.UK's documented exception); public users get one thing at a time. Some selection rules read this."
     },
     "archetype": {
       "type": "string",
-      "enum": ["overview", "list", "worklist", "analytical", "detail", "wizard", "form", "auth", "hub", "settings", "system"],
+      "enum": [
+        "overview",
+        "list",
+        "worklist",
+        "analytical",
+        "detail",
+        "wizard",
+        "form",
+        "auth",
+        "hub",
+        "settings",
+        "system"
+      ],
       "description": "What KIND of screen this is, from the taxonomy in screen-specs/README.md (backbone: SAP Fiori floorplans). list = find-and-act over a filterable set; worklist = process a given queue (no filter bar — having one means the archetype is list); detail = one record in full; hub = entry points to other places; overview = glance across sources, action happens elsewhere. The archetype constrains the template and check-screen-spec.mjs verifies the pairing."
     },
     "template": {
       "type": "string",
-      "description": "A block from src/blocks (ListPageTemplate, DetailPageTemplate, AuthTemplate, FormModal), or \"custom\" with customReason filled in."
+      "description": "A block from src/blocks (ListPageTemplate, DetailPageTemplate, AuthTemplate, WizardTemplate), or \"custom\" with customReason filled in."
     },
     "customReason": {
       "type": "string",
@@ -93,7 +117,19 @@
           },
           "task": {
             "type": "string",
-            "enum": ["find", "compare", "scan", "browse", "monitor", "analyze", "process", "navigate", "read", "input", "act"],
+            "enum": [
+              "find",
+              "compare",
+              "scan",
+              "browse",
+              "monitor",
+              "analyze",
+              "process",
+              "navigate",
+              "read",
+              "input",
+              "act"
+            ],
             "description": "What the user DOES in this zone, one verb. The collection tasks (find, compare, scan, browse, monitor, analyze, process, navigate) trigger the representation rules in selection-rules.json; read, input and act do not. This is the judgment the spec review approves — the gate then holds the components to it."
           },
           "data": {
@@ -103,24 +139,176 @@
             "properties": {
               "item": {
                 "type": "string",
-                "enum": ["record", "prose", "visual", "metric"],
+                "enum": [
+                  "record",
+                  "prose",
+                  "visual",
+                  "metric"
+                ],
                 "description": "What one item is: structured fields (record), text to read (prose), an image or preview that carries the decision (visual), a number on a scale (metric)."
               },
               "cardinality": {
                 "type": "string",
-                "enum": ["one", "few", "many", "unbounded"],
+                "enum": [
+                  "one",
+                  "few",
+                  "many",
+                  "unbounded"
+                ],
                 "description": "How many items. unbounded forbids Table (DataGrid virtualizes)."
               },
               "fields": {
                 "type": "integer",
                 "minimum": 0,
-                "description": "How many attributes per item actually matter to the task. 4+ comparable fields is what earns columns."
+                "description": "How many attributes per item actually matter to the task. 4+ comparable fields is what earns columns. On an input zone it is how many fields the user fills in, which is what decides dialog vs page vs wizard."
               },
               "editable": {
                 "type": "boolean",
                 "description": "true only when editing values IS the task, which demands DataGrid. Occasional inline edits on a table do not set this."
+              },
+              "carries": {
+                "type": "string",
+                "enum": [
+                  "entity",
+                  "person",
+                  "metric",
+                  "request",
+                  "event",
+                  "story",
+                  "media",
+                  "destination",
+                  "option",
+                  "offer",
+                  "proof",
+                  "capability",
+                  "progress",
+                  "collection",
+                  "change"
+                ],
+                "description": "What ONE card carries — the content type, not the representation. Required as soon as the zone's representation is cards and its task is a collection task: it is what the card-family rules fire on. entity: A record with fields of its own: an order, a team, a document, a user. person: A human as the subject: face, role, ways to reach them. metric: A number on a scale, read for its level and its direction. request: Something waiting for THIS reader's decision or input. event: Something that happens at a time: a session, a webinar, a deadline. story: Prose with a picture: an article, a post, a case write-up. media: A recording, a video, a board, a document preview: the frame is the content. destination: A place to go rather than a record to read. option: One choice in a set the reader picks from. offer: What we give and what it costs: a plan, a promotion, an upgrade. proof: Evidence for a claim: a quote, a customer logo, a result in a number. capability: One thing the product can do, named and explained in a line. progress: Something the reader is partway through: a course, a checklist, an onboarding. collection: Several items shown INSIDE one card, under a name for the set. change: What happened since last time: an audit trail, a digest, a history."
+              },
+              "commit": {
+                "type": "string",
+                "enum": [
+                  "explicit",
+                  "per-row",
+                  "autosave",
+                  "none"
+                ],
+                "description": "How the input becomes real. explicit: The user presses a named button and the record changes then, not before. per-row: Each control applies on change, on its own, with its own feedback. autosave: The form saves itself after a pause in typing and states when it last did. none: Nothing is committed at all: the input narrows or searches what is already there. One screen picks one: a page that applies some controls on change and asks for Save on others is a page nobody trusts."
+              },
+              "context": {
+                "type": "string",
+                "enum": [
+                  "standalone",
+                  "over-list",
+                  "beside-context",
+                  "in-place"
+                ],
+                "description": "What is behind the form and whether it has to stay readable. standalone: The form is the screen. Nothing behind it needs reading. over-list: Opened from a collection the user was working in. beside-context: The record, list or document behind it must stay readable while the fields are filled in. in-place: The field is edited where it is read, inside other content."
+              },
+              "familiarity": {
+                "type": "string",
+                "enum": [
+                  "routine",
+                  "unfamiliar"
+                ],
+                "description": "Whether the user has done this before. Long AND unfamiliar is the one case that earns a wizard's steps; long and routine is a page form (Fiori)."
+              },
+              "rowUnit": {
+                "type": "string",
+                "enum": [
+                  "record",
+                  "fact",
+                  "field",
+                  "attribute",
+                  "crossing",
+                  "event",
+                  "change",
+                  "resource"
+                ],
+                "description": "What ONE ROW is. Defaults to `record`. record: A thing with fields of its own: an invoice, a user, a team. fact: A stated value in a reference: a rate, a limit, a definition. field: One attribute of ONE record, read top to bottom. attribute: A property compared across a few subjects that are the COLUMNS. crossing: The cell where two categorical axes meet. event: Something that happened at a time, appended to a stream. change: A difference between two versions of the same thing. resource: Something booked or scheduled against time."
+              },
+              "axes": {
+                "type": "string",
+                "enum": [
+                  "rows",
+                  "cross"
+                ],
+                "description": "One axis or two. Defaults to `rows`: the columns are fields of the row. `cross` means the columns are a second category and the cell is a measure, which is a matrix."
+              },
+              "cells": {
+                "type": "string",
+                "enum": [
+                  "static",
+                  "interactive"
+                ],
+                "description": "Whether a CELL is operated. Defaults to `static` (ARIA role table). `interactive` makes it a grid, which owes one tab stop, arrow keys between cells, and Home and End."
+              },
+              "select": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "single",
+                  "batch"
+                ],
+                "description": "How rows are picked. Defaults to `none`. `batch` means one action applies to several rows, which needs a count, a select-all and a way out."
+              },
+              "nesting": {
+                "type": "string",
+                "enum": [
+                  "flat",
+                  "grouped",
+                  "hierarchy"
+                ],
+                "description": "Defaults to `flat`. `grouped` is named sets the reader can collapse; `hierarchy` is rows inside rows, which is a treegrid."
+              },
+              "aggregate": {
+                "type": "boolean",
+                "description": "true when totals or subtotals are part of what the table is read for. The total belongs in TFoot, not in a body row."
+              },
+              "rowDetail": {
+                "type": "boolean",
+                "description": "true when a row carries a second layer read in place, instead of a twentieth column or a route change."
               }
             }
+          },
+          "card": {
+            "type": "string",
+            "enum": [
+              "object",
+              "collection",
+              "dataset",
+              "analytical",
+              "kpi",
+              "health",
+              "action",
+              "history",
+              "preview",
+              "person",
+              "stack",
+              "option",
+              "entry",
+              "expandable",
+              "embed",
+              "checklist",
+              "digest",
+              "plan",
+              "cover",
+              "story",
+              "feature",
+              "media",
+              "case",
+              "proof",
+              "testimonial",
+              "logos",
+              "offer",
+              "event",
+              "course",
+              "comparison",
+              "capture"
+            ],
+            "description": "Which card family this zone's cards are, from screen-specs/card-rules.json. Compulsory for a cards zone with a collection task, and checked against what the zone carries: the family must be one the rules choose for task + data.carries, must be built (not `planned`), and the zone must name the components it is built from."
           },
           "answers": {
             "type": "string",
@@ -137,6 +325,115 @@
             "description": "Registry components used here. Props may be pinned as \"Button variant=primary\".",
             "items": {
               "type": "string"
+            }
+          },
+          "form": {
+            "type": "string",
+            "enum": [
+              "dialog",
+              "panel",
+              "page",
+              "wizard",
+              "question",
+              "review",
+              "settings",
+              "auth",
+              "inline",
+              "bulk",
+              "grid",
+              "confirm",
+              "verified-confirm",
+              "upload",
+              "draft",
+              "composer",
+              "filter",
+              "search"
+            ],
+            "description": "WHICH KIND of form this zone is. Required as soon as the zone's task is input: it is what the rules in form-rules.json fire on, together with data.commit, data.fields, data.context and data.familiarity. dialog: A modal form over the screen that opened it. panel: The same form in a side panel, with the context still on screen. page: A page-sized form: sections under a header, actions in a footer bar. wizard: One sequential task split into revealed steps, with a check-answers step at the end. question: One question per screen, Continue underneath. review: Every answer restated before an irreversible commit, each with a link back to where it was given. settings: Grouped sections of explained knobs, each applied on its own. auth: Sign in, sign up, reset, verify. inline: One field edited where it is read. bulk: One change applied to the records the user selected. grid: Editing across a collection, in the cells themselves. confirm: Yes or no on a stated consequence. verified-confirm: A destructive action gated behind typing the thing's own name. upload: Files plus the metadata that describes them. draft: A long form that saves itself and can be left. composer: Free text plus attachments, sent rather than saved. filter: Input that narrows a collection already on screen. search: One query field, submitted to find."
+          },
+          "table": {
+            "type": "string",
+            "enum": [
+              "reference",
+              "list",
+              "worklist",
+              "selection",
+              "editable-grid",
+              "virtualized",
+              "tree",
+              "grouped",
+              "expandable",
+              "analytical",
+              "pivot",
+              "comparison",
+              "key-value",
+              "schedule",
+              "heatmap",
+              "bar-in-cell",
+              "log",
+              "diff",
+              "card-table",
+              "ticks"
+            ],
+            "description": "WHICH KIND of table this zone is, from screen-specs/table-rules.json. Required as soon as the zone shows a table or a grid: it is what the table rules fire on, together with the task, data.cardinality and the row shape (data.rowUnit, data.axes, data.cells, data.select, data.nesting, data.aggregate, data.rowDetail). reference: A static table of stated values: rates, limits, a glossary of levels. list: Find and act: the table a collection screen is built around. worklist: A given queue where every row needs a decision or a completion. selection: Picking N rows and applying one action to all of them. editable-grid: A spreadsheet: editing across records is the primary task. virtualized: A windowed table: thousands of rows, only the visible ones in the DOM. tree: Hierarchy with columns: a bill of materials, an org rollup, a folder tree with size and owner. grouped: Rows under named headings the reader can collapse. expandable: A row with a second layer, revealed in place. analytical: Transactions under a total: subtotals, a totals row, a drill from the sum to the rows. pivot: Two categorical axes and one measure in the cell. comparison: A few subjects as COLUMNS and their attributes as rows. key-value: One record's fields, read top to bottom. schedule: A resource against time: rooms by hour, people by day, machines by week. heatmap: A matrix read as a pattern: the shape across the grid matters more than any one number. bar-in-cell: A ranking read at a glance: the number and its length in the same cell. log: A dense append-only stream: time first, payload after it. diff: Before and after, side by side: an audit trail, a review of an edit. card-table: The top rows inside a card on an overview, with no table chrome. ticks: Binary coverage across a set: supported or not."
+          },
+          "columns": {
+            "type": "array",
+            "description": "The COLUMNS of this zone's table, in the order they are read. Optional, and the moment it is given the cell rules apply: each column names what it CARRIES and screen-specs/cell-rules.json decides its alignment, whether its width is fixed, whether it may sort and what it owes. identifier: The record's own name or number: what the row IS. identity: A person or a team as the value of a column. text: A short value read as a word: a supplier, a place, a category. number: A count or a quantity. money: An amount with a currency. percent: A share, a rate, a completion. date: When something happens or happened. relative-time: How long ago something happened. status: Which state a record is in. tags: Several labels on one record. boolean: Supported or not, included or not. measure: A value on a scale, compared down the column. trend: The shape of a value over time. media: A picture that identifies the row. link: A record that lives somewhere else. actions: What can be done to this row. select: The checkbox that picks the row. empty: No value, said out loud.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "cell"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The column heading, in the words the screen uses."
+                },
+                "cell": {
+                  "type": "string",
+                  "enum": [
+                    "identifier",
+                    "identity",
+                    "text",
+                    "number",
+                    "money",
+                    "percent",
+                    "date",
+                    "relative-time",
+                    "status",
+                    "tags",
+                    "boolean",
+                    "measure",
+                    "trend",
+                    "media",
+                    "link",
+                    "actions",
+                    "select",
+                    "empty"
+                  ],
+                  "description": "What one cell of this column carries."
+                },
+                "align": {
+                  "type": "string",
+                  "enum": [
+                    "start",
+                    "end",
+                    "center"
+                  ],
+                  "description": "Only to state what the kind already decides; the gate rejects a disagreement rather than letting two money columns align differently."
+                },
+                "sortable": {
+                  "type": "boolean",
+                  "description": "This column holds the sort. Rejected on a kind that has no order (tags, a picture, actions)."
+                },
+                "stacked": {
+                  "type": "boolean",
+                  "description": "This column puts a value over its secondary line (CellStack). One column per table."
+                }
+              }
             }
           }
         }
@@ -230,6 +527,33 @@
           }
         }
       }
+    },
+    "lifecycle": {
+      "description": "What this screen DOES to the resource. Checked against the archetype: an archetype that reads and a screen that claims to delete on it is either the wrong archetype or an action that belongs somewhere else. The decisions that hang off it (which detail variant, which edit shape, how hard a delete is to confirm) live in screen-specs/lifecycle-rules.json.",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "create",
+              "read",
+              "update",
+              "delete"
+            ]
+          },
+          "minItems": 1
+        }
+      ]
     }
   }
 }

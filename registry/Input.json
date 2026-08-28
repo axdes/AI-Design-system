@@ -18,6 +18,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on. On `muted` (a page/PageHeader) the border is dropped since the white fill separates it; `base` (default, a white card or form) keeps the border. Invalid + focus stay visible on both.",
       "values": [
         "base",
         "muted"
@@ -27,6 +28,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "Control height: sm / md (default) / lg — matches the button/control scale.",
       "values": [
         "sm",
         "md",

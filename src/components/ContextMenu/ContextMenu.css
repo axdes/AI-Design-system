@@ -5,6 +5,7 @@
   min-inline-size: 12rem;
   padding: var(--space-1);
   background: var(--popover);
+
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -26,9 +27,31 @@
   text-align: start;
   cursor: pointer;
 }
-.context-item[data-active] { background: var(--accent-soft); }
-.context-item[data-tone='destructive'] { color: var(--destructive); }
+/* Stated twice on purpose: `data-active` is the keyboard position and is also
+ * set on mouseenter, but a stylesheet that only names data-active reads as a
+ * menu with no hover at all. */
+.context-item:hover:not(:disabled) { background: var(--surface-hover); }
+.context-item[data-active] { background: var(--surface-hover); }
+.context-item:active:not(:disabled) { background: var(--accent-soft); }
+.context-item[data-tone='destructive'] { color: var(--destructive-emphasis); }
 .context-item[data-tone='destructive'][data-active] { background: var(--destructive-soft); }
 .context-item-icon { color: var(--muted-foreground); }
-.context-item[data-tone='destructive'] .context-item-icon { color: var(--destructive); }
+.context-item[data-tone='destructive'] .context-item-icon { color: var(--destructive-emphasis); }
 .context-item:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* WHERE ENTER WILL LAND. The fill alone cannot say it: on this surface a tint
+ * measures 1.15:1 in light and 1.33 in dark, and SC 2.4.11 asks a focus
+ * indicator for 3:1. `data-active` is set by the arrow keys AND by the pointer,
+ * and in both cases it names the row Enter fires — so the mark is the same for
+ * both. A pseudo-element, not an inset box-shadow: a shadow offset is physical
+ * and would sit on the wrong side in Arabic. */
+.context-item[data-active] { position: relative; }
+.context-item[data-active]::before {
+  content: "";
+  position: absolute;
+  inset-block: var(--space-1);
+  inset-inline-start: 0;
+  inline-size: var(--space-2xs);
+  border-radius: var(--radius-full);
+  background: var(--primary-accent);
+}

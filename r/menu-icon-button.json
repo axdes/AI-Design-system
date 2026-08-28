@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "menu-icon-button",
+  "type": "registry:ui",
+  "title": "MenuIconButton",
+  "description": "A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra actions a toolbar has no room to name. It is <MenuButton>'s pair, and the split between them is the same one the system already makes between `Button` and `IconButton`: a control with no words in it has to carry a name and a tooltip, and a separate component is what makes that unavoidable rather than remembered. Folding it",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/dropdown.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/MenuIconButton/MenuIconButton.tsx",
+      "content": "import { type ReactNode } from 'react'\nimport { Dropdown } from '../Dropdown'\nimport { type IconName } from '../Icon'\nimport { IconButton } from '../IconButton'\nimport { Tooltip } from '../Tooltip'\n\ntype Variant = 'ghost' | 'filled' | 'quiet'\ntype Size = 'sm' | 'md' | 'lg'\ntype Align = 'start' | 'end'\n\ntype Props = {\n  /**\n   * What the control is called. It is the accessible name AND the tooltip —\n   * required, because a lone glyph names nothing and this is the shape where\n   * that is forgotten. \"More actions\" is not it: say whose actions.\n   */\n  label: string\n  /** The menu: `<DropdownItem>`, `<DropdownSection>`, `<DropdownDivider>`. */\n  children: ReactNode\n  /** Defaults to the overflow glyph, which is what this nearly always is. */\n  icon?: IconName\n  variant?: Variant\n  size?: Size\n  /** Which edge of the trigger the menu lines up with. */\n  align?: Align\n  className?: string\n}\n\n/**\n * A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra\n * actions a toolbar has no room to name.\n *\n * It is <MenuButton>'s pair, and the split between them is the same one the\n * system already makes between `Button` and `IconButton`: a control with no\n * words in it has to carry a name and a tooltip, and a separate component is\n * what makes that unavoidable rather than remembered. Folding it into\n * MenuButton as an optional label would make the name optional, which is the\n * whole thing this prevents.\n *\n * Built 2026-08-26, after four screens assembled it by hand from a Dropdown\n * render prop, an IconButton and an aria-label.\n *\n * Copy: the label names WHOSE actions these are — \"Actions for the March\n * invoice\" — because \"More actions\" on six rows tells a screen-reader user\n * nothing about which row they are on.\n */\nexport function MenuIconButton({\n  label,\n  children,\n  icon = 'more_vert',\n  variant = 'ghost',\n  size = 'md',\n  align = 'end',\n  className,\n}: Props) {\n  return (\n    <Dropdown\n      align={align}\n      className={className}\n      trigger={({ isOpen, ...triggerProps }) => (\n        <Tooltip content={label}>\n          <IconButton\n            icon={icon}\n            size={size}\n            variant={variant}\n            aria-label={label}\n            data-open={isOpen || undefined}\n            {...triggerProps}\n          />\n        </Tooltip>\n      )}\n    >\n      {children}\n    </Dropdown>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/MenuIconButton/MenuIconButton.tsx"
+    },
+    {
+      "path": "src/components/MenuIconButton/index.ts",
+      "content": "export { MenuIconButton } from './MenuIconButton'\n",
+      "type": "registry:ui",
+      "target": "@ui/MenuIconButton/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/MenuIconButton.json"
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "side-panel",
+  "type": "registry:ui",
+  "title": "SidePanel",
+  "description": "Reusable side-panel chrome: header (title + optional close) over a scrolling body, with an optional pinned footer. The container's width/borders/radius are left to the consumer via `className`. Used by ContentSidePanel and form panels. Copy: the title names what the panel holds, in the same words the reader used to open it.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/SidePanel/SidePanel.css",
+      "content": "/* Side-panel chrome — white surface, header / scrolling body / pinned footer.\n * Outer width/borders/radius come from the consumer's className. */\n.side-panel {\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n  background: var(--card);\n\n  overflow: hidden;\n}\n\n.side-panel-header {\n  flex-shrink: 0;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: var(--space-2);\n  padding: var(--space-4);\n}\n.side-panel-title {\n  margin: 0;\n  font-family: var(--font-family-display);\n  font-size: var(--font-xl);\n  font-weight: var(--font-weight-regular);\n  line-height: var(--leading-tight);\n}\n\n/* Controls in the header. `margin-inline-start: auto` puts them at the far end when there is no\n   close button beside them, which is the common case (a collapse toggle alone). */\n.side-panel-actions {\n  display: flex;\n  align-items: center;\n  gap: var(--space-1);\n  margin-inline-start: auto;\n}\n\n.side-panel-body {\n  flex: 1;\n  min-height: 0;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: var(--space-4);\n  padding: 0 var(--space-4) var(--space-4);\n  font-size: var(--font-base);\n  line-height: var(--leading-normal);\n}\n\n.side-panel-footer {\n  flex-shrink: 0;\n  display: flex;\n  justify-content: flex-end;\n  gap: var(--space-2);\n  padding: var(--space-4);\n  border-block-start: 1px solid var(--border);\n}\n\n/* A panel that is a wide-screen affordance drops out below its width rather\n * than wrapping under the content, where it is a jump list pointing at what the\n * reader already passed. The numbers are repeated because a media query cannot\n * read a custom property; the linter holds them to the breakpoint scale. */\n@media (max-width: 30rem) {\n  .side-panel[data-hide-below='sm'],\n  /* And the region that holds it. <Page> renders `<aside class=\"page-aside\">`\n     around whatever it is given; leaving that in the flow around a hidden panel\n     keeps a zero-height column on the page, which is what the audit measures\n     and reports (2026-08-26). Hiding the panel without its region is half a\n     fix. */\n  .page-aside:has(> .side-panel[data-hide-below='sm']) { display: none; }\n}\n@media (max-width: 48rem) {\n  .side-panel[data-hide-below='md'],\n  .page-aside:has(> .side-panel[data-hide-below='md']) { display: none; }\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/SidePanel/SidePanel.css"
+    },
+    {
+      "path": "src/components/SidePanel/SidePanel.tsx",
+      "content": "import './SidePanel.css'\nimport type { ReactNode } from 'react'\nimport { useTranslation } from 'react-i18next'\nimport { cn } from '../lib/cn'\nimport { IconButton } from '../IconButton'\nimport { Tooltip } from '../Tooltip'\n\ntype Props = {\n  /**\n   * Drop the panel entirely below this width. For a pane that is a WIDE-SCREEN\n   * affordance and nothing else: a table of contents wrapped under the article\n   * on a phone points only at things already scrolled past, which the page\n   * audit reads as a dead column (2026-08-26). Same word and same two steps as\n   * `<Th hideBelow>`.\n   */\n  hideBelow?: 'sm' | 'md'\n  /** Panel heading. */\n  title: ReactNode\n  /** Shows a close button in the header when provided. */\n  onClose?: () => void\n  /** Controls in the header, before the close button (e.g. a collapse toggle). */\n  headerActions?: ReactNode\n  /** Pinned footer (e.g. Submit / Cancel actions). */\n  footer?: ReactNode\n  children: ReactNode\n  id?: string\n  className?: string\n  /** Region label; defaults to `title` when it is a plain string. */\n  label?: string\n}\n\n/* Reusable side-panel chrome: header (title + optional close) over a scrolling\n * body, with an optional pinned footer. The container's width/borders/radius are\n * left to the consumer via `className`. Used by ContentSidePanel and form panels. \n   *\n   * Copy: the title names what the panel holds, in the same words the reader used\n   * to open it.\n   */\nexport function SidePanel({ title, onClose, headerActions, footer, children, id, className, label, hideBelow }: Props) {\n  const { t } = useTranslation()\n  return (\n    <section\n      id={id}\n      className={cn('side-panel', className)} data-raised=\"card\"\n      data-hide-below={hideBelow}\n      aria-label={label ?? (typeof title === 'string' ? title : undefined)}\n    >\n      <header className=\"side-panel-header\">\n        <h2 className=\"side-panel-title\">{title}</h2>\n        {headerActions && <div className=\"side-panel-actions\">{headerActions}</div>}\n        {onClose && (\n          <Tooltip content={t('a11y.close')}>\n            <IconButton icon=\"close\" size=\"md\" aria-label={t('a11y.close')} onClick={onClose} />\n          </Tooltip>\n        )}\n      </header>\n      {/* The body scrolls, so it is a tab stop: a region a mouse can scroll and a keyboard cannot\n        * reach is content that exists only for some people (axe: scrollable-region-focusable).\n        * jsx-a11y cannot tell that this div scrolls and asks for an interactive role, which would\n        * be a lie; the panel's own <section aria-label> already names the region. */}\n      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}\n      <div className=\"side-panel-body\" tabIndex={0}>{children}</div>\n      {footer && <footer className=\"side-panel-footer\">{footer}</footer>}\n    </section>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/SidePanel/SidePanel.tsx"
+    },
+    {
+      "path": "src/components/SidePanel/index.ts",
+      "content": "export { SidePanel } from './SidePanel'\n",
+      "type": "registry:ui",
+      "target": "@ui/SidePanel/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/SidePanel.json"
+}

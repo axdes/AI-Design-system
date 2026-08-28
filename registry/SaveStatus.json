@@ -1,0 +1,54 @@
+{
+  "ref": "SaveStatus",
+  "level": "atom",
+  "description": "Whether the work is safe right now: saving, saved at a time, or failed. The status line a draft form owes the user, beside its actions. Copy: says whether the work is safe right now, in the fewest words that carry it — \"Saved 2 minutes ago\", \"Could not save\". Never \"All changes saved\" when they are not.",
+  "exports": [
+    "SaveStatus"
+  ],
+  "main": "SaveStatus",
+  "from": "@/components/SaveStatus",
+  "slots": [],
+  "props": [
+    {
+      "name": "state",
+      "type": "State",
+      "required": true,
+      "values": [
+        "idle",
+        "saving",
+        "saved",
+        "error"
+      ]
+    },
+    {
+      "name": "at",
+      "type": "string | number | Date",
+      "required": false,
+      "description": "When the last successful save happened. Read with `state=\"saved\"`."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SaveStatus/SaveStatus.tsx",
+  "variants": {
+    "state": {
+      "prop": "state",
+      "values": [
+        "idle",
+        "saving",
+        "saved",
+        "error"
+      ]
+    }
+  },
+  "uses": [
+    "Field",
+    "Icon",
+    "Input",
+    "Time"
+  ],
+  "example": "const [title, setTitle] = useState('Community Outreach Newsletter')\n/* The pair, together, because neither is the whole answer: `useAutosave` owns\n * WHEN a draft is written (a pause in typing, once, not per keystroke) and\n * <SaveStatus> is the sentence that says it happened. A form that saves by\n * itself and never says so makes the user invent their own proof — they\n * retype a sentence, or they leave and hope. */\nconst { state, savedAt } = useAutosave(title, async () => {\n  await Promise.resolve()\n})\n\n<Field label=\"Title\" htmlFor=\"draft-title\">\n  <Input id=\"draft-title\" value={title} onChange={(e) => { setTitle(e.target.value) }} />\n  {/* `idle` renders nothing, so the line does not reserve space before the\n    * first change. A fixed instant keeps the visual baseline still. */}\n  <SaveStatus state={state} at={savedAt ?? '2026-08-23T09:14:00.000Z'} />\n</Field>"
+}

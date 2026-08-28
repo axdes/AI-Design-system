@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "title": "Badge",
+  "description": "Status chip: a small standalone pill that labels state through `tone`. Not CountBadge, which pins a number to another element's corner. Copy: one word for a state the reader recognises — \"Active\", \"Overdue\". A badge that needs three words is a sentence, and belongs in the body.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Badge/Badge.css",
+      "content": ".badge {\n  /* Sizes to its label, never to its container. `display: inline-flex` is not\n     enough: as a flex or grid child with the default `stretch`, the cross size\n     is set by the parent and the pill runs the full width — a badge that reads\n     as a text input, which is exactly how it shipped on the patterns screen\n     (measured 2026-08-22: 219px of pill around 48px of text). An explicit\n     inline-size opts out of stretch, in both axes' worth of cases. */\n  inline-size: fit-content;\n  display: inline-flex;\n  align-items: center;\n  gap: var(--space-1);\n  padding: var(--space-2xs) var(--space-3);\n  border: 1px solid transparent;\n  border-radius: var(--radius-full);\n  font-size: var(--font-sm);\n  font-weight: var(--font-weight-regular);\n  line-height: var(--leading-snug);\n  white-space: nowrap;\n}\n/* md — matches a small button: same height + horizontal padding. */\n.badge[data-size=\"md\"] {\n  height: var(--control-height-sm);\n  padding-inline: var(--space-3);\n}\n/* Default style = solid (bold colored tag). */\n.badge[data-tone=\"neutral\"] { background: transparent;       color: var(--muted-foreground); border-color: var(--border); }\n.badge[data-tone=\"primary\"] { background: var(--primary);    color: var(--primary-foreground); }\n.badge[data-tone=\"success\"] { background: var(--success); color: var(--success-foreground); }\n.badge[data-tone=\"warning\"] { background: var(--warning); color: var(--warning-foreground); }\n.badge[data-tone=\"danger\"]  { background: var(--destructive);  color: var(--destructive-foreground); }\n.badge[data-tone=\"ai\"]      { background: var(--ai);           color: var(--ai-foreground); }\n\n/* Soft fill — light tinted bg + saturated text. shadcn-style. */\n.badge[data-fill=\"soft\"][data-tone=\"primary\"] { background: var(--primary-soft);  color: var(--primary-soft-foreground); }\n.badge[data-fill=\"soft\"][data-tone=\"success\"] { background: var(--success-soft);  color: var(--success-soft-foreground); }\n.badge[data-fill=\"soft\"][data-tone=\"warning\"] { background: var(--warning-soft); color: var(--warning-soft-foreground); }\n.badge[data-fill=\"soft\"][data-tone=\"danger\"]  { background: var(--destructive-soft);   color: var(--destructive-soft-foreground); }\n.badge[data-fill=\"soft\"][data-tone=\"ai\"]      { background: var(--ai-soft);           color: var(--ai-soft-foreground); }\n.badge[data-fill=\"soft\"][data-tone=\"neutral\"] { background: var(--muted);       color: var(--muted-foreground); border-color: transparent; }\n\n\n/* Plain fill — no background/border, just tone-coloured text (e.g. inline metrics). */\n.badge[data-fill=\"plain\"] { background: transparent; border-color: transparent; padding-inline: 0; }\n.badge[data-fill=\"plain\"][data-tone=\"neutral\"] { color: var(--muted-foreground); }\n.badge[data-fill=\"plain\"][data-tone=\"primary\"] { color: var(--primary-accent); }\n.badge[data-fill=\"plain\"][data-tone=\"success\"] { color: var(--success-emphasis); }\n.badge[data-fill=\"plain\"][data-tone=\"warning\"] { color: var(--warning-emphasis); }\n.badge[data-fill=\"plain\"][data-tone=\"danger\"]  { color: var(--destructive-emphasis); }\n.badge[data-fill=\"plain\"][data-tone=\"ai\"]      { color: var(--ai); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Badge/Badge.css"
+    },
+    {
+      "path": "src/components/Badge/Badge.tsx",
+      "content": "import './Badge.css'\nimport type { HTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Tone = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'ai'\ntype Fill = 'solid' | 'soft' | 'plain'\ntype Size = 'sm' | 'md'\n\ntype Props = HTMLAttributes<HTMLSpanElement> & {\n  tone?: Tone\n  /** Visual fill. `solid` (default) = saturated bg; `soft` = tinted bg + dark text; `plain` = no bg, tone-coloured text. */\n  fill?: Fill\n  /** `sm` (default) = compact tag; `md` = matches a small button (height + padding). */\n  size?: Size\n}\n\n/**\n * Status chip: a small standalone pill that labels state through `tone`. Not\n * CountBadge, which pins a number to another element's corner.\n *\n * Copy: one word for a state the reader recognises — \"Active\", \"Overdue\". A\n * badge that needs three words is a sentence, and belongs in the body.\n */\nexport function Badge({ tone = 'neutral', fill, size, className, ...rest }: Props) {\n  return (\n    <span\n      className={cn('badge', className)}\n      data-tone={tone}\n      data-fill={fill}\n      data-size={size}\n      {...rest}\n    />\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Badge/Badge.tsx"
+    },
+    {
+      "path": "src/components/Badge/index.ts",
+      "content": "export { Badge } from './Badge'\n",
+      "type": "registry:ui",
+      "target": "@ui/Badge/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Badge.json"
+}

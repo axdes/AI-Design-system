@@ -1,59 +1,346 @@
 {
   "ref": "Table",
   "level": "organism",
-  "description": "A styled, accessible table. Compose inside <Card flush> for an edge-to-edge surface. Sub-parts: THead, TBody, Tr, Th, Td.",
+  "description": "A styled, accessible table. Compose inside <Card flush> for an edge-to-edge surface. Sub-parts: THead, TBody, TFoot, Tr, Th, Td, TrGroup, TrDetail, TableEmpty, TableSkeleton. Copy: the caption names what the table lists, even when hidden — it is the table's only name for a screen reader.",
   "exports": [
     "Table",
     "TableScroll",
     "THead",
     "TBody",
+    "TFoot",
     "Tr",
     "Th",
-    "Td"
+    "Td",
+    "ThGroup",
+    "TrGroup",
+    "TdExpand",
+    "TrDetail",
+    "TableEmpty",
+    "TableSkeleton"
   ],
   "main": "Table",
   "from": "@/components/Table",
   "slots": [
     {
       "name": "TableScroll",
-      "line": 48
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ]
     },
     {
-      "name": "THead",
-      "line": 52
+      "name": "THead"
     },
     {
       "name": "TBody",
-      "line": 56
+      "props": [
+        {
+          "name": "ref",
+          "type": "Ref<HTMLTableSectionElement>",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "TFoot"
     },
     {
       "name": "Tr",
-      "line": 61
+      "props": [
+        {
+          "name": "selected",
+          "type": "boolean",
+          "required": false
+        }
+      ]
     },
     {
       "name": "Th",
-      "line": 69
+      "props": [
+        {
+          "name": "align",
+          "type": "Align",
+          "required": false,
+          "values": [
+            "start",
+            "end",
+            "center"
+          ]
+        },
+        {
+          "name": "sortable",
+          "type": "boolean",
+          "required": false,
+          "description": "Renders the header as a sort control."
+        },
+        {
+          "name": "sortDirection",
+          "type": "SortDirection",
+          "required": false,
+          "description": "Current sort on THIS column: 'asc' / 'desc' / null (sortable but inactive)."
+        },
+        {
+          "name": "onSort",
+          "type": "() => void",
+          "required": false,
+          "description": "Called when the header is activated to change the sort."
+        },
+        {
+          "name": "select",
+          "type": "boolean",
+          "required": false,
+          "description": "The checkbox column: sized to its control instead of sharing the width."
+        },
+        {
+          "name": "emphasis",
+          "type": "boolean",
+          "required": false,
+          "description": "A row header's identifier: the record's name, in the body's ink."
+        },
+        {
+          "name": "width",
+          "type": "string",
+          "required": false,
+          "description": "The column's width, declared once on its header. Any CSS length, honoured under `<Table layout=\"fixed\">`. Fix the predictable columns (status, date, actions) and let the text ones take what is left."
+        },
+        {
+          "name": "hideBelow",
+          "type": "HideBelow",
+          "required": false,
+          "description": "Drops this column below a breakpoint. Only for a column whose value is reachable another way: dropping a column drops data, and the identifier and the actions are never the ones to go.",
+          "values": [
+            "sm",
+            "md"
+          ]
+        }
+      ]
     },
     {
       "name": "Td",
-      "line": 97
+      "props": [
+        {
+          "name": "align",
+          "type": "Align",
+          "required": false,
+          "values": [
+            "start",
+            "end",
+            "center"
+          ]
+        },
+        {
+          "name": "emphasis",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "tone",
+          "type": "Tone",
+          "required": false,
+          "values": [
+            "success",
+            "warning",
+            "danger"
+          ]
+        },
+        {
+          "name": "heat",
+          "type": "Heat",
+          "required": false,
+          "description": "Paints the cell on the heatmap ramp (0 to 4), for a table read as a pattern. `tone` is the semantic fill and says good or bad.",
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "select",
+          "type": "boolean",
+          "required": false,
+          "description": "The checkbox column: sized to its control instead of sharing the width."
+        },
+        {
+          "name": "hideBelow",
+          "type": "HideBelow",
+          "required": false,
+          "description": "Drops this cell below a breakpoint. It has to match its header's `hideBelow`, or the row and the head stop having the same columns.",
+          "values": [
+            "sm",
+            "md"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ThGroup",
+      "props": [
+        {
+          "name": "colSpan",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "align",
+          "type": "Align",
+          "required": false,
+          "values": [
+            "start",
+            "end",
+            "center"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TrGroup",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "How many rows are inside, so a collapsed group says what it hides."
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "onToggle",
+          "type": "() => void",
+          "required": true
+        },
+        {
+          "name": "colSpan",
+          "type": "number",
+          "required": true,
+          "description": "How many columns the table has, so the heading spans all of them."
+        }
+      ]
+    },
+    {
+      "name": "TdExpand",
+      "props": [
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "onToggle",
+          "type": "() => void",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TrDetail",
+      "props": [
+        {
+          "name": "colSpan",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TableEmpty",
+      "props": [
+        {
+          "name": "colSpan",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TableSkeleton",
+      "props": [
+        {
+          "name": "columns",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "required": false
+        }
+      ]
     }
   ],
   "props": [
     {
       "name": "stickyHeader",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Header stays while the rows scroll. It sticks to the nearest scrolling ancestor, so inside `<TableScroll>` give the wrapper a block size."
+    },
+    {
+      "name": "stickyFooter",
+      "type": "boolean",
+      "required": false,
+      "description": "Keeps `<TFoot>` on the bottom edge: a total that scrolls away is a total nobody reads."
+    },
+    {
+      "name": "stickyColumn",
+      "type": "boolean",
+      "required": false,
+      "description": "Freezes the first column: when the identifier scrolls out of view the reader is on an unnamed row."
     },
     {
       "name": "size",
       "type": "Size",
-      "required": false
+      "required": false,
+      "description": "Row density: md (default) / sm for dense reference tables.",
+      "values": [
+        "sm",
+        "md"
+      ]
     },
     {
       "name": "nowrap",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "One record per line: values never wrap mid-value (a phone number broken in half reads as two numbers) and rows keep one height. It claims width, so pair it with `<TableScroll>`."
+    },
+    {
+      "name": "caption",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The table's name, as a real `<caption>`. Give it this or an `aria-label`: a table with neither is unnamed to anyone who cannot see the heading."
+    },
+    {
+      "name": "captionHidden",
+      "type": "boolean",
+      "required": false,
+      "description": "Keeps the caption for assistive technology only, when the heading above already says the same words."
+    },
+    {
+      "name": "layout",
+      "type": "Layout",
+      "required": false,
+      "description": "Column sizing: content-driven (default) or the widths the header declares.",
+      "values": [
+        "auto",
+        "fixed"
+      ]
     }
   ],
   "sourcePath": "src/components/Table/Table.tsx",
@@ -66,16 +353,51 @@
         "true"
       ]
     },
+    "sticky-foot": {
+      "prop": "stickyFooter",
+      "values": [
+        "true"
+      ]
+    },
+    "sticky-col": {
+      "prop": "stickyColumn",
+      "values": [
+        "true"
+      ]
+    },
     "size": {
       "prop": "size",
-      "values": null
+      "values": [
+        "sm",
+        "md"
+      ]
     },
     "nowrap": {
       "prop": "nowrap",
       "values": [
         "true"
       ]
+    },
+    "layout": {
+      "prop": "layout",
+      "values": [
+        "auto",
+        "fixed"
+      ]
+    },
+    "hidden": {
+      "prop": "captionHidden",
+      "values": [
+        "true"
+      ]
     }
   },
-  "example": "/* Wrap when the columns will not fit a narrow viewport: the row scrolls\n   sideways instead of squeezing. `label` names the tab stop that creates. */\n<TableScroll label=\"Adoption by dimension\">\n  <Table>\n    <THead>\n      <Tr><Th>Dimension</Th><Th>Level 1</Th><Th>Level 2</Th></Tr>\n    </THead>\n    <TBody>\n      <Tr><Td emphasis>AI capabilities</Td><Td>Assisted</Td><Td tone=\"success\">Agentic</Td></Tr>\n      <Tr><Td emphasis>Daily active</Td><Td>Low</Td><Td tone=\"success\">&gt;80%</Td></Tr>\n    </TBody>\n  </Table>\n</TableScroll>"
+  "uses": [
+    "BatchActions",
+    "Button",
+    "Checkbox",
+    "Icon",
+    "TableToolbar"
+  ],
+  "example": "const selection = useRowSelection(IDS)\nconst [sort, setSort] = useState<'asc' | 'desc'>('asc')\nconst rows = [...ROWS].sort((a, b) => (sort === 'asc' ? a.amount - b.amount : b.amount - a.amount))\nconst total = ROWS.reduce((sum, r) => sum + r.amount, 0)\n\n<div>\n  {/* One bar, two states: while rows are picked the toolbar IS the batch\n      bar, so no action can be ambiguous about what it applies to. */}\n  <TableToolbar\n    title=\"Invoices due\"\n    count={rows.length}\n    actions={<Button size=\"sm\">New invoice<Icon name=\"add\" /></Button>}\n    batch={selection.count > 0\n      ? (\n        <BatchActions count={selection.count} onClear={selection.clear}>\n          <Button variant=\"secondary\" size=\"sm\">Approve</Button>\n          <Button variant=\"secondary\" size=\"sm\">Export</Button>\n        </BatchActions>\n      )\n      : undefined}\n  />\n  <TableScroll label=\"Invoices due\">\n    <Table caption=\"Invoices due this month\" captionHidden>\n      <THead>\n        <Tr>\n          <Th select>\n            {/* Tri-state: some rows picked is indeterminate, never \"off\". */}\n            <Checkbox\n              aria-label=\"Select all rows\"\n              checked={selection.all}\n              indeterminate={sel"
 }

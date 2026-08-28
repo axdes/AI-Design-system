@@ -1,7 +1,7 @@
 {
   "ref": "Tooltip",
   "level": "molecule",
-  "description": "Text on hover and focus, and the only right answer for naming an icon-only control. Popover is a card on click, Dropdown is a menu.",
+  "description": "Text on hover and focus, and the only right answer for naming an icon-only control. Popover is a card on click, Dropdown is a menu. Copy: names the control, it does not explain it. If the words are needed to decide, they belong on the page — a tooltip is unreachable on a touch screen and gone on the next keystroke.",
   "exports": [
     "Tooltip"
   ],
@@ -28,12 +28,14 @@
     {
       "name": "delay",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Hover delay before the tooltip appears (ms). Default 300."
     },
     {
       "name": "enabled",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "When false, renders children untouched. Default true."
     },
     {
       "name": "children",

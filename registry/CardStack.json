@@ -1,0 +1,72 @@
+{
+  "ref": "CardStack",
+  "level": "organism",
+  "description": "Many cards of one kind, shown as one: the top card, the count, and a way into the pile. An overview has room for one card per topic; when a topic has twenty instances the topic keeps its slot and the instances go behind it. Below about five, show them — a stack of three hides nothing and costs a click. With `onNext` the pile is also a queue you can work through in place. Copy: the label names the pile and the open control counts it — \"Open all 9 findings\". A count with no noun is a number nobody can act on.",
+  "exports": [
+    "CardStack"
+  ],
+  "main": "CardStack",
+  "from": "@/components/CardStack",
+  "slots": [],
+  "props": [
+    {
+      "name": "count",
+      "type": "number",
+      "required": true,
+      "description": "How many there are in total, including the one on top."
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "required": true,
+      "description": "Opening the pile. With `onNext` this is a named button; without it the whole card is the target, named for a screen reader by `label`."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true,
+      "description": "What the pile IS: \"12 audits waiting on you\". Read instead of the visual layering, which says nothing out loud."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The card on top — the usual card content, whatever family it belongs to."
+    },
+    {
+      "name": "onNext",
+      "type": "() => void",
+      "required": false,
+      "description": "Put the top card behind the pile and bring up the next one. Give it and the pile grows a pair of controls: the deck becomes something you can work through in place, which is the whole point of a pile you can see the edges of. The caller owns which card is on top, the way <Tabs> owns its value."
+    },
+    {
+      "name": "nextLabel",
+      "type": "string",
+      "required": false,
+      "description": "The two button labels. Required with `onNext` — this package ships no UI text of its own."
+    },
+    {
+      "name": "openLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/CardStack/CardStack.tsx",
+  "context": "region",
+  "variants": {
+    "count": {
+      "prop": "count",
+      "values": null
+    }
+  },
+  "uses": [
+    "Card",
+    "MetaItem"
+  ],
+  "example": "const [at, setAt] = useState(0)\nconst top = QUEUE[at % QUEUE.length]\n\n<CardStack\n  count={12}\n  label=\"12 audits waiting on you\"\n  onOpen={() => undefined}\n  onNext={() => setAt((i) => i + 1)}\n  nextLabel=\"Skip\"\n  openLabel=\"Open\"\n>\n  <CardTitle>{top.title}</CardTitle>\n  <CardMeta>\n    <MetaItem icon=\"schedule\">{top.waiting}</MetaItem>\n  </CardMeta>\n</CardStack>"
+}

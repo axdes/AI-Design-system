@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "save-status",
+  "type": "registry:ui",
+  "title": "SaveStatus",
+  "description": "Whether the work is safe right now: saving, saved at a time, or failed. The status line a draft form owes the user, beside its actions. Copy: says whether the work is safe right now, in the fewest words that carry it — \"Saved 2 minutes ago\", \"Could not save\". Never \"All changes saved\" when they are not.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/time.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/SaveStatus/SaveStatus.css",
+      "content": ".save-status {\n  display: inline-flex;\n  align-items: center;\n  gap: var(--space-2);\n  font-size: var(--font-sm);\n  line-height: var(--leading-normal);\n  color: var(--muted-foreground);\n  min-block-size: var(--space-6);\n}\n/* Idle says nothing rather than \"not saved\": before the first change there is\n * nothing to report, and an empty line keeps the actions from moving when the\n * first save arrives. */\n.save-status[data-state=\"idle\"] { visibility: hidden; }\n.save-status[data-state=\"saved\"] .icon { color: var(--success-emphasis); }\n.save-status[data-state=\"error\"] { color: var(--destructive-emphasis); }\n",
+      "type": "registry:ui",
+      "target": "@ui/SaveStatus/SaveStatus.css"
+    },
+    {
+      "path": "src/components/SaveStatus/SaveStatus.tsx",
+      "content": "import './SaveStatus.css'\nimport { useTranslation } from 'react-i18next'\nimport { cn } from '../lib/cn'\nimport { Icon } from '../Icon'\nimport { Time } from '../Time'\n\ntype State = 'idle' | 'saving' | 'saved' | 'error'\n\ntype Props = {\n  state: State\n  /** When the last successful save happened. Read with `state=\"saved\"`. */\n  at?: string | number | Date\n  className?: string\n}\n\n/* A form that saves by itself has to say so, or the user invents their own\n * proof: they retype a sentence, or they leave and hope. This is that sentence,\n * and it is a live region because the event it reports is one nobody triggered\n * on purpose and nobody is looking at the corner for. `polite`, so it waits for\n * a gap in typing rather than interrupting it. */\n\n/** Whether the work is safe right now: saving, saved at a time, or failed.\n *  The status line a draft form owes the user, beside its actions. \n *\n * Copy: says whether the work is safe right now, in the fewest words that carry\n * it — \"Saved 2 minutes ago\", \"Could not save\". Never \"All changes saved\"\n * when they are not.\n */\nexport function SaveStatus({ state, at, className }: Props) {\n  const { t } = useTranslation()\n  return (\n    <span className={cn('save-status', className)} data-state={state} role=\"status\">\n      {/* No spinner: <Spinner> is a live region of its own, and two nested\n        * ones announce the same event twice. The word is the whole report. */}\n      {state === 'saving' && t('field.saving')}\n      {state === 'saved' && (\n        <>\n          <Icon name=\"check\" />\n          {t('field.saved')}\n          {at !== undefined && <Time value={at} mode=\"relative\" />}\n        </>\n      )}\n      {state === 'error' && (\n        <>\n          <Icon name=\"warning\" />\n          {t('field.saveFailed')}\n        </>\n      )}\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/SaveStatus/SaveStatus.tsx"
+    },
+    {
+      "path": "src/components/SaveStatus/index.ts",
+      "content": "export { SaveStatus } from './SaveStatus'\n",
+      "type": "registry:ui",
+      "target": "@ui/SaveStatus/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/SaveStatus.json"
+}

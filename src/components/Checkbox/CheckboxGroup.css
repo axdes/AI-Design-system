@@ -1,0 +1,3 @@
+/* Same rhythm as .radio-group: the two are read as one family and a different
+ * gap on each is the kind of drift nobody sees until they sit side by side. */
+.checkbox-group { display: flex; flex-direction: column; gap: var(--space-2); }

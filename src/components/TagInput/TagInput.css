@@ -13,6 +13,8 @@
   background: var(--background);
   transition: border-color var(--duration-fast);
 }
+.taginput:hover:not([data-disabled]) { border-color: var(--ring); }
+.taginput[data-invalid]:focus-within { outline-color: var(--destructive); }
 .taginput:focus-within {
   outline: var(--ring-width) solid var(--ring);
   outline-offset: var(--ring-offset);

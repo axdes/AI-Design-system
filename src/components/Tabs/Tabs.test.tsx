@@ -40,16 +40,24 @@ describe('Tabs', () => {
     expect(overview).toHaveAttribute('aria-controls', panel.id)
   })
 
-  it('renders only the active panel', async () => {
+  /* Every panel STAYS in the layout — they share one grid cell, so the tab strip
+   * sits over the height of the tallest and switching does not move the content
+   * under it (owner, 23.08: the content jumps when you switch tabs). What
+   * makes the inactive one absent is `inert` plus aria-hidden, not unmounting,
+   * so this is what the contract is now: present in the DOM, unreachable. */
+  it('keeps every panel in the layout and makes the inactive ones unreachable', async () => {
     const user = userEvent.setup()
     render(<Example />)
-    expect(screen.getByText('Overview body')).toBeInTheDocument()
-    expect(screen.queryByText('History body')).toBeNull()
+    const panel = (name: string) => screen.getByText(name).closest('[role="tabpanel"]')!
+
+    expect(panel('Overview body')).not.toHaveAttribute('inert')
+    expect(panel('History body')).toHaveAttribute('inert')
+    expect(panel('History body')).toHaveAttribute('aria-hidden', 'true')
 
     await user.click(screen.getByRole('tab', { name: 'History' }))
 
-    expect(screen.getByText('History body')).toBeInTheDocument()
-    expect(screen.queryByText('Overview body')).toBeNull()
+    expect(panel('History body')).not.toHaveAttribute('inert')
+    expect(panel('Overview body')).toHaveAttribute('inert')
   })
 
   it('moves with Arrow/Home/End and wraps around', async () => {

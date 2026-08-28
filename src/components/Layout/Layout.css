@@ -1,7 +1,77 @@
 /* Layout primitives — Stack (column), Row (horizontal), Grid (auto-fit) */
 .stack { display: flex; flex-direction: column; }
 .row   { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; }
-.grid  { display: grid; grid-template-columns: repeat(auto-fit, minmax(var(--min-item, 16rem), 1fr)); }
+.row[data-nowrap] { flex-wrap: nowrap; }
+.grid  { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min-item, 16rem)), 1fr)); }
+/* How narrow a card in this grid may get before the grid drops a column. The
+ * auto-fit default packs at 16rem, which is right for a tile that carries two
+ * words and wrong for a card that carries a name, a role and an action: at 16rem
+ * a person card measured 250px on a laptop and every name broke over two lines
+ * (owner, 22.08). `min(100%, …)` keeps the track from overflowing a container
+ * narrower than the minimum itself. */
+/* CARDS IN A ROW ARE THE SAME HEIGHT (owner's rule, 23.08), which is the grid's
+ * own default — these values are the escape hatch for a grid of things that are
+ * NOT cards. The ragged-row problem they used to solve is a content problem: a
+ * card that runs short is missing a part, and CardMeta pinning to the foot puts
+ * the spare height where it reads as air rather than as a hole. */
+.grid[data-align="start"]  { align-items: start; }
+.grid[data-align="center"] { align-items: center; }
+.grid[data-align="end"]    { align-items: end; }
+
+.grid[data-min="sm"] { --min-item: 16rem; }
+.grid[data-min="md"] { --min-item: 20rem; }
+.grid[data-min="lg"] { --min-item: 24rem; }
+
+/* The unequal set: twelve tracks, each item declaring how many it takes. The
+ * auto-fit default above answers "a set of equals"; this answers "a wide one
+ * beside two narrow ones", which no minmax can express. */
+.grid[data-columns="12"] { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.grid-item[data-span="3"]  { grid-column: span 3; }
+.grid-item[data-span="4"]  { grid-column: span 4; }
+.grid-item[data-span="6"]  { grid-column: span 6; }
+.grid-item[data-span="8"]  { grid-column: span 8; }
+.grid-item[data-span="9"]  { grid-column: span 9; }
+.grid-item[data-span="12"] { grid-column: span 12; }
+/* A GridItem is a cell, not a box. The cell stretches to the row and now passes
+ * that on: its content used to stop at its own text while the cell around it ran
+ * to the bottom of the row, so a twelve-column set came out ragged while an
+ * auto-fit set did not — same rule, two answers. */
+.grid-item { display: flex; flex-direction: column; min-inline-size: 0; }
+.grid-item > * { flex: 1 1 auto; }
+
+/* Below the tablet edge twelve tracks become six: a quarter would be 170px of
+ * card, which is narrower than the words in it. Everything wider than a half
+ * takes the whole row. */
+/* The twelve tracks answer the GRID's own width, not the window's.
+ *
+ * Measured 22.08: at an 800px viewport this page's content column is ~500px, so
+ * a `span 4` card came out 148px wide, and the nested grid inside a card gave
+ * SIX columns of 65px. The viewport was 800 and the old media query fired at
+ * 768, so nothing caught it: the window was wide, the grid was not.
+ *
+ * The track count stays twelve at every width and only the SPANS change. That
+ * is not a stylistic choice: `@container` styles the container's DESCENDANTS,
+ * never the container itself, so a grid cannot use its own width to change its
+ * own `grid-template-columns` — measured the hard way, with six tracks left at
+ * twelve and the items collapsed to one, which is how a person card ended up
+ * 65px wide. The items are descendants; they can be told. */
+.grid[data-columns="12"] { container-type: inline-size; }
+
+/* Under 48rem of GRID: a quarter or a third becomes a half, a half or more
+ * becomes the whole row. */
+@container (max-width: 48rem) {
+  .grid-item[data-span="3"],
+  .grid-item[data-span="4"]  { grid-column: span 6; }
+  .grid-item[data-span="6"],
+  .grid-item[data-span="8"],
+  .grid-item[data-span="9"]  { grid-column: span 12; }
+}
+
+/* Under 30rem: one card per row. Two 15rem cards side by side is two cards
+ * neither of which can carry a name and a role. */
+@container (max-width: 30rem) {
+  .grid-item[data-span] { grid-column: span 12; }
+}
 
 .stack[data-gap="1"],  .row[data-gap="1"],  .grid[data-gap="1"]  { gap: var(--space-1); }
 .stack[data-gap="2"],  .row[data-gap="2"],  .grid[data-gap="2"]  { gap: var(--space-2); }
@@ -15,4 +85,12 @@
 .row[data-align="start"]     { align-items: flex-start; }
 .row[data-align="center"]    { align-items: center; }
 .row[data-align="end"]       { align-items: flex-end; }
+/* A row that fills its flex parent's main axis. `justify` can only place
+ * content INSIDE the row's own width, so a row sized by its contents has
+ * nothing to centre against: a centred action group inside <CardMeta> (which
+ * spreads its children) sat at the start of the footer until the row could
+ * grow. */
+.row[data-grow] { flex: 1; }
 .row[data-justify="between"] { justify-content: space-between; }
+.row[data-justify="center"] { justify-content: center; }
+.row[data-justify="end"] { justify-content: flex-end; }

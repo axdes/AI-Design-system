@@ -25,7 +25,11 @@ type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onC
 
 /* A number field with stepper buttons. The native <input type="number"> keeps
  * the spinbutton role, keyboard and validation; the -/+ buttons are the
- * click affordance. Clamps to min/max. Wrap in <Field> for a visible label. */
+ * click affordance. Clamps to min/max. Wrap in <Field> for a visible label. 
+   *
+   * Copy: the label carries the unit, so the number never has to — "Weight in kg",
+   * not "Weight" with a kg inside the box.
+   */
 export function NumberInput({
   value, onChange, min, max, step = 1, label, invalid, disabled,
   decrementLabel = 'Decrease', incrementLabel = 'Increase', surface = 'base', size, className, ...rest
@@ -44,7 +48,7 @@ export function NumberInput({
     <div className={cn('number-input', className)} data-invalid={invalid || undefined} data-disabled={disabled || undefined} data-surface={surface} data-size={size}>
       <Tooltip content={decrementLabel}>
         <IconButton
-          icon="arrow_downward"
+          icon="remove"
           size={stepperSize}
           variant="quiet"
           aria-label={decrementLabel}
@@ -67,7 +71,7 @@ export function NumberInput({
       />
       <Tooltip content={incrementLabel}>
         <IconButton
-          icon="arrow_upward"
+          icon="add"
           size={stepperSize}
           variant="quiet"
           aria-label={incrementLabel}

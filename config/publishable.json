@@ -1,0 +1,25 @@
+{
+  "_": [
+    "What may not appear in the tree that publish-ds.mjs pushes to a public",
+    "repository. The working log is swapped for a stub on publish and was the only",
+    "thing anyone checked; the assumption underneath that — everything else here is",
+    "generic — stopped being true without anybody noticing (2026-08-28).",
+    "",
+    "The line to hold: a DOMAIN word describes how software works and belongs in a",
+    "worked example. A PRODUCT word says whose software it is. `routingGroupId` is",
+    "the first; `genesysGroupId` is the second and identifies a client from a public",
+    "URL.",
+    "",
+    "scripts/check-publishable.mjs fails the gate on anything listed here."
+  ],
+  "identifiers": [
+    { "word": "genesys", "why": "a client's platform; naming it identifies the client" },
+    { "word": "epam", "why": "the employer, and by extension every internal product below" },
+    { "word": "airun", "why": "an internal product, not part of this system" },
+    { "word": "salim", "why": "a client product built ON this system, not part of it" },
+    { "word": "codemie", "why": "an internal platform" },
+    { "word": "telescope", "why": "an internal system" },
+    { "word": "leap", "why": "an internal system" }
+  ],
+  "allow": []
+}

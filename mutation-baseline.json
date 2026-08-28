@@ -1,0 +1,699 @@
+{
+  "score": 59,
+  "floor": 59,
+  "killed": 123,
+  "survived": 84,
+  "components": {
+    "Accordion": {
+      "hash": "b76be8850153",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "off-by-one"
+      ]
+    },
+    "ActionCard": {
+      "hash": "3a8b77716554",
+      "killed": [
+        "drop-optional-render"
+      ],
+      "survived": [
+        "and-to-or"
+      ]
+    },
+    "Alert": {
+      "hash": "0e02315a728e",
+      "killed": [
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "and-to-or",
+        "drop-spread"
+      ]
+    },
+    "AppLayout": {
+      "hash": "64c466022ea0",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": []
+    },
+    "Avatar": {
+      "hash": "25b192bcb09c",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "drop-optional-render",
+        "drop-spread"
+      ]
+    },
+    "BarChart": {
+      "hash": "77f44440aad1",
+      "killed": [
+        "boolean-default",
+        "and-to-or",
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "Breadcrumb": {
+      "hash": "90f5a3607ea1",
+      "killed": [
+        "and-to-or",
+        "strip-aria",
+        "off-by-one"
+      ],
+      "survived": []
+    },
+    "Button": {
+      "hash": "1072243269b3",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render",
+        "drop-spread"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "Calendar": {
+      "hash": "6afe9e04cc61",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "CardStack": {
+      "hash": "bb7a50a9ada0",
+      "killed": [
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "and-to-or"
+      ]
+    },
+    "Carousel": {
+      "hash": "b2d8846bed47",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "negate-cond",
+        "off-by-one"
+      ]
+    },
+    "CharacterCount": {
+      "hash": "e9dab8fd5bc4",
+      "killed": [],
+      "survived": []
+    },
+    "ChatComposer": {
+      "hash": "517d88035a35",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "drop-optional-render",
+        "invert-comparison"
+      ]
+    },
+    "ChatMessage": {
+      "hash": "1858d7b05f4d",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "strip-aria",
+        "negate-cond",
+        "invert-comparison"
+      ]
+    },
+    "Checkbox": {
+      "hash": "dcd1ca984c5a",
+      "killed": [
+        "drop-optional-render",
+        "drop-spread"
+      ],
+      "survived": [
+        "and-to-or"
+      ]
+    },
+    "Chip": {
+      "hash": "7d9440bd5c1b",
+      "killed": [
+        "and-to-or",
+        "drop-spread"
+      ],
+      "survived": [
+        "drop-optional-render"
+      ]
+    },
+    "CodeInput": {
+      "hash": "3ba45e976207",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "boolean-default",
+        "negate-cond",
+        "off-by-one"
+      ]
+    },
+    "ColorSwatch": {
+      "hash": "eb16ae63e2d9",
+      "killed": [],
+      "survived": []
+    },
+    "Combobox": {
+      "hash": "59219069c8b8",
+      "killed": [
+        "boolean-default",
+        "strip-aria",
+        "drop-optional-render",
+        "off-by-one"
+      ],
+      "survived": [
+        "and-to-or"
+      ]
+    },
+    "CommandPalette": {
+      "hash": "9c5336d69e72",
+      "killed": [
+        "and-to-or"
+      ],
+      "survived": [
+        "off-by-one"
+      ]
+    },
+    "ContentCard": {
+      "hash": "6ad66a6e8f16",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": []
+    },
+    "ContentSidePanel": {
+      "hash": "8cbff393f007",
+      "killed": [
+        "and-to-or",
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": []
+    },
+    "ContextMenu": {
+      "hash": "4391fcc24735",
+      "killed": [
+        "drop-optional-render"
+      ],
+      "survived": [
+        "and-to-or",
+        "off-by-one"
+      ]
+    },
+    "CopyButton": {
+      "hash": "1428ac6defa4",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "negate-cond"
+      ]
+    },
+    "DataGrid": {
+      "hash": "67110d4516fc",
+      "killed": [
+        "and-to-or"
+      ],
+      "survived": [
+        "strip-aria",
+        "negate-cond",
+        "drop-optional-render",
+        "off-by-one",
+        "invert-comparison"
+      ]
+    },
+    "DatePicker": {
+      "hash": "b95482496345",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": []
+    },
+    "DateRangePicker": {
+      "hash": "801f4e099535",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": []
+    },
+    "DonutChart": {
+      "hash": "3f0de9184a30",
+      "killed": [
+        "boolean-default",
+        "and-to-or",
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": []
+    },
+    "Dropdown": {
+      "hash": "940f80325d5e",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "boolean-default",
+        "off-by-one",
+        "drop-spread"
+      ]
+    },
+    "ErrorSummary": {
+      "hash": "6893530d1be1",
+      "killed": [],
+      "survived": []
+    },
+    "FeedbackModal": {
+      "hash": "f7b92210324e",
+      "killed": [],
+      "survived": []
+    },
+    "Field": {
+      "hash": "e429aae09d8b",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": []
+    },
+    "FileUpload": {
+      "hash": "4f90f00bbe0b",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "and-to-or",
+        "drop-optional-render",
+        "invert-comparison"
+      ]
+    },
+    "FilterBar": {
+      "hash": "35c98bbf5c8a",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "FilterDropdown": {
+      "hash": "bb8e2a51aa1c",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "boolean-default",
+        "and-to-or",
+        "drop-optional-render",
+        "invert-comparison"
+      ]
+    },
+    "Highlight": {
+      "hash": "6b860bbd27c5",
+      "killed": [],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "HoverCard": {
+      "hash": "7beb8a8b5d44",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "boolean-default"
+      ]
+    },
+    "IconButton": {
+      "hash": "1d08e29448da",
+      "killed": [
+        "drop-spread"
+      ],
+      "survived": []
+    },
+    "IconDisc": {
+      "hash": "d0f0a5062ed8",
+      "killed": [
+        "negate-cond"
+      ],
+      "survived": []
+    },
+    "InlineText": {
+      "hash": "b8cd94bddb76",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "and-to-or"
+      ]
+    },
+    "Input": {
+      "hash": "f81fbfca1d9b",
+      "killed": [
+        "drop-spread"
+      ],
+      "survived": []
+    },
+    "LineChart": {
+      "hash": "2741976dc428",
+      "killed": [],
+      "survived": [
+        "boolean-default",
+        "and-to-or",
+        "negate-cond",
+        "drop-optional-render",
+        "off-by-one",
+        "invert-comparison"
+      ]
+    },
+    "LinkTile": {
+      "hash": "9a68cd732ad2",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": []
+    },
+    "LoadMore": {
+      "hash": "7c58d01bdb6e",
+      "killed": [
+        "and-to-or"
+      ],
+      "survived": []
+    },
+    "MenuButton": {
+      "hash": "914de2b97322",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "negate-cond",
+        "invert-comparison"
+      ]
+    },
+    "MenuIconButton": {
+      "hash": "43963077c06d",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": []
+    },
+    "Modal": {
+      "hash": "b8f3fbbcb7e8",
+      "killed": [
+        "boolean-default",
+        "and-to-or",
+        "strip-aria",
+        "drop-optional-render",
+        "off-by-one"
+      ],
+      "survived": []
+    },
+    "NumberInput": {
+      "hash": "8b320fe9cb91",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "negate-cond",
+        "invert-comparison",
+        "drop-spread"
+      ]
+    },
+    "Pagination": {
+      "hash": "d81b47f391ee",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "PasswordInput": {
+      "hash": "2ff56c1f8b72",
+      "killed": [
+        "strip-aria",
+        "negate-cond",
+        "drop-spread"
+      ],
+      "survived": []
+    },
+    "PlanCard": {
+      "hash": "d83bb72bd159",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": []
+    },
+    "Popover": {
+      "hash": "9a6a00d63cbb",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "and-to-or",
+        "invert-comparison"
+      ]
+    },
+    "Radio": {
+      "hash": "3ae3810c8fe7",
+      "killed": [
+        "drop-optional-render"
+      ],
+      "survived": [
+        "and-to-or",
+        "drop-spread"
+      ]
+    },
+    "RangeSlider": {
+      "hash": "22f7205eedac",
+      "killed": [
+        "and-to-or",
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "Rating": {
+      "hash": "3f9878ecbe82",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "negate-cond",
+        "invert-comparison"
+      ]
+    },
+    "ScheduleGrid": {
+      "hash": "356f67516ba1",
+      "killed": [
+        "off-by-one"
+      ],
+      "survived": [
+        "and-to-or"
+      ]
+    },
+    "SearchInput": {
+      "hash": "684dbeb24de6",
+      "killed": [
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "and-to-or",
+        "invert-comparison",
+        "drop-spread"
+      ]
+    },
+    "SegmentedControl": {
+      "hash": "5aa15ede3b90",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "off-by-one"
+      ]
+    },
+    "Select": {
+      "hash": "219967a8dcc3",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": []
+    },
+    "SelectableTile": {
+      "hash": "4e390a408352",
+      "killed": [],
+      "survived": [
+        "and-to-or",
+        "drop-optional-render"
+      ]
+    },
+    "SideNav": {
+      "hash": "9a88beb0ecf9",
+      "killed": [
+        "boolean-default",
+        "and-to-or",
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "Slider": {
+      "hash": "ca1d71c4e58a",
+      "killed": [
+        "and-to-or",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "drop-spread"
+      ]
+    },
+    "Stepper": {
+      "hash": "60e96714efeb",
+      "killed": [
+        "and-to-or",
+        "strip-aria",
+        "negate-cond"
+      ],
+      "survived": []
+    },
+    "Switch": {
+      "hash": "e1b1f3908413",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "drop-spread"
+      ]
+    },
+    "Table": {
+      "hash": "08d9ca42398c",
+      "killed": [
+        "strip-aria"
+      ],
+      "survived": [
+        "drop-spread"
+      ]
+    },
+    "Tabs": {
+      "hash": "7ec39f460d40",
+      "killed": [
+        "strip-aria",
+        "off-by-one"
+      ],
+      "survived": []
+    },
+    "TagInput": {
+      "hash": "c79833ff77c1",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "invert-comparison"
+      ]
+    },
+    "Time": {
+      "hash": "41d58a51c634",
+      "killed": [
+        "and-to-or"
+      ],
+      "survived": []
+    },
+    "TimeInput": {
+      "hash": "e2a14d873d3d",
+      "killed": [
+        "drop-spread"
+      ],
+      "survived": []
+    },
+    "Toast": {
+      "hash": "6c2bff6138fb",
+      "killed": [
+        "strip-aria",
+        "negate-cond"
+      ],
+      "survived": [
+        "and-to-or"
+      ]
+    },
+    "Tooltip": {
+      "hash": "bf54057094a0",
+      "killed": [
+        "drop-optional-render"
+      ],
+      "survived": [
+        "boolean-default",
+        "and-to-or",
+        "invert-comparison"
+      ]
+    },
+    "Tree": {
+      "hash": "f1e2397e02f9",
+      "killed": [
+        "and-to-or",
+        "strip-aria",
+        "negate-cond",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "off-by-one"
+      ]
+    },
+    "TreeTable": {
+      "hash": "1f2c00719ccd",
+      "killed": [
+        "and-to-or",
+        "strip-aria"
+      ],
+      "survived": [
+        "off-by-one"
+      ]
+    },
+    "Truncate": {
+      "hash": "21a050c7007d",
+      "killed": [],
+      "survived": [
+        "invert-comparison"
+      ]
+    }
+  }
+}

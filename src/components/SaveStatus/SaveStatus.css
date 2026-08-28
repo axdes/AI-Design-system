@@ -1,0 +1,15 @@
+.save-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-sm);
+  line-height: var(--leading-normal);
+  color: var(--muted-foreground);
+  min-block-size: var(--space-6);
+}
+/* Idle says nothing rather than "not saved": before the first change there is
+ * nothing to report, and an empty line keeps the actions from moving when the
+ * first save arrives. */
+.save-status[data-state="idle"] { visibility: hidden; }
+.save-status[data-state="saved"] .icon { color: var(--success-emphasis); }
+.save-status[data-state="error"] { color: var(--destructive-emphasis); }

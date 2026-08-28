@@ -1,7 +1,7 @@
 import './WizardTemplate.css'
 import { type ReactNode } from 'react'
 import { Button } from '../../components/Button'
-import { PageHeader } from '../../components/PageHeader'
+import { Page } from '../Page'
 import { Stepper } from '../../components/Stepper'
 import { cn } from '../../lib/cn'
 
@@ -38,6 +38,10 @@ type Props = {
  * below, the last step submitting under the real event's name. Steps are
  * freely navigable, and the final step is a `<WizardReview>` whose Change
  * links jump straight back.
+ *
+ * Copy: the page title names the whole job, the step names are its parts —
+ * nouns, parallel, and the same word in the stepper as in the step's own
+ * heading.
  */
 export function WizardTemplate({
   title,
@@ -55,11 +59,10 @@ export function WizardTemplate({
   const index = Math.max(0, steps.findIndex((s) => s.id === current))
   const last = index === steps.length - 1
   return (
-    /* Header inside the capped column, SettingsPageTemplate's argument: a form
-     * column is narrower than the page, and a far-edge title above it reads as
-     * two screens. */
-    <div className={cn('wizard-shell', className)}>
-      <PageHeader title={title} />
+    /* The header inside the capped column is now the `wizard` archetype's
+     * geometry, held once in <Page>: a form column is narrower than the page,
+     * and a far-edge title above it reads as two screens. */
+    <Page archetype="wizard" className={cn('wizard-shell', className)} title={title}>
       <div className="wizard-page">
         <Stepper
           steps={steps.map(({ label, description }) => ({ label, description }))}
@@ -87,7 +90,7 @@ export function WizardTemplate({
           )}
         </div>
       </div>
-    </div>
+    </Page>
   )
 }
 

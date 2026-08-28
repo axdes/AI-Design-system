@@ -47,11 +47,15 @@ const text = `# The design system
 - No inline styles except truly dynamic values. No !important. Logical
   properties (padding-inline, text-align: start) — the system is RTL-ready.
 - Page structure comes from the blocks (ListPageTemplate, DetailPageTemplate,
-  AuthTemplate, FormModal): a screen that hand-rolls its own width, centering
+  AuthTemplate, WizardTemplate): a screen that hand-rolls its own width, centering
   or header is wrong.
 - Icon-only controls take BOTH aria-label and a Tooltip wrapper.
 - Every list, table and search has an empty state.
 - One primary Button per visible surface: a screen answers once.
+- Nothing here is missing on purpose. If a part genuinely does not exist, do not
+  hand-roll it and do not hand-build its folder either: \`npm run new -- Name
+  --level … --surface … --category … --about "…"\` writes every file and every
+  registration a part needs, and \`--remove\` reverses them.
 
 ## Choosing a representation (the decision rules)
 

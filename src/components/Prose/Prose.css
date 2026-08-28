@@ -1,0 +1,20 @@
+/* 68ch: the measure typography has agreed on for a century of body text, and
+ * the number four separate files here reached for independently before this
+ * existed. `ch` and not rem, because the measure is about CHARACTERS — it has
+ * to hold when the reader changes the face or the size. */
+.prose {
+  margin: 0;
+  max-inline-size: 68ch;
+  line-height: var(--leading-relaxed);
+}
+.prose[data-size='sm'] { font-size: var(--font-sm); }
+.prose[data-appearance='muted'] { color: var(--muted-foreground); }
+.prose[data-appearance='plain'] { color: var(--foreground); }
+
+/* A phrase inside prose may carry weight without becoming a heading: the one
+ * clause that is the point of the sentence. Ink, not size — a bold run at a
+ * larger size would read as a title that lost its line. */
+.prose strong {
+  color: var(--foreground);
+  font-weight: var(--font-weight-medium);
+}

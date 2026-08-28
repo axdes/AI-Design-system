@@ -88,12 +88,12 @@ describe('JSX reader', () => {
 
   it("keeps a nested element's props out of its parent", () => {
     const tags = readTags(
-      '<ListPageTemplate title="Docs" actions={<Button variant="primary" iconEnd>New</Button>}>x</ListPageTemplate>',
+      '<ListPageTemplate title="Docs" actions={<Button variant="primary">New</Button>}>x</ListPageTemplate>',
     )
     expect(tags[0].name).toBe('ListPageTemplate')
     expect(tags[0].attrs.map((a) => a.name)).toEqual(['title', 'actions'])
     expect(tags[1].name).toBe('Button')
-    expect(tags[1].attrs.map((a) => a.name)).toEqual(['variant', 'iconEnd'])
+    expect(tags[1].attrs.map((a) => a.name)).toEqual(['variant'])
   })
 
   it('survives a > inside an expression or a string', () => {

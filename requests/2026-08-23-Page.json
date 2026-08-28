@@ -1,0 +1,29 @@
+{
+  "name": "Page",
+  "level": "block",
+  "date": "2026-08-23",
+  "requestedBy": "agent (screens research, docs/RESEARCH-SCREENS.md)",
+  "need": "The screen layer grows by adding a React file per shape, so a shape the nine templates do not have has no system parts to assemble one from. Measured: 17 of 54 page modules across the products use no template, 16 files re-declare the templates' own `page-content` wrapper by hand, and the apps carry 7,931 lines of layout CSS against 708 in all thirteen blocks. The largest accepted duplication group in `npm run scout` is page chrome. Nothing offers a sub-navigation slot (six screens hand-roll Tabs as page navigation), a sticky action bar (five app stylesheets hand-roll one), a second pane, or a full-bleed region.",
+  "consideredAlternatives": [
+    {
+      "ref": "blocks/ListPageTemplate, blocks/DetailPageTemplate, and the seven beside them",
+      "whyNot": "They are the status quo being measured. Each is all-or-nothing: between AppLayout and a whole template there is nothing, so an unmet shape falls out of the system into divs and never comes back."
+    },
+    {
+      "ref": "add one template per missing archetype (board, reader, console, analytical, split view)",
+      "whyNot": "It is the same growth mechanism that produced the problem, and the external pass showed the shapes are not archetypes at all: Fiori's flexible column layout HOSTS floorplans rather than being one, and Material reduces every body to three canonical layouts. Five more components would encode five more fixed geometries."
+    },
+    {
+      "ref": "spacing primitives only (Polaris discussion #7195: Box, Stack, Inline, Tiles, Columns, Bleed)",
+      "whyNot": "That layer already exists here as Layout, Card, FormStack and ListCluster. What is missing is the page-REGION layer above it, which those primitives do not provide."
+    }
+  ],
+  "proposedApi": {
+    "Page": "archetype (the preset: overview | list | worklist | analytical | detail | wizard | form | auth | hub | settings | status), regions as node slots (notices, header, subnav, toolbar, children as the body, detail for the second pane, aside, footerBar), and the geometry the preset defaults (shape: single | list-detail | feed | board | canvas; width: narrow | reading | default | full; align: start | center; panels)",
+    "data": "screen-specs/page-rules.json holds the region vocabulary, the shapes and one entry per archetype saying which regions are required, optional or forbidden and what each may carry. Adding a page type is a JSON entry the gate validates immediately; it is not a component."
+  },
+  "sources": "Primer PageLayout (region vocabulary and prop shape: position, width {min,max,default}, sticky, resizable, divider, hidden, responsive objects), Material 3 / Android canonical layouts (three body shapes, adaptive across window classes), SAP Fiori flexible column layout (a layout hosts floorplans, so split view is not an archetype), AWS Cloudscape (split-view rules, the lifecycle axis), Shopify polaris-react discussions #6454 and #7195 (the monolithic Page problem and the primitive answer), GOV.UK (pages named after their job), EightShapes on classification. Full write-up and the measurements in docs/RESEARCH-SCREENS.md.",
+  "status": "approved",
+  "decision": "Build the mechanism as one block plus a rules file, and keep as components only the four templates that carry real behaviour rather than geometry (list empty-state logic, form errors and dirty guard, wizard step state, auth submit). The remaining five templates are geometry and become preset entries.",
+  "decidedBy": "owner (2026-08-23, in conversation: do it the way that is correct, extensible and flexible)"
+}

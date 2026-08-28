@@ -61,10 +61,12 @@
       ]
     },
     "form": {
-      "useWhen": "A short or routine capture: one surface, submitted once.",
-      "notWhen": "Long and unfamiliar (wizard), or public users under load — they get one thing per page (GOV.UK).",
+      "useWhen": "A capture: fields the user fills in and commits. Which KIND of form (dialog, panel, page, draft, settings, …) is the next decision down, and screen-specs/form-rules.json computes it from the field count, the familiarity, the context and the commit model.",
+      "notWhen": "Long AND unfamiliar (wizard), or public users under load — they get one thing per page (GOV.UK).",
       "templates": [
-        "FormModal"
+        "Modal",
+        "FormPageTemplate",
+        "FormPanel"
       ]
     },
     "auth": {
@@ -102,13 +104,18 @@
       "components": [
         "DataGrid"
       ],
-      "means": "virtualized table: unbounded rows, Excel-like manipulation"
+      "means": "virtualized table: unbounded rows, Excel-like manipulation. The ARIA grid pattern comes with it: one tab stop, arrow keys between cells, Home and End."
     },
     "table": {
       "components": [
-        "Table"
+        "Table",
+        "TreeTable",
+        "PivotTable",
+        "ComparisonTable",
+        "ScheduleGrid",
+        "DiffTable"
       ],
-      "means": "columns over rows: side-by-side comparison, sort and filter by field"
+      "means": "columns over rows: side-by-side comparison, sort and filter by field. WHICH KIND of table (list, worklist, selection, analytical, pivot, comparison, tree, schedule, diff, …) is the next decision down, and screen-specs/table-rules.json computes it from what a row is, what the reader does, how many rows there are and whether a cell interacts."
     },
     "list": {
       "components": [
@@ -120,8 +127,7 @@
       "components": [
         "Stat",
         "Meter",
-        "ProgressCircle",
-        "ProgressBar"
+        "Progress"
       ],
       "means": "KPI tiles and gauges: values read at a glance"
     },

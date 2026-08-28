@@ -1,7 +1,7 @@
 {
   "ref": "Dropdown",
   "level": "molecule",
-  "description": "Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are built in, so spread `triggerProps` onto your own button. Items, sections and dividers are the parts.",
+  "description": "Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are built in, so spread `triggerProps` onto your own button. Items, sections and dividers are the parts. When the trigger is an ordinary labelled button, `<MenuButton>` is that already assembled — including the split form where a default action sits on its own half. Come here when the trigger is something else: an avatar, a table row, a field.",
   "exports": [
     "Dropdown",
     "DropdownItem",
@@ -12,16 +12,25 @@
   "from": "@/components/Dropdown",
   "slots": [
     {
-      "name": "DropdownItem",
-      "line": 260
+      "name": "DropdownItem"
     },
     {
       "name": "DropdownSection",
-      "line": 295
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ]
     },
     {
-      "name": "DropdownDivider",
-      "line": 306
+      "name": "DropdownDivider"
     }
   ],
   "props": [
@@ -52,17 +61,26 @@
     {
       "name": "menuClassName",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Class on the menu element (portaled to body — needed for descendant selectors)."
     },
     {
       "name": "closeOnSelect",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Close menu when an item is clicked. Default true. Set false for multi-select."
     },
     {
       "name": "matchTriggerWidth",
       "type": "boolean | 'min'",
-      "required": false
+      "required": false,
+      "description": "Menu width: true = exactly the trigger's width (select-style), 'min' = at least the trigger's width but growing with longer content. Default false (intrinsic width)."
+    },
+    {
+      "name": "triggerId",
+      "type": "string",
+      "required": false,
+      "description": "Name the trigger yourself instead of letting one be generated. Use it when something outside has to reach the control by id: `<Field htmlFor>`, or an `ErrorSummary` row that puts focus on the field it names."
     }
   ],
   "sourcePath": "src/components/Dropdown/Dropdown.tsx",

@@ -1,7 +1,7 @@
 {
   "ref": "UserMenu",
   "level": "organism",
-  "description": "Account trigger for a sidebar footer: name + role expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions.",
+  "description": "Account trigger for a sidebar footer: name + role expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions. Copy: the trigger names the person, and the items are verbs — \"Sign out\", not \"Sign-out\".",
   "exports": [
     "UserMenu"
   ],
@@ -17,7 +17,8 @@
     {
       "name": "role",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Secondary line under the name (e.g. role)."
     },
     {
       "name": "avatarSrc",
@@ -27,7 +28,8 @@
     {
       "name": "actions",
       "type": "UserMenuAction[]",
-      "required": true
+      "required": true,
+      "description": "Menu entries shown in the dropdown."
     },
     {
       "name": "menuLabel",
@@ -37,5 +39,5 @@
   ],
   "sourcePath": "src/components/UserMenu/UserMenu.tsx",
   "context": "region",
-  "example": "/* Presentation only: the account trigger for a sidebar footer. The consumer\n * owns the user object and what each action does. */\n\n<UserMenu\n  name=\"Sarah Al-Mansouri\"\n  role=\"Brand manager\"\n  menuLabel=\"Account menu\"\n  actions={[\n    { id: 'profile', label: 'Profile', icon: 'person', onSelect: () => undefined },\n    { id: 'logout', label: 'Sign out', icon: 'logout', onSelect: () => undefined },\n  ]}\n/>"
+  "example": "/* Presentation only: the account trigger for a sidebar footer. The consumer\n * owns the user object and what each action does. */\n\n<UserMenu\n  name=\"Ada Meridian\"\n  role=\"Brand manager\"\n  menuLabel=\"Account menu\"\n  actions={[\n    { id: 'profile', label: 'Profile', icon: 'person', onSelect: () => undefined },\n    { id: 'logout', label: 'Sign out', icon: 'logout', onSelect: () => undefined },\n  ]}\n/>"
 }

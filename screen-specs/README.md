@@ -141,6 +141,85 @@ chosen to dodge a rule will pass the machine and is exactly what the human
 review of the spec is for. And `answers` matching is identity, not paraphrase —
 copy the primaryQuestion string, or the check calls it a different question.
 
+### The layer under "cards" — WHICH card
+
+`selection-rules.json` stops at the representation. Once the answer is `cards`
+the next question used to be taste, and taste is what a card grid drifts on:
+the same screen grows an object card, a status card and a promo tile in one row
+because nothing said they are different things.
+[card-rules.json](card-rules.json) makes that a computation too, from a survey
+of 31 card families across SAP Fiori (object, list, table, analytical,
+timeline, stack, component cards), Salesforce Lightning, IBM Carbon tiles,
+Atlassian Smart Links, Microsoft Adaptive Cards, Shopify Polaris, USWDS,
+Material 3 and the promo conventions.
+
+Two more declarations, and only for a zone the reader reads AS cards — a `Card`
+that is merely the surface under a `Table` is not one:
+
+- `data.carries` — what ONE card carries: the CONTENT TYPE, not its shape.
+  `entity`, `person`, `metric`, `request`, `event`, `story`, `media`,
+  `destination`, `option`, `offer`, `proof`, `capability`, `progress`,
+  `collection`, `change`. Each kind has a one-line test in the file: a `request`
+  is something where doing nothing is itself an outcome someone is waiting on.
+- `card` — the family: `object`, `collection`, `kpi`, `action`, `entry`,
+  `option`, `story`, `cover`, `plan`, `event`, … Each family names what it is
+  for, when it is the wrong answer, the parts it may not ship without, and the
+  components it is built from.
+
+What the gate then holds you to: the family must exist, must carry what the
+zone says it carries, must be one the rules choose for that task and content
+kind, must be BUILT rather than `planned`, and the zone must name the
+components it is built from. The hard rules are the ones that cost most when
+they are got wrong: a card carrying a `request` may not be an object, story or
+entry card (a decision that only links away hands the work back to the reader);
+an `option` may not be an entry tile (a clickable card navigates, a selectable
+one changes a value). Every family owes the same three states besides its happy
+path — `loading`, `empty`, `error` — which is where one system otherwise grows
+four empty states.
+
+Ask before writing, over MCP: `decide` takes `data.carries` and answers one
+level deeper, with the family, its parts, what builds it and what it owes.
+`src/test/card-rules.test.ts` proves every one of these checks can go red.
+
+## Which FORM takes the input
+
+The two layers above decide how a collection is SHOWN. On the other side of the
+screen a zone TAKES input, and until 2026-08-23 the system had nothing to say
+about it: the `form` archetype pointed at one template (a form in a `Modal`), so a
+15-field object was either crammed into a dialog or hand-rolled in an app.
+[form-rules.json](form-rules.json) makes that a computation too, from a survey
+of 18 form kinds (docs/RESEARCH-FORMS.md) across GOV.UK, SAP Fiori, Baymard,
+NN/g, GitLab Pajamas, Carbon, Polaris and WCAG 2.2.
+
+A zone whose `task` is `input` declares, beside its fields:
+
+- `data.commit` — how the input becomes real. `explicit` (a named button),
+  `per-row` (each control applies on change), `autosave` (saves itself after a
+  pause and says when), `none` (a filter or a search, which commits nothing and
+  therefore owes no Save, no dirty state and no error summary). One screen picks
+  ONE: a page that applies some controls on change and asks for Save on others
+  is a page nobody can predict.
+- `data.fields` — how many fields the user fills in. Past six a dialog scrolls
+  its own actions off screen; from nine it is refused (HF1).
+- `data.context` — `standalone`, `over-list`, `beside-context` (the record
+  behind it must stay readable, which is what a modal gets wrong), `in-place`.
+- `data.familiarity` — `routine` or `unfamiliar`. Long AND unfamiliar is the one
+  case that earns a wizard's steps; long and routine is a page form (Fiori).
+- `form` — the kind those four choose: `dialog`, `panel`, `page`, `wizard`,
+  `question`, `review`, `settings`, `auth`, `inline`, `bulk`, `grid`, `confirm`,
+  `verified-confirm`, `upload`, `draft`, `composer`, `filter`, `search`.
+
+Every kind names what it is BUILT from, and the gate holds the zone to it: a
+`page` form without `FormPageTemplate` fails, a `draft` without `SaveStatus`
+fails, and a kind still `planned` (question, inline, bulk, verified-confirm)
+fails on use — agree the parts first in `requests/`, then the screen. Notes
+carry the rest: four fields committed at once owe an `ErrorSummary`, eight owe
+sections.
+
+Ask before writing, over MCP: `decide` with `task: "input"` answers with the
+kind, its use-when / not-when, what builds it and what it owes.
+`src/test/form-rules.test.ts` proves every one of these checks can go red.
+
 ## The content model — where screens come FROM
 
 The decision fields judge a screen someone already invented. The layer above

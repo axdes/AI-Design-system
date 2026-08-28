@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "code",
+  "type": "registry:ui",
+  "title": "Code",
+  "description": "Source code, inline in a sentence or as a block that scrolls inside itself and can be reached by keyboard. Three things a `<pre>` does not do on its own and every product re-does: the monospace face from the token rather than the browser's default, a scroll that is REACHABLE (a scrollable region owes a tab stop and a name — axe's `scrollable-region-focusable`, which this repository's own site fail",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Code/Code.css",
+      "content": ".code {\n  margin: 0;\n  font-family: var(--font-family-mono);\n  font-size: var(--font-sm);\n  line-height: var(--leading-relaxed);\n  color: var(--foreground);\n}\n\n/* A BLOCK OF CODE IS A PANEL, not a paragraph in a different typeface. It had\n * no surface at all — no ground, no edge, no padding — so a sample sat directly\n * on the page and the reader had to work out where it started and where the\n * prose came back (owner, 2026-08-24). Every system does this the same way,\n * and for the same reason: the tint says \"this is literal text, copy it\".\n *\n * It also scrolls inside itself, and it is allowed to be narrower than its\n * content. Without the floor a flex or grid child sizes to its longest line and\n * takes the document sideways with it. */\n.code:not([data-inline]) {\n  max-inline-size: 100%;\n  min-inline-size: 0;\n  overflow-x: auto;\n  padding: var(--space-4);\n  background: var(--muted);\n  border: 1px solid var(--border);\n  border-radius: var(--radius-md);\n}\n.code:not([data-inline]):focus-visible {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n\n/* Inline: a fragment in a line of text, so it takes a tint to separate it from\n * the words around it and nothing else — no border, no block spacing. */\n.code[data-inline] {\n  padding-inline: var(--space-1);\n  border-radius: var(--radius-sm);\n  background: var(--muted);\n}\n\n/* On a phone the measure is narrower than a line of most code. A page that\n * scrolls sideways is the worse of the two failures. */\n@media (max-width: 48rem) {\n  .code:not([data-inline]) {\n    white-space: pre-wrap;\n    overflow-wrap: anywhere;\n  }\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Code/Code.css"
+    },
+    {
+      "path": "src/components/Code/Code.tsx",
+      "content": "import './Code.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** The source. Kept verbatim: a code sample that reflows is lying about the code. */\n  children: ReactNode\n  /** A fragment inside a sentence rather than a block of its own. */\n  inline?: boolean\n  /**\n   * What the block is, for the reader and for the screen reader that lands in\n   * it. Required on a block, because a scrollable region with no name is a\n   * region a keyboard user arrives in without being told where they are.\n   */\n  label?: string\n  className?: string\n}\n\n/**\n * Source code, inline in a sentence or as a block that scrolls inside itself\n * and can be reached by keyboard.\n *\n * Three things a `<pre>` does not do on its own and every product re-does: the\n * monospace face from the token rather than the browser's default, a scroll\n * that is REACHABLE (a scrollable region owes a tab stop and a name — axe's\n * `scrollable-region-focusable`, which this repository's own site failed), and\n * a floor of zero so the sample scrolls inside its container instead of pushing\n * the document sideways.\n *\n * On a phone it wraps rather than scrolls: a page that scrolls sideways is\n * worse than a sample that breaks its lines, and the reader can recover from\n * one of the two.\n *\n * Copy: the label names what the block IS — \"vite.config.ts\", \"The response\" —\n * because a reader landing on a wall of source needs to know what they are\n * looking at before they read it.\n */\nexport function Code({ children, inline, label, className }: Props) {\n  if (inline) return <code className={cn('code', className)} data-inline=\"\">{children}</code>\n  return (\n    <pre className={cn('code', className)} tabIndex={0} role=\"region\" aria-label={label}>\n      <code>{children}</code>\n    </pre>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Code/Code.tsx"
+    },
+    {
+      "path": "src/components/Code/index.ts",
+      "content": "export { Code } from './Code'\n",
+      "type": "registry:ui",
+      "target": "@ui/Code/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Code.json"
+}

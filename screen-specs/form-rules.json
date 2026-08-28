@@ -1,0 +1,761 @@
+{
+  "$comment": "The form decision layer. selection-rules.json answers WHICH REPRESENTATION a collection gets and card-rules.json answers WHICH CARD once the answer is cards; this file answers the question that used to be taste on the other side of the screen: once a zone CAPTURES INPUT, which kind of form it is, what it is built from, and how it commits. A kind is chosen by four things and nothing else: how many fields, how familiar the task is, whether the surrounding context has to stay visible, and who commits the change. Consolidated 2026-08-23 from GOV.UK (question pages, one thing per page, error summary, conditional reveal, marking the minority), SAP Fiori (object page create/edit mode, footer bar, draft handling), Baymard (label placement, inline validation timing), NN/g and GitLab Pajamas (saving and feedback), Carbon and Polaris (form structure), and WCAG 2.2 (1.3.5, 3.3.1, 3.3.7, 3.3.8). The survey behind it is docs/RESEARCH-FORMS.md. check-screen-spec.mjs enforces it: a zone whose task is input must say which kind of form it is and how it commits, and may only use a kind some matching rule chooses.",
+  "commitModels": {
+    "explicit": {
+      "means": "The user presses a named button and the record changes then, not before.",
+      "use": "Records: anything another person or another screen reads afterwards."
+    },
+    "per-row": {
+      "means": "Each control applies on change, on its own, with its own feedback.",
+      "use": "Settings: knobs read rarely and changed one at a time."
+    },
+    "autosave": {
+      "means": "The form saves itself after a pause in typing and states when it last did.",
+      "use": "Drafts: long, resumable work where 'continue later' is expected."
+    },
+    "none": {
+      "means": "Nothing is committed at all: the input narrows or searches what is already there.",
+      "use": "Filters and search. They own no Save, no dirty state and no error summary."
+    }
+  },
+  "contexts": {
+    "standalone": {
+      "means": "The form is the screen. Nothing behind it needs reading."
+    },
+    "over-list": {
+      "means": "Opened from a collection the user was working in."
+    },
+    "beside-context": {
+      "means": "The record, list or document behind it must stay readable while the fields are filled in."
+    },
+    "in-place": {
+      "means": "The field is edited where it is read, inside other content."
+    }
+  },
+  "formKinds": {
+    "dialog": {
+      "means": "A modal form over the screen that opened it.",
+      "useWhen": "1 to 6 fields, routine, reversible, and the list behind it is the context.",
+      "notWhen": "The record has named sections, or the page behind it has to be read while typing.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 8,
+      "context": [
+        "over-list",
+        "standalone"
+      ],
+      "templates": [
+        "Modal"
+      ],
+      "components": {
+        "required": [
+          "Modal"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "A primary that names the event, never 'Submit'.",
+        "Every field reachable without the dialog scrolling past its own actions."
+      ],
+      "status": "built"
+    },
+    "panel": {
+      "means": "The same form in a side panel, with the context still on screen.",
+      "useWhen": "Editing while the record or the list behind it stays readable.",
+      "notWhen": "The form is longer than the panel scrolls comfortably, or nothing behind it matters.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 10,
+      "context": [
+        "beside-context",
+        "over-list"
+      ],
+      "templates": [
+        "FormPanel"
+      ],
+      "components": {
+        "required": [
+          "FormPanel"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "The panel keeps its own footer actions; the page's actions stay for the page."
+      ],
+      "status": "built"
+    },
+    "page": {
+      "means": "A page-sized form: sections under a header, actions in a footer bar.",
+      "useWhen": "7 or more fields, or the form has named sections, or the form IS the screen's job.",
+      "notWhen": "Three fields, which a dialog does without a route change; or an unfamiliar sequence, which is a wizard.",
+      "commit": [
+        "explicit",
+        "autosave"
+      ],
+      "context": [
+        "standalone"
+      ],
+      "templates": [
+        "FormPageTemplate"
+      ],
+      "components": {
+        "required": [
+          "FormPageTemplate"
+        ],
+        "oneOf": [
+          "FormSection",
+          "FormStack"
+        ],
+        "expect": [
+          "ErrorSummary"
+        ]
+      },
+      "owes": [
+        "Sections with real legends once there is more than one group.",
+        "An error summary above the first field on a failed submit.",
+        "Actions pinned in the footer bar, reachable without scrolling to the end."
+      ],
+      "status": "built"
+    },
+    "wizard": {
+      "means": "One sequential task split into revealed steps, with a check-answers step at the end.",
+      "useWhen": "Long AND unfamiliar, order matters, and a summary is owed before the commit.",
+      "notWhen": "Two steps, or a routine the user repeats: a wizard there is a page form with extra clicks (Fiori).",
+      "commit": [
+        "explicit"
+      ],
+      "minSteps": 3,
+      "context": [
+        "standalone"
+      ],
+      "templates": [
+        "WizardTemplate"
+      ],
+      "components": {
+        "required": [
+          "WizardTemplate",
+          "Stepper"
+        ],
+        "expect": [
+          "WizardReview"
+        ]
+      },
+      "owes": [
+        "A review step that repeats every answer with a Change link (WCAG 3.3.7: never ask twice).",
+        "Steps addressable in the URL, so a reload does not restart the task."
+      ],
+      "status": "built"
+    },
+    "question": {
+      "means": "One question per screen, Continue underneath.",
+      "useWhen": "Public or infrequent users, branching questions, low confidence, or a flow that must survive being abandoned (GOV.UK one thing per page).",
+      "notWhen": "Internal users who repeat the flow daily: they pay for it in clicks.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 2,
+      "context": [
+        "standalone"
+      ],
+      "templates": [],
+      "components": {
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "Its own URL per question, so back and bookmark both work."
+      ],
+      "status": "built",
+      "waitingFor": "a public-facing flow in one of the products; internal screens have never needed it",
+      "note": "Was `planned` with no `opensWhen` — a claim with no expiry, which is how a status outlives the thing it described. Marked built on 2026-08-26 when a specimen was written for it out of registry parts only. Composable today from a heading and two Buttons; the kind is a LAYOUT decision (one question per screen), not a part the system was missing."
+    },
+    "review": {
+      "means": "Every answer restated before an irreversible commit, each with a link back to where it was given.",
+      "useWhen": "The submit cannot be taken back, or the user has been away between steps.",
+      "notWhen": "Nothing is irreversible and the whole form is on one screen anyway.",
+      "commit": [
+        "explicit"
+      ],
+      "context": [
+        "standalone"
+      ],
+      "templates": [
+        "WizardTemplate"
+      ],
+      "components": {
+        "required": [
+          "WizardReview"
+        ]
+      },
+      "owes": [
+        "Change links whose accessible name carries the field, not five bare 'Change' links."
+      ],
+      "status": "built"
+    },
+    "settings": {
+      "means": "Grouped sections of explained knobs, each applied on its own.",
+      "useWhen": "Configuration read rarely and changed deliberately; every row says what it actually affects.",
+      "notWhen": "The rows are really records to manage, which is a list.",
+      "commit": [
+        "per-row"
+      ],
+      "context": [
+        "standalone"
+      ],
+      "templates": [
+        "SettingsPageTemplate"
+      ],
+      "components": {
+        "required": [
+          "SettingsPageTemplate"
+        ],
+        "expect": [
+          "SettingRow"
+        ]
+      },
+      "owes": [
+        "No page-level Save: a page that applies some rows and asks for Save on others is a page nobody trusts."
+      ],
+      "status": "built"
+    },
+    "auth": {
+      "means": "Sign in, sign up, reset, verify.",
+      "useWhen": "The screen's only job is identifying the user.",
+      "notWhen": "Anything with a second purpose on the same screen.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 4,
+      "context": [
+        "standalone"
+      ],
+      "templates": [
+        "AuthTemplate"
+      ],
+      "components": {
+        "required": [
+          "AuthTemplate"
+        ]
+      },
+      "owes": [
+        "Paste into the password field stays allowed and the browser may fill it (WCAG 3.3.8).",
+        "Error copy that does not say which half of the pair was wrong."
+      ],
+      "status": "built"
+    },
+    "inline": {
+      "means": "One field edited where it is read.",
+      "useWhen": "A single value on a record the user is already looking at: a title, an owner, a status.",
+      "notWhen": "Several fields at once, which is a panel or a dialog.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 1,
+      "context": [
+        "in-place"
+      ],
+      "templates": [],
+      "components": {
+        "expect": [
+          "Input"
+        ]
+      },
+      "owes": [
+        "The read and edit states occupy the same space, so nothing below moves when editing starts."
+      ],
+      "status": "built",
+      "waitingFor": "a second product asking for it; RenameDialog covers the one live case",
+      "note": "Was `planned` with no `opensWhen` — a claim with no expiry, which is how a status outlives the thing it described. Marked built on 2026-08-26 when a specimen was written for it out of registry parts only. <InlineText> is the part, and it has been in the registry since before this status was written."
+    },
+    "bulk": {
+      "means": "One change applied to the records the user selected.",
+      "useWhen": "The same edit across many rows, with the count stated in the copy.",
+      "notWhen": "The change differs per record: that is editing each one.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 3,
+      "context": [
+        "over-list"
+      ],
+      "templates": [
+        "Modal"
+      ],
+      "components": {
+        "required": [
+          "Modal"
+        ]
+      },
+      "owes": [
+        "The number of records in the confirm copy, and what happens to the ones that fail."
+      ],
+      "status": "built",
+      "waitingFor": "a product with a selection model in a list",
+      "note": "Was `planned` with no `opensWhen` — a claim with no expiry, which is how a status outlives the thing it described. Marked built on 2026-08-26 when a specimen was written for it out of registry parts only. <BatchActions> states the count and <Modal actions> asks the question; both exist."
+    },
+    "grid": {
+      "means": "Editing across a collection, in the cells themselves.",
+      "useWhen": "Editing many records is the primary task.",
+      "notWhen": "One record at a time.",
+      "commit": [
+        "explicit",
+        "autosave"
+      ],
+      "context": [
+        "standalone"
+      ],
+      "templates": [],
+      "components": {
+        "required": [
+          "DataGrid"
+        ]
+      },
+      "owes": [
+        "A row that fails says so in the row, not in a dialog about the whole grid."
+      ],
+      "status": "built"
+    },
+    "confirm": {
+      "means": "Yes or no on a stated consequence.",
+      "useWhen": "A destructive or irreversible action needs an explicit second press.",
+      "notWhen": "The user has to type anything: that is a verified confirm.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 0,
+      "context": [
+        "over-list",
+        "standalone"
+      ],
+      "templates": [
+        "Modal"
+      ],
+      "components": {
+        "required": [
+          "Modal"
+        ]
+      },
+      "owes": [
+        "The consequence in the copy, and the real verb on the button."
+      ],
+      "status": "built"
+    },
+    "verified-confirm": {
+      "means": "A destructive action gated behind typing the thing's own name.",
+      "useWhen": "Unrecoverable and wide: deleting a workspace, revoking everyone's access.",
+      "notWhen": "Recoverable actions, where typing is theatre and trains people to type through warnings.",
+      "commit": [
+        "explicit"
+      ],
+      "maxFields": 1,
+      "context": [
+        "over-list",
+        "standalone"
+      ],
+      "templates": [],
+      "components": {
+        "required": [
+          "Modal",
+          "Input"
+        ]
+      },
+      "owes": [
+        "The exact string to type, quoted, and a primary that stays inert until it matches."
+      ],
+      "status": "built",
+      "waitingFor": "a product with an unrecoverable, wide-blast-radius action",
+      "note": "Was `planned` with no `opensWhen` — a claim with no expiry, which is how a status outlives the thing it described. Marked built on 2026-08-26 when a specimen was written for it out of registry parts only. <Modal> takes children and `actions.confirmDisabled`, so the field and the armed button are one dialog. This is the same unblocking as lifecycle-rules' `confirm-typed` on the same day: the blocker was that no dialog both took input and coloured its commitment, and folding FormModal into Modal made one that does."
+    },
+    "upload": {
+      "means": "Files plus the metadata that describes them.",
+      "useWhen": "What is being captured IS the file, and the fields explain it.",
+      "notWhen": "Files alone with nothing to say about them: that is the control, not a form.",
+      "commit": [
+        "explicit"
+      ],
+      "context": [
+        "standalone",
+        "over-list"
+      ],
+      "templates": [
+        "Modal",
+        "FormPageTemplate"
+      ],
+      "components": {
+        "required": [
+          "FileUpload"
+        ]
+      },
+      "owes": [
+        "Progress per file, and a failure that names the file rather than the batch."
+      ],
+      "status": "built"
+    },
+    "draft": {
+      "means": "A long form that saves itself and can be left.",
+      "useWhen": "Resumable work where 'continue later' is expected and losing it is the real risk.",
+      "notWhen": "Short forms: autosave there surprises more than it helps.",
+      "commit": [
+        "autosave"
+      ],
+      "context": [
+        "standalone"
+      ],
+      "templates": [
+        "FormPageTemplate"
+      ],
+      "components": {
+        "required": [
+          "FormPageTemplate",
+          "SaveStatus"
+        ]
+      },
+      "owes": [
+        "A status line that says when it last saved, and what happens when a save fails."
+      ],
+      "status": "built"
+    },
+    "composer": {
+      "means": "Free text plus attachments, sent rather than saved.",
+      "useWhen": "The result is a message in a thread.",
+      "notWhen": "The result is a record with fields.",
+      "commit": [
+        "explicit"
+      ],
+      "context": [
+        "standalone",
+        "beside-context"
+      ],
+      "templates": [],
+      "components": {
+        "required": [
+          "ChatComposer"
+        ]
+      },
+      "owes": [
+        "Enter sends or Enter breaks the line, decided once and stated."
+      ],
+      "status": "built"
+    },
+    "filter": {
+      "means": "Input that narrows a collection already on screen.",
+      "useWhen": "Nothing is committed: the values change what is shown, and are gone next time unless the screen remembers them.",
+      "notWhen": "The values persist as a record: that is a real form.",
+      "commit": [
+        "none"
+      ],
+      "context": [
+        "standalone"
+      ],
+      "templates": [],
+      "components": {
+        "required": [
+          "FilterBar"
+        ]
+      },
+      "owes": [
+        "A way to clear everything, and the current narrowing visible without opening a menu."
+      ],
+      "status": "built"
+    },
+    "search": {
+      "means": "One query field, submitted to find.",
+      "useWhen": "One criterion, typed.",
+      "notWhen": "More than one criterion, which is a filter.",
+      "commit": [
+        "none"
+      ],
+      "maxFields": 1,
+      "context": [
+        "standalone",
+        "beside-context"
+      ],
+      "templates": [],
+      "components": {
+        "required": [
+          "SearchInput"
+        ]
+      },
+      "owes": [
+        "An empty result that says what was searched for."
+      ],
+      "status": "built"
+    }
+  },
+  "rules": [
+    {
+      "id": "F1",
+      "when": {
+        "maxFields": 8,
+        "context": [
+          "over-list"
+        ]
+      },
+      "choose": [
+        "dialog",
+        "panel",
+        "bulk",
+        "confirm",
+        "upload"
+      ],
+      "because": "Up to eight routine fields opened from a list is a dialog: the list is the context, and a route change to a page loses it. Past that the dialog scrolls its own actions off screen (HF1)."
+    },
+    {
+      "id": "F2",
+      "when": {
+        "context": [
+          "beside-context"
+        ]
+      },
+      "choose": [
+        "panel",
+        "composer",
+        "search"
+      ],
+      "because": "When the thing behind the form has to stay readable, a modal is the wrong container: it covers exactly what the user is copying from."
+    },
+    {
+      "id": "F3",
+      "when": {
+        "minFields": 7
+      },
+      "choose": [
+        "page",
+        "draft",
+        "grid"
+      ],
+      "because": "Past six fields a dialog scrolls its own actions off screen and has nowhere to put sections (Fiori: create page, not create dialog). Steps are not automatic here: they are earned by unfamiliarity (F4), not by length."
+    },
+    {
+      "id": "F4",
+      "when": {
+        "minFields": 7,
+        "familiarity": "unfamiliar"
+      },
+      "choose": [
+        "wizard",
+        "question",
+        "draft"
+      ],
+      "because": "Long AND unfamiliar is the one case steps earn their clicks: the user cannot judge the whole form at once, so it is revealed a step at a time."
+    },
+    {
+      "id": "F5",
+      "when": {
+        "minFields": 7,
+        "familiarity": "routine"
+      },
+      "choose": [
+        "page",
+        "draft",
+        "grid"
+      ],
+      "because": "Long but familiar is a page form. Forcing steps on a routine the user repeats weekly only adds clicks (Fiori)."
+    },
+    {
+      "id": "F6",
+      "when": {
+        "audience": "public"
+      },
+      "choose": [
+        "question",
+        "wizard",
+        "auth"
+      ],
+      "because": "Public users under load do better with one thing per page: it survives interruption, branches cleanly and handles errors one at a time (GOV.UK)."
+    },
+    {
+      "id": "F7",
+      "when": {
+        "commit": "per-row"
+      },
+      "choose": [
+        "settings"
+      ],
+      "because": "Applying each control on its own IS the settings model; anything else with a per-row commit is a settings screen that has not admitted it."
+    },
+    {
+      "id": "F8",
+      "when": {
+        "commit": "autosave"
+      },
+      "choose": [
+        "draft",
+        "grid",
+        "page"
+      ],
+      "because": "Autosave belongs to work that is long enough to lose. A short form that saves itself leaves the user unsure anything happened."
+    },
+    {
+      "id": "F9",
+      "when": {
+        "commit": "none"
+      },
+      "choose": [
+        "filter",
+        "search"
+      ],
+      "because": "Input that commits nothing is a narrowing, not a form: no Save, no dirty state, no error summary."
+    },
+    {
+      "id": "F10",
+      "when": {
+        "maxFields": 1,
+        "context": [
+          "in-place"
+        ]
+      },
+      "choose": [
+        "inline"
+      ],
+      "because": "One value on a record already on screen is edited where it is read; opening a dialog for it costs more than the edit."
+    },
+    {
+      "id": "F11",
+      "when": {
+        "maxFields": 0
+      },
+      "choose": [
+        "confirm",
+        "verified-confirm",
+        "review"
+      ],
+      "because": "A form with no fields of its own is a decision, not a capture: it asks yes or no, asks the user to type the name of what they are destroying, or restates the answers already given before an irreversible submit."
+    },
+    {
+      "id": "F12",
+      "when": {
+        "maxFields": 6,
+        "context": [
+          "standalone"
+        ]
+      },
+      "choose": [
+        "auth",
+        "page",
+        "question",
+        "upload",
+        "composer",
+        "search",
+        "dialog",
+        "confirm"
+      ],
+      "because": "A short standalone capture is a page form or one of the specialised short screens; which one is decided by what it captures, not by its length."
+    }
+  ],
+  "hard": [
+    {
+      "id": "HF1",
+      "when": {
+        "minFields": 9
+      },
+      "forbid": [
+        "dialog"
+      ],
+      "instead": "page",
+      "because": "Nine or more fields in a dialog scroll the actions out of the viewport and leave sections nowhere to go (Fiori: create page)."
+    },
+    {
+      "id": "HF2",
+      "when": {
+        "commit": "autosave"
+      },
+      "forbid": [
+        "dialog",
+        "panel",
+        "confirm",
+        "verified-confirm",
+        "auth"
+      ],
+      "instead": "draft",
+      "because": "A container with Cancel in its footer promises the change can be abandoned; autosave has already committed it."
+    },
+    {
+      "id": "HF3",
+      "when": {
+        "commit": "none"
+      },
+      "forbid": [
+        "dialog",
+        "page",
+        "wizard",
+        "draft",
+        "settings",
+        "auth"
+      ],
+      "instead": "filter",
+      "because": "A screen that commits nothing must not carry a Save: it teaches the user that Save sometimes means nothing."
+    },
+    {
+      "id": "HF4",
+      "when": {
+        "commit": "per-row"
+      },
+      "forbid": [
+        "dialog",
+        "page",
+        "wizard",
+        "draft"
+      ],
+      "instead": "settings",
+      "because": "Mixing per-row apply with a page-level Save on one screen is the save model nobody can predict (Pajamas: do not mix)."
+    }
+  ],
+  "notes": [
+    {
+      "id": "NF-summary",
+      "when": {
+        "minFields": 4,
+        "commit": "explicit"
+      },
+      "if": "any",
+      "say": "four or more fields committed at once: a failed submit owes an <ErrorSummary> above the first field, focused, with a row per failure — marking fields in place only helps someone who can see the whole form at once (GOV.UK)",
+      "unless": [
+        "ErrorSummary"
+      ]
+    },
+    {
+      "id": "NF-sections",
+      "when": {
+        "minFields": 8
+      },
+      "if": "page",
+      "say": "eight or more fields read as one undifferentiated column: group them into <FormSection>s whose legends say who or what each group is about, or split the form into steps"
+    },
+    {
+      "id": "NF-draft-status",
+      "when": {
+        "commit": "autosave"
+      },
+      "if": "any",
+      "say": "an autosaving form owes a <SaveStatus>: without it the user invents their own proof that the work is safe, usually by retyping it",
+      "unless": [
+        "SaveStatus"
+      ]
+    },
+    {
+      "id": "NF-public",
+      "when": {
+        "audience": "public"
+      },
+      "if": "page",
+      "say": "a public audience on one long page is the case GOV.UK measured as failing: low-confidence users do better with one question per screen, and the flow survives being abandoned"
+    },
+    {
+      "id": "NF-wizard-review",
+      "when": {
+        "minFields": 7,
+        "familiarity": "unfamiliar"
+      },
+      "if": "wizard",
+      "say": "a wizard's last step is a check-answers step (<WizardReview>): re-asking what was already answered is the WCAG 2.2 redundant-entry failure, and the summary is where it is usually broken"
+    }
+  ]
+}

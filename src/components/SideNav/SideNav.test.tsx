@@ -119,3 +119,28 @@ describe('SideNav', () => {
     expect(screen.getByRole('button', { name: 'Expand navigation' })).toBeInTheDocument()
   })
 })
+
+describe('SideNav routing', () => {
+  it('lets the consumer bring its own link, so navigation stays a link', () => {
+    /* Without this the only two options are an anchor that reloads the whole
+       document and a button, and all three products picked the button — which
+       cannot be middle-clicked, cannot have its address copied, and is
+       announced as a button to somebody who is navigating. */
+    render(
+      <SideNav
+        aria-label="Primary"
+        groups={[{ items: [{ id: 'a', label: 'Reports', icon: 'article', active: true,
+          render: (inner, props) => <a {...props} href="/reports" data-router="yes">{inner}</a> }] }]}
+      />,
+    )
+    const link = screen.getByRole('link', { name: 'Reports' })
+    expect(link).toHaveAttribute('data-router', 'yes')
+    expect(link).toHaveAttribute('aria-current', 'page')
+    expect(link).toHaveClass('side-nav-item')
+  })
+
+  it('still renders a button when the consumer only has a handler', () => {
+    render(<SideNav aria-label="Primary" groups={[{ items: [{ id: 'a', label: 'Reports', icon: 'article', onSelect: () => undefined }] }]} />)
+    expect(screen.getByRole('button', { name: 'Reports' })).toBeInTheDocument()
+  })
+})

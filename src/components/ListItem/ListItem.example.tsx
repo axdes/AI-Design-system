@@ -5,7 +5,7 @@ import { ListItem } from './ListItem'
 export function Example() {
   return (
     <ListItem onClick={() => undefined}>
-      <strong>Sarah Al-Mansouri</strong>
+      <strong>Ada Meridian</strong>
       <span> Product designer</span>
     </ListItem>
   )

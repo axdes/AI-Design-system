@@ -1,7 +1,7 @@
 {
   "ref": "DateRangePicker",
   "level": "molecule",
-  "description": "A date-span field: one trigger, one <Calendar>, two picks. The first click marks the start, the second closes with the ordered range (picking backwards swaps the ends instead of failing). One date is <DatePicker>; this is the from/to filter over a list or a report.",
+  "description": "A date-span field: one trigger, one <Calendar>, two picks. The first click marks the start, the second closes with the ordered range (picking backwards swaps the ends instead of failing). One date is <DatePicker>; this is the from/to filter over a list or a report. Copy: the label names the span — \"Reporting period\" — and never says \"from/to\", which the two halves already say.",
   "exports": [
     "DateRangePicker"
   ],
@@ -12,12 +12,25 @@
     {
       "name": "value",
       "type": "DateRange",
-      "required": false
+      "required": false,
+      "fields": [
+        {
+          "name": "start",
+          "type": "Date",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "Date",
+          "required": true
+        }
+      ]
     },
     {
       "name": "onChange",
       "type": "(range: DateRange) => void",
-      "required": true
+      "required": true,
+      "description": "Fires once both ends are picked, already ordered."
     },
     {
       "name": "min",
@@ -32,7 +45,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the trigger."
     },
     {
       "name": "placeholder",
@@ -42,7 +56,8 @@
     {
       "name": "locale",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "BCP-47 locale for the shown dates + the calendar. Defaults to document lang."
     },
     {
       "name": "invalid",
@@ -53,6 +68,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on; same contract as <DatePicker>.",
       "values": [
         "base",
         "muted"
@@ -62,6 +78,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "sm / md (default) / lg — matches the shared control height/padding scale.",
       "values": [
         "sm",
         "md",

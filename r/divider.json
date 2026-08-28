@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "divider",
+  "type": "registry:ui",
+  "title": "Divider",
+  "description": "The one hairline separator. A horizontal rule between sections, or a vertical one between inline items. With children it becomes a labelled divider (the rule runs either side of the text). Decorative unless labelled: role=separator only when it carries no text, so a screen reader is not told about a rule that is purely visual noise.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Divider/Divider.css",
+      "content": ".divider[data-orientation='horizontal'] {\n  inline-size: 100%;\n  block-size: 1px;\n  background: var(--border);\n  border: none;\n}\n.divider[data-orientation='vertical'] {\n  inline-size: 1px;\n  align-self: stretch;\n  min-block-size: 1em;\n  background: var(--border);\n}\n\n/* Labelled: the rule runs on both sides of centred text. */\n.divider-labelled {\n  display: flex;\n  align-items: center;\n  gap: var(--space-3);\n  background: none;\n  block-size: auto;\n}\n.divider-labelled::before,\n.divider-labelled::after {\n  content: '';\n  flex: 1;\n  block-size: 1px;\n  background: var(--border);\n}\n.divider-label {\n  font-size: var(--font-sm);\n  color: var(--muted-foreground);\n  white-space: nowrap;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Divider/Divider.css"
+    },
+    {
+      "path": "src/components/Divider/Divider.tsx",
+      "content": "import './Divider.css'\nimport { type ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** Default horizontal; vertical divides a row (needs a sized flex parent). */\n  orientation?: 'horizontal' | 'vertical'\n  /** Optional centred label on a horizontal rule (\"OR\", a section name). */\n  children?: ReactNode\n  className?: string\n}\n\n/* The one hairline separator. A horizontal rule between sections, or a vertical\n * one between inline items. With children it becomes a labelled divider (the\n * rule runs either side of the text). Decorative unless labelled: role=separator\n * only when it carries no text, so a screen reader is not told about a rule that\n * is purely visual noise. */\nexport function Divider({ orientation = 'horizontal', children, className }: Props) {\n  if (children) {\n    return (\n      <div className={cn('divider', 'divider-labelled', className)} data-orientation=\"horizontal\">\n        <span className=\"divider-label\">{children}</span>\n      </div>\n    )\n  }\n  return (\n    <div className={cn('divider', className)} data-orientation={orientation} role=\"separator\" aria-orientation={orientation} />\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Divider/Divider.tsx"
+    },
+    {
+      "path": "src/components/Divider/index.ts",
+      "content": "export { Divider } from './Divider'\n",
+      "type": "registry:ui",
+      "target": "@ui/Divider/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Divider.json"
+}

@@ -27,7 +27,12 @@ type Props = {
 /* The Cmd+K command palette: a centered search over an action list. Type to
  * filter, Arrow keys to move, Enter to run, Escape to close. The consumer owns
  * `open` (wire it to a global key handler) and what each command does. Portaled,
- * focus goes to the input on open. */
+ * focus goes to the input on open. 
+   *
+   * Copy: the placeholder names the verbs this palette knows — "Search or jump
+   * to…". Command names start with the verb, so a list of them reads as a
+   * list of things you can do.
+   */
 export function CommandPalette({ open, onClose, commands, placeholder = 'Type a command or search…', emptyLabel = 'No results', className }: Props) {
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -64,7 +69,7 @@ export function CommandPalette({ open, onClose, commands, placeholder = 'Type a 
   return createPortal(
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- backdrop click-to-dismiss; the dialog owns the role
     <div className="command-overlay" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose() }}>
-      <div className={cn('command', className)} role="dialog" aria-modal="true" aria-label="Command palette" onKeyDown={onKeyDown}>
+      <div className={cn('command', className)} data-raised="popover" role="dialog" aria-modal="true" aria-label="Command palette" onKeyDown={onKeyDown}>
         <div className="command-search">
           <Icon name="search" className="command-search-icon" />
           <input

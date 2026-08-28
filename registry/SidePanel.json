@@ -1,7 +1,7 @@
 {
   "ref": "SidePanel",
   "level": "organism",
-  "description": "Reusable side-panel chrome: header (title + optional close) over a scrolling body, with an optional pinned footer. The container's width/borders/radius are left to the consumer via `className`. Used by ContentSidePanel and form panels.",
+  "description": "Reusable side-panel chrome: header (title + optional close) over a scrolling body, with an optional pinned footer. The container's width/borders/radius are left to the consumer via `className`. Used by ContentSidePanel and form panels. Copy: the title names what the panel holds, in the same words the reader used to open it.",
   "exports": [
     "SidePanel"
   ],
@@ -10,24 +10,38 @@
   "slots": [],
   "props": [
     {
+      "name": "hideBelow",
+      "type": "'sm' | 'md'",
+      "required": false,
+      "description": "Drop the panel entirely below this width. For a pane that is a WIDE-SCREEN affordance and nothing else: a table of contents wrapped under the article on a phone points only at things already scrolled past, which the page audit reads as a dead column (2026-08-26). Same word and same two steps as `<Th hideBelow>`.",
+      "values": [
+        "sm",
+        "md"
+      ]
+    },
+    {
       "name": "title",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Panel heading."
     },
     {
       "name": "onClose",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "Shows a close button in the header when provided."
     },
     {
       "name": "headerActions",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Controls in the header, before the close button (e.g. a collapse toggle)."
     },
     {
       "name": "footer",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Pinned footer (e.g. Submit / Cancel actions)."
     },
     {
       "name": "children",
@@ -47,11 +61,21 @@
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Region label; defaults to `title` when it is a plain string."
     }
   ],
   "sourcePath": "src/components/SidePanel/SidePanel.tsx",
   "context": "region",
+  "variants": {
+    "hide-below": {
+      "prop": "hideBelow",
+      "values": [
+        "sm",
+        "md"
+      ]
+    }
+  },
   "uses": [
     "Button",
     "Field",

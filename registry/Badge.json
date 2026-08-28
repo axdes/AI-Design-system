@@ -1,7 +1,7 @@
 {
   "ref": "Badge",
   "level": "atom",
-  "description": "Status chip: a small standalone pill that labels state through `tone`. Not CountBadge, which pins a number to another element's corner.",
+  "description": "Status chip: a small standalone pill that labels state through `tone`. Not CountBadge, which pins a number to another element's corner. Copy: one word for a state the reader recognises — \"Active\", \"Overdue\". A badge that needs three words is a sentence, and belongs in the body.",
   "exports": [
     "Badge"
   ],
@@ -26,6 +26,7 @@
       "name": "fill",
       "type": "Fill",
       "required": false,
+      "description": "Visual fill. `solid` (default) = saturated bg; `soft` = tinted bg + dark text; `plain` = no bg, tone-coloured text.",
       "values": [
         "solid",
         "soft",
@@ -36,6 +37,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "`sm` (default) = compact tag; `md` = matches a small button (height + padding).",
       "values": [
         "sm",
         "md"
@@ -72,5 +74,8 @@
       ]
     }
   },
-  "example": "<Badge tone=\"success\">Published</Badge>"
+  "uses": [
+    "Layout"
+  ],
+  "example": "<Row gap={2} align=\"center\">\n  <Badge tone=\"success\" fill=\"soft\">Published</Badge>\n  <Badge tone=\"warning\" fill=\"soft\">In review</Badge>\n  <Badge tone=\"danger\">Failed</Badge>\n  <Badge tone=\"neutral\" fill=\"plain\" size=\"sm\">Draft</Badge>\n</Row>"
 }

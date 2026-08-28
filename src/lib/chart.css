@@ -1,0 +1,143 @@
+/* THE FURNITURE EVERY CHART IN THIS SYSTEM WEARS.
+ *
+ * A scale down the side, a grid, a goal line, a readout under the pointer, a
+ * legend and a row of category labels. None of it is the MARK — the bars, the
+ * lines and the arcs stay with their own components — and all of it has to look
+ * the same on every chart, or two cards side by side read as two systems.
+ *
+ * It lives in lib/ next to chart.ts (the arithmetic those charts share) rather
+ * than in a component, because it has no markup of its own: <BarChart> and
+ * <LineChart> each render these classes around their own plot. The moment a
+ * THIRD chart needs the same frame, that frame becomes a component and both of
+ * them become marks inside it — the condition written down in config/twins.json.
+ *
+ * Every chart declares --chart-height and --chart-scale-width on its own root;
+ * --tick-at and --readout-at are set per element from the data. The values here
+ * are the fallbacks, so this stylesheet stands on its own.
+ */
+.chart-frame {
+  --chart-height: calc(var(--space-16) * 1.75);
+  --chart-scale-width: 2.5rem;
+  --tick-at: 0%;
+  --readout-at: 50%;
+
+  display: flex;
+  gap: var(--space-2);
+  block-size: var(--chart-height);
+  min-inline-size: 0;
+  /* HALF THE TOP LABEL LIVES ABOVE THE PLOT. Every tick is centred on its own
+   * grid line, so the highest one hangs half a line over the top of the frame
+   * and sat against the card title above it (owner, 23.08). The frame keeps
+   * that half-line for itself. */
+  padding-block-start: var(--space-2);
+}
+
+/* THE SCALE. Each label is pinned to its own value, so the ticks and the grid
+ * lines are the same set of numbers rather than two lists that agree by luck. */
+.chart-scale {
+  position: relative;
+  flex: none;
+  inline-size: var(--chart-scale-width);
+}
+.chart-tick {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-end: var(--tick-at);
+  transform: translateY(50%);
+  font-size: var(--font-xs);
+  color: var(--chart-axis);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.chart-grid {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: var(--tick-at);
+  border-block-start: 1px solid var(--chart-grid);
+}
+/* The goal: a line ACROSS the plot, so a mark is visibly short OF something.
+ * It carries no label of its own — a word printed in the plot sits on the data
+ * (owner, 23.08); the card's meta line is where the goal gets named. */
+.chart-target {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: var(--tick-at);
+  border-block-start: 1px dashed var(--chart-axis);
+}
+
+/* THE READOUT: what the mark under the pointer says, where that mark is. It
+ * stays INSIDE the plot — above it, it covered the card's own title — and at
+ * the first and last position it hangs by one edge instead of centring, so it
+ * never leaves the card either. */
+.chart-readout {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: var(--readout-at);
+  transform: translateX(-50%);
+  z-index: var(--z-sticky);
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--popover-item-radius);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--shadow-popover);
+  font-size: var(--font-xs);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.chart-readout[data-side="start"] { inset-inline-start: 0; transform: none; }
+.chart-readout[data-side="end"] { inset-inline-start: auto; inset-inline-end: 0; transform: none; }
+.chart-readout-label { font-weight: var(--font-weight-semibold); }
+.chart-readout-row { display: flex; align-items: center; gap: var(--space-2); }
+.chart-readout-value { margin-inline-start: auto; font-variant-numeric: tabular-nums; }
+
+/* THE KEY: the same mark in the legend and in the readout, in slot order. A
+ * series that MEANS a status takes the status colour instead of its slot. */
+.chart-key {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--chart-1);
+  flex: none;
+}
+.chart-key[data-series="2"] { background: var(--chart-2); }
+.chart-key[data-series="3"] { background: var(--chart-3); }
+.chart-key[data-series="4"] { background: var(--chart-4); }
+.chart-key[data-series="5"] { background: var(--chart-5); }
+.chart-key[data-series="6"] { background: var(--chart-6); }
+.chart-key[data-tone="success"] { background: var(--chart-success); }
+.chart-key[data-tone="warning"] { background: var(--chart-warning); }
+.chart-key[data-tone="danger"]  { background: var(--chart-danger); }
+/* Round, when the mark it stands for is a point on a line. */
+.chart-key[data-shape="dot"] { border-radius: var(--radius-full); }
+
+.chart-labels {
+  display: flex;
+  gap: var(--space-2);
+  padding-inline-start: calc(var(--chart-scale-width) + var(--space-2));
+  font-size: var(--font-xs);
+  color: var(--chart-axis);
+}
+.chart-labels > span {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chart-labels > span[data-active] { color: var(--foreground); }
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-xs);
+  color: var(--muted-foreground);
+}
+.chart-legend > li { display: flex; align-items: center; gap: var(--space-2); }

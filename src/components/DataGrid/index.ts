@@ -1,1 +1,1 @@
-export { DataGrid, type DataGridColumn } from './DataGrid'
+export { DataGrid, type DataGridColumn, type DataGridSort } from './DataGrid'

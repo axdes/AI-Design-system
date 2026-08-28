@@ -1,7 +1,7 @@
 {
   "ref": "SearchInput",
   "level": "molecule",
-  "description": "The search field: the icon, the clear button and the debounce contract in one control.",
+  "description": "The search field: the icon, the clear button and the debounce contract in one control. Copy: the placeholder names the field being searched — \"Search invoices\" — so a screen with two searches is two different controls.",
   "exports": [
     "SearchInput"
   ],
@@ -13,6 +13,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on. On `muted` (a page/PageHeader) the border is dropped since the white fill separates it; `base` (default, a white card or form) keeps the border. Invalid + focus stay visible on both.",
       "values": [
         "base",
         "muted"
@@ -21,12 +22,14 @@
     {
       "name": "onClear",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "Called when the user clicks the clear (×) button. Parent owns the value."
     },
     {
       "name": "expanded",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Always-open, persistent field (no collapse-to-icon). For panels/forms where the search is a permanent control; width comes from `className`."
     }
   ],
   "sourcePath": "src/components/SearchInput/SearchInput.tsx",

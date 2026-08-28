@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "batch-actions",
+  "type": "registry:ui",
+  "title": "BatchActions",
+  "description": "The bar that appears once rows are selected: the count, what can be done to them, and the way out. It replaces the table's toolbar rather than sitting beside it, so an action can never be ambiguous about what it applies to.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/BatchActions/BatchActions.css",
+      "content": "/* The batch bar. It sits where the toolbar was, in the accent wash, so the\n * table reads as being in a mode rather than as having grown a row of buttons. */\n.batch-actions {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: var(--space-3);\n  padding: var(--space-2) var(--space-3);\n  border-radius: var(--radius-md);\n  background: var(--accent-soft);\n  color: var(--accent-foreground);\n}\n\n.batch-actions-count {\n  font-size: var(--font-sm);\n  font-weight: var(--font-weight-semibold);\n  font-variant-numeric: tabular-nums;\n}\n\n.batch-actions-all { font-size: var(--font-sm); }\n\n/* The actions take the trailing edge; Clear is last, after them, because it is\n * the way out rather than one more thing to do to the rows. */\n.batch-actions-list { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }\n",
+      "type": "registry:ui",
+      "target": "@ui/BatchActions/BatchActions.css"
+    },
+    {
+      "path": "src/components/BatchActions/BatchActions.tsx",
+      "content": "import './BatchActions.css'\nimport type { ReactNode } from 'react'\nimport { useTranslation } from 'react-i18next'\nimport { Button } from '../Button'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** How many rows are picked. Said in words, because a bar that acts on a\n   *  selection has to name the size of it. */\n  count: number\n  /** Drops the selection. The way out that is not unticking twelve boxes. */\n  onClear: () => void\n  /** What can be done to the selection. Every action here acts on all of it. */\n  children: ReactNode\n  /** The sentence that offers the rest of the set (\"Select all 1,284\"), for a\n   *  selection that can reach past the page. A checkbox cannot say whether it\n   *  means this page or the query, so this says it in words. */\n  selectAll?: ReactNode\n  className?: string\n}\n\n/**\n * The bar that appears once rows are selected: the count, what can be done to\n * them, and the way out. It replaces the table's toolbar rather than sitting\n * beside it, so an action can never be ambiguous about what it applies to.\n */\nexport function BatchActions({ count, onClear, children, selectAll, className }: Props) {\n  const { t } = useTranslation()\n  return (\n    /* A toolbar of actions, named by its own count: a screen reader landing\n     * here hears how many rows it is about to act on. */\n    <div className={cn('batch-actions', className)} role=\"toolbar\" aria-label={t('table.selected', { count })}>\n      <span className=\"batch-actions-count\" aria-live=\"polite\">{t('table.selected', { count })}</span>\n      {selectAll ? <span className=\"batch-actions-all\">{selectAll}</span> : null}\n      <div className=\"batch-actions-list\">{children}</div>\n      <Button variant=\"ghost\" size=\"sm\" onClick={onClear}>{t('table.clearSelection')}</Button>\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/BatchActions/BatchActions.tsx"
+    },
+    {
+      "path": "src/components/BatchActions/index.ts",
+      "content": "export { BatchActions } from './BatchActions'\n",
+      "type": "registry:ui",
+      "target": "@ui/BatchActions/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/BatchActions.json"
+}

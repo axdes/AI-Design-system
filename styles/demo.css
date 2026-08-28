@@ -39,6 +39,13 @@
   border: 1px solid var(--border);
   border-radius: var(--card-radius);
   background: var(--card);
+  /* THE ONE COPY LEFT of the raised-surface tokens (utilities.css,
+   * [data-raised]). These style elements in a PLAYGROUND that lives in another
+   * repository, and a stylesheet cannot put an attribute on markup it does not
+   * own. Everything the package renders itself uses the attribute. */
+  --surface-contrast: var(--accent);
+  --surface-contrast-hover: var(--accent-strong);
+  --surface-contrast-active: var(--accent-active);
 }
 .pg-spec--wide { grid-column: 1 / -1; }   /* full-width cards (color, chat, etc.) */
 .pg-spec-title { font-size: var(--font-md); font-weight: var(--font-weight-semibold); }
@@ -184,6 +191,10 @@
   padding-block: var(--space-2);
   padding-inline: var(--space-4);
   background: var(--background);
+  /* Same as above: playground markup this package does not own. */
+  --surface-contrast: var(--accent);
+  --surface-contrast-hover: var(--accent-strong);
+  --surface-contrast-active: var(--accent-active);
   border-block-end: 1px solid var(--border);
 }
 .pg-topbar-home {

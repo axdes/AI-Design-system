@@ -1,7 +1,7 @@
 {
   "ref": "Avatar",
   "level": "atom",
-  "description": "A person or a team as an image with an initial fallback. `status` adds a presence dot whose meaning lives in `statusLabel`, not in its colour; `shape=\"square\"` reads as a team rather than a person.",
+  "description": "A person or a team as an image with an initial fallback. `status` adds a presence dot whose meaning lives in `statusLabel`, not in its colour; `shape=\"square\"` reads as a team rather than a person. Copy: the name is the person's own, spelled as they spell it — the initial and the accessible name both come from it. `statusLabel` says what the dot means; a colour on its own says nothing.",
   "exports": [
     "Avatar"
   ],
@@ -12,12 +12,14 @@
     {
       "name": "name",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Full name — first letter is used as the initial; whole name as aria-label."
     },
     {
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "Discrete sizes. Omit + use `fill` to size from parent.",
       "values": [
         "sm",
         "md",
@@ -29,17 +31,20 @@
     {
       "name": "fill",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Fill the parent (width/height 100%). For nesting inside icon buttons."
     },
     {
       "name": "src",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Optional image url. If it fails to load, the initial is shown instead."
     },
     {
       "name": "shape",
       "type": "Shape",
       "required": false,
+      "description": "Circle by default. `square` is the rounded-rect form, for a team or an organisation rather than a person.",
       "values": [
         "circle",
         "square"
@@ -49,6 +54,7 @@
       "name": "status",
       "type": "Status",
       "required": false,
+      "description": "Presence dot pinned to the corner.",
       "values": [
         "online",
         "away",
@@ -59,7 +65,8 @@
     {
       "name": "statusLabel",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Localised word for the status, folded into the accessible name so the dot is never colour-only. Without it the raw status value is read."
     }
   ],
   "sourcePath": "src/components/Avatar/Avatar.tsx",
@@ -101,5 +108,5 @@
   "uses": [
     "Layout"
   ],
-  "example": "<Row gap={3}>\n  <Avatar name=\"Sarah Al-Mansouri\" />\n  <Avatar name=\"Omar Haddad\" status=\"online\" statusLabel=\"Online\" />\n</Row>"
+  "example": "<Row gap={3}>\n  <Avatar name=\"Ada Meridian\" src={FACES[0]} />\n  <Avatar name=\"Ben Calloway\" src={FACES[1]} status=\"online\" statusLabel=\"Online\" />\n  <Avatar name=\"Cleo Nakamura\" />\n</Row>"
 }

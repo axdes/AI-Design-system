@@ -22,12 +22,50 @@
     {
       "name": "onSubmit",
       "type": "(reason: Reason | null, details: string) => void",
-      "required": true
+      "required": true,
+      "description": "Called with the picked reason + free-text details on send."
     },
     {
       "name": "labels",
       "type": "FeedbackLabels",
-      "required": true
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "close",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "send",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "desc",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "detailsLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "detailsPlaceholder",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "reasons",
+          "type": "Record<Reason, string>",
+          "required": true
+        }
+      ]
     }
   ],
   "sourcePath": "src/components/FeedbackModal/FeedbackModal.tsx",

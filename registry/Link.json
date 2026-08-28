@@ -1,0 +1,69 @@
+{
+  "ref": "Link",
+  "level": "atom",
+  "description": "A link: text that goes somewhere. Use it for navigation, and `<Button>` for something that happens on this page — the difference is what the browser does, not how it looks, so a link that acts is a button wearing a costume.",
+  "exports": [
+    "Link"
+  ],
+  "main": "Link",
+  "from": "@/components/Link",
+  "slots": [],
+  "props": [
+    {
+      "name": "href",
+      "type": "string",
+      "required": false,
+      "description": "Where it goes. Optional only when `render` is given, because then the link you return carries it."
+    },
+    {
+      "name": "variant",
+      "type": "'primary' | 'quiet' | 'bare'",
+      "required": false,
+      "description": "`primary` (default) is a link in READING TEXT: brand-coloured and always underlined, because in a paragraph colour alone is the only thing marking it and colour alone is not enough (WCAG 1.4.1). `quiet` is a link in CHROME — a breadcrumb, a row of meta, a footer — where position already says it is a link, so it sits in secondary ink and underlines when the pointer or the keyboard arrives. `bare` paints nothing, ever, because something else is the affordance: the link wraps a whole SURFACE — a card that lifts under the pointer, a row that highlights — and underlining the words inside it says a second time what the surface already said, badly (owner, 2026-08-25). The anchor is still there, so middle-click, copy-address and the keyboard all work.",
+      "values": [
+        "primary",
+        "quiet",
+        "bare"
+      ]
+    },
+    {
+      "name": "external",
+      "type": "boolean",
+      "required": false,
+      "description": "Opens in a new tab, safely, and says so with a trailing glyph. Without the glyph a new tab is a surprise, and the back button does not undo it."
+    },
+    {
+      "name": "arrow",
+      "type": "boolean",
+      "required": false,
+      "description": "A trailing arrow, for a link that CONTINUES the thing you are reading: \"Read more\", \"See all 24\", \"Next chapter\". Not for a link inside a sentence — there the arrow lands mid-line and reads as punctuation nobody typed. It mirrors in Arabic, because an arrow that means \"onward\" points the way the text runs."
+    },
+    {
+      "name": "render",
+      "type": "(inner: ReactNode, props: { className: string; 'data-variant': string }) => ReactElement",
+      "required": false,
+      "description": "Wrap the link in your own router's link. The callback is handed the content (label plus whatever `arrow` or `external` added) and the props the anchor would have carried; return an element that renders both. The same escape `<SideNav>` has, and it exists for the same reason: in a single-page app a plain `href` reloads the whole document, and the way out must not be to stop using links."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    }
+  ],
+  "sourcePath": "src/components/Link/Link.tsx",
+  "inherits": "Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>",
+  "variants": {
+    "variant": {
+      "prop": "variant",
+      "values": [
+        "primary",
+        "quiet",
+        "bare"
+      ]
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "/* In a paragraph the link is brand-coloured AND underlined: inside a line of\n * text there is nothing else marking it, and colour on its own is not a mark\n * everyone can see. `quiet` is the other case — a link in chrome, where its\n * position already says what it is. */\n\n<p className=\"link-example-prose\">\n  Everything the workspace publishes is listed in the{' '}\n  <Link href=\"/reports\">report library</Link>, and the retention rules are\n  in the <Link href=\"https://example.com/policy\" external>data policy</Link>.\n  {' '}\n  {/* `arrow` is for a link that CONTINUES the reading, standing on its own\n    * line. Inside the sentence above it would land mid-line and read as\n    * punctuation nobody typed. */}\n  <Link href=\"/reports/q4\" arrow>Read more</Link>\n</p>"
+}

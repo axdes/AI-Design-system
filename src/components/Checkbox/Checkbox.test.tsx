@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Checkbox } from './Checkbox'
+import { CheckboxGroup } from './CheckboxGroup'
 
 /* The box the user sees is a styled span; the box the browser and the screen
  * reader see is a real <input>. That split is the whole design, and it is also
@@ -67,5 +68,29 @@ describe('Checkbox', () => {
     )
     const data = new FormData(screen.getByTestId('f') as HTMLFormElement)
     expect(data.get('archived')).toBe('yes')
+  })
+})
+
+describe('CheckboxGroup', () => {
+  const CHANNELS = [
+    { value: 'email', label: 'Email' },
+    { value: 'teams', label: 'Teams message' },
+  ]
+
+  it('names the group, so the boxes are one question', () => {
+    render(<CheckboxGroup label="How should we reach you?" options={CHANNELS} value={[]} onChange={() => {}} />)
+    expect(screen.getByRole('group', { name: 'How should we reach you?' })).toBeInTheDocument()
+  })
+
+  it('adds a value on tick and removes it on untick', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+    render(<CheckboxGroup label="Channels" options={CHANNELS} value={['email']} onChange={onChange} />)
+
+    await user.click(screen.getByRole('checkbox', { name: 'Teams message' }))
+    expect(onChange).toHaveBeenLastCalledWith(['email', 'teams'])
+
+    await user.click(screen.getByRole('checkbox', { name: 'Email' }))
+    expect(onChange).toHaveBeenLastCalledWith([])
   })
 })

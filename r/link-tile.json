@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link-tile",
+  "type": "registry:ui",
+  "title": "LinkTile",
+  "description": "A clickable tile: navigates on click/Enter/Space, with an overflow (⋮) menu in its top-inline-end corner. The caller supplies the title, the menu items, the open handler and the body. Copy: the title is the destination's own name, so a reader arriving there recognises where they are.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/card.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/dropdown.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/LinkTile/LinkTile.css",
+      "content": "/* The tile's own layout. Everything visual (surface, radius, hover) belongs to <Card>; this file\n * only places the two things Card cannot know about: a title and a menu trigger on one row, with\n * the trigger at the inline end.\n *\n * It was missing. The component shipped writing these three class names and no stylesheet ever\n * defined them, so the head stacked: the ⋮ trigger sat on its own line under the title, in every\n * app that adopted the tile. Caught the first time a screen outside the first app used it. */\n\n.ws-tile-head {\n  display: flex;\n  align-items: start;\n  justify-content: space-between;\n  gap: var(--space-2);\n  min-inline-size: 0;\n}\n\n/* The title takes the room and wraps; the trigger keeps its size. */\n.ws-tile-head .card-title {\n  min-inline-size: 0;\n}\n\n.ws-tile-menu {\n  flex: none;\n  /* Pulls the quiet trigger back level with the title's cap height rather than its line box, so\n   * the row reads as one line and not as an icon floating below the text. */\n  margin-block-start: calc(var(--space-1) * -1);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/LinkTile/LinkTile.css"
+    },
+    {
+      "path": "src/components/LinkTile/LinkTile.tsx",
+      "content": "import './LinkTile.css'\nimport type { ReactNode } from 'react'\nimport { IconButton } from '../IconButton'\nimport { Dropdown } from '../Dropdown'\nimport { Card, CardTitle } from '../Card'\n\n/* Extracted from the Workshops and Transcripts list pages, which carried\n * byte-identical copies of this composition. Everything here is DS parts:\n * Card / CardTitle / IconButton / Dropdown. */\n\n/** A clickable tile: navigates on click/Enter/Space, with an overflow (⋮) menu\n *  in its top-inline-end corner. The caller supplies the title, the menu items,\n *  the open handler and the body. \n *\n * Copy: the title is the destination's own name, so a reader arriving there\n * recognises where they are.\n */\nexport function LinkTile({\n  title,\n  menuLabel,\n  menu,\n  onOpen,\n  children,\n}: {\n  title: ReactNode\n  /** Accessible name for the ⋮ trigger. */\n  menuLabel: string\n  /** Dropdown items (DropdownItem elements). */\n  menu: ReactNode\n  onOpen: () => void\n  /** Tile body below the head — meta, snippet, badges. */\n  children?: ReactNode\n}) {\n  return (\n    <Card\n      interactive\n      role=\"link\"\n      tabIndex={0}\n      className=\"ws-tile\"\n      onClick={onOpen}\n      onKeyDown={(e) => {\n        if (e.key === 'Enter' || e.key === ' ') {\n          e.preventDefault()\n          onOpen()\n        }\n      }}\n    >\n      <div className=\"ws-tile-head\">\n        <CardTitle as=\"h2\">{title}</CardTitle>\n        {/* The menu lives inside a link-tile, so Enter on the ⋮ trigger would\n            reach the tile's own key handler and navigate away instead of opening\n            the menu. Clicks need no guard here: <Dropdown> already stops those\n            on both the trigger and the menu, and LinkTile.test.tsx holds it to\n            that from the outside, wherever the guard lives. */}\n        <span className=\"ws-tile-menu\" role=\"presentation\" onKeyDown={(e) => e.stopPropagation()}>\n          <Dropdown\n            trigger={({ isOpen, ...triggerProps }) => (\n              <IconButton\n                {...triggerProps}\n                data-open={isOpen || undefined}\n                icon=\"more_vert\"\n                size=\"sm\"\n                variant=\"quiet\"\n                reveal\n                aria-label={menuLabel}\n              />\n            )}\n          >\n            {menu}\n          </Dropdown>\n        </span>\n      </div>\n      {children}\n    </Card>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/LinkTile/LinkTile.tsx"
+    },
+    {
+      "path": "src/components/LinkTile/index.ts",
+      "content": "export { LinkTile } from './LinkTile'\n",
+      "type": "registry:ui",
+      "target": "@ui/LinkTile/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/LinkTile.json"
+}

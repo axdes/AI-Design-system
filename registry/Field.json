@@ -1,7 +1,7 @@
 {
   "ref": "Field",
   "level": "molecule",
-  "description": "Form field: a label (with optional required marker) over its control, plus the hint or error underneath, wired to the control with `aria-describedby`.",
+  "description": "Form field: a label (with optional required marker), the hint or error, then its control, wired together with `aria-describedby`. Copy: the label names the value, not the input — \"Work email\", not \"Enter your email\". The hint is a rule that applies before typing; the error is what happened and what to do — \"Add a country code\", never \"Invalid\".",
   "exports": [
     "Field"
   ],
@@ -17,7 +17,8 @@
     {
       "name": "htmlFor",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Links the label to a control id (for native inputs/textarea)."
     },
     {
       "name": "required",
@@ -25,14 +26,28 @@
       "required": false
     },
     {
+      "name": "optional",
+      "type": "boolean",
+      "required": false,
+      "description": "Marks the MINORITY. In a form where most fields are required, the few that are not say so; a star on every field tells nobody anything."
+    },
+    {
       "name": "error",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Validation message, above the control. Announced, and described-by wired."
     },
     {
       "name": "hint",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Quiet hint above the control, replaced by `error` when there is one."
+    },
+    {
+      "name": "count",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The one thing that belongs UNDER the control: a `<CharacterCount>`, which is a running total of what was typed rather than an instruction."
     },
     {
       "name": "children",
@@ -47,6 +62,10 @@
   ],
   "sourcePath": "src/components/Field/Field.tsx",
   "variants": {
+    "invalid": {
+      "prop": "error",
+      "values": null
+    },
     "error": {
       "prop": "error",
       "values": null
@@ -56,5 +75,5 @@
     "Input",
     "Label"
   ],
-  "example": "const [email, setEmail] = useState('not-an-address')\nconst invalid = !email.includes('@')\n/* `htmlFor` ties the label to the control's id; `error` is wired to the same\n * control with aria-describedby, so the reason is read as part of the field\n * rather than as a stray sentence underneath it. */\n\n<Field\n  label=\"Email address\"\n  htmlFor=\"email\"\n  required\n  hint=\"We only use it to send the invitation.\"\n  error={invalid ? 'Enter an address with an @ in it.' : undefined}\n>\n  <Input\n    id=\"email\"\n    type=\"email\"\n    value={email}\n    invalid={invalid}\n    onChange={(e) => setEmail(e.target.value)}\n  />\n</Field>"
+  "example": "const [email, setEmail] = useState('not-an-address')\nconst invalid = !email.includes('@')\n/* `htmlFor` ties the label to the control's id; `error` is wired to the same\n * control with aria-describedby, so the reason is read as part of the field\n * rather than as a stray sentence underneath it. */\n\n<Field\n  label=\"Email address\"\n  htmlFor=\"email\"\n  required\n  hint=\"We only use it to send the invitation.\"\n  error={invalid ? 'Enter an address with an @ in it.' : undefined}\n>\n  <Input\n    id=\"email\"\n    type=\"email\"\n    autoComplete=\"email\"\n    value={email}\n    invalid={invalid}\n    onChange={(e) => setEmail(e.target.value)}\n  />\n</Field>"
 }

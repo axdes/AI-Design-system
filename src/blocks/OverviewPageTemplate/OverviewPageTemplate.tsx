@@ -3,7 +3,7 @@ import { type ReactNode } from 'react'
 import { Card, CardHeader, CardTitle, CardMeta } from '../../components/Card'
 import { EmptyState } from '../../components/EmptyState'
 import { type IconName } from '../../components/Icon'
-import { PageHeader } from '../../components/PageHeader'
+import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 
 type Props = {
@@ -64,6 +64,10 @@ type Props = {
  * (freshness lives in its actions), conditional notices, a context band, a
  * prime row read first, then a grid of `<OverviewWidget>`s — zones in priority
  * order because attention is spent top to bottom.
+ *
+ * Copy: the title names WHOSE overview it is when a product has more than one;
+ * otherwise the product's own area word. The figures under it carry their
+ * period, because an overview with no period is a number with no meaning.
  */
 export function OverviewPageTemplate({
   title,
@@ -78,9 +82,7 @@ export function OverviewPageTemplate({
   className,
 }: Props) {
   return (
-    <>
-      <PageHeader title={title} actions={actions} />
-      <div className={cn('overview-page', className)}>
+    <Page archetype="overview" className={cn('overview-page', className)} title={title} actions={actions}>
         {notices && <div className="overview-notices">{notices}</div>}
         {isEmpty && empty ? (
           <EmptyState
@@ -102,8 +104,7 @@ export function OverviewPageTemplate({
             {children && <div className="overview-grid">{children}</div>}
           </>
         )}
-      </div>
-    </>
+    </Page>
   )
 }
 

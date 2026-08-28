@@ -34,6 +34,8 @@ type Props = {
  * rules both hand-rolled versions (a live-call bar and a
  * RecordingPill) discovered independently. Presentational: state, polling and
  * routing stay in the app.
+ *
+ * Copy: names what is running, not that something is — "Recording", "Listening".
  */
 export function SessionPill({
   label,

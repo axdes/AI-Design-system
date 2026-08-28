@@ -1,7 +1,8 @@
 /* Reference solution — what "used the design system" looks like for this task.
  * Doubles as a regression fixture: the scorers must give it a perfect score. */
 import { useState } from 'react'
-import { FormModal } from '@/blocks/FormModal'
+import { FormStack } from '@/components/FormStack'
+import { Modal } from '@/components/Modal'
 import { Alert } from '@/components/Alert'
 import { Button } from '@/components/Button'
 import { Field } from '@/components/Field'
@@ -43,7 +44,8 @@ export function Screen() {
         Invite user<Icon name="person_add" />
       </Button>
 
-      <FormModal open={open} title="Invite user" confirmLabel="Send invite" onConfirm={save} onClose={close}>
+      <Modal open={open} title="Invite user" onClose={close} actions={{ onConfirm: save, confirmLabel: 'Send invite' }}>
+        <FormStack>
         {error && <Alert tone="danger" role="alert">{error}</Alert>}
         <Field label="Full name" htmlFor="invite-name" required>
           <Input id="invite-name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
@@ -54,7 +56,8 @@ export function Screen() {
         <Field label="Role" htmlFor="invite-role">
           <Select label="Role" value={role} onChange={setRole} options={ROLES} />
         </Field>
-      </FormModal>
+        </FormStack>
+      </Modal>
     </>
   )
 }

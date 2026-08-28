@@ -15,6 +15,14 @@
  *      taken in practice and never written down, which is the worst of the two
  *      states: the folder claims the system is waiting for a call that was made
  *      weeks ago.
+ *
+ *      A BATCH request names several parts at once ("Code, Prose, ColorSwatch"),
+ *      and for six weeks that was how one slipped through: no registry file is
+ *      called that, so the check looked for the whole phrase, found nothing and
+ *      passed while two of the three had shipped (2026-08-26). Each name in the
+ *      batch is now checked on its own, and a batch that is PART built is the
+ *      loudest case of all — it is the one where the folder is wrong about
+ *      something that already happened.
  *   2. `pending` for more than STALE_DAYS with nothing saying what it waits for.
  *      Fix it by deciding, or by adding `waitingFor` — the same contract the
  *      linter's ALLOW map and the promotion scout run on: an open item carries a
@@ -48,8 +56,20 @@ for (const file of files.sort()) {
   if (r.status !== 'pending') continue
   pending += 1
 
-  if (existsSync(`${ROOT}/registry/${r.name}.json`)) {
-    problems.push(`${file}: ${r.name} is IN the registry and this still says pending — write the decision that was already taken`)
+  /* The parts this request asks for. A batch names them in `name` separated by
+     commas and keys them in `proposedApi`; a single request names one. */
+  const named = [
+    ...String(r.name).split(/[,/]| and /).map((s) => s.trim()),
+    ...(r.proposedApi && typeof r.proposedApi === 'object' ? Object.keys(r.proposedApi) : []),
+  ].filter((n) => /^[A-Z][A-Za-z]*$/.test(n))
+  const built = [...new Set(named)].filter((n) => existsSync(`${ROOT}/registry/${n}.json`))
+  if (built.length) {
+    const rest = [...new Set(named)].filter((n) => !built.includes(n))
+    problems.push(
+      rest.length
+        ? `${file}: ${built.join(', ')} shipped while this still says pending (${rest.join(', ')} did not) — write the decision that was already taken, and file what is left as its own request`
+        : `${file}: ${built.join(', ')} is IN the registry and this still says pending — write the decision that was already taken`,
+    )
     continue
   }
   const age = Math.round((today - new Date(r.date)) / 86400000)

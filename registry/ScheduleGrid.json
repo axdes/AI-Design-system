@@ -1,0 +1,69 @@
+{
+  "ref": "ScheduleGrid",
+  "level": "organism",
+  "description": "A resource against time: rooms by hour, people by day, machines by week. Resources are the rows and time runs along the columns, which is the shape that makes a GAP visible — and a gap is what a schedule is read for. A booking spans the slots it actually occupies (one block, `colSpan`), and a merged cell names its headers so a screen reader can still say which room and which hours it is. `Calendar` picks a date; this shows what is in the dates. Copy: an entry says what is happening and for whom, in that order — the time is already the grid's.",
+  "exports": [
+    "ScheduleGrid"
+  ],
+  "main": "ScheduleGrid",
+  "from": "@/components/ScheduleGrid",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "captionHidden",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "resources",
+      "type": "readonly ScheduleResource[]",
+      "required": true,
+      "description": "The rows: rooms, people, machines. What is being booked."
+    },
+    {
+      "name": "slots",
+      "type": "readonly ScheduleSlot[]",
+      "required": true,
+      "description": "The columns: evenly spaced units of time, in order."
+    },
+    {
+      "name": "events",
+      "type": "readonly ScheduleEvent[]",
+      "required": true,
+      "description": "What is booked. Overlapping bookings on one resource stack into lanes, the way every scheduler does it, rather than covering each other."
+    },
+    {
+      "name": "now",
+      "type": "string",
+      "required": false,
+      "description": "The slot that is happening now. Marks the column, so \"where are we\" is not a thing the reader has to work out from the clock."
+    },
+    {
+      "name": "freeLabel",
+      "type": "string",
+      "required": false,
+      "description": "The word for a slot with nothing in it. Read by assistive technology: an empty cell is silence, and silence is not the same as free."
+    },
+    {
+      "name": "resourceHeader",
+      "type": "ReactNode",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ScheduleGrid/ScheduleGrid.tsx",
+  "context": "region",
+  "uses": [
+    "Table"
+  ],
+  "example": "<ScheduleGrid\n  label=\"Room bookings today\"\n  captionHidden\n  resourceHeader=\"Room\"\n  resources={ROOMS}\n  slots={HOURS}\n  events={EVENTS}\n  /* The column that is happening now, marked so the reader does not have to\n     work it out from the clock. */\n  now=\"11:00\"\n/>"
+}

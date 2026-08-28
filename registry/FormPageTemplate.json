@@ -1,0 +1,88 @@
+{
+  "ref": "FormPageTemplate",
+  "level": "block",
+  "description": "The page-sized FORM skeleton: a capped column of `<FormSection>`s under the page header, the error summary above the first field, and the actions pinned in a footer bar so the commit is reachable without scrolling to the bottom. Reach for it past six fields or as soon as the form has named sections; below that a form in a `<Modal>` does the same job without a route change. Copy: the title names what is being created or changed, and the submit label repeats that verb — \"Create invoice\", not \"Submit\". Cancel says what is lost when the reader means to keep it.",
+  "exports": [
+    "FormPageTemplate"
+  ],
+  "main": "FormPageTemplate",
+  "from": "@/blocks/FormPageTemplate",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Page title in the header."
+    },
+    {
+      "name": "errors",
+      "type": "FormError[]",
+      "required": false,
+      "description": "What the last submit rejected. Rendered above the first field, and it takes focus, so a failed submit is never silent."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The `<FormSection>` stack, or a plain `<FormStack>` for a short form."
+    },
+    {
+      "name": "submitLabel",
+      "type": "string",
+      "required": true,
+      "description": "Names the real event (\"Create workspace\"), never \"Submit\"."
+    },
+    {
+      "name": "onSubmit",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "cancelLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "() => void",
+      "required": false,
+      "description": "Omit for a form nobody cancels out of (an autosaving draft)."
+    },
+    {
+      "name": "busy",
+      "type": "boolean",
+      "required": false,
+      "description": "Submitting: the primary carries the spinner, the rest disables."
+    },
+    {
+      "name": "status",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The `<SaveStatus>` of an autosaving form, beside the actions."
+    },
+    {
+      "name": "dirty",
+      "type": "boolean",
+      "required": false,
+      "description": "True once a field has been edited. While it is true, closing the tab asks first: an explicit-save form that loses work silently is the one complaint no error message can answer afterwards."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/FormPageTemplate/FormPageTemplate.tsx",
+  "context": "page",
+  "uses": [
+    "Button",
+    "ErrorSummary",
+    "Field",
+    "FormSection",
+    "Input",
+    "Select",
+    "Textarea"
+  ],
+  "example": "const [name, setName] = useState('')\nconst [area, setArea] = useState('emea')\nconst [purpose, setPurpose] = useState('')\nconst [errors, setErrors] = useState<FormError[]>([])\n/* Validation runs on submit and answers in one place: the summary above the\n * first field, plus the message on the field itself. The ids match the\n * control ids, which is what lets a summary row put the caret in the field. */\nconst submit = () => {\n  setErrors(name.trim() ? [] : [{ id: 'ws-name', message: 'Enter a name for the workspace' }])\n}\n\n<FormPageTemplate\n  title=\"New workspace\"\n  errors={errors}\n  dirty={Boolean(name || purpose)}\n  submitLabel=\"Create workspace\"\n  onSubmit={submit}\n  onCancel={() => setErrors([])}\n>\n  <FormSection title=\"Identity\" description=\"What the team will see in their list.\">\n    <Field\n      label=\"Workspace name\"\n      htmlFor=\"ws-name\"\n      required\n      error={errors.length ? 'Enter a name for the workspace' : undefined}\n    >\n      <Input id=\"ws-name\" value={name} invalid={errors.length > 0} onChange={(e) => setName(e.target.value)} />\n    </Field>\n    <Field label=\"Purpose\" htmlFor=\"ws-purpose\" optional hint=\"One line, shown under the name.\">\n      <Textarea id=\"ws-pu"
+}

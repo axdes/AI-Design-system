@@ -15,6 +15,12 @@ import { staticInlineStyle } from '../lib/inline-style.mjs'
 // wants by name. Nothing here reads a hardcoded path.
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
 
+/* Comments blanked to spaces, so line numbers survive. Every rule that matches
+   MARKUP reads through this: a component's own doc block routinely names the
+   control it exists to replace — ColorSwatch's first paragraph is about
+   `<input type="color">` — and a rule that reads that as a violation punishes
+   the file for explaining itself (2026-08-26). Rules that count lines or read
+   exports keep the raw source, which is what they are about. */
 const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
 
 function walk(dir, exts, out = []) {
@@ -170,6 +176,34 @@ export function rSemanticOnly(c) {
   return out
 }
 
+/** A status FILL is not a status INK.
+ *
+ *  --destructive, --success and --warning are the colours a solid badge or a
+ *  button is FILLED with; white sits on them and reads. Used as `color:` on an
+ *  ordinary surface they are text, and there the same value fails: --destructive
+ *  as ink measures 3.17:1 on the dark page and 2.63 inside a popover, against a
+ *  4.5 floor. The system already carries the answer — --destructive-emphasis,
+ *  --success-emphasis, --warning-emphasis, documented as "Ink, not fill" and
+ *  lightened per theme — and eight components had simply not used it.
+ *
+ *  This is deliberately a STATIC rule. The same finding came out of a pixel
+ *  check that had to be calibrated four times before its numbers could be
+ *  trusted; this one is arithmetic on a token name and cannot drift. */
+export function rStatusInk(c) {
+  const out = []
+  for (const f of c.srcCss) {
+    c.lines(f).forEach((ln, i) => {
+      const m = ln.match(/(?:^|[^-])color:\s*var\(--(destructive|success|warning)\)/)
+      if (!m) return
+      /* border-color and outline-color are BOUNDARIES, not ink: SC 1.4.11 holds
+       * them to 3:1 and `npm run boundary` is what measures them. */
+      if (/(?:border|outline|caret|text-decoration|accent|column-rule)-color\s*:\s*var\(--(?:destructive|success|warning)\)/.test(ln)) return
+      out.push(`${c.rel(f)}:${i + 1}  --${m[1]} used as ink — that role is a FILL (white sits on it). Text and glyphs take --${m[1] === 'destructive' ? 'destructive' : m[1]}-emphasis, which is lightened for dark; as ink the fill measures 3.17:1 there.`)
+    })
+  }
+  return out
+}
+
 /** raw <select>/<input>/<textarea> outside their primitive folders */
 export function rRawControls(c) {
   const out = []
@@ -177,7 +211,7 @@ export function rRawControls(c) {
     if (c.allowedPath(f, 'rawControls')) continue
     // UI layers only: a bare <input> in a script or a data module is not a screen.
     if (!/\/(layouts|components|blocks|shell|lib)\//.test(c.rel(f))) continue
-    const src = c.read(f).split('\n')
+    const src = c.stripComments(c.read(f)).split('\n')
     src.forEach((ln, i) => {
       const m = ln.match(/<(select|textarea|input)\b/)
       if (!m) return
@@ -207,10 +241,73 @@ export function rRawButtons(c) {
   for (const f of c.usageFiles) {
     if (c.allowedPath(f, 'rawButtons')) continue
     if (!/\/layouts\//.test(c.rel(f))) continue
-    c.read(f).split('\n').forEach((ln, i) => {
+    c.stripComments(c.read(f)).split('\n').forEach((ln, i) => {
       if (!/<button\b/.test(ln)) return
       out.push(`${c.rel(f)}:${i + 1}  raw <button> in a screen — use <Button> (variant="link" for a title that navigates)`)
     })
+  }
+  return out
+}
+
+/**
+ * A screen that declares the page wrapper itself.
+ *
+ * `page-content` is the wrapper a page block owns: the width cap, the fluid
+ * padding, the container context and the height release the shell keys on. A
+ * screen that writes it by hand re-implements all four, and gets three of them
+ * slightly wrong, which is how 16 files and 7,931 lines of app layout CSS
+ * happened (docs/RESEARCH-SCREENS.md). The fix is a page block — <Page> with
+ * the archetype, or the template that carries it.
+ */
+export function rHandRolledPage(c) {
+  const out = []
+  for (const f of c.usageFiles) {
+    if (c.allowedPath(f, 'handRolledPage')) continue
+    if (!/\/layouts\//.test(c.rel(f))) continue
+    c.stripComments(c.read(f)).split('\n').forEach((ln, i) => {
+      if (!/className=("|')page-content\b/.test(ln)) return
+      out.push(`${c.rel(f)}:${i + 1}  the screen declares its own page wrapper — that is a page block's job: <Page archetype="..."> or the template for the archetype`)
+    })
+  }
+  return out
+}
+
+/**
+ * A stack, a row or a grid written by hand when the system has one.
+ *
+ * `display: flex` with a column direction and a gap IS `<Stack>`. `display:
+ * flex` with wrap and a gap IS `<Row>`. `display: grid` with `auto-fit` and a
+ * gap IS `<Grid>`. Writing them out again is not a style crime — it is a
+ * DISCOVERY failure, the one the registry exists to prevent, and until now
+ * nothing caught it: the linters check raw px, raw hex and raw controls, so a
+ * hand-rolled layout passed every gate green.
+ *
+ * Measured on the system's own site, 2026-08-23: 37 hand-written classes, of
+ * which 15 were these three shapes. Scoped to screens and their parts, because
+ * a COMPONENT is where a flex container is legitimately built.
+ */
+export function rHandRolledLayout(c) {
+  const out = []
+  for (const f of c.srcCss) {
+    if (c.allowedPath(f, 'handRolledLayout')) continue
+    const rel = c.rel(f)
+    if (!/\/(layouts|site|screens)\//.test(rel)) continue
+    const src = c.read(f)
+    /* One rule block at a time: the three shapes are about what a single
+       declaration block says together, not about the file. */
+    for (const m of src.matchAll(/([^{}]*)\{([^}]*)\}/g)) {
+      const selector = m[1].trim().split('\n').pop().trim()
+      const body = m[2]
+      if (!/\bgap\s*:/.test(body)) continue
+      const line = src.slice(0, m.index).split('\n').length
+      if (/display\s*:\s*flex/.test(body) && /flex-direction\s*:\s*column/.test(body)) {
+        out.push(`${rel}:${line}  ${selector} is a <Stack gap={n}> written by hand — the system has one`)
+      } else if (/display\s*:\s*flex/.test(body) && /flex-wrap\s*:\s*wrap/.test(body)) {
+        out.push(`${rel}:${line}  ${selector} is a <Row gap={n}> written by hand — the system has one`)
+      } else if (/display\s*:\s*grid/.test(body) && /auto-fit|auto-fill/.test(body)) {
+        out.push(`${rel}:${line}  ${selector} is a <Grid gap={n}> written by hand — the system has one`)
+      }
+    }
   }
   return out
 }
@@ -243,7 +340,7 @@ export function rIconButtonTooltip(c) {
   for (const f of c.usageFiles) {
     if (/components\/IconButton\//.test(c.rel(f))) continue
     if (c.allowedPath(f, 'iconButtonTooltip')) continue
-    const src = c.read(f).split('\n')
+    const src = c.stripComments(c.read(f)).split('\n')
     src.forEach((ln, i) => {
       if (!/<IconButton[\s/>]/.test(ln)) return
       const window = src.slice(i, i + 14).join('\n')
@@ -270,7 +367,7 @@ export function rPrimitiveInternals(c) {
   const out = []
   for (const f of c.usageFiles) {
     if (!c.primitiveInternalsScope.test(c.rel(f))) continue
-    c.read(f).split('\n').forEach((ln, i) => {
+    c.stripComments(c.read(f)).split('\n').forEach((ln, i) => {
       if (/className="[^"]*\b(chip|badge|btn)\b[^"]*"/.test(ln) && /data-(variant|size|tone)=/.test(ln)
         && !c.allowList('primitiveInternals').some((x) => ln.includes(x))) {
         out.push(`${c.rel(f)}:${i + 1}  hand-rolled primitive class + data-* — use the <Chip>/<Badge>/<Button> component (add a prop if a variant is missing)`)
@@ -359,7 +456,7 @@ export function rPluralForms(c) {
 /**
  * Nothing destructive happens without asking first.
  *
- * The system has had `<ConfirmDialog>` for a long time and most screens used it,
+ * The system has had a confirmation dialog for a long time and most screens used it,
  * which is exactly why the gaps survived: three screens deleted on a single
  * click and nobody noticed, one of them with the confirmation text already
  * written in the locale file and wired to nothing.
@@ -400,7 +497,7 @@ export function rDestructiveConfirms(c) {
       if (!handler) return
       // Delegation upward: the parent owns both the data and the question.
       if (/\bon[A-Z]\w*\s*\(/.test(handler[1])) return
-      out.push(`${c.rel(f)}:${i + 1}  destructive action with no confirmation anywhere in this file — use <ConfirmDialog> (or delegate to a parent that does)`)
+      out.push(`${c.rel(f)}:${i + 1}  destructive action with no confirmation anywhere in this file — use <Modal size="sm" actions={{ tone: 'destructive' }}> (or delegate to a parent that does)`)
     })
   }
   return out
@@ -579,7 +676,7 @@ export function rInlineStyle(c) {
   const out = []
   for (const f of c.usageFiles) {
     if (c.allowedPath(f, 'inlineStyle')) continue
-    c.read(f).split('\n').forEach((ln, i) => {
+    c.stripComments(c.read(f)).split('\n').forEach((ln, i) => {
       if (!staticInlineStyle(ln)) return
       out.push(`${c.rel(f)}:${i + 1}  static inline style — move it to the component's CSS`)
     })
@@ -587,12 +684,61 @@ export function rInlineStyle(c) {
   return out
 }
 
+/** A field whose PURPOSE the browser knows must say so.
+ *
+ *  `autocomplete` is what lets a password manager fill a login, a phone fill an
+ *  address form and a one-time code jump from the SMS: WCAG 2.2 1.3.5 asks for
+ *  it, and for a user with a motor or memory impairment it is the difference
+ *  between a form they can complete and one they cannot. It is also invisible
+ *  when missing — every field still looks right — which is why it needs a rule
+ *  rather than a review.
+ *
+ *  Scoped to the fields whose purpose is unambiguous from the code itself: a
+ *  typed Input (email, tel, url, password) and a PasswordInput. A plain text
+ *  Input is left alone, since nothing in the source says whether it holds a
+ *  name or a project title; CodeInput is left alone because it supplies
+ *  one-time-code itself, which is the better place for a purpose that never
+ *  varies.
+ */
+export function rAutocompletePurpose(c) {
+  const out = []
+  const TYPED = /type=\{?["']?(email|tel|url|password)["']?\}?/
+  for (const f of c.usageFiles) {
+    if (c.allowedPath(f, 'autocomplete')) continue
+    if (!/\/(layouts|components|blocks|shell)\//.test(c.rel(f))) continue
+    const src = c.stripComments(c.read(f)).split('\n')
+    src.forEach((ln, i) => {
+      const m = ln.match(/<(Input|PasswordInput)\b/)
+      if (!m) return
+      /* The whole element, however it is formatted: from the tag to the first
+       * line that closes it. */
+      const chunk = []
+      for (let j = i; j < Math.min(src.length, i + 12); j++) {
+        chunk.push(src[j])
+        if (/\/>|>\s*$/.test(src[j]) && j > i) break
+        if (j === i && /\/>/.test(src[j])) break
+      }
+      const el = chunk.join(' ')
+      const known = m[1] !== 'Input' || TYPED.test(el)
+      if (!known) return
+      if (/autoComplete=/.test(el)) return
+      out.push(`${c.rel(f)}:${i + 1}  <${m[1]}> has a purpose the browser knows and no autoComplete — name it (WCAG 1.3.5), e.g. autoComplete="email" / "current-password" / "one-time-code"`)
+    })
+  }
+  return out
+}
+
+
 export const SHARED_RULES = {
   'spacing/radius via tokens (no raw px)': rSpacingPx,
   'components use semantic status roles (no tonal primitives)': rSemanticOnly,
+  'a status fill is not a status ink': rStatusInk,
   'logical properties for RTL (no left/right)': rLogicalProps,
   'no raw form controls outside primitives': rRawControls,
+  'known-purpose fields carry autocomplete': rAutocompletePurpose,
   'no raw <button> in a screen': rRawButtons,
+  'the page wrapper comes from a page block': rHandRolledPage,
+  'stacks, rows and grids come from the system': rHandRolledLayout,
   'icon-only buttons have aria-label': rIconButtonA11y,
   'icon-only buttons wrapped in <Tooltip>': rIconButtonTooltip,
   'no reaching into primitive class+data contract': rPrimitiveInternals,
@@ -603,6 +749,46 @@ export const SHARED_RULES = {
   'counted strings have every plural form': rPluralForms,
   'no dead value exports': rDeadExports,
   'no dead CSS classes': rDeadCss,
+  'a part that takes words says what words': rCopyGuidance,
   'media queries on the declared breakpoint scale': rBreakpointScale,
   'files within the size ceiling': rFileSize,
+}
+
+/**
+ * A part that takes WORDS says what words.
+ *
+ * The system tells an agent which component to reach for and what props it
+ * takes, and then leaves the hardest half — what to write in them — to be
+ * guessed. Measured 2026-08-26: 75 components accept a label, a title, a
+ * message or a placeholder, and 13% of them said anything about the copy that
+ * goes there. The outside reading of 158 design systems put this first: the
+ * highest-scoring were not the ones with the most parts but the ones that
+ * documented what they had, and content guidance was the rarest layer of all.
+ *
+ * The marker is a `Copy:` paragraph in the component's own JSDoc — the block
+ * the registry publishes, so the guidance travels with the contract rather
+ * than living in a document nobody fetches. A prose sentence that happens to
+ * contain the word "words" does not count: the check looks for the marker, so
+ * the rule cannot be satisfied by accident.
+ */
+export function rCopyGuidance(c) {
+  const TEXT = /^(label|title|message|placeholder|description|hint|caption|error|emptyLabel|confirmLabel|cancelLabel|allLabel|secondary|excerpt|eyebrow|by|source|name|alt|summary|subtitle)$/
+  const out = []
+  /* Read the registry, not the source: it already resolved which props a
+     component publishes and collapsed its JSDoc, and re-parsing that here would
+     be a second answer to a question the generator has settled. */
+  const dir = `${c.root}/registry`
+  if (!c.existsSync(dir)) return out
+  for (const file of c.walk(dir, ['.json'])) {
+    let entry
+    try { entry = JSON.parse(c.read(file)) } catch { continue }
+    if (!(entry.props ?? []).some((p) => TEXT.test(p.name))) continue
+    if (/\bCopy:/.test(entry.description ?? '')) continue
+    const which = (entry.props ?? []).filter((p) => TEXT.test(p.name)).map((p) => p.name).slice(0, 3).join(', ')
+    out.push(
+      `${entry.sourcePath ?? c.rel(file)}:1  <${entry.ref}> takes words (${which}) and says nothing about them — ` +
+        `add a "Copy:" paragraph to its JSDoc saying what to write there`,
+    )
+  }
+  return out
 }

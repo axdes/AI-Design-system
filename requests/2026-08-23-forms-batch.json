@@ -1,0 +1,41 @@
+{
+  "name": "forms batch (6 components + 2 blocks + 2 hooks + Field change)",
+  "level": "mixed",
+  "date": "2026-08-23",
+  "requestedBy": "agent",
+  "status": "approved",
+  "decidedBy": "user",
+  "decision": "The owner asked for a survey of form kinds, how their content is laid out and which rules govern them, then for the result to be BUILT so the system can carry every kind properly. The survey (docs/RESEARCH-FORMS.md, 18 kinds) measured the system against them: the CONTROLS are close to complete and everything above them is missing. The owner approved P1 + P2 of the survey's build plan, and chose the full GOV.UK order for Field: hint AND error above the control.",
+  "need": "The archetype `form` points at exactly one template (FormModal), so a 15-field object is either crammed into a dialog or hand-rolled in an app. FormStack is flat, so a form cannot group fields at all (no fieldset, no legend, no section heading). A failed submit can only mark fields in place, so a keyboard or screen-reader user has to hunt. RadioGroup has no checkbox twin. Nothing in the system carries autosave, save status, character count, a dependent field under an option, or a guard against leaving a dirty form (grep: zero hits for beforeunload / unsaved across the monorepo).",
+  "consideredAlternatives": [
+    { "ref": "FormModal", "whyNot": "A dialog is the right home for 1-6 routine fields; past that the dialog scrolls, the actions leave the viewport and the sections have nowhere to go." },
+    { "ref": "WizardTemplate", "whyNot": "Splits a long task into steps. A page form is long but not sequential: forcing steps on a familiar record only adds clicks (Fiori)." },
+    { "ref": "SettingsPageTemplate + SettingsSection", "whyNot": "Its rows are label + explanation + control, applied per row on change. A form section is a stack of Fields committed together; the save model is the opposite one." },
+    { "ref": "DetailPageTemplate panels", "whyNot": "Read mode with sections, no form column, no sticky commit bar, no error summary slot." },
+    { "ref": "FormStack + hand-rolled fieldset", "whyNot": "That is the hand-rolling this system exists to stop, and the group label is exactly the part hand-rolling drops." },
+    { "ref": "Alert", "whyNot": "Carries one message until it is resolved; an error summary is an indexed list of failures, each linking to its own field, and it takes focus on submit." },
+    { "ref": "RadioGroup", "whyNot": "Single choice by construction (one name, native arrow keys). A multi-select set needs a group role and no shared name." },
+    { "ref": "Meter / ProgressBar", "whyNot": "Both measure a value; a character count states a remaining budget and turns into an error at the limit." },
+    { "ref": "Accordion", "whyNot": "Hides content behind a heading the user opens. A conditional reveal opens because an option was chosen, and its content belongs to that option." },
+    { "ref": "Toast", "whyNot": "Autosave feedback must persist ('Saved 14:32'), and a toast that scrolls away cannot be the record of whether work is safe." }
+  ],
+  "components": [
+    { "name": "FormSection", "level": "molecule", "surface": "region", "why": "fieldset + legend + optional description around a FormStack. The one part that makes grouping possible at all, and the part hand-rolling always drops.", "proposedApi": { "props": [ { "name": "title", "type": "ReactNode", "required": true }, { "name": "description", "type": "ReactNode", "required": false }, { "name": "children", "type": "ReactNode", "required": true } ] } },
+    { "name": "ErrorSummary", "level": "molecule", "surface": "region", "why": "The on-submit list of failures, focusable, each row linking to its field. GOV.UK's pattern: a route for the keyboard user and a count for the screen reader.", "proposedApi": { "props": [ { "name": "errors", "type": "{ id: string; message: ReactNode }[]", "required": true }, { "name": "title", "type": "ReactNode", "required": false } ] } },
+    { "name": "CheckboxGroup", "level": "molecule", "surface": "card", "why": "The missing twin of RadioGroup: a labelled group of checkboxes with one value array.", "proposedApi": { "props": [ { "name": "value", "type": "string[]", "required": true }, { "name": "onChange", "type": "(value: string[]) => void", "required": true }, { "name": "options", "type": "Option[]", "required": true }, { "name": "label", "type": "string", "required": true } ] } },
+    { "name": "CharacterCount", "level": "atom", "surface": "card", "why": "States the remaining budget of a limited field and turns into an error at the limit, announced politely rather than on every keystroke.", "proposedApi": { "props": [ { "name": "value", "type": "string", "required": true }, { "name": "max", "type": "number", "required": true } ] } },
+    { "name": "ConditionalReveal", "level": "molecule", "surface": "card", "why": "The dependent field that belongs to one option: rendered under it, hidden until it is chosen, never validated while hidden.", "proposedApi": { "props": [ { "name": "when", "type": "boolean", "required": true }, { "name": "children", "type": "ReactNode", "required": true } ] } },
+    { "name": "SaveStatus", "level": "atom", "surface": "card", "why": "What a draft form owes the user: whether the work is safe right now (saving / saved at / failed), as a live region.", "proposedApi": { "props": [ { "name": "state", "type": "'idle' | 'saving' | 'saved' | 'error'", "required": true }, { "name": "at", "type": "Date | string", "required": false } ] } }
+  ],
+  "blocks": [
+    { "name": "FormPageTemplate", "level": "block", "surface": "page", "why": "The page-sized form the archetype has never had: header, capped column, error summary slot, FormSection stack, sticky footer actions (Fiori footer bar in create and edit mode).", "proposedApi": { "props": [ { "name": "title", "type": "ReactNode", "required": false }, { "name": "errors", "type": "FormError[]", "required": false }, { "name": "submitLabel", "type": "string", "required": true }, { "name": "onSubmit", "type": "() => void", "required": true }, { "name": "onCancel", "type": "() => void", "required": false }, { "name": "busy", "type": "boolean", "required": false }, { "name": "status", "type": "ReactNode", "required": false } ] } },
+    { "name": "FormPanel", "level": "block", "surface": "region", "why": "The same contract inside a SidePanel, for editing while the record or list stays readable beside it.", "proposedApi": { "props": [ { "name": "title", "type": "string", "required": true }, { "name": "onClose", "type": "() => void", "required": true }, { "name": "onSubmit", "type": "() => void", "required": true }, { "name": "submitLabel", "type": "string", "required": false }, { "name": "busy", "type": "boolean", "required": false } ] } }
+  ],
+  "hooks": [
+    { "name": "useAutosave", "why": "The draft form's save model in one place: on blur and after a pause in typing, never on every keystroke, reporting the state SaveStatus renders." },
+    { "name": "useUnsavedChanges", "why": "The guard nothing in the monorepo has: a dirty explicit-save form warns before the tab closes." }
+  ],
+  "changes": [
+    { "ref": "Field", "what": "Gains `optional` (renders '(optional)' in the label, the mark for the minority) and moves BOTH hint and error above the control, GOV.UK order: the instruction is read before typing, and the reason a field was rejected is read before the field is reached." }
+  ]
+}

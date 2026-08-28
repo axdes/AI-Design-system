@@ -17,7 +17,8 @@
     {
       "name": "max",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Show at most this many, then a \"+N\" overflow disc. Default 4."
     },
     {
       "name": "size",
@@ -49,5 +50,5 @@
   "uses": [
     "Avatar"
   ],
-  "example": "/* Overlapping team stack. Anything past `max` collapses into a \"+N\" disc that\n * still announces the hidden count. */\n\n<AvatarGroup\n  max={3}\n  items={[\n    { name: 'Sarah Al-Mansouri' },\n    { name: 'Ahmed Al-Saud' },\n    { name: 'Fatima Al-Zahra' },\n    { name: 'Mohammed Al-Khalid' },\n    { name: 'Noura Al-Otaibi' },\n  ]}\n/>"
+  "example": "/* Overlapping team stack. Anything past `max` collapses into a \"+N\" disc that\n * still announces the hidden count. */\n\n<AvatarGroup\n  max={3}\n  items={[\n    { name: 'Ada Meridian', src: '/demo/avatar-ada.jpg' },\n    { name: 'Cleo Nakamura', src: '/demo/avatar-cleo.jpg' },\n    /* One without a picture on purpose: a real team always has one, and the\n       stack has to stay a stack when a face is missing. */\n    { name: 'Dev Okonkwo' },\n    { name: 'Eve Lindqvist', src: '/demo/avatar-eve.jpg' },\n    { name: 'Finn Barros', src: '/demo/avatar-finn.jpg' },\n  ]}\n/>"
 }

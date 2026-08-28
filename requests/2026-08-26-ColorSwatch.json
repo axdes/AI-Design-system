@@ -1,0 +1,30 @@
+{
+  "name": "ColorSwatch",
+  "level": "atom",
+  "date": "2026-08-26",
+  "requestedBy": "agent (splitting the docs-parts batch, on the owner's instruction to work the pending requests)",
+  "need": "A colour is a value a person picks, and the system has no control for picking one. `<input type=\"color\">` is exactly the raw control lint-rules refuses, so the one place that needs it — the site's own settings panel, where a visitor tries the system in another brand — is five hand-rolled buttons carrying a written exception. Filed as its own record because the batch it arrived in was about documentation parts and this is not one: Code and Prose render text, this one takes input.",
+  "consideredAlternatives": [
+    {
+      "ref": "input type=\"color\"",
+      "whyNot": "The native picker cannot be styled, opens an OS dialog that owes the system nothing, and is the raw control the linter refuses everywhere else."
+    },
+    {
+      "ref": "components/Radio + a custom label",
+      "whyNot": "The right SEMANTICS for a closed set of brands, and the settings panel should use them. What is missing underneath is the swatch itself: a colour rendered as a control-sized target that reads on any surface, including one its own colour matches."
+    },
+    {
+      "ref": "components/Badge fill=\"solid\"",
+      "whyNot": "A badge states a value; it is not a target and carries no selected state."
+    },
+    {
+      "ref": "leave the exception in place",
+      "whyNot": "It is the status quo and it is written down as an exception, which is the honest version of \"nobody decided\". The second consumer is the trigger, and a brand picker is the kind of thing every product that themes gets asked for."
+    }
+  ],
+  "proposedApi": "value (a CSS colour), label (required — a colour cannot be its own name to a screen reader), selected, onSelect, size (sm | md). Draws its own edge from --border rather than from the colour, so a swatch the colour of the surface is still a visible target.",
+  "sources": "Measured on the site's settings panel, 2026-08-23: five buttons, 31 lines of CSS, one written exception. Primer, Polaris and Carbon each ship a swatch or colour-input primitive.",
+  "status": "approved",
+  "decision": "Approved and built 2026-08-26, the day it was split out. The settings panel gave back 24 lines of CSS and the written exception for a raw control. `label` is REQUIRED, which is the decision inside the decision: a colour has no accessible name of its own, so a swatch without one is a button that reads as \"button\" to anyone not looking at it. The dot draws its own edge from --border rather than from the value, so a swatch the colour of the surface is still a target — the case a colour-as-background approach gets wrong exactly when it matters. Its own doc block cost a linter fix: the raw-control rule read the sentence naming `<input type=\"color\">` as a violation, and six sibling rules had the same hole (fixed the same day).",
+  "decidedBy": "owner (2026-08-26, told the pending requests to be worked)"
+}

@@ -22,6 +22,7 @@ export function Example() {
       <Input
         id="email"
         type="email"
+        autoComplete="email"
         value={email}
         invalid={invalid}
         onChange={(e) => setEmail(e.target.value)}

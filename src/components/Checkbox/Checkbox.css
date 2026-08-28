@@ -1,5 +1,14 @@
 .checkbox {
   --box-size: 1.25rem;   /* md default; sm/lg below */
+  /* The label IS the target, and at 20px (17 on sm) it was under the SC 2.5.8
+   * floor — and checkboxes stack, so the spacing exception does not apply. */
+  min-block-size: var(--space-6);
+  /* The hidden input below is absolutely positioned, so the label has to be its
+   * containing block. Without this it resolves against the page instead, escapes
+   * the clip of any scroll container it sits in, and stretches the DOCUMENT down
+   * to its own offset — a page-tall form scrolled a few pixels and showed a white
+   * strip under a shell that is exactly 100dvh tall. */
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -11,6 +20,15 @@
 .checkbox[data-size="sm"] { --box-size: 1rem; font-size: var(--font-sm); }
 .checkbox[data-size="lg"] { --box-size: 1.5rem; font-size: var(--font-md); }
 .checkbox[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+/* The same three answers every other control gives. The selection family gave
+ * none of them: a checkbox did not acknowledge the pointer, did not answer the
+ * press, and had no way to be marked wrong — so a required consent box could be
+ * rejected by a form with nothing on screen saying which box was the problem. */
+.checkbox:hover:not([data-disabled]) .checkbox-box { border-color: var(--ring); }
+.checkbox:active:not([data-disabled]) .checkbox-box { border-color: var(--primary-active); }
+.checkbox[data-invalid] .checkbox-box { border-color: var(--destructive); }
+.checkbox[data-invalid] .checkbox-input:focus-visible + .checkbox-box { outline-color: var(--destructive); }
+
 
 /* Real input kept in the DOM (form-native + accessible), visually hidden. */
 .checkbox-input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }

@@ -1,7 +1,7 @@
 {
   "ref": "CodeInput",
   "level": "molecule",
-  "description": "One box per character, for a verification code. A single field would work and would be less code. The boxes exist because a code arrives as separated characters in an SMS or an authenticator, and because checking six characters you have typed into one field means counting them. Paste still fills the whole thing in one go, which is how most people actually enter it.",
+  "description": "One box per character, for a verification code. A single field would work and would be less code. The boxes exist because a code arrives as separated characters in an SMS or an authenticator, and because checking six characters you have typed into one field means counting them. Paste still fills the whole thing in one go, which is how most people actually enter it. Copy: the label says where the code came from — \"The 6-digit code we sent to ada@example.com\" — because a reader who cannot find the message cannot type it.",
   "exports": [
     "CodeInput"
   ],
@@ -12,12 +12,14 @@
     {
       "name": "length",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "How many characters the code has."
     },
     {
       "name": "value",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "The code so far. Shorter than `length` while it is being typed."
     },
     {
       "name": "onChange",
@@ -27,7 +29,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Names the group, since the individual boxes are \"digit 1 of 6\"."
     },
     {
       "name": "invalid",
@@ -37,7 +40,8 @@
     {
       "name": "numeric",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Keep it to digits (default). Off for alphanumeric codes."
     },
     {
       "name": "className",

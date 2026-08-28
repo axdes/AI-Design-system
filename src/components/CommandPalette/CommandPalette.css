@@ -11,6 +11,7 @@
 .command {
   inline-size: min(36rem, calc(100vw - var(--space-8)));
   background: var(--popover);
+
   color: var(--popover-foreground);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -51,7 +52,6 @@
   font-size: var(--font-base);
   cursor: pointer;
 }
-.command-item[data-active] { background: var(--accent-soft); }
 .command-item-icon { color: var(--muted-foreground); }
 .command-item-label { flex: 1; }
 .command-item-hint {
@@ -60,3 +60,17 @@
   font-variant-numeric: tabular-nums;
 }
 .command-empty { padding: var(--space-4); text-align: center; font-size: var(--font-sm); color: var(--muted-foreground); }
+
+/* WHERE ENTER WILL LAND — said by the row itself, not by a bar beside it.
+ *
+ * It was a 2px accent bar down the leading edge, argued from a contrast figure:
+ * the fill alone measures 1.15:1 against this surface and a focus indicator is
+ * asked for 3:1. The owner removed it twice (2026-08-24) and is right on both
+ * counts — the row here is not DOM focus (focus stays in the input; the row is
+ * named by aria-activedescendant), and the system already has one answer for
+ * "this is the current row": the fill the sidebar uses for the current section.
+ * So the active row takes --accent, a full step past the hover tint rather than
+ * the half-step it was, and the mark is the row rather than an ornament on it.
+ */
+.command-item[data-active] { background: var(--accent); color: var(--accent-foreground); }
+.command-item[data-active] .command-item-icon { color: var(--accent-foreground); }

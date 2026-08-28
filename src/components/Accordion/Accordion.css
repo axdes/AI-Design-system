@@ -3,10 +3,12 @@
   flex-direction: column;
 }
 
-.accordion-item {
-  border-block-end: 1px solid var(--border);
-}
-.accordion-item:first-child {
+/* A rule BETWEEN two sections, never around the set. The outer lines drew a box
+ * that nothing asked for: inside a card, one item wore a hairline above and
+ * below and read as a divider that had lost its section (owner, 23.08). The
+ * same surface rule as everywhere else here — what separates blocks is space,
+ * and a line is only for the seam between two of them. */
+.accordion-item + .accordion-item {
   border-block-start: 1px solid var(--border);
 }
 

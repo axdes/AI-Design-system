@@ -18,6 +18,17 @@
 .identity-name {
   font-weight: var(--font-weight-medium);
   color: var(--foreground);
+  /* A name is not a word the layout may push out of the card. Measured across a
+   * width sweep of the patterns screen: "Vitali Novikau" hung 34px past the
+   * card edge between 800 and 1040, and the vertical cards did it at every one
+   * of eighteen widths, because the who-column was centred and therefore sized
+   * to its own content rather than to the card.
+   *
+   * `break-word`, NOT `anywhere`: anywhere makes the min-content width one
+   * CHARACTER, so a flex or grid column happily squeezes to nothing and the
+   * name breaks mid-word — "Fatim / a Al- / Zahra" (owner, 22.08). break-word
+   * only breaks a word that genuinely cannot fit on a line of its own. */
+  overflow-wrap: break-word;
 }
 
 .identity-secondary {
@@ -39,4 +50,89 @@
 
 .identity[data-vertical] .identity-who {
   align-items: center;
+  /* Centred does not mean "as wide as it likes": without this the column takes
+   * its max-content width and the name and the role hang off both sides. */
+  max-inline-size: 100%;
+}
+
+/* Standing up, the role WRAPS. The ellipsis belongs to the list row, where one
+ * line is the contract; on a portrait card a cut role reads as a bug, which is
+ * what "Software Engineering Team Leade…" was. */
+.identity[data-vertical] .identity-secondary {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  text-wrap: pretty;
+  /* "Engineering" is longer than a 176px card column, and a word that does not
+   * break is a word that hangs out: 6.6px at 800 and 840 after the first fix. */
+  overflow-wrap: break-word;
+}
+
+/* The hero: a portrait the card is built around, so the name takes a step up
+ * with it. Below xl the name is a line of text beside a face; at xl the face is
+ * the subject and the name is its caption. */
+.identity[data-size='xl'] {
+  gap: var(--space-4);
+}
+
+.identity[data-size='xl'] .identity-name {
+  font-size: var(--font-lg);
+}
+
+/* The face with a control on it. The wrapper exists only when there IS one, so
+ * the common case stays an avatar and nothing else. */
+.identity-face {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.identity-action {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* The ring is the surface behind it, not a border colour: it is what makes
+   * the control read as sitting ON the face instead of overlapping it. */
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 0 2px var(--card);
+}
+
+/* The page-level identity: the profile screen's own header, where the face is
+ * the subject and the name is a page heading rather than a line of text.
+ * Consolidated from the same block hand-rolled in three products. */
+.identity[data-size='2xl'] {
+  gap: var(--space-6);
+  align-items: center;
+  /* The name is display-sized here, so on a narrow screen it cannot share the
+   * row with the face and still hold a word. Wrapping gives it the full width
+   * on the next line instead: the hand-rolled version pushed "Mohammed" past
+   * the card edge, and letting `break-word` do the work instead produced
+   * "Mohamm / med Al- / Khalid". Same lesson as the page panes — a floor and a
+   * wrap ask no question about the viewport. */
+  flex-wrap: wrap;
+}
+
+.identity[data-size='2xl'] .identity-who {
+  flex: 1 1 12rem;
+}
+
+.identity[data-size='2xl'] .identity-name {
+  font-family: var(--font-family-display);
+  font-size: var(--font-2xl);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-tight);
+}
+
+/* At this size the secondary is not a tail on one line — a profile shows a role
+ * AND an address, and both are worth reading in full. */
+.identity[data-size='2xl'] .identity-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }

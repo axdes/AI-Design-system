@@ -1,0 +1,20 @@
+/* One line, cut with an ellipsis. `min-inline-size: 0` is what lets it shrink
+ * inside a flex or grid parent, which is where a truncation silently stops
+ * working. */
+.truncate {
+  display: block;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Two lines: the one description column a table is allowed. The line clamp
+ * needs a block container, so white-space goes back to normal. */
+.truncate[data-lines="2"] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  white-space: normal;
+}

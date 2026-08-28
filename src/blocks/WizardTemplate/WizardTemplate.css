@@ -1,19 +1,9 @@
-/* The block owns its page wrapper (ListPageTemplate's argument). Narrow like
- * settings: a wizard is a form read line by line. Block-private knob,
- * co-located per the token conventions. */
-.wizard-shell {
-  --wizard-max-width: 52rem;
-  flex: 1;
-  inline-size: 100%;
-  max-inline-size: min(var(--page-max-width), var(--wizard-max-width));
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-}
-
+/* The cap, the centring and the padding come from <Page archetype="wizard">:
+ * narrow like settings, because a wizard is a form read line by line, and that
+ * decision is the `reading` width in screen-specs/page-rules.json. What stays
+ * is the step rhythm, which is wider than the page's default gap because a
+ * stepper, a step and its actions are three separate things. */
 .wizard-page {
-  padding-block: 0 var(--space-4);
-  padding-inline: var(--space-8);
   display: flex;
   flex-direction: column;
   gap: var(--space-6);

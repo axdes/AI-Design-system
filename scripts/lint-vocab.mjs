@@ -1,6 +1,6 @@
 // One word per idea across the whole public API.
 //
-// A shared prop name is a promise. `tone` on Alert and `tone` on ProgressBar
+// A shared prop name is a promise. `tone` on Alert and `tone` on Progress
 // must accept the same words, or an agent that learned the system from one
 // component writes a type error against the next one. Nothing checked that, and
 // the system had quietly split in two places: `danger` against `destructive`

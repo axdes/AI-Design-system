@@ -23,7 +23,11 @@ type Props = {
 const HELD = 2000
 
 /** Copy a value, and say so. The clipboard call, the two-second confirmation and
- *  the failure case in one place, because five apps had written all three. */
+ *  the failure case in one place, because five apps had written all three. 
+ *
+ * Copy: the label says what will be copied, not that copying happens — "Copy the
+ * invoice number". The confirmation is past tense and short.
+ */
 export function CopyButton({ value, label, copiedLabel, size = 'sm', variant = 'ghost', className }: Props) {
   const { t } = useTranslation()
   const [copied, setCopied] = useState(false)

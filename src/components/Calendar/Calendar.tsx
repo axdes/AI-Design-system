@@ -36,7 +36,11 @@ const addMonths = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth()
 /* A month grid for picking a single date. Keyboard: Arrow keys move day, Page
  * Up/Down move month, Home/End jump to the week's start/end, Enter/Space select.
  * Month and weekday names come from Intl (locale + RTL aware). Standalone, or
- * the body of <DatePicker>. */
+ * the body of <DatePicker>. 
+   *
+   * Copy: the accessible name says what the date is FOR — "Delivery date", not
+   * "Calendar".
+   */
 export function Calendar({
   value, onChange, month, onMonthChange, min, max, rangeStart, rangeEnd, weekStartsOn = 1,
   locale = typeof document !== 'undefined' ? document.documentElement.lang || 'en' : 'en',

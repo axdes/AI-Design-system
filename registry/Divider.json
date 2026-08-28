@@ -13,6 +13,7 @@
       "name": "orientation",
       "type": "'horizontal' | 'vertical'",
       "required": false,
+      "description": "Default horizontal; vertical divides a row (needs a sized flex parent).",
       "values": [
         "horizontal",
         "vertical"
@@ -21,7 +22,8 @@
     {
       "name": "children",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Optional centred label on a horizontal rule (\"OR\", a section name)."
     },
     {
       "name": "className",

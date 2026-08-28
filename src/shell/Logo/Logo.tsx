@@ -10,7 +10,11 @@
  * area, strokes in the brand gradient so it reads on any surface, and the
  * still frame is the complete mark.
  */
-export function Logo({ size = 36 }: { size?: number }) {
+export function Logo({ size = 36, tone = 'brand' }: { size?: number; tone?: 'brand' | 'inverse' }) {
+  /* `inverse` is for the mark sitting ON a brand fill (the rail's primary
+   * circle), where the gradient it is normally drawn in has nothing left to
+   * contrast with. It takes the ink of whatever it is inside instead. */
+  const stroke = tone === 'inverse' ? 'currentColor' : 'url(#ds-grad)'
   return (
     <svg
       className="eco-symbol"
@@ -28,13 +32,13 @@ export function Logo({ size = 36 }: { size?: number }) {
         </linearGradient>
       </defs>
       {/* Three component tiles… */}
-      <rect x="9" y="9" width="13" height="13" rx="3.5" stroke="url(#ds-grad)" strokeWidth="2.6" />
-      <rect x="26" y="9" width="13" height="13" rx="3.5" stroke="url(#ds-grad)" strokeWidth="2.6" />
-      <rect x="9" y="26" width="13" height="13" rx="3.5" stroke="url(#ds-grad)" strokeWidth="2.6" />
+      <rect x="9" y="9" width="13" height="13" rx="3.5" stroke={stroke} strokeWidth="2.6" />
+      <rect x="26" y="9" width="13" height="13" rx="3.5" stroke={stroke} strokeWidth="2.6" />
+      <rect x="9" y="26" width="13" height="13" rx="3.5" stroke={stroke} strokeWidth="2.6" />
       {/* …and the spark assembling the fourth. */}
       <path
         d="M32.5 25.5l2 4.5 4.5 2.5-4.5 2.5-2 4.5-2-4.5-4.5-2.5 4.5-2.5Z"
-        stroke="url(#ds-grad)"
+        stroke={stroke}
         strokeWidth="2.6"
         strokeLinejoin="round"
       />

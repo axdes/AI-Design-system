@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "icon-disc",
+  "type": "registry:ui",
+  "title": "IconDisc",
+  "description": "An icon in a filled disc, at a proportion nobody has to choose. Use it for a section mark, a tile's badge, a heading's cap — anywhere a glyph needs to read as a thing rather than as punctuation. The glyph size is NOT a prop, and that is the whole component. A 20px icon in a 32px disc fills two thirds of it and reads as cramped; the brand mark in the rail sits at half, and that is the proportion th",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/IconDisc/IconDisc.css",
+      "content": "/* The disc is one cell and the glyph is centred in it, so the circle never\n   resizes around a wider or narrower path. The two steps are the grid, not a\n   choice: 32/16 and 48/24 — a glyph at exactly half its disc on both, so the\n   pair cannot drift as the ladder grows. */\n.icon-disc {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  flex: 0 0 auto;\n  border-radius: var(--radius-full);\n}\n\n.icon-disc[data-size='sm'] { inline-size: var(--space-8); block-size: var(--space-8); }\n.icon-disc[data-size='md'] { inline-size: var(--space-12); block-size: var(--space-12); }\n\n/* A quiet ground with one step of separation drawn on it: on a card, which is\n   white, the tint alone reads as no disc at all. */\n.icon-disc[data-tone='neutral'] {\n  background: var(--accent);\n  /* The ink that goes WITH this surface. `--primary` on `--accent` is 1.29:1 in dark — the brand\n   * indigo against a near-black band — and a neutral disc has no reason to carry the brand ink\n   * anyway: every other accent surface in the system pairs with `--accent-foreground`. */\n  color: var(--accent-foreground);\n  box-shadow: inset 0 0 0 1px var(--border);\n}\n\n/* The brand at full strength needs no edge — it separates itself. */\n.icon-disc[data-tone='primary'] {\n  background: var(--primary);\n  color: var(--primary-foreground);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/IconDisc/IconDisc.css"
+    },
+    {
+      "path": "src/components/IconDisc/IconDisc.tsx",
+      "content": "import './IconDisc.css'\nimport { Icon } from '../Icon'\nimport type { IconName } from '../Icon'\nimport { cn } from '../lib/cn'\n\n/**\n * The disc. The glyph is not on this scale — it follows, which is the point.\n * There is no `lg`: the third disc the grid offers is 64, a glyph at half of it\n * would be 32, and the icon scale runs 16 / 20 / 24 / 40. Adding a step to a\n * type scale to serve one component is how a scale rots, and rounding to 24 or\n * 40 would put a different proportion on the ladder — which is the one thing\n * this component exists to prevent.\n */\ntype Size = 'sm' | 'md'\n/** The fill. `neutral` is a quiet ground; `primary` is the brand speaking. */\ntype Tone = 'neutral' | 'primary'\n\ntype Props = {\n  /** The glyph. */\n  icon: IconName\n  /** How big the DISC is. */\n  size?: Size\n  /** What the disc is filled with. */\n  tone?: Tone\n  className?: string\n}\n\n/**\n * An icon in a filled disc, at a proportion nobody has to choose. Use it for a\n * section mark, a tile's badge, a heading's cap — anywhere a glyph needs to read\n * as a thing rather than as punctuation.\n *\n * The glyph size is NOT a prop, and that is the whole component. A 20px icon in\n * a 32px disc fills two thirds of it and reads as cramped; the brand mark in the\n * rail sits at half, and that is the proportion this system already chose\n * (owner, 2026-08-25). A lint rule could only complain after someone had picked\n * a number — the mistake is picking one at all, so the pair is set here once and\n * the caller chooses only the disc.\n *\n * Decorative by default: the disc carries no text and `Icon` is already hidden\n * from the reader, so a mark beside a heading does not say the heading twice. If\n * the glyph is the ONLY thing carrying the meaning, that meaning belongs in\n * words next to it, not in a label on the circle.\n */\nexport function IconDisc({ icon, size = 'md', tone = 'neutral', className }: Props) {\n  return (\n    <span className={cn('icon-disc', className)} data-size={size} data-tone={tone}>\n      {/* The one place the pair is decided: 32/16 and 48/24, a glyph at exactly\n          half its disc on both steps. */}\n      <Icon name={icon} size={size === 'md' ? 'lg' : 'sm'} />\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/IconDisc/IconDisc.tsx"
+    },
+    {
+      "path": "src/components/IconDisc/index.ts",
+      "content": "export { IconDisc } from './IconDisc'\n",
+      "type": "registry:ui",
+      "target": "@ui/IconDisc/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/IconDisc.json"
+}

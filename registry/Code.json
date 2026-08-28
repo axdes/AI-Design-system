@@ -1,0 +1,42 @@
+{
+  "ref": "Code",
+  "level": "atom",
+  "description": "Source code, inline in a sentence or as a block that scrolls inside itself and can be reached by keyboard. Three things a `<pre>` does not do on its own and every product re-does: the monospace face from the token rather than the browser's default, a scroll that is REACHABLE (a scrollable region owes a tab stop and a name — axe's `scrollable-region-focusable`, which this repository's own site failed), and a floor of zero so the sample scrolls inside its container instead of pushing the document sideways. On a phone it wraps rather than scrolls: a page that scrolls sideways is worse than a sample that breaks its lines, and the reader can recover from one of the two. Copy: the label names what the block IS — \"vite.config.ts\", \"The response\" — because a reader landing on a wall of source needs to know what they are looking at before they read it.",
+  "exports": [
+    "Code"
+  ],
+  "main": "Code",
+  "from": "@/components/Code",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The source. Kept verbatim: a code sample that reflows is lying about the code."
+    },
+    {
+      "name": "inline",
+      "type": "boolean",
+      "required": false,
+      "description": "A fragment inside a sentence rather than a block of its own."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": "What the block is, for the reader and for the screen reader that lands in it. Required on a block, because a scrollable region with no name is a region a keyboard user arrives in without being told where they are."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Code/Code.tsx",
+  "context": "region",
+  "uses": [
+    "Prose"
+  ],
+  "example": "/* A block owes a name: it scrolls, so a keyboard lands in it and has to be\n   told where. Inline needs none — it is part of the sentence. */\n\n<>\n  <Prose>\n    The list archetype is carried by <Code inline>ListPageTemplate</Code>.\n  </Prose>\n  <Code label=\"A list page\">{SOURCE}</Code>\n</>"
+}

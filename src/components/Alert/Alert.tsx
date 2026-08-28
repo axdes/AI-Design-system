@@ -35,12 +35,16 @@ type Props = HTMLAttributes<HTMLDivElement> & {
  * Inline message on a region: `tone` carries the meaning and `onDismiss` makes
  * it dismissible. Default role is status; pass role="alert" for an error.
  * Dismiss info and success, never an unresolved error.
+ *
+ * Copy: one sentence about what happened, in the reader's terms, not the
+ * system's. A tone is not a substitute for words: "Saved" and "Could not
+ * save — the file is open elsewhere" both need saying.
  */
 export function Alert({ tone = 'info', icon, compact, action, onDismiss, className, role = 'status', children, ...rest }: Props) {
   const { t } = useTranslation()
   return (
     <div
-      className={cn('alert', className)}
+      className={cn('alert', className)} data-raised="card"
       data-tone={tone}
       data-compact={compact || undefined}
       role={role}

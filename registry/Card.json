@@ -6,6 +6,7 @@
     "Card",
     "CardHeader",
     "CardTitle",
+    "CardCorner",
     "CardMeta",
     "CardMedia"
   ],
@@ -13,47 +14,116 @@
   "from": "@/components/Card",
   "slots": [
     {
-      "name": "CardHeader",
-      "line": 38
+      "name": "CardHeader"
     },
     {
       "name": "CardTitle",
-      "line": 47
+      "props": [
+        {
+          "name": "as",
+          "type": "'h2' | 'h3' | 'h4'",
+          "required": false,
+          "description": "Defaults to h2 to avoid heading-level skips below a page h1.",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ]
+        },
+        {
+          "name": "onOpen",
+          "type": "() => void",
+          "required": false,
+          "description": "Where the card goes. A card's title IS its link (owner's rule, 23.08), so this renders the title as the control that opens it and stretches that control's hit area over the whole card: ONE accessible name, ONE focus stop, and a keyboard can reach it — which a click handler on the card's div never could."
+        }
+      ]
     },
     {
-      "name": "CardMeta",
-      "line": 51
+      "name": "CardCorner"
+    },
+    {
+      "name": "CardMeta"
     },
     {
       "name": "CardMedia",
-      "line": 72
+      "props": [
+        {
+          "name": "placement",
+          "type": "'top' | 'side' | 'cover'",
+          "required": false,
+          "description": "Where the media sits. `top` bleeds edge-to-edge above the content, `side` is a fixed column beside it (a horizontal card), `cover` puts the card's OWN content on top of the media — and brings the scrim with it, because text never sits on raw imagery.",
+          "values": [
+            "top",
+            "side",
+            "cover"
+          ]
+        },
+        {
+          "name": "wash",
+          "type": "'brand' | 'ink'",
+          "required": false,
+          "description": "A tinted media block for photograph-less covers (a training, a category tile): the brand gradient or ink. Children (an image) win over the wash.",
+          "values": [
+            "brand",
+            "ink"
+          ]
+        },
+        {
+          "name": "playable",
+          "type": "boolean",
+          "required": false,
+          "description": "This media PLAYS. Draws the play affordance over the frame, so a card that starts a recording does not look identical to one that opens a document. Decoration only: the card itself stays the single target."
+        },
+        {
+          "name": "duration",
+          "type": "ReactNode",
+          "required": false,
+          "description": "How long it runs, in the corner of the frame (\"12:04\"). The other half of the same promise: what the reader is agreeing to before they press."
+        },
+        {
+          "name": "ratio",
+          "type": "'16/9' | '4/3' | '1/1'",
+          "required": false,
+          "description": "Holds the frame to a shape whatever sits in it. For content that is NOT ours — an embedded player, a board, a document preview — where the height would otherwise be decided by the guest.",
+          "values": [
+            "16/9",
+            "4/3",
+            "1/1"
+          ]
+        }
+      ]
     }
   ],
   "props": [
     {
       "name": "interactive",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Removes border + base shadow; adds cursor + hover shadow."
     },
     {
       "name": "flat",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "No border, no shadow — flat surface. For non-clickable info cards."
     },
     {
       "name": "fill",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Stretches to fill its grid/flex cell vertically."
     },
     {
       "name": "tight",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Tight internal gap (6px) instead of default 18px."
     },
     {
       "name": "flush",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "No padding at all - for full-bleed content (tables) where rows manage their own edge spacing and divider lines must meet the card frame."
     }
   ],
   "sourcePath": "src/components/Card/Card.tsx",
@@ -91,10 +161,16 @@
       ]
     }
   },
+  "primitiveColorRefs": [
+    "--neutral-0"
+  ],
   "uses": [
     "Badge",
     "Button",
-    "MetaItem"
+    "Icon",
+    "IconButton",
+    "MetaItem",
+    "Tooltip"
   ],
-  "example": "/* THE CARD ANATOMY, in the order the levels are read. Copy this shape; a card that needs less\n * stops early rather than inventing its own arrangement.\n *\n *   1. eyebrow  what KIND of thing this is, with its status beside it\n *   2. title    its name, one step above body text (a tile is not a page)\n *   3. facts    what you opened the card to read\n *   4. meta     provenance and counts, pinned to the bottom behind a hairline\n *\n * The ladder is what makes a card scannable. The previous example was a title and one grey\n * line, so every product invented its own arrangement and all of them came out as a shouting\n * name over a stack of identical grey lines. */\n\n<Card interactive fill tight>\n  <CardHeader>\n    <MetaItem icon=\"description\" appearance=\"eyebrow\">Design sprint</MetaItem>\n    <Badge tone=\"warning\" fill=\"soft\">In review</Badge>\n  </CardHeader>\n  {/* THE WHOLE CARD OPENS IT, and the title is what does the opening: `.card-link` stretches\n    * this control's hit area over the tile, so there is one accessible name and one focus\n    * stop instead of a click handler on the card div that no keyboard can reach. Buttons\n    * that do something ELSE inside the card carry `.card-a"
+  "example": "/* THE CARD ANATOMY, in reading order — copy this shape; a card that needs less stops early.\n *   1. eyebrow  what KIND of thing this is, with its status beside it\n *   2. title    its name, one step above body text (a tile is not a page)\n *   3. facts    what you opened the card to read\n *   4. meta     provenance and counts, pinned to the bottom */\n\n<Card interactive fill tight>\n  {/* Every card may carry its menu here, over the title's stretched hit area.\n    * Icon-only, so it takes a Tooltip and an aria-label; wire it to a <Dropdown>. */}\n  <CardCorner>\n    <Tooltip content=\"More\">\n      <IconButton icon=\"more_vert\" aria-label=\"More\" size=\"sm\" onClick={() => undefined} />\n    </Tooltip>\n  </CardCorner>\n  <CardHeader>\n    <MetaItem icon=\"description\" appearance=\"eyebrow\">Design sprint</MetaItem>\n    <Badge tone=\"warning\" fill=\"soft\">In review</Badge>\n  </CardHeader>\n  {/* THE WHOLE CARD OPENS IT: `.card-link` stretches this control over the tile, so there is\n    * one accessible name and one focus stop. Other buttons inside carry `.card-above`. */}\n  <CardTitle>\n    <Button variant=\"link\" className=\"card-link\" onClick={() => undefined}>Q3 onboarding guide</Button>\n  </CardTitle"
 }

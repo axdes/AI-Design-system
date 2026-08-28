@@ -17,7 +17,7 @@
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { execFileSync } from 'node:child_process'
-import { cpSync, mkdtempSync, mkdirSync, rmSync, writeFileSync, readFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdtempSync, mkdirSync, rmSync, writeFileSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -90,14 +90,18 @@ describe('lint-vocab', () => {
       registry.components[name] = {
         ref: name,
         main: name,
-        props: [{ name: 'density', type: "'tight' | 'loose'", required: false, values: ['tight', 'loose'] }],
+        /* The probe name has to be one the vocabulary does NOT declare: this
+         * half of the linter reads the registry, so it can only see the name.
+         * It used to be `density`, which became a real declared prop the day
+         * TableToolbar grew a density switch. */
+        props: [{ name: 'cadence', type: "'tight' | 'loose'", required: false, values: ['tight', 'loose'] }],
       }
     }
     writeFileSync(path, JSON.stringify(registry, null, 2))
     const { code, out } = runLinter('lint-vocab.mjs')
     writeFileSync(path, original)
     expect(code).toBe(1)
-    expect(out).toContain('density')
+    expect(out).toContain('cadence')
   }, 30_000)
 })
 
@@ -161,12 +165,19 @@ describe('contrast', () => {
 
   it('catches an exemption for a pair the CSS no longer paints', () => {
     /* An exemption that outlives its line is a blanket excuse for whatever
-     * lands on that pair next, so a stale one has to fail like a stale twin. */
-    const file = join(COPY, 'src/components/Checkbox/Checkbox.css')
-    const original = readFileSync(file, 'utf8')
-    writeFileSync(file, original.replace('color: var(--primary-foreground);', 'color: var(--card-foreground);'))
+     * lands on that pair next, so a stale one has to fail like a stale twin.
+     * The pair has to stop being painted EVERYWHERE, not just in one file:
+     * a check mark on a filled control is a shape several components draw,
+     * and the sweep reads all of them. */
+    const files = ['src/components/Checkbox/Checkbox.css', 'src/components/SelectableTile/SelectableTile.css']
+      .map((rel) => join(COPY, rel))
+      .filter((f) => existsSync(f))
+    const originals = files.map((f) => readFileSync(f, 'utf8'))
+    for (const [i, f] of files.entries()) {
+      writeFileSync(f, originals[i].replaceAll('var(--primary-foreground)', 'var(--card-foreground)'))
+    }
     const { code, out } = runLinter('contrast-check.mjs')
-    writeFileSync(file, original)
+    for (const [i, f] of files.entries()) writeFileSync(f, originals[i])
     expect(code).toBe(1)
     expect(out).toMatch(/no longer paints/)
   }, 30_000)

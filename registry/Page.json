@@ -1,0 +1,237 @@
+{
+  "ref": "Page",
+  "level": "block",
+  "description": "The PAGE mechanism: the regions a screen is made of and the shape its body takes. Every page archetype is a preset over this one component rather than a component of its own, so a shape the system has not met yet is composed from system parts instead of from divs. Copy: the title is the page's own name in the reader's words. Nothing renders under it — a line explaining the page is content, and content lives in the body (the rule that removed `subtitle` from this system, 2026-08-20).",
+  "exports": [
+    "Page"
+  ],
+  "main": "Page",
+  "from": "@/blocks/Page",
+  "slots": [],
+  "props": [
+    {
+      "name": "archetype",
+      "type": "Archetype",
+      "required": false,
+      "description": "The page's kind. It supplies the geometry so a screen does not restate what its kind implies, and names the entry in screen-specs/page-rules.json that says which regions this kind may and may not have.",
+      "values": [
+        "overview",
+        "list",
+        "worklist",
+        "analytical",
+        "detail",
+        "hub",
+        "form",
+        "wizard",
+        "settings",
+        "auth",
+        "system"
+      ]
+    },
+    {
+      "name": "notices",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Page-level messages above the content: a degraded service, a pending action."
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false,
+      "description": "WHAT THE PAGE IS CALLED. Give it and the page builds its own `<PageHeader>`; that is the common case, and eight blocks were each writing the same four lines to do it by hand (2026-08-26). A ReactNode, because a record title routinely carries a <Badge> or a <Tag> beside it."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What acts on the WHOLE page, in the header: edit, delete, a primary action."
+    },
+    {
+      "name": "onBack",
+      "type": "() => void",
+      "required": false,
+      "description": "Up one level. Present makes the header carry a back control."
+    },
+    {
+      "name": "backLabel",
+      "type": "string",
+      "required": false,
+      "description": "Accessible name for that control; PageHeader has a default."
+    },
+    {
+      "name": "inline",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Tools that belong BESIDE the title rather than at the far end: a search field, a filter. `actions` is the far end."
+    },
+    {
+      "name": "header",
+      "type": "ReactNode",
+      "required": false,
+      "description": "A header you build yourself, for the pages the ingredients above do not describe. Ignored when `title` is given: a page has one header — the same rule `actions` and `footer` follow on <Modal>."
+    },
+    {
+      "name": "subnav",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Navigation WITHIN the page: sections of one record, views of one collection."
+    },
+    {
+      "name": "toolbar",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What acts on the body as a whole: search, filters, batch actions, a view switcher."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The body."
+    },
+    {
+      "name": "detail",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The second pane of a `list-detail` body. Ignored by every other shape."
+    },
+    {
+      "name": "aside",
+      "type": "ReactNode",
+      "required": false,
+      "description": "A supporting pane beside the body. Wraps under it when the two stop fitting."
+    },
+    {
+      "name": "asideWidth",
+      "type": "AsideWidth",
+      "required": false,
+      "description": "How much room the aside takes: a column that shares the width, or a rail as wide as its content.",
+      "values": [
+        "default",
+        "rail"
+      ]
+    },
+    {
+      "name": "footerBar",
+      "type": "ReactNode",
+      "required": false,
+      "description": "A sticky bar carrying the commitment: submit, next, apply."
+    },
+    {
+      "name": "shape",
+      "type": "Shape",
+      "required": false,
+      "description": "Overrides the archetype's shape. Required when there is no archetype.",
+      "values": [
+        "single",
+        "list-detail",
+        "feed",
+        "board",
+        "canvas"
+      ]
+    },
+    {
+      "name": "width",
+      "type": "Width",
+      "required": false,
+      "description": "Overrides the archetype's width.",
+      "values": [
+        "narrow",
+        "reading",
+        "default",
+        "full"
+      ]
+    },
+    {
+      "name": "align",
+      "type": "Align",
+      "required": false,
+      "description": "Overrides the archetype's alignment. `center` puts a short column mid-height.",
+      "values": [
+        "start",
+        "center"
+      ]
+    },
+    {
+      "name": "panels",
+      "type": "boolean",
+      "required": false,
+      "description": "The page stops scrolling and the panes scroll inside themselves, so the header and a sticky table head hold still. Desktop only: a full-height scroller on a phone puts the page under it out of reach."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/Page/Page.tsx",
+  "context": "page",
+  "variants": {
+    "archetype": {
+      "prop": "archetype",
+      "values": [
+        "overview",
+        "list",
+        "worklist",
+        "analytical",
+        "detail",
+        "hub",
+        "form",
+        "wizard",
+        "settings",
+        "auth",
+        "system"
+      ]
+    },
+    "shape": {
+      "prop": "shape",
+      "values": [
+        "single",
+        "list-detail",
+        "feed",
+        "board",
+        "canvas"
+      ]
+    },
+    "width": {
+      "prop": "width",
+      "values": [
+        "narrow",
+        "reading",
+        "default",
+        "full"
+      ]
+    },
+    "align": {
+      "prop": "align",
+      "values": [
+        "start",
+        "center"
+      ]
+    },
+    "panels": {
+      "prop": "panels",
+      "values": [
+        "true"
+      ]
+    },
+    "has-aside": {
+      "prop": "aside",
+      "values": null
+    },
+    "aside-width": {
+      "prop": "asideWidth",
+      "values": [
+        "default",
+        "rail"
+      ]
+    }
+  },
+  "uses": [
+    "Button",
+    "Card",
+    "EmptyState",
+    "ListItem",
+    "PageHeader"
+  ],
+  "example": "const [selected, setSelected] = useState<string | null>('r-1')\nconst current = REQUESTS.find((r) => r.id === selected)\n\n<Page\n  archetype=\"worklist\"\n  shape=\"list-detail\"\n  title=\"Approvals\"\n  detail={current\n    ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>\n    /* The pane says what it waits for rather than sitting blank. `as=\"h2\"`\n       because the page header already took the h1. */\n    : <EmptyState as=\"h2\" surface=\"card\" icon=\"list_alt\" title=\"Nothing selected\" />}\n  footerBar={<Button variant=\"primary\" disabled={!current}>Approve</Button>}\n>\n  {/* The queue is a surface of its own: two bare rows on the page background\n      read as loose text beside the card they select into. */}\n  <Card flush>\n    {REQUESTS.map((r) => (\n      <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>\n    ))}\n  </Card>\n</Page>"
+}

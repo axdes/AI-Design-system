@@ -17,7 +17,11 @@ type Props = {
 
 /** Account trigger for a sidebar footer: name + role expanded, avatar-only when
  *  the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell).
- *  Presentation-only — the consumer supplies the user and the menu actions. */
+ *  Presentation-only — the consumer supplies the user and the menu actions. 
+ *
+ * Copy: the trigger names the person, and the items are verbs — "Sign out", not
+ * "Sign-out".
+ */
 export function UserMenu({ name, role, avatarSrc, actions, menuLabel = "Account menu" }: Props) {
   return (
     <Dropdown

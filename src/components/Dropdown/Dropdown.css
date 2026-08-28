@@ -8,6 +8,7 @@
   min-width: 13rem;   /* dropdown menu knob */
   padding: var(--space-1);
   background: var(--popover);
+
   color: var(--popover-foreground);
   border-radius: var(--popover-radius);
   box-shadow: var(--shadow-popover);
@@ -31,7 +32,9 @@
   cursor: pointer;
   transition: background var(--duration-fast), color var(--duration-fast);
 }
-.dropdown-item:hover { background: var(--accent-soft); }
+.dropdown-item:hover { background: var(--surface-hover); }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.dropdown-item:active:not([data-disabled]) { background: var(--accent-soft); }
 .dropdown-item:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -42,7 +45,7 @@
 .dropdown-item[data-disabled] { opacity: 0.45; cursor: not-allowed; }
 .dropdown-item[data-disabled]:hover { background: transparent; }
 .dropdown-item:focus-visible {
-  background: var(--accent-soft);
+  background: var(--surface-hover);
   outline: var(--ring-width) solid var(--ring);
   outline-offset: calc(-1 * var(--ring-offset));
 }
@@ -50,7 +53,7 @@
 
 /* Destructive item (e.g. Delete) — danger text + icon. */
 .dropdown-item[data-tone="danger"],
-.dropdown-item[data-tone="danger"] .icon { color: var(--destructive); }
+.dropdown-item[data-tone="danger"] .icon { color: var(--destructive-emphasis); }
 .dropdown-item[data-tone="danger"]:hover { background: var(--destructive-soft); }
 
 /* Selection affordance — primary semibold label + trailing check pinned to

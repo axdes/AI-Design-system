@@ -1,7 +1,7 @@
 {
   "ref": "IconButton",
   "level": "atom",
-  "description": "A button whose label is an icon, which is why it always takes an aria-label and a Tooltip. `quiet` for inline toolbars, `filled` plus `tone` for send and stop.",
+  "description": "A button whose label is an icon, which is why it always takes an aria-label and a Tooltip. `quiet` for inline toolbars, `filled` plus `tone` for send and stop. Copy: the aria-label is the same verb a worded button would carry, and it names the target when a screen repeats the control: \"Delete invoice INV-1041\", not \"Delete\".",
   "exports": [
     "IconButton"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "ref",
       "type": "Ref<HTMLButtonElement>",
-      "required": false
+      "required": false,
+      "description": "Forwarded to the underlying <button>."
     },
     {
       "name": "icon",
@@ -23,6 +24,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "Square button matching control heights: sm 32 / md 40 / lg 52. Default 'sm'. NOTE: `Button` defaults to 'md', so a pair of them needs this stated — an unsized icon button beside an unsized button is 32 next to 40. Three apps shipped that before `controls-same-height` started asking.",
       "values": [
         "sm",
         "md",
@@ -33,6 +35,7 @@
       "name": "variant",
       "type": "Variant",
       "required": false,
+      "description": "ghost = transparent (default, hover = accent fill). filled = solid fill. quiet = transparent, hover recolors only (no fill) — for inline toolbar icons.",
       "values": [
         "ghost",
         "filled",
@@ -43,6 +46,7 @@
       "name": "tone",
       "type": "Tone",
       "required": false,
+      "description": "Fill colour for `filled` (e.g. send = primary, stop = destructive).",
       "values": [
         "primary",
         "destructive"
@@ -51,12 +55,14 @@
     {
       "name": "reveal",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Hidden by default; container's :hover or `data-open` makes it visible."
     },
     {
       "name": "loading",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "In-flight action: swaps the icon for a spinner and blocks clicks. The spinner reuses the button's aria-label as its accessible name."
     }
   ],
   "sourcePath": "src/components/IconButton/IconButton.tsx",

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "color-swatch",
+  "type": "registry:ui",
+  "title": "ColorSwatch",
+  "description": "A colour as a control: the value, its name, and a pressed state. Reach for it anywhere a person picks a colour from a set someone curated — a brand, a label, a calendar. For a free choice of any colour at all, this is the wrong part; that is a picker, and the system does not have one. `<input type=\"color\">` is the alternative it replaces, and it is the raw control the linter refuses everywhere els",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ColorSwatch/ColorSwatch.css",
+      "content": "/* The colour arrives as an inline custom property. Declared here with the\n   system's own brand as its fallback, so the stylesheet is complete on its own\n   and a swatch with no value is still a control rather than a hole. */\n.color-swatch {\n  --color-swatch: var(--primary);\n  display: inline-flex;\n  align-items: center;\n  gap: var(--space-2);\n  border: 1px solid var(--border);\n  border-radius: var(--control-radius);\n  background: var(--card);\n  color: var(--foreground);\n  font: inherit;\n  cursor: pointer;\n}\n\n.color-swatch[data-size='md'] { padding: var(--space-2) var(--space-3); font-size: var(--font-sm); }\n.color-swatch[data-size='sm'] { padding: var(--space-1) var(--space-2); font-size: var(--font-xs); }\n\n/* The dot carries the colour and its own edge. The edge is what makes a white\n   swatch on a white card a target rather than a gap. */\n.color-swatch-dot {\n  flex: 0 0 auto;\n  inline-size: var(--space-4);\n  block-size: var(--space-4);\n  border-radius: var(--radius-full);\n  background: var(--color-swatch);\n  box-shadow: inset 0 0 0 1px var(--border);\n}\n.color-swatch[data-size='sm'] .color-swatch-dot { inline-size: var(--space-3); block-size: var(--space-3); }\n\n/* Chosen is stated by the system's own emphasis, not by the swatch's colour:\n   a selected state drawn in the value would be invisible for pale values and\n   shouting for saturated ones. */\n.color-swatch[data-selected] {\n  border-color: var(--primary);\n  box-shadow: inset 0 0 0 1px var(--primary);\n}\n\n/* Hover and press are the surface stepping, not the colour: the dot is data and\n   must read the same whether or not a pointer is on it. One stop further on\n   press, so a slow choice is not a dead control. */\n.color-swatch:hover:not(:disabled) { background: var(--accent); }\n.color-swatch:active:not(:disabled) { background: var(--accent-strong); }\n\n.color-swatch:focus-visible {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n\n.color-swatch:disabled {\n  /* The same disabled treatment <Button> uses, so a dead control looks dead\n     the one way in this system. */\n  opacity: 0.5;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ColorSwatch/ColorSwatch.css"
+    },
+    {
+      "path": "src/components/ColorSwatch/ColorSwatch.tsx",
+      "content": "import './ColorSwatch.css'\nimport type { CSSProperties } from 'react'\nimport { cn } from '../lib/cn'\n\n/** How big the control is. `sm` sits in a dense panel; `md` in a form. */\ntype Size = 'sm' | 'md'\n\ntype Props = {\n  /** The colour itself — any CSS colour. It is a VALUE, not a theme token. */\n  value: string\n  /**\n   * What this colour is called. Required, and deliberately: a colour has no\n   * accessible name of its own, so a swatch without one is a button that reads\n   * as \"button\" to anyone not looking at it.\n   */\n  label: string\n  /** Whether this is the chosen one. */\n  selected?: boolean\n  /** Called with the value when it is picked. */\n  onSelect?: (value: string) => void\n  size?: Size\n  disabled?: boolean\n  className?: string\n}\n\n/**\n * A colour as a control: the value, its name, and a pressed state. Reach for it\n * anywhere a person picks a colour from a set someone curated — a brand, a\n * label, a calendar. For a free choice of any colour at all, this is the wrong\n * part; that is a picker, and the system does not have one.\n *\n * `<input type=\"color\">` is the alternative it replaces, and it is the raw\n * control the linter refuses everywhere else: it cannot be styled, and it hands\n * the person an OS dialog that owes this system nothing.\n *\n * The dot draws its own edge from `--border` rather than from the colour, so a\n * swatch the colour of the surface it sits on is still a visible target — the\n * case a colour-as-background approach gets wrong exactly when it matters, on\n * white and on near-white.\n *\n * Copy: `label` is the colour's NAME in the reader's words — \"Indigo\", not\n * \"#4638d3\". A hex code is the value, and it is already the value.\n */\nexport function ColorSwatch({\n  value,\n  label,\n  selected,\n  onSelect,\n  size = 'md',\n  disabled,\n  className,\n}: Props) {\n  return (\n    <button\n      type=\"button\"\n      className={cn('color-swatch', className)}\n      data-size={size}\n      data-selected={selected || undefined}\n      /* A genuinely dynamic value, which is the one case inline style is for:\n         it is data, and it cannot be a token because it is not a decision the\n         system made. */\n      style={{ '--color-swatch': value } as CSSProperties}\n      aria-pressed={selected ?? false}\n      disabled={disabled}\n      onClick={() => onSelect?.(value)}\n    >\n      <span className=\"color-swatch-dot\" aria-hidden=\"true\" />\n      {label}\n    </button>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ColorSwatch/ColorSwatch.tsx"
+    },
+    {
+      "path": "src/components/ColorSwatch/index.ts",
+      "content": "export { ColorSwatch } from './ColorSwatch'\n",
+      "type": "registry:ui",
+      "target": "@ui/ColorSwatch/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/ColorSwatch.json"
+}

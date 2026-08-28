@@ -12,7 +12,8 @@
     {
       "name": "value",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "24-hour \"HH:MM\" (the native time value). Empty string = not set yet."
     },
     {
       "name": "onChange",
@@ -28,6 +29,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on; same contract as <Input>.",
       "values": [
         "base",
         "muted"
@@ -37,6 +39,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "Control height: sm / md (default) / lg — matches the button/control scale.",
       "values": [
         "sm",
         "md",

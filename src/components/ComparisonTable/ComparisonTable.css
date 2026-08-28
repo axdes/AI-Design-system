@@ -1,0 +1,48 @@
+/* The subject column carries the name, what it costs and what choosing it
+ * does, stacked, so the header is the whole offer rather than a word. */
+.comparison-subject {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+.comparison-name {
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--foreground);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.comparison-note { color: var(--muted-foreground); text-transform: none; letter-spacing: normal; }
+.comparison-action { margin-block-start: var(--space-2); }
+
+/* The one column the reader is pointed at, marked down its whole length rather
+ * than on the header alone: the tick that matters is the one in the row being
+ * read, twelve rows below the badge.
+ *
+ * --primary-soft, not --accent-soft: the accent wash is a NEUTRAL step (#ebf0f7)
+ * within two percent of the page colour, so the recommended column read as the
+ * page showing through the card (owner, 23.08: the background merges). A
+ * recommendation is the brand pointing at something, and the brand wash is the
+ * token that says so. */
+.comparison-table .table-th[data-recommended],
+.comparison-table .table-td[data-recommended] {
+  background: var(--primary-soft);
+  /* A GREY HAIRLINE DISAPPEARS ON A TINT. --border is mixed for the page and
+   * the card, so on the brand wash the row rules simply stopped at the column
+   * and started again after it, and the header had no line under it at all
+   * (owner, 23.08: the borders are not visible on this background). The line
+   * that separates rows in a tinted column has to be mixed from that tint. */
+  border-block-end-color: color-mix(in oklch, var(--primary-soft), var(--foreground) 16%);
+}
+
+/* A tick, and the words behind it. Colour and shape are the shorthand; the
+ * text is what a screen reader and a colour-blind reader actually get. */
+.comparison-mark { display: inline-flex; min-block-size: var(--space-6); align-items: center; }
+/* --success-soft-foreground, not --success-emphasis: the tick can land in a
+ * cell that carries the success FILL (a comparison inside a toned column), and
+ * the emphasis ink measures 4.29:1 on that fill in light and 3.75:1 in dark.
+ * The soft-foreground role is the one designed to be read on it, and it is just
+ * as readable on the card and on the recommended wash (handbook's contrast
+ * gate, 23.08). */
+.comparison-mark[data-included] { color: var(--success-soft-foreground); }

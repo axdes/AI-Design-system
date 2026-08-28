@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty-state",
+  "type": "registry:ui",
+  "title": "EmptyState",
+  "description": "What a screen shows when it has nothing: an icon, a sentence about why it is empty, and the action that would fill it. Copy: the title says what is missing, not that something is missing — \"No invoices yet\", never \"No results\". The description says WHY it is empty and what would fill it; if the reason is a filter, say so, because that is a different screen from a first run.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/EmptyState/EmptyState.css",
+      "content": ".empty-state {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: var(--space-2);\n  padding: var(--space-12) var(--space-4);\n  text-align: center;\n}\n\n.empty-state-icon {\n  display: grid;\n  place-items: center;\n  width: var(--icon-2xl);\n  height: var(--icon-2xl);\n  border-radius: var(--radius-full);\n  background: var(--muted);          /* on a white surface (card) — grey badge */\n  color: var(--muted-foreground);\n  margin-bottom: var(--space-2);\n}\n/* On a grey page surface, invert so the badge reads as white. */\n.empty-state[data-surface=\"page\"] .empty-state-icon { background: var(--background); }\n\n.empty-state-title {\n  margin: 0;\n  font-family: var(--font-family-display);\n  font-size: var(--font-xl);\n  font-weight: var(--font-weight-regular);\n  color: var(--foreground);\n}\n\n.empty-state-description {\n  margin: 0;\n  max-width: var(--prose-max-width);\n  color: var(--muted-foreground);\n  font-size: var(--font-base);\n  line-height: var(--leading-normal);\n}\n\n.empty-state-action {\n  margin-top: var(--space-3);\n}\n\n/* ── sm — tight content areas (chat history, side panels, small cards) ── */\n.empty-state[data-size=\"sm\"] { gap: var(--space-1); padding: var(--space-6) var(--space-3); }\n.empty-state[data-size=\"sm\"] .empty-state-icon {\n  width: 3rem;    /* 48px badge */\n  height: 3rem;\n  margin-bottom: var(--space-1);\n}\n.empty-state[data-size=\"sm\"] .empty-state-icon .icon { width: 1.5rem; height: 1.5rem; }   /* 24px */\n.empty-state[data-size=\"sm\"] .empty-state-title { font-size: var(--font-md); }\n.empty-state[data-size=\"sm\"] .empty-state-description { font-size: var(--font-sm); }\n\n/* ── lg — full-screen hero (empty/placeholder pages). Same muted-circle badge\n *    treatment as the other sizes, just larger (consistent look). ───────── */\n.empty-state[data-size=\"lg\"] { gap: var(--space-3); padding-block: var(--space-16); }\n.empty-state[data-size=\"lg\"] .empty-state-icon {\n  width: 6rem;    /* 96px badge — fixed component size */\n  height: 6rem;\n  margin-bottom: var(--space-4);\n}\n.empty-state[data-size=\"lg\"] .empty-state-icon .icon {\n  width: 3rem;    /* 48px */\n  height: 3rem;\n}\n.empty-state[data-size=\"lg\"] .empty-state-title { font-size: var(--font-3xl); }\n.empty-state[data-size=\"lg\"] .empty-state-description {\n  font-size: var(--font-base);\n  /* Readable column, wraps to ~2 lines (not a narrow stack, not one wide line). */\n  max-width: var(--chat-message-max-width);\n}\n.empty-state[data-size=\"lg\"] .empty-state-action { margin-top: var(--space-2); }\n",
+      "type": "registry:ui",
+      "target": "@ui/EmptyState/EmptyState.css"
+    },
+    {
+      "path": "src/components/EmptyState/EmptyState.tsx",
+      "content": "import './EmptyState.css'\nimport { createElement, type ReactNode } from 'react'\nimport { Icon, type IconName } from '../Icon'\n\n/* h1 included on purpose. On a screen whose header carries no title — a\n * placeholder route, a list with nothing in it yet — this heading IS the\n * page's name, and a page with no h1 gives a screen reader nothing to\n * announce it by. Inside a card or a section it stays h2 or lower. */\ntype Heading = 'h1' | 'h2' | 'h3' | 'h4'\n\ntype Props = {\n  icon?: IconName\n  title: string\n  description?: string\n  action?: ReactNode\n  /** Heading level for the title. Pick to fit the page hierarchy. Default `h2`. */\n  as?: Heading\n  /** `sm` = tight content areas (chat-history panel, side panels, small cards);\n   *  `md` (default) = section/page; `lg` = full-screen hero. */\n  size?: 'sm' | 'md' | 'lg'\n  /** Surface the empty state sits on, so the icon badge contrasts:\n   *  `card` (default) = white surface → grey badge; `page` = grey page → white badge. */\n  surface?: 'card' | 'page'\n}\n\n/**\n * What a screen shows when it has nothing: an icon, a sentence about why it is\n * empty, and the action that would fill it.\n *\n * Copy: the title says what is missing, not that something is missing — \"No\n * invoices yet\", never \"No results\". The description says WHY it is empty\n * and what would fill it; if the reason is a filter, say so, because that\n * is a different screen from a first run.\n */\nexport function EmptyState({ icon, title, description, action, as = 'h2', size = 'md', surface = 'card' }: Props) {\n  return (\n    <div className=\"empty-state\" data-size={size} data-surface={surface} role=\"status\">\n      {icon && (\n        <div className=\"empty-state-icon\">\n          <Icon name={icon} size=\"xl\" />\n        </div>\n      )}\n      {createElement(as, { className: 'empty-state-title' }, title)}\n      {description && <p className=\"empty-state-description\">{description}</p>}\n      {action && <div className=\"empty-state-action\">{action}</div>}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/EmptyState/EmptyState.tsx"
+    },
+    {
+      "path": "src/components/EmptyState/index.ts",
+      "content": "export { EmptyState } from './EmptyState'\n",
+      "type": "registry:ui",
+      "target": "@ui/EmptyState/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/EmptyState.json"
+}

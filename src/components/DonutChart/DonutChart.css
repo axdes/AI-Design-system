@@ -1,0 +1,147 @@
+/* A WHOLE, SPLIT INTO NAMED SHARES.
+ *
+ * Three things separate this from the ring it replaced (owner, 23.08): the arcs
+ * are cut apart by a real gap instead of touching, so two shares never melt
+ * into one shape; a share can take a SLOT colour when the ring is about
+ * unrelated things rather than about statuses; and the hole answers about
+ * whatever the pointer is on, which is the question a legend cannot answer
+ * without making the reader count.
+ */
+.donut-chart {
+  /* Local to this component: the ring's three diameters and its weight. The
+   * default has to hold a number in its hole, which is what sets the floor. */
+  --donut-size: calc(var(--space-16) * 1.5);
+  --donut-stroke: 5;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+.donut-chart[data-size="sm"] { --donut-size: var(--space-16); }
+.donut-chart[data-size="sm"] .donut-chart-value { font-size: var(--font-sm); }
+.donut-chart[data-size="lg"] .donut-chart-value { font-size: var(--font-xl); }
+.donut-chart[data-size="lg"] { --donut-size: calc(var(--space-16) * 2.25); }
+
+.donut-chart-ring {
+  position: relative;
+  /* The ring READS under the pointer, it does not navigate: crosshair is the
+   * cursor for "point at the data", the same one the plots wear, and `pointer`
+   * here would promise a click that never comes (owner, 23.08). */
+  cursor: crosshair;
+  flex: none;
+  inline-size: var(--donut-size);
+  block-size: var(--donut-size);
+}
+.donut-chart-ring svg { display: block; inline-size: 100%; block-size: 100%; transform: rotate(-90deg); }
+
+.donut-chart-track { fill: none; stroke: var(--chart-track); stroke-width: var(--donut-stroke); }
+
+.donut-chart-arc {
+  fill: none;
+  stroke-width: var(--donut-stroke);
+  stroke: var(--chart-1);
+  /* The ring assembles itself: every arc sweeps out of the top at once, which
+   * is one gesture rather than five. */
+  transform-origin: center;
+  animation: donut-chart-sweep var(--duration-slow) var(--ease-out) both;
+  transition: stroke-width var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+}
+@keyframes donut-chart-sweep {
+  from { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* The share under the pointer thickens and the rest step back — the ring's
+ * version of what the bar chart's columns do. */
+.donut-chart:has(.donut-chart-arc[data-active]) .donut-chart-arc:not([data-active]) { opacity: 0.6; }
+.donut-chart-arc[data-active] { stroke-width: calc(var(--donut-stroke) + 1.5); }
+
+/* THE SLOTS, when the ring is about unrelated things (sites, categories). */
+.donut-chart-arc[data-series="2"], .donut-chart-dot[data-series="2"] { stroke: var(--chart-2); background: var(--chart-2); }
+.donut-chart-arc[data-series="3"], .donut-chart-dot[data-series="3"] { stroke: var(--chart-3); background: var(--chart-3); }
+.donut-chart-arc[data-series="4"], .donut-chart-dot[data-series="4"] { stroke: var(--chart-4); background: var(--chart-4); }
+.donut-chart-arc[data-series="5"], .donut-chart-dot[data-series="5"] { stroke: var(--chart-5); background: var(--chart-5); }
+.donut-chart-arc[data-series="6"], .donut-chart-dot[data-series="6"] { stroke: var(--chart-6); background: var(--chart-6); }
+
+/* THE TONES, when it is about how much of it is bad. */
+.donut-chart-arc[data-tone="neutral"] { stroke: var(--muted-foreground); }
+.donut-chart-arc[data-tone="primary"] { stroke: var(--primary); }
+.donut-chart-arc[data-tone="success"] { stroke: var(--chart-success); }
+.donut-chart-arc[data-tone="warning"] { stroke: var(--chart-warning); }
+.donut-chart-arc[data-tone="danger"]  { stroke: var(--chart-danger); }
+
+/* The hole is not decoration: it is where the number the ring is ABOUT goes.
+ * A fixed share of the diameter, so the number can never overrun the stroke. */
+.donut-chart-center {
+  position: absolute;
+  inset: 19%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-1);
+  text-align: center;
+  pointer-events: none;
+}
+.donut-chart-value {
+  font-size: var(--font-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-none);
+  font-variant-numeric: tabular-nums;
+}
+.donut-chart-caption {
+  font-size: var(--font-xs);
+  color: var(--muted-foreground);
+  /* The hole swaps between the total and the share being read, and the two
+   * captions are different lengths: without a line reserved the ring's middle
+   * jumped as the pointer moved. */
+  min-block-size: 1em;
+}
+
+/* THE LEGEND DROPS UNDER THE RING RATHER THAN OUT OF THE CARD.
+ *
+ * At 390px the ring, the names, the values and the percentages do not fit on
+ * one line: the legend ran 23px past the card edge (page audit, 23.08). Below
+ * its own minimum it takes the next line, where it has the whole card. */
+.donut-chart-legend {
+  flex: 1 1 10rem;
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-sm);
+  min-inline-size: 0;
+}
+.donut-chart-legend > li {
+  /* The row is the arc's hit area, and a row IS something you point at. */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+/* The legend is the same control as the ring: pointing at a row reads its
+ * share, because that row is easier to hit than a 5px arc. */
+.donut-chart-legend > li[data-active] { color: var(--foreground); }
+.donut-chart-legend-value {
+  margin-inline-start: auto;
+  display: flex;
+  gap: var(--space-2);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.donut-chart-share { min-inline-size: 2.5rem; text-align: end; }
+
+.donut-chart-dot {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--chart-1);
+  flex: none;
+}
+.donut-chart-dot[data-tone="neutral"] { background: var(--muted-foreground); }
+.donut-chart-dot[data-tone="primary"] { background: var(--primary); }
+.donut-chart-dot[data-tone="success"] { background: var(--chart-success); }
+.donut-chart-dot[data-tone="warning"] { background: var(--chart-warning); }
+.donut-chart-dot[data-tone="danger"]  { background: var(--chart-danger); }

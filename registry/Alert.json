@@ -1,7 +1,7 @@
 {
   "ref": "Alert",
   "level": "molecule",
-  "description": "Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible. Default role is status; pass role=\"alert\" for an error. Dismiss info and success, never an unresolved error.",
+  "description": "Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible. Default role is status; pass role=\"alert\" for an error. Dismiss info and success, never an unresolved error. Copy: one sentence about what happened, in the reader's terms, not the system's. A tone is not a substitute for words: \"Saved\" and \"Could not save — the file is open elsewhere\" both need saying.",
   "exports": [
     "Alert"
   ],
@@ -24,17 +24,20 @@
     {
       "name": "icon",
       "type": "IconName",
-      "required": false
+      "required": false,
+      "description": "Override the tone icon (e.g. `sparkles` for AI-assist messages)."
     },
     {
       "name": "compact",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Dense one-line variant: small padding, centred icon."
     },
     {
       "name": "action",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Trailing action (e.g. a Button), pinned to the end of the alert row."
     },
     {
       "name": "onDismiss",

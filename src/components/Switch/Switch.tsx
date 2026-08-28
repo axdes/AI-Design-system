@@ -6,18 +6,25 @@ type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'onChang
   checked: boolean
   onChange: (next: boolean) => void
   label: string
+  /** The form rejected this setting. Red track and a red focus ring; the
+   *  message belongs to the `<Field>` around it. */
+  invalid?: boolean
 }
 
 /**
  * An on/off setting that applies the moment it is flipped (role="switch"). A
  * checkbox is for something that applies when a form is submitted.
+ *
+ * Copy: the label names the state when ON, and never repeats the word "on":
+ * "Weekly digest", not "Weekly digest on/off".
  */
-export function Switch({ checked, onChange, label, className, ...rest }: Props) {
+export function Switch({ checked, onChange, label, invalid, className, ...rest }: Props) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
+      aria-invalid={invalid || undefined}
       aria-label={label}
       className={cn('switch', className)}
       onClick={() => onChange(!checked)}

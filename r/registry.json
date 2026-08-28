@@ -1,0 +1,799 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "ai-design-system",
+  "homepage": "https://github.com/axdes/AI-Design-system",
+  "items": [
+    {
+      "name": "design-tokens",
+      "type": "registry:file",
+      "title": "Design tokens",
+      "description": "The three token tiers every component reads: settings (the choices), primitives (the values) and semantic (the roles). Import them once, at the top of your global stylesheet, before any component CSS. Both themes are here — the dark one is not an inversion, it is its own set."
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Disclosure list: a stack of headers that each reveal a panel. The header is a real <button> (Space/Enter toggle it, focus ring, disabled honoured); Arrow Up/Down/Home/End move between headers, matching the WAI-ARIA accordion. State is owned here — pass `multiple` to allow several panels open at once."
+    },
+    {
+      "name": "action-card",
+      "type": "registry:ui",
+      "title": "ActionCard",
+      "description": "A question put to THIS reader, answered on the spot: the ask, the context it needs, the answers, and — once given — the outcome in place of them. Reach for <Alert> when the card only informs, and for a plain <Card> when the decision really happens on another screen. Copy: the title is the question put to THIS reader, phrased as a question. The body carries only what the answer needs; anything else"
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible. Default role is status; pass role=\"alert\" for an error. Dismiss info and success, never an unresolved error. Copy: one sentence about what happened, in the reader's terms, not the system's. A tone is not a substitute for words: \"Saved\" and \"Could not save — the file is open elsewhere\" both need saying."
+    },
+    {
+      "name": "app-layout",
+      "type": "registry:ui",
+      "title": "AppLayout",
+      "description": "The application shell: navigation and a scrolling main, in one of four arrangements. Routing-agnostic — pass any nav in the `nav` slot. Below the drawer breakpoint a side arrangement becomes an overlay drawer toggled by `navOpen`; `top` and `none` have nothing to drawer and stay as they are."
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "A person or a team as an image with an initial fallback. `status` adds a presence dot whose meaning lives in `statusLabel`, not in its colour; `shape=\"square\"` reads as a team rather than a person. Copy: the name is the person's own, spelled as they spell it — the initial and the accessible name both come from it. `statusLabel` says what the dot means; a colour on its own says nothing."
+    },
+    {
+      "name": "avatar-group",
+      "type": "registry:ui",
+      "title": "AvatarGroup",
+      "description": "Overlapping stack of avatars with a \"+N\" overflow — a team, the people on a thread. Presentational; the caller supplies the list. The overflow disc carries the hidden count so it is not silent to a screen reader."
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Status chip: a small standalone pill that labels state through `tone`. Not CountBadge, which pins a number to another element's corner. Copy: one word for a state the reader recognises — \"Active\", \"Overdue\". A badge that needs three words is a sentence, and belongs in the body."
+    },
+    {
+      "name": "bar-chart",
+      "type": "registry:ui",
+      "title": "BarChart",
+      "description": "A value per category, as bars: the analytical card's second form after <Sparkline> (a value over time). Carries its own scale, grid, legend and hover readout, and reads as a table to a screen reader. Reach for <Meter> when there is one value against one target, and for a <Table> when the numbers are compared exactly rather than at a glance. Copy: category labels are the categories' own names, shor"
+    },
+    {
+      "name": "batch-actions",
+      "type": "registry:ui",
+      "title": "BatchActions",
+      "description": "The bar that appears once rows are selected: the count, what can be done to them, and the way out. It replaces the table's toolbar rather than sitting beside it, so an action can never be ambiguous about what it applies to."
+    },
+    {
+      "name": "brand-mark",
+      "type": "registry:ui",
+      "title": "BrandMark",
+      "description": "The brand mark in its cap: a filled circle the size of a rail item, with the mark inside it cross-fading to an arrow when the pointer or the keyboard arrives. It lives here rather than inside `<SideNav>` for the reason SideNav's own CSS gives: a component that capped whatever logo it was handed would turn a wordmark into white text in a coloured disc. Capping is the product's choice. It lives here"
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "The trail back up a record hierarchy, e.g. Library / Reports / Q3. Routing agnostic: pass `href` for anchors, `onSelect` for buttons. The last item is always the current page (aria-current), not a link. Replaces the old habit of faking a breadcrumb with a subtitle string. Copy: each crumb is the page's own title, unshortened. A trail that renames its steps is a trail the reader cannot match to whe"
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "The action control: `variant` sets its weight, `loading` swaps the icon for a spinner and disables it (`iconEnd` is a deprecated no-op: icons always trail) actions. Copy: the verb the reader is about to perform, with its object when the screen has more than one — \"Send invoice\", not \"Submit\", never \"OK\". The label is a promise about what happens next."
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "ButtonGroup",
+      "description": "Two or three buttons that are one decision: \"Save\" beside the menu of other ways to save. They are welded into one pill — the radii flatten where they meet and a hairline separates them, because a gap says \"two things\". There is no loose variant on purpose: a row of buttons with space between them is a row of buttons, and `<Layout direction=\"row\" gap>` already builds it. For the commonest case of "
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "A month grid for picking a single date. Keyboard: Arrow keys move day, Page Up/Down move month, Home/End jump to the week's start/end, Enter/Space select. Month and weekday names come from Intl (locale + RTL aware). Standalone, or the body of <DatePicker>. Copy: the accessible name says what the date is FOR — \"Delivery date\", not \"Calendar\"."
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "The surface a block of content sits on. Header, title, meta and footer arrive as slots; `interactive` makes the whole card one target, `tight` and `fill` tune its padding."
+    },
+    {
+      "name": "card-stack",
+      "type": "registry:ui",
+      "title": "CardStack",
+      "description": "Many cards of one kind, shown as one: the top card, the count, and a way into the pile. An overview has room for one card per topic; when a topic has twenty instances the topic keeps its slot and the instances go behind it. Below about five, show them — a stack of three hides nothing and costs a click. With `onNext` the pile is also a queue you can work through in place. Copy: the label names the "
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "A slideshow that scrolls rather than animates. The track is a scroll-snap container, so the browser owns the movement: swipe, trackpad, shift-wheel and the arrow buttons all end up at the same snap point, and the whole thing still works with JavaScript busy. The buttons and the dots are the accessible half; scroll position is the source of truth for which slide is current, which is why the dots fo"
+    },
+    {
+      "name": "cell-stack",
+      "type": "registry:ui",
+      "title": "CellStack",
+      "description": "Two facts in one cell, stacked: a title over its path, an invoice over its supplier, a product over its SKU. The one place a table row is allowed two lines, and only in ONE column of the table. `Identity` is this for a person (it brings the face). `MetaItem` is one piece of secondary information with its icon, under a title rather than beside it. Copy: the secondary line is the first line's contex"
+    },
+    {
+      "name": "character-count",
+      "type": "registry:ui",
+      "title": "CharacterCount",
+      "description": "The remaining budget of a limited field, stated under it: instant on screen, announced only once typing stops."
+    },
+    {
+      "name": "chat-composer",
+      "type": "registry:ui",
+      "title": "ChatComposer",
+      "description": "Rounded chat input bar: auto-growing textarea plus voice/send. A pill on one line, rounded-rect once it grows; the mic swaps to a brand-filled send as soon as there is text. Enter sends, Shift+Enter adds a newline. The consumer positions it. Copy: the placeholder is an invitation, not an instruction manual: one short line naming what this assistant can be asked. It disappears the moment anyone typ"
+    },
+    {
+      "name": "chat-message",
+      "type": "registry:ui",
+      "title": "ChatMessage",
+      "description": "One chat message: a right-aligned bubble for the user, a left block for the assistant with a working toolbar (read aloud, copy, thumbs up/down) + optional quick-reply chips. Shared by every chat surface."
+    },
+    {
+      "name": "chat-shell",
+      "type": "registry:ui",
+      "title": "ChatShell",
+      "description": "Shared chrome for chat screens: full-height column → padded region → one rounded card surface that lays its children out in a grid [history | thread | optional panel]. Lives inside <AppShell>."
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Custom checkbox: a real <input> (kept accessible + form-native) visually replaced by a themed box. Sizing/colors come from tokens, like the controls. Copy: the label is the positive statement the tick makes true — \"Send me the weekly digest\", never \"Do not send…\". A negative label makes an unticked box mean yes."
+    },
+    {
+      "name": "chip",
+      "type": "registry:ui",
+      "title": "Chip",
+      "description": "Rounded selectable label. A Button with a toggle state, always pill-shaped: quick actions, quick replies, pick-a-reason chips, filters, etc. Copy: names the filter it applies, not the act of filtering — \"Overdue\", not \"Filter by overdue\"."
+    },
+    {
+      "name": "code",
+      "type": "registry:ui",
+      "title": "Code",
+      "description": "Source code, inline in a sentence or as a block that scrolls inside itself and can be reached by keyboard. Three things a `<pre>` does not do on its own and every product re-does: the monospace face from the token rather than the browser's default, a scroll that is REACHABLE (a scrollable region owes a tab stop and a name — axe's `scrollable-region-focusable`, which this repository's own site fail"
+    },
+    {
+      "name": "code-input",
+      "type": "registry:ui",
+      "title": "CodeInput",
+      "description": "One box per character, for a verification code. A single field would work and would be less code. The boxes exist because a code arrives as separated characters in an SMS or an authenticator, and because checking six characters you have typed into one field means counting them. Paste still fills the whole thing in one go, which is how most people actually enter it. Copy: the label says where the c"
+    },
+    {
+      "name": "color-swatch",
+      "type": "registry:ui",
+      "title": "ColorSwatch",
+      "description": "A colour as a control: the value, its name, and a pressed state. Reach for it anywhere a person picks a colour from a set someone curated — a brand, a label, a calendar. For a free choice of any colour at all, this is the wrong part; that is a picker, and the system does not have one. `<input type=\"color\">` is the alternative it replaces, and it is the raw control the linter refuses everywhere els"
+    },
+    {
+      "name": "column-picker",
+      "type": "registry:ui",
+      "title": "ColumnPicker",
+      "description": "Which columns a table shows, and in what order. A card of controls on click, so it is a `<Popover>` rather than a menu: the reader ticks several boxes in one visit and the table changes under it. The choice belongs to the reader and to this collection, so persist it per table (localStorage or the user's settings) rather than resetting it on every visit."
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Tag>s and the list stays open. Copy: the empty label says what was searched for and offers the way out — \"No supplier matches 'nortwind'. C"
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:ui",
+      "title": "CommandPalette",
+      "description": "The Cmd+K command palette: a centered search over an action list. Type to filter, Arrow keys to move, Enter to run, Escape to close. The consumer owns `open` (wire it to a global key handler) and what each command does. Portaled, focus goes to the input on open. Copy: the placeholder names the verbs this palette knows — \"Search or jump to…\". Command names start with the verb, so a list of them rea"
+    },
+    {
+      "name": "comparison-table",
+      "type": "registry:ui",
+      "title": "ComparisonTable",
+      "description": "A few subjects as COLUMNS and their attributes as rows: plans, vendors, candidates, options. The one table that transposes on purpose, because the reader is comparing three things across twenty attributes rather than twenty records across three fields. Many subjects turn the columns into a scroll nobody can hold in their head: past about five, the subjects are records and belong in rows. Copy: row"
+    },
+    {
+      "name": "conditional-reveal",
+      "type": "registry:ui",
+      "title": "ConditionalReveal",
+      "description": "The dependent field under an option: present only while that option is chosen, indented under it so the two read as one question."
+    },
+    {
+      "name": "content-card",
+      "type": "registry:ui",
+      "title": "ContentCard",
+      "description": "One CONTENT entry: media, eyebrow, title, excerpt, meta, actions — the six slots every feed shares, from a repo list to a news teaser. ONE component, two surfaces. `layout` says where the media sits, and `row` is the list form: no card of its own, a hairline between neighbours, sized to sit inside a flush <Card>. `density` says how much of the anatomy survives, and the two are orthogonal — a tile "
+    },
+    {
+      "name": "content-side-panel",
+      "type": "registry:ui",
+      "title": "ContentSidePanel",
+      "description": "Document side panel: an icon rail that slides a SidePanel out over the content, one panel per icon."
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "ContextMenu",
+      "description": "A right-click menu positioned at the pointer. Opens on contextmenu over the wrapped target, clamps to the viewport, closes on outside-click, Escape or selection. Arrow keys move between items. Distinct from <Dropdown> (a left-click trigger button)."
+    },
+    {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "CopyButton",
+      "description": "Copy a value, and say so. The clipboard call, the two-second confirmation and the failure case in one place, because five apps had written all three. Copy: the label says what will be copied, not that copying happens — \"Copy the invoice number\". The confirmation is past tense and short."
+    },
+    {
+      "name": "count-badge",
+      "type": "registry:ui",
+      "title": "CountBadge",
+      "description": "A count or dot pinned to the top-inline-end corner of whatever it wraps — notifications on a bell, unread on an avatar. Distinct from <Badge>, which is a standalone status pill. Hidden entirely when count is 0 and no dot. Copy: the accessible label counts the thing, not the badge — \"3 unread messages\". A number alone is read as \"three\" with nothing to attach it to."
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "title": "DataGrid",
+      "description": "A virtualized table: only the rows in view (plus a small overscan) are in the DOM, so tens of thousands of rows scroll smoothly. Rows are a fixed height (the windowing needs it); a spacer sizes the scroll area to the full list. For a short, static table use <Table>; reach for this when the row count is large. It is a GRID, and the ARIA pattern is a contract rather than a name: one tab stop for the"
+    },
+    {
+      "name": "date-block",
+      "type": "registry:ui",
+      "title": "DateBlock",
+      "description": "A date as a block the eye lands on first: the month small over the day large. For an EVENT, where the reader scans by date — a timestamp inside a sentence is <Time>, and a field in a record is a plain value."
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "DatePicker",
+      "description": "A date field: a trigger that reads like an input and opens a <Calendar> in a <Popover>. Picking a day sets the value and closes. The shown date is formatted with Intl; the calendar carries the keyboard contract. Copy: the label names the event, not the field — \"Delivery date\". The placeholder shows the format the reader may type, and it is the format their locale writes."
+    },
+    {
+      "name": "date-range-picker",
+      "type": "registry:ui",
+      "title": "DateRangePicker",
+      "description": "A date-span field: one trigger, one <Calendar>, two picks. The first click marks the start, the second closes with the ordered range (picking backwards swaps the ends instead of failing). One date is <DatePicker>; this is the from/to filter over a list or a report. Copy: the label names the span — \"Reporting period\" — and never says \"from/to\", which the two halves already say."
+    },
+    {
+      "name": "descriptions",
+      "type": "registry:ui",
+      "title": "Descriptions",
+      "description": "A read-only list of field/value pairs — a record's metadata, a summary panel. Real <dl>/<dt>/<dd> so it reads as a description list to a screen reader. Distinct from a form (no inputs) and from a Table (no rows of records)."
+    },
+    {
+      "name": "diff-table",
+      "type": "registry:ui",
+      "title": "DiffTable",
+      "description": "What changed, side by side: an audit trail, a review of an edit, a settings history. The row is a change rather than a record, which is why the two columns are the same field at two times instead of two fields. Colour marks the kind of change and never carries it alone: every row says added, removed or changed in words too. Copy: column headers name the two versions the reader is comparing — \"Befo"
+    },
+    {
+      "name": "divider",
+      "type": "registry:ui",
+      "title": "Divider",
+      "description": "The one hairline separator. A horizontal rule between sections, or a vertical one between inline items. With children it becomes a labelled divider (the rule runs either side of the text). Decorative unless labelled: role=separator only when it carries no text, so a screen reader is not told about a rule that is purely visual noise."
+    },
+    {
+      "name": "donut-chart",
+      "type": "registry:ui",
+      "title": "DonutChart",
+      "description": "A whole split into named shares: how much of the total is open, at risk, done. Hovering a share reads it in the hole. Reach for <Progress shape=\"ring\"> when there is ONE value on a scale — a ring with a single segment is that component wearing a legend. Copy: the caption says what the whole ring adds up to, because a share is meaningless without its total. Segment labels are the categories' own na"
+    },
+    {
+      "name": "dropdown",
+      "type": "registry:ui",
+      "title": "Dropdown",
+      "description": "Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are built in, so spread `triggerProps` onto your own button. Items, sections and dividers are the parts. When the trigger is an ordinary labelled button, `<MenuButton>` is that already assembled — including the split form where a default action sits on its own half. Come here when the trigger is something else: an avatar, a ta"
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "EmptyState",
+      "description": "What a screen shows when it has nothing: an icon, a sentence about why it is empty, and the action that would fill it. Copy: the title says what is missing, not that something is missing — \"No invoices yet\", never \"No results\". The description says WHY it is empty and what would fill it; if the reason is a filter, say so, because that is a different screen from a first run."
+    },
+    {
+      "name": "entity-link",
+      "type": "registry:ui",
+      "title": "EntityLink",
+      "description": "One entity that lives ELSEWHERE, shown with enough of itself to be recognised: inline inside a sentence, or as a card with its state and its meta. Wrap it in <HoverCard> when the preview should appear on hover instead of on the page. Copy: the title is the record's name; the meta says what is waiting inside it, which is the reason to follow the link at all."
+    },
+    {
+      "name": "error-summary",
+      "type": "registry:ui",
+      "title": "ErrorSummary",
+      "description": "The on-submit list of what the form rejected: focusable, counted, and each row links to its own field. Render it above the first field. Copy: the title counts the problems and nothing else — \"2 things need fixing\". Each row repeats the field's own error word for word, because a summary that paraphrases sends the reader hunting for a message that does not exist."
+    },
+    {
+      "name": "expand-button",
+      "type": "registry:ui",
+      "title": "ExpandButton",
+      "description": "The chevron that opens and closes a row or a panel, with the rotation and the aria-expanded wiring already done. Copy: the label names what opens, not the direction — \"Show the transcript\", not \"Expand\"."
+    },
+    {
+      "name": "feedback-modal",
+      "type": "registry:ui",
+      "title": "FeedbackModal",
+      "description": "\"What went wrong?\" — negative-feedback dialog (matches the original)."
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Form field: a label (with optional required marker), the hint or error, then its control, wired together with `aria-describedby`. Copy: the label names the value, not the input — \"Work email\", not \"Enter your email\". The hint is a rule that applies before typing; the error is what happened and what to do — \"Add a country code\", never \"Invalid\"."
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "title": "FileUpload",
+      "description": "A drop area plus a native file picker, with a removable list of attached files. Wraps the raw <input type=\"file\"> (the one control with no DS equivalent) and adds drag-and-drop. The input stays the accessible control; the drop area is a labelled convenience on top. Copy: the hint states the limits BEFORE the choosing: which formats, what size, how many. A rule discovered by failing is a rule state"
+    },
+    {
+      "name": "filter-bar",
+      "type": "registry:ui",
+      "title": "FilterBar",
+      "description": "The row of filters above a list: FilterDropdowns side by side on desktop, one icon that opens them in a Modal sheet on mobile."
+    },
+    {
+      "name": "filter-dropdown",
+      "type": "registry:ui",
+      "title": "FilterDropdown",
+      "description": "One filter as a chip: the current selection reads on the trigger and the options are typed by their value. Copy: the label is the field being filtered; `allLabel` is the unfiltered state in the reader's words — \"Any region\", not \"All\"."
+    },
+    {
+      "name": "form-section",
+      "type": "registry:ui",
+      "title": "FormSection",
+      "description": "One named group of fields inside a form: a `fieldset` with a visible legend, an optional sentence, and a `<FormStack>` of Fields inside. Copy: the section title groups the questions under it in the reader's terms, and the description says why they are asked together."
+    },
+    {
+      "name": "form-stack",
+      "type": "registry:ui",
+      "title": "FormStack",
+      "description": "Vertical stack of Fields inside a modal or panel. The single shared layout for create/edit forms: every form gets identical rhythm from one place instead of each page hand-rolling its own flex column."
+    },
+    {
+      "name": "highlight",
+      "type": "registry:ui",
+      "title": "Highlight",
+      "description": "Marks the matched part of a result, so a list of hits shows WHY each one is a hit. Uses a real `<mark>`: the highlight is a semantic emphasis, not a colour, and a screen reader is entitled to know which words matched."
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "HoverCard",
+      "description": "Hover-triggered rich card — a profile preview on a name, a definition on a term. Opens on hover OR focus (keyboard-reachable), closes when the pointer leaves both trigger and card. For text-only hints use <Tooltip>; for a click-triggered panel use <Popover>."
+    },
+    {
+      "name": "icon",
+      "type": "registry:ui",
+      "title": "Icon",
+      "description": "Every icon in the system, addressed by Material-style name. Size comes from CSS through `size`, so changing an --icon-* token cascades everywhere at once. Copy: there is no copy here on purpose: an icon carries no words, so anything it must say belongs on the control around it."
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:ui",
+      "title": "IconButton",
+      "description": "A button whose label is an icon, which is why it always takes an aria-label and a Tooltip. `quiet` for inline toolbars, `filled` plus `tone` for send and stop. Copy: the aria-label is the same verb a worded button would carry, and it names the target when a screen repeats the control: \"Delete invoice INV-1041\", not \"Delete\"."
+    },
+    {
+      "name": "icon-disc",
+      "type": "registry:ui",
+      "title": "IconDisc",
+      "description": "An icon in a filled disc, at a proportion nobody has to choose. Use it for a section mark, a tile's badge, a heading's cap — anywhere a glyph needs to read as a thing rather than as punctuation. The glyph size is NOT a prop, and that is the whole component. A 20px icon in a 32px disc fills two thirds of it and reads as cramped; the brand mark in the rail sits at half, and that is the proportion th"
+    },
+    {
+      "name": "identity",
+      "type": "registry:ui",
+      "title": "Identity",
+      "description": "A person as one glance: avatar beside name and secondary line — the face next to the name, never a face floating a row above it. Consolidated from the showcase's and a second product's hand-rolled identity blocks. Copy: the name as the person writes it, and the secondary line is what they do here, not their whole title. Two lines, both short: this is a face with a name, not a profile."
+    },
+    {
+      "name": "inline-text",
+      "type": "registry:ui",
+      "title": "InlineText",
+      "description": "True inline editing (the vanilla `.editable` contract): the SAME element becomes editable on click — same font, same layout, no control chrome. Enter commits, Escape reverts, blur saves. Key it by `value` upstream so a server-confirmed update re-renders the committed text. Copy: the accessible label names the value being edited, not the act — \"Recording title\", not \"Edit title\"."
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "The single-line text field: label, invalid state and the shared control tokens. A screen never renders a bare input."
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "InputGroup",
+      "description": "A field with something attached to it: `https://` before the value, `kg` after it, a Copy button on the end. The GROUP wears the field frame and owns the focus ring; the input inside goes frameless, so the whole thing reads and behaves as one control rather than a box beside a box."
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "One key as a key cap, with real <kbd> semantics: the shortcut hint next to a CommandPalette trigger, a menu row, a help sheet. One Kbd per key; compose a combination as siblings with a plain \"+\" between them."
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "The text that names a control and is tied to it by htmlFor. Field already composes one; reach for it directly only outside a Field."
+    },
+    {
+      "name": "layout",
+      "type": "registry:ui",
+      "title": "Grid",
+      "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for a set of cards — auto-fitting equals by default, or `columns={12}` with `GridItem` spans when the set is deliberately unequal. `gap` is a token step, never a raw px."
+    },
+    {
+      "name": "line-chart",
+      "type": "registry:ui",
+      "title": "LineChart",
+      "description": "A value over time, as a line: the analytical card's first form when the question is \"which way is it going\". Carries its own scale, grid, legend and a crosshair readout, and reads as a table to a screen reader. Reach for <Sparkline> when the shape sits beside a number and needs no axis, and for <BarChart> when the x axis is categories rather than time. Copy: the accessible label says what the line"
+    },
+    {
+      "name": "link",
+      "type": "registry:ui",
+      "title": "Link",
+      "description": "A link: text that goes somewhere. Use it for navigation, and `<Button>` for something that happens on this page — the difference is what the browser does, not how it looks, so a link that acts is a button wearing a costume."
+    },
+    {
+      "name": "link-tile",
+      "type": "registry:ui",
+      "title": "LinkTile",
+      "description": "A clickable tile: navigates on click/Enter/Space, with an overflow (⋮) menu in its top-inline-end corner. The caller supplies the title, the menu items, the open handler and the body. Copy: the title is the destination's own name, so a reader arriving there recognises where they are."
+    },
+    {
+      "name": "list-cluster",
+      "type": "registry:ui",
+      "title": "ListCluster",
+      "description": "Centered \"welcome\" list: big title + subtitle, the tile grid, a large CTA under the cards. Shown while everything fits the viewport (useSimpleFit). ONE component for Workshops, Transcripts and Discovery — the three lists must always look and behave the same. Copy: the hero title welcomes and names the product; the subtitle says in one sentence what a first-time reader can do here. This is the one "
+    },
+    {
+      "name": "list-item",
+      "type": "registry:ui",
+      "title": "ListItem",
+      "description": "One clickable row of a list: an optional marker, leading media, title, meta and a trailing action, all inside the row's own hit area."
+    },
+    {
+      "name": "load-more",
+      "type": "registry:ui",
+      "title": "LoadMore",
+      "description": "The end of a list that has more of it. `<Pagination>` pages a known total; this is for the ones where the total is not known and may not be finite. Copy: name what arrives, with the number when it is known — \"Show 20 more invoices\". \"Load more\" tells the reader nothing about what they are about to wait for."
+    },
+    {
+      "name": "logo-wall",
+      "type": "registry:ui",
+      "title": "LogoWall",
+      "description": "Customer or partner marks in ONE optical weight: unlike logos are drawn at unlike strengths, and a row of them at full colour reads as noise rather than as proof. Normalising that is systems work — done per page it is done by eye, and looks it. Copy: every `alt` is the organisation's name in full. The mark IS the information here, so a reader who cannot see it learns who is on the wall only from t"
+    },
+    {
+      "name": "menu-button",
+      "type": "registry:ui",
+      "title": "MenuButton",
+      "description": "A button that opens a MENU, in its two forms: one target that opens the menu, or — with `onClick` — a split button whose label commits the default action and whose chevron opens the rest. It exists because the system had neither form and both were being assembled by hand in eight places (2026-08-26): the render-prop trigger, the chevron, `data-open`, and — the part that breaks silently — an `aria-"
+    },
+    {
+      "name": "menu-icon-button",
+      "type": "registry:ui",
+      "title": "MenuIconButton",
+      "description": "A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra actions a toolbar has no room to name. It is <MenuButton>'s pair, and the split between them is the same one the system already makes between `Button` and `IconButton`: a control with no words in it has to carry a name and a tooltip, and a separate component is what makes that unavoidable rather than remembered. Folding it"
+    },
+    {
+      "name": "meta-item",
+      "type": "registry:ui",
+      "title": "MetaItem",
+      "description": "One piece of secondary information (a date, an owner, a count) with its icon, sized to sit under a title."
+    },
+    {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "Meter",
+      "description": "A linear progress / gauge on a fixed scale, with an optional target marker. The fill width and marker position are the only dynamic inline styles. Copy: the label carries the sentence, because a gauge with a number and no subject is a decoration: \"Storage used, 62 of 100 GB\"."
+    },
+    {
+      "name": "modal",
+      "type": "registry:ui",
+      "title": "Modal",
+      "description": "Dialog in a portal: focus trap, ESC, body scroll lock and a foot for the actions. `size` widens it, and `sm` is for a yes/no confirmation only — a dialog that collects anything needs `md` or wider. ONE dialog, any content. A confirmation is this with a sentence in it; a form is this with a <FormStack> of Fields in it. Both used to be blocks of their own and neither carried behaviour, so both are n"
+    },
+    {
+      "name": "nav-drawer-button",
+      "type": "registry:ui",
+      "title": "NavDrawerButton",
+      "description": "Opens the navigation drawer, in the leading slot of the screen's top bar and only below the drawer breakpoint. `<PageHeader>` renders it when the screen has no `onBack`; a screen with its own bar renders it there instead."
+    },
+    {
+      "name": "number-input",
+      "type": "registry:ui",
+      "title": "NumberInput",
+      "description": "A number field with stepper buttons. The native <input type=\"number\"> keeps the spinbutton role, keyboard and validation; the -/+ buttons are the click affordance. Clamps to min/max. Wrap in <Field> for a visible label. Copy: the label carries the unit, so the number never has to — \"Weight in kg\", not \"Weight\" with a kg inside the box."
+    },
+    {
+      "name": "page-header",
+      "type": "registry:ui",
+      "title": "PageHeader",
+      "description": "The top of a page: title, breadcrumb and the page-level actions. Page chrome belongs here, not in a screen's own CSS. The title stands alone by RULE: no text renders under it (a subtitle prop existed and was removed 2026-08-20 — explanatory lines under titles are banned from this system; what used to live there is content and belongs in the page body). Copy: the title is the record's own name, not"
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Pager for a known total: renders nothing for a single page and collapses long ranges with gaps. LoadMore is the one for a list with no total. Copy: the accessible name says WHICH collection is paged — \"Invoices pages\", not \"Pagination\". A screen with two paged lists is otherwise two identical controls."
+    },
+    {
+      "name": "password-input",
+      "type": "registry:ui",
+      "title": "PasswordInput",
+      "description": "A password field that can be read back. Every login checklist asks for this and no field in this system had it, so ten of them shipped as a bare `type=\"password\"`: a typo in a masked field is invisible, and the only recovery is to clear it and start again. The toggle is a button rather than a checkbox because it does not change what will be submitted, only what is on screen."
+    },
+    {
+      "name": "pivot-table",
+      "type": "registry:ui",
+      "title": "PivotTable",
+      "description": "Two categorical axes and one measure in the cell: teams by month, region by product, skill by level. A crosstab, in other words, and the one table shape where a cell is identified by both of its headers rather than by its row. Not for one axis (that is a `<Table>` with a sortable column), and not for a value the reader has to read exactly while it is painted (`heat` off). Copy: row and column head"
+    },
+    {
+      "name": "plan-card",
+      "type": "registry:ui",
+      "title": "PlanCard",
+      "description": "One plan in a pricing row: what it is called, what it costs, what it includes and the single action that takes it. Copy: the name is what the reader will call it afterwards, not a tier number. Features are outcomes, not switches: \"Everyone sees the same board\", not \"Shared board: yes\". The price says its period every time."
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Click-triggered floating panel for RICH content: a form, a group of controls, a detail card. <Tooltip> is text on hover, <Dropdown> is a menu of items; this is neither. Closes on outside click or Escape, returning focus to the trigger. The content is a labelled role=\"dialog\". Copy: the accessible name says what the panel holds, because it is a dialog and announces itself before its content."
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "How far along something is — as a bar or as a ring. One component, because a bar and a ring are one statement in two shapes: HTML makes the meaningful split elsewhere, between `<progress>` (work moving toward done) and `<meter>` (a value on a scale that does not move), and this system keeps that split as <Progress> and <Meter>. Line versus circle is a choice about the room available, not about wha"
+    },
+    {
+      "name": "prose",
+      "type": "registry:ui",
+      "title": "Prose",
+      "description": "A sentence, at a measure. The measure is the whole reason it exists. Text set to whatever width its container happens to be is text the eye loses the start of, and every screen that noticed re-wrote the same `max-inline-size` with a slightly different number: four files in this repository's own site arrived at 62, 68, 70 and \"none\" before this component did (2026-08-23). One number, once, and it i"
+    },
+    {
+      "name": "quote",
+      "type": "registry:ui",
+      "title": "Quote",
+      "description": "A quotation with its attribution, in real <figure>/<blockquote> semantics — a testimonial, a finding quoted from a report, a line from an interview. For the system's own voice use ordinary text; this is for someone else's. Copy: the words are the speaker's, unedited; trimming a quote to fit is how a testimonial stops being one. `by` is a person, `source` is where they said it or what they do — an "
+    },
+    {
+      "name": "radio",
+      "type": "registry:ui",
+      "title": "Radio",
+      "description": "Single custom radio, one option in a set where exactly one is chosen. Native <input type=\"radio\"> (so a shared `name` gives arrow-key navigation + form semantics for free), visually themed. Copy: options are parallel: same part of speech, same length, same grain. \"Weekly\" beside \"Every Monday at 9\" reads as two different questions."
+    },
+    {
+      "name": "range-slider",
+      "type": "registry:ui",
+      "title": "RangeSlider",
+      "description": "A bounded pair on one track: a price between two values, any filter with a \"from\" and a \"to\" on the same scale. Two native range inputs share the track, so the keyboard contract comes for free; each thumb clamps against the other instead of crossing it. Single value? That is <Slider>. Copy: the label names the span and its unit; the two thumbs need one name between them, not \"min\" and \"max\"."
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "title": "Rating",
+      "description": "A star rating, a score out of `max` stars. Interactive when `onChange` is given (a radiogroup: click or Arrow keys set the score), read-only otherwise (an img with the score as its name). Half values render a half-filled star. Copy: the label says what is being rated, and the value is spoken as a fraction — \"4 out of 5\" — because a row of marks says nothing to a reader who cannot see it."
+    },
+    {
+      "name": "rich-message",
+      "type": "registry:ui",
+      "title": "RichMessage",
+      "description": "A message or AI answer as it was written: headings, quotes, code, lists and tables from TYPED blocks — never from HTML, so there is nothing to sanitise and nothing to inject. A table scrolls inside its own container; a thread that scrolls sideways has stopped being readable."
+    },
+    {
+      "name": "save-status",
+      "type": "registry:ui",
+      "title": "SaveStatus",
+      "description": "Whether the work is safe right now: saving, saved at a time, or failed. The status line a draft form owes the user, beside its actions. Copy: says whether the work is safe right now, in the fewest words that carry it — \"Saved 2 minutes ago\", \"Could not save\". Never \"All changes saved\" when they are not."
+    },
+    {
+      "name": "schedule-grid",
+      "type": "registry:ui",
+      "title": "ScheduleGrid",
+      "description": "A resource against time: rooms by hour, people by day, machines by week. Resources are the rows and time runs along the columns, which is the shape that makes a GAP visible — and a gap is what a schedule is read for. A booking spans the slots it actually occupies (one block, `colSpan`), and a merged cell names its headers so a screen reader can still say which room and which hours it is. `Calendar"
+    },
+    {
+      "name": "search-input",
+      "type": "registry:ui",
+      "title": "SearchInput",
+      "description": "The search field: the icon, the clear button and the debounce contract in one control. Copy: the placeholder names the field being searched — \"Search invoices\" — so a screen with two searches is two different controls."
+    },
+    {
+      "name": "section-label",
+      "type": "registry:ui",
+      "title": "SectionLabel",
+      "description": "The heading that names a section inside a page or a panel: the voice of a card title, one step larger. Rank comes from size and colour, not from caps. Copy: names what the section holds, in the reader's words. It is a heading and reads like one — not a shouted category."
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "title": "SegmentedControl",
+      "description": "A single-choice toggle rendered as adjacent segments — a compact radio group for switching a view (List / Board, Day / Week / Month). Uses the radiogroup pattern (Arrow keys move and select); distinct from <Tabs>, which navigates between panels, and from <Select>, which is for longer lists. Copy: one or two words per segment, parallel with each other. They sit side by side, so a long one makes eve"
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Single choice from a short list, built on Dropdown so the menu can match the trigger width. Combobox is the one for a long list. Copy: the label names the value, the placeholder names the choice not yet made — \"Choose a region\". Options are parallel and never restate the label."
+    },
+    {
+      "name": "selectable-tile",
+      "type": "registry:ui",
+      "title": "SelectableTile",
+      "description": "A card that IS the control: the whole surface picks the option it shows, over a real radio or checkbox so the keyboard and the form get it for free. Reach for <LinkTile> when the tile navigates instead, for <Radio> or <Checkbox> when the options are words, and for <PlanCard> when the option is a priced plan. Copy: the title is the choice, the description is what picking it means for the reader — n"
+    },
+    {
+      "name": "session-pill",
+      "type": "registry:ui",
+      "title": "SessionPill",
+      "description": "The floating \"a session is live elsewhere\" pill: pulsing dot, what is running, the timer, one press back to it. Rendered once by the app shell so it survives navigation, and hidden on the session's own screen — the two rules both hand-rolled versions (a live-call bar and a RecordingPill) discovered independently. Presentational: state, polling and routing stay in the app. Copy: names what is runni"
+    },
+    {
+      "name": "setup-guide",
+      "type": "registry:ui",
+      "title": "SetupGuide",
+      "description": "The first-run checklist (Shopify's setup guide): steps with their state and the control that performs each, a counted progress line, and a dismiss that appears only when the work is done. Lives at the top of a product's home until it has earned its removal. Copy: every step starts with a verb and describes one action — \"Connect a calendar\". The detail says why it is worth doing, not how the contro"
+    },
+    {
+      "name": "side-nav",
+      "type": "registry:ui",
+      "title": "SideNav",
+      "description": "The application navigation column: sections, the active route, and the collapse to an icon rail."
+    },
+    {
+      "name": "side-panel",
+      "type": "registry:ui",
+      "title": "SidePanel",
+      "description": "Reusable side-panel chrome: header (title + optional close) over a scrolling body, with an optional pinned footer. The container's width/borders/radius are left to the consumer via `className`. Used by ContentSidePanel and form panels. Copy: the title names what the panel holds, in the same words the reader used to open it."
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Loading placeholder: the shape of content before it arrives, so the layout does not jump when it does. Decorative by design (aria-hidden) — announce the loading state once, on the region, with a <Spinner> or aria-busy, not on every shimmer. The pulse animation is disabled under prefers-reduced-motion."
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Single-value range input. Built on the native <input type=\"range\">, so the keyboard contract (arrows, Home/End, Page Up/Down) and screen-reader support come for free; this adds the label row, the value read-out and the themed track. The filled portion is driven by a --pct custom property. Copy: the label carries the unit; the value is announced as the reader would say it, not as a raw number."
+    },
+    {
+      "name": "sparkline",
+      "type": "registry:ui",
+      "title": "Sparkline",
+      "description": "The shape of a number over time: a line with no axes, no grid and no tooltip — the trend part of a KPI card, not a chart. Reach for <Meter> when the value is judged against a target instead of against its own past. Copy: the accessible label says what the trend is OF and over what, because the shape alone is unreadable to anyone who cannot see it."
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "The one busy indicator for the whole system: a rotating loader icon. Inline by default (sits next to text or inside a button); center it with the layout around it. Animation is paused under prefers-reduced-motion (reset.css). Copy: the label says what is being waited for — \"Loading invoices\" — and it is announced, so it is a sentence a person can hear."
+    },
+    {
+      "name": "stat",
+      "type": "registry:ui",
+      "title": "Stat",
+      "description": "A KPI tile: a large value with a caption, and — when the number is judged rather than just read — the comparison and the trend behind it. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>. Copy: the label says what the number counts, with its unit and its period — \"Invoices paid this quarter\". The delta says what it is compared to, or it is not a comparison."
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "Progress across an ordered set of steps (a wizard, a multi-step form). Shows which are done (check), which is active (aria-current=\"step\") and which are still ahead. Presentational: the parent owns `current` and what each step contains. Completed steps can be clickable to go back. Copy: step names are nouns, short and parallel, and they stay the same word in the step and in its page title."
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "An on/off setting that applies the moment it is flipped (role=\"switch\"). A checkbox is for something that applies when a form is submitted. Copy: the label names the state when ON, and never repeats the word \"on\": \"Weekly digest\", not \"Weekly digest on/off\"."
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "A styled, accessible table. Compose inside <Card flush> for an edge-to-edge surface. Sub-parts: THead, TBody, TFoot, Tr, Th, Td, TrGroup, TrDetail, TableEmpty, TableSkeleton. Copy: the caption names what the table lists, even when hidden — it is the table's only name for a screen reader."
+    },
+    {
+      "name": "table-toolbar",
+      "type": "registry:ui",
+      "title": "TableToolbar",
+      "description": "The row above a table: what it is called, how many rows it has, what narrows it, and what acts on it. Distinct from `<FilterBar>`, which is one of the things that goes inside it, and from `<PageHeader>`, which belongs to the screen rather than to this table. While a selection exists the toolbar is replaced by `batch`, which is the one arrangement that cannot mislead: an Export next to a \"3 selecte"
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "One panel at a time behind a labelled list, with full ARIA and arrow keys. SegmentedControl is the compact single choice with no panels. Copy: nouns, not verbs — a tab is a place, not an action. One or two words each, and parallel: \"Overview, Findings, People\", not \"Overview, Show findings, The team\"."
+    },
+    {
+      "name": "tag",
+      "type": "registry:ui",
+      "title": "Tag",
+      "description": "A static, non-interactive label token in a pill — the read-only counterpart to <Chip> (which is a button). Optionally removable: the label does nothing, only the trailing X drops the token, so the remove control can be its own button (a remove button nested inside a Chip button would be invalid HTML). Copy: the value as the reader wrote or chose it, unaltered. A tag is data; rewording it makes it "
+    },
+    {
+      "name": "tag-group",
+      "type": "registry:ui",
+      "title": "TagGroup",
+      "description": "Several labels in one cell, with the ones that do not fit counted rather than wrapped: a wall of pills makes every row a different height and the column unreadable. The overflow says how many are left and names them on hover. The twin of `AvatarGroup`, which does the same for faces."
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:ui",
+      "title": "TagInput",
+      "description": "Free-text tags: type, press Enter or comma, get a removable <Tag>. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag. Copy: the placeholder says how to add one — \"Type and press Enter\" — becaus"
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Multi-line counterpart to <Input> — reuses the `.input` field styling (border, radius, focus ring, hover, placeholder) and only overrides the height/resize behaviour."
+    },
+    {
+      "name": "thumbnail",
+      "type": "registry:ui",
+      "title": "Thumbnail",
+      "description": "The picture that identifies a row: a product, a document, a frame of a recording. A fixed box, so it never becomes the row's height driver and every row in the column is the same height whatever the image is. `Avatar` is the one for a person (it is round and falls back to initials); `CardMedia` is the one for a card, where the frame IS the content. Copy: the `alt` says what the picture shows, not "
+    },
+    {
+      "name": "time",
+      "type": "registry:ui",
+      "title": "Time",
+      "description": "A timestamp said the way a reader says it, with the exact one underneath. The relative label is never the only copy of the fact: `dateTime` carries the machine-readable instant and `title` the full local date, so \"2 hours ago\" is hoverable and parseable rather than the only thing on the page."
+    },
+    {
+      "name": "time-input",
+      "type": "registry:ui",
+      "title": "TimeInput",
+      "description": "A time-of-day field: the native <input type=\"time\"> in the system's Input clothes, so the picker, the validation and the keyboard stay the browser's. The value is always 24-hour \"HH:MM\"; the browser shows it in the user's own clock convention. Wrap it in <Field> for its label, like <Input>."
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "A vertical sequence of events joined by a connecting line — an audit trail, a delivery history, a changelog. Each node is a marker (dot or icon) with a title, an optional time and body. Presentational; the caller orders the items and formats the times."
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "A single transient confirmation — what happened, and the one thing to do about it. Reach for it directly only when the message belongs inside a panel rather than in the corner of the screen; everywhere else render <ToastStack>, which is a positioned list of these and owns the timers. Copy: past tense and short: it appears after the fact. \"Invoice sent\", not \"Sending invoice\". If there is an undo, "
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Text on hover and focus, and the only right answer for naming an icon-only control. Popover is a card on click, Dropdown is a menu. Copy: names the control, it does not explain it. If the words are needed to decide, they belong on the page — a tooltip is unreachable on a touch screen and gone on the next keystroke."
+    },
+    {
+      "name": "tree",
+      "type": "registry:ui",
+      "title": "Tree",
+      "description": "Hierarchical expand/collapse list (files, categories). The WAI-ARIA tree: Up/Down move between VISIBLE rows, Right expands or steps into a group, Left collapses or steps out, Enter selects. Controlled selection and expansion, or self-managed. Copy: node labels are the things' own names, and the level is carried by the structure, so a label never repeats its parent."
+    },
+    {
+      "name": "tree-table",
+      "type": "registry:ui",
+      "title": "TreeTable",
+      "description": "Hierarchy WITH columns: a bill of materials, an org rollup, a folder tree with size and owner. `<Tree>` is the same hierarchy with one column of labels, and `<Table>` is the same columns with no nesting. The ARIA pattern is `treegrid`, and it is a contract: the rows are the widget's stops, Right opens a branch or steps into it, Left closes it or steps out, and the whole thing is one tab stop. Copy"
+    },
+    {
+      "name": "truncate",
+      "type": "registry:ui",
+      "title": "Truncate",
+      "description": "A value that does not fit, cut with an ellipsis, with the whole of it in a tooltip. The tooltip appears only when the text is ACTUALLY clipped, so a column of short values has no hover behaviour at all. A table gets one of three answers to a long value: wrap it (and lose the scan), widen the row (and lose the page), or this. Never use it on a column header: a header nobody can read is a column nob"
+    },
+    {
+      "name": "user-menu",
+      "type": "registry:ui",
+      "title": "UserMenu",
+      "description": "Account trigger for a sidebar footer: name + role expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions. Copy: the trigger names the person, and the items are verbs — \"Sign out\", not \"Sign-out\"."
+    }
+  ]
+}

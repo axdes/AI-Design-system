@@ -1,0 +1,37 @@
+/* A WALL, not a paragraph of logos.
+ *
+ * It used to be `flex-wrap`, which packs the marks from the leading edge and
+ * leaves whatever is left over at the end of the last line: four wordmarks in a
+ * card came out as a ragged 2x2 block pinned to the left, and read as a list of
+ * headings someone had failed to align (owner, 23.08). A wall is a GRID —
+ * even cells, each mark centred in its own, however many fit. */
+.logo-wall {
+  /* Local to this component: the cap on how tall any mark may draw itself, and
+   * the narrowest cell a wordmark still reads in. */
+  --logo-height: var(--space-8);
+  --logo-cell: 8rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--logo-cell), 1fr));
+  place-items: center;
+  gap: var(--space-6) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.logo-wall[data-size="sm"] { --logo-height: var(--space-6); --logo-cell: 7rem; gap: var(--space-4); }
+.logo-wall[data-size="lg"] { --logo-height: var(--space-12); --logo-cell: 10rem; }
+
+/* The normalisation, and the whole reason this is a component: one height, one
+ * weight, one opacity, so a heavy wordmark and a thin one carry the same
+ * emphasis. `colour` opts out for the row somebody negotiated. */
+.logo-wall img {
+  display: block;
+  block-size: var(--logo-height);
+  inline-size: auto;
+  max-inline-size: 100%;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+.logo-wall[data-colour] img { filter: none; opacity: 1; }

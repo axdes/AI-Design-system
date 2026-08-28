@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hover-card",
+  "type": "registry:ui",
+  "title": "HoverCard",
+  "description": "Hover-triggered rich card — a profile preview on a name, a definition on a term. Opens on hover OR focus (keyboard-reachable), closes when the pointer leaves both trigger and card. For text-only hints use <Tooltip>; for a click-triggered panel use <Popover>.",
+  "dependencies": [
+    "react-dom"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/HoverCard/HoverCard.css",
+      "content": ".hover-card {\n  position: fixed;\n  z-index: var(--z-dropdown);\n  max-inline-size: 20rem;\n  padding: var(--space-4);\n  background: var(--popover);\n\n  color: var(--popover-foreground);\n  border: 1px solid var(--border);\n  border-radius: var(--radius-lg);\n  box-shadow: var(--shadow-lg);\n  font-size: var(--font-sm);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/HoverCard/HoverCard.css"
+    },
+    {
+      "path": "src/components/HoverCard/HoverCard.tsx",
+      "content": "import './HoverCard.css'\nimport { cloneElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react'\nimport { createPortal } from 'react-dom'\nimport { cn } from '../lib/cn'\nimport { composeRefs } from '../lib/composeRefs'\n\ntype ChildProps = {\n  ref?: React.Ref<HTMLElement>\n  onMouseEnter?: (e: React.MouseEvent) => void\n  onMouseLeave?: (e: React.MouseEvent) => void\n  onFocus?: (e: React.FocusEvent) => void\n  onBlur?: (e: React.FocusEvent) => void\n  'aria-describedby'?: string\n}\n\ntype Props = {\n  /** The element that reveals the card on hover/focus. */\n  children: ReactElement<ChildProps>\n  /** Rich content of the card. */\n  content: ReactNode\n  /** Delay before it opens (ms). Default 200. */\n  openDelay?: number\n  className?: string\n}\n\nconst GAP = 8\nconst EDGE = 8\n\n/* Hover-triggered rich card — a profile preview on a name, a definition on a\n * term. Opens on hover OR focus (keyboard-reachable), closes when the pointer\n * leaves both trigger and card. For text-only hints use <Tooltip>; for a\n * click-triggered panel use <Popover>. */\nexport function HoverCard({ children, content, openDelay = 200, className }: Props) {\n  const [pos, setPos] = useState<{ top: number; left: number } | null>(null)\n  const triggerRef = useRef<HTMLElement | null>(null)\n  const cardRef = useRef<HTMLDivElement | null>(null)\n  const timerRef = useRef<number | null>(null)\n  const overCardRef = useRef(false)\n  const id = useId()\n\n  useEffect(() => () => { if (timerRef.current) window.clearTimeout(timerRef.current) }, [])\n\n  const place = () => {\n    const t = triggerRef.current\n    if (!t) return\n    const r = t.getBoundingClientRect()\n    setPos({ top: r.bottom + GAP, left: Math.max(EDGE, r.left) })\n  }\n  const open = () => {\n    if (timerRef.current) window.clearTimeout(timerRef.current)\n    timerRef.current = window.setTimeout(place, openDelay)\n  }\n  const scheduleClose = () => {\n    if (timerRef.current) window.clearTimeout(timerRef.current)\n    timerRef.current = window.setTimeout(() => { if (!overCardRef.current) setPos(null) }, 120)\n  }\n\n  /* Compose, do not replace: cloneElement overwrites the child's ref, so without\n   * this any ref the caller had on the element would silently stop being filled\n   * the moment they wrapped it in a HoverCard. */\n  // eslint-disable-next-line @eslint-react/no-clone-element, react-hooks/refs -- injects hover/focus handlers into the trigger without an extra wrapper span; the ref below is composed, not read\n  const child = cloneElement(children, {\n    // eslint-disable-next-line react-hooks/refs -- composeRefs only stores these; React calls the result at commit, nothing is read during render\n    ref: composeRefs<HTMLElement>(triggerRef, (children as ReactElement<ChildProps>).props.ref),\n    onMouseEnter: (e: React.MouseEvent) => { open(); children.props.onMouseEnter?.(e) },\n    onMouseLeave: (e: React.MouseEvent) => { scheduleClose(); children.props.onMouseLeave?.(e) },\n    onFocus: (e: React.FocusEvent) => { place(); children.props.onFocus?.(e) },\n    onBlur: (e: React.FocusEvent) => { scheduleClose(); children.props.onBlur?.(e) },\n    'aria-describedby': pos ? id : children.props['aria-describedby'],\n  })\n\n  return (\n    <>\n      {child}\n      {pos && createPortal(\n        <div\n          ref={cardRef}\n          id={id}\n          role=\"tooltip\"\n          className={cn('hover-card', className)}\n          data-raised=\"popover\"\n          style={{ top: pos.top, left: pos.left }}\n          onMouseEnter={() => { overCardRef.current = true }}\n          onMouseLeave={() => { overCardRef.current = false; scheduleClose() }}\n        >\n          {content}\n        </div>,\n        document.body,\n      )}\n    </>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/HoverCard/HoverCard.tsx"
+    },
+    {
+      "path": "src/components/HoverCard/index.ts",
+      "content": "export { HoverCard } from './HoverCard'\n",
+      "type": "registry:ui",
+      "target": "@ui/HoverCard/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/HoverCard.json"
+}

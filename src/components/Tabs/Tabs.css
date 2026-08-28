@@ -1,13 +1,27 @@
+/* A grid, not a column: every panel lands in the same cell (row 2), so the row
+ * is as tall as the tallest panel and switching a tab no longer moves the
+ * content under the card. */
 .tabs {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-3);
 }
 .tablist {
-  display: inline-flex;
+  grid-row: 1;
+  display: flex;
   gap: var(--space-4);
   border-bottom: 1px solid var(--border);
 }
+.tablist[data-justify="center"] { justify-content: center; }
+.tablist[data-justify="end"] { justify-content: flex-end; }
+
+.tabpanel {
+  grid-row: 2;
+  grid-column: 1;
+  min-inline-size: 0;
+}
+/* Present in the layout, absent to everything else. */
+.tabpanel:not([data-selected]) { visibility: hidden; }
 .tab {
   position: relative;
   padding: var(--space-2) 0;
@@ -23,13 +37,17 @@
 }
 .tab:hover { color: var(--foreground); }
 .tab[aria-selected="true"] { color: var(--foreground); }
+/* --primary-accent, not --primary: this is a MARK on a surface, not a filled
+ * control. The brand fill measures 1.93:1 on a dark card, so the underline that
+ * says which tab you are on had no boundary in that theme; the ink role is the
+ * one the system already lightens for dark. */
 .tab[aria-selected="true"]::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   inset-block-end: -1px;
   height: var(--space-2xs);
-  background: var(--primary);
+  background: var(--primary-accent);
   border-radius: var(--radius-full);
 }
 .tab:focus-visible {
@@ -44,22 +62,24 @@
   gap: var(--space-2);
   border-bottom: none;
 }
+/* The pill fills itself with whatever separates it from the surface it is on —
+ * white on the grey page, grey on a white card — and hovers one stop further
+ * from that surface. It used to hover to `--card` outright, which on a card is
+ * white on white (owner, 2026-08-22). */
 .tabs[data-appearance='pills'] .tab {
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
-  background: var(--accent);
+  background: var(--surface-contrast);
   color: var(--accent-foreground);
   transition:
     background var(--duration-fast),
     color var(--duration-fast);
 }
-/* Hover lifts the pill to the elevated (white in light) surface, like the
- * filled IconButton. Mixing the dark foreground into --accent via OKLCH drifts
- * the hue through a muddy brown/red, so use the card surface instead. */
 .tabs[data-appearance='pills'] .tab:hover {
-  background: var(--card);
+  background: var(--surface-contrast-hover);
   color: var(--accent-foreground);
 }
+.tabs[data-appearance='pills'] .tab:active { background: var(--surface-contrast-active); }
 .tabs[data-appearance='pills'] .tab[aria-selected='true'] {
   background: var(--primary);
   color: var(--primary-foreground);

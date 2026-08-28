@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "feedback-modal",
+  "type": "registry:ui",
+  "title": "FeedbackModal",
+  "description": "\"What went wrong?\" — negative-feedback dialog (matches the original).",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/chip.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/field.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/modal.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/textarea.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/FeedbackModal/FeedbackModal.css",
+      "content": ".feedback-desc { margin: 0 0 var(--space-4); color: var(--muted-foreground); line-height: var(--leading-normal); }\n\n.feedback-reasons { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-block-end: var(--space-4); }\n",
+      "type": "registry:ui",
+      "target": "@ui/FeedbackModal/FeedbackModal.css"
+    },
+    {
+      "path": "src/components/FeedbackModal/FeedbackModal.tsx",
+      "content": "import './FeedbackModal.css'\nimport { useState } from 'react'\nimport { Button } from '../Button'\nimport { Chip } from '../Chip'\nimport { Textarea } from '../Textarea'\nimport { Field } from '../Field'\nimport { Modal } from '../Modal'\n\nconst REASONS = ['wrong', 'incomplete', 'unclear', 'other'] as const\ntype Reason = (typeof REASONS)[number]\n\n/* All display copy comes from the caller — the DS component stays i18n-agnostic\n * (no useTranslation / no app locale keys baked in). */\nexport type FeedbackLabels = {\n  title: string\n  close: string\n  send: string\n  desc: string\n  detailsLabel: string\n  detailsPlaceholder: string\n  reasons: Record<Reason, string>\n}\n\ntype Props = {\n  open: boolean\n  onClose: () => void\n  /** Called with the picked reason + free-text details on send. */\n  onSubmit: (reason: Reason | null, details: string) => void\n  labels: FeedbackLabels\n}\n\n/* \"What went wrong?\" — negative-feedback dialog (matches the original). */\nexport function FeedbackModal({ open, onClose, onSubmit, labels }: Props) {\n  const [reason, setReason] = useState<Reason | null>(null)\n  const [details, setDetails] = useState('')\n\n  const reset = () => { setReason(null); setDetails('') }\n  const close = () => { reset(); onClose() }\n  const send = () => { onSubmit(reason, details.trim()); reset() }\n\n  return (\n    <Modal\n      open={open}\n      onClose={close}\n      title={labels.title}\n      size=\"md\"\n      footer={\n        <>\n          <Button variant=\"secondary\" onClick={close}>{labels.close}</Button>\n          <Button onClick={send}>{labels.send}</Button>\n        </>\n      }\n    >\n      <p className=\"feedback-desc\">{labels.desc}</p>\n      <div className=\"feedback-reasons\">\n        {REASONS.map((r) => (\n          <Chip\n            key={r}\n            selected={reason === r}\n            onClick={() => setReason((cur) => (cur === r ? null : r))}\n          >\n            {labels.reasons[r]}\n          </Chip>\n        ))}\n      </div>\n      <Field label={labels.detailsLabel} htmlFor=\"feedback-details\">\n        <Textarea\n          id=\"feedback-details\"\n          rows={4}\n          placeholder={labels.detailsPlaceholder}\n          value={details}\n          onChange={(e) => setDetails(e.target.value)}\n        />\n      </Field>\n    </Modal>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/FeedbackModal/FeedbackModal.tsx"
+    },
+    {
+      "path": "src/components/FeedbackModal/index.ts",
+      "content": "export { FeedbackModal } from './FeedbackModal'\n",
+      "type": "registry:ui",
+      "target": "@ui/FeedbackModal/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/FeedbackModal.json"
+}

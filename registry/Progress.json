@@ -1,0 +1,103 @@
+{
+  "ref": "Progress",
+  "level": "atom",
+  "description": "How far along something is — as a bar or as a ring. One component, because a bar and a ring are one statement in two shapes: HTML makes the meaningful split elsewhere, between `<progress>` (work moving toward done) and `<meter>` (a value on a scale that does not move), and this system keeps that split as <Progress> and <Meter>. Line versus circle is a choice about the room available, not about what is being said, so it is a prop (2026-08-25; it was two components, and the ring's own description called itself the counterpart of the bar). With `value` it is determinate; without, a bar slides for \"working, duration unknown\". For a spinning busy marker use <Spinner>; for a gauge with a target use <Meter>. Copy: the label says what is progressing and toward what — \"Uploading 3 of 12 files\". A bare percentage is a number with no subject.",
+  "exports": [
+    "Progress"
+  ],
+  "main": "Progress",
+  "from": "@/components/Progress",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": false,
+      "description": "0..max filled fraction. Omit for an INDETERMINATE bar (unknown duration); a ring has no indeterminate form."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false
+    },
+    {
+      "name": "shape",
+      "type": "'bar' | 'ring'",
+      "required": false,
+      "description": "Linear or a ring. A shape, not a meaning — both say the same thing about the same value.",
+      "values": [
+        "bar",
+        "ring"
+      ]
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "values": [
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "description": "Ring only: how big the ring is. A bar takes the width it is given.",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true,
+      "description": "Accessible name of what is progressing."
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "required": false,
+      "description": "Show the value — beside the label on a bar, inside the ring."
+    },
+    {
+      "name": "formatValue",
+      "type": "(value: number, max: number) => string",
+      "required": false,
+      "description": "Formats the shown value (default is the rounded percentage)."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Progress/Progress.tsx",
+  "variants": {
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Layout"
+  ],
+  "example": "/* The same statement in both shapes: a bar takes the width it is given and\n   suits a row of them, a ring is compact enough for a dashboard tile. Drop\n   `value` and the bar slides for \"working, duration unknown\" — a ring has no\n   such form, because a circle that never fills reads as broken. */\n\n<Stack gap={6}>\n  <Progress value={64} label=\"Documents processed\" showValue />\n  <Row gap={6}>\n    <Progress shape=\"ring\" value={64} label=\"Documents processed\" showValue />\n    <Progress shape=\"ring\" value={92} tone=\"success\" size=\"lg\" label=\"Coverage\" showValue />\n  </Row>\n  <Progress label=\"Importing\" />\n</Stack>"
+}

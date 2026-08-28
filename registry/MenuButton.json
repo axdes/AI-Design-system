@@ -1,0 +1,83 @@
+{
+  "ref": "MenuButton",
+  "level": "molecule",
+  "description": "A button that opens a MENU, in its two forms: one target that opens the menu, or — with `onClick` — a split button whose label commits the default action and whose chevron opens the rest. It exists because the system had neither form and both were being assembled by hand in eight places (2026-08-26): the render-prop trigger, the chevron, `data-open`, and — the part that breaks silently — an `aria-label` on the half that is only an icon. One part, so the boilerplate is written once and the accessible name cannot be forgotten. It takes NO leading icon, and that is the system's rule rather than a gap: `.btn > .icon` carries `order: 1`, so every mark in a button trails its label (owner's ruling). A menu button already spends that slot on the chevron, and a second mark could only pile up beside it — \"Create ＋ ⌄\" reads as two controls stuck together. One button, one mark, and it is the one that says a menu opens. Reach for <Dropdown> directly when the trigger is not a button (an avatar, a table row) and for <ContextMenu> when the menu belongs to a right-click. Copy: the label is the verb of the default action when there is one, and the menu items are the other ways to do it — parallel with the label, so the set reads as one decision.",
+  "exports": [
+    "MenuButton"
+  ],
+  "main": "MenuButton",
+  "from": "@/components/MenuButton",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": true,
+      "description": "What the button says."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The menu: `<DropdownItem>`, `<DropdownSection>`, `<DropdownDivider>`."
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "required": false,
+      "description": "The default action, lifted out of the menu onto its own half. Give it and the control SPLITS: the label does the common thing on one press, the chevron offers the alternatives. Leave it out and the whole button opens the menu, because a button that promotes nothing should not look like it promotes something."
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "required": false,
+      "description": "Names the half that is only a chevron, and the pair as a whole. Required with `onClick` for the reason `IconButton` exists: an icon with no words is unreachable by anyone who cannot see it. Without `onClick` the label already names the control and this is not read."
+    },
+    {
+      "name": "variant",
+      "type": "Variant",
+      "required": false,
+      "values": [
+        "primary",
+        "secondary",
+        "ghost"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "align",
+      "type": "Align",
+      "required": false,
+      "description": "Which edge of the trigger the menu lines up with.",
+      "values": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/MenuButton/MenuButton.tsx",
+  "uses": [
+    "Button",
+    "ButtonGroup",
+    "Dropdown",
+    "Icon",
+    "IconButton",
+    "Layout",
+    "Tooltip"
+  ],
+  "example": "<Row gap={3}>\n  <MenuButton label=\"Create\">\n    <DropdownItem icon=\"description\" onClick={() => undefined}>Blank document</DropdownItem>\n    <DropdownItem icon=\"content_copy\" onClick={() => undefined}>From a template</DropdownItem>\n    <DropdownDivider />\n    <DropdownItem icon=\"upload\" onClick={() => undefined}>Upload a file</DropdownItem>\n  </MenuButton>\n  <MenuButton label=\"Save\" menuLabel=\"Other ways to save\" onClick={() => undefined}>\n    <DropdownItem icon=\"content_copy\" onClick={() => undefined}>Save a copy</DropdownItem>\n    <DropdownItem icon=\"description\" onClick={() => undefined}>Save as template</DropdownItem>\n  </MenuButton>\n</Row>"
+}

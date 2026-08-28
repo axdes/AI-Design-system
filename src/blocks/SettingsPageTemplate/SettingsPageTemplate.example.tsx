@@ -9,7 +9,7 @@ import { Button } from '../../components/Button'
 import { PasswordInput } from '../../components/PasswordInput'
 import { Select } from '../../components/Select'
 import { Switch } from '../../components/Switch'
-import { ConfirmDialog } from '../ConfirmDialog'
+import { Modal } from '../../components/Modal'
 import { SettingsPageTemplate, SettingsSection, SettingRow } from './SettingsPageTemplate'
 
 export function Example() {
@@ -56,7 +56,9 @@ export function Example() {
           htmlFor="set-key"
           badge={<Badge tone="success" fill="soft">configured</Badge>}
         >
-          <PasswordInput id="set-key" placeholder="dg_..." />
+          {/* A machine secret, not a credential: a password manager offering to
+            * fill it would be offering the wrong thing. */}
+          <PasswordInput id="set-key" autoComplete="off" placeholder="dg_..." />
         </SettingRow>
       </SettingsSection>
       <SettingsSection
@@ -72,15 +74,21 @@ export function Example() {
           </Button>
         </SettingRow>
       </SettingsSection>
-      <ConfirmDialog
+      {/* A confirmation is a Modal at `sm` with a sentence in it. `tone` colours
+          the commitment so a delete never reads as a save. */}
+      <Modal
         open={confirming}
         title="Delete this workspace?"
-        message="Every member loses its recordings. There is no undo."
-        confirmLabel="Delete workspace"
-        confirmVariant="destructive"
-        onConfirm={() => setConfirming(false)}
+        size="sm"
         onClose={() => setConfirming(false)}
-      />
+        actions={{
+          onConfirm: () => setConfirming(false),
+          confirmLabel: 'Delete workspace',
+          tone: 'destructive',
+        }}
+      >
+        Every member loses its recordings. There is no undo.
+      </Modal>
     </SettingsPageTemplate>
   )
 }

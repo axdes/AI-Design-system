@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "type": "registry:ui",
+  "title": "Switch",
+  "description": "An on/off setting that applies the moment it is flipped (role=\"switch\"). A checkbox is for something that applies when a form is submitted. Copy: the label names the state when ON, and never repeats the word \"on\": \"Weekly digest\", not \"Weekly digest on/off\".",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Switch/Switch.css",
+      "content": ".switch {\n  /* Switch-local dimensions (atom-private knobs). */\n  --switch-width: 2.25rem;\n  --switch-height: 1.25rem;\n  --switch-thumb: 1rem;\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  flex-shrink: 0;\n  width: var(--switch-width);\n  height: var(--switch-height);\n  border-radius: var(--radius-full);\n  background: var(--switch-track-off);\n  cursor: pointer;\n  border: none;\n  padding: 0;\n  transition: background var(--duration-fast);\n}\n/* The track is 20px tall because that is the shape; the TARGET has to be 24\n * (SC 2.5.8). A pseudo-element extends the hit area without moving a pixel of\n * the drawing — ::after is already the thumb. */\n.switch::before {\n  content: \"\";\n  position: absolute;\n  inset-block: calc((var(--space-6) - var(--switch-height)) / -2);\n  inset-inline: 0;\n}\n.switch:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }\n.switch[aria-checked=\"true\"] { background: var(--primary); }\n.switch[disabled] { opacity: 0.5; cursor: not-allowed; }\n/* The same three answers the rest of the system gives. A switch that does not\n * acknowledge the pointer reads as a picture of a switch. */\n.switch:hover:not([disabled]) { background: var(--accent-strong); }\n.switch[aria-checked=\"true\"]:hover:not([disabled]) { background: var(--primary-hover); }\n.switch:active:not([disabled]) { background: var(--accent-active); }\n.switch[aria-checked=\"true\"]:active:not([disabled]) { background: var(--primary-active); }\n/* Marked wrong: the track carries the red, since the thumb is the value. */\n.switch[aria-invalid=\"true\"] { box-shadow: inset 0 0 0 2px var(--destructive); }\n.switch[aria-invalid=\"true\"]:focus-visible { outline-color: var(--destructive); }\n\n.switch::after {\n  content: \"\";\n  position: absolute;\n  inset-inline-start: var(--space-2xs);\n  width: var(--switch-thumb);\n  height: var(--switch-thumb);\n  border-radius: var(--radius-full);\n  background: var(--switch-thumb);\n  box-shadow: var(--shadow-sm);\n  transition: inset-inline-start var(--duration-fast);\n}\n.switch[aria-checked=\"true\"]::after { inset-inline-start: calc(100% - var(--switch-thumb) - var(--space-2xs)); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Switch/Switch.css"
+    },
+    {
+      "path": "src/components/Switch/Switch.tsx",
+      "content": "import './Switch.css'\nimport type { ButtonHTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'onChange'> & {\n  checked: boolean\n  onChange: (next: boolean) => void\n  label: string\n  /** The form rejected this setting. Red track and a red focus ring; the\n   *  message belongs to the `<Field>` around it. */\n  invalid?: boolean\n}\n\n/**\n * An on/off setting that applies the moment it is flipped (role=\"switch\"). A\n * checkbox is for something that applies when a form is submitted.\n *\n * Copy: the label names the state when ON, and never repeats the word \"on\":\n * \"Weekly digest\", not \"Weekly digest on/off\".\n */\nexport function Switch({ checked, onChange, label, invalid, className, ...rest }: Props) {\n  return (\n    <button\n      type=\"button\"\n      role=\"switch\"\n      aria-checked={checked}\n      aria-invalid={invalid || undefined}\n      aria-label={label}\n      className={cn('switch', className)}\n      onClick={() => onChange(!checked)}\n      {...rest}\n    />\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Switch/Switch.tsx"
+    },
+    {
+      "path": "src/components/Switch/index.ts",
+      "content": "export { Switch } from './Switch'\n",
+      "type": "registry:ui",
+      "target": "@ui/Switch/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Switch.json"
+}

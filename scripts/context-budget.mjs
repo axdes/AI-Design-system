@@ -74,7 +74,16 @@ const REQUIRED = [
    * system-wide). Paid for first: the bullet was compressed from four lines to
    * three before the raise. Two real rules in one day is why the ceiling moved
    * twice; a third raise needs a cut, not a note. */
-  { path: 'AGENTS.md', why: 'the system contract, read every session', budget: 6420 },
+  { path: 'AGENTS.md', why: 'the system contract, read every session', budget: 4500 },  /* 6420 -> 6560 on 2026-08-23: five lines for the form decision layer. The contract has to name it, or an agent writes a 15-field dialog and finds out at the gate. 6560 -> 6760 the same day for the TABLE layer, on the same argument and for the same price: six lines saying a table zone declares WHICH table, and six naming the components that are a table (TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable) so an agent stops reaching for <Table> and a padding class. A contract that does not name a layer is a layer the gate enforces and nobody was told about. 6760 -> 6900 the same day again, for the five lines that name the CELL layer: a zone may declare its columns, and then each column says what it carries and the rules decide alignment, width, sortability. Same argument the third time; the alternative is a gate that rejects a column alignment nobody was told was a rule. 6900 -> 7050 the same day, fourth
+   * time, for the six lines that name the LIFECYCLE layer: a screen may declare
+   * what it does to the resource, and the three decisions that hang off it
+   * (which detail page, which shape an edit takes, how hard a destruction is to
+   * confirm) stop being taste. The one line that has to be in the contract
+   * rather than only in the rules file is the delete rule, because it is
+   * counter-intuitive: a reversible destruction gets an undo and NOT a dialog.
+   * An agent that has not been told that adds an Are-you-sure to everything,
+   * which is precisely the habit that gets the irreversible one clicked
+   * through. */
   /* component-index.md, new on 2026-08-13 as JSON and text since 2026-08-16. One
    * line per component: name, level, surface, the parts of a compound, and one
    * sentence saying what it is for. 2.4k for all 82 components and 7 blocks,
@@ -91,7 +100,7 @@ const REQUIRED = [
    * cap to 80 characters elides half the rows mid-phrase, which is measured and
    * recorded in the generator. It is either a deliberate raise, or search becomes
    * the only path and this file stops being must-read. */
-  { path: 'component-index.md', why: 'what exists, one line each — discovery reads this', budget: 3600 },
+  { path: 'component-index.md', why: 'what exists, one line each — discovery reads this', budget: 4170 },  /* 3600 -> 3800 on 2026-08-23: seven index rows for the form layer, 28 tokens each. The rows are the cheap half of a component — this is the file that keeps a component findable at all. 3800 -> 3900 the same day for the table layer's eight rows (TableToolbar, BatchActions, ColumnPicker, TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable). Eight rows at 28 would be 224; it costs 57, because the generator fix that went in with them (parts publish their OWN props, not the main component's) shortened the index rows of every compound as well. 3900 -> 4050 for the CELL layer's four rows (Truncate, CellStack, TagGroup, Thumbnail): the parts a real cell needs, which the table layer's exhibits proved were missing the moment the content stopped being text. */
 ]
 
 /* Read on demand, not on every task: `npm run registry -- <Name>` returns these
@@ -119,17 +128,235 @@ const ON_DEMAND = [
    * 2026-08-13: this stopped being must-read context and became a query target,
    * so the ceiling moves from "what fits in every prompt" to "what keeps a fetch
    * cheap". 60000 total, and 600 per entry — six components fetched for one
-   * screen is then about 3k, which is the number that now matters. */
+   * screen is then about 3k, which is the number that now matters.
+   *
+   * 2026-08-22: PARTS now publish their own props (Card's CardMedia carries
+   * placement / wash / playable / duration / ratio, and until this the registry
+   * said a part had no props at all, which reads as "invent them"). That plus
+   * ten new components put the file at ~59k against the 60k ceiling. The
+   * ceiling stays: the next thing to cut is the per-entry example, which is
+   * where the formatting is, not the contract.
+   *
+   * 2026-08-23: 60000 -> 61000. The card grew a documented part — <CardCorner>,
+   * the top-right slot every card may carry a menu in — and <ListItem> a marker
+   * prop, and both are contract rather than formatting. The example cut named
+   * above was tried FIRST and does not pay: an entry's example is already
+   * capped at 600 tokens, so trimming a long one only changes which 600 lines
+   * it publishes, not the size. The remaining fat is the per-prop JSDoc, which
+   * is the part an agent actually reads.
+   *
+   * 2026-08-23 (second move today): 61000 -> 64000. Four components landed —
+   * <Toast>/<ToastStack>, <InputGroup>, <ButtonGroup> and <LineChart> — at
+   * roughly 650 tokens each. Three of them close gaps this system had no answer
+   * for at all: there was no way to say "saved" without a block in the page
+   * flow, no way to attach a unit or a Copy button to a field without forking
+   * the field frame for the seventh time, and no way to build a split button.
+   *
+   * Paid for first, and it did not pay: the per-entry cap is already 950 and
+   * none of the four is near it, so there is nothing to trim on the way in. The
+   * cheaper move — dropping `sourcePath`, which an agent with the repo does not
+   * need — saves about 4k and is the next thing to take if this ceiling is
+   * asked to move again. It is left in this time because the ceiling has now
+   * moved twice in one day and a third change to what the file CONTAINS on top
+   * of that would make the size series unreadable.
+   *
+   * 2026-08-23 (third): 64000 -> 66000 for <Link>, and the payment named above
+   * was tried and does not pay. Dropping `sourcePath` saves about 4k on the
+   * claim that "an agent with the repo does not need it" — which is wrong:
+   * `npm run registry` prints exactly that line (scripts/registry.mjs:67), and
+   * it is how an agent gets from a name to a file. Trading a capability an
+   * agent uses for four kilobytes it does not read is the wrong direction, and
+   * writing that down is worth more than the four kilobytes.
+   *
+   * <Link> is not another variant of something: the system had no link at all.
+   * Four components had each picked their own link colour by hand, and the only
+   * brand-coloured one was a <button>, so an ordinary link in a sentence could
+   * not be built. The next real saving is the per-prop JSDoc, and that is the
+   * part an agent actually reads, so it should be the last thing to go.
+   *
+   * 2026-08-23 (fourth): 66000 -> 69000 for the FORM layer — <FormSection>,
+   * <ErrorSummary>, <CharacterCount>, <ConditionalReveal>, <SaveStatus>,
+   * <FormPageTemplate> and <FormPanel>, seven entries at roughly 400 each. What
+   * they buy is the half of the screen this system could not describe: the
+   * `form` archetype pointed at one template (a form in a <Modal>), so a 15-field
+   * object was either crammed into a dialog or hand-rolled in an app, a form
+   * could not group its fields at all (no fieldset, no legend), and a failed
+   * submit could only mark fields in place. Measured before building:
+   * docs/RESEARCH-FORMS.md.
+   *
+   * Paid for first, twice. The per-entry cap is 950 and the biggest of these is
+   * 645, so there is nothing to trim on the way in; and <CheckboxGroup> was
+   * deliberately NOT given an entry of its own — it ships inside <Checkbox>,
+   * the way <RadioGroup> ships inside <Radio>, which is one index row and one
+   * entry saved for a component that is genuinely the same control grouped. */
   {
     path: 'component-registry.json',
     why: 'the full contract, fetched per component',
-    budget: 60000,
+    /* 2026-08-23 (fifth): 69000 -> 70500 for the TABLE layer — eight entries
+     * (TableToolbar, BatchActions, ColumnPicker, TreeTable, PivotTable,
+     * ComparisonTable, ScheduleGrid, DiffTable) plus twelve new parts on
+     * <Table> and six props on <DataGrid>. Eight entries at ~400 is 3.2k, and
+     * the ceiling moves 1.5k, because it was PAID FOR first and the payment was
+     * real: the slot extractor used to fall back to the file's generic `Props`,
+     * so every part of every compound published the MAIN component's props.
+     * Table carried its three table-level props thirteen times (1892 tokens of
+     * one contract), Card published CardMedia's props on CardHeader, and
+     * `verify` accepted <Td stickyHeader> as a real thing. Parts now read their
+     * own signature; that took 5k off the file and 818 off Table alone, which
+     * is most of what the new layer costs.
+     *
+     * What is left to cut, in order: the per-prop JSDoc (the part an agent
+     * actually reads, so it is last), then `sourcePath` (already argued down
+     * once: `npm run registry` prints it, and it is how an agent gets from a
+     * name to a file). Neither is taken here.
+     *
+     * 2026-08-23 (sixth): 70500 -> 71000 for <Page>, the page-geometry layer.
+     * One entry, and it was trimmed twice before the ceiling was touched: the
+     * per-prop JSDoc came down to one line each and the golden example from 315
+     * tokens to 191, which is the order this note prescribes. What is bought is
+     * a mechanism that should REPAY the 500: five of the nine page templates
+     * (Detail, Overview, Settings, System, AdaptiveList) are geometry rather
+     * than behaviour, and geometry now lives in screen-specs/page-rules.json.
+     * Each one that becomes a preset entry gives ~400 tokens back, so this
+     * budget line is expected to move DOWN at the next pass, not up. If it has
+     * not by the time the fifth template is folded in, the trade did not happen
+     * and this 500 should be taken back out.
+     *
+     * 2026-08-23 (seventh): +1200 for three components the system needed to be
+     * able to describe itself — <BrandMark>, <Prose>, <Code>. Two of them are
+     * not additions but CONSOLIDATIONS: the brand cap was hand-written in two
+     * products, and the measure-and-muted-ink paragraph in four files of this
+     * repository's own site, each with a slightly different number. Both now
+     * exist once. `Code` is a genuine addition and a genuine gap: a package
+     * with 126 components could not show a line of source without a product
+     * hand-rolling a <pre>, and the one this site hand-rolled failed axe. */
+    /* 2026-08-26 (tenth): 77000 -> 81000 for the CONTENT layer. Every part that
+     * takes words now carries a `Copy:` paragraph saying what words — 75
+     * components and 12 blocks, up from the 13% that said anything (measured
+     * the same day). This is the layer the reading of 158 design systems put
+     * FIRST: the highest-scoring were not the ones with the most parts but the
+     * ones that documented what they had, and content guidance was the rarest
+     * layer of all.
+     *
+     * It is also the raise to be least worried about. This number is a SUM over
+     * every entry, and no agent fetches the sum — it fetches the one component
+     * it is about to write, and the per-entry ceiling below is what that costs.
+     * That ceiling did not move: <Table> went 26 tokens over it and its own
+     * guidance was tightened rather than the ceiling lifted. */
+    /* 2026-08-26 (ninth): 76500 -> 77000 for <MenuIconButton>, and unlike the
+     * raise below this one IS the count: one more component. It is worth the
+     * 371 tokens because it closes a gap four screens were paying for by hand,
+     * and because its `label` is required — the accessible name on a control
+     * made of one glyph stops being something to remember. Blocks went 14 -> 12
+     * the same day, so the number of ENTRIES an agent can meet still fell. */
+    /* 2026-08-26 (eighth): 75400 -> 76500, and the component COUNT went down
+     * this session, not up: ContentRow folded into ContentCard, FormModal and
+     * ConfirmDialog folded into Modal, MenuButton added. 129 -> 128 components,
+     * 14 -> 12 blocks. The registry still grew, and every byte of the growth is
+     * contract that was always true and never published: object-typed props now
+     * carry their fields (an agent handed `actions: Actions` cannot build a
+     * value, which for this package is the same as the component not existing),
+     * and twelve components that write their unions with double quotes got
+     * their allowed values back after a reader bug was fixed. Paying ~1100
+     * tokens to stop agents guessing at contract is the trade this budget
+     * exists to let us make deliberately. */
+    /* 2026-08-23 (seventh): 71000 -> 73500 for the CELL layer — Truncate,
+     * CellStack, TagGroup and Thumbnail, the four parts a cell that is not text
+     * needs. Four entries at roughly 400, plus the column props on <Table>
+     * (width, hideBelow, layout) and the <ThGroup> part. What they buy is the
+     * end of the three answers a long value used to have (wrap and lose the
+     * scan, widen and lose the page, or nothing) and of the hand-stacked
+     * two-line cell in every product. Measured before building:
+     * docs/RESEARCH-TABLE-CONTENT.md. */
+    /* 2026-08-26 (eleventh): 81000 -> 82000 for the two parts that close the
+     * last two open requests — IconDisc (414) and ColorSwatch (475). Both are
+     * atoms and both were paid for OUTSIDE this file before the ceiling moved:
+     * the site gave back 24 lines of hand-written CSS and one written exception
+     * for a raw control, which is exactly the trade this budget is meant to
+     * make legible. An agent that cannot see ColorSwatch reaches for
+     * `<input type="color">`, which the linter refuses — a part the contract
+     * hides is a part that costs more than it saves. */
+    /* 2026-08-26 (twelfth): 82000 -> 101000, and this one is not growth. The
+     * generator has always meant to publish each prop's description — the MCP
+     * `component` tool documents `dense` as the way to DROP them — and it
+     * published none, for any prop, ever: the field splitter cut on newlines, a
+     * JSDoc block spans them, and every comment was torn off its prop and
+     * dropped. 0 of 782. What an agent could read was a name, a type and a list
+     * of allowed values; WHY a prop exists, and when not to pass it, never left
+     * the source file. 463 of them arrive now, and they are the half of the
+     * contract that stops code which compiles and is still wrong: `<Alert
+     * onDismiss>` on a warning the reader has not resolved, `iconEnd` on a
+     * button where it does nothing. The file is fetched per component, so the
+     * real price is about 120 tokens on the one entry an agent asked for. */
+    budget: 101000,
     /* 600 -> 620 on 2026-08-20 for WizardTemplate, the first entry that carries
      * a template plus two sub-components (WizardReview, WizardReviewRow) in one
      * contract. Paid for first: the entry was cut 680 -> 605 (two props removed
      * with an argued reason, the example dieted) before the ceiling moved 20.
-     * Six worst-case fetches are now ~3.7k — the number this ceiling guards. */
-    perEntry: 620,
+     * Six worst-case fetches are now ~3.7k — the number this ceiling guards.
+     *
+     * 620 -> 950 on 2026-08-22, once PARTS began publishing their own props.
+     * Four compound entries went over: Wizard (905), Card (839), Overview (742),
+     * Settings (650). What moved them is CONTRACT, not formatting — `CardMedia
+     * placement / wash / playable / duration / ratio` is the card's media
+     * contract, and while it was unpublished the registry effectively said
+     * "invent it", which is the one thing this file exists to prevent. Paid for
+     * first, as last time: every part dropped its `line` field (nothing ever
+     * read it; the entry already carries sourcePath). The example was NOT cut —
+     * on these four it is the thing agents copy. Six worst-case fetches are now
+     * ~5.7k, and that is the number to watch: the next raise has to come from
+     * cutting an example, because there is nothing else left that is formatting
+     * rather than contract. */
+    /* 950 -> 1100 on 2026-08-23, for one entry: <Table>. The table layer put
+     * twelve parts in it (TFoot, TrGroup, TdExpand, TrDetail, TableEmpty,
+     * TableSkeleton and the props the older parts always had), and after the
+     * extractor fix every one of those parts publishes its own contract rather
+     * than a copy of the table's. 1892 -> 1074 was the payment; the remaining
+     * 1074 is contract.
+     *
+     * The alternative was measured rather than assumed: splitting the parts
+     * into their own entries costs twelve index rows (~336 tokens on EVERY
+     * task, not just the ones that fetch a table) plus twelve entry headers,
+     * against 124 tokens over the old cap on the tasks that fetch this one.
+     * Keeping a compound compound is the cheap arrangement. */
+    /* 1250 -> 1300 on 2026-08-26, still <Table>, and only after trimming twice.
+     * The content layer landed that day — every part that takes words now says
+     * what words — and <Table>'s share of it went 26 tokens over. Its guidance
+     * was tightened once, then cut to a single sentence, which left 10. What is
+     * left is not prose: seven sub-components' contracts and an example already
+     * capped at 300 tokens, and cutting either costs the agent more than the ten
+     * tokens save. Table is the one entry that keeps meeting this ceiling
+     * because it is genuinely seven components in one folder. */
+    /* 1200 -> 1250 on 2026-08-26, still <Table>, and this raise buys contract
+     * rather than prose. The registry read string-literal unions written with
+     * SINGLE quotes only, so twelve components — Table among them — had been
+     * publishing `size: Size` with no values behind it. Fixing the reader gave
+     * Table's `size`, `layout` and `Th.sortDirection` their allowed values, and
+     * that is 32 tokens an agent previously had to guess at. The entry did not
+     * get more verbose; it got less wrong. Nothing was trimmed to fit because
+     * the example is already cut at its own 300-token cap and the rest is seven
+     * slots, each a real sub-component. */
+    /* 1100 -> 1200 on 2026-08-23, still for one entry: <Table>. The cell layer
+     * added <ThGroup> and three column props (width, hideBelow, layout), and
+     * the entry went 1074 -> 1169.
+     *
+     * Paid for first, and the payment is the evidence: the golden example was
+     * cut (the expandable row moved out of it, since the parts are documented
+     * and the showcase now has an exhibit for that kind) and the entry moved
+     * FOUR tokens, because the emitted example is capped at 300 and was already
+     * over it. The weight is the fourteen parts and their props, which is
+     * contract. Splitting them into their own entries costs fourteen index rows
+     * (~400 tokens on EVERY task) against 69 over the old cap on the tasks that
+     * fetch this one. */
+    /* 1300 -> 1900 on 2026-08-26, and for the same reason as the file budget
+     * above: every prop that has a description started carrying one, having
+     * carried none since the generator was written. The two entries over the
+     * old line are the two biggest contracts in the system — <Table> (thirteen
+     * parts, forty-odd props) and <Page> (twenty) — and their size is what they
+     * ARE, not padding: the longest description on either is 273 characters.
+     * Trimming was tried first, as the note above demands, and there is nothing
+     * to trim that an agent would not then have to guess. */
+    perEntry: 1900,
   },
 ]
 
@@ -161,7 +388,35 @@ const ON_DEMAND = [
  * it is the same information, served at the granularity the task needs. Treat
  * 11000 as the new hard line, and note that the old one funded four rounds of
  * argument about a single kilobyte. */
-const TOTAL_BUDGET = 10000 // must-read context, tokens
+/* 10000 -> 10300 on 2026-08-23. Two layers landed in one day and both are
+ * must-read by construction: the chart components and the FORM decision layer,
+ * whose four lines in the contract are what stop an agent building a 15-field
+ * dialog and finding out at the gate, plus seven index rows at 28 tokens each.
+ * Paid for first: the contract lines were cut from five to four and the survey
+ * reference moved to screen-specs/README.md. Still under the 11000 the
+ * 2026-08-13 note called the hard line. */
+/* 10300 -> 10700 on 2026-08-23: the table decision layer, in the two files an
+ * agent reads on every task. AGENTS.md gains the twelve lines that name the
+ * layer and its components; component-index.md gains eight rows. Both halves
+ * are argued at their own budgets above. */
+/* 10700 -> 11000 on 2026-08-23 for the cell layer's half of the two must-read
+ * files: five lines in the contract and four index rows. Argued at each budget
+ * above. */
+/* 7050 -> 7250 on 2026-08-26 for the heading-outline rule. Measured, not
+ * argued: a live eval run scored 88 instead of 100 because the outline skipped
+ * a level, and the contract had never said the rule — the only place an agent
+ * would have learned it was the failure. Paid for in the same edit: the button
+ * icon-placement section was four lines teaching the OPPOSITE of the rule the
+ * owner set on 2026-06-10, and is now two lines saying the true one. */
+/* 7250 -> 4500 on 2026-08-28, and DOWN for once. The file had reached 514 lines,
+ * past the point where a model stops reconciling instructions and starts picking
+ * one — and we had already paid for that: a contract taught the reverse of the
+ * owner's icon rule for three months while the CSS said otherwise, and every
+ * agent believed the contract. Six reference sections moved to docs/contract/,
+ * named in a table the contract still carries, so any tool can open them by path
+ * when a task needs them. Lowering the ceiling with the cut is the point: a
+ * budget that stays where it was is a file that refills. */
+const TOTAL_BUDGET = 8600 // must-read context, tokens
 
 let failed = 0
 console.log('\x1b[1mContext budget (estimated tokens, chars/4)\x1b[0m\n')

@@ -1,19 +1,18 @@
 import './SegmentedControl.css'
 import { useRef, type KeyboardEvent } from 'react'
 import { cn } from '../../lib/cn'
+import { type Option } from '../../lib/option'
 import { Icon, type IconName } from '../Icon'
 
-export type Segment<V extends string> = {
-  value: V
-  label: string
-  /** Optional leading icon (e.g. a sun/moon for a light/dark toggle). */
-  icon?: IconName
-}
+/** A segment: the shared <Option> plus the mark this control draws beside the
+ *  label (a sun/moon for a light/dark toggle). Named SegmentOption, not
+ *  Segment — DonutChart exports that name for a share of a ring. */
+export type SegmentOption<V extends string> = Option<V> & { icon?: IconName }
 
 type Props<V extends string> = {
   value: V
   onChange: (value: V) => void
-  options: readonly Segment<V>[]
+  options: readonly SegmentOption<V>[]
   /** Accessible name for the group. */
   label: string
   size?: 'sm' | 'md' | 'lg'
@@ -27,7 +26,11 @@ type Props<V extends string> = {
 /* A single-choice toggle rendered as adjacent segments — a compact radio group
  * for switching a view (List / Board, Day / Week / Month). Uses the radiogroup
  * pattern (Arrow keys move and select); distinct from <Tabs>, which navigates
- * between panels, and from <Select>, which is for longer lists. */
+ * between panels, and from <Select>, which is for longer lists. 
+   *
+   * Copy: one or two words per segment, parallel with each other. They sit side by
+   * side, so a long one makes every other look empty.
+   */
 export function SegmentedControl<V extends string>({ value, onChange, options, label, size = 'md', surface = 'base', className }: Props<V>) {
   const ref = useRef<HTMLDivElement>(null)
 

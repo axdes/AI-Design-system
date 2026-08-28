@@ -1,7 +1,7 @@
 {
   "ref": "OverviewPageTemplate",
   "level": "block",
-  "description": "The OVERVIEW page skeleton, read at a glance and acted on elsewhere: header (freshness lives in its actions), conditional notices, a context band, a prime row read first, then a grid of `<OverviewWidget>`s — zones in priority order because attention is spent top to bottom.",
+  "description": "The OVERVIEW page skeleton, read at a glance and acted on elsewhere: header (freshness lives in its actions), conditional notices, a context band, a prime row read first, then a grid of `<OverviewWidget>`s — zones in priority order because attention is spent top to bottom. Copy: the title names WHOSE overview it is when a product has more than one; otherwise the product's own area word. The figures under it carry their period, because an overview with no period is a number with no meaning.",
   "exports": [
     "OverviewPageTemplate",
     "OverviewWidget"
@@ -10,60 +10,69 @@
   "from": "@/blocks/OverviewPageTemplate",
   "slots": [
     {
-      "name": "OverviewWidget",
-      "line": 135
+      "name": "OverviewWidget"
     }
   ],
   "props": [
     {
       "name": "title",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Page title in the header."
     },
     {
       "name": "actions",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Header actions. On an overview this is where freshness lives too: the \"updated N min ago\" fact sits beside the one control that refreshes it, never as a line under the title (one product's cockpit learned this twice)."
     },
     {
       "name": "notices",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Conditional page-level notices (a setup gap, unpushed work). The contract that makes them safe on the busiest screen: render NOTHING when the machine is healthy — a notice that is always there is one nobody reads."
     },
     {
       "name": "band",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The context band above the work: what period it is, what is asked by when. A band, not a card — and it earns its place only if it changes with the date."
     },
     {
       "name": "prime",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Read FIRST, full-width before the grid: the two or three Stats/Meters that answer the screen's primaryQuestion. About seven visual elements bound the whole page."
     },
     {
       "name": "board",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The full-width work surface, for the overview whose centre of gravity is a ranked BOARD — one card per item, reading order IS priority order — rather than a widget grid. Renders after prime, before the grid, and is never squeezed into the grid's columns. The cockpit case this block was consolidated from; a screen passes `board` or `children`, rarely both."
     },
     {
       "name": "children",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The widget grid: `<OverviewWidget>` children, laid out by the template."
     },
     {
       "name": "isEmpty",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "When true, the empty state is shown instead of band, prime and grid."
     },
     {
       "name": "empty",
       "type": "{ icon?: IconName title: string description?: string action?: ReactNode }",
-      "required": false
+      "required": false,
+      "description": "Empty-state config. An overview has no filters, so there is only the `no-data` case: a fresh install, nothing to oversee yet. The header stays — its actions are usually how the first data arrives."
     },
     {
       "name": "className",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Extra class on the page wrapper, for the rare app-level difference."
     }
   ],
   "sourcePath": "src/blocks/OverviewPageTemplate/OverviewPageTemplate.tsx",
@@ -77,7 +86,6 @@
     "Icon",
     "Layout",
     "Meter",
-    "PageHeader",
     "Stat"
   ],
   "example": "const setupGap = false /* the notices contract: nothing when healthy */\n\n<OverviewPageTemplate\n  title=\"Operations overview\"\n  actions={<Button variant=\"secondary\">Refresh</Button>}\n  notices={setupGap && <Alert tone=\"warning\">The export connector is signed out.</Alert>}\n  prime={\n    <>\n      <Stat value={2} label=\"Waiting on you\" tone=\"warning\" size=\"lg\" />\n      <Stat value={14} label=\"Handled this week\" size=\"lg\" />\n    </>\n  }\n>\n  <OverviewWidget\n    title=\"Approvals queue\"\n    footer={<Button variant=\"link\">View all 9</Button>}\n  >\n    {QUEUE.map((r) => (\n      <Row key={r.id} gap={3}>\n        <strong>{r.id}</strong>\n        <span>{r.who}</span>\n        <Badge tone=\"warning\" fill=\"soft\">waiting {r.waiting}</Badge>\n      </Row>\n    ))}\n  </OverviewWidget>\n  <OverviewWidget title=\"Monthly budget\">\n    {/* A value on a fixed scale is a Meter, not a sentence. */}\n    <Meter value={72} max={100} label=\"72% of the review budget used\" />\n  </OverviewWidget>\n</OverviewPageTemplate>"

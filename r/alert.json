@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "title": "Alert",
+  "description": "Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible. Default role is status; pass role=\"alert\" for an error. Dismiss info and success, never an unresolved error. Copy: one sentence about what happened, in the reader's terms, not the system's. A tone is not a substitute for words: \"Saved\" and \"Could not save — the file is open elsewhere\" both need saying.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Alert/Alert.css",
+      "content": "/* Modern alert: leading status icon + neutral, readable text on a lightly\n * tinted surface with a soft colored border. The icon and border carry the\n * tone; the text stays neutral (not a saturated fill + colored text). */\n.alert {\n  display: flex;\n  align-items: flex-start;\n  gap: var(--space-2);\n  padding: var(--space-3) var(--space-4);\n  border: 1px solid var(--border);\n  border-radius: var(--radius-lg);\n  background: var(--card);\n\n  color: var(--foreground);\n  font-size: var(--font-sm);\n  line-height: var(--leading-snug);\n}\n.alert-icon { flex: none; margin-block-start: 1px; color: var(--muted-foreground); }\n.alert-body { min-width: 0; }\n\n/* Trailing action (message + a button): pinned to the end; the row wraps so the\n * action drops below the text on narrow widths. */\n.alert:has(.alert-action) { flex-wrap: wrap; column-gap: var(--space-3); }\n.alert-action { flex: none; margin-inline-start: auto; align-self: center; }\n\n/* Dismiss sits after the action, hugging the top edge so it stays put when the\n * body runs to several lines. `auto` here only bites when there is no action. */\n.alert-dismiss { flex: none; margin-inline-start: auto; align-self: flex-start; }\n.alert-action + .alert-dismiss { margin-inline-start: 0; }\n.alert[data-compact] .alert-dismiss { align-self: center; }\n\n/* Compact — dense single-line strip (inline assist rows, list-level notices). */\n.alert[data-compact] {\n  align-items: center;\n  padding: var(--space-2) var(--space-3);\n  border-radius: var(--radius-md);\n}\n.alert[data-compact] .alert-icon { margin-block-start: 0; }\n\n/* Tint + a tone-matched edge. The tint alone is not enough: an info notice on\n * the --muted page surface, or a pale success notice on a light card, had no\n * outline left and dissolved into the background. The border is what makes the\n * alert a shape on ANY surface; the icon still carries the emphasis colour. */\n.alert[data-tone=\"neutral\"] { background: var(--muted); border-color: var(--border-strong); }\n.alert[data-tone=\"info\"]    { background: var(--primary-soft); border-color: var(--primary-border); }\n.alert[data-tone=\"danger\"]  { background: var(--destructive-soft); border-color: var(--destructive-border); }\n.alert[data-tone=\"warning\"] { background: var(--warning-soft); border-color: var(--warning-border); }\n.alert[data-tone=\"success\"] { background: var(--success-soft); border-color: var(--success-border); }\n.alert[data-tone=\"info\"]    .alert-icon { color: var(--primary-soft-foreground); }\n.alert[data-tone=\"danger\"]  .alert-icon { color: var(--destructive-emphasis); }\n.alert[data-tone=\"warning\"] .alert-icon { color: var(--warning-emphasis); }\n.alert[data-tone=\"success\"] .alert-icon { color: var(--success-emphasis); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Alert/Alert.css"
+    },
+    {
+      "path": "src/components/Alert/Alert.tsx",
+      "content": "import './Alert.css'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport { useTranslation } from 'react-i18next'\nimport { cn } from '../lib/cn'\nimport { Icon, type IconName } from '../Icon'\nimport { IconButton } from '../IconButton'\nimport { Tooltip } from '../Tooltip'\n\ntype Tone = 'neutral' | 'danger' | 'warning' | 'success' | 'info'\n\nconst TONE_ICON: Record<Tone, IconName> = {\n  neutral: 'info',\n  info: 'info',\n  success: 'check_circle',\n  warning: 'warning',\n  danger: 'error',\n}\n\ntype Props = HTMLAttributes<HTMLDivElement> & {\n  tone?: Tone\n  /** Override the tone icon (e.g. `sparkles` for AI-assist messages). */\n  icon?: IconName\n  /** Dense one-line variant: small padding, centred icon. */\n  compact?: boolean\n  /** Trailing action (e.g. a Button), pinned to the end of the alert row. */\n  action?: ReactNode\n  /* Dismissal is the consumer's job because the alert does not own its own\n   * mounting: pass a handler and a close button appears. Suits info, success\n   * and neutral notices; a warning or an error the user has not resolved yet\n   * should stay on screen, so do not pass it there. */\n  onDismiss?: () => void\n}\n\n/**\n * Inline message on a region: `tone` carries the meaning and `onDismiss` makes\n * it dismissible. Default role is status; pass role=\"alert\" for an error.\n * Dismiss info and success, never an unresolved error.\n *\n * Copy: one sentence about what happened, in the reader's terms, not the\n * system's. A tone is not a substitute for words: \"Saved\" and \"Could not\n * save — the file is open elsewhere\" both need saying.\n */\nexport function Alert({ tone = 'info', icon, compact, action, onDismiss, className, role = 'status', children, ...rest }: Props) {\n  const { t } = useTranslation()\n  return (\n    <div\n      className={cn('alert', className)} data-raised=\"card\"\n      data-tone={tone}\n      data-compact={compact || undefined}\n      role={role}\n      {...rest}\n    >\n      <Icon name={icon ?? TONE_ICON[tone]} className=\"alert-icon\" />\n      <div className=\"alert-body\">{children}</div>\n      {action && <div className=\"alert-action\">{action}</div>}\n      {onDismiss && (\n        <Tooltip content={t('a11y.dismiss')}>\n          <IconButton\n            icon=\"close\"\n            variant=\"quiet\"\n            size=\"sm\"\n            className=\"alert-dismiss\"\n            aria-label={t('a11y.dismiss')}\n            onClick={onDismiss}\n          />\n        </Tooltip>\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Alert/Alert.tsx"
+    },
+    {
+      "path": "src/components/Alert/index.ts",
+      "content": "export { Alert } from './Alert'\n",
+      "type": "registry:ui",
+      "target": "@ui/Alert/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Alert.json"
+}

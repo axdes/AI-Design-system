@@ -1,7 +1,7 @@
 {
   "ref": "RenameDialog",
   "level": "block",
-  "description": "Give one thing a new name. A `<FormModal>` with a single field, Enter to save; an empty name cannot submit and an unchanged one closes without `onSave`.",
+  "description": "Give one thing a new name: a dialog with a single field, Enter to save; an empty name cannot submit and an unchanged one closes without `onSave`. It stays a block of its own where <FormModal> and <ConfirmDialog> did not, because it carries BEHAVIOUR a Modal cannot: the reseed on open, the focus-and-select exactly once, Enter, and those submit semantics. Arrangement belongs in Modal; behaviour is what earns a name (2026-08-26). Copy: the title names the thing being renamed — \"Rename recording\" — and the field label is the value, not the act: \"Name\", not \"New name\".",
   "exports": [
     "RenameDialog"
   ],
@@ -17,17 +17,20 @@
     {
       "name": "title",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Dialog title, e.g. \"Rename recording\"."
     },
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Label over the single field."
     },
     {
       "name": "initial",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "The current name. The field opens seeded with it, selected."
     },
     {
       "name": "confirmLabel",
@@ -47,7 +50,8 @@
     {
       "name": "onSave",
       "type": "(name: string) => void",
-      "required": true
+      "required": true,
+      "description": "Called only with a trimmed, non-empty name that differs from `initial`."
     }
   ],
   "sourcePath": "src/blocks/RenameDialog/RenameDialog.tsx",
@@ -55,7 +59,9 @@
   "uses": [
     "Button",
     "Field",
-    "Input"
+    "FormStack",
+    "Input",
+    "Modal"
   ],
   "example": "const [open, setOpen] = useState(false)\n/* The name lives with the row: `initial` seeds the field, `onSave` fires only\n * when the user actually changed it. */\nconst [name, setName] = useState('Kickoff call')\n\n<>\n  <Button variant=\"secondary\" onClick={() => setOpen(true)}>Rename</Button>\n  <RenameDialog\n    open={open}\n    title=\"Rename recording\"\n    label=\"Name\"\n    initial={name}\n    onClose={() => setOpen(false)}\n    onSave={(next) => { setName(next); setOpen(false) }}\n  />\n</>"
 }

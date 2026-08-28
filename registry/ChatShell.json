@@ -12,17 +12,20 @@
     {
       "name": "collapsed",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Icon-rail state of the chat-history column (drives the grid + ChatHistory)."
     },
     {
       "name": "panel",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Show the optional right-hand panel column (e.g. a form)."
     },
     {
       "name": "noSidebar",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Drop the history column entirely (e.g. when there are no chats)."
     },
     {
       "name": "children",

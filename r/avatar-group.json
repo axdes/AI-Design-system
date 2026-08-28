@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-group",
+  "type": "registry:ui",
+  "title": "AvatarGroup",
+  "description": "Overlapping stack of avatars with a \"+N\" overflow — a team, the people on a thread. Presentational; the caller supplies the list. The overflow disc carries the hidden count so it is not silent to a screen reader.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/avatar.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/AvatarGroup/AvatarGroup.css",
+      "content": ".avatar-group {\n  display: inline-flex;\n  align-items: center;\n}\n.avatar-group-item {\n  display: inline-flex;\n  border-radius: var(--radius-full);\n  box-shadow: 0 0 0 2px var(--background);\n}\n.avatar-group-item:not(:first-child) {\n  margin-inline-start: calc(var(--space-2) * -1);\n}\n\n.avatar-group-overflow {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: var(--radius-full);\n  background: var(--muted);\n  color: var(--muted-foreground);\n  font-weight: var(--font-weight-semibold);\n  font-variant-numeric: tabular-nums;\n}\n.avatar-group-overflow[data-size='sm'] { inline-size: var(--avatar-sm); block-size: var(--avatar-sm); font-size: var(--font-xs); }\n.avatar-group-overflow[data-size='md'] { inline-size: var(--avatar-md); block-size: var(--avatar-md); font-size: var(--font-sm); }\n.avatar-group-overflow[data-size='lg'] { inline-size: var(--avatar-lg); block-size: var(--avatar-lg); font-size: var(--font-base); }\n\n/* `.sr-only` for the \"+N more\" text comes from styles/utilities.css. */\n",
+      "type": "registry:ui",
+      "target": "@ui/AvatarGroup/AvatarGroup.css"
+    },
+    {
+      "path": "src/components/AvatarGroup/AvatarGroup.tsx",
+      "content": "import './AvatarGroup.css'\nimport { cn } from '../lib/cn'\nimport { Avatar } from '../Avatar'\n\ntype Size = 'sm' | 'md' | 'lg'\n\nexport type AvatarGroupItem = { name: string; src?: string }\n\ntype Props = {\n  items: AvatarGroupItem[]\n  /** Show at most this many, then a \"+N\" overflow disc. Default 4. */\n  max?: number\n  size?: Size\n  className?: string\n}\n\n/* Overlapping stack of avatars with a \"+N\" overflow — a team, the people on a\n * thread. Presentational; the caller supplies the list. The overflow disc\n * carries the hidden count so it is not silent to a screen reader. */\nexport function AvatarGroup({ items, max = 4, size = 'md', className }: Props) {\n  const shown = items.slice(0, max)\n  const overflow = items.length - shown.length\n  return (\n    <div className={cn('avatar-group', className)} data-size={size}>\n      {shown.map((item) => (\n        <span className=\"avatar-group-item\" key={item.name}>\n          <Avatar name={item.name} src={item.src} size={size} />\n        </span>\n      ))}\n      {overflow > 0 && (\n        <span className=\"avatar-group-item avatar-group-overflow\" data-size={size}>\n          +{overflow}\n          <span className=\"sr-only\">{overflow} more</span>\n        </span>\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/AvatarGroup/AvatarGroup.tsx"
+    },
+    {
+      "path": "src/components/AvatarGroup/index.ts",
+      "content": "export { AvatarGroup, type AvatarGroupItem } from './AvatarGroup'\n",
+      "type": "registry:ui",
+      "target": "@ui/AvatarGroup/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/AvatarGroup.json"
+}

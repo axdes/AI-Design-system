@@ -1,0 +1,30 @@
+{
+  "name": "IconDisc",
+  "level": "atom",
+  "date": "2026-08-25",
+  "requestedBy": "owner",
+  "need": "An icon in a filled disc, at a proportion nobody has to choose. The system already has this shape twice — <BrandMark> caps the brand mark in a rail-item disc, and the site's overview tiles now cap a section icon the same way — and the second time is the promotion trigger. The owner's words when the first attempt came out cramped: make it a rule so it does not happen again. A rule would police the number; a component removes the choice, which is the only thing that makes it unrepeatable.",
+  "consideredAlternatives": [
+    {
+      "ref": "a lint rule on the ratio",
+      "whyNot": "It can only fire after someone has written the CSS, and it would have to guess which round element is a disc holding an icon. The mistake is choosing a number at all."
+    },
+    {
+      "ref": "a token for the ratio",
+      "whyNot": "A token cannot hold a relationship between two elements: the disc is one box, the glyph is another, and a token in either place still lets the pair be wrong."
+    },
+    {
+      "ref": "components/BrandMark",
+      "whyNot": "It is the brand's cap specifically: it carries the collapse arrow and its cross-fade, and it is sized to a rail item. Generalising it would mean a brand component that is sometimes not the brand."
+    },
+    {
+      "ref": "components/Avatar",
+      "whyNot": "A disc for a PERSON or a team, with an initial fallback and a presence dot. An icon is neither, and reaching for it would make every section mark announce itself as somebody."
+    }
+  ],
+  "proposedApi": "icon (IconName), size (sm | md — the disc), tone (neutral | primary — the fill), className. The glyph size is NOT a prop: that is the whole point.",
+  "sources": "Measured 2026-08-25: a 20px glyph in a 32px disc fills two thirds of it and reads as cramped; the brand mark in the rail sits at about half, which is the proportion this system already chose. 48/20 is what the overview tiles landed on by eye after the owner said so.",
+  "status": "approved",
+  "decision": "Approved and built 2026-08-26. Built with TWO steps, not three: the ladder is 32/16 and 48/24, a glyph at exactly half its disc on both, which is the proportion the brand mark in the rail already uses (40/20). There is no `lg` because the third disc the grid offers is 64, half of it is 32, and the icon scale runs 16 / 20 / 24 / 40 — adding a step to a type scale to serve one component is how a scale rots, and rounding to 24 or 40 would put a second proportion on the ladder, which is the one thing this part exists to prevent. The overview tile moved onto it and gave back its four declarations; its glyph grew from 20 to 24 in the same 48 disc, which the screen check would NOT have caught on its own (0.33% of pixels, under the 0.5% tolerance) and which was accepted by looking at the pair.",
+  "decidedBy": "owner (2026-08-26, told the pending requests to be worked)"
+}

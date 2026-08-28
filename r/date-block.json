@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "date-block",
+  "type": "registry:ui",
+  "title": "DateBlock",
+  "description": "A date as a block the eye lands on first: the month small over the day large. For an EVENT, where the reader scans by date — a timestamp inside a sentence is <Time>, and a field in a record is a plain value.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/DateBlock/DateBlock.css",
+      "content": "/* A DATE THE EYE LANDS ON — TYPE, NOT A BADGE.\n *\n * It shipped as a tinted lavender tile with a blue month over a blue day, which\n * is the 2014 event-badge and reads as one (owner, 23.08: this does not look\n * modern). The tint was also the thing the system already refuses elsewhere: an\n * accent fill behind a piece of text that is not a status. What makes a date\n * land is SIZE and rank — a big day over a small month, in ink — so that is\n * what the default is now. `tone` still fills the tile for the case that wants\n * a coloured chip; it is opt-in rather than the resting state.\n */\n.date-block {\n  /* Local to this component: the tile's two sizes, used only when a tone fills\n   * it. Unfilled, the block is as wide as its own digits. */\n  --date-block-size: var(--space-12);\n\n  display: grid;\n  justify-items: center;\n  align-content: start;\n  gap: var(--space-1);\n  min-inline-size: var(--date-block-size);\n  flex: none;\n  line-height: var(--leading-none);\n}\n\n.date-block-month {\n  font-size: var(--font-xs);\n  font-weight: var(--font-weight-medium);\n  text-transform: uppercase;\n  letter-spacing: var(--tracking-wide);\n  color: var(--muted-foreground);\n}\n.date-block-day {\n  font-size: var(--font-2xl);\n  font-weight: var(--font-weight-semibold);\n  font-variant-numeric: tabular-nums;\n  color: var(--foreground);\n  letter-spacing: -0.02em;\n}\n.date-block[data-size=\"sm\"] { --date-block-size: var(--space-8); }\n.date-block[data-size=\"sm\"] .date-block-day { font-size: var(--font-lg); }\n\n/* THE FILLED TILE: opt in with a tone. Same two lines, boxed and coloured — for\n * a calendar strip where the block is the only thing in its column, or a status\n * the date itself carries (overdue). Not the default, and never just to make a\n * card look busier. */\n.date-block[data-tone] {\n  place-content: center;\n  justify-items: center;\n  inline-size: var(--date-block-size);\n  block-size: var(--date-block-size);\n  border-radius: var(--radius-md);\n  background: var(--muted);\n}\n.date-block[data-tone] .date-block-day { font-size: var(--font-lg); }\n.date-block[data-tone][data-size=\"sm\"] .date-block-day { font-size: var(--font-base); }\n.date-block[data-tone] .date-block-month,\n.date-block[data-tone] .date-block-day { color: inherit; }\n\n.date-block[data-tone=\"primary\"] { background: var(--primary-soft); color: var(--primary-accent); }\n.date-block[data-tone=\"neutral\"] { background: var(--muted); color: var(--foreground); }\n/* The *-soft-foreground inks, not the *-emphasis ones: emphasis is the ink for\n * a role on the PAGE, and on its own soft fill it measures 4.29:1 in light and\n * 3.75:1 in dark. The soft-foreground role exists for exactly this pairing.\n * (Caught by the handbook's contrast gate once the vendored copy grew this\n * component, 23.08.) */\n.date-block[data-tone=\"success\"] { background: var(--success-soft); color: var(--success-soft-foreground); }\n.date-block[data-tone=\"warning\"] { background: var(--warning-soft); color: var(--warning-soft-foreground); }\n.date-block[data-tone=\"danger\"]  { background: var(--destructive-soft); color: var(--destructive-soft-foreground); }\n",
+      "type": "registry:ui",
+      "target": "@ui/DateBlock/DateBlock.css"
+    },
+    {
+      "path": "src/components/DateBlock/DateBlock.tsx",
+      "content": "import \"./DateBlock.css\";\nimport { cn } from \"../lib/cn\";\n\ntype Tone = \"neutral\" | \"primary\" | \"success\" | \"warning\" | \"danger\";\ntype Size = \"sm\" | \"md\";\n\ntype Props = {\n  /** ISO string, epoch milliseconds, or a Date. */\n  value: string | number | Date;\n  /** BCP-47 tag. Omit to follow the browser. */\n  locale?: string;\n  /** Fills the block as a coloured tile. Omitted, the date is type in ink,\n   *  which is what a card wants; a tone is for a calendar strip. */\n  tone?: Tone;\n  size?: Size;\n  className?: string;\n};\n\n/** A date as a block the eye lands on first: the month small over the day\n *  large. For an EVENT, where the reader scans by date — a timestamp inside a\n *  sentence is <Time>, and a field in a record is a plain value. */\nexport function DateBlock({ value, locale, tone, size, className }: Props) {\n  const date = new Date(value);\n  if (Number.isNaN(date.getTime())) return null;\n  const month = new Intl.DateTimeFormat(locale, { month: \"short\" }).format(date);\n  const day = new Intl.DateTimeFormat(locale, { day: \"numeric\" }).format(date);\n  /* The machine-readable instant travels with the human one, the same promise\n   * <Time> makes: the tile is a rendering of a date, not a picture of one. */\n  return (\n    <time\n      className={cn(\"date-block\", className)}\n      data-tone={tone}\n      data-size={size}\n      dateTime={date.toISOString()}\n      title={new Intl.DateTimeFormat(locale, { dateStyle: \"full\" }).format(date)}\n    >\n      <span className=\"date-block-month\">{month}</span>\n      <span className=\"date-block-day\">{day}</span>\n    </time>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/DateBlock/DateBlock.tsx"
+    },
+    {
+      "path": "src/components/DateBlock/index.ts",
+      "content": "export { DateBlock } from \"./DateBlock\";\n",
+      "type": "registry:ui",
+      "target": "@ui/DateBlock/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/DateBlock.json"
+}

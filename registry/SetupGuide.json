@@ -1,7 +1,7 @@
 {
   "ref": "SetupGuide",
   "level": "organism",
-  "description": "The first-run checklist (Shopify's setup guide): steps with their state and the control that performs each, a counted progress line, and a dismiss that appears only when the work is done. Lives at the top of a product's home until it has earned its removal.",
+  "description": "The first-run checklist (Shopify's setup guide): steps with their state and the control that performs each, a counted progress line, and a dismiss that appears only when the work is done. Lives at the top of a product's home until it has earned its removal. Copy: every step starts with a verb and describes one action — \"Connect a calendar\". The detail says why it is worth doing, not how the control works.",
   "exports": [
     "SetupGuide"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "title",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The guide's name (\"Get set up\")."
     },
     {
       "name": "steps",
@@ -22,7 +23,8 @@
     {
       "name": "onDismiss",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "Dismiss, shown ONLY when every step is done. A dismissed guide never returns (the caller persists that), so first-run and steady-state are one page with a section that retires itself."
     },
     {
       "name": "dismissLabel",

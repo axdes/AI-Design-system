@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "thumbnail",
+  "type": "registry:ui",
+  "title": "Thumbnail",
+  "description": "The picture that identifies a row: a product, a document, a frame of a recording. A fixed box, so it never becomes the row's height driver and every row in the column is the same height whatever the image is. `Avatar` is the one for a person (it is round and falls back to initials); `CardMedia` is the one for a card, where the frame IS the content. Copy: the `alt` says what the picture shows, not ",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Thumbnail/Thumbnail.css",
+      "content": "/* A fixed box. The image covers it, so a portrait and a landscape source give\n * the same row height — which is the whole reason this is not a bare <img>. */\n.thumbnail {\n  display: block;\n  flex: none;\n  inline-size: var(--space-12);\n  block-size: var(--space-12);\n  overflow: hidden;\n  border-radius: var(--radius-sm);\n  background: var(--muted);\n}\n.thumbnail[data-size=\"sm\"] { inline-size: var(--space-6); block-size: var(--space-6); }\n.thumbnail[data-ratio=\"16/9\"] { inline-size: var(--space-16); block-size: var(--space-8); }\n\n.thumbnail img {\n  inline-size: 100%;\n  block-size: 100%;\n  object-fit: cover;\n  display: block;\n}\n\n.thumbnail-fallback {\n  display: grid;\n  place-items: center;\n  inline-size: 100%;\n  block-size: 100%;\n  color: var(--muted-foreground);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Thumbnail/Thumbnail.css"
+    },
+    {
+      "path": "src/components/Thumbnail/Thumbnail.tsx",
+      "content": "import './Thumbnail.css'\nimport type { ImgHTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\nimport { Icon, type IconName } from '../Icon'\n\ntype Size = 'sm' | 'md'\n\ntype Props = Omit<ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height'> & {\n  /** The picture. Leave it out and the fallback icon stands in, which is what\n   *  a row with no image needs: the column still has one width. */\n  src?: string\n  /** Always required, and empty when the picture repeats the text beside it. */\n  alt: string\n  /** The stand-in when there is no picture. */\n  icon?: IconName\n  /** sm (24px, a dense table) / md (40px, the default). */\n  size?: Size\n  /** Square (the default) for a thing, 16/9 for a frame of video. */\n  ratio?: '1/1' | '16/9'\n}\n\n/**\n * The picture that identifies a row: a product, a document, a frame of a\n * recording. A fixed box, so it never becomes the row's height driver and every\n * row in the column is the same height whatever the image is.\n *\n * `Avatar` is the one for a person (it is round and falls back to initials);\n * `CardMedia` is the one for a card, where the frame IS the content.\n *\n * Copy: the `alt` says what the picture shows, not that it is a picture; an\n * empty alt is correct only when the image adds nothing the words do not\n * already carry.\n */\nexport function Thumbnail({ src, alt, icon = 'insert_drive_file', size, ratio, className, ...rest }: Props) {\n  return (\n    <span className={cn('thumbnail', className)} data-size={size} data-ratio={ratio}>\n      {src\n        ? <img src={src} alt={alt} loading=\"lazy\" {...rest} />\n        : (\n          /* The fallback is not empty space: a column of images with a hole in\n           * it reads as a broken image, not as a record without one. */\n          /* With an alt it is an image that happens to be a glyph; with an\n             empty alt it is decoration, and a role=\"img\" with no name is a\n             promise of a label that is not there (axe: role-img-alt). */\n          <span\n            className=\"thumbnail-fallback\"\n            role={alt ? 'img' : undefined}\n            aria-label={alt || undefined}\n            aria-hidden={alt ? undefined : true}\n          >\n            <Icon name={icon} />\n          </span>\n        )}\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Thumbnail/Thumbnail.tsx"
+    },
+    {
+      "path": "src/components/Thumbnail/index.ts",
+      "content": "export { Thumbnail } from './Thumbnail'\n",
+      "type": "registry:ui",
+      "target": "@ui/Thumbnail/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Thumbnail.json"
+}

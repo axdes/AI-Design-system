@@ -19,12 +19,17 @@
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--muted-foreground);
+  /* --link-quiet: a breadcrumb is a link in chrome. See the LINKS block in
+   * semantic.css — one decision for what a link is coloured, four hand-picked
+   * answers before it. */
+  color: var(--link-quiet);
   font: inherit;
   text-decoration: none;
   cursor: pointer;
   transition: color var(--duration-fast), background var(--duration-fast);
 }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.breadcrumb-link:active { color: var(--link-hover); }
 .breadcrumb-link:hover {
   color: var(--foreground);
   background: var(--accent-soft);

@@ -18,6 +18,7 @@
       "name": "appearance",
       "type": "'meta' | 'eyebrow'",
       "required": false,
+      "description": "`meta` (default) = ambient text + dimmed icon (dates, counters). `eyebrow` = small fully-muted kicker label above a title. Absorbs the old <Eyebrow>.",
       "values": [
         "meta",
         "eyebrow"

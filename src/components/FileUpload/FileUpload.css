@@ -13,7 +13,14 @@
   cursor: pointer;
   transition: border-color var(--duration-fast), background var(--duration-fast);
 }
+/* Hover and press, like every other control. The drop area answered a DRAG
+ * (data-over) and nothing else, so a pointer that had not picked anything up
+ * yet got no sign the area was operable at all. */
+.file-upload-drop:hover:not([data-disabled]) { border-color: var(--ring); background: var(--accent-soft); }
+.file-upload-drop:active:not([data-disabled]) { border-color: var(--primary-active); }
 .file-upload-drop[data-over] { border-color: var(--primary); background: var(--accent-soft); }
+.file-upload-drop[data-invalid] { border-color: var(--destructive); }
+.file-upload-drop[data-invalid]:focus-within { outline-color: var(--destructive); }
 .file-upload-drop[data-disabled] { opacity: 0.5; cursor: not-allowed; }
 .file-upload-drop:focus-within {
   outline: var(--ring-width) solid var(--ring);

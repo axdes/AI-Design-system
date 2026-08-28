@@ -1,0 +1,52 @@
+{
+  "ref": "ComparisonTable",
+  "level": "organism",
+  "description": "A few subjects as COLUMNS and their attributes as rows: plans, vendors, candidates, options. The one table that transposes on purpose, because the reader is comparing three things across twenty attributes rather than twenty records across three fields. Many subjects turn the columns into a scroll nobody can hold in their head: past about five, the subjects are records and belong in rows. Copy: row labels are the question each row answers, identical across subjects. A row that changes its wording per column is not comparable.",
+  "exports": [
+    "ComparisonTable"
+  ],
+  "main": "ComparisonTable",
+  "from": "@/components/ComparisonTable",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "captionHidden",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "subjects",
+      "type": "readonly ComparisonSubject[]",
+      "required": true
+    },
+    {
+      "name": "rows",
+      "type": "readonly ComparisonRow[]",
+      "required": true
+    },
+    {
+      "name": "rowHeader",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The header over the attribute column."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ComparisonTable/ComparisonTable.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Icon",
+    "Table"
+  ],
+  "example": "<ComparisonTable label=\"Plans compared\" captionHidden rowHeader=\"What you get\" subjects={PLANS} rows={ROWS} />"
+}

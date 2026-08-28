@@ -1,7 +1,7 @@
 {
   "ref": "LinkTile",
   "level": "organism",
-  "description": "A clickable tile: navigates on click/Enter/Space, with an overflow (⋮) menu in its top-inline-end corner. The caller supplies the title, the menu items, the open handler and the body.",
+  "description": "A clickable tile: navigates on click/Enter/Space, with an overflow (⋮) menu in its top-inline-end corner. The caller supplies the title, the menu items, the open handler and the body. Copy: the title is the destination's own name, so a reader arriving there recognises where they are.",
   "exports": [
     "LinkTile"
   ],
@@ -17,12 +17,14 @@
     {
       "name": "menuLabel",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the ⋮ trigger."
     },
     {
       "name": "menu",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Dropdown items (DropdownItem elements)."
     },
     {
       "name": "onOpen",
@@ -32,7 +34,8 @@
     {
       "name": "children",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Tile body below the head — meta, snippet, badges."
     }
   ],
   "sourcePath": "src/components/LinkTile/LinkTile.tsx",

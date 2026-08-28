@@ -4,9 +4,13 @@
   overflow: hidden;
   background: var(--card);
 }
+/* The card surface, not --muted: --muted is the PAGE colour, so the header band
+ * read as the page showing through the grid's own frame (owner, 23.08: the
+ * header background merges, leave it white). This is the same answer <Table>
+ * came to — the border and the label typography carry head from body. */
 .datagrid-header {
   display: grid;
-  background: var(--muted);
+  background: var(--card);
   border-block-end: 1px solid var(--border);
 }
 .datagrid-body {
@@ -15,12 +19,35 @@
 }
 .datagrid-spacer { position: relative; }
 .datagrid-window { position: absolute; inset-inline: 0; inset-block-start: 0; }
+/* The cells STRETCH and centre their own content, so a cell can be filled
+ * edge to edge when it has to be (an editor) without the row changing height.
+ * With `align-items: center` on the row the cell was 21px tall inside a 40px
+ * row, and the editor sat in the middle of it like a dropped label (owner,
+ * 23.08: look at how it looks). */
 .datagrid-row {
   display: grid;
-  align-items: center;
+  align-items: stretch;
   border-block-end: 1px solid var(--border);
 }
+
+/* A table is read ALONG a row: six columns are one fact, not six. Without this the eye has to
+ * hold its own place across the width, which on a fifty-row grid is what makes people read the
+ * wrong team's answer. Hover for where the pointer is, and a kept ground for the row the current
+ * cell is in — the latter matters more since the box came off read-only cells. */
+.datagrid-row:hover {
+  background: var(--surface-hover);
+}
+
+/* No kept ground on the row the cursor last landed on. Hover says where the pointer IS, which is
+ * behaviour; a row that stays shaded after the pointer left says something happened to it, and
+ * nothing did. Removed the day it was tried on a real fifty-row grid. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .datagrid-row { transition: background-color var(--duration-fast) var(--ease-out); }
+}
 .datagrid-cell {
+  display: flex;
+  align-items: center;
   padding: 0 var(--space-4);
   font-size: var(--font-sm);
   color: var(--foreground);
@@ -28,8 +55,28 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.datagrid-cell[data-align='end'] { text-align: end; justify-self: end; font-variant-numeric: tabular-nums; }
-.datagrid-cell[data-align='center'] { text-align: center; justify-self: center; }
+/* A COLUMN OF SENTENCES gets a second line rather than an ellipsis half a word in. The row height
+ * is fixed — that is what makes the windowing possible at all — so this is a clamp and not free
+ * growth: two lines, and the rest is on `title` and in the editor. A caller that wants the second
+ * line to have room raises `rowHeight` with it. */
+.datagrid-cell[data-wrap] {
+  white-space: normal;
+  align-items: center;
+}
+
+.datagrid-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* The clamp counts LINES, so the line box has to be one this component decides, not one the
+   * browser picks from the font. */
+  line-height: var(--leading-snug);
+}
+
+/* Alignment is the CONTENT's, now that the cell is a flex box that stretches. */
+.datagrid-cell[data-align='end'] { justify-content: flex-end; text-align: end; font-variant-numeric: tabular-nums; }
+.datagrid-cell[data-align='center'] { justify-content: center; text-align: center; }
 .datagrid-th {
   font-size: var(--font-xs);
   font-weight: var(--font-weight-semibold);
@@ -38,4 +85,145 @@
   color: var(--muted-foreground);
   padding-block: var(--space-3);
   white-space: nowrap;
+}
+
+/* THE CURRENT CELL IS A BOX. The roving tab stop has to be visible however the
+ * focus arrived: `:focus-visible` deliberately does not fire for a mouse, so a
+ * clicked cell showed nothing and the next keystroke came as a surprise. */
+.datagrid-cell[data-active] {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+/* ...only where there is something to enter.
+ *
+ * A box around a value that cannot be changed says "type here" and answers a question nobody
+ * asked: clicking a Coach column to read a name should not light it up. But the roving tab stop
+ * still has to be visible to somebody arrowing through the grid, or they lose their place — so
+ * the mark stays for keyboard focus, which is what `:focus-visible` below already is, and goes
+ * for the mouse. */
+.datagrid-cell[data-active]:not([data-editable]) {
+  outline: none;
+}
+.datagrid-cell:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(var(--ring-offset) * -1);
+}
+/* An editable cell says so before it is entered, rather than only once the
+ * user has already typed into the wrong one. */
+.datagrid-cell[data-editable] { cursor: text; }
+.datagrid-cell[data-editable]:hover { background: var(--surface-hover); }
+/* Pressing an editable cell answers, the way every other control in the system
+ * answers a press: without it the double click that opens the editor happens
+ * with no acknowledgement at all. */
+.datagrid-cell[data-editable]:active { background: var(--muted); }
+/* The editor fills the cell it replaces, so the row does not change height and
+ * the value does not jump sideways as the input takes over. The cell drops its
+ * own inline padding while editing: the input brings its own, and two paddings
+ * put the caret four pixels off the value it replaced. */
+.datagrid-cell[data-editing] { padding: var(--space-1); }
+.datagrid-cell .input {
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 0;
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+.datagrid-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: var(--space-6);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+.datagrid-sort:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.datagrid-sort-icon { opacity: 0; transition: opacity var(--duration-fast); }
+.datagrid-sort:hover .datagrid-sort-icon { opacity: 0.4; }
+.datagrid-sort[data-active] .datagrid-sort-icon { opacity: 1; color: var(--primary-accent); }
+
+/* No rows. The message sits under the header, in the grid's own frame. */
+.datagrid-empty { padding: var(--space-6) var(--space-4); }
+
+/* A CHOICE CELL IS A SELECT — there is no editor to open, so there is no second
+ * state to design. Quiet at rest so fifty of them down a column read as values
+ * rather than as a form; the caret says it is a choice, and the frame arrives
+ * under the pointer and under the focus. */
+.dg-choice-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: 100%;
+}
+
+.dg-choice {
+  appearance: none;
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: var(--control-height-sm);
+  padding-inline: var(--space-2) var(--space-6);
+  border: 1px solid transparent;
+  border-radius: var(--control-radius);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--font-sm);
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.dg-choice:hover { border-color: var(--input); background: var(--background); }
+
+/* ONE ring, and it is the control's. The cell around it wears none: two boxes
+ * on one value is what the owner saw (26.08), and the row's own ground already
+ * says which row is current. */
+.dg-choice:focus-visible {
+  border-color: var(--input);
+  background: var(--background);
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: 0;
+}
+
+.datagrid-cell[data-choice] { padding-inline: var(--space-2); cursor: pointer; }
+.datagrid-cell[data-choice][data-active] { outline: none; }
+
+/* WHAT BECAME OF THIS CELL, at the end of it. It takes the caret's place on a choice cell rather
+ * than crowding in beside it: two marks at one edge is a cell arguing with itself. */
+.dg-cell-mark {
+  flex: none;
+  margin-inline-start: auto;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  align-items: center;
+}
+
+.dg-cell-mark[data-state='saved'] { color: var(--success-emphasis); }
+.dg-cell-mark[data-state='failed'] { color: var(--destructive-emphasis); }
+
+/* Inside a choice cell it stands where the caret stands, which is over the select and out of the
+ * way of the press. */
+.dg-choice-wrap > .dg-cell-mark {
+  position: absolute;
+  inset-inline-end: var(--space-1);
+  margin-inline-start: 0;
+  pointer-events: none;
+}
+
+.dg-choice-caret {
+  position: absolute;
+  inset-inline-end: var(--space-1);
+  color: var(--muted-foreground);
+  pointer-events: none;
 }

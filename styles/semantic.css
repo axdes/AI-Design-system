@@ -39,6 +39,21 @@
   --primary:                var(--brand-400);     /* #4638D3 brand indigo */
   --primary-foreground:     var(--neutral-0);
   --primary-hover:          var(--brand-500);
+  /* Pressed. Hover moves one stop, the press moves one more — the third
+   * step the system did not have. */
+  --primary-active:         var(--brand-600);
+  /* LINKS. There was no such token and no Link component, so every link in the
+   * system had picked its own colour by hand: the link-button brand, EntityLink
+   * near-black, the breadcrumb grey, a card title inheriting. Four answers to
+   * one question, side by side on the same screen. One decision now:
+   *   --link        text that goes somewhere, inside reading text
+   *   --link-quiet  the same thing in chrome, where position already says it
+   * Deliberately NOT :visited: these are application links, and a workspace
+   * whose nav recolours itself as you use it reads as broken rather than as
+   * helpful. A content site should add it here and nowhere else. */
+  --link:                   var(--primary-accent);
+  --link-hover:             var(--primary-hover);
+  --link-quiet:             var(--muted-foreground);
   /* Primary used as TEXT / icon / border ON a page or card surface (not a fill).
    * Same as --primary in light; the dark theme lightens it so brand-blue accents
    * stay legible on the dark surface (brand-400 there sits at ~1.7:1 — it blends).
@@ -57,15 +72,87 @@
 
   --icon-muted:             var(--neutral-500);
 
+  /* ════ CHARTS ═══════════════════════════════════════════════════
+   * The series slots a chart paints with, in fixed order: series 1 is always
+   * --chart-1, whatever else is on screen, so a filter that drops a series
+   * never repaints the ones that stay. Status colours (--success, --warning,
+   * --destructive) are NOT in this list on purpose: a chart that means "how
+   * much of it is bad" tones by meaning, and a chart that means "these are
+   * three different things" tones by slot. Mixing them makes one series look
+   * like a warning. */
+  --chart-1: var(--series-1);
+  --chart-2: var(--series-2);
+  --chart-3: var(--series-3);
+  --chart-4: var(--series-4);
+  --chart-5: var(--series-5);
+  --chart-6: var(--series-6);
+  /* The furniture: a grid line is the quietest thing on the plot, an axis label
+   * is ordinary secondary text, and the track is what an unfilled bar sits in. */
+  --chart-grid:  var(--border);
+  --chart-axis:  var(--muted-foreground);
+  --chart-track: var(--accent);
+  /* Status, as DATA rather than as a chip. A donut painted in --success /
+   * --warning / --destructive came out olive, mustard and brick (owner, 23.08:
+   * this looks bad): those steps are chosen to carry white TEXT on a small
+   * badge, and a 40px arc of the same colour is a different job. These are the
+   * same three meanings, one step fresher, and they are only ever used for a
+   * filled area that carries its own label.
+   *
+   * They are deliberately NOT run through the categorical adjacency gate: a
+   * status palette separates by meaning and ships with a named legend, which is
+   * the documented mitigation. */
+  --chart-success: var(--success-600);
+  --chart-warning: var(--warning-800);
+  --chart-danger:  var(--danger-600);
+
+
   --secondary:              var(--neutral-100);   /* plain light grey on white surfaces; page-level contexts override to white */
-  --secondary-hover:        var(--neutral-200);
   --secondary-foreground:   var(--neutral-700);   /* text-secondary */
 
   --accent:                 var(--neutral-200);
   --accent-foreground:      var(--neutral-900);
   /* Softer hover/active fill for elements ON white/elevated surfaces (menus,
    * lists, toolbar icon buttons) — lighter than --accent. */
-  --accent-soft:            var(--neutral-100);
+  /* neutral-200, not -100: at -100 this token WAS --muted, so a ghost button
+   * or a menu row hovering on the page surface painted itself the exact
+   * colour of the page — 1.00:1, a hover that does not happen. The step has
+   * to differ from every surface it can land on, not merely be quiet. */
+  --accent-soft:            var(--neutral-200);
+  /* One stop past --accent: the hover step for a control that already carries a
+   * fill (a pill, a filled icon button), so hovering moves it FURTHER from the
+   * surface behind it rather than back towards it. */
+  --accent-strong:          var(--neutral-300);
+  /* One past --accent-strong: the pressed step for a control on a card, where
+   * hover has already spent --accent-strong. */
+  --accent-active:         var(--neutral-400);
+  /* One past pressed: what a quiet control on a WHITE surface is held down
+   * at, now that its resting fill starts a step lower. */
+  /* WHAT A QUIET CONTROL FILLS ITSELF WITH SO IT DOES NOT DISSOLVE INTO ITS
+   * SURFACE: on grey go white, on white go grey.
+   *
+   * This is the page's answer. Every surface that is NOT the page has to give
+   * its own, and that is the part which used to be missing: only `.card` did,
+   * so a quiet button on any other white area took this answer and stood white
+   * on white. `.content-surface` in the showcase is exactly that — a white area
+   * the code calls "not a card" — and its Start Editing button had no fill at
+   * all (owner, 2026-08-23). The rule was right; it was only bound in one file.
+   *
+   * A surface answering is now checked rather than remembered: the showcase's
+   * `npm run controls` walks every screen and measures every filled control
+   * against the colour actually painted behind it. */
+  --surface-contrast:       var(--card);
+  --surface-contrast-hover: var(--accent);
+  /* The third step: what the same control fills itself with WHILE PRESSED. The
+   * system had hover and then nothing — no `:active` rule existed anywhere in
+   * 106 components, so a click gave no answer until the work finished and a
+   * slow action read as a dead button. One more stop in the same direction. */
+  --surface-contrast-active: var(--accent-strong);
+  /* Hover/active fill for a row inside a POPOVER surface, which is a different
+   * surface from the page. In dark, --accent-soft and --popover are both
+   * neutral-820: every menu highlight was painting itself the exact colour of
+   * the menu (1.00:1), so hover and the keyboard position were invisible. A
+   * popover states its own step. */
+  --popover-hover:          var(--neutral-100);
   /* Row/area hover on a card surface: one whisper lighter than the page tint,
    * so a hovered table row reads without ever matching --muted (a hover that
    * equals the page colour looks like a hole, not a highlight). */
@@ -76,15 +163,9 @@
   /* Left as it was: ChatHistory is its consumer and paints hover/active with it.
    * The sidebars keep their own --accent background — the two surfaces differ on
    * purpose, and a contrast fix for dark mode is no reason to restyle either. */
-  --nav-active-bg:          var(--muted);
-  --nav-active-fg:          var(--primary-accent);
+  --nav-active:          var(--muted);
+  --nav-active-foreground:          var(--primary-accent);
 
-  /* Over imagery the theme stops mattering: the scrim is dark and its text is
-   * light in BOTH themes, because the image underneath obeys neither. Declared
-   * once — the dark blocks deliberately do not restate these. */
-  --scrim-fade:             linear-gradient(to top, var(--scrim-85), var(--scrim-70) 40%, var(--scrim-0) 80%);
-  --scrim-strong:           var(--scrim-85);
-  --scrim-foreground:       var(--neutral-0);
 
   --destructive:            var(--danger-800);
   --destructive-foreground: var(--neutral-0);
@@ -132,12 +213,22 @@
   --input:                  var(--neutral-300);
   --ring:                   var(--brand-400);
 
+  /* THE EDGE A CONTROL DRAWS SO ITS SHAPE SURVIVES ANY SURFACE.
+   *
+   * --surface-contrast answers "what do I fill myself with"; this answers "and
+   * where do I end". They are two different questions, and the arithmetic says
+   * so: no fill can be quiet enough to read as secondary AND separated enough
+   * to clear 3:1 — solved numerically over the whole ramp, there is no such
+   * colour. So the fill stays quiet and the edge carries the boundary. */
+  --control-edge:           var(--neutral-550);
+
+
   /* Switch track when off — semantic so dark theme can override cleanly. */
   --switch-track-off:       var(--neutral-300);
-  --switch-thumb-bg:        var(--neutral-0);
+  --switch-thumb:        var(--neutral-0);
 
   /* Avatar fallback (no image) — distinctive surface with foreground contrast. */
-  --avatar-bg:              var(--neutral-700);
+  --avatar:              var(--neutral-700);
   --avatar-foreground:      var(--neutral-0);
 
   --overlay:                rgb(0 0 0 / 0.4);   /* modal/drawer backdrop */
@@ -167,6 +258,8 @@
   --primary:                var(--brand-400);     /* brand blue fill, same in both themes (white text on it) */
   --primary-foreground:     var(--neutral-0);     /* white on teal — brand-button consistency */
   --primary-hover:          var(--brand-500);     /* darker on hover, same direction as light */
+  --primary-active:         var(--brand-600);
+  --link-hover:             var(--brand-100);
   /* The brand as INK on dark. brand-300 clears the page and the muted surface
    * (4.58:1) but only reaches 2.84:1 on --accent — and --accent is where this
    * token actually lands most often: a dropdown item, a selected tree row, a
@@ -184,8 +277,18 @@
 
   --icon-muted:             var(--neutral-400);
 
+  /* Charts — the same six hues restepped for the dark surface. */
+  --chart-1: var(--series-1-dark);
+  --chart-2: var(--series-2-dark);
+  --chart-3: var(--series-3-dark);
+  --chart-4: var(--series-4-dark);
+  --chart-5: var(--series-5-dark);
+  --chart-6: var(--series-6-dark);
+  --chart-success: var(--success-500);
+  --chart-warning: var(--warning-800);
+  --chart-danger:  var(--danger-400);
+
   --secondary:              var(--neutral-850);
-  --secondary-hover:        var(--neutral-800);
   --secondary-foreground:   var(--neutral-100);
 
   --accent:                 var(--neutral-800);
@@ -195,10 +298,18 @@
    * at 2.84:1, both unreadable. brand-200 gives 4.77:1. Found by running axe in
    * a real browser — jsdom cannot evaluate contrast, so this had been invisible
    * to every check the repository had. */
-  --nav-active-bg:          var(--muted);
-  --nav-active-fg:          var(--brand-200);
-  --accent-soft:            var(--neutral-820);   /* subtle hover on dark cards */
+  --nav-active-foreground:          var(--primary-accent);
+  /* neutral-800, not -820: at -820 this was --popover, so every menu
+   * highlight in this theme was the colour of the menu. */
+  --accent-soft:            var(--neutral-800);   /* subtle hover on dark cards */
+  --accent-strong:          var(--neutral-700);   /* the hover step past --accent */
+  --accent-active:         var(--neutral-600);   /* one further: the pressed step, named `active` to match the `:active` selector that reads it */
   --surface-hover:          var(--neutral-820);   /* row hover on dark cards */
+  /* neutral-800, not --accent-soft: in this theme --accent-soft and --popover
+   * are the SAME neutral-820, so every menu highlight was painting itself the
+   * colour of the menu. Measured 1.00:1 — hover and the keyboard position were
+   * not dim, they were absent. */
+  --popover-hover:          var(--neutral-800);
 
   --destructive:            var(--danger-800);    /* danger-800: brand red deep enough for AA on white text (4.98:1) */
   --destructive-foreground: var(--neutral-0);
@@ -228,10 +339,13 @@
   --input:                  var(--neutral-820);   /* same as --border for visual consistency */
   --ring:                   var(--brand-300);   /* lighter so the focus outline reads on dark */
 
-  --switch-track-off:       var(--neutral-800);
-  --switch-thumb-bg:        var(--neutral-100);
+  --control-edge:           var(--neutral-550);
 
-  --avatar-bg:              var(--neutral-700);
+
+  --switch-track-off:       var(--neutral-800);
+  --switch-thumb:        var(--neutral-100);
+
+  --avatar:              var(--neutral-700);
   --avatar-foreground:      var(--neutral-100);
 
   --overlay:                rgb(0 0 0 / 0.6);   /* stronger overlay on dark */
@@ -241,7 +355,7 @@
   --shadow-md:        0 4px 12px rgb(0 0 0 / 0.40);
   --shadow-lg:        0 12px 32px rgb(0 0 0 / 0.50);
   --shadow-popover:   0 4px 24px rgb(0 0 0 / 0.40);
-  --shadow-card-hover:0 0 24px rgb(0 0 0 / 0.30);
+  --shadow-card-hover: 0 6px 20px rgb(0 0 0 / 0.45);
 }
 
 [data-theme="light"] { color-scheme: light; }
@@ -256,7 +370,7 @@
   --shadow-md: 0 2px 16px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.14);
   --shadow-popover: 0 4px 24px rgb(0 0 0 / 0.08);
-  --shadow-card-hover: 0 0 24px rgb(0 0 0 / 0.06);
+  --shadow-card-hover: 0 6px 20px rgb(0 0 0 / 0.12);
 }
 
 /* System mode: respect OS preference when no explicit data-theme is set. */
@@ -269,6 +383,15 @@
  * `npm run contrast` measured the other block and reported green.
  *
  * The contrast check now reads both, so they cannot drift again silently. */
+/* jscpd:ignore-start
+ * This block is a DELIBERATE mirror of [data-theme="dark"] above, and the file
+ * says why: a media query cannot join a selector list, so "the user chose dark"
+ * and "the user chose nothing and the OS says dark" have to be written twice.
+ * The duplication is the point — `npm run contrast` reads BOTH blocks precisely
+ * because they drifted once. Excluded here rather than raising the package-wide
+ * clone threshold, which would have hidden real copy-paste everywhere else.
+ * The proper fix is to generate this block from the one above, the way tokens/
+ * is generated from styles/; until then the contrast gate is what holds it. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     color-scheme: dark;
@@ -284,22 +407,36 @@
     --primary:                var(--brand-400);
     --primary-foreground:     var(--neutral-0);
     --primary-hover:          var(--brand-500);
+    --primary-active:         var(--brand-600);
+    --link-hover:             var(--brand-100);
     --primary-accent:         var(--brand-200);
     --primary-soft:           var(--brand-900);
     --primary-soft-foreground: var(--brand-200);
-    --nav-active-bg:          var(--muted);
-    --nav-active-fg:          var(--brand-200);
-    --secondary-hover:        var(--neutral-800);
+    --nav-active-foreground:          var(--primary-accent);
     --ai:                     var(--violet-400);
     --ai-foreground:          var(--neutral-900);
     --ai-soft:                var(--violet-900);
     --ai-soft-foreground:     var(--violet-200);
     --icon-muted:             var(--neutral-400);
+
+    /* Charts — the same six hues restepped for the dark surface. */
+    --chart-1: var(--series-1-dark);
+    --chart-2: var(--series-2-dark);
+    --chart-3: var(--series-3-dark);
+    --chart-4: var(--series-4-dark);
+    --chart-5: var(--series-5-dark);
+    --chart-6: var(--series-6-dark);
+  --chart-success: var(--success-500);
+    --chart-warning: var(--warning-800);
+    --chart-danger:  var(--danger-400);
     --secondary:              var(--neutral-850);
     --secondary-foreground:   var(--neutral-100);
     --accent:                 var(--neutral-800);
     --accent-foreground:      var(--neutral-100);
-    --accent-soft:            var(--neutral-820);
+    --accent-soft:            var(--neutral-800);
+    --accent-strong:          var(--neutral-700);
+    --accent-active:         var(--neutral-600);
+    --popover-hover:          var(--neutral-800);
     --surface-hover:          var(--neutral-820);
     --destructive:            var(--danger-800);
     --destructive-foreground: var(--neutral-0);
@@ -324,15 +461,17 @@
     --border-strong:          var(--neutral-800);
     --input:                  var(--neutral-820);
     --ring:                   var(--brand-300);
+    --control-edge:           var(--neutral-550);
     --switch-track-off:       var(--neutral-800);
-    --switch-thumb-bg:        var(--neutral-100);
-    --avatar-bg:              var(--neutral-700);
+    --switch-thumb:        var(--neutral-100);
+    --avatar:              var(--neutral-700);
     --avatar-foreground:      var(--neutral-100);
     --overlay:                rgb(0 0 0 / 0.6);
     --shadow-sm:        0 1px 2px rgb(0 0 0 / 0.35);
     --shadow-md:        0 4px 12px rgb(0 0 0 / 0.40);
     --shadow-lg:        0 12px 32px rgb(0 0 0 / 0.50);
     --shadow-popover:   0 4px 24px rgb(0 0 0 / 0.40);
-    --shadow-card-hover:0 0 24px rgb(0 0 0 / 0.30);
+    --shadow-card-hover: 0 6px 20px rgb(0 0 0 / 0.45);
   }
 }
+/* jscpd:ignore-end */

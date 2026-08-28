@@ -1,18 +1,50 @@
 .meter { display: flex; flex-direction: column; gap: var(--space-1); min-inline-size: 0; }
+
+/* THE TRACK IS A RULE, NOT A TUBE.
+ *
+ * It was 10px with a hard black tick standing on it, which is the 2014 progress
+ * bar (owner, 23.08: this does not look modern). Six pixels reads as a
+ * measurement rather than a container, and the marker below says "the goal is
+ * here" without stamping on the fill. */
 .meter-track {
-  position: relative; block-size: 10px; border-radius: var(--radius-full);
-  background: var(--accent); overflow: visible;
+  position: relative;
+  block-size: 6px;
+  border-radius: var(--radius-full);
+  background: var(--chart-track);
+  overflow: visible;
 }
-.meter[data-size="sm"] .meter-track { block-size: 6px; }
-.meter-fill { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: var(--radius-full); background: var(--primary); }
-.meter[data-tone="success"] .meter-fill { background: var(--success); }
-.meter[data-tone="warning"] .meter-fill { background: var(--warning); }
-.meter[data-tone="danger"] .meter-fill { background: var(--destructive); }
+.meter[data-size="sm"] .meter-track { block-size: 4px; }
+
+.meter-fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  /* The reading arrives instead of being there already — one gesture, the same
+   * curve every other part of the system answers on. */
+  transform-origin: inline-start;
+  animation: meter-fill var(--duration-slow) var(--ease-out) both;
+}
+@keyframes meter-fill {
+  from { transform: scaleX(0); }
+}
+.meter[data-tone="success"] .meter-fill { background: var(--chart-success); }
+.meter[data-tone="warning"] .meter-fill { background: var(--chart-warning); }
+.meter[data-tone="danger"] .meter-fill { background: var(--chart-danger); }
+
+/* THE GOAL. A hairline standing across the track, ringed in the surface colour
+ * so it reads whether it lands on the fill or on the empty part. */
 .meter-target {
-  position: absolute; inset-block-start: -3px; inline-size: 2px; block-size: 16px;
-  background: var(--foreground); border-radius: var(--radius-full);
+  position: absolute;
+  inset-block: -3px;
+  inline-size: 2px;
+  border-radius: var(--radius-full);
+  background: var(--foreground);
+  box-shadow: 0 0 0 2px var(--card);
 }
+
 .meter-ticks {
   display: flex; justify-content: space-between;
-  font-size: var(--font-xs); color: var(--muted-foreground); font-variant-numeric: tabular-nums;
+  font-size: var(--font-xs); color: var(--chart-axis); font-variant-numeric: tabular-nums;
 }

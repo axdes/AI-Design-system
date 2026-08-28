@@ -1,7 +1,7 @@
 {
   "ref": "ListPageTemplate",
   "level": "block",
-  "description": "The LIST page skeleton, the most common product screen: a header (title + actions), an optional toolbar, then either the content or an empty state.",
+  "description": "The LIST page skeleton, the most common product screen: a header (title + actions), an optional toolbar, then either the content or an empty state. Copy: the title is the collection in the plural, in the reader's word for it — \"Invoices\", not \"Invoice list\". The empty state names what is missing and what would fill it.",
   "exports": [
     "ListPageTemplate"
   ],
@@ -12,64 +12,66 @@
     {
       "name": "title",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Page title in the header. Optional because a screen that is only ever empty has none: the empty state carries the words, and repeating them above it reads as an error. `PlaceholderPage` is exactly that screen."
     },
     {
       "name": "actions",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Header actions (e.g. a \"New\" button)."
     },
     {
       "name": "inline",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Content placed INSIDE the header row, beside the title. Where a list screen puts its search: two of the real ones already do it that way, and without this the only option was a toolbar on its own line below."
     },
     {
       "name": "toolbar",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Optional toolbar under the header (a FilterBar / a row of filters)."
     },
     {
       "name": "children",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The list / grid content the caller supplies, with its own layout. Optional for the same reason as `title`: an always-empty screen has no list."
     },
     {
       "name": "isEmpty",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "When true, the empty state is shown instead of the content."
     },
     {
       "name": "empty",
       "type": "{ icon?: IconName title: string description?: string action?: ReactNode reason?: 'no-data' | 'no-matches' }",
-      "required": false
+      "required": false,
+      "description": "Empty-state config, shown when isEmpty. `reason` decides what happens to the header, and it matters more than it looks. `no-data` (the default) drops the title: repeating \"Users\" above \"no users yet\" reads as an error, which is what the hand-written screens already did. `no-matches` keeps the whole header, because the search box and the filters that caused the emptiness are IN it — dropping them leaves the user with an empty screen and nothing to undo it with."
     },
     {
       "name": "contentClassName",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Extra class on the content wrapper. A list screen decides its own layout (a card grid, one reading column, a table), so the template does not impose one; this is where the caller's layout class goes."
     },
     {
       "name": "className",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Extra class on the page wrapper, for the rare app-level difference. One app's shell makes this element the scroll container, for instance."
     },
     {
       "name": "panels",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Panelled list: the page stops scrolling and the content region takes the leftover height, so whatever the caller puts there (typically a `<Card flush>` around a `<TableScroll>`) scrolls inside itself while the header and the toolbar stay put. Pair it with `<Table stickyHeader>` so the column names survive the scroll. Desktop only — stacked full-height scrollers on a phone make the bottom one unreachable, so below the shell's panel breakpoint the page scrolls normally. The app shell has to release its height for this; see `.app-layout:has([data-panels])` — the same contract DetailPageTemplate's `panels` uses."
     }
   ],
   "sourcePath": "src/blocks/ListPageTemplate/ListPageTemplate.tsx",
   "context": "page",
-  "variants": {
-    "panels": {
-      "prop": "panels",
-      "values": [
-        "true"
-      ]
-    }
-  },
   "uses": [
     "Button",
     "Card",
@@ -79,5 +81,5 @@
     "PageHeader",
     "SearchInput"
   ],
-  "example": "const [query, setQuery] = useState('')\nconst rows = [{ id: '1', name: 'Onboarding' }, { id: '2', name: 'Payroll' }]\nconst shown = rows.filter((r) => r.name.toLowerCase().includes(query.toLowerCase()))\n\n<ListPageTemplate\n  title=\"Projects\"\n  actions={<Button variant=\"primary\" iconEnd>New<Icon name=\"add\" /></Button>}\n  toolbar={\n    <SearchInput\n      placeholder=\"Search projects\"\n      value={query}\n      onChange={(e) => setQuery(e.target.value)}\n      onClear={() => setQuery('')}\n    />\n  }\n  isEmpty={shown.length === 0}\n  empty={{ icon: 'folder', title: 'No projects match', description: 'Try a different search.' }}\n>\n  {/* The block stacks its children; a card grid is one line of <Grid>, and\n      leaving that to the caller is what lets a table or a single reading\n      column live under the same template. */}\n  <Grid gap={4}>\n    {shown.map((r) => (\n      <Card key={r.id} interactive>{r.name}</Card>\n    ))}\n  </Grid>\n</ListPageTemplate>"
+  "example": "const [query, setQuery] = useState('')\nconst rows = [{ id: '1', name: 'Onboarding' }, { id: '2', name: 'Payroll' }]\nconst shown = rows.filter((r) => r.name.toLowerCase().includes(query.toLowerCase()))\n\n<ListPageTemplate\n  title=\"Projects\"\n  actions={<Button variant=\"primary\">New<Icon name=\"add\" /></Button>}\n  toolbar={\n    <SearchInput\n      placeholder=\"Search projects\"\n      value={query}\n      onChange={(e) => setQuery(e.target.value)}\n      onClear={() => setQuery('')}\n    />\n  }\n  isEmpty={shown.length === 0}\n  empty={{ icon: 'folder', title: 'No projects match', description: 'Try a different search.' }}\n>\n  {/* The block stacks its children; a card grid is one line of <Grid>, and\n      leaving that to the caller is what lets a table or a single reading\n      column live under the same template. */}\n  <Grid gap={4}>\n    {shown.map((r) => (\n      <Card key={r.id} interactive>{r.name}</Card>\n    ))}\n  </Grid>\n</ListPageTemplate>"
 }

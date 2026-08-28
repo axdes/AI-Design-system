@@ -1,0 +1,66 @@
+{
+  "ref": "IconDisc",
+  "level": "atom",
+  "description": "An icon in a filled disc, at a proportion nobody has to choose. Use it for a section mark, a tile's badge, a heading's cap — anywhere a glyph needs to read as a thing rather than as punctuation. The glyph size is NOT a prop, and that is the whole component. A 20px icon in a 32px disc fills two thirds of it and reads as cramped; the brand mark in the rail sits at half, and that is the proportion this system already chose (owner, 2026-08-25). A lint rule could only complain after someone had picked a number — the mistake is picking one at all, so the pair is set here once and the caller chooses only the disc. Decorative by default: the disc carries no text and `Icon` is already hidden from the reader, so a mark beside a heading does not say the heading twice. If the glyph is the ONLY thing carrying the meaning, that meaning belongs in words next to it, not in a label on the circle.",
+  "exports": [
+    "IconDisc"
+  ],
+  "main": "IconDisc",
+  "from": "@/components/IconDisc",
+  "slots": [],
+  "props": [
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": true,
+      "description": "The glyph."
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "description": "How big the DISC is.",
+      "values": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "description": "What the disc is filled with.",
+      "values": [
+        "neutral",
+        "primary"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/IconDisc/IconDisc.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md"
+      ]
+    },
+    "tone": {
+      "prop": "tone",
+      "values": [
+        "neutral",
+        "primary"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "Layout"
+  ],
+  "example": "<Row gap={3} align=\"center\">\n  <IconDisc icon=\"campaign\" />\n  <IconDisc icon=\"campaign\" tone=\"primary\" />\n  <IconDisc icon=\"campaign\" size=\"sm\" />\n</Row>"
+}

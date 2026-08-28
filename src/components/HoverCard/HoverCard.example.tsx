@@ -11,9 +11,9 @@ export function Example() {
     <HoverCard
       content={
         <Row gap={3}>
-          <Avatar name="Sarah Al-Mansouri" />
+          <Avatar name="Ada Meridian" />
           <Stack gap={1}>
-            <strong>Sarah Al-Mansouri</strong>
+            <strong>Ada Meridian</strong>
             <span>Brand manager, joined 2023</span>
           </Stack>
         </Row>

@@ -16,7 +16,12 @@ type Props = {
 
 /* A star rating, a score out of `max` stars. Interactive when `onChange` is given (a radiogroup: click or
  * Arrow keys set the score), read-only otherwise (an img with the score as its
- * name). Half values render a half-filled star. */
+ * name). Half values render a half-filled star. 
+   *
+   * Copy: the label says what is being rated, and the value is spoken as a
+   * fraction — "4 out of 5" — because a row of marks says nothing to a
+   * reader who cannot see it.
+   */
 export function Rating({ value, onChange, max = 5, label, size = 'md', className }: Props) {
   const [hover, setHover] = useState<number | null>(null)
   const shown = hover ?? value

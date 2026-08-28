@@ -1,4 +1,11 @@
 .badge {
+  /* Sizes to its label, never to its container. `display: inline-flex` is not
+     enough: as a flex or grid child with the default `stretch`, the cross size
+     is set by the parent and the pill runs the full width — a badge that reads
+     as a text input, which is exactly how it shipped on the patterns screen
+     (measured 2026-08-22: 219px of pill around 48px of text). An explicit
+     inline-size opts out of stretch, in both axes' worth of cases. */
+  inline-size: fit-content;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);

@@ -10,9 +10,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* A CIRCLE AT ONE DIGIT, A PILL AT TWO — and nothing in between.
+   * The box was `min-inline-size: var(--space-4)` with padding on both sides
+   * and a 2px ring, so a single digit measured 16 tall and 19 wide: an egg on
+   * every bell in the system (owner, 2026-08-24, and the box model agrees —
+   * 4+4 padding + 2+2 border + ~7 of glyph). The padding is what does not
+   * belong at one character: the min size already reserves the room. */
   min-inline-size: var(--space-4);
   block-size: var(--space-4);
-  padding-inline: var(--space-1);
   border-radius: var(--radius-full);
   border: 2px solid var(--background);
   background: var(--destructive);
@@ -22,6 +27,7 @@
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
+.count-badge-marker[data-wide] { padding-inline: var(--space-1); }
 .count-badge-marker[data-tone='primary']  { background: var(--primary);  color: var(--primary-foreground); }
 .count-badge-marker[data-tone='success']  { background: var(--success);  color: var(--success-foreground); }
 .count-badge-marker[data-dot] {

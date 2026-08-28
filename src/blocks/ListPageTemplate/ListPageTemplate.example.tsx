@@ -16,7 +16,7 @@ export function Example() {
   return (
     <ListPageTemplate
       title="Projects"
-      actions={<Button variant="primary" iconEnd>New<Icon name="add" /></Button>}
+      actions={<Button variant="primary">New<Icon name="add" /></Button>}
       toolbar={
         <SearchInput
           placeholder="Search projects"

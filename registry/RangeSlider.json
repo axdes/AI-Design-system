@@ -1,7 +1,7 @@
 {
   "ref": "RangeSlider",
   "level": "atom",
-  "description": "A bounded pair on one track: a price between two values, any filter with a \"from\" and a \"to\" on the same scale. Two native range inputs share the track, so the keyboard contract comes for free; each thumb clamps against the other instead of crossing it. Single value? That is <Slider>.",
+  "description": "A bounded pair on one track: a price between two values, any filter with a \"from\" and a \"to\" on the same scale. Two native range inputs share the track, so the keyboard contract comes for free; each thumb clamps against the other instead of crossing it. Single value? That is <Slider>. Copy: the label names the span and its unit; the two thumbs need one name between them, not \"min\" and \"max\".",
   "exports": [
     "RangeSlider"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "value",
       "type": "[number, number]",
-      "required": true
+      "required": true,
+      "description": "The selected span, start then end."
     },
     {
       "name": "onChange",
@@ -37,17 +38,20 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name; each thumb announces it plus \"start\" / \"end\"."
     },
     {
       "name": "showValue",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Show the current span at the inline-end of the label row."
     },
     {
       "name": "formatValue",
       "type": "(value: number) => string",
-      "required": false
+      "required": false,
+      "description": "Formats one bound of the shown span (e.g. `(v) => `${v}%``)."
     },
     {
       "name": "disabled",

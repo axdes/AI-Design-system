@@ -7,7 +7,7 @@ export function Example() {
    * owns the user object and what each action does. */
   return (
     <UserMenu
-      name="Sarah Al-Mansouri"
+      name="Ada Meridian"
       role="Brand manager"
       menuLabel="Account menu"
       actions={[

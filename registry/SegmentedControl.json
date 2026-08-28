@@ -1,7 +1,7 @@
 {
   "ref": "SegmentedControl",
   "level": "molecule",
-  "description": "A single-choice toggle rendered as adjacent segments — a compact radio group for switching a view (List / Board, Day / Week / Month). Uses the radiogroup pattern (Arrow keys move and select); distinct from <Tabs>, which navigates between panels, and from <Select>, which is for longer lists.",
+  "description": "A single-choice toggle rendered as adjacent segments — a compact radio group for switching a view (List / Board, Day / Week / Month). Uses the radiogroup pattern (Arrow keys move and select); distinct from <Tabs>, which navigates between panels, and from <Select>, which is for longer lists. Copy: one or two words per segment, parallel with each other. They sit side by side, so a long one makes every other look empty.",
   "exports": [
     "SegmentedControl"
   ],
@@ -21,13 +21,14 @@
     },
     {
       "name": "options",
-      "type": "readonly Segment<V>[]",
+      "type": "readonly SegmentOption<V>[]",
       "required": true
     },
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the group."
     },
     {
       "name": "size",
@@ -43,6 +44,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the control sits on, so its fills invert to stay visible. `base` (default): grey track on a white/card surface, white selected pill. `muted`: white track on a grey (--muted) surface, grey selected pill.",
       "values": [
         "base",
         "muted"

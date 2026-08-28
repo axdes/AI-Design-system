@@ -1,0 +1,229 @@
+/* A BAR CHART WITH ITS SCALE ON IT.
+ *
+ * It used to be five grey blocks and one blue one, with no axis, no grid and no
+ * number anywhere: a picture of a chart rather than a chart (owner, 23.08). The
+ * shape is the same; what was missing is everything that makes a shape
+ * readable — where zero is, how far the ticks are apart, what the column under
+ * the pointer actually says, and what the goal line means.
+ *
+ * The scale, the grid, the goal line, the readout, the legend and the row of
+ * labels are NOT here: they are the same furniture on every chart in this
+ * system and they live in src/lib/chart.css. What is here is the MARK — the
+ * columns, their colours and how they answer the pointer.
+ */
+.bar-chart {
+  /* Local to this component: the three heights a bar chart is read at, the
+   * width the scale column reserves, the bar's own cap, and the column a
+   * horizontal chart gives its names. */
+  --chart-height: calc(var(--space-16) * 1.75);
+  --chart-scale-width: 2.5rem;
+  --bar-chart-bar-width: 2.5rem;
+
+  /* Set per element from the data, and declared here so the stylesheet stands
+   * on its own: a bar with no value has no length, and that is not a crash. */
+  --tick-at: 0%;
+  --bar-size: 0%;
+  --bar-delay: 0ms;
+  --readout-at: 50%;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  min-inline-size: 0;
+}
+.bar-chart[data-size="sm"] { --chart-height: var(--space-16); }
+.bar-chart[data-size="lg"] { --chart-height: calc(var(--space-16) * 2.5); }
+
+.bar-chart-plot {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  block-size: 100%;
+  min-inline-size: 0;
+}
+
+/* THE COLUMN IS THE HIT AREA, and it is a button so a keyboard reaches the
+ * same readout the pointer does. */
+.bar-chart-column {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: 0;
+  block-size: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  /* Reads, does not navigate: the data cursor, not the link one. */
+  cursor: crosshair;
+}
+.bar-chart-column:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+.bar-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* 2px between adjacent fills, so two bars of the same colour still read as
+   * two bars. Same gap the stacked segments use. */
+  gap: var(--space-2xs);
+  inline-size: 100%;
+  block-size: 100%;
+}
+.bar-chart[data-stacked] .bar-chart-bars { flex-direction: column-reverse; align-items: center; }
+
+.bar-chart-bar {
+  position: relative;
+  inline-size: min(100%, var(--bar-chart-bar-width));
+  block-size: var(--bar-size);
+  min-block-size: var(--space-2xs);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--chart-1);
+  /* The bar grows out of the baseline it is measured from, one after another
+   * across the chart. `both` holds it at zero through its own delay. */
+  transform-origin: bottom;
+  animation: bar-chart-grow var(--duration-slow) var(--ease-out) var(--bar-delay) both;
+}
+.bar-chart[data-stacked] .bar-chart-bar { border-radius: var(--radius-sm); }
+
+@keyframes bar-chart-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* THE SERIES SLOTS, in fixed order. A chart with one series paints slot 1, so a
+ * single-measure chart is the brand's own colour. */
+.bar-chart-bar[data-series="2"] { background: var(--chart-2); }
+.bar-chart-bar[data-series="3"] { background: var(--chart-3); }
+.bar-chart-bar[data-series="4"] { background: var(--chart-4); }
+.bar-chart-bar[data-series="5"] { background: var(--chart-5); }
+.bar-chart-bar[data-series="6"] { background: var(--chart-6); }
+/* A series that MEANS a status takes the status colour instead of its slot. */
+.bar-chart-bar[data-tone="success"] { background: var(--chart-success); }
+.bar-chart-bar[data-tone="warning"] { background: var(--chart-warning); }
+.bar-chart-bar[data-tone="danger"]  { background: var(--chart-danger); }
+
+/* The whole chart in one status tone, for a single-series chart that is about
+ * one thing being good or bad. */
+.bar-chart[data-tone="neutral"] .bar-chart-bar[data-series="1"] { background: var(--foreground); }
+.bar-chart[data-tone="success"] .bar-chart-bar[data-series="1"] { background: var(--chart-success); }
+.bar-chart[data-tone="warning"] .bar-chart-bar[data-series="1"] { background: var(--chart-warning); }
+.bar-chart[data-tone="danger"]  .bar-chart-bar[data-series="1"] { background: var(--chart-danger); }
+
+/* ONE COLUMN UNDER DISCUSSION: the rest step back rather than the accent
+ * shouting. Only when the caller actually named one — `:has` keeps that
+ * conditional in the stylesheet instead of an attribute on the figure. */
+.bar-chart:has(.bar-chart-bar[data-emphasis]) .bar-chart-bar:not([data-emphasis]) { opacity: 0.4; }
+/* And the column under the pointer is the one being read. */
+.bar-chart:has(.bar-chart-column[data-active]) .bar-chart-column:not([data-active]) .bar-chart-bar { opacity: 0.55; }
+/* It is never the dim one. The `:has` here is not decoration: the emphasis rule
+ * above scores (0,5,0) and a plain descendant version of this one scored
+ * (0,4,0), so with an emphasis set, hovering any OTHER column left the bar
+ * being read at 0.4 while its neighbours sat at 0.55 — the one bar the reader
+ * asked about was the palest thing on the chart. */
+.bar-chart:has(.bar-chart-column[data-active]) .bar-chart-column[data-active] .bar-chart-bar { opacity: 1; }
+
+.bar-chart-value {
+  position: absolute;
+  inset-block-end: 100%;
+  inset-inline: 0;
+  padding-block-end: var(--space-1);
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--chart-axis);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── LYING DOWN ───────────────────────────────────────────────────────────────
+ * The same chart for a RANKING: long names read better beside their bar than
+ * rotated under it, and the eye compares lengths down a column. */
+.bar-chart[data-orientation="horizontal"] .chart-frame { display: block; block-size: auto; }
+.bar-chart[data-orientation="horizontal"] .bar-chart-plot {
+  flex-direction: column;
+  align-items: stretch;
+  block-size: auto;
+  gap: var(--space-3);
+}
+.bar-chart[data-orientation="horizontal"] .bar-chart-column {
+  block-size: auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+/* Name on the left of its own line, value on the right, bar underneath across
+ * the whole width. */
+.bar-chart-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--font-xs);
+  color: var(--chart-axis);
+}
+.bar-chart-head-value {
+  margin-inline-start: auto;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+.bar-chart[data-orientation="horizontal"] .bar-chart-bars {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  block-size: auto;
+}
+.bar-chart[data-orientation="horizontal"] .bar-chart-bar {
+  inline-size: var(--bar-size);
+  block-size: var(--space-3);
+  min-inline-size: var(--space-2xs);
+  /* BOTH ENDS ROUNDED, lying down. Standing up, a bar's foot sits ON the zero
+   * line the grid draws, so a square foot reads as anchored; lying down there
+   * is no line at the start and a square end reads as a bar somebody cut off
+   * (owner, 23.08). */
+  border-radius: var(--radius-full);
+  transform-origin: inline-start;
+  animation-name: bar-chart-grow-inline;
+}
+@keyframes bar-chart-grow-inline {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.bar-chart-name {
+  min-inline-size: 0;
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bar-chart[data-orientation="horizontal"] .chart-grid {
+  inset-block: 0;
+  inset-inline: auto;
+  inset-inline-start: var(--tick-at);
+  border-block-start: 0;
+  border-inline-start: 1px solid var(--chart-grid);
+}
+
+/* In a card the chart takes the spare height. Cards in a row are the same
+ * height (owner's rule, 23.08), so a card whose subject is a chart gets extra
+ * room — and the honest place for it is the plot, not a band of white between
+ * the plot and the footer. Its own height stays the floor. */
+.card > .bar-chart { flex: 1 1 auto; }
+.card > .bar-chart .chart-frame {
+  block-size: auto;
+  min-block-size: var(--chart-height);
+  flex: 1 1 auto;
+}
+/* Lying down there is no plot height to grow into, so the spare room goes
+ * BETWEEN the rows: three bars stacked at the top of a card with 100px of
+ * white under them is the hole this rule closes. */
+.card > .bar-chart[data-orientation="horizontal"] .chart-frame { min-block-size: 0; }
+.card > .bar-chart[data-orientation="horizontal"] .bar-chart-plot {
+  block-size: 100%;
+  justify-content: space-evenly;
+}

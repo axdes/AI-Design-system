@@ -1,0 +1,98 @@
+/* One component, two shapes. Everything the two shared — the tones, the value's
+ * tabular figures, the transition — is written once; what differs is only the
+ * geometry of the track. */
+.progress { --pct: 0; }
+
+/* ── Bar ─────────────────────────────────────────────────────────────────── */
+.progress[data-shape='bar'] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  inline-size: 100%;
+}
+.progress-labelrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--font-sm);
+}
+.progress-label { color: var(--foreground); }
+
+.progress-track {
+  position: relative;
+  inline-size: 100%;
+  block-size: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  overflow: hidden;
+}
+.progress-fill {
+  inline-size: calc(var(--pct) * 1%);
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transition: inline-size var(--duration-normal);
+}
+.progress-track[data-tone='success'] .progress-fill { background: var(--success); }
+.progress-track[data-tone='warning'] .progress-fill { background: var(--warning); }
+.progress-track[data-tone='danger'] .progress-fill { background: var(--destructive); }
+
+/* Indeterminate: a short segment sliding left to right. A ring has no such
+ * form — a circle that never fills reads as broken, not as busy. */
+.progress-track[data-indeterminate] .progress-fill {
+  inline-size: 35%;
+  animation: progress-slide 1.2s ease-in-out infinite;
+}
+@keyframes progress-slide {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
+/* ── Ring ────────────────────────────────────────────────────────────────── */
+.progress[data-shape='ring'] {
+  /* Diameter is a component-private knob; the stroke scales with the viewBox,
+   * so one number sizes everything. */
+  --progress-ring-size: 3rem;
+  display: inline-grid;
+  place-items: center;
+}
+.progress[data-shape='ring'][data-size='sm'] { --progress-ring-size: 2.25rem; }
+.progress[data-shape='ring'][data-size='lg'] { --progress-ring-size: 4rem; }
+
+.progress-ring,
+.progress[data-shape='ring'] .progress-value { grid-area: 1 / 1; }
+
+.progress-ring {
+  inline-size: var(--progress-ring-size);
+  block-size: var(--progress-ring-size);
+  /* Start at 12 o'clock; the dash itself runs clockwise. */
+  transform: rotate(-90deg);
+}
+.progress-ring-track,
+.progress-ring-fill {
+  fill: none;
+  stroke-width: 3.5;
+}
+.progress-ring-track { stroke: var(--accent); }
+.progress-ring-fill {
+  stroke: var(--primary);
+  stroke-linecap: round;
+  stroke-dasharray: var(--pct) 100;
+  transition: stroke-dasharray var(--duration-normal);
+}
+.progress[data-shape='ring'][data-tone='success'] .progress-ring-fill { stroke: var(--success); }
+.progress[data-shape='ring'][data-tone='warning'] .progress-ring-fill { stroke: var(--warning); }
+.progress[data-shape='ring'][data-tone='danger'] .progress-ring-fill { stroke: var(--destructive); }
+
+/* ── The value, whichever shape it sits in ───────────────────────────────── */
+.progress-value {
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.progress[data-shape='ring'] .progress-value {
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--foreground);
+}
+.progress[data-shape='ring'][data-size='lg'] .progress-value { font-size: var(--font-sm); }

@@ -42,6 +42,10 @@
 button.stepper-button {
   cursor: pointer;
 }
+/* A step you can go back to is a control, and it said nothing under the pointer. */
+button.stepper-button:hover .stepper-marker { border-color: var(--ring); }
+button.stepper-button:hover .stepper-text { color: var(--foreground); }
+button.stepper-button:active .stepper-marker { border-color: var(--primary-active); }
 button.stepper-button:focus-visible {
   outline: var(--ring-width) solid var(--ring);
   outline-offset: var(--ring-offset);

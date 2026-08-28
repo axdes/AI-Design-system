@@ -1,13 +1,45 @@
 # AI Design System
 
-An AI-first design system: not just a component library, but the machinery
-that makes an AI agent assemble screens CORRECTLY from requirements — and the
-proof that it does.
+131 React components that an agent can assemble into screens CORRECTLY — and the
+machinery that proves it did. The failure this exists to fix is the one review
+does not catch: a screen that compiles, reads fine, and is still wrong. Cards
+where a table belongs. A search box over a queue nobody searches.
 
-The recurring failure this system exists to fix: an agent builds a screen
-that compiles, passes review, and is still wrong — cards where a table
-belongs, a search box on a queue nobody searches, content in the wrong order.
-Every layer below exists to make that failure impossible or loud.
+## Take one component
+
+```bash
+npx shadcn@latest add https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/card.json
+```
+
+That installs the component, everything it composes, the token layer and
+nothing else. Plain CSS with custom properties — no Tailwind, no runtime, no
+provider to wrap your app in. Browse what is installable in
+[`r/registry.json`](r/registry.json).
+
+## Point your agent at it
+
+```bash
+claude mcp add ds -- node /path/to/design-system/mcp/server.mjs
+```
+
+Five tools: ask what exists, ask what a component's props MEAN, ask which
+representation a zone should use before writing it, and check the code
+afterwards. For tools without MCP, [`llms.txt`](llms.txt) is the same knowledge
+as text, and [`registry/`](registry/) is one JSON file per component.
+
+## Why an agent gets it right here
+
+Most systems tell an agent what exists. This one also decides. Seven layers of
+executable rules answer *which* representation, card, form, table, cell and page
+archetype a given task and data shape earn — with the reason and a right/wrong
+pair — and the gate rejects a screen that contradicts them. The MCP `decide`
+tool answers before you write; `npm run verify` answers after, on code that does
+not have to exist on disk yet.
+
+Measured rather than claimed: eight briefs, one live agent run each, scored by
+the gate's own validators. The same model on the same briefs without this system
+scores 61% and writes six times more code. Numbers and history in
+[evals/BASELINE.md](evals/BASELINE.md).
 
 ## The five layers
 
@@ -23,7 +55,7 @@ Every layer below exists to make that failure impossible or loud.
    "which representation for this data and task": rules with reasons and
    good/bad pairs, hard forbids, archetype taxonomy. The validator computes
    "table or cards" from the declared facts and fails the contradiction.
-4. **Components and blocks** (`src/`) — 93 components and 11 page templates,
+4. **Components and blocks** (`src/`) — 131 components and 12 page templates,
    token-driven, RTL-ready, with a golden example per component that the test
    suite compiles, renders and axe-checks, so the docs cannot drift from the
    code.
@@ -62,8 +94,8 @@ cannot call the registry.
 
 ```
 styles/          the three token tiers: settings → primitives → semantic
-src/components/  93 components, one folder each: Name.tsx + css + golden example
-src/blocks/      11 page templates (List, Detail, Overview, Settings, Wizard…)
+src/components/  one folder each: Name.tsx + css + golden example
+src/blocks/      the page templates (List, Detail, Overview, Settings, Wizard…)
 src/shell/       the showcase chrome
 screen-specs/    the decision layer: models, specs, selection rules
 registry/        the generated component contract, one file per component

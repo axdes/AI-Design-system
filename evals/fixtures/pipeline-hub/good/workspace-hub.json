@@ -13,15 +13,27 @@
       "name": "header",
       "task": "read",
       "purpose": "The workspace's name and nothing else: no actions, because nothing is created from the hub — each area owns its own creations. No count Badge beside the title either; the counts belong to the tiles they describe.",
-      "components": ["ListPageTemplate"]
+      "components": [
+        "ListPageTemplate"
+      ]
     },
     {
       "name": "areas",
       "task": "navigate",
-      "data": { "item": "record", "cardinality": "few" },
+      "data": {
+        "item": "record",
+        "cardinality": "few",
+        "carries": "destination"
+      },
+      "card": "entry",
       "answers": "Where do I go?",
       "purpose": "One tile per area, all five always present — they are the workspace's shape, not its content, so this grid never has an empty case of its own. Each tile is one target (Card interactive): the area's name, the one line saying what waits inside, and the live count riding the tile as a CountBadge — on the tile because the number describes the destination, never a column, because a column is an invitation to compare five numbers nobody compares (R9: entry points are tiles).",
-      "components": ["Card interactive=true", "CardTitle", "CountBadge", "Grid"]
+      "components": [
+        "Card interactive=true",
+        "CardTitle",
+        "CountBadge",
+        "Grid"
+      ]
     }
   ],
   "states": {

@@ -17,17 +17,20 @@
     {
       "name": "multiple",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "true = several panels open at once; false (default) = one at a time."
     },
     {
       "name": "defaultOpen",
       "type": "string[]",
-      "required": false
+      "required": false,
+      "description": "Ids open on first render."
     },
     {
       "name": "size",
       "type": "'md' | 'lg'",
       "required": false,
+      "description": "Header voice: `md` (default, body size) or `lg` — the section-head size, for a column of blocks whose titles are the headings of the page beside them.",
       "values": [
         "md",
         "lg"
@@ -37,6 +40,7 @@
       "name": "headingLevel",
       "type": "2 | 3 | 4",
       "required": false,
+      "description": "Heading level of each header (default 3). Set it to the level the outline is at where the accordion sits: a stack of blocks straight under the page title is at 2, not 3, and a skipped level is a section a screen reader cannot walk to.",
       "values": [
         2,
         3,

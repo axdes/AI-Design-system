@@ -1,48 +1,17 @@
-/* Same page-wrapper contract as `.list-page`, and for the same reason: the
- * `<PageHeader>` this block renders above is capped to `--page-max-width` and
- * centred, so a content area that is neither drifts away from its own title on
- * any wide screen. This block had a flat `padding: var(--space-6)` and no cap —
- * which is why nothing adopted it: every real detail screen caps its content,
- * so adopting the block meant losing the alignment. The page audit's
- * `header-aligns` rule reports exactly this, which is how it was measured. */
-.detail-page {
-  /* Flex with wrap, not a grid with a breakpoint.
-   *
-   * The aside used to be a fixed `20rem` grid track that collapsed at `@media (width <= 900px)`,
-   * and a media query asks how wide the WINDOW is. This block never gets the window: inside an
-   * app shell the sidebar takes 260px first. At a 901px viewport the query had not fired, so the
-   * two-column split ran inside a 641px box and left 241px for the reading column while the aside
-   * kept its full width. A container query cannot fix it either — this element IS the container,
-   * and a container cannot query itself. Flex wrapping asks no question at all: the two columns
-   * sit side by side while both fit their floors, and the aside drops below when they stop
-   * fitting, at whatever width that turns out to be. */
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  inline-size: 100%;
-  max-inline-size: var(--page-max-width);
-  margin-inline: auto;
-  /* Top gap comes from PageHeader's own padding-block-end; only bottom here. */
-  padding-block: 0 var(--space-4);
-  padding-inline: var(--space-8);
-  container-type: inline-size;
-  container-name: content;
-}
-.detail-page-main {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  /* 22rem is the reading column's floor: below it the aside wraps away instead of squeezing it.
-   * The grow factor is deliberately lopsided — spare width belongs to the content, not to a
-   * metadata panel, and `1` on both would have grown the aside to 27rem on a wide screen. */
-  flex: 100 1 22rem;
-  min-inline-size: 0;
-}
-.detail-page-aside {
-  /* Grows only once it is alone on its line, where it should fill the width. */
-  flex: 1 1 20rem;
-  min-inline-size: 0;
-}
+/* The page wrapper and the two column tracks come from <Page archetype="detail">:
+ * the cap, the centring, the container context, the wrapping row, the reading
+ * column's 22rem floor and the aside's 20rem. Those numbers were measured here
+ * first and moved up when <Page> was written, so this file no longer restates
+ * them. `.detail-page` stays as the class on the page element, because the
+ * panelled variant below is this block's own contract and has to scope to it.
+ *
+ * Why flex-wrap and not a grid with a breakpoint, since the question comes back
+ * every time: a media query asks how wide the WINDOW is, and this element never
+ * gets the window — inside an app shell the sidebar takes 260px first. At a
+ * 901px viewport the query had not fired, so a two-column split ran inside a
+ * 641px box and left 241px for the reading column while the aside kept its full
+ * width. A container query cannot fix it either: the element IS the container.
+ * Wrapping asks no question at all. */
 
 /* In the normal (non-panelled) layout the aside is a CARD: rounded like every
  * surface beside it, and sticky under the page header so the reference column
@@ -83,7 +52,7 @@
  * their parent, because the parent carries the inline padding that lines the page
  * up with its header — painting the parent would push the surface 32px past the
  * title on both sides. */
-.detail-page[data-panels] .detail-page-main {
+.detail-page[data-panels] .page-body {
   background: var(--card);
   border-radius: var(--card-radius);
   padding: var(--card-padding);
@@ -111,9 +80,24 @@
  * A border rather than a box-shadow because `.card[data-interactive]:hover` owns the shadow, and
  * an outline drawn with it would disappear the moment the pointer arrived. Everything is
  * border-box, so the outline costs the content nothing. */
-.detail-page[data-panels] .detail-page-main .card,
+.detail-page[data-panels] .page-body .card,
 .detail-page[data-panels] .detail-page-aside .card {
   border: 1px solid var(--border);
+}
+
+/* <Page> wraps the aside in a region of its own, so the panel (or the rail)
+ * has to fill it: the region is the flex item that stretches, and a plain block
+ * child would sit at its content height with the card surface stopping short. */
+.detail-page[data-panels] .page-aside {
+  display: flex;
+  flex-direction: column;
+  /* SidePanel and the rail both paint their own surface and manage their own
+     scrolling; the region only hands them the height. */
+  overflow: visible;
+}
+.detail-page[data-panels] .page-aside > * {
+  flex: 1;
+  min-block-size: 0;
 }
 
 /* Side by side from 64rem up, and no lower: the columns need 22rem + 20rem
@@ -122,7 +106,10 @@
  * is also what a phone should get — two full-height scrollers stacked mean the
  * second one is unreachable without scrolling the first to its end. */
 @media (min-width: 64rem) {
-  .detail-page[data-panels] {
+  /* The row, not the page: <Page> splits the wrapper from the two-column row, so
+   * these belong to `.page-main`. Pointed at the page element they would stretch
+   * and un-gap the wrong box, and the seam below would never close. */
+  .detail-page[data-panels] .page-main {
     /* The shell turns `.app-layout-main` into a flex column for this, so the page takes the
      * leftover height with `flex`, not with a percentage of an auto-height parent. */
     flex: 1;
@@ -133,9 +120,9 @@
   /* A wrapping flex LINE grows to its tallest item, so `align-items: stretch` alone stretched
    * both columns to 2161px inside an 825px page and the scroll went back to the document. The cap
    * is what makes each column's own `overflow-y` the thing that scrolls. */
-  .detail-page[data-panels] > * { max-block-size: 100%; }
+  .detail-page[data-panels] .page-main > * { max-block-size: 100%; }
 
-  .detail-page[data-panels] .detail-page-main {
+  .detail-page[data-panels] .page-body {
     overflow-y: auto;
     min-block-size: 0;
   }
@@ -143,7 +130,7 @@
    * Unconditional, these squared off the right-hand side of a single panelled column: a card
    * cut flat against nothing, which is what the first screen to use panels without an aside
    * got. */
-  .detail-page[data-panels][data-has-aside] .detail-page-main {
+  .detail-page[data-panels][data-has-aside] .page-body {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   }

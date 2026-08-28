@@ -1,7 +1,7 @@
 {
   "ref": "LoadMore",
   "level": "molecule",
-  "description": "The end of a list that has more of it. `<Pagination>` pages a known total; this is for the ones where the total is not known and may not be finite.",
+  "description": "The end of a list that has more of it. `<Pagination>` pages a known total; this is for the ones where the total is not known and may not be finite. Copy: name what arrives, with the number when it is known — \"Show 20 more invoices\". \"Load more\" tells the reader nothing about what they are about to wait for.",
   "exports": [
     "LoadMore"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "onLoad",
       "type": "() => void",
-      "required": true
+      "required": true,
+      "description": "Fetch the next page. Called once per intersection while `auto`."
     },
     {
       "name": "loading",
@@ -22,7 +23,8 @@
     {
       "name": "hasMore",
       "type": "boolean",
-      "required": true
+      "required": true,
+      "description": "Renders nothing when false — the end of a list needs no control."
     },
     {
       "name": "label",
@@ -37,7 +39,8 @@
     {
       "name": "auto",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Also fire when the control scrolls into view. The button stays either way: an infinite list with no control is unreachable from the keyboard and unusable to anyone who wants the footer."
     },
     {
       "name": "className",

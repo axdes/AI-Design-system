@@ -10,6 +10,12 @@
 // screen, while every component-level gate was green:
 //
 //   1. no-overflow        content wider than the viewport (nothing caught this)
+//   1b. shell-covers-the-page  the checkbox's own hidden input is absolutely
+//                         positioned with no positioned ancestor, so it resolved
+//                         against the PAGE, escaped the shell's overflow and made
+//                         the document 33px taller than a shell that is exactly
+//                         100dvh: a white strip under the form, on every screen
+//                         with a checkbox in an inner scroller
 //   2. header-aligns      a screen capped its own width a second time, so the
 //                         page title sat flush left and the cards floated centre
 //   3. grid-fills-row     `minmax(18rem, 24rem)` packs tracks at their MAX, so
@@ -57,13 +63,21 @@ const DIST = `${ROOT}/dist`
 if (!existsSync(CONFIG)) { console.error(`No config/screens.config.json in ${ROOT}.`); process.exit(1) }
 if (!existsSync(`${DIST}/index.html`)) { console.error('No dist/index.html — run `npm run build` first.'); process.exit(1) }
 
-const { screens, seedLocalStorage = {}, widths, auditAllow = {}, apiMocks = {}, contentSelectors, localeStorageKey = 'i18n.lang', rtlLocale = 'ar' } = JSON.parse(readFileSync(CONFIG, 'utf8'))
+const { screens, seedLocalStorage = {}, widths: shotWidths, auditWidths = [], auditAllow = {}, apiMocks = {}, contentSelectors, localeStorageKey = 'i18n.lang', rtlLocale = 'ar' } = JSON.parse(readFileSync(CONFIG, 'utf8'))
 
 /* Which element IS the content column. The design system and the apps that
  * follow it use `.page-content`; the page-template blocks own their wrappers
  * (`.list-page`, `.adaptive-list-page`, `.detail-page`), so all four are the
  * default. A package that genuinely named its own container says so here rather
  * than having the header rules quietly skip.
+ *
+ * `.page-inner` leads the list and is the one that matters now: <Page> splits
+ * the cap from the padding across two elements, so the block classes above
+ * (`.list-page`, `.adaptive-list-page`) land on the OUTER one, which has no
+ * inline padding. Measured against that, every list screen read "title 32px
+ * from the content column" while the pixels had not moved at all — the rule was
+ * measuring the wrong box, which is exactly the failure the paragraph below
+ * describes, one structure later.
  *
  * The list is not cosmetic: when an app moved onto `<AdaptiveListPage>` this
  * rule dropped straight to zero, because the wrapper it had been measuring no
@@ -76,12 +90,19 @@ const { screens, seedLocalStorage = {}, widths, auditAllow = {}, apiMocks = {}, 
  * that; it adopted `.page-content` instead, which is the actual fix — the cap
  * and the inline padding that keep header and content aligned now come from one
  * place there, as they always did everywhere else. */
-const CONTENT = contentSelectors ?? ['.page-content', '.list-page', '.adaptive-list-page', '.detail-page']
+const CONTENT = contentSelectors ?? ['.page-inner', '.page-content', '.list-page', '.adaptive-list-page', '.detail-page']
 
 /* The drawer breakpoint, in CSS pixels. One number, read by the two nav rules, so
  * a check can never disagree with the stylesheet by accident. Keep it in step with
  * `@media (max-width: 48rem)` in AppShell.css and PageHeader.css. */
 const DRAWER_MAX = 768
+
+/* The screenshot widths, plus any this audit adds for itself. A committed PNG
+ * costs a baseline per screen, so `widths` stays the set worth LOOKING at; a
+ * viewport that only asserts rules costs nothing, and the one it was added for
+ * is a SHORT window: every shot height is 844px or more, and a locked shell only
+ * shows the white strip under it when the page is taller than the window. */
+const widths = [...shotWidths, ...auditWidths]
 
 /* Sub-pixel slack. Browsers hand back fractional widths from percentage and
  * container-query maths, and a rule that fires on 0.5px is a rule people turn off. */
@@ -134,8 +155,19 @@ function measure({ slack, contentSelectors }) {
     if (cols.length === 0 || cols.some(Number.isNaN)) continue
     const gap = parseFloat(cs.columnGap) || 0
     const used = cols.reduce((a, b) => a + b, 0) + gap * (cols.length - 1)
-    const avail = el.getBoundingClientRect().width
+    /* The TRACKS' box, not the element's: a component that is itself a grid
+     * carries its own padding, and counting that padding as spare reported a
+     * 313px tile as 34px short of another column (23.08). */
+    const box = el.getBoundingClientRect().width
+    const avail = box
+      - (parseFloat(cs.paddingInlineStart) || 0) - (parseFloat(cs.paddingInlineEnd) || 0)
+      - (parseFloat(cs.borderInlineStartWidth) || 0) - (parseFloat(cs.borderInlineEndWidth) || 0)
     const spare = avail - used
+    /* A single column that the author centred on purpose is a reading measure, not
+     * a packing accident: `justify-content: center` is the decision written down.
+     * The rule is about auto-fill tracks pinned to a fixed max, which pack at that
+     * max and leave a column's worth of nothing beside them. */
+    if (cols.length === 1 && cs.justifyContent === 'center') continue
     // One more column would fit: the row is wasting a column's worth of space.
     if (cols.length >= 1 && spare > cols[0] + gap + slack) {
       grids.push({ cls: String(el.className).slice(0, 60), avail: Math.round(avail), used: Math.round(used), spare: Math.round(spare), cols: cols.length })
@@ -215,6 +247,14 @@ function measure({ slack, contentSelectors }) {
       }
       const seen = new Map(), dupe = new Set()
       for (const s of item.querySelectorAll('svg')) {
+        /* A glyph inside a CONTROL belongs to the control, not to the item's
+         * content: a select-all checkbox and the row checkboxes under it are
+         * one control at two levels, which is the pattern working, and the
+         * same is true of a tick in a checkbox and a chevron in a disclosure.
+         * The defect this rule is for is an ITEM saying the same thing twice
+         * (a media tile and the eyebrow under it), and neither of those sits
+         * in a button or a label. (Caught by the tables gallery, 23.08.) */
+        if (s.closest('button, label, [role="button"], [role="checkbox"], [role="switch"]')) continue
         const name = s.getAttribute('data-icon') ?? s.querySelector('path')?.getAttribute('d')?.slice(0, 24) ?? ''
         if (!name) continue
         const where = sig(s)
@@ -227,6 +267,220 @@ function measure({ slack, contentSelectors }) {
     /* The template's aside, not the app's navigation: <aside> is also what the
      * shell wraps its sidebar in, and measuring that reported a full-height rail
      * on every screen. */
+    /* INK vs AIR inside a row.
+     *
+     * The span measure above is satisfied by the very thing that is wrong: a row
+     * stretched to 2400px is "96% of the column" and also a desert with a title at
+     * one edge and two buttons at the other. So this measures the row itself —
+     * how much of its width carries something. Ink is the sum of what its own
+     * children occupy; the rest is nothing. A row that is mostly nothing needs a
+     * cap or another column, and no proxy for beauty is involved. */
+    const airyRows = []
+    for (const item of [...contentEl.querySelectorAll(ITEM)].filter((el) => !el.querySelector(ITEM))) {
+      const r = item.getBoundingClientRect()
+      if (r.width < 900) continue
+      let ink = 0
+      for (const kid of item.children) {
+        const k = kid.getBoundingClientRect()
+        if (k.width < 2 || k.height < 2) continue
+        /* A child that fills the row is a wrapper: measure ITS children instead,
+         * or the answer is always 100%. */
+        if (k.width > r.width * 0.9 && kid.children.length) {
+          for (const g of kid.children) {
+            const gk = g.getBoundingClientRect()
+            if (gk.width >= 2) ink += gk.width
+          }
+        } else ink += k.width
+      }
+      const density = ink / r.width
+      if (density < 0.55) airyRows.push(`${Math.round(density * 100)}% of ${Math.round(r.width)}px — “${(item.textContent ?? '').trim().replace(/\s+/g, ' ').slice(0, 32)}”`)
+    }
+    /* A pill that stretched.
+     *
+     * Badge, Chip and Button size themselves to their label. Drop one into a flex
+     * column or a grid cell and `align-items: stretch` pulls it to the full width,
+     * where a badge reads as a text input and a button as a banner. The label sits
+     * at one end and the rest is empty pill. Measured, not judged: the element is
+     * wider than its own text plus its padding. */
+    /* A card that does not hold its content.
+     *
+     * A name, a role, a meta fact or a title that ends up wider than the card's
+     * content box hangs over the edge or gets cut by it — the reader sees
+     * "Software Engineering Team Leade". The page audit shoots five widths, and
+     * this class of defect only appears at some of them, which is exactly why
+     * it survived a green gate and a screenshot review: measured 22.08, the
+     * vertical Identity spilled at eighteen widths between 520 and 1400 and
+     * nobody's eye was on those. Media is exempt: it bleeds on purpose. */
+    /* A NEGATIVE INLINE MARGIN IS A DECLARATION, not an accident: it is how a
+     * part says it bleeds into the card's padding on purpose — media does it,
+     * and so does a row whose hover band has to reach past the words. The part
+     * and everything inside it is exempt; everything else still has to fit. */
+    const bleeders = new Set()
+    for (const el of contentEl.querySelectorAll('.card *')) {
+      const s = getComputedStyle(el)
+      if ((parseFloat(s.marginInlineStart) || 0) < 0 || (parseFloat(s.marginInlineEnd) || 0) < 0) bleeders.add(el)
+    }
+    const bleeds = (el) => {
+      for (let n = el; n; n = n.parentElement) if (bleeders.has(n)) return true
+      return false
+    }
+    const spills = []
+    for (const card of contentEl.querySelectorAll('.card')) {
+      const cr = card.getBoundingClientRect()
+      const cs = getComputedStyle(card)
+      const left = cr.left + parseFloat(cs.paddingLeft || '0')
+      const right = cr.right - parseFloat(cs.paddingRight || '0')
+      const label = (card.querySelector('.card-title, .identity-name, h2, h3')?.textContent ?? '').trim().slice(0, 28)
+      /* A scroll container is the written statement "what I hold is wider than
+       * me, and that is the design": a table inside `TableScroll` is SUPPOSED to
+       * run past the card and be dragged. Measuring its descendants against the
+       * card's edge reported the admin portal's user table as 1051px of spill on
+       * a phone — the one screen in this repository that puts a table in a card,
+       * which is why it took a second product to find it. The container itself is
+       * still measured; only what it scrolls is exempt. */
+      const scrolled = (node) => {
+        for (let p = node.parentElement; p && p !== card; p = p.parentElement) {
+          const o = getComputedStyle(p).overflowX
+          if (o === 'auto' || o === 'scroll') return true
+        }
+        return false
+      }
+      for (const el of card.querySelectorAll('*')) {
+        const r = el.getBoundingClientRect()
+        if (r.width === 0 && r.height === 0) continue
+        if (el.closest('.card-media, .card-stack')) continue
+        if (bleeds(el) || scrolled(el)) continue
+        const over = Math.max(r.right - right, left - r.left)
+        if (over > 1.5) {
+          spills.push(`“${label}” — ${String(el.className).split(' ')[0] || el.tagName.toLowerCase()} “${(el.textContent ?? '').trim().slice(0, 24)}” ${Math.round(over)}px past the card`)
+          break
+        }
+      }
+    }
+
+    /* THE CARD'S RHYTHM IS ONE SET OF STEPS, NOT A NUMBER PER CARD.
+     *
+     * A card stacks its parts on the card's own gap: 8 between lines that
+     * belong together, 16 before a component (a table, a chart, a list), 24
+     * after media that bleeds to the edges, 0 between rows of a list that carry
+     * their own padding. Anything else is a guest's stylesheet deciding the
+     * card's spacing for it, which is how three cards side by side ended up
+     * with a table 36px under its title, a timeline at 8 and a list at 12
+     * (owner, 23.08: the same distances everywhere, and reusable).
+     *
+     * The footer is exempt: `.card-meta` floats to the foot of a stretched
+     * card, so the space above it belongs to the ROW's height, not to a step. */
+    /* THE STEPS ARE THE SYSTEM'S, READ FROM THE SYSTEM. This was the hardcoded
+       list [0, 4, 8, 16, 24], which quietly omitted 12 — `--space-3`, a step on
+       the same 4px grid as every other one — and so failed real screens for
+       using a real token (owner, 2026-08-26: "why is 12 missing, it is on the
+       grid"). A rule that restates a scale instead of reading it will drift
+       from it, and the drift lands on whoever is unlucky enough to use the
+       missing step. */
+    /* The scale is the grid unit times the multipliers the token names carry:
+       --space-3 IS 3 units. Read the unit and multiply. A `var()` written into
+       an inline height does not reliably give a used value back (measured: every
+       step came out 4px), and getPropertyValue hands back the calc() as text. */
+    const unit = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--grid-unit')) || 4
+    const STEPS = [0, ...[1, 2, 3, 4, 5, 6, 8, 12, 16].map((m) => m * unit)]
+    const rhythm = []
+    for (const card of contentEl.querySelectorAll('.card')) {
+      /* The steps are the CARD's own column. A card that a component has re-laid
+       * as a grid (a thumbnail beside two rows, at ContentCard's narrowest) is
+       * placing its parts by areas, and the distance between two of them is a
+       * track height, not a step. */
+      if (!getComputedStyle(card).display.includes('flex')) continue
+      const kids = [...card.children].filter((k) => {
+        const r = k.getBoundingClientRect()
+        return getComputedStyle(k).display !== 'none' && r.height > 0
+      })
+      const label = (card.querySelector('.card-title, .identity-name, h2, h3')?.textContent ?? '').trim().slice(0, 24)
+      for (let i = 0; i < kids.length - 1; i += 1) {
+        const a = kids[i], b = kids[i + 1]
+        /* `margin-block-start: auto` is a part saying it sits at the FOOT of the
+         * card. The space above it is the row's height, not a step — and the
+         * question has to be put to the TYPED style map, because
+         * getComputedStyle resolves an auto margin to the pixels it used (0px
+         * here), which is the one answer that cannot be told from a real zero. */
+        let pinned = false
+        try { pinned = String(b.computedStyleMap().get('margin-block-start')) === 'auto' } catch { pinned = false }
+        if (pinned) continue
+        if (getComputedStyle(b).position === 'absolute' || getComputedStyle(a).position === 'absolute') continue
+        const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect()
+        if (rb.top < ra.bottom - 0.5) continue
+        const gap = Math.round(rb.top - ra.bottom)
+        if (STEPS.some((step) => Math.abs(gap - step) <= 1)) continue
+        const name = (el) => String(el.className).split(' ')[0] || el.tagName.toLowerCase()
+        rhythm.push(`“${label}” — ${gap}px between ${name(a)} and ${name(b)}`)
+      }
+    }
+
+    const stretchedPills = []
+    for (const el of contentEl.querySelectorAll('.badge, .chip, .btn')) {
+      const r = el.getBoundingClientRect()
+      if (r.width < 40) continue
+      /* A pill is a FILLED shape sized to its label. The link variant has no
+       * fill, and when the link is a card's title it is a heading that runs the
+       * width of its card on purpose. */
+      if (el.dataset.variant === 'link') continue
+      const range = document.createRange()
+      range.selectNodeContents(el)
+      const text = range.getBoundingClientRect().width
+      const cs = getComputedStyle(el)
+      const pad = parseFloat(cs.paddingInlineStart || '0') + parseFloat(cs.paddingInlineEnd || '0')
+      if (text > 0 && r.width > text + pad + 24) {
+        stretchedPills.push(`${String(el.className).split(' ')[0]} “${(el.textContent ?? '').trim().slice(0, 18)}” ${Math.round(r.width)}px for ${Math.round(text)}px of text`)
+      }
+    }
+    /* ── One stack, one alignment ──────────────────────────────────────────
+     * Parts stacked in a column, one hugging the left edge of the stack and a
+     * sibling hugging the right edge. It reads as two clusters that happen to
+     * share a container, and it is almost never typed on purpose: it is what a
+     * container is left holding when its layout mode changes underneath it.
+     * That is exactly how it got here — `align-self: end / center / start`
+     * placed three ROWS on the vertical axis of a `1fr auto 1fr` grid, the
+     * container became a flex column, the same three words silently became
+     * horizontal, and the library's hero title ran to the right edge while its
+     * two buttons sat at the left one. Fifteen screens times five widths of
+     * geometry rules were green on it, because every one of them measures a
+     * part against the COLUMN and each part was inside the column.
+     *
+     * A child that fills the stack made no alignment decision, so it is not
+     * read. Two children of the SAME class on opposite edges are a pattern, not
+     * an accident (a chat transcript is the case: the reader's messages right,
+     * the assistant's left), so they are not reported. */
+    const splitStacks = []
+    for (const el of contentEl.querySelectorAll('*')) {
+      const cs = getComputedStyle(el)
+      const isColumn = (cs.display.includes('flex') && cs.flexDirection.startsWith('column'))
+        || (cs.display.includes('grid') && cs.gridTemplateColumns.split(' ').filter(Boolean).length === 1)
+      if (!isColumn) continue
+      const r = el.getBoundingClientRect()
+      const startX = r.left + (parseFloat(cs.paddingInlineStart) || 0)
+      const endX = r.right - (parseFloat(cs.paddingInlineEnd) || 0)
+      const inner = endX - startX
+      /* Under a phone's column width there is no room to be misaligned in. */
+      if (inner < 400) continue
+      const parts = []
+      for (const child of el.children) {
+        const cr = child.getBoundingClientRect()
+        if (cr.width <= 0 || cr.height <= 0) continue
+        const ccs = getComputedStyle(child)
+        if (ccs.position === 'absolute' || ccs.position === 'fixed') continue
+        /* It fills the stack: there was no edge to choose. */
+        if (inner - cr.width < 48) continue
+        const gapStart = cr.left - startX
+        const gapEnd = endX - cr.right
+        const side = gapStart <= 8 ? 'left' : gapEnd <= 8 ? 'right' : null
+        if (side) parts.push({ side, cls: String(child.className).split(' ')[0] || child.tagName.toLowerCase() })
+      }
+      const l = parts.find((p) => p.side === 'left')
+      const rt = parts.find((p) => p.side === 'right')
+      if (l && rt && l.cls !== rt.cls) {
+        splitStacks.push(`.${String(el.className).split(' ')[0] || el.tagName.toLowerCase()} stacks .${l.cls} against its left edge and .${rt.cls} against its right`)
+      }
+    }
+
     const aside = contentEl.querySelector('.detail-aside, [class*="-aside"]')
     return {
       columnWidth: Math.round(cr.width),
@@ -237,14 +491,48 @@ function measure({ slack, contentSelectors }) {
       deadAt,
       proseRun: wall,
       repeatedIcons,
+      airyRows,
+      stretchedPills,
+      spills,
+      rhythm,
+      splitStacks,
       emptyState: !!contentEl.querySelector('.empty-state'),
-      asideHeight: aside ? Math.round(aside.getBoundingClientRect().height) : null,
+      /* A pane that is NOT DISPLAYED is absent, not dead. `<SidePanel hideBelow>`
+         drops a wide-screen affordance below its width, which is the fix this
+         rule asks for — and the rule then read the zero-height element it left
+         behind as a 0% column and failed the same screen (2026-08-26). Null
+         means "no aside here", and a hidden one is exactly that. */
+      asideHeight: aside && aside.getClientRects().length
+        ? Math.round(aside.getBoundingClientRect().height)
+        : null,
     }
   }
   return {
     composition: compositionOf(),
     docScrollWidth: doc.scrollWidth,
     docClientWidth: doc.clientWidth,
+    /* The shell paints the page; the document under it is the BODY colour, which
+     * is white. So anything that makes the document taller than the shell opens a
+     * white strip at the bottom of a screen whose shell is exactly 100dvh — and
+     * the usual cause is invisible: an absolutely positioned box with no
+     * positioned ancestor resolves against the page, escapes the shell's
+     * `overflow: hidden`, and drags the scroll area down to wherever it sits
+     * inside an inner scroller. */
+    shellGap: (() => {
+      const shell = document.querySelector('.app-shell, .app-layout')
+      if (!shell) return null
+      const bottom = shell.getBoundingClientRect().bottom + window.scrollY
+      const gap = Math.round(doc.scrollHeight - bottom)
+      if (gap <= 0) return { gap, offender: null }
+      let offender = null, deepest = bottom
+      for (const el of document.querySelectorAll('body *')) {
+        const pos = getComputedStyle(el).position
+        if (pos !== 'absolute' && pos !== 'fixed') continue
+        const b = el.getBoundingClientRect().bottom + window.scrollY
+        if (b > deepest) { deepest = b; offender = `<${el.tagName.toLowerCase()} class="${String(el.className).slice(0, 40)}">` }
+      }
+      return { gap, offender }
+    })(),
     worst,
     header: box('.page-header .page-header-row') ?? box('.page-header'),
     headerActions: box('.page-header-actions'),
@@ -387,7 +675,7 @@ let checks = 0
  * and this repository has already shipped one linter rule that silently checked
  * nothing for weeks. A rule at zero is a coverage gap, not a clean bill. */
 const ran = new Map()
-const RULES = ['axe', 'no-overflow', 'header-aligns', 'column-not-centred', 'actions-flush-end', 'card-text-aligns', 'one-page-heading', 'heading-order', 'grid-fills-row', 'controls-same-height', 'nav-reachable', 'nav-not-doubled', 'nav-one-leading-control', 'nav-trigger-hittable', 'width-used', 'no-dead-band', 'prose-not-a-wall', 'no-repeated-icon']
+const RULES = ['axe', 'no-overflow', 'shell-covers-the-page', 'header-aligns', 'column-not-centred', 'actions-flush-end', 'card-text-aligns', 'one-page-heading', 'heading-order', 'grid-fills-row', 'controls-same-height', 'nav-reachable', 'nav-not-doubled', 'nav-one-leading-control', 'nav-trigger-hittable', 'width-used', 'no-dead-band', 'prose-not-a-wall', 'no-repeated-icon', 'row-carries-something', 'pill-fits-its-label', 'card-holds-its-content', 'card-rhythm', 'stack-one-alignment']
 for (const r of RULES) ran.set(r, 0)
 
 console.log(`${BOLD}Page audit${RESET} ${DIM}${screens.length} screen(s) x ${widths.length} width(s)${RESET}\n`)
@@ -490,6 +778,26 @@ async function auditScreen({ name, path, theme = 'light', anonymous = false, has
       if (c.repeatedIcons.length) {
         fail('no-repeated-icon', `${c.repeatedIcons.length} item(s) render the same icon twice (${c.repeatedIcons.slice(0, 3).join(', ')})`)
       } else pass('no-repeated-icon')
+      /* A pill stretched to its container instead of its label. */
+      if (c.stretchedPills.length) {
+        fail('pill-fits-its-label', `${c.stretchedPills.length}: ${c.stretchedPills.slice(0, 2).join('; ')}`)
+      } else pass('pill-fits-its-label')
+      /* Nothing hangs over the edge of the card that carries it. */
+      if (c.spills.length) {
+        fail('card-holds-its-content', `${c.spills.length}: ${c.spills.slice(0, 3).join('; ')}`)
+      } else pass('card-holds-its-content')
+      /* One card, one set of steps between its parts. */
+      if (c.rhythm.length) {
+        fail('card-rhythm', `${c.rhythm.length}: ${c.rhythm.slice(0, 3).join('; ')}`)
+      } else pass('card-rhythm')
+      /* One stack, one alignment. */
+      if (c.splitStacks.length) {
+        fail('stack-one-alignment', `${c.splitStacks.length}: ${c.splitStacks.slice(0, 3).join('; ')} — parts of one cluster pulled to opposite edges`)
+      } else pass('stack-one-alignment')
+      /* A wide row that is mostly air. */
+      if (c.airyRows.length) {
+        fail('row-carries-something', `${c.airyRows.length} row(s) are mostly nothing: ${c.airyRows.slice(0, 2).join('; ')}`)
+      } else pass('row-carries-something')
       /* An aside is metadata beside the content. Shorter than a third of it and
        * it is a card that left a dead column behind. */
       if (c.asideHeight !== null && c.contentHeight > 0 && c.asideHeight / c.contentHeight < 0.33) {
@@ -501,6 +809,15 @@ async function auditScreen({ name, path, theme = 'light', anonymous = false, has
     if (m.docScrollWidth > m.docClientWidth + SLACK) {
       fail('no-overflow', `document scrolls ${m.docScrollWidth - m.docClientWidth}px sideways; widest offender <${m.worst?.tag} class="${m.worst?.cls}"> by ${Math.round(m.worst?.over ?? 0)}px`)
     } else pass('no-overflow')
+
+    /* 1b. ...and nothing may stick out below the shell. Same failure seen from
+     * the other side: the strip the shell does not reach is painted in the body
+     * colour, so the page ends in a white band nobody put there. */
+    if (m.shellGap) {
+      if (m.shellGap.gap > SLACK) {
+        fail('shell-covers-the-page', `the document is ${m.shellGap.gap}px taller than the shell — that strip is the body colour, not the page${m.shellGap.offender ? `; deepest escapee ${m.shellGap.offender}` : ''}`)
+      } else pass('shell-covers-the-page')
+    }
 
     /* Inline edges, not left and right. In RTL the row starts on the right and
      * ends on the left, so a rule written in physical sides measures the wrong
@@ -551,7 +868,7 @@ async function auditScreen({ name, path, theme = 'light', anonymous = false, has
         fail('one-page-heading', `${h1s} <h1> on the page; exactly one names the screen`)
       } else if (skip > 0) {
         fail('heading-order', `heading level jumps from h${m.headings[skip - 1]} to h${m.headings[skip]} — the outline skips a level, so a section cannot be reached by walking it`)
-      } else pass('one-page-heading')
+      } else { pass('one-page-heading'); pass('heading-order') }
     }
 
     // 3. A grid row must not waste a whole column.

@@ -1,7 +1,7 @@
 {
   "ref": "ChatComposer",
   "level": "molecule",
-  "description": "Rounded chat input bar: auto-growing textarea plus voice/send. A pill on one line, rounded-rect once it grows; the mic swaps to a brand-filled send as soon as there is text. Enter sends, Shift+Enter adds a newline. The consumer positions it.",
+  "description": "Rounded chat input bar: auto-growing textarea plus voice/send. A pill on one line, rounded-rect once it grows; the mic swaps to a brand-filled send as soon as there is text. Enter sends, Shift+Enter adds a newline. The consumer positions it. Copy: the placeholder is an invitation, not an instruction manual: one short line naming what this assistant can be asked. It disappears the moment anyone types, so nothing a reader needs may live only there.",
   "exports": [
     "ChatComposer"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "value",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Controlled value (optional — composer manages its own state otherwise)."
     },
     {
       "name": "onChange",
@@ -22,17 +23,20 @@
     {
       "name": "onSend",
       "type": "(text: string) => void",
-      "required": false
+      "required": false,
+      "description": "Called with the trimmed text on submit."
     },
     {
       "name": "streaming",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Assistant is responding — swaps send for a stop button."
     },
     {
       "name": "onStop",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "Called when the stop button is pressed."
     },
     {
       "name": "placeholder",
@@ -42,7 +46,8 @@
     {
       "name": "aiSpark",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Decorative AI spark at the inline start — marks the bar as AI-powered."
     },
     {
       "name": "className",

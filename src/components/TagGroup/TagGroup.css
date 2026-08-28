@@ -1,0 +1,16 @@
+/* One line of labels, and the overflow instead of a second line: a cell that
+ * wraps its pills makes every row a different height. */
+.tag-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.tag-group-more {
+  font-size: var(--font-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  cursor: default;
+}

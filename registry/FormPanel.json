@@ -1,0 +1,73 @@
+{
+  "ref": "FormPanel",
+  "level": "block",
+  "description": "A form in a SIDE PANEL: the same contract as a form in a `<Modal>` for the case a dialog gets wrong, where the record or list behind it has to stay readable while the fields are filled in. Past a panel's worth of fields it is a `<FormPageTemplate>`. Copy: same words as the page-sized form: the title names the job, the submit label carries its verb. A panel is not a reason to shorten a label to \"OK\".",
+  "exports": [
+    "FormPanel"
+  ],
+  "main": "FormPanel",
+  "from": "@/blocks/FormPanel",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The Field rows, or a `<FormSection>` stack for a longer panel."
+    },
+    {
+      "name": "errors",
+      "type": "FormError[]",
+      "required": false,
+      "description": "What the last submit rejected, above the first field."
+    },
+    {
+      "name": "submitLabel",
+      "type": "string",
+      "required": false,
+      "description": "Names the real event (\"Save changes\"), never \"Submit\"."
+    },
+    {
+      "name": "cancelLabel",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "onSubmit",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "required": true
+    },
+    {
+      "name": "busy",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/blocks/FormPanel/FormPanel.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "ErrorSummary",
+    "Field",
+    "FormStack",
+    "Input",
+    "Select",
+    "SidePanel"
+  ],
+  "example": "const [name, setName] = useState('Discovery workshop')\nconst [owner, setOwner] = useState('kira')\n/* The list this panel was opened from stays on screen beside it, which is the\n * whole reason to use a panel instead of a dialog. */\n\n<FormPanel title=\"Edit session\" submitLabel=\"Save changes\" onSubmit={() => {}} onClose={() => {}}>\n  <Field label=\"Session name\" htmlFor=\"session-name\" required>\n    <Input id=\"session-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Owner\">\n    <Select label=\"Owner\" options={OWNERS} value={owner} onChange={setOwner} />\n  </Field>\n</FormPanel>"
+}

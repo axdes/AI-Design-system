@@ -1,0 +1,49 @@
+{
+  "name": "ContentCard",
+  "level": "organism",
+  "date": "2026-08-22",
+  "requestedBy": "agent",
+  "status": "approved",
+  "decidedBy": "user",
+  "decision": "Two studies of card CONTENT (the levels-and-sets one, then the modern-practice one) ended at the same finding: the ROW knows the contract and the CARD does not. <ContentRow> takes media, eyebrow, title, excerpt, meta and actions with a density; the tile, the side card and the cover are hand-assembled from Card + CardMedia + CardTitle + MetaItem every time, so the reading order is held by discipline rather than by a type. That is where the content drifts: the date sits under the title in one card and over it in the next, and both pass the gate. The owner asked for it to be built.",
+  "need": "One content entry, one component, whatever shape the place gives it. Plus the modern half of the research: the arrangement should answer the CARD's own width, not the window's — a story in a sidebar is a row and the same story in a grid is a tile, and today that needs either two components or a viewport media query that is wrong in a sidebar.",
+  "consideredAlternatives": [
+    {
+      "ref": "ContentRow",
+      "whyNot": "The same contract, but it IS a row: no surface, no media placement, no cover. A grid of rows is not a grid of cards."
+    },
+    {
+      "ref": "Card + CardMedia + CardTitle + CardMeta by hand",
+      "whyNot": "What every screen does now, and exactly what drifts: nothing holds the order of the levels or the drop order at narrow widths."
+    },
+    {
+      "ref": "A `layout` prop with no auto",
+      "whyNot": "Then every caller re-decides the same thing, and gets it wrong in a sidebar. `auto` is the default and a named layout is the override."
+    },
+    {
+      "ref": "A viewport media query inside Card (what `placement=side` does today)",
+      "whyNot": "Wrong by construction: a side card in a 300px sidebar on a 1600px screen stays horizontal, because the viewport says it may."
+    }
+  ],
+  "proposedApi": {
+    "props": [
+      { "name": "title", "type": "ReactNode", "required": true },
+      { "name": "media", "type": "ReactNode", "required": false },
+      { "name": "eyebrow", "type": "ReactNode", "required": false },
+      { "name": "excerpt", "type": "ReactNode", "required": false },
+      { "name": "meta", "type": "ReactNode", "required": false },
+      { "name": "actions", "type": "ReactNode", "required": false },
+      { "name": "onOpen", "type": "() => void", "required": false },
+      { "name": "layout", "type": "'auto' | 'tile' | 'side' | 'cover' | 'bare'", "required": false },
+      { "name": "fill", "type": "boolean", "required": false }
+    ]
+  },
+  "variants": [
+    {
+      "on": "Grid",
+      "add": "alignRows",
+      "why": "The other half of the modern finding: in a row of cards, titles of different lengths push the excerpts and metas of their neighbours out of line. `alignRows` puts every ContentCard on the parent's row tracks (CSS subgrid), so the parts line up across the row without fixed heights and without truncating titles."
+    }
+  ],
+  "waitingFor": ""
+}

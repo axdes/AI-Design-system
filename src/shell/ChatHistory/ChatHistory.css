@@ -81,8 +81,8 @@
   border-radius: var(--radius-full);
   transition: background var(--duration-fast);
 }
-.chat-item:hover { background: var(--nav-active-bg); }
-.chat-item[data-active] { background: var(--nav-active-bg); }
+.chat-item:hover { background: var(--nav-active); }
+.chat-item[data-active] { background: var(--nav-active); }
 
 .chat-item-main {
   flex: 1;

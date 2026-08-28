@@ -47,8 +47,16 @@
   transition: background var(--duration-fast);
 }
 .calendar-day:hover { background: var(--accent-soft); }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.calendar-day:active:not(:disabled) { background: var(--accent); }
 .calendar-day:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * -1); }
-.calendar-day[data-outside] { color: var(--muted-foreground); opacity: 0.5; }
+/* No opacity. A day from the next month is still a day you can click, so it is
+ * ordinary text and 1.4.3 applies: --muted-foreground alone is 6.04:1 here,
+ * and halving it took the same text to 2.12. The colour already says "another
+ * month"; the dimming was the same signal said twice, and the second saying
+ * was what made it unreadable. Disabled days keep their opacity — those are
+ * exempt, and they are not clickable. */
+.calendar-day[data-outside] { color: var(--muted-foreground); }
 .calendar-day[data-today]:not([data-selected]) { box-shadow: inset 0 0 0 1px var(--border-strong); }
 .calendar-day[data-selected] { background: var(--primary); color: var(--primary-foreground); font-weight: var(--font-weight-semibold); }
 /* A DateRangePicker's span: the days between the two selected edges read as a

@@ -59,6 +59,10 @@ type Resolved = {
 /**
  * Text on hover and focus, and the only right answer for naming an icon-only
  * control. Popover is a card on click, Dropdown is a menu.
+ *
+ * Copy: names the control, it does not explain it. If the words are needed to
+ * decide, they belong on the page — a tooltip is unreachable on a touch
+ * screen and gone on the next keystroke.
  */
 export function Tooltip({ content, placement = 'top', delay = 300, enabled = true, children }: Props) {
   const [pos, setPos] = useState<Resolved | null>(null)
@@ -87,6 +91,22 @@ export function Tooltip({ content, placement = 'top', delay = 300, enabled = tru
    * disabling need not be its own doing: a parent can disable it for any reason, and the tooltip is
    * just as stuck. Above the `enabled` return because a hook may not be called conditionally.
    */
+  /* Escape closes it. SC 1.4.13 asks that content shown on hover or focus be
+   * dismissible without moving the pointer or the focus, and until this existed
+   * a tooltip could only be escaped by moving off the trigger — which on a
+   * magnified screen means losing the thing you were reading about. Bound on the
+   * document, in the capture phase, so it fires wherever focus happens to be. */
+  useEffect(() => {
+    if (!pos) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      if (timerRef.current !== null) window.clearTimeout(timerRef.current)
+      setPos(null)
+    }
+    document.addEventListener('keydown', onKey, true)
+    return () => { document.removeEventListener('keydown', onKey, true) }
+  }, [pos])
+
   useEffect(() => {
     if (!pos) return
     const el = childRef.current as (HTMLElement & { disabled?: boolean }) | null

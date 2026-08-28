@@ -1,13 +1,26 @@
 /* Icon + text inline pair. Used for dates, counters, secondary info. */
 .meta-item {
   display: inline-flex;
-  align-items: center;
+  /* THE ICON SITS ON THE FIRST LINE, NOT IN THE MIDDLE OF THE BLOCK.
+   *
+   * Centred is invisible while the text is one line and wrong the moment it is
+   * two: the glyph drifts into the gutter between them and points at nothing
+   * (owner, 23.08). Aligned to the start it stays beside the words it labels
+   * however many lines they run to. The 16px glyph inside a 17px line box is
+   * already optically centred on that line, so no nudge is needed. */
+  align-items: flex-start;
   gap: var(--space-1);
   /* Secondary by definition, so secondary in size. It used to inherit, which is right inside a card
    * or a list row (both set it) and wrong everywhere else: on a plain surface a date and a counter
    * came out the same size as the sentence they annotate. */
   font-size: var(--font-sm);
+  /* A meta fact narrows with its card instead of pushing past it: measured at
+   * 800px, "Warsaw", "12 minutes" and "Last 5 months" each hung 9 to 30px out
+   * of the card. The icon keeps its size; the words wrap. */
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
+.meta-item .icon { flex: none; }
 /* Dim the icon via the muted-icon token (theme-aware: neutral-500 light /
  * neutral-400 dark) rather than opacity, which crushed to near-invisible on the
  * dark page surface. */
@@ -19,8 +32,14 @@
  * content-type). The whole label (icon included) reads muted, so the icon
  * inherits rather than taking the metadata icon-muted tone. */
 .meta-item[data-appearance="eyebrow"] {
-  font-size: var(--font-sm);
-  font-weight: var(--font-weight-regular);
+  /* A kicker, not a sentence: 13px regular grey read as body text sitting above
+   * the title, which is why "Reviewer" and "Audit" looked like stray lines
+   * rather than labels (owner, 22.08). Small, spaced and lifted to medium is
+   * what every editorial card does with the same word. */
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted-foreground);
 }
 .meta-item[data-appearance="eyebrow"] .icon {

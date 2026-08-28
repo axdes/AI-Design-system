@@ -1,29 +1,35 @@
 import './FilterDropdown.css'
 import { useState, type KeyboardEvent, type ReactNode } from 'react'
 import { cn } from '../../lib/cn'
+import { type Option } from '../../lib/option'
 import { Icon, type IconName } from '../Icon'
 import { Dropdown, DropdownItem } from '../Dropdown'
 import { SearchInput } from '../SearchInput'
 import { Tag } from '../Tag'
 import { useFilterBar } from '../../lib/filterBarContext'
 
-export type FilterOption = {
-  value: string
-  label: string
-  /** Optional leading icon on the menu row. */
+/** A filter choice: the shared <Option> plus what a filter menu also draws —
+ *  a leading mark, and a trailing count that rolls the per-status statistics
+ *  into the filter so a separate counter row is not needed.
+ *
+ *  It was declared here already, NOT generic, and `Props` then repeated its
+ *  shape as an inline literal below — a type nobody used sitting above a copy
+ *  of itself (2026-08-26). Now it is generic and Props uses it. */
+export type FilterOption<V extends string> = Option<V> & {
   icon?: IconName
-  /** Optional trailing count badge (rolls the per-status statistics into the
-   *  filter, so a separate counter row is not needed). */
   count?: number
 }
 
 type Props<V extends string> = {
   label: string
-  options: readonly { value: V; label: string; icon?: IconName; count?: number }[]
+  options: readonly FilterOption<V>[]
   value: readonly V[]
   onChange: (next: V[]) => void
-  /** Default true — multi-select. Each toggle keeps the menu open. */
-  multi?: boolean
+  /** Default true — several choices at once, and each toggle keeps the menu
+   *  open. The word is `multiple`, matching <Combobox> and <SelectableTile>:
+   *  this control called it `multiple` and nothing caught it, because lint:vocab
+   *  reads union props and a boolean has no union (2026-08-26). */
+  multiple?: boolean
   /** Label of the permanent "all" row (e.g. "All types"). Empty value = all. */
   allLabel: string
   /** Optional trailing count on the "all" row (total across options). */
@@ -65,7 +71,7 @@ function SearchableOptions<V extends string>({
   children,
 }: {
   placeholder: string
-  options: readonly { value: V; label: string; icon?: IconName; count?: number }[]
+  options: readonly FilterOption<V>[]
   children: (shown: readonly { value: V; label: string; icon?: IconName; count?: number }[]) => ReactNode
 }) {
   const [query, setQuery] = useState('')
@@ -113,9 +119,12 @@ function SearchableOptions<V extends string>({
 /**
  * One filter as a chip: the current selection reads on the trigger and the
  * options are typed by their value.
+ *
+ * Copy: the label is the field being filtered; `allLabel` is the unfiltered
+ * state in the reader's words — "Any region", not "All".
  */
 export function FilterDropdown<V extends string>({
-  label, options, value, onChange, multi = true, allLabel, allCount, allIcon, showValue, valueText, menuExtra, searchable, searchPlaceholder = 'Search', showTags, className,
+  label, options, value, onChange, multiple = true, allLabel, allCount, allIcon, showValue, valueText, menuExtra, searchable, searchPlaceholder = 'Search', showTags, className,
 }: Props<V>) {
   const { inSheet } = useFilterBar()
   const isSelected = (v: V) => value.includes(v)
@@ -138,7 +147,7 @@ export function FilterDropdown<V extends string>({
    * state so the checks collapse onto the All row and the trigger reads
    * "Label: All ..." instead of listing the full set. */
   const toggle = (v: V) => {
-    if (!multi) {
+    if (!multiple) {
       onChange(isSelected(v) ? [] : [v])
       return
     }
@@ -169,7 +178,7 @@ export function FilterDropdown<V extends string>({
     <div className="filter-dropdown-stack">
     <Dropdown
       align="start"
-      closeOnSelect={!multi}
+      closeOnSelect={!multiple}
       /* Sheet mode locks the menu to the trigger; otherwise the menu opens at
        * least as wide as the pill and grows with longer rows. */
       matchTriggerWidth={inSheet || 'min'}

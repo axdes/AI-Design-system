@@ -16,9 +16,27 @@
   padding: 0;
   transition: background var(--duration-fast);
 }
+/* The track is 20px tall because that is the shape; the TARGET has to be 24
+ * (SC 2.5.8). A pseudo-element extends the hit area without moving a pixel of
+ * the drawing — ::after is already the thumb. */
+.switch::before {
+  content: "";
+  position: absolute;
+  inset-block: calc((var(--space-6) - var(--switch-height)) / -2);
+  inset-inline: 0;
+}
 .switch:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
 .switch[aria-checked="true"] { background: var(--primary); }
 .switch[disabled] { opacity: 0.5; cursor: not-allowed; }
+/* The same three answers the rest of the system gives. A switch that does not
+ * acknowledge the pointer reads as a picture of a switch. */
+.switch:hover:not([disabled]) { background: var(--accent-strong); }
+.switch[aria-checked="true"]:hover:not([disabled]) { background: var(--primary-hover); }
+.switch:active:not([disabled]) { background: var(--accent-active); }
+.switch[aria-checked="true"]:active:not([disabled]) { background: var(--primary-active); }
+/* Marked wrong: the track carries the red, since the thumb is the value. */
+.switch[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--destructive); }
+.switch[aria-invalid="true"]:focus-visible { outline-color: var(--destructive); }
 
 .switch::after {
   content: "";
@@ -27,7 +45,7 @@
   width: var(--switch-thumb);
   height: var(--switch-thumb);
   border-radius: var(--radius-full);
-  background: var(--switch-thumb-bg);
+  background: var(--switch-thumb);
   box-shadow: var(--shadow-sm);
   transition: inset-inline-start var(--duration-fast);
 }

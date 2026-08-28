@@ -29,6 +29,10 @@ type Props = HTMLAttributes<HTMLSpanElement> & {
  * A person or a team as an image with an initial fallback. `status` adds a
  * presence dot whose meaning lives in `statusLabel`, not in its colour;
  * `shape="square"` reads as a team rather than a person.
+ *
+ * Copy: the name is the person's own, spelled as they spell it — the initial and
+ * the accessible name both come from it. `statusLabel` says what the dot
+ * means; a colour on its own says nothing.
  */
 export function Avatar({ name, size, fill, src, shape, status, statusLabel, className, ...rest }: Props) {
   /* Remember WHICH src broke rather than a boolean: a new url then renders on

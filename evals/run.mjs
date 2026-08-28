@@ -48,6 +48,15 @@ const TASKS_DIR = `${ROOT}/evals/tasks`
 const RUN_SLUG = `run-${process.pid}`
 const WORK = `${ROOT}/src/__eval__/${RUN_SLUG}`
 
+/* Take the work root away on the way out, however the run ends. The compile pass
+   deletes the test FILE it wrote and nothing deleted the directory around it, so
+   every run since this file was written left one behind: 901 empty directories
+   under src/__eval__ by 2026-08-27, in the source tree of a package that is
+   published. Litter nobody sees is litter nobody removes. */
+const sweepWork = () => { try { rmSync(WORK, { recursive: true, force: true }) } catch { /* the run is over either way */ } }
+process.on('exit', sweepWork)
+for (const sig of ['SIGINT', 'SIGTERM']) process.on(sig, () => { sweepWork(); process.exit(130) })
+
 const argv = process.argv.slice(2)
 const flag = (name) => {
   const i = argv.indexOf(`--${name}`)

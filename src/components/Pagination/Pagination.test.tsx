@@ -57,4 +57,14 @@ describe('Pagination', () => {
     await user.click(screen.getByRole('button', { name: 'Page 1' }))
     expect(onChange).toHaveBeenCalledWith(1)
   })
+
+  /* A mutation test removed this component's aria-label and the whole suite —
+     471 tests, axe over every golden example — stayed green (2026-08-26). The
+     examples give the control a name another way, so axe is satisfied there and
+     the standalone case, which is how a product uses it, went unchecked. The
+     name IS the contract for a control whose label is not text beside it. */
+  it('names the navigation region, so a page with two of them is walkable', () => {
+    render(<Pagination page={2} pageCount={5} onChange={() => {}} label="Search results" />)
+    expect(screen.getByRole('navigation', { name: 'Search results' })).toBeInTheDocument()
+  })
 })

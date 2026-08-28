@@ -1,5 +1,10 @@
 .radio {
+  /* 24px floor — see Checkbox.css; radios stack the same way. */
+  min-block-size: var(--space-6);
   --dot-size: 1.25rem;   /* md default; sm/lg below */
+  /* Containing block for the hidden input — see Checkbox.css for what escapes
+   * without it. */
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -11,6 +16,15 @@
 .radio[data-size="sm"] { --dot-size: 1rem; font-size: var(--font-sm); }
 .radio[data-size="lg"] { --dot-size: 1.5rem; font-size: var(--font-md); }
 .radio[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+/* The same three answers every other control gives. The selection family gave
+ * none of them: a checkbox did not acknowledge the pointer, did not answer the
+ * press, and had no way to be marked wrong — so a required consent box could be
+ * rejected by a form with nothing on screen saying which box was the problem. */
+.radio:hover:not([data-disabled]) .radio-circle { border-color: var(--ring); }
+.radio:active:not([data-disabled]) .radio-circle { border-color: var(--primary-active); }
+.radio[data-invalid] .radio-circle { border-color: var(--destructive); }
+.radio[data-invalid] .radio-input:focus-visible + .radio-circle { outline-color: var(--destructive); }
+
 
 .radio-input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }
 

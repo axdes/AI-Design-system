@@ -17,7 +17,8 @@
     {
       "name": "defaultOpen",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Optional default-open section by key."
     }
   ],
   "sourcePath": "src/components/ContentSidePanel/ContentSidePanel.tsx",

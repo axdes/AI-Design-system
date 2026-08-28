@@ -70,11 +70,15 @@ function withCss(files, declaration) {
  * legitimately accepts props no registry could list. Mutating one of those and
  * calling the silence a hole would be testing a case the scorer deliberately
  * does not judge, and the fix would be a scorer that cries wolf on className. */
-function firstRegistryTag(src, { judgeable = false } = {}) {
+function firstRegistryTag(src, { judgeable = false, inherits = false } = {}) {
   for (const m of src.matchAll(/<([A-Z][A-Za-z0-9]*)\b/g)) {
     const entry = all[m[1]]
     if (!entry) continue
-    if (judgeable && (entry.inherits || (m[1] !== entry.main && m[1] !== entry.ref))) continue
+    const isMain = m[1] === entry.main || m[1] === entry.ref
+    /* `inherits: true` asks for the OPPOSITE of `judgeable`: a passthrough
+       entry, which is exactly the population the prop check used to skip. */
+    if (inherits && (!entry.inherits || !isMain)) continue
+    if (judgeable && (entry.inherits || !isMain)) continue
     return { name: m[1], at: m.index }
   }
   return null
@@ -101,6 +105,25 @@ const MUTATIONS = [
       const src = files[file]
         .replaceAll(`<${tag.name}`, `<${fake}`)
         .replaceAll(`</${tag.name}>`, `</${fake}>`)
+      return { ...files, [file]: src }
+    },
+  },
+  {
+    /* The sibling case — an invented component WITH the import an agent writes
+       for it — is not here on purpose. That hole lived in the MCP wrapper's
+       exemption for the caller's own components, not in `staticScore`, so a
+       mutation here would pass before and after the fix and read as coverage
+       nobody has. Its guard is mcp/server.test.mjs (2026-08-26). */
+    name: 'invented-prop-on-a-passthrough',
+    why: 'An invented prop on a component that spreads ...rest. Those were 27 of 143 entries — Button, Card, Badge — and the prop check skipped them entirely until 2026-08-26.',
+    apply(files) {
+      const file = tsxOf(files)
+      if (!file) return null
+      const tag = firstRegistryTag(files[file], { inherits: true })
+      if (!tag) return null
+      const src = files[file].slice(0, tag.at + tag.name.length + 1) +
+        ' padding="huge"' +
+        files[file].slice(tag.at + tag.name.length + 1)
       return { ...files, [file]: src }
     },
   },

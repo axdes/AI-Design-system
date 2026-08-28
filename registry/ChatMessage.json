@@ -21,22 +21,26 @@
     {
       "name": "text",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Plain text of the message — used by copy + read-aloud on assistant rows."
     },
     {
       "name": "choices",
       "type": "readonly ChatChoice[]",
-      "required": false
+      "required": false,
+      "description": "Quick-reply chips under an assistant message."
     },
     {
       "name": "hideActions",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Hide the built-in action toolbar (copy / read / feedback)."
     },
     {
       "name": "onDislike",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "Fired when the user picks thumbs-down (e.g. to open a feedback dialog)."
     },
     {
       "name": "children",

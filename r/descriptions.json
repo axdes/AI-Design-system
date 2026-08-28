@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "descriptions",
+  "type": "registry:ui",
+  "title": "Descriptions",
+  "description": "A read-only list of field/value pairs — a record's metadata, a summary panel. Real <dl>/<dt>/<dd> so it reads as a description list to a screen reader. Distinct from a form (no inputs) and from a Table (no rows of records).",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Descriptions/Descriptions.css",
+      "content": ".descriptions { margin: 0; }\n.descriptions[data-layout='stacked'] {\n  display: grid;\n  /* A list, not a set of sections: at space-4 the rows floated apart far enough that each pair\n     read as its own block. The name sits right on top of its value and the pairs are told apart\n     by the gap between them, which is what space-3 buys. */\n  gap: var(--space-3) var(--space-6);\n}\n.descriptions[data-layout='stacked'][data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n.descriptions[data-layout='stacked'][data-columns='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n\n.descriptions-row { min-inline-size: 0; }\n.descriptions[data-layout='stacked'] .descriptions-row { display: flex; flex-direction: column; gap: var(--space-1); }\n/* The list measures ITSELF, not the window: the same `inline` list sits in a 1300px card on one\n   screen and in a 20rem aside on the next, and a media query cannot tell those apart. */\n.descriptions[data-layout='inline'] { container-type: inline-size; }\n.descriptions[data-layout='inline'] .descriptions-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: var(--space-1) var(--space-3);\n  padding-block: var(--space-2);\n  border-block-end: 1px solid var(--border);\n}\n.descriptions[data-layout='inline'] .descriptions-row:last-child { border-block-end: none; }\n\n/* A FIELD NAME, not a heading.\n *\n * It used to borrow <SectionLabel>: display face, 17px, uppercase, tracked. That put a shouted\n * heading on every row of what is meant to read as a quiet list — a column of WAVE / WHERE /\n * the LABELS louder than the answers under them — and set the label in a different\n * typeface from its own value, which is what made these lists look broken rather than styled.\n * A field name is small, quiet, and in the same face as the text it names; the value carries the\n * weight, because the value is the content. */\n.descriptions-term {\n  font-size: var(--font-sm);\n  font-weight: var(--font-weight-regular);\n  line-height: var(--leading-normal);\n  color: var(--muted-foreground);\n}\n/* The label column is fixed so every value in the list starts on the same line, which is the\n   whole reason to put the term beside the value rather than above it. */\n.descriptions[data-layout='inline'] .descriptions-term { flex: 0 0 9rem; }\n/* Until the list is too narrow to afford it. 9rem of name against 7rem of value is a label eating\n   the content it names — every value wrapping to three lines while the column beside it stays\n   empty. Below 26rem the name goes back on top of its value, which is the `stacked` layout, and\n   the reason THIS is a container query and not a second prop: the caller should not have to know\n   how wide the box it dropped the list into happens to be. */\n@container (max-width: 26rem) {\n  .descriptions[data-layout='inline'] .descriptions-term { flex-basis: 100%; }\n}\n.descriptions-value { margin: 0; font-size: var(--font-base); color: var(--foreground); }\n.descriptions[data-layout='inline'] .descriptions-value { font-size: var(--font-sm); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Descriptions/Descriptions.css"
+    },
+    {
+      "path": "src/components/Descriptions/Descriptions.tsx",
+      "content": "import './Descriptions.css'\nimport { type ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\nexport type Description = {\n  term: ReactNode\n  value: ReactNode\n}\n\ntype Props = {\n  items: Description[]\n  /** stacked (term above value, default) or inline (term beside value). */\n  layout?: 'stacked' | 'inline'\n  /** Columns on wide screens (stacked layout only). Default 1. */\n  columns?: 1 | 2 | 3\n  className?: string\n}\n\n/* A read-only list of field/value pairs — a record's metadata, a summary panel.\n * Real <dl>/<dt>/<dd> so it reads as a description list to a screen reader.\n * Distinct from a form (no inputs) and from a Table (no rows of records). */\nexport function Descriptions({ items, layout = 'stacked', columns = 1, className }: Props) {\n  return (\n    <dl className={cn('descriptions', className)} data-layout={layout} data-columns={columns}>\n      {items.map((item, i) => (\n        // eslint-disable-next-line @eslint-react/no-array-index-key -- term is a ReactNode, so it cannot be a key; the list is read-only and never reorders\n        <div className=\"descriptions-row\" key={i}>\n          <dt className=\"descriptions-term\">{item.term}</dt>\n          <dd className=\"descriptions-value\">{item.value}</dd>\n        </div>\n      ))}\n    </dl>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Descriptions/Descriptions.tsx"
+    },
+    {
+      "path": "src/components/Descriptions/index.ts",
+      "content": "export { Descriptions, type Description } from './Descriptions'\n",
+      "type": "registry:ui",
+      "target": "@ui/Descriptions/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Descriptions.json"
+}

@@ -1,7 +1,7 @@
 {
   "ref": "Combobox",
   "level": "molecule",
-  "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Tag>s and the list stays open.",
+  "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Tag>s and the list stays open. Copy: the empty label says what was searched for and offers the way out — \"No supplier matches 'nortwind'. Check the spelling, or add a supplier.\" A bare \"No results\" leaves the reader stuck on their own typo.",
   "exports": [
     "Combobox"
   ],
@@ -17,22 +17,26 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the text field."
     },
     {
       "name": "multiple",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Multi-select: `value` is an array and picks render as removable tags. Single (default): `value` is one option value."
     },
     {
       "name": "value",
       "type": "V | readonly V[]",
-      "required": false
+      "required": false,
+      "description": "One value in single mode, an array in multi mode."
     },
     {
       "name": "onChange",
       "type": "((next: V) => void) | ((next: V[]) => void)",
-      "required": true
+      "required": true,
+      "description": "Receives one value in single mode, the full array in multi mode. Pass the handler that matches your `multiple` setting."
     },
     {
       "name": "placeholder",
@@ -47,17 +51,20 @@
     {
       "name": "filter",
       "type": "(option: ComboboxOption<V>, query: string) => boolean",
-      "required": false
+      "required": false,
+      "description": "Matched against the option label, case-insensitive, by default. Pass a custom matcher to search other fields or fuzzy-match."
     },
     {
       "name": "emptyLabel",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Shown when the query matches nothing. Default \"No matches\"."
     },
     {
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "sm / md (default) / lg — matches the shared control height/padding scale.",
       "values": [
         "sm",
         "md",
@@ -68,6 +75,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on. On `muted` (a page/PageHeader) the border is dropped since the white fill separates it; `base` (default, a white card or form) keeps the border. Invalid + focus stay visible on both.",
       "values": [
         "base",
         "muted"

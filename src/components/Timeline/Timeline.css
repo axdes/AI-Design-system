@@ -1,4 +1,21 @@
+/* The marker is a DISC, not a ring around a glyph. It used to be 16px wide with
+ * a 16px icon inside it and a 2px ring drawn outside: the glyph filled the
+ * circle edge to edge and touched the ring, so three events in a card read as
+ * three smudges joined by a stub of line (owner, 23.08: the timeline has
+ * collapsed). The disc is 24px, the icon keeps its 16, and the tone lives in a
+ * soft fill instead of an outline. */
 .timeline {
+  /* Component-private knobs, co-located per the token conventions. */
+  --timeline-marker: var(--space-6);
+  /* How long a line of the timeline may run before the time stops following the
+   * right edge: on a full-width page that edge is a thousand pixels from the
+   * event the time belongs to. */
+  --timeline-measure: 48rem;
+
+  /* The timeline answers its OWN width, not the window's: the same component is
+   * 300px wide in a card and 900px wide on a detail page. */
+  container-type: inline-size;
+
   margin: 0;
   padding: 0;
   list-style: none;
@@ -9,14 +26,16 @@
   position: relative;
   display: flex;
   gap: var(--space-3);
-  padding-block-end: var(--space-6);
+  padding-block-end: var(--space-4);
 }
-/* The connecting line runs down from each marker to the next. */
+/* The connecting line runs from the foot of one marker to the head of the next,
+ * with one grid step of air at each end so it joins the discs instead of
+ * growing out of them. */
 .timeline-item:not(:last-child)::before {
   content: '';
   position: absolute;
-  inset-block: var(--space-6) 0;
-  inset-inline-start: calc(var(--space-4) / 2);
+  inset-block: calc(var(--timeline-marker) + var(--space-1)) var(--space-1);
+  inset-inline-start: calc(var(--timeline-marker) / 2);
   inline-size: 2px;
   background: var(--border);
   transform: translateX(-50%);
@@ -29,25 +48,45 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--space-4);
-  block-size: var(--space-4);
+  inline-size: var(--timeline-marker);
+  block-size: var(--timeline-marker);
   border-radius: var(--radius-full);
-  background: var(--background);
+  background: var(--accent);
   color: var(--muted-foreground);
-  box-shadow: 0 0 0 2px var(--border);
 }
-.timeline-dot { inline-size: var(--space-2); block-size: var(--space-2); border-radius: var(--radius-full); background: var(--muted-foreground); }
-.timeline-marker[data-tone='primary']     { color: var(--primary);            box-shadow: 0 0 0 2px var(--primary); }
-.timeline-marker[data-tone='primary'] .timeline-dot     { background: var(--primary); }
-.timeline-marker[data-tone='success']     { color: var(--success-emphasis);   box-shadow: 0 0 0 2px var(--success-emphasis); }
-.timeline-marker[data-tone='success'] .timeline-dot     { background: var(--success-emphasis); }
-.timeline-marker[data-tone='warning']     { color: var(--warning-emphasis);   box-shadow: 0 0 0 2px var(--warning-emphasis); }
-.timeline-marker[data-tone='warning'] .timeline-dot     { background: var(--warning-emphasis); }
-.timeline-marker[data-tone='danger'] { color: var(--destructive-emphasis); box-shadow: 0 0 0 2px var(--destructive-emphasis); }
-.timeline-marker[data-tone='danger'] .timeline-dot { background: var(--destructive-emphasis); }
+.timeline-dot { inline-size: var(--space-2); block-size: var(--space-2); border-radius: var(--radius-full); background: currentcolor; }
+.timeline-marker[data-tone='primary'] { background: var(--primary-soft);     color: var(--primary-soft-foreground); }
+.timeline-marker[data-tone='success'] { background: var(--success-soft);     color: var(--success-soft-foreground); }
+.timeline-marker[data-tone='warning'] { background: var(--warning-soft);     color: var(--warning-soft-foreground); }
+.timeline-marker[data-tone='danger']  { background: var(--destructive-soft); color: var(--destructive-soft-foreground); }
 
-.timeline-body { min-inline-size: 0; padding-block-start: calc((var(--space-4) - 1em) / 2); }
-.timeline-head { display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; }
-.timeline-title { font-size: var(--font-base); font-weight: var(--font-weight-medium); color: var(--foreground); }
-.timeline-time { font-size: var(--font-xs); color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+/* The title sits on the marker's own centre line: half the disc, less half a
+ * line of text. */
+.timeline-body { flex: 1; min-inline-size: 0; padding-block-start: calc((var(--timeline-marker) - 1lh) / 2); }
+/* WHEN sits UNDER what happened, until there is room for it beside.
+ *
+ * A right-hand time column costs about a third of the line, and in a card that
+ * is 300px wide it spent that third on "Monday" while the event itself broke
+ * over two lines mid-word (owner, 23.08: why is the date on the right, there is
+ * no room). Under 30rem of TIMELINE the time is a second line; past it, it
+ * takes the end of the first. */
+.timeline-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  /* A line of a timeline is still a line of text: past a reading measure the
+   * time would sit a thousand pixels from the event it belongs to. */
+  max-inline-size: var(--timeline-measure);
+}
+
+@container (min-width: 30rem) {
+  .timeline-head {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+}
+.timeline-title { min-inline-size: 0; font-size: var(--font-base); font-weight: var(--font-weight-medium); color: var(--foreground); }
+.timeline-time { flex: none; white-space: nowrap; font-size: var(--font-sm); color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 .timeline-content { margin-block-start: var(--space-1); font-size: var(--font-sm); color: var(--muted-foreground); }

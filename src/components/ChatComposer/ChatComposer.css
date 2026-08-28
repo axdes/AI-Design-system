@@ -13,7 +13,15 @@
   background: var(--background);
   transition: border-color var(--duration-fast), border-radius var(--duration-fast);
 }
-.chat-composer:focus-within { border-color: var(--primary-accent); }
+/* The ring, not only a recoloured border. Every other field frame in the system
+ * draws --ring-width at --ring-offset on focus; this one changed a border colour,
+ * so the same keypress produced a different answer depending on whether you were
+ * in the composer or in a form above it. The border keeps its accent too. */
+.chat-composer:focus-within {
+  border-color: var(--primary-accent);
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
 .chat-composer[data-stretched] {
   align-items: flex-end;
   border-radius: var(--radius-rect);
@@ -50,7 +58,7 @@
 
 /* Recording cancel — danger-tinted (the waveform conveys the live state). */
 .chat-composer-voice.is-recording,
-.chat-composer-voice.is-recording:hover { color: var(--destructive); background: transparent; }
+.chat-composer-voice.is-recording:hover { color: var(--destructive-emphasis); background: transparent; }
 
 /* Voice waveform — animated bars while recording (replaces the field). */
 .chat-composer-waveform {

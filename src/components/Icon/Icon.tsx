@@ -1,21 +1,22 @@
 import './Icon.css'
 import {
-  Plus, ChevronDown, ChevronLeft, ChevronRight, MoreVertical, Search, Clock, Folder, FolderPlus, FolderInput,
-  File, FileText, Film, Megaphone, Share2, Newspaper, Pencil, Copy, Trash2, Type,
-  Users, LayoutDashboard, MessageCircle, LogOut, User as UserIcon,
-  Check, X, Menu, ClipboardCheck, Eye, EyeOff,
   ArrowLeft, History, Settings, ListChecks, ShieldCheck, Download, SlidersHorizontal,
-  Save, ArrowLeftToLine, ArrowRightToLine,
-  Mic, CalendarDays, Volume2, ThumbsUp, ThumbsDown, SendHorizontal, Timer,
-  UserPlus,
+  ArrowUp, ArrowDown, Minus, Scale, HandMetal,
+  Check, X, Menu, ClipboardCheck, Eye, EyeOff,
   CircleCheck, TriangleAlert, CircleX, Info,
+  File, FileText, Film, Megaphone, Share2, Newspaper, Pencil, Copy, Trash2, Type,
+  IdCard, CircleGauge,
+  Mic, CalendarDays, Volume2, ThumbsUp, ThumbsDown, SendHorizontal, Timer,
   Pin, Archive, Square, LoaderCircle, SkipForward, Undo2,
-  Sun, Moon, Phone, PhoneOff, PhoneForwarded, MapPin,
-  Wind, Flame, HeartPulse, Shield, ZapOff, Droplet, Layers, Flag, Briefcase, Star,
-  IdCard, Gauge,
   Play, Pause, RefreshCw, Upload, Compass, Lightbulb, Brain, Quote, Presentation,
-  ArrowUp, ArrowDown, Scale, HandMetal,
+  Plus, ChevronDown, ChevronLeft, ChevronRight, MoreVertical, Search, Clock, Folder, FolderPlus, FolderInput,
+  Save, ArrowLeftToLine, ArrowRightToLine,
+  Sun, Moon, Phone, PhoneOff, PhoneForwarded, MapPin,
+  Table2,
   type LucideIcon,
+  UserPlus,
+  Users, LayoutDashboard, MessageCircle, LogOut, User as UserIcon,
+  Wind, Flame, HeartPulse, Shield, ZapOff, Droplet, Layers, Flag, Briefcase, Star,
 } from 'lucide-react'
 import { type SVGProps } from 'react'
 import { cn } from '../../lib/cn'
@@ -105,6 +106,7 @@ const ICONS = {
   history:          History,
   settings:         Settings,
   list_alt:         ListChecks,
+  table:            Table2,
   verified:         ShieldCheck,
   download:         Download,
   tune:             SlidersHorizontal,
@@ -147,7 +149,11 @@ const ICONS = {
   sparkles:         AiSpark,
   auto_awesome:     AutoAwesome,
   badge:            IdCard,
-  gauge:            Gauge,
+  /* CircleGauge, not Gauge: Lucide's `Gauge` is an ARC with a gap at the top
+   * left, and at 16px that gap reads as a circle somebody clipped (owner,
+   * 23.08: it is cut off in the second card). The closed dial says the same
+   * thing and survives the size. */
+  gauge:            CircleGauge,
   play:             Play,
   pause:            Pause,
   refresh:          RefreshCw,
@@ -159,6 +165,7 @@ const ICONS = {
   presentation:     Presentation,
   arrow_upward:     ArrowUp,
   arrow_downward:   ArrowDown,
+  remove:           Minus,
   balance:          Scale,
   nudge:            HandMetal,
 } satisfies Record<string, LucideIcon>
@@ -176,6 +183,9 @@ type Props = {
  * Every icon in the system, addressed by Material-style name. Size comes from
  * CSS through `size`, so changing an --icon-* token cascades everywhere at
  * once.
+ *
+ * Copy: there is no copy here on purpose: an icon carries no words, so anything
+ * it must say belongs on the control around it.
  */
 export function Icon({ name, size = 'sm', className }: Props) {
   const Component = ICONS[name]

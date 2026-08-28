@@ -1,7 +1,7 @@
 {
   "ref": "CountBadge",
   "level": "molecule",
-  "description": "A count or dot pinned to the top-inline-end corner of whatever it wraps — notifications on a bell, unread on an avatar. Distinct from <Badge>, which is a standalone status pill. Hidden entirely when count is 0 and no dot.",
+  "description": "A count or dot pinned to the top-inline-end corner of whatever it wraps — notifications on a bell, unread on an avatar. Distinct from <Badge>, which is a standalone status pill. Hidden entirely when count is 0 and no dot. Copy: the accessible label counts the thing, not the badge — \"3 unread messages\". A number alone is read as \"three\" with nothing to attach it to.",
   "exports": [
     "CountBadge"
   ],
@@ -12,17 +12,20 @@
     {
       "name": "children",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The element the marker sits on (an Icon, IconButton, Avatar)."
     },
     {
       "name": "count",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Numeric count. Values over `max` render as `${max}+`. Omit for a plain dot."
     },
     {
       "name": "dot",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Show a small dot with no number (e.g. \"unread\", \"online\")."
     },
     {
       "name": "max",
@@ -42,7 +45,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Read out to a screen reader, e.g. \"3 unread\". Without it the marker is decorative (aria-hidden) — pass it whenever the count carries meaning."
     },
     {
       "name": "className",

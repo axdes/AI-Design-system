@@ -1,7 +1,7 @@
 {
   "ref": "Tag",
   "level": "molecule",
-  "description": "A static, non-interactive label token in a pill — the read-only counterpart to <Chip> (which is a button). Optionally removable: the label does nothing, only the trailing X drops the token, so the remove control can be its own button (a remove button nested inside a Chip button would be invalid HTML).",
+  "description": "A static, non-interactive label token in a pill — the read-only counterpart to <Chip> (which is a button). Optionally removable: the label does nothing, only the trailing X drops the token, so the remove control can be its own button (a remove button nested inside a Chip button would be invalid HTML). Copy: the value as the reader wrote or chose it, unaltered. A tag is data; rewording it makes it un-findable.",
   "exports": [
     "Tag"
   ],
@@ -17,12 +17,14 @@
     {
       "name": "onRemove",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "When set, renders a trailing remove button that calls this on click."
     },
     {
       "name": "removeLabel",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Accessible label + tooltip for the remove button (required when removable)."
     },
     {
       "name": "size",

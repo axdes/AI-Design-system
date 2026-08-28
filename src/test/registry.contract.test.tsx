@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { render } from '@testing-library/react'
 import registry from '../../component-registry.json'
-import { RENDER, NOT_RENDERABLE } from './render-map'
+import { RENDER, NOT_RENDERABLE } from '@/specimens'
 
 /* The registry is the contract agents build against: it promises that
  * `<Button variant="success">` exists AND that it lands as `data-variant="success"` in

@@ -1,7 +1,7 @@
 {
   "ref": "AuthTemplate",
   "level": "block",
-  "description": "Centered auth-page skeleton: one Card with a brand slot, the caller's content, an error slot, and a full-width submit when there is a form. Structure only.",
+  "description": "Centered auth-page skeleton: one Card with a brand slot, the caller's content, an error slot, and a full-width submit when there is a form. Structure only. Copy: the title is what the reader is here to do — \"Sign in\", not the product's name over again. The error says what to try, and never whether it was the address or the password that was wrong.",
   "exports": [
     "AuthTemplate"
   ],
@@ -12,42 +12,50 @@
     {
       "name": "brand",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Brand mark shown above the content (a logo img or wordmark node)."
     },
     {
       "name": "title",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "The page's accessible name, rendered as a visually hidden `<h1>`. A logo image is not a heading: without this the screen has no h1 at all and a screen reader lands on a page with no title."
     },
     {
       "name": "subtitle",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Optional one-line subtitle under the brand."
     },
     {
       "name": "children",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The form fields, or whatever the screen shows when there is no form."
     },
     {
       "name": "error",
       "type": "string | null",
-      "required": false
+      "required": false,
+      "description": "Error message shown above the submit; null/undefined when clear."
     },
     {
       "name": "footer",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Optional footer under the content (links, hints, demo accounts)."
     },
     {
       "name": "className",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Extra class on the page wrapper: where a product puts its own background. The template owns the structure, the product owns the brand."
     },
     {
       "name": "themeLock",
       "type": "'light' | 'dark'",
       "required": false,
+      "description": "Pins the screen to one theme regardless of the app's. Auth screens are usually branded and lit, and the dark card you would otherwise get looks broken against a light brand background.",
       "values": [
         "light",
         "dark"
@@ -56,22 +64,26 @@
     {
       "name": "onSubmit",
       "type": "(e: FormEvent) => void",
-      "required": false
+      "required": false,
+      "description": "Present together or not at all. With them the content is wrapped in a `<form>` under a full-width submit; without them it is rendered as-is. Not every auth screen is a form, which is why nothing could adopt this block while these were mandatory: one product signs in through SSO buttons and a number to confirm in Authenticator, another swaps its form for a progress readout while it pulls data for minutes. Both are still the same centred card on the same branded page, so the form is a mode, not the shape. (A discriminated union would enforce the pairing, but the registry generator reads a single object type and silently published two props out of ten when this was a union. The registry is the contract agents build against, so its accuracy wins over a compile-time nicety no caller needed.)"
     },
     {
       "name": "submitLabel",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The submit button label. Only meaningful together with `onSubmit`."
     },
     {
       "name": "busy",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "The submission is in flight: the submit shows a spinner and stops accepting presses, so it cannot be fired twice."
     },
     {
       "name": "busyLabel",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "What the spinner announces while `busy` (default \"Loading\")."
     }
   ],
   "sourcePath": "src/blocks/AuthTemplate/AuthTemplate.tsx",
@@ -94,5 +106,5 @@
     "Layout",
     "PasswordInput"
   ],
-  "example": "const [email, setEmail] = useState('')\nconst [password, setPassword] = useState('')\nconst [error, setError] = useState<string | null>(null)\n/* `busy` stops a second press. Copy this shape. */\nconst [busy, setBusy] = useState(false)\nconst handleSubmit = (e: FormEvent) => {\n  e.preventDefault()\n  if (!email || !password) return setError('Enter your email and password.')\n  setError(null)\n  setBusy(true)\n  /* `finally`, not `then`: a rejected sign-in releases the button too. */\n  void signIn().finally(() => setBusy(false))\n}\n\n<AuthTemplate\n  brand={<strong>Acme</strong>}\n  title=\"Sign in\"\n  subtitle=\"Sign in to continue\"\n  error={error}\n  submitLabel=\"Sign in\"\n  busy={busy}\n  busyLabel=\"Signing in\"\n  onSubmit={handleSubmit}\n>\n  <Field label=\"Email\" htmlFor=\"auth-email\" required>\n    <Input id=\"auth-email\" type=\"email\" value={email} onChange={(e) => setEmail(e.target.value)} />\n  </Field>\n  <Field label=\"Password\" htmlFor=\"auth-password\" required>\n    <PasswordInput id=\"auth-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n  </Field>\n</AuthTemplate>"
+  "example": "const [email, setEmail] = useState('')\nconst [password, setPassword] = useState('')\nconst [error, setError] = useState<string | null>(null)\n/* `busy` stops a second press. Copy this shape. */\nconst [busy, setBusy] = useState(false)\nconst handleSubmit = (e: FormEvent) => {\n  e.preventDefault()\n  if (!email || !password) return setError('Enter your email and password.')\n  setError(null)\n  setBusy(true)\n  /* `finally`, not `then`: a rejected sign-in releases the button too. */\n  void signIn().finally(() => setBusy(false))\n}\n\n<AuthTemplate\n  brand={<strong>Acme</strong>}\n  title=\"Sign in\"\n  subtitle=\"Sign in to continue\"\n  error={error}\n  submitLabel=\"Sign in\"\n  busy={busy}\n  busyLabel=\"Signing in\"\n  onSubmit={handleSubmit}\n>\n  <Field label=\"Email\" htmlFor=\"auth-email\" required>\n    <Input id=\"auth-email\" type=\"email\" autoComplete=\"email\" value={email} onChange={(e) => setEmail(e.target.value)} />\n  </Field>\n  <Field label=\"Password\" htmlFor=\"auth-password\" required>\n    <PasswordInput id=\"auth-password\" autoComplete=\"current-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n  </Field>\n</AuthTemplate>"
 }

@@ -1,7 +1,7 @@
 {
   "ref": "ListCluster",
   "level": "organism",
-  "description": "Centered \"welcome\" list: big title + subtitle, the tile grid, a large CTA under the cards. Shown while everything fits the viewport (useSimpleFit). ONE component for Workshops, Transcripts and Discovery — the three lists must always look and behave the same.",
+  "description": "Centered \"welcome\" list: big title + subtitle, the tile grid, a large CTA under the cards. Shown while everything fits the viewport (useSimpleFit). ONE component for Workshops, Transcripts and Discovery — the three lists must always look and behave the same. Copy: the hero title welcomes and names the product; the subtitle says in one sentence what a first-time reader can do here. This is the one place a line under a title is allowed, and it earns it by being the whole screen.",
   "exports": [
     "ListCluster"
   ],
@@ -12,17 +12,20 @@
     {
       "name": "mark",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The app's brand mark, above the title. Optional: the ecosystem symbol pattern (a light standalone glyph per app) was hand-rolled in a product hero because this block had nowhere to put one, which is how a page template stops being adopted."
     },
     {
       "name": "title",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "ReactNode, like PageHeader's: a welcome title routinely carries the product name in the brand gradient (\"Welcome to <span class=brand-word>Razmova</span>\"), and typing this as a string is what sent the first product that wanted one off to hand-roll its own hero."
     },
     {
       "name": "subtitle",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Optional. A title that already says it needs no line under it, and forcing one produced screens explaining their own heading back to the reader."
     },
     {
       "name": "cta",
@@ -47,5 +50,5 @@
     "Icon",
     "Layout"
   ],
-  "example": "const items = [{ id: '1', name: 'Kickoff' }, { id: '2', name: 'Retro' }]\n/* The centered \"welcome\" list: one shape shared by every list screen, so they\n * cannot drift apart. Cards go in the middle, the primary CTA underneath. */\n\n<ListCluster\n  title=\"Workshops\"\n  subtitle=\"Pick a workshop or start a new one.\"\n  cta={<Button variant=\"primary\" size=\"lg\" iconEnd>New workshop<Icon name=\"add\" /></Button>}\n>\n  <Grid gap={4}>\n    {items.map((i) => (\n      <Card key={i.id} interactive><CardTitle>{i.name}</CardTitle></Card>\n    ))}\n  </Grid>\n</ListCluster>"
+  "example": "const items = [{ id: '1', name: 'Kickoff' }, { id: '2', name: 'Retro' }]\n/* The centered \"welcome\" list: one shape shared by every list screen, so they\n * cannot drift apart. Cards go in the middle, the primary CTA underneath. */\n\n<ListCluster\n  title=\"Workshops\"\n  subtitle=\"Pick a workshop or start a new one.\"\n  cta={<Button variant=\"primary\" size=\"lg\">New workshop<Icon name=\"add\" /></Button>}\n>\n  <Grid gap={4}>\n    {items.map((i) => (\n      <Card key={i.id} interactive><CardTitle>{i.name}</CardTitle></Card>\n    ))}\n  </Grid>\n</ListCluster>"
 }

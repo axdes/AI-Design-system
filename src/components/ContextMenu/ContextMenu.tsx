@@ -1,7 +1,8 @@
 import './ContextMenu.css'
-import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode, useId } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
+import { useDismiss } from '../../lib/useDismiss'
 import { Icon, type IconName } from '../Icon'
 
 export type ContextMenuItem = {
@@ -30,6 +31,7 @@ export function ContextMenu({ children, items, className }: Props) {
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
+  const menuId = useId()
 
   const open = (e: MouseEvent) => {
     e.preventDefault()
@@ -43,18 +45,15 @@ export function ContextMenu({ children, items, className }: Props) {
   }
   const close = () => setPos(null)
 
+  /* Outside press and Escape are `useDismiss`'s, shared with every other layer.
+     There is nothing to measure here — the position came from the pointer event
+     that opened the menu — which is why this uses the dismissal alone and not
+     the whole anchored-layer mechanism. */
+  useDismiss({ open: pos !== null, onClose: close, stays: [menuRef] })
+
+  /* Focus the menu so arrow keys work immediately. */
   useEffect(() => {
-    if (!pos) return
-    const onDown = (e: globalThis.MouseEvent) => { if (!menuRef.current?.contains(e.target as Node)) close() }
-    const onKey = (e: globalThis.KeyboardEvent) => { if (e.key === 'Escape') close() }
-    document.addEventListener('mousedown', onDown)
-    document.addEventListener('keydown', onKey)
-    /* Focus the menu so arrow keys work immediately. */
-    menuRef.current?.focus()
-    return () => {
-      document.removeEventListener('mousedown', onDown)
-      document.removeEventListener('keydown', onKey)
-    }
+    if (pos) menuRef.current?.focus()
   }, [pos])
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -78,15 +77,22 @@ export function ContextMenu({ children, items, className }: Props) {
         <div
           ref={menuRef}
           className="context-menu"
+          data-raised="popover"
           role="menu"
           aria-label="Context menu"
           tabIndex={-1}
+          /* Focus stays on the menu and the ARROW KEYS move `active`, so the row
+           * the eye follows has to be named here or a screen reader announces
+           * nothing as the selection moves. The mark on that row (see the
+           * ::before in ContextMenu.css) is its visible half. */
+          aria-activedescendant={items[active] ? `${menuId}-${items[active].id}` : undefined}
           style={{ insetInlineStart: pos.x, insetBlockStart: pos.y }}
           onKeyDown={onKeyDown}
         >
           {items.map((item, i) => (
             <button
               key={item.id}
+              id={`${menuId}-${item.id}`}
               type="button"
               role="menuitem"
               className="context-item"

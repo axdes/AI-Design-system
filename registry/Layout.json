@@ -1,9 +1,10 @@
 {
   "ref": "Layout",
   "level": "atom",
-  "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for an auto-fitting set of cards. `gap` is a token step, never a raw px.",
+  "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for a set of cards — auto-fitting equals by default, or `columns={12}` with `GridItem` spans when the set is deliberately unequal. `gap` is a token step, never a raw px.",
   "exports": [
     "Grid",
+    "GridItem",
     "Row",
     "Stack"
   ],
@@ -11,12 +12,13 @@
   "from": "@/components/Layout",
   "slots": [
     {
-      "name": "Row",
-      "line": 13
+      "name": "GridItem"
     },
     {
-      "name": "Stack",
-      "line": 11
+      "name": "Row"
+    },
+    {
+      "name": "Stack"
     }
   ],
   "props": [
@@ -34,6 +36,42 @@
         12,
         16
       ]
+    },
+    {
+      "name": "columns",
+      "type": "12",
+      "required": false,
+      "description": "Twelve equal tracks instead of the auto-fitting default: the layout where items are DIFFERENT sizes (a wide feature beside two narrow tiles), each child wrapped in `GridItem` with its `span`. Omit it and every child gets the same width, which is the right answer for a set of equals.",
+      "values": [
+        12
+      ]
+    },
+    {
+      "name": "min",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "description": "The narrowest a card in this grid may get before the grid drops a column. `sm` (16rem) is the default and right for tiles that carry a word or two; `md` (20rem) is what a card with a name, a role and an action needs; `lg` (24rem) is for a card with a picture and two sentences. Measured, not guessed: at `sm` a person card came out 250px wide on a laptop and every name broke over two lines.",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "align",
+      "type": "'start' | 'center' | 'end'",
+      "required": false,
+      "description": "How the children sit in their row. The default stretches them to the tallest, and for CARDS that default is the rule: cards in a row are always the same height (owner, 23.08). A ragged row is answered by giving the short card the part it is missing, never by `start`. Use these values for a grid of things that are not cards — captions, thumbnails, controls — where a row of unequal boxes is what was asked for.",
+      "values": [
+        "start",
+        "center",
+        "end"
+      ]
+    },
+    {
+      "name": "alignRows",
+      "type": "boolean",
+      "required": false
     }
   ],
   "sourcePath": "src/components/Layout/Grid.tsx",
@@ -51,11 +89,39 @@
         12,
         16
       ]
+    },
+    "columns": {
+      "prop": "columns",
+      "values": [
+        12
+      ]
+    },
+    "min": {
+      "prop": "min",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "align": {
+      "prop": "align",
+      "values": [
+        "start",
+        "center",
+        "end"
+      ]
+    },
+    "align-rows": {
+      "prop": "alignRows",
+      "values": [
+        "true"
+      ]
     }
   },
   "uses": [
     "Button",
     "Card"
   ],
-  "example": "const cards = ['Drafts', 'In review', 'Published']\n/* Spacing lives on the container (gap), never as child margins. `gap` takes a\n * step of the 4pt scale: 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16. */\n\n<Stack gap={6}>\n  <Grid gap={4}>\n    {cards.map((c) => (\n      <Card key={c}><CardTitle>{c}</CardTitle></Card>\n    ))}\n  </Grid>\n  <Row gap={2}>\n    <Button variant=\"secondary\">Cancel</Button>\n    <Button variant=\"primary\">Save</Button>\n  </Row>\n</Stack>"
+  "example": "const cards = ['Drafts', 'In review', 'Published']\n/* Spacing lives on the container (gap), never as child margins. `gap` takes a\n * step of the 4pt scale: 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16. */\n\n<Stack gap={6}>\n  {/* A set of EQUALS: no columns, no spans — the tracks fit themselves. */}\n  <Grid gap={4}>\n    {cards.map((c) => (\n      <Card key={c}><CardTitle>{c}</CardTitle></Card>\n    ))}\n  </Grid>\n  {/* A set that is deliberately UNEQUAL: twelve tracks, each item saying how\n      many it takes. 3 is a quarter, 6 a half, 9 three quarters, 12 the row. */}\n  <Grid gap={4} columns={12}>\n    <GridItem span={9}>\n      <Card fill><CardTitle>This quarter</CardTitle></Card>\n    </GridItem>\n    <GridItem span={3}>\n      <Card fill><CardTitle>Open items</CardTitle></Card>\n    </GridItem>\n  </Grid>\n  <Row gap={2}>\n    <Button variant=\"secondary\">Cancel</Button>\n    <Button variant=\"primary\">Save</Button>\n  </Row>\n</Stack>"
 }

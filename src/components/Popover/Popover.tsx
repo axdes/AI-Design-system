@@ -3,8 +3,6 @@ import {
   useCallback,
   useEffect,
   useId,
-  useLayoutEffect,
-  useRef,
   useState,
   type MouseEvent,
   type ReactNode,
@@ -12,6 +10,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
+import { useAnchoredLayer } from '../../lib/useAnchoredLayer'
 
 export type PopoverTriggerProps = {
   ref: Ref<HTMLButtonElement>
@@ -43,12 +42,13 @@ const EDGE = 8
 /** Click-triggered floating panel for RICH content: a form, a group of controls,
  *  a detail card. <Tooltip> is text on hover, <Dropdown> is a menu of items; this
  *  is neither. Closes on outside click or Escape, returning focus to the trigger.
- *  The content is a labelled role="dialog". */
+ *  The content is a labelled role="dialog". 
+ *
+ * Copy: the accessible name says what the panel holds, because it is a dialog
+ * and announces itself before its content.
+ */
 export function Popover({ trigger, children, label, placement = 'bottom', className }: Props) {
   const [open, setOpen] = useState(false)
-  const [pos, setPos] = useState<Position | null>(null)
-  const triggerRef = useRef<HTMLButtonElement | null>(null)
-  const panelRef = useRef<HTMLDivElement | null>(null)
   const panelId = useId()
 
   const close = useCallback(() => {
@@ -56,10 +56,13 @@ export function Popover({ trigger, children, label, placement = 'bottom', classN
     triggerRef.current?.focus()
   }, [])
 
-  const place = useCallback(() => {
+  /* WHERE the panel goes. The listeners, the rAF throttling, the mount timing
+     and the two dismissals are `useAnchoredLayer`'s — shared with <Dropdown>,
+     which is where Popover picked up the throttled reflow it never had. */
+  const measure = useCallback((): Position | null => {
     const t = triggerRef.current
-    const panel = panelRef.current
-    if (!t || !panel) return
+    const panel = layerRef.current
+    if (!t || !panel) return null
     const r = t.getBoundingClientRect()
     const pw = panel.offsetWidth
     const ph = panel.offsetHeight
@@ -68,40 +71,19 @@ export function Popover({ trigger, children, label, placement = 'bottom', classN
     const flip = placement === 'bottom' ? below + ph > window.innerHeight && above > EDGE : above > EDGE
     const top = flip ? above : (placement === 'bottom' ? below : r.top - GAP - ph)
     const left = Math.min(Math.max(EDGE, r.left), window.innerWidth - pw - EDGE)
-    // eslint-disable-next-line @eslint-react/set-state-in-effect -- positions the portal from measured geometry; not derivable during render
-    setPos({ top: Math.max(EDGE, top), left })
+    return { top: Math.max(EDGE, top), left }
   }, [placement])
 
-  useLayoutEffect(() => {
-    if (open) place()
-  }, [open, place])
+  const { triggerRef, layerRef, setLayer, position: pos } = useAnchoredLayer<Position>({
+    open,
+    onClose: close,
+    measure,
+  })
 
   /* Move focus into the panel on open. */
   useEffect(() => {
-    if (open) panelRef.current?.focus()
-  }, [open])
-
-  /* Outside-click + Escape + reposition on scroll/resize while open. */
-  useEffect(() => {
-    if (!open) return
-    const onDown = (e: globalThis.MouseEvent) => {
-      const target = e.target as Node
-      if (triggerRef.current?.contains(target) || panelRef.current?.contains(target)) return
-      close()
-    }
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { e.preventDefault(); close() } }
-    const onReflow = () => place()
-    document.addEventListener('mousedown', onDown)
-    document.addEventListener('keydown', onKey)
-    window.addEventListener('scroll', onReflow, true)
-    window.addEventListener('resize', onReflow)
-    return () => {
-      document.removeEventListener('mousedown', onDown)
-      document.removeEventListener('keydown', onKey)
-      window.removeEventListener('scroll', onReflow, true)
-      window.removeEventListener('resize', onReflow)
-    }
-  }, [open, close, place])
+    if (open) layerRef.current?.focus()
+  }, [open, layerRef])
 
   const triggerProps: PopoverTriggerProps = {
     ref: (el) => { triggerRef.current = el },
@@ -117,12 +99,12 @@ export function Popover({ trigger, children, label, placement = 'bottom', classN
       {open &&
         createPortal(
           <div
-            ref={panelRef}
+            ref={setLayer}
             id={panelId}
             role="dialog"
             aria-label={label}
             tabIndex={-1}
-            className={cn('popover', className)}
+            className={cn('popover', className)} data-raised="popover"
             style={pos ? { top: pos.top, left: pos.left } : { visibility: 'hidden' }}
           >
             {children}

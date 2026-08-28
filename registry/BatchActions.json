@@ -1,0 +1,48 @@
+{
+  "ref": "BatchActions",
+  "level": "molecule",
+  "description": "The bar that appears once rows are selected: the count, what can be done to them, and the way out. It replaces the table's toolbar rather than sitting beside it, so an action can never be ambiguous about what it applies to.",
+  "exports": [
+    "BatchActions"
+  ],
+  "main": "BatchActions",
+  "from": "@/components/BatchActions",
+  "slots": [],
+  "props": [
+    {
+      "name": "count",
+      "type": "number",
+      "required": true,
+      "description": "How many rows are picked. Said in words, because a bar that acts on a selection has to name the size of it."
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "required": true,
+      "description": "Drops the selection. The way out that is not unticking twelve boxes."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "What can be done to the selection. Every action here acts on all of it."
+    },
+    {
+      "name": "selectAll",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The sentence that offers the rest of the set (\"Select all 1,284\"), for a selection that can reach past the page. A checkbox cannot say whether it means this page or the query, so this says it in words."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/BatchActions/BatchActions.tsx",
+  "context": "region",
+  "uses": [
+    "Button"
+  ],
+  "example": "/* The bar exists only while something is selected, so the example opens in\n   the state it exists for: three rows picked, waiting for a verb. */\nconst [count, setCount] = useState(3)\nif (count === 0) return <Button size=\"sm\" onClick={() => setCount(3)}>Select three rows</Button>\n\n<BatchActions count={count} onClear={() => setCount(0)}>\n  <Button variant=\"secondary\" size=\"sm\">Export</Button>\n  <Button variant=\"secondary\" size=\"sm\">Assign owner</Button>\n</BatchActions>"
+}

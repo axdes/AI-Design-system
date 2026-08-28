@@ -1,0 +1,84 @@
+{
+  "ref": "TableToolbar",
+  "level": "molecule",
+  "description": "The row above a table: what it is called, how many rows it has, what narrows it, and what acts on it. Distinct from `<FilterBar>`, which is one of the things that goes inside it, and from `<PageHeader>`, which belongs to the screen rather than to this table. While a selection exists the toolbar is replaced by `batch`, which is the one arrangement that cannot mislead: an Export next to a \"3 selected\" bar has to say which three it means (Carbon batch action bar). Copy: the title names the collection and the count says how many are in it after filtering, not before.",
+  "exports": [
+    "TableToolbar"
+  ],
+  "main": "TableToolbar",
+  "from": "@/components/TableToolbar",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What this table is called. Leave it out when the page heading above the table already says the same words."
+    },
+    {
+      "name": "as",
+      "type": "'h2' | 'h3' | 'h4'",
+      "required": false,
+      "description": "Which heading level the title is. A level is a property of the DOCUMENT, not of the toolbar: under a section heading it is h3, directly under the page title it is h2. Default h3.",
+      "values": [
+        "h2",
+        "h3",
+        "h4"
+      ]
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "required": false,
+      "description": "How many rows the table holds AFTER filtering. A count is orientation: without it a filtered table and a small table look identical."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The narrowing controls: a SearchInput, a FilterBar, a ColumnPicker."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The table's own actions (create, export, import), at the trailing edge."
+    },
+    {
+      "name": "density",
+      "type": "Density",
+      "required": false,
+      "description": "The row density this table is read at. Given with `onDensityChange`, the toolbar renders the switch. Density is a decision of the screen and of the reader, so remember the choice per collection rather than resetting it.",
+      "values": [
+        "comfortable",
+        "compact"
+      ]
+    },
+    {
+      "name": "onDensityChange",
+      "type": "(density: Density) => void",
+      "required": false
+    },
+    {
+      "name": "batch",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Replaces the whole toolbar while rows are selected: pass `<BatchActions>`. One bar, two states, so the actions that apply to a selection never sit beside the ones that do not."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/TableToolbar/TableToolbar.tsx",
+  "context": "region",
+  "uses": [
+    "Button",
+    "Icon",
+    "SearchInput",
+    "SegmentedControl",
+    "Table"
+  ],
+  "example": "const [query, setQuery] = useState('')\nconst [density, setDensity] = useState<'comfortable' | 'compact'>('comfortable')\nconst rows = ROWS.filter((r) => r.name.toLowerCase().includes(query.toLowerCase()))\n\n<div>\n  {/* The count is the filtered count: it is how the user knows the search\n      did something when the rows scrolled out of view. */}\n  <TableToolbar\n    title=\"Documents\"\n    count={rows.length}\n    actions={<Button size=\"sm\">New document<Icon name=\"add\" /></Button>}\n    density={density}\n    onDensityChange={setDensity}\n  >\n    <SearchInput expanded value={query} onChange={(e) => setQuery(e.target.value)} onClear={() => setQuery('')} placeholder=\"Search documents\" />\n  </TableToolbar>\n  <TableScroll label=\"Documents\">\n    <Table caption=\"Documents, most recently updated first\" captionHidden size={density === 'compact' ? 'sm' : undefined}>\n      <THead>\n        <Tr><Th>Document</Th><Th>Owner</Th><Th>Updated</Th></Tr>\n      </THead>\n      <TBody>\n        {rows.map((r) => (\n          <Tr key={r.id}>\n            <Th scope=\"row\" emphasis>{r.name}</Th>\n            <Td>{r.owner}</Td>\n            <Td>{r.updated}</Td>\n          </Tr>\n        ))}\n      </TBody>\n    </Table>\n  </Tab"
+}

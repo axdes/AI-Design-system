@@ -1,0 +1,232 @@
+/* CardMedia: the picture, frame or wash at the top, side or behind a card.
+ *
+ * Split out of Card.css on 2026-08-26. That file had grown to 717 lines and 83
+ * selectors — the largest in the package, larger than the whole semantic token
+ * layer — because it carried two subjects: the SURFACE a card is, and the
+ * MEDIA a card may hold. They are separate parts already (<Card> and
+ * <CardMedia>), and the placements, ratios, washes, play plate and duration
+ * badge are all the second one. Rules that read `.card ... .card-media` live
+ * here too: they are about the media's geometry, and CSS does not care which
+ * file a selector sits in. Nothing changed but the address — the visual
+ * baselines did not move a pixel. */
+
+/* On a cover the scrim deepens with it: the text band has to stay as legible
+ * over the enlarged frame as it was over the still one. */
+/* THE DARKENING ON HOVER IS ONE OPACITY, NOT A SECOND GRADIENT.
+ *
+ * A gradient is not an interpolable value: `transition: background` between two
+ * linear-gradients does nothing for the whole duration and then SNAPS to the
+ * end state, which is the jerk the owner saw on the wash card (23.08). A flat
+ * dark layer whose opacity moves is smooth, and it darkens a photograph and a
+ * coloured wash the same way. */
+/* The layer darkens the GROUND, never the words on it. `.card-media` takes its
+ * own stacking context so this overlay is trapped inside the media; without it
+ * the overlay's z-index escaped into the card's context, painted over the title
+ * and the meta, and the whole card dimmed under the pointer instead of the
+ * picture behind it (owner, 23.08: why is the content being darkened). */
+.card-media[data-placement='cover'] { isolation: isolate; }
+
+.card-media[data-placement='cover']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--scrim-strong);
+  opacity: 0;
+  transition: opacity var(--card-motion);
+  z-index: 1;
+}
+
+.card[data-interactive]:hover .card-media[data-placement='cover']::before {
+  opacity: 0.22;
+}
+
+/* ── The media slot ──────────────────────────────────────────────────────────
+ * Three placements, one part. The slot owns everything media needs and the
+ * content must not inherit: full-bleed against the card's padding, cover
+ * cropping, and — for `cover` — the scrim, so text NEVER sits on raw imagery
+ * (the contrast is checked at the image's worst point, which nobody can
+ * promise; the scrim is the promise). */
+.card-media {
+  /* Component-private knobs, co-located per the token conventions. */
+  --card-media-height: 9rem;
+  overflow: hidden;
+}
+
+/* Top: bleeds to the card's edges above the content, and holds its ratio at
+ * every card width instead of a fixed height. */
+.card-media[data-placement='top'] {
+  margin-block-start: calc(-1 * var(--card-padding));
+  margin-inline: calc(-1 * var(--card-padding));
+  aspect-ratio: var(--card-media-ratio);
+  block-size: auto;
+  min-block-size: var(--card-media-height);
+  border-start-start-radius: var(--card-radius);
+  border-start-end-radius: var(--card-radius);
+  /* A picture that bleeds to three edges must sit the CARD's distance from the
+   * first line under it, not the 8px that separates two lines of text. The
+   * card's own gap supplies 8 of it (owner, 23.08: too little room between the
+   * image and the title). */
+  margin-block-end: calc(var(--card-padding) - var(--space-2));
+}
+
+/* Side: the card turns horizontal — a fixed media column, content beside it.
+ *
+ * The media is taken OUT of the flow and pinned to the card's leading edge,
+ * and the card reserves that column as padding. The obvious alternative — a
+ * two-column grid with the media at `grid-row: 1 / 20` — is what this did until
+ * 2026-08-22, and it is a trap: spanning to line 20 creates nineteen row
+ * tracks, so a card with four children paid FIFTEEN empty row gaps and stood
+ * 400px tall around 200px of content. There is no row count to span to, because
+ * the content decides it. */
+.card:has(> .card-media[data-placement='side']) {
+  /* Component-private knob, co-located per the token conventions. A share of
+   * the card, floored and capped: 8.5rem is the narrowest strip that still
+   * reads as a picture, and past 16rem the media starts crowding the words it
+   * is illustrating. A horizontal card is 320px wide in a sidebar and 900px
+   * across a feature row, and one fixed number cannot serve both. */
+  --card-media-side-width: clamp(8.5rem, 28%, 16rem);
+
+  position: relative;
+  padding-inline-start: calc(var(--card-media-side-width) + var(--card-padding));
+}
+
+.card-media[data-placement='side'] {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--card-media-side-width);
+  border-start-start-radius: var(--card-radius);
+  border-end-start-radius: var(--card-radius);
+}
+
+/* Cover: media behind, content on top, pushed to the card's foot, scrim
+ * between them. The card speaks in the scrim's foreground while covered. */
+.card:has(> .card-media[data-placement='cover']) {
+  /* THE INK BELONGS TO THE SURFACE, LINKS INCLUDED.
+   *
+   * Over imagery the theme stops mattering: the scrim is dark and its text is
+   * light in both themes. Everything here already inherited that — and the
+   * title did not, because a clickable title is a <Button variant="link">, and
+   * that variant asks for --link, which is the brand indigo. Indigo on a photo
+   * is the one thing on this card nobody can read (owner, 2026-08-23).
+   *
+   * Same shape as --surface-contrast: the token is the question, the surface is
+   * what answers it. Any surface that owns its ink rebinds these three. */
+  --link: var(--scrim-foreground);
+  --link-hover: var(--scrim-foreground);
+  --link-quiet: var(--scrim-foreground);
+  --card-ink: var(--scrim-foreground);
+  /* Secondary ink over a photo is still light — it just carries less weight,
+   * and the scrim is what buys it. A grey here would be the same bug again. */
+  --card-ink-muted: var(--scrim-foreground);
+  --card-cover-min-height: 12rem;
+
+  position: relative;
+  justify-content: flex-end;
+  min-block-size: var(--card-cover-min-height);
+  color: var(--scrim-foreground);
+}
+
+.card-media[data-placement='cover'] {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+/* The scrim: a gradient over the text band, not a tint over the whole frame. */
+.card-media[data-placement='cover']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--scrim-fade);
+}
+
+.card:has(> .card-media[data-placement='cover']) > :not(.card-media) {
+  position: relative;
+}
+
+/* Tinted media: the cover for content that has no photograph — a training, a
+ * category tile. A FLAT colour, not a gradient: the gradient read as a photo
+ * that failed to load, and stacked under the cover's own scrim it turned the
+ * card blue at the top and black at the bottom for no reason anyone could name
+ * (owner, 23.08). The colour is the ground; the text on it is the scrim's
+ * foreground, and hover darkens the whole ground by one opacity. */
+.card-media[data-wash='brand'] {
+  background: var(--primary);
+}
+
+/* No photo scrim over a wash: there is no photograph to protect the text from,
+ * and the fade is what made a flat colour look like a gradient. */
+.card-media[data-placement='cover'][data-wash]::after {
+  background: none;
+}
+
+.card-media[data-wash='ink'] {
+  background: var(--scrim-strong);
+}
+
+/* Playable media: a card that starts a recording may not look like a card that
+ * opens a document. The glyph is decoration (aria-hidden) because the CARD is
+ * the target; the duration is text, because it is the thing the reader wants
+ * before they press. Both live on the scrim's side of the theme: over imagery
+ * the theme stops mattering. */
+.card-media[data-playable] { position: relative; }
+
+.card-media-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  inline-size: var(--space-12);
+  block-size: var(--space-12);
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--scrim-strong);
+  color: var(--scrim-foreground);
+  transition: transform var(--card-motion);
+}
+
+.card[data-interactive]:hover .card-media-play { transform: scale(1.08); }
+
+.card-media-duration {
+  position: absolute;
+  inset-block-end: var(--space-2);
+  inset-inline-end: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--scrim-strong);
+  color: var(--scrim-foreground);
+  font-size: var(--font-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A frame that holds its shape whatever sits in it: foreign content (a player,
+ * a board, a document preview) brings its own aspect ratio, and the card has to
+ * decide whose wins before the first one lands. Ours does. */
+.card-media[data-ratio="16/9"] { aspect-ratio: 16 / 9; }
+
+.card-media[data-ratio="4/3"]  { aspect-ratio: 4 / 3; }
+
+.card-media[data-ratio="1/1"]  { aspect-ratio: 1 / 1; }
+
+/* On a phone a horizontal card is not horizontal: 136px is the narrowest strip
+ * that still reads as a picture, and on a 326px card that leaves 150px for the
+ * words — a four-line headline beside a thumbnail. Below the phone breakpoint
+ * the side media becomes top media, which is the same card standing up. */
+@media (max-width: 30rem) {
+  .card:has(> .card-media[data-placement='side']) {
+    padding-inline-start: var(--card-padding);
+  }
+
+  .card-media[data-placement='side'] {
+    position: static;
+    inline-size: auto;
+    block-size: var(--card-media-height);
+    margin-block-start: calc(-1 * var(--card-padding));
+    margin-block-end: calc(var(--card-padding) - var(--space-2));
+    margin-inline: calc(-1 * var(--card-padding));
+    border-start-start-radius: var(--card-radius);
+    border-start-end-radius: var(--card-radius);
+    border-end-start-radius: 0;
+  }
+}

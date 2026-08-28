@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "type": "registry:ui",
+  "title": "Textarea",
+  "description": "Multi-line counterpart to <Input> — reuses the `.input` field styling (border, radius, focus ring, hover, placeholder) and only overrides the height/resize behaviour.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Textarea/Textarea.css",
+      "content": "/* Overrides on top of `.input`: multi-line height + vertical resize.\n * A pill radius (from --control-radius) looks wrong on a tall box, use a\n * rounded-rect (lg) instead. */\n.textarea {\n  height: auto;\n  min-height: calc(var(--control-height) * 2);\n  padding-block: var(--space-2);\n  border-radius: var(--radius-lg);\n  line-height: var(--leading-normal);\n  resize: vertical;\n}\n/* Sizes — keep auto-height (override .input[data-size] fixed height) + scale min-height. */\n.textarea[data-size] { height: auto; }\n.textarea[data-size=\"sm\"] { min-height: calc(var(--control-height-sm) * 2); }\n.textarea[data-size=\"lg\"] { min-height: calc(var(--control-height-lg) * 2); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Textarea/Textarea.css"
+    },
+    {
+      "path": "src/components/Textarea/Textarea.tsx",
+      "content": "import '../Input/Input.css'\nimport './Textarea.css'\nimport type { TextareaHTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> & {\n  invalid?: boolean\n  /** sm / md (default) / lg — matches the control scale (font + min-height). */\n  size?: 'sm' | 'md' | 'lg'\n}\n\n/* Multi-line counterpart to <Input> — reuses the `.input` field styling\n * (border, radius, focus ring, hover, placeholder) and only overrides the\n * height/resize behaviour. */\nexport function Textarea({ invalid, size, className, rows = 4, ...rest }: Props) {\n  return (\n    <textarea\n      className={cn('input', 'textarea', className)}\n      data-size={size}\n      aria-invalid={invalid || undefined}\n      rows={rows}\n      {...rest}\n    />\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Textarea/Textarea.tsx"
+    },
+    {
+      "path": "src/components/Textarea/index.ts",
+      "content": "export { Textarea } from './Textarea'\n",
+      "type": "registry:ui",
+      "target": "@ui/Textarea/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Textarea.json"
+}

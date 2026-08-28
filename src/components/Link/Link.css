@@ -1,0 +1,106 @@
+/* THE THREE THINGS A LINK CAN BE, AND HOW EACH ONE ANSWERS. This is the whole
+ * rule; before it there were four hand-picked colours on one screen.
+ *
+ *   1  IN RUNNING TEXT  --link, underlined at rest.  <Link variant="primary">
+ *      Inside a sentence there is nothing but the colour marking it, and colour
+ *      on its own is not a mark everyone can see, so the underline is not
+ *      decoration — it is the second cue WCAG 1.4.1 asks for.
+ *
+ *   2  IN CHROME  --link-quiet, underline on arrival.  <Link variant="quiet">
+ *      A breadcrumb, a row of meta, a footer. Position already says it is a
+ *      link, so it sits in secondary ink until the pointer or the keyboard
+ *      reaches it. Breadcrumb.css takes the same token.
+ *
+ *   4  A LINK ROUND A SURFACE  paints nothing.  <Link variant="bare">
+ *      The card lifts, the row highlights — the surface is the affordance and
+ *      the link only supplies the anchor. Decorating the words inside it says
+ *      the same thing twice and makes a grid of tiles read as a wall of
+ *      underlined text (owner, 2026-08-25).
+ *
+ *   3  A TITLE THAT LINKS  keeps the surface's ink, underlines on hover.
+ *      A card title, a row title. It is already the loudest thing in its block
+ *      and it is already the size of a heading; colouring it as well makes a
+ *      list of cards read as a list of links with boxes drawn round them. It is
+ *      NOT --link: over a photograph the ink is the scrim's, and a title that
+ *      insisted on the brand was the one word nobody could read. See
+ *      `.card-title .card-link` in Card.css and `.content-row-title`.
+ *
+ * A link on a coloured surface takes that surface's ink: --link is rebindable,
+ * the same shape as --surface-contrast. Card.css answers it for its cover.
+ *
+ * One link, two jobs, and the rule for which is which lives in Link.tsx.
+ *
+ * The five states are the same five every control answers, so a link does not
+ * behave like a special case: hover, press, focus ring, and — because a link is
+ * text — an underline that is present or arrives, never a colour on its own. */
+.link {
+  color: var(--link);
+  border-radius: var(--radius-sm);
+  /* The underline sits clear of descenders instead of cutting through them, and
+   * it thickens on hover rather than appearing, so nothing shifts. */
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  transition: color var(--duration-fast), text-decoration-color var(--duration-fast);
+}
+/* In reading text: underlined at rest. Inside a paragraph the colour is the only
+ * thing marking the link, and colour alone is not a mark everyone can see. */
+.link[data-variant="primary"] { text-decoration: underline; }
+
+/* In chrome: secondary ink, underline on arrival. A breadcrumb sits in a row of
+ * links and its position already says what it is. */
+.link[data-variant="quiet"] {
+  color: var(--link-quiet);
+  text-decoration: none;
+}
+.link[data-variant="quiet"]:hover { color: var(--foreground); text-decoration: underline; }
+
+/* Nothing, at every state: colour, underline and the hover thickening all come
+ * off, because the surface under it is already answering. */
+.link[data-variant="bare"],
+.link[data-variant="bare"]:hover,
+.link[data-variant="bare"]:active {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+}
+
+.link:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
+.link:active { color: var(--primary-active); }
+.link:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+/* The trailing arrow: it TRAILS, like every icon in this system, and it moves a
+ * step further out when the pointer arrives — the same "one stop further" the
+ * controls answer with, said in distance rather than in colour. `scaleX(-1)` in
+ * Arabic: an arrow meaning "onward" has to point the way the text runs, and the
+ * glyph itself is not symmetrical. */
+.link-arrow {
+  display: inline-block;
+  vertical-align: -0.15em;
+  margin-inline-start: var(--space-1);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.link:dir(rtl) .link-arrow { transform: scaleX(-1); }
+.link:hover .link-arrow { transform: translateX(var(--space-1)); }
+.link:dir(rtl):hover .link-arrow { transform: scaleX(-1) translateX(var(--space-1)); }
+/* An arrow that slides on every hover is motion; it obeys the global setting. */
+@media (prefers-reduced-motion: reduce) {
+  .link:hover .link-arrow { transform: none; }
+  .link:dir(rtl):hover .link-arrow { transform: scaleX(-1); }
+}
+
+/* The new-tab glyph rides the text: same colour, slightly lower than cap height
+ * so it reads as punctuation rather than as an icon parked after the word. */
+.link-external {
+  display: inline-block;
+  vertical-align: -0.1em;
+  margin-inline-start: var(--space-1);
+}
+
+/* The golden example's paragraph. A link only shows what it is inside running
+ * text at a readable measure, so the example sets one rather than demonstrating
+ * a link alone on a line, which is the one place it never lives. */
+.link-example-prose { max-inline-size: var(--prose-max-width); }

@@ -3,5 +3,5 @@
 import { Identity } from './Identity'
 
 export function Example() {
-  return <Identity name="Sarah Al-Mansouri" secondary="Product designer" size="lg" />
+  return <Identity src="/demo/avatar-ben.jpg" name="Ada Meridian" secondary="Product designer" size="lg" />
 }

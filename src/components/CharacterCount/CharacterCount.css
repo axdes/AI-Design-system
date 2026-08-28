@@ -1,0 +1,18 @@
+.character-count {
+  font-size: var(--font-sm);
+  line-height: var(--leading-normal);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.character-count[data-error] { color: var(--destructive-emphasis); }
+
+/* Announced, never painted: the visible copy above says the same thing without
+ * waiting, and two visible copies of one sentence is a bug. */
+.character-count-live {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

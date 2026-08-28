@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input-group",
+  "type": "registry:ui",
+  "title": "InputGroup",
+  "description": "A field with something attached to it: `https://` before the value, `kg` after it, a Copy button on the end. The GROUP wears the field frame and owns the focus ring; the input inside goes frameless, so the whole thing reads and behaves as one control rather than a box beside a box.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/InputGroup/InputGroup.css",
+      "content": "/* THE FIELD FRAME, worn by the group instead of the field. See the recipe at\n * the top of Input.css — this is a seventh wearer, and the only one that hands\n * the frame to a wrapper: an addon outside the border reads as a label, and an\n * addon inside a second border reads as a box in a box. */\n.input-group {\n  display: flex;\n  align-items: center;\n  inline-size: 100%;\n  block-size: var(--control-height);\n  padding-inline: var(--control-padding-x);\n  gap: var(--space-2);\n  border: 1px solid var(--input);\n  border-radius: var(--control-radius);\n  background: var(--background);\n  color: var(--foreground);\n  transition: border-color var(--duration-fast);\n}\n.input-group[data-size=\"sm\"] { block-size: var(--control-height-sm); padding-inline: var(--space-3); font-size: var(--font-sm); }\n.input-group[data-size=\"lg\"] { block-size: var(--control-height-lg); font-size: var(--control-font-size-lg); }\n\n.input-group:hover:not([data-disabled]) { border-color: var(--ring); }\n.input-group:focus-within {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n.input-group[data-invalid] { border-color: var(--destructive); }\n.input-group[data-invalid]:focus-within { outline-color: var(--destructive); }\n.input-group[data-surface=\"muted\"]:not([data-invalid]),\n.input-group[data-surface=\"muted\"]:not([data-invalid]):hover { border-color: transparent; }\n.input-group[data-disabled] { opacity: 0.5; cursor: not-allowed; }\n\n/* The field goes frameless and gives up its own ring: the group draws both, so\n * a focused group shows ONE outline rather than two nested ones. */\n.input-group > .input,\n.input-group > .textarea {\n  flex: 1;\n  min-inline-size: 0;\n  block-size: 100%;\n  padding-inline: 0;\n  border: none;\n  background: transparent;\n  border-radius: 0;\n}\n.input-group > .input:hover:not(:disabled) { border-color: transparent; }\n.input-group > .input:focus-visible,\n.input-group > .textarea:focus-visible { outline: none; }\n\n/* An affix is quiet by default — it labels the value, it is not the value. A\n * control passed as an affix keeps its own colour. */\n.input-group-affix {\n  display: inline-flex;\n  align-items: center;\n  flex: none;\n  color: var(--muted-foreground);\n  white-space: nowrap;\n}\n/* A button on the end sits flush with the frame rather than floating inside it. */\n.input-group-affix[data-side=\"end\"]:has(.btn, .icon-button) { margin-inline-end: calc(var(--control-padding-x) * -1 + var(--space-1)); }\n.input-group-affix[data-side=\"start\"]:has(.btn, .icon-button) { margin-inline-start: calc(var(--control-padding-x) * -1 + var(--space-1)); }\n",
+      "type": "registry:ui",
+      "target": "@ui/InputGroup/InputGroup.css"
+    },
+    {
+      "path": "src/components/InputGroup/InputGroup.tsx",
+      "content": "import './InputGroup.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** Exactly one field — an `<Input>`, `<NumberInput>` or `<Textarea>`. */\n  children: ReactNode\n  /** Sits before the value: a unit, a scheme, a currency. Text, or a control. */\n  prefix?: ReactNode\n  /** Sits after it: a unit, a Button, an IconButton. */\n  suffix?: ReactNode\n  /** Red frame + red focus ring. The message belongs to the `<Field>` around it. */\n  invalid?: boolean\n  disabled?: boolean\n  /** Which surface the group sits on — same contract as `<Input surface>`. */\n  surface?: 'base' | 'muted'\n  size?: 'sm' | 'md' | 'lg'\n  className?: string\n}\n\n/**\n * A field with something attached to it: `https://` before the value, `kg`\n * after it, a Copy button on the end. The GROUP wears the field frame and owns\n * the focus ring; the input inside goes frameless, so the whole thing reads and\n * behaves as one control rather than a box beside a box.\n */\nexport function InputGroup({\n  children, prefix, suffix, invalid, disabled, surface = 'base', size, className,\n}: Props) {\n  return (\n    <div\n      className={cn('input-group', className)}\n      data-size={size}\n      data-surface={surface}\n      data-invalid={invalid || undefined}\n      data-disabled={disabled || undefined}\n    >\n      {prefix !== undefined && <span className=\"input-group-affix\" data-side=\"start\">{prefix}</span>}\n      {children}\n      {suffix !== undefined && <span className=\"input-group-affix\" data-side=\"end\">{suffix}</span>}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/InputGroup/InputGroup.tsx"
+    },
+    {
+      "path": "src/components/InputGroup/index.ts",
+      "content": "export { InputGroup } from './InputGroup'\n",
+      "type": "registry:ui",
+      "target": "@ui/InputGroup/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/InputGroup.json"
+}

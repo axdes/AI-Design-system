@@ -1,0 +1,52 @@
+.entity-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--foreground);
+  text-decoration: none;
+  min-inline-size: 0;
+}
+.entity-link:hover .entity-link-title { text-decoration: underline; }
+.entity-link:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+.entity-link-icon { color: var(--muted-foreground); flex: none; }
+.entity-link-title { font-weight: var(--font-weight-medium); }
+
+/* Inline: it has to sit in a line of prose without changing its rhythm, so no
+ * surface, no padding block, and the baseline stays the sentence's. */
+.entity-link[data-view="inline"] {
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--muted);
+  vertical-align: baseline;
+}
+
+/* Card: the entity gets its own surface, which is what a link owes when it is
+ * the subject of the paragraph rather than a mention inside it. */
+.entity-link[data-view="card"] {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-1) var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  background: var(--card);
+}
+.entity-link[data-view="card"] .entity-link-icon { grid-row: 1 / span 2; }
+.entity-link[data-view="card"]:hover { border-color: var(--border-strong, var(--border)); }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.entity-link:active .entity-link-title { color: var(--link-hover); }
+.entity-link[data-view="card"]:active { background: var(--surface-hover); }
+.entity-link-meta {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}

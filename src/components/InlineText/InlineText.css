@@ -1,0 +1,41 @@
+/* The one thing a contentEditable does not say for itself: that it can be edited.
+ *
+ * This component had no stylesheet at all. It rendered text that happened to be editable, and the
+ * only way to find that out was to click it — which nobody does to a paragraph. "No control
+ * chrome" means the field does not sit in a box all day; it does not mean the reader has to guess.
+ *
+ * So: a cursor that says text, a quiet ground on hover that says "this responds", and a real box
+ * with the focus ring while it IS being edited, because the one moment the reader must not be in
+ * doubt is when their typing is going somewhere.
+ */
+.inline-text {
+  cursor: text;
+  border-radius: var(--radius-sm);
+  /* Pulled back by the same amount it pads, so the resting text sits exactly where it would
+   * without this: an affordance that moves the words is one that has to be paid for on every
+   * screen the component appears on. */
+  padding-inline: var(--space-1);
+  margin-inline: calc(var(--space-1) * -1);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.inline-text:hover {
+  /* NOT --muted. In dark, --muted and --background are one colour by design
+     (the page has no second tier there), so a hover painted with it was
+     invisible in every dark theme — the control said "this responds" and then
+     did not. --surface-hover is the token for exactly this question: one stop
+     off whatever surface the thing is standing on. Found 2026-08-26, by
+     widening the boundary check to read every stylesheet in a folder rather
+     than only the one named after it. */
+  background: var(--surface-hover);
+}
+
+.inline-text:focus {
+  background: var(--background);
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inline-text { transition: none; }
+}

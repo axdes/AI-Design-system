@@ -1,0 +1,127 @@
+{
+  "_": [
+    "One suffix, one meaning, across every semantic token family.",
+    "",
+    "config/prop-vocabulary.json does this for component PROPS and has since",
+    "2026-08. Tokens had no equivalent, and the cost showed: `-emphasis` read as a",
+    "synonym of the base because in the LIGHT theme it resolves to the same value,",
+    "and only the dark theme reveals it as a separate role (2026-08-26). A word",
+    "whose meaning you can only recover by reading three theme blocks is a word",
+    "nobody can use correctly.",
+    "",
+    "The model is the one the field converged on: a name reads namespace -> object",
+    "-> base -> modifier, modifiers last, one ordering for the whole system",
+    "(Nathan Curtis / EightShapes). Prominence is ONE ordered axis and interaction",
+    "state is a small closed set (Atlassian). The W3C DTCG format we export",
+    "standardises the FILE, not the names, so the names are ours to hold.",
+    "",
+    "scripts/lint-token-vocab.mjs fails on a suffix that is not declared here.",
+    "",
+    "It also holds the ALIASES: a semantic token whose value is another semantic",
+    "token rather than a primitive. They are legitimate — a chart axis IS label",
+    "text, and spelling the primitive twice would mean changing it twice — but they",
+    "are the one place in the token layer where editing one role silently moves",
+    "another, and until 2026-08-26 nothing checked them. Each is declared below with",
+    "the role it follows, so the coupling is a decision someone made rather than a",
+    "line someone copied. `diverges` names the themes where the alias deliberately",
+    "does NOT hold, which is the case a reader would otherwise call a bug."
+  ],
+  "suffixes": {
+    "foreground": {
+      "axis": "what is written ON this role",
+      "means": "the ink that sits on the role's own fill. `--success-foreground` is the ink on a solid success fill, never the colour of success itself."
+    },
+    "soft": {
+      "axis": "the same role as a pale wash",
+      "means": "the subtle end of the prominence axis: a tinted background a dark text can sit on. Pairs with `-soft-foreground`.",
+      "why": "This and the base form the two steps every status family has: soft = subtle, base = bold. The industry names them subtle/bold; this system named them first and the pair is coherent, so the words stay."
+    },
+    "soft-foreground": {
+      "axis": "what is written on the pale wash",
+      "means": "the ink for `-soft`. Two foregrounds per family because the two fills need opposite inks."
+    },
+    "border": {
+      "axis": "the edge of this role",
+      "means": "the hairline around a soft fill, and nothing else."
+    },
+    "emphasis": {
+      "axis": "the role as a MARK, not as a fill",
+      "means": "the status when it must be drawn rather than filled: an icon, a spark, a bar, a dot. It lightens in dark while the fill does not, which is the whole reason it exists.",
+      "why": "In the light theme it resolves to the same value as the base for destructive and success, which makes it look like a duplicate. It is not: in dark the fill stays danger-800 and this goes danger-300. Deleting it would have broken dark mode in six products (caught 2026-08-26 before the delete)."
+    },
+    "strong": {
+      "axis": "one step further from the surface",
+      "means": "a quiet neutral made more visible: `--accent-strong`, `--border-strong`. Not a status, not the brand."
+    },
+    "hover": {
+      "axis": "the pointer is over it",
+      "means": "matches the `:hover` selector that reads it."
+    },
+    "active": {
+      "axis": "the control is being pressed",
+      "means": "matches the `:active` selector that reads it. `pressed` was used once and renamed on 2026-08-26: one state, one word."
+    },
+    "quiet": {
+      "axis": "the same role, said softly, as INK",
+      "means": "a link that does not shout. `-soft` is a fill, this is ink."
+    },
+    "muted": {
+      "axis": "the neutral grey of a thing",
+      "means": "`--icon-muted`, `--muted-foreground`. The system's grey, not a dimmed version of a role."
+    },
+    "accent": {
+      "axis": "the brand at full strength",
+      "means": "`--primary-accent` is the brand colour itself, where `--primary` may be tuned for a fill."
+    }
+  },
+  "aliases": {
+    "--link": {
+      "follows": "--primary-accent",
+      "why": "a link is the brand speaking in running text; it is the accent, not a colour that resembles it."
+    },
+    "--link-hover": {
+      "follows": "--primary-hover",
+      "diverges": [
+        "dark"
+      ],
+      "why": "in light, hovering a link deepens it the way hovering the brand deepens it.",
+      "divergence": "dark cannot go deeper — it goes LIGHTER (--brand-100), so the dark theme sets its own value. This is the pair the -emphasis near-miss was about: identical in light, opposite in dark."
+    },
+    "--link-quiet": {
+      "follows": "--muted-foreground",
+      "why": "a link that is not the point of the sentence carries the weight of secondary text."
+    },
+    "--chart-grid": {
+      "follows": "--border",
+      "why": "a gridline is a border drawn inside the plot; it separates without being read."
+    },
+    "--chart-axis": {
+      "follows": "--muted-foreground",
+      "why": "axis labels ARE secondary text. If secondary text gets lighter, so must they, or the chart stops matching the page around it."
+    },
+    "--chart-track": {
+      "follows": "--accent",
+      "why": "the unfilled part of a bar is the same quiet ground a hovered row sits on."
+    },
+    "--surface-contrast": {
+      "follows": "--card",
+      "why": "a control that has to read on ANY surface stands on the card colour, because that is the surface the system guarantees contrast against."
+    },
+    "--surface-contrast-hover": {
+      "follows": "--accent",
+      "why": "hovering that control is the same step as hovering anything else on a card."
+    },
+    "--surface-contrast-active": {
+      "follows": "--accent-strong",
+      "why": "pressing it is the next step on the same ladder."
+    },
+    "--nav-active": {
+      "follows": "--muted",
+      "why": "the current page is marked by a quiet ground, not by a colour of its own."
+    },
+    "--nav-active-foreground": {
+      "follows": "--primary-accent",
+      "why": "the label of the current page is the brand, the same brand a link is. It spelled --brand-200 in the dark theme until 2026-08-26 — the same value, reached by hand, which would have stayed behind the day the brand moved."
+    }
+  }
+}

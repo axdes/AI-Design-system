@@ -1,0 +1,100 @@
+{
+  "name": "card-families batch (3 components + 1 variant)",
+  "level": "mixed",
+  "date": "2026-08-22",
+  "requestedBy": "agent",
+  "status": "approved",
+  "decidedBy": "user",
+  "decision": "The owner asked for a survey of card kinds across enterprise design systems and promo pages, then for the result to be BUILT and wired into the system so an agent can pick a card by what the content is. The survey (31 families, screen-specs/card-rules.json) measured the system against them: it covers the card as a carrier of CONTENT and barely covers the card as a carrier of a DECISION. These are the three parts that gap needs, plus the variant that makes a KPI card say whether the number is good.",
+  "need": "Queue 1 of the survey: the families the products already ask for. `kpi` cannot be built at all (Stat has value and label, no comparison), `analytical` has no chart part of any kind, `option` has no selectable surface (LinkTile navigates and demands a menu), `action` has nothing — a card that asks a question and takes the answer in place is half of enterprise card usage and the system has never had it.",
+  "consideredAlternatives": [
+    {
+      "ref": "Meter",
+      "whyNot": "A value against a target on a fixed scale, not a value over time; a KPI's trend has no maximum."
+    },
+    {
+      "ref": "ProgressBar / ProgressCircle",
+      "whyNot": "Both say how far along, neither says what the shape of the number was."
+    },
+    {
+      "ref": "LinkTile",
+      "whyNot": "Navigates on click and requires an overflow menu. A selectable tile changes a value in a form and must survive the next click."
+    },
+    {
+      "ref": "Chip / Radio / Checkbox in a Grid",
+      "whyNot": "Right for words, wrong for a choice that carries an icon, a description and a price; the surface has to be the control (Carbon selectable tile)."
+    },
+    {
+      "ref": "Card + Button by hand",
+      "whyNot": "The part nobody hand-rolls correctly is the resolved state: after approve or decline the card must state the outcome, or the reader answers twice."
+    },
+    {
+      "ref": "Alert",
+      "whyNot": "Stays until resolved and carries a message, not a request addressed to this reader with its own fields and outcome."
+    }
+  ],
+  "components": [
+    {
+      "name": "Sparkline",
+      "level": "atom",
+      "surface": "card",
+      "why": "The trend part of a KPI card and the whole of the analytical card's first form. Pure SVG, no dependency, no axes: shape only, with the last point marked because that is the one the reader is standing on.",
+      "proposedApi": {
+        "props": [
+          { "name": "values", "type": "number[]", "required": true },
+          { "name": "tone", "type": "Tone", "required": false },
+          { "name": "label", "type": "string", "required": false },
+          { "name": "area", "type": "boolean", "required": false },
+          { "name": "size", "type": "Size", "required": false }
+        ]
+      }
+    },
+    {
+      "name": "SelectableTile",
+      "level": "molecule",
+      "surface": "region",
+      "why": "A card as a form control: single or multiple choice, the whole surface is the target, the state is visible and keyboard-reachable. Carbon separates it from the clickable tile because the two look alike and behave nothing alike.",
+      "proposedApi": {
+        "props": [
+          { "name": "title", "type": "ReactNode", "required": true },
+          { "name": "selected", "type": "boolean", "required": true },
+          { "name": "onSelect", "type": "(selected: boolean) => void", "required": true },
+          { "name": "multiple", "type": "boolean", "required": false },
+          { "name": "icon", "type": "IconName", "required": false },
+          { "name": "meta", "type": "ReactNode", "required": false },
+          { "name": "disabled", "type": "boolean", "required": false }
+        ]
+      }
+    },
+    {
+      "name": "ActionCard",
+      "level": "organism",
+      "surface": "region",
+      "why": "A question put to this reader, answered in place, with the outcome stated on the same surface afterwards. Adaptive Cards' shape, which the system has never had.",
+      "proposedApi": {
+        "props": [
+          { "name": "title", "type": "ReactNode", "required": true },
+          { "name": "actions", "type": "ReactNode", "required": true },
+          { "name": "resolved", "type": "{ tone: Tone, text: ReactNode }", "required": false },
+          { "name": "eyebrow", "type": "ReactNode", "required": false },
+          { "name": "meta", "type": "ReactNode", "required": false },
+          { "name": "children", "type": "ReactNode", "required": false }
+        ]
+      }
+    }
+  ],
+  "variants": [
+    {
+      "on": "Stat",
+      "add": "delta + trend",
+      "why": "A KPI is four layers: label, value, comparison, and a visual anchor. Stat had two. `delta` carries the comparison with its own direction and tone; `trend` takes a <Sparkline> so the tile is complete without a wrapper.",
+      "props": [
+        { "name": "delta", "type": "ReactNode", "required": false },
+        { "name": "direction", "type": "\"up\" | \"down\" | \"flat\"", "required": false },
+        { "name": "deltaTone", "type": "\"success\" | \"danger\" | \"neutral\"", "required": false },
+        { "name": "trend", "type": "ReactNode", "required": false }
+      ]
+    }
+  ],
+  "waitingFor": ""
+}

@@ -1,12 +1,20 @@
 import "./SideNav.css";
-import { Fragment, useState, type ReactNode } from "react";
+import { Fragment, useState, type ReactElement, type ReactNode } from "react";
 import { cn } from "../../lib/cn";
 import { Divider } from "../Divider";
 import { Icon, type IconName } from "../Icon";
 import { Tooltip } from "../Tooltip";
 
-/** One navigable entry. Routing-agnostic: pass `href` to render an anchor, or
- *  `onSelect` to render a button — the consumer owns navigation. */
+/** One navigable entry. Routing-agnostic three ways, and the third is the one a
+ *  router app wants: pass `href` for a plain anchor, `onSelect` for a button, or
+ *  `render` to wrap the entry's own markup in your router's link.
+ *
+ *  `render` exists because the other two both cost something in a single-page
+ *  app, and until 2026-08-23 every product paid the second price without
+ *  choosing it: `href` reloads the whole document, so all three apps used
+ *  `onSelect`, and every navigation entry in every product became a <button>.
+ *  A button cannot be middle-clicked into a new tab, cannot have its address
+ *  copied, and is announced as a button to someone who is navigating. */
 export type SideNavItem = {
   id: string;
   label: string;
@@ -22,6 +30,13 @@ export type SideNavItem = {
   active?: boolean;
   href?: string;
   onSelect?: () => void;
+  /**
+   * Wrap the entry in your own link. The callback is handed the entry's inner
+   * markup and the class and ARIA it must carry; return an element that renders
+   * them. `href` and `onSelect` are ignored when it is given, because the link
+   * you return owns the navigation.
+   */
+  render?: (inner: ReactNode, props: { className: string; 'aria-current'?: 'page'; 'data-usage'?: string }) => ReactElement;
 };
 
 export type SideNavGroup = {
@@ -45,6 +60,14 @@ type Props = {
   footer?: ReactNode;
   /** Master switch for the collapse affordance (default true). */
   collapsible?: boolean;
+  /**
+   * Which control collapses the rail. `logo` is the default and is the decided
+   * answer: collapsed, the biggest target on the rail is what opens the rail,
+   * and expanded, hovering the mark says what pressing it will do. It used to
+   * default to `bottom`, and the measurement on 2026-08-23 was that no product
+   * passed this prop at all — so every one of them carried a Collapse button
+   * nobody had chosen, while the behaviour they wanted sat behind a default.
+   */
   collapseControl?: CollapseControl;
   /** Controlled collapsed state. Omit to let the component manage it. */
   collapsed?: boolean;
@@ -63,7 +86,7 @@ export function SideNav({
   logoMark,
   footer,
   collapsible = true,
-  collapseControl = "bottom",
+  collapseControl = "logo",
   collapsed,
   defaultCollapsed = false,
   onCollapsedChange,
@@ -71,8 +94,12 @@ export function SideNav({
 }: Props) {
   const [internal, setInternal] = useState(defaultCollapsed);
   const isCollapsed = collapsible && (collapsed ?? internal);
-  const logoTogglable = collapsible && (collapseControl === "logo" || collapseControl === "both");
-  const showBottomToggle = collapsible && (collapseControl === "bottom" || collapseControl === "both");
+  /* The logo can only be the control if there IS one. Without this a rail with
+   * no logo and the default control would have no way to collapse at all —
+   * found by the existing tests the moment the default changed, which is what
+   * they are for. */
+  const logoTogglable = collapsible && !!(logo ?? logoMark) && (collapseControl === "logo" || collapseControl === "both");
+  const showBottomToggle = collapsible && (collapseControl === "bottom" || collapseControl === "both" || !logoTogglable);
 
   function toggle() {
     const next = !isCollapsed;
@@ -83,7 +110,7 @@ export function SideNav({
   const brand = isCollapsed ? (logoMark ?? logo) : logo;
 
   return (
-    <aside className="side-nav" data-collapsed={isCollapsed || undefined} aria-label={ariaLabel}>
+    <aside className="side-nav" data-collapsed={isCollapsed || undefined} data-has-mark={logoMark ? "" : undefined} aria-label={ariaLabel}>
       {brand && (
         <div className="side-nav-header">
           {logoTogglable ? (
@@ -128,7 +155,14 @@ export function SideNav({
                     </>
                   );
                   const className = cn("side-nav-item", item.active && "is-active");
-                  const node = item.href ? (
+                  const shared = {
+                    className,
+                    "aria-current": item.active ? ("page" as const) : undefined,
+                    "data-usage": item.usage,
+                  };
+                  const node = item.render ? (
+                    item.render(inner, shared)
+                  ) : item.href ? (
                     <a href={item.href} className={className} onClick={item.onSelect}
                       data-usage={item.usage} aria-current={item.active ? "page" : undefined}>
                       {inner}

@@ -1,7 +1,7 @@
 {
   "ref": "Icon",
   "level": "atom",
-  "description": "Every icon in the system, addressed by Material-style name. Size comes from CSS through `size`, so changing an --icon-* token cascades everywhere at once.",
+  "description": "Every icon in the system, addressed by Material-style name. Size comes from CSS through `size`, so changing an --icon-* token cascades everywhere at once. Copy: there is no copy here on purpose: an icon carries no words, so anything it must say belongs on the control around it.",
   "exports": [
     "Icon"
   ],

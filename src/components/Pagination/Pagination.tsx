@@ -41,6 +41,10 @@ function pages(page: number, pageCount: number, siblings: number): (number | 'ga
 /**
  * Pager for a known total: renders nothing for a single page and collapses
  * long ranges with gaps. LoadMore is the one for a list with no total.
+ *
+ * Copy: the accessible name says WHICH collection is paged — "Invoices pages",
+ * not "Pagination". A screen with two paged lists is otherwise two
+ * identical controls.
  */
 export function Pagination({
   page, pageCount, onChange, siblingCount = 1, label = 'Pagination', prevLabel = 'Previous page', nextLabel = 'Next page', className,

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "meter",
+  "type": "registry:ui",
+  "title": "Meter",
+  "description": "A linear progress / gauge on a fixed scale, with an optional target marker. The fill width and marker position are the only dynamic inline styles. Copy: the label carries the sentence, because a gauge with a number and no subject is a decoration: \"Storage used, 62 of 100 GB\".",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Meter/Meter.css",
+      "content": ".meter { display: flex; flex-direction: column; gap: var(--space-1); min-inline-size: 0; }\n\n/* THE TRACK IS A RULE, NOT A TUBE.\n *\n * It was 10px with a hard black tick standing on it, which is the 2014 progress\n * bar (owner, 23.08: this does not look modern). Six pixels reads as a\n * measurement rather than a container, and the marker below says \"the goal is\n * here\" without stamping on the fill. */\n.meter-track {\n  position: relative;\n  block-size: 6px;\n  border-radius: var(--radius-full);\n  background: var(--chart-track);\n  overflow: visible;\n}\n.meter[data-size=\"sm\"] .meter-track { block-size: 4px; }\n\n.meter-fill {\n  position: absolute;\n  inset-block: 0;\n  inset-inline-start: 0;\n  border-radius: var(--radius-full);\n  background: var(--primary);\n  /* The reading arrives instead of being there already — one gesture, the same\n   * curve every other part of the system answers on. */\n  transform-origin: inline-start;\n  animation: meter-fill var(--duration-slow) var(--ease-out) both;\n}\n@keyframes meter-fill {\n  from { transform: scaleX(0); }\n}\n.meter[data-tone=\"success\"] .meter-fill { background: var(--chart-success); }\n.meter[data-tone=\"warning\"] .meter-fill { background: var(--chart-warning); }\n.meter[data-tone=\"danger\"] .meter-fill { background: var(--chart-danger); }\n\n/* THE GOAL. A hairline standing across the track, ringed in the surface colour\n * so it reads whether it lands on the fill or on the empty part. */\n.meter-target {\n  position: absolute;\n  inset-block: -3px;\n  inline-size: 2px;\n  border-radius: var(--radius-full);\n  background: var(--foreground);\n  box-shadow: 0 0 0 2px var(--card);\n}\n\n.meter-ticks {\n  display: flex; justify-content: space-between;\n  font-size: var(--font-xs); color: var(--chart-axis); font-variant-numeric: tabular-nums;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Meter/Meter.css"
+    },
+    {
+      "path": "src/components/Meter/Meter.tsx",
+      "content": "import \"./Meter.css\";\nimport { cn } from \"../lib/cn\";\n\ntype Tone = \"primary\" | \"success\" | \"warning\" | \"danger\";\ntype Size = \"sm\" | \"md\";\n\ntype Props = {\n  value: number;\n  /** Scale maximum (default 100). */\n  max?: number;\n  /** Optional goal marker rendered on the track. */\n  target?: number;\n  tone?: Tone;\n  size?: Size;\n  /** Tick labels under the track: an explicit list, or `true` for [0, max]. */\n  ticks?: number[] | boolean;\n  /** Accessible description of what the meter measures. */\n  label?: string;\n  className?: string;\n};\n\nconst clamp = (n: number) => Math.max(0, Math.min(100, n));\n\n/** A linear progress / gauge on a fixed scale, with an optional target marker.\n *  The fill width and marker position are the only dynamic inline styles. \n *\n * Copy: the label carries the sentence, because a gauge with a number and no\n * subject is a decoration: \"Storage used, 62 of 100 GB\".\n */\nexport function Meter({ value, max = 100, target, tone = \"primary\", size, ticks, label, className }: Props) {\n  const pct = clamp((value / max) * 100);\n  const targetPct = target != null ? clamp((target / max) * 100) : null;\n  const tickVals = Array.isArray(ticks) ? ticks : ticks ? [0, max] : null;\n\n  return (\n    <div\n      className={cn(\"meter\", className)}\n      data-tone={tone}\n      data-size={size}\n      role=\"meter\"\n      aria-valuenow={value}\n      aria-valuemin={0}\n      aria-valuemax={max}\n      aria-label={label}\n    >\n      <div className=\"meter-track\">\n        <div className=\"meter-fill\" style={{ inlineSize: `${pct}%` }} />\n        {targetPct != null && (\n          <div className=\"meter-target\" style={{ insetInlineStart: `${targetPct}%` }} aria-hidden=\"true\" />\n        )}\n      </div>\n      {tickVals && (\n        <div className=\"meter-ticks\">\n          {tickVals.map((t) => (\n            <span key={t}>{t}</span>\n          ))}\n        </div>\n      )}\n    </div>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Meter/Meter.tsx"
+    },
+    {
+      "path": "src/components/Meter/index.ts",
+      "content": "export { Meter } from \"./Meter\";\n",
+      "type": "registry:ui",
+      "target": "@ui/Meter/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Meter.json"
+}

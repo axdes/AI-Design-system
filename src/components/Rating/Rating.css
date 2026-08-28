@@ -7,9 +7,18 @@
 .rating[data-size='sm'] { font-size: var(--font-sm); }
 .rating[data-size='lg'] { font-size: var(--font-lg); }
 
+/* A FILLED STAR IS FILLED. The glyph is a STROKE, so recolouring it left every
+ * star an outline and a score of 4 out of 5 looked exactly like a score of 0
+ * (owner, 2026-08-24). `fill` here beats Lucide's own `fill="none"` attribute:
+ * a presentation attribute loses to any author rule.
+ *
+ * The ink stays --warning-emphasis: it is the status role a GLYPH is allowed to
+ * take (`npm run lint:rules` enforces that), and once the shape is solid rather
+ * than a hairline outline it reads as a star at that value. */
 .rating-star[data-fill='empty'] { color: var(--border-strong); }
-.rating-star[data-fill='full'] { color: var(--warning-emphasis); }
-.rating-star[data-fill='half'] { color: var(--warning-emphasis); opacity: 0.55; }
+.rating-star[data-fill='full'] { color: var(--warning-emphasis); fill: currentColor; }
+/* No half-star glyph in the map, so half is the same fill at half strength. */
+.rating-star[data-fill='half'] { color: var(--warning-emphasis); fill: currentColor; opacity: 0.5; }
 
 .rating-star-button {
   display: inline-flex;

@@ -1,7 +1,7 @@
 {
   "ref": "Pagination",
   "level": "molecule",
-  "description": "Pager for a known total: renders nothing for a single page and collapses long ranges with gaps. LoadMore is the one for a list with no total.",
+  "description": "Pager for a known total: renders nothing for a single page and collapses long ranges with gaps. LoadMore is the one for a list with no total. Copy: the accessible name says WHICH collection is paged — \"Invoices pages\", not \"Pagination\". A screen with two paged lists is otherwise two identical controls.",
   "exports": [
     "Pagination"
   ],
@@ -12,12 +12,14 @@
     {
       "name": "page",
       "type": "number",
-      "required": true
+      "required": true,
+      "description": "1-based current page."
     },
     {
       "name": "pageCount",
       "type": "number",
-      "required": true
+      "required": true,
+      "description": "Total number of pages."
     },
     {
       "name": "onChange",
@@ -27,12 +29,14 @@
     {
       "name": "siblingCount",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "How many numbered buttons to show around the current page. Default 1 (so: first … prev-cur-next … last)."
     },
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Accessible names — the control is a labelled navigation landmark."
     },
     {
       "name": "prevLabel",

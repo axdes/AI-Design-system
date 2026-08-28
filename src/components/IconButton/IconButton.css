@@ -6,7 +6,11 @@
   border: none;
   border-radius: var(--control-radius);
   background: transparent;
-  color: var(--muted-foreground);
+  /* Full-strength ink. `quiet` is the one that sits in secondary ink, and that
+   * difference is now the only thing separating the two at rest — until this,
+   * `ghost` and `quiet` drew the identical button and diverged only once the
+   * pointer arrived, which is two names for one picture. */
+  color: var(--foreground);
   font-family: inherit;
   cursor: pointer;
   transition: opacity var(--duration-fast), background var(--duration-fast), color var(--duration-fast);
@@ -36,23 +40,37 @@
   pointer-events: none;
 }
 
-/* Filled — for an icon button on a muted/grey surface (e.g. header back).
- * Subtle fill at rest; lifts to an elevated (white in light) surface + primary
- * accent on hover. Theme-correct via --accent → --card inversion. */
+/* Filled — the icon button that carries a surface of its own: a header back, a
+ * row of actions under a portrait. Which fill that is depends on what it is
+ * sitting on, and it asks rather than assumes: --surface-contrast is white on
+ * the grey page and grey on a white card, and the hover step always moves one
+ * stop FURTHER from the surface. Painting `--card` on hover unconditionally is
+ * what made it disappear on a card (owner, 2026-08-22). */
 .icon-button[data-variant="filled"] {
-  background: var(--accent);
+  background: var(--surface-contrast);
   color: var(--foreground);
 }
+/* Pressed: one stop past hover, the same third step the button family gained. */
+.icon-button:active { background: var(--accent); }
+.icon-button[data-variant="filled"]:active { background: var(--surface-contrast-active); }
+/* The fill moves, the ink stays. It used to recolour the glyph to the brand on
+ * hover, which no other control in the family does — a secondary button does not
+ * turn its label blue — so three icon buttons in a row answered the pointer two
+ * different ways (owner, 2026-08-23). Hover means one thing here: one stop
+ * further from the surface. */
 .icon-button[data-variant="filled"]:hover,
 .icon-button[data-variant="filled"][data-open] {
-  background: var(--card);
-  color: var(--primary-accent);
+  background: var(--surface-contrast-hover);
 }
 
-/* Quiet — transparent, hover recolors only (no fill). Inline toolbar icons
- * (chat search/filter/close, 3-dot menus) that shouldn't grow a background. */
+/* Quiet — never grows a background, and sits in secondary ink so it reads as
+ * quieter than `ghost` BEFORE anyone touches it. Inline toolbar icons (chat
+ * search/filter/close, 3-dot menus) that must not add furniture to a dense row.
+ * The whole variant is one sentence: it answers with ink, never with fill. */
+.icon-button[data-variant="quiet"] { color: var(--muted-foreground); }
 .icon-button[data-variant="quiet"]:hover,
 .icon-button[data-variant="quiet"][data-open] { background: transparent; color: var(--foreground); }
+.icon-button[data-variant="quiet"]:active { background: transparent; color: var(--primary-accent); }
 
 /* Filled tones — solid brand / danger fill (e.g. composer send / stop). */
 .icon-button[data-variant="filled"][data-tone="primary"] { background: var(--primary); color: var(--primary-foreground); }

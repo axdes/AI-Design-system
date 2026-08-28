@@ -1,0 +1,9 @@
+/* The rule is structural, not decorative: it is the same neutral hairline the
+ * system draws everywhere else, and it exists to show which option the content
+ * hangs off. */
+.conditional-reveal {
+  margin-block-start: var(--space-2);
+  margin-inline-start: var(--space-3);
+  padding-inline-start: var(--space-4);
+  border-inline-start: 2px solid var(--border);
+}

@@ -12,12 +12,14 @@
     {
       "name": "text",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "The full text to render."
     },
     {
       "name": "query",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "What to mark inside it. An empty query marks nothing."
     },
     {
       "name": "caseSensitive",

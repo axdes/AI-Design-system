@@ -1,7 +1,7 @@
 {
   "ref": "DetailPageTemplate",
   "level": "block",
-  "description": "The DETAIL page skeleton: a header with back + actions, then a main content column and an optional right SidePanel for metadata/related items. Structure only; the caller fills the columns with DS components. A page-template block the discovery picks for record/detail screens.",
+  "description": "The DETAIL page skeleton: a header with back + actions, then a main content column and an optional right SidePanel for metadata/related items. Structure only; the caller fills the columns with DS components. A page-template block the discovery picks for record/detail screens. Copy: the title is the record's own name, not its type — \"Northwind Paper\", not \"Supplier\". Nothing goes under it; what would have is content and belongs in the body.",
   "exports": [
     "DetailPageTemplate"
   ],
@@ -12,62 +12,56 @@
     {
       "name": "title",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Detail title in the header. ReactNode, like PageHeader's own title: a record title routinely carries a status <Badge> or a <Tag> beside it, and typing this as string only forced callers to fake it elsewhere."
     },
     {
       "name": "onBack",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "Back handler for the header."
     },
     {
       "name": "backLabel",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Accessible name for the back control (defaults inside PageHeader)."
     },
     {
       "name": "actions",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Header actions (edit / delete / …)."
     },
     {
       "name": "children",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The main content (sections, cards, tabs)."
     },
     {
       "name": "aside",
-      "type": "{ title: string; content: ReactNode; collapsible?: boolean; defaultCollapsed?: boolean }",
-      "required": false
+      "type": "{ title: string content: ReactNode collapsible?: boolean defaultCollapsed?: boolean hideBelow?: 'sm' | 'md' }",
+      "required": false,
+      "description": "Optional right-hand side panel (metadata, related items). `collapsible` folds it to a narrow rail with one control to bring it back. Use it when the panel is long enough that a reader working in the main column wants the width instead — the panel is context, and context the reader has finished with should not go on taking a fifth of the page."
     },
     {
       "name": "panels",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Put each column on its own white card, fill the height, and let each one scroll on its own. Off by default: a record page that is read top to bottom wants the page to scroll, and two independently scrolling boxes are worse for that. Turn it on when the two columns are read side by side and against each other — a match score next to what it was measured against — where scrolling one to reach the bottom of the other is the thing that gets in the way. The app shell has to release its height for this; see `.app-layout:has([data-panels])`."
     }
   ],
   "sourcePath": "src/blocks/DetailPageTemplate/DetailPageTemplate.tsx",
   "context": "page",
-  "variants": {
-    "has-aside": {
-      "prop": "aside",
-      "values": null
-    },
-    "panels": {
-      "prop": "panels",
-      "values": [
-        "true"
-      ]
-    }
-  },
   "uses": [
     "Button",
     "Card",
+    "Descriptions",
     "Icon",
     "IconButton",
-    "MetaItem",
-    "PageHeader",
     "SidePanel",
     "Tooltip"
   ],
-  "example": "const project = { id: 'p1', name: 'Onboarding revamp' }\n\n<DetailPageTemplate\n  title={project.name}\n  onBack={() => undefined}\n  actions={<Button variant=\"ghost\"><Icon name=\"edit\" />Edit</Button>}\n  aside={{ title: 'Details', content: <MetaItem icon=\"schedule\">Updated today</MetaItem> }}\n>\n  <Card>\n    <CardTitle>Overview</CardTitle>\n    <p>Two teams, four screens, shipping in March.</p>\n  </Card>\n</DetailPageTemplate>"
+  "example": "const project = { id: 'p1', name: 'Onboarding revamp' }\n\n<DetailPageTemplate\n  title={project.name}\n  onBack={() => undefined}\n  actions={<Button variant=\"ghost\"><Icon name=\"edit\" />Edit</Button>}\n  panels\n  aside={{\n    title: 'Details',\n    collapsible: true,\n    content: (\n      <Descriptions\n        items={[\n          { term: 'Owner', value: 'Ada Meridian' },\n          { term: 'Updated', value: 'Today' },\n        ]}\n      />\n    ),\n  }}\n>\n  <Card>\n    <CardTitle>Overview</CardTitle>\n    <p>Two teams, four screens, shipping in March.</p>\n  </Card>\n</DetailPageTemplate>"
 }

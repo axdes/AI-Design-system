@@ -30,14 +30,60 @@
     "menu": "Chat options",
     "newChat": "New chat",
     "noResults": "No chats found",
+    "rowMenu": {
+      "archive": "Archive",
+      "delete": "Delete",
+      "pin": "Pin",
+      "rename": "Rename"
+    },
     "search": "Search chats",
     "send": "Send",
-    "stop": "stop",
+    "stop": "Stop",
     "voiceInput": "Voice input",
     "voiceMessage": "Voice message"
+  },
+  "field": {
+    "charsLeft_one": "{{count}} character remaining",
+    "charsLeft_other": "{{count}} characters remaining",
+    "charsOver_one": "{{count}} character too many",
+    "charsOver_other": "{{count}} characters too many",
+    "optional": "(optional)",
+    "problemTitle_one": "There is 1 problem",
+    "problemTitle_other": "There are {{count}} problems",
+    "saveFailed": "Could not save. Your last change is still here; try again.",
+    "saved": "Saved",
+    "saving": "Saving",
+    "unsavedChanges": "You have unsaved changes."
   },
   "filter": {
     "clearAll": "Clear all",
     "filters": "Filters"
+  },
+  "modal": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "table": {
+    "clearSelection": "Clear selection",
+    "columns": "Columns",
+    "density": "Density",
+    "densityCompact": "Compact",
+    "densityDefault": "Default",
+    "expandRow": "Show more about {{name}}",
+    "loading": "Loading rows",
+    "moreTags_one": "+1 more",
+    "moreTags_other": "+{{count}} more",
+    "resetColumns": "Reset columns",
+    "rows_one": "{{count}} row",
+    "rows_other": "{{count}} rows",
+    "selectAllRows": "Select all rows",
+    "selectRow": "Select this row",
+    "selected_one": "1 selected",
+    "selected_other": "{{count}} selected"
+  },
+  "theme": {
+    "dark": "Dark",
+    "label": "Theme",
+    "light": "Light"
   }
 }

@@ -1,7 +1,7 @@
 {
   "ref": "WizardTemplate",
   "level": "block",
-  "description": "The WIZARD page skeleton: a Stepper over one step at a time, Back/Next below, the last step submitting under the real event's name. Steps are freely navigable, and the final step is a `<WizardReview>` whose Change links jump straight back.",
+  "description": "The WIZARD page skeleton: a Stepper over one step at a time, Back/Next below, the last step submitting under the real event's name. Steps are freely navigable, and the final step is a `<WizardReview>` whose Change links jump straight back. Copy: the page title names the whole job, the step names are its parts — nouns, parallel, and the same word in the stepper as in the step's own heading.",
   "exports": [
     "WizardTemplate",
     "WizardReview",
@@ -12,38 +12,53 @@
   "slots": [
     {
       "name": "WizardReview",
-      "line": 98
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ]
     },
     {
-      "name": "WizardReviewRow",
-      "line": 111
+      "name": "WizardReviewRow"
     }
   ],
   "props": [
     {
       "name": "title",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Page title in the header."
     },
     {
       "name": "steps",
       "type": "WizardStep[]",
-      "required": true
+      "required": true,
+      "description": "The ordered steps: 3-5. A 2-step wizard is a form with extra clicks."
     },
     {
       "name": "current",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Current step id — the parent owns it, usually mirrored into the URL."
     },
     {
       "name": "onStep",
       "type": "(id: string) => void",
-      "required": true
+      "required": true,
+      "description": "Back, Next and clicks on visited steps all arrive here."
     },
     {
       "name": "children",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The current step's content."
     },
     {
       "name": "backLabel",
@@ -58,7 +73,8 @@
     {
       "name": "submitLabel",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Names the real event (\"Create schedule\"), never \"Submit\"."
     },
     {
       "name": "onSubmit",
@@ -68,7 +84,8 @@
     {
       "name": "busy",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Submitting: the submit carries the spinner, the rest disables."
     },
     {
       "name": "className",
@@ -82,7 +99,6 @@
     "Button",
     "Field",
     "Input",
-    "PageHeader",
     "Select",
     "Stepper"
   ],

@@ -1,0 +1,81 @@
+{
+  "ref": "DonutChart",
+  "level": "atom",
+  "description": "A whole split into named shares: how much of the total is open, at risk, done. Hovering a share reads it in the hole. Reach for <Progress shape=\"ring\"> when there is ONE value on a scale — a ring with a single segment is that component wearing a legend. Copy: the caption says what the whole ring adds up to, because a share is meaningless without its total. Segment labels are the categories' own names, not abbreviations.",
+  "exports": [
+    "DonutChart"
+  ],
+  "main": "DonutChart",
+  "from": "@/components/DonutChart",
+  "slots": [],
+  "props": [
+    {
+      "name": "segments",
+      "type": "Segment[]",
+      "required": true
+    },
+    {
+      "name": "center",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What sits in the hole: the total, or the share that matters. Under the pointer the hole shows the segment being read instead."
+    },
+    {
+      "name": "caption",
+      "type": "ReactNode",
+      "required": false,
+      "description": "A word under it — \"open\", \"of 320\"."
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "legend",
+      "type": "boolean",
+      "required": false,
+      "description": "Off when the segments are already named beside the chart."
+    },
+    {
+      "name": "percent",
+      "type": "boolean",
+      "required": false,
+      "description": "Shares as percentages beside the values."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": "What the whole ring measures."
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "required": false,
+      "description": "BCP-47 tag for the numbers. Omit to follow the browser."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/DonutChart/DonutChart.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "example": "<DonutChart segments={FINDINGS} center=\"320\" caption=\"findings\" label=\"Findings by state\" />"
+}

@@ -1,0 +1,45 @@
+{
+  "ref": "FormSection",
+  "level": "molecule",
+  "description": "One named group of fields inside a form: a `fieldset` with a visible legend, an optional sentence, and a `<FormStack>` of Fields inside. Copy: the section title groups the questions under it in the reader's terms, and the description says why they are asked together.",
+  "exports": [
+    "FormSection"
+  ],
+  "main": "FormSection",
+  "from": "@/components/FormSection",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The group's name: who or what these fields are about."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "required": false,
+      "description": "One sentence on why the group exists, when the title cannot carry it."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The Field rows."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/FormSection/FormSection.tsx",
+  "context": "region",
+  "uses": [
+    "Field",
+    "FormStack",
+    "Input",
+    "Select"
+  ],
+  "example": "const [name, setName] = useState('Delivery review')\nconst [area, setArea] = useState('emea')\n/* The legend answers \"what are these fields about\"; if no sentence can say\n * that, the fields do not form a section and belong in the plain FormStack. */\n\n<FormSection title=\"Ownership\" description=\"Who this workspace belongs to.\">\n  <Field label=\"Workspace name\" htmlFor=\"ws-name\" required>\n    <Input id=\"ws-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Area\">\n    <Select label=\"Area\" options={AREAS} value={area} onChange={setArea} />\n  </Field>\n</FormSection>"
+}

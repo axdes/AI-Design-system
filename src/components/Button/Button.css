@@ -26,6 +26,10 @@
 /* [data-open] = the button is acting as an open dropdown trigger; mirror hover. */
 .btn:hover,
 .btn[data-open] { background: var(--primary-hover); }
+/* PRESSED. The system had hover and then nothing: a click on a slow action
+ * gave no answer at all, which is why people press twice. One more stop in the
+ * same direction the hover already moved. */
+.btn:active { background: var(--primary-active); }
 .btn:focus-visible {
   outline: var(--ring-width) solid var(--ring);
   outline-offset: var(--ring-offset);
@@ -59,21 +63,33 @@
 }
 .btn[data-block="true"] { width: 100%; }
 
-/* The hairline is not decoration. `--secondary` and `--muted` are both neutral-100 in light and
- * both neutral-8xx in dark, so a secondary button standing on a PAGE (rather than on a white card)
- * was the exact colour of what was behind it: the actions in a page header read as plain text with
- * no edges, and nobody could tell they were controls. The token's own comment promised that
- * "page-level contexts override to white", and nothing ever did.
+/* No line round a button (owner, 2026-08-22). It used to carry an inset hairline, and the reason
+ * was real: `--secondary` and `--muted` are both neutral-100 in light and both neutral-8xx in
+ * dark, so a secondary button standing on a PAGE was the exact colour of what was behind it —
+ * page-header actions read as plain text with no edges. The line was the wrong answer to a real
+ * question. The right one is the same one the filled icon button and the pill now give: ask the
+ * surface. --surface-contrast is white on the grey page and grey on a white card, so the button
+ * separates by its FILL on either, and hover moves one stop further from the surface. */
+/* Still no line round a button — asked for on 2026-08-22, and again on 08-23
+ * when one was tried. A boundary drawn at 3:1 is a mid-grey hairline, and on a
+ * quiet action that reads as chrome the design does not want. What the button
+ * separates by is its FILL, and the fill now asks the surface, which is the
+ * part that was actually broken: inside a Modal or a SidePanel this measured
+ * 1.00:1 — the exact colour of what it stood on — and it now measures 1.15
+ * light / 1.33-1.49 dark, the same separation a card already gives it.
  *
- * Same answer SegmentedControl already needed: a control must read on any surface. Drawn as an
- * inset shadow rather than a border so it costs no layout and cannot shift the label by a pixel. */
+ * That is below the 3:1 SC 1.4.11 asks of a component boundary, and it is a
+ * deliberate, recorded decision rather than an oversight: the label carries
+ * 4.5:1 and the shape is a filled pill. `npm run boundary` measures edge tokens
+ * and does not hold button fills to the floor, so this is not a check quietly
+ * switched off — it was never in scope. */
 .btn[data-variant="secondary"] {
-  background: var(--secondary);
+  background: var(--surface-contrast);
   color: var(--secondary-foreground);
-  box-shadow: inset 0 0 0 1px var(--border);
 }
 .btn[data-variant="secondary"]:hover,
-.btn[data-variant="secondary"][data-open] { background: var(--secondary-hover); }
+.btn[data-variant="secondary"][data-open] { background: var(--surface-contrast-hover); }
+.btn[data-variant="secondary"]:active { background: var(--surface-contrast-active); }
 
 .btn[data-variant="ghost"] {
   background: transparent;
@@ -81,6 +97,7 @@
 }
 .btn[data-variant="ghost"]:hover,
 .btn[data-variant="ghost"][data-open] { background: var(--accent-soft); }
+.btn[data-variant="ghost"]:active { background: var(--accent); }
 
 .btn[data-variant="destructive"] {
   background: var(--destructive);
@@ -88,6 +105,7 @@
 }
 .btn[data-variant="destructive"]:hover,
 .btn[data-variant="destructive"][data-open] { background: color-mix(in oklch, var(--destructive) 88%, black); }
+.btn[data-variant="destructive"]:active { background: color-mix(in oklch, var(--destructive) 76%, black); }
 
 /* Success: a prominent green action. Used where a state change demands an
  * obvious "apply" (e.g. regenerate a stale report), not for routine confirms. */
@@ -97,6 +115,7 @@
 }
 .btn[data-variant="success"]:hover,
 .btn[data-variant="success"][data-open] { background: color-mix(in oklch, var(--success) 88%, black); }
+.btn[data-variant="success"]:active { background: color-mix(in oklch, var(--success) 76%, black); }
 
 /* Dark — solid neutral-dark fill (neutral-820), white text. */
 .btn[data-variant="dark"] {
@@ -105,6 +124,7 @@
 }
 .btn[data-variant="dark"]:hover,
 .btn[data-variant="dark"][data-open] { background: var(--foreground); }
+.btn[data-variant="dark"]:active { background: color-mix(in oklch, var(--foreground) 82%, white); }
 
 /* AI — the assistant's own action (open the assistant, generate, rewrite).
  * Violet rather than brand, so "the machine did this" never reads as a normal
@@ -115,6 +135,7 @@
 }
 .btn[data-variant="ai"]:hover,
 .btn[data-variant="ai"][data-open] { background: color-mix(in oklch, var(--ai) 88%, black); }
+.btn[data-variant="ai"]:active { background: color-mix(in oklch, var(--ai) 76%, black); }
 
 /* Link — brand-coloured inline text action, no button chrome. Resets the
  * control height/padding so it reads as a link, not a pill. */
@@ -122,10 +143,15 @@
   height: auto;
   padding-inline: 0;
   background: transparent;
-  color: var(--primary-accent);
+  /* Same token <Link> uses. This one is still a <button> — an action that looks
+   * like a link — and it has to be the same colour as a real link or the two
+   * read as different things while doing the same thing to the eye. */
+  color: var(--link);
 }
 .btn[data-variant="link"]:hover,
 .btn[data-variant="link"][data-open] {
   background: transparent;
+  color: var(--link-hover);
   text-decoration: underline;
 }
+.btn[data-variant="link"]:active { background: transparent; color: var(--primary-active); }

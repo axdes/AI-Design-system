@@ -21,7 +21,7 @@ const RESET = '\x1b[0m', RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m'
  * @param {number} budget.mainKb   largest single JS chunk, gzipped
  * @param {number} budget.totalKb  all shipped JS, gzipped
  * @param {string} [budget.dir]    where the build landed, default dist/assets
- * @param {string[]} [budget.exclude]  filename prefixes that are not shipped to
+ * @param {string[]} [budget.exclude]  filename fragments that are not shipped to
  *   users. The design system's `visual-*` chunk is the screenshot gallery: it
  *   imports the registry and every component, and no app user ever loads it.
  */
@@ -33,7 +33,7 @@ export function checkBundleSize({ mainKb, totalKb, dir = 'dist/assets', exclude 
 
   const files = readdirSync(dir)
     .filter((f) => f.endsWith('.js'))
-    .filter((f) => !exclude.some((p) => f.startsWith(p)))
+    .filter((f) => !exclude.some((p) => f.includes(p)))
   if (files.length === 0) {
     console.error(`No JS in ${dir} — nothing to measure, which is not a pass.`)
     process.exit(1)

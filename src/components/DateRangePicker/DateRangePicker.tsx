@@ -31,7 +31,11 @@ type Props = {
 /* A date-span field: one trigger, one <Calendar>, two picks. The first click
  * marks the start, the second closes with the ordered range (picking backwards
  * swaps the ends instead of failing). One date is <DatePicker>; this is the
- * from/to filter over a list or a report. */
+ * from/to filter over a list or a report. 
+   *
+   * Copy: the label names the span — "Reporting period" — and never says
+   * "from/to", which the two halves already say.
+   */
 export function DateRangePicker({
   value, onChange, min, max, label, placeholder = 'Select dates',
   locale = typeof document !== 'undefined' ? document.documentElement.lang || 'en' : 'en',

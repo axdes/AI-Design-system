@@ -24,6 +24,10 @@ type Props = {
  * text renders under it (a subtitle prop existed and was removed 2026-08-20 —
  * explanatory lines under titles are banned from this system; what used to live
  * there is content and belongs in the page body).
+ *
+ * Copy: the title is the record's own name, not its type — "Northwind Paper",
+ * not "Supplier detail". Nothing goes under it: an explanatory line there
+ * is content and belongs in the body.
  */
 export function PageHeader({ title, onBack, backLabel, inline, actions }: Props) {
   const { t } = useTranslation()

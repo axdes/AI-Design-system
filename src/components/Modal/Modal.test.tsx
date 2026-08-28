@@ -209,4 +209,64 @@ describe('Modal', () => {
 
     expect(opener).toHaveFocus()
   })
+
+  /* THE DECISION ROW. It replaced <FormModal> and <ConfirmDialog>, two blocks
+     that carried no behaviour and hand-built this row twice (2026-08-26). What
+     has to hold is what they were pinning: the order, the destructive colour,
+     and the two different kinds of "not yet". */
+  it('puts cancel before confirm and closes on cancel', async () => {
+    const onClose = vi.fn()
+    const onConfirm = vi.fn()
+    render(
+      <Modal open title="Edit" onClose={onClose} actions={{ onConfirm, confirmLabel: 'Save' }}>
+        body
+      </Modal>,
+    )
+    const buttons = screen.getAllByRole('button').filter((b) => /Cancel|Save/.test(b.textContent ?? ''))
+    expect(buttons.map((b) => b.textContent)).toEqual(['Cancel', 'Save'])
+    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+    expect(onClose).toHaveBeenCalled()
+    expect(onConfirm).not.toHaveBeenCalled()
+  })
+
+  it('colours a destructive commitment so a delete never looks like a save', () => {
+    render(
+      <Modal open title="Delete" onClose={() => undefined}
+        actions={{ onConfirm: () => undefined, confirmLabel: 'Delete', tone: 'destructive' }}>
+        This cannot be undone.
+      </Modal>,
+    )
+    expect(screen.getByRole('button', { name: 'Delete' })).toHaveAttribute('data-variant', 'destructive')
+  })
+
+  /* One word used to mean both across the two blocks: one disabled the button,
+     the other spun it. Split, so a caller says which it means. */
+  it('separates "in flight" from "nothing to confirm yet"', () => {
+    const { rerender } = render(
+      <Modal open title="Save" onClose={() => undefined}
+        actions={{ onConfirm: () => undefined, confirmLabel: 'Save', confirmDisabled: true }}>
+        body
+      </Modal>,
+    )
+    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+    rerender(
+      <Modal open title="Save" onClose={() => undefined}
+        actions={{ onConfirm: () => undefined, confirmLabel: 'Save', busy: true }}>
+        body
+      </Modal>,
+    )
+    expect(screen.getByRole('button', { name: /Save/ })).toHaveAttribute('data-loading', 'true')
+  })
+
+  it('lets actions win over a loose footer: a dialog has one foot', () => {
+    render(
+      <Modal open title="Edit" onClose={() => undefined}
+        actions={{ onConfirm: () => undefined }} footer={<span>loose</span>}>
+        body
+      </Modal>,
+    )
+    /* The dialog is portalled to document.body, so `container` never holds it. */
+    expect(document.querySelectorAll('.modal-footer')).toHaveLength(1)
+    expect(screen.queryByText('loose')).toBeNull()
+  })
 })

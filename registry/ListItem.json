@@ -1,15 +1,31 @@
 {
   "ref": "ListItem",
   "level": "molecule",
-  "description": "One clickable row of a list: leading media, title, meta and a trailing action, all inside the row's own hit area.",
+  "description": "One clickable row of a list: an optional marker, leading media, title, meta and a trailing action, all inside the row's own hit area.",
   "exports": [
     "ListItem"
   ],
   "main": "ListItem",
   "from": "@/components/ListItem",
   "slots": [],
-  "props": [],
+  "props": [
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false,
+      "description": "A marker at the head of the row, so the rows read as a list. One icon for the whole list."
+    }
+  ],
   "sourcePath": "src/components/ListItem/ListItem.tsx",
   "inherits": "ButtonHTMLAttributes<HTMLButtonElement>",
-  "example": "<ListItem onClick={() => undefined}>\n  <strong>Sarah Al-Mansouri</strong>\n  <span> Product designer</span>\n</ListItem>"
+  "variants": {
+    "icon": {
+      "prop": "icon",
+      "values": null
+    }
+  },
+  "uses": [
+    "Icon"
+  ],
+  "example": "<ListItem onClick={() => undefined}>\n  <strong>Ada Meridian</strong>\n  <span> Product designer</span>\n</ListItem>"
 }

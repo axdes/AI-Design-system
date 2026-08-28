@@ -1,0 +1,481 @@
+{
+  "$comment": "The layer under table-rules.json. That file answers WHICH TABLE a zone gets; this one answers what a COLUMN is made of. A column carries one kind of value for every row (a column that is a badge on some rows and a sentence on others is two columns), and the kind decides four things nobody should have to argue about again: which way it aligns, whether its width is fixed or flexible, whether it may be sorted, and what it owes. Consolidated 2026-08-23 from Handsontable's data-table anatomy (cell variants and states), setproduct's 2026 guide (cell content patterns, the fixed-plus-flexible width hybrid), PatternFly (truncation: four characters, never a header, the tooltip), Carbon (row height, toolbar, expansion), SAP Fiori (smart-table columns, micro charts in a cell, amount and currency together), NN/g (the four user tasks) and Pencil and Paper. The survey behind it is docs/RESEARCH-TABLE-CONTENT.md. check-screen-spec.mjs enforces it: a table zone that declares its columns is held to these rules, column by column.",
+  "cellKinds": {
+    "identifier": {
+      "means": "The record's own name or number: what the row IS.",
+      "useWhen": "Always. Every table has exactly one, and it is the first column.",
+      "notWhen": "Never absent, and never twice.",
+      "align": "start",
+      "width": "flexible",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": [
+          "CellStack",
+          "Link"
+        ]
+      },
+      "owes": [
+        "First column, and a row header (scope=\"row\") so a screen reader can say which record a value belongs to.",
+        "Human-readable: a UUID is not an identifier a person can use.",
+        "It is the link to the record, if the record has a page."
+      ],
+      "status": "built"
+    },
+    "identity": {
+      "means": "A person or a team as the value of a column.",
+      "useWhen": "The column answers 'who': an owner, an assignee, a requester.",
+      "notWhen": "Only a name is shown and no face is available \u2014 that is a text column.",
+      "align": "start",
+      "width": "flexible",
+      "sortable": true,
+      "components": {
+        "required": [
+          "Identity"
+        ],
+        "expect": [
+          "Avatar",
+          "AvatarGroup"
+        ]
+      },
+      "owes": [
+        "The face beside the name, never above it.",
+        "Several people are an AvatarGroup with a +N, not five faces in a row."
+      ],
+      "status": "built"
+    },
+    "text": {
+      "means": "A short value read as a word: a supplier, a place, a category.",
+      "useWhen": "The value is read, not compared as a quantity.",
+      "notWhen": "The value is a sentence: a column of sentences is a column that aligns nothing.",
+      "align": "start",
+      "width": "flexible",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": [
+          "Truncate"
+        ]
+      },
+      "owes": [
+        "One line, cut with an ellipsis, the whole value in a tooltip."
+      ],
+      "status": "built"
+    },
+    "number": {
+      "means": "A count or a quantity.",
+      "useWhen": "The values are compared down the column.",
+      "notWhen": "The digits are an identifier (an order number, a postcode): that reads as a word and starts.",
+      "align": "end",
+      "width": "fixed",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": []
+      },
+      "owes": [
+        "Tabular figures, which Td align=\"end\" brings.",
+        "The unit in the header, once, not in every cell."
+      ],
+      "status": "built"
+    },
+    "money": {
+      "means": "An amount with a currency.",
+      "useWhen": "The column is money.",
+      "notWhen": "A mixed-currency column where the codes differ per row still ends, but the code goes in the CELL (Fiori).",
+      "align": "end",
+      "width": "fixed",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": []
+      },
+      "owes": [
+        "One writing of an amount per system (lib/formatNumber money).",
+        "The currency in the header when the column is one currency."
+      ],
+      "status": "built"
+    },
+    "percent": {
+      "means": "A share, a rate, a completion.",
+      "useWhen": "The value is a ratio the reader compares.",
+      "notWhen": "The share is the point and the number is not: that is a measure, with a bar.",
+      "align": "end",
+      "width": "fixed",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": [
+          "Meter"
+        ]
+      },
+      "owes": [
+        "One decimal at most, and the same number of decimals down the column."
+      ],
+      "status": "built"
+    },
+    "date": {
+      "means": "When something happens or happened.",
+      "useWhen": "A due date, a created date, a period.",
+      "notWhen": "The reader thinks in 'how long ago', which is relative time.",
+      "align": "start",
+      "width": "fixed",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": [
+          "Time",
+          "DateBlock"
+        ]
+      },
+      "owes": [
+        "One format for the whole table.",
+        "A date is read as a word, so it starts even though it is digits."
+      ],
+      "status": "built"
+    },
+    "relative-time": {
+      "means": "How long ago something happened.",
+      "useWhen": "A stream, an activity log, a 'last seen' column.",
+      "notWhen": "The exact moment matters (an audit, a schedule) \u2014 that is a date.",
+      "align": "start",
+      "width": "fixed",
+      "sortable": true,
+      "components": {
+        "required": [
+          "Time"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "The exact timestamp underneath, which Time already carries."
+      ],
+      "status": "built"
+    },
+    "status": {
+      "means": "Which state a record is in.",
+      "useWhen": "A workflow state, an outcome, a health.",
+      "notWhen": "The value is free text \u2014 a status is a closed set or it is not a status.",
+      "align": "start",
+      "width": "fixed",
+      "sortable": true,
+      "components": {
+        "required": [
+          "Badge"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "One word, one tone per state, and the word carries it: colour alone is not information.",
+        "Sorted in the order the workflow runs, never alphabetically."
+      ],
+      "status": "built"
+    },
+    "tags": {
+      "means": "Several labels on one record.",
+      "useWhen": "Free-form labelling: topics, areas, skills.",
+      "notWhen": "There is exactly one, which is a status or a text column.",
+      "align": "start",
+      "width": "flexible",
+      "sortable": false,
+      "components": {
+        "required": [
+          "TagGroup"
+        ],
+        "expect": [
+          "Tag"
+        ]
+      },
+      "owes": [
+        "Two visible plus a counted overflow that names the rest: a wrapped wall of pills makes every row a different height."
+      ],
+      "status": "built"
+    },
+    "boolean": {
+      "means": "Supported or not, included or not.",
+      "useWhen": "The column is a yes or a no for every row.",
+      "notWhen": "There is a third state (unknown, partial) \u2014 that is a status.",
+      "align": "center",
+      "width": "fixed",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": []
+      },
+      "owes": [
+        "A tick and a blank, each carrying its words for anyone not reading the shape."
+      ],
+      "status": "built"
+    },
+    "measure": {
+      "means": "A value on a scale, compared down the column.",
+      "useWhen": "The reader asks 'how much of it', not 'what is the number'.",
+      "notWhen": "The exact value is what is read: that is a number.",
+      "align": "start",
+      "width": "flexible",
+      "sortable": true,
+      "components": {
+        "required": [
+          "Meter"
+        ],
+        "expect": [
+          "Progress"
+        ]
+      },
+      "owes": [
+        "The bar and the number in one cell.",
+        "One scale for the whole column, named in the header."
+      ],
+      "status": "built"
+    },
+    "trend": {
+      "means": "The shape of a value over time.",
+      "useWhen": "The direction is the message.",
+      "notWhen": "The reader needs the values: that is a chart, on its own surface.",
+      "align": "start",
+      "width": "fixed",
+      "sortable": false,
+      "components": {
+        "required": [
+          "Sparkline"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "No axes, no tooltip, no legend: a sparkline that needs a legend is a chart in the wrong place."
+      ],
+      "status": "built"
+    },
+    "media": {
+      "means": "A picture that identifies the row.",
+      "useWhen": "A product, a document, a recording.",
+      "notWhen": "The picture IS the content and the row is a card \u2014 that is a card, not a table.",
+      "align": "start",
+      "width": "fixed",
+      "sortable": false,
+      "components": {
+        "required": [
+          "Thumbnail"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "A fixed box, so the image never drives the row height."
+      ],
+      "status": "built"
+    },
+    "link": {
+      "means": "A record that lives somewhere else.",
+      "useWhen": "The row points at a related thing: a supplier, a parent order, a ticket.",
+      "notWhen": "It points at ITSELF \u2014 that is the identifier, which is already the link.",
+      "align": "start",
+      "width": "flexible",
+      "sortable": true,
+      "components": {
+        "required": [],
+        "expect": [
+          "Link",
+          "EntityLink"
+        ]
+      },
+      "owes": [
+        "The value is the link. A column of 'View' verbs is a column with no data in it."
+      ],
+      "status": "built"
+    },
+    "actions": {
+      "means": "What can be done to this row.",
+      "useWhen": "Rows are acted on one at a time.",
+      "notWhen": "One action applies to many rows: that is a selection table and a batch bar.",
+      "align": "end",
+      "width": "fixed",
+      "sortable": false,
+      "components": {
+        "required": [],
+        "expect": [
+          "IconButton",
+          "Tooltip",
+          "Dropdown",
+          "Button"
+        ]
+      },
+      "owes": [
+        "Last column, aligned to the end.",
+        "Under three actions are icon buttons with tooltips; more go in a menu.",
+        "Always visible: an action revealed on hover does not exist on a touch screen."
+      ],
+      "status": "built"
+    },
+    "select": {
+      "means": "The checkbox that picks the row.",
+      "useWhen": "The table is a selection table.",
+      "notWhen": "Nothing is ever picked.",
+      "align": "center",
+      "width": "fixed",
+      "sortable": false,
+      "components": {
+        "required": [
+          "Checkbox"
+        ],
+        "expect": [
+          "BatchActions"
+        ]
+      },
+      "owes": [
+        "First column, before the identifier.",
+        "A tri-state header checkbox, never a two-state one."
+      ],
+      "status": "built"
+    },
+    "empty": {
+      "means": "No value, said out loud.",
+      "useWhen": "Any column whose value can be absent.",
+      "notWhen": "Never a kind of its own in a spec: it is what every other kind owes.",
+      "align": "start",
+      "width": "flexible",
+      "sortable": false,
+      "components": {
+        "required": [],
+        "expect": []
+      },
+      "owes": [
+        "'None', 'Not set' or '0' \u2014 no value and zero are not the same fact, and a blank cell reads as a rendering failure."
+      ],
+      "status": "built"
+    }
+  },
+  "rules": [
+    {
+      "id": "C1",
+      "title": "The identifier is first, and it is a row header",
+      "when": {
+        "cell": [
+          "identifier"
+        ]
+      },
+      "expect": {
+        "first": true,
+        "rowHeader": true
+      },
+      "because": "A screen reader says the row header with every value in the row; a table whose first column is not the record's name is a grid of numbers belonging to nobody (NN/g: the human-readable identifier first)."
+    },
+    {
+      "id": "C2",
+      "title": "Compared quantities end, read values start",
+      "when": {
+        "cell": [
+          "number",
+          "money",
+          "percent"
+        ]
+      },
+      "expect": {
+        "align": "end"
+      },
+      "because": "Digits compare by place value only when they line up, and tabular figures come with the end alignment. Dates, IDs and postcodes are digits that are READ, so they start."
+    },
+    {
+      "id": "C3",
+      "title": "Actions are last and select is first",
+      "when": {
+        "cell": [
+          "actions"
+        ]
+      },
+      "expect": {
+        "last": true,
+        "align": "end"
+      },
+      "because": "The row is read from its name to what can be done about it. A verb in the middle of the data is a verb nobody finds twice."
+    },
+    {
+      "id": "C4",
+      "title": "A column nobody compares does not sort",
+      "when": {
+        "cell": [
+          "tags",
+          "trend",
+          "media",
+          "actions",
+          "select",
+          "empty"
+        ]
+      },
+      "expect": {
+        "sortable": false
+      },
+      "because": "A sortable header promises an order; a column of pictures, pills or buttons has none, and the promise costs a control in every header."
+    },
+    {
+      "id": "C5",
+      "title": "One two-line column, and only one",
+      "when": {
+        "cell": [
+          "identifier",
+          "identity"
+        ]
+      },
+      "expect": {
+        "stacked": "allowed"
+      },
+      "because": "Two facts in one cell is what makes a row scannable at all (a name over its email); two columns doing it makes the row a paragraph."
+    }
+  ],
+  "hard": [
+    {
+      "id": "CH1",
+      "when": {
+        "cell": [
+          "prose"
+        ]
+      },
+      "forbid": [
+        "*"
+      ],
+      "instead": "expandable",
+      "because": "A column of sentences aligns nothing (selection-rules R7). The text belongs in an expandable row or on the record."
+    },
+    {
+      "id": "CH2",
+      "when": {
+        "cell": [
+          "status"
+        ]
+      },
+      "forbid": [
+        "align:end"
+      ],
+      "instead": "start",
+      "because": "A badge pushed to the end of a wide column floats away from the value it describes."
+    }
+  ],
+  "notes": [
+    {
+      "id": "CN-columns",
+      "when": {
+        "minColumns": 8
+      },
+      "if": "any",
+      "say": "eight columns or more: turn columns off (ColumnPicker), freeze the identifier (Table stickyColumn) and put the long tail in an expandable row, in that order. A twenty-column table is usually a pivot that has not been written as one."
+    },
+    {
+      "id": "CN-width",
+      "when": {},
+      "if": "any",
+      "say": "fix the predictable columns (status, date, actions, select) and let the text ones flex, with a minimum on each: a table whose every column is content-sized re-flows as the data changes."
+    },
+    {
+      "id": "CN-truncate",
+      "when": {},
+      "if": "text",
+      "say": "a text column truncates with <Truncate>: one line, an ellipsis, the whole value in a tooltip. Wrapping is for the one description column a table is allowed, and three lines is a paragraph."
+    },
+    {
+      "id": "CN-unit",
+      "when": {},
+      "if": "money",
+      "say": "the currency goes in the header when the column is one currency, and in the cell when the rows differ (Fiori). Not both."
+    }
+  ],
+  "$componentsNote": "Every component named above is in the registry and is built. Truncate, CellStack, TagGroup and Thumbnail were built with this file on 2026-08-23; the rest already existed and were only waiting to be told which column they belong in."
+}

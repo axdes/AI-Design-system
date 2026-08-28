@@ -23,7 +23,12 @@ type Props = {
 }
 
 /** One plan in a pricing row: what it is called, what it costs, what it includes
- *  and the single action that takes it. */
+ *  and the single action that takes it. 
+ *
+ * Copy: the name is what the reader will call it afterwards, not a tier number.
+ * Features are outcomes, not switches: "Everyone sees the same board", not
+ * "Shared board: yes". The price says its period every time.
+ */
 export function PlanCard({
   name, price, period, description, features, action, recommended, recommendedLabel = 'Recommended', className,
 }: Props) {

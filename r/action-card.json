@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "action-card",
+  "type": "registry:ui",
+  "title": "ActionCard",
+  "description": "A question put to THIS reader, answered on the spot: the ask, the context it needs, the answers, and — once given — the outcome in place of them. Reach for <Alert> when the card only informs, and for a plain <Card> when the decision really happens on another screen. Copy: the title is the question put to THIS reader, phrased as a question. The body carries only what the answer needs; anything else",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/card.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/meta-item.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ActionCard/ActionCard.css",
+      "content": "/* The answers sit together at the foot of the card, reading order first: this\n * is one question with two answers, not two unrelated controls at opposite\n * ends. CardMeta is not used for them because it spreads its children. */\n.action-card-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: var(--space-3);\n  margin-block-start: auto;\n  padding-block-start: var(--space-1);\n}\n.action-card-meta { display: flex; flex-wrap: wrap; gap: var(--space-3); }\n\n/* The outcome sits where the actions were, so the card's height does not jump\n * when it is answered. */\n\n.action-card-outcome {\n  display: flex;\n  align-items: center;\n  gap: var(--space-2);\n  margin: 0;\n  padding-block-start: var(--space-3);\n  margin-block-start: auto;\n  font-size: var(--font-sm);\n  color: var(--muted-foreground);\n}\n.action-card-outcome[data-tone=\"success\"] { color: var(--success-emphasis); }\n.action-card-outcome[data-tone=\"danger\"] { color: var(--destructive-emphasis); }\n",
+      "type": "registry:ui",
+      "target": "@ui/ActionCard/ActionCard.css"
+    },
+    {
+      "path": "src/components/ActionCard/ActionCard.tsx",
+      "content": "import \"./ActionCard.css\";\nimport type { ReactNode } from \"react\";\nimport { cn } from \"../lib/cn\";\nimport { Card, CardHeader, CardTitle } from \"../Card\";\nimport { Icon, type IconName } from \"../Icon\";\nimport { MetaItem } from \"../MetaItem\";\n\ntype Tone = \"success\" | \"danger\" | \"neutral\";\n\ntype Resolved = {\n  /** What the answer was: success for the affirmative one, danger for the\n   *  refusal, neutral for anything that expired or was withdrawn. */\n  tone: Tone;\n  /** The outcome as a sentence in the past tense: \"Approved by you, 10:24\". */\n  text: ReactNode;\n};\n\ntype Props = {\n  /** The question, in the words the reader would use to answer it. */\n  title: ReactNode;\n  /** The answers, as <Button>s. Two is the usual number; three is the limit\n   *  before the card is really a form. */\n  actions: ReactNode;\n  /** What kind of request this is: \"Approval\", \"Access request\". */\n  eyebrow?: ReactNode;\n  /** Facts the decision needs: who asked, when, how much. */\n  meta?: ReactNode;\n  /** The context of the request — a Descriptions of fields, a paragraph, an\n   *  Identity of who is asking. */\n  children?: ReactNode;\n  /** Once answered, the card states the outcome instead of the actions, so\n   *  nobody answers twice and nobody wonders whether it went through. */\n  resolved?: Resolved;\n  className?: string;\n};\n\nconst ICON: Record<Tone, IconName> = { success: \"check_circle\", danger: \"close\", neutral: \"info\" };\n\n/** A question put to THIS reader, answered on the spot: the ask, the context it\n *  needs, the answers, and — once given — the outcome in place of them. Reach\n *  for <Alert> when the card only informs, and for a plain <Card> when the\n *  decision really happens on another screen. \n *\n * Copy: the title is the question put to THIS reader, phrased as a question. The\n * body carries only what the answer needs; anything else belongs behind\n * the record.\n */\nexport function ActionCard({ title, actions, eyebrow, meta, children, resolved, className }: Props) {\n  return (\n    <Card className={cn(\"action-card\", className)} data-resolved={resolved ? resolved.tone : undefined}>\n      {eyebrow && (\n        <CardHeader>\n          <MetaItem appearance=\"eyebrow\">{eyebrow}</MetaItem>\n        </CardHeader>\n      )}\n      <CardTitle>{title}</CardTitle>\n      {children}\n      {meta && <div className=\"action-card-meta\">{meta}</div>}\n      {resolved ? (\n        <p className=\"action-card-outcome\" data-tone={resolved.tone}>\n          <Icon name={ICON[resolved.tone]} size=\"sm\" />\n          {resolved.text}\n        </p>\n      ) : (\n        <div className=\"action-card-actions\">{actions}</div>\n      )}\n    </Card>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ActionCard/ActionCard.tsx"
+    },
+    {
+      "path": "src/components/ActionCard/index.ts",
+      "content": "export { ActionCard } from \"./ActionCard\";\n",
+      "type": "registry:ui",
+      "target": "@ui/ActionCard/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/ActionCard.json"
+}

@@ -21,7 +21,7 @@ const QUEUE: Report[] = [
 export function Screen() {
   const [approved, setApproved] = useState<string[]>([])
   return (
-    <Grid min="16rem" gap={4}>
+    <Grid gap={4}>
       {QUEUE.map((r) => (
         <Card key={r.id} fill>
           <CardHeader>

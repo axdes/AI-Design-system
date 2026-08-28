@@ -1,0 +1,1 @@
+export { IconDisc } from './IconDisc'

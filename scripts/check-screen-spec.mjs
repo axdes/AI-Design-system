@@ -31,7 +31,7 @@
  */
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { makeRuleEngine, checkPriority, checkPrimaryActions, checkContentModel } from './lib/spec-rules.mjs'
+import { makeLifecycleEngine, makeRuleEngine, makeCardEngine, makeFormEngine, makeTableEngine, makeCellEngine, checkPriority, checkPrimaryActions, checkContentModel } from './lib/spec-rules.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const DIR = `${ROOT}/screen-specs`
@@ -89,11 +89,290 @@ const rulesFileProblems = engine.representationComponents
   .filter((c) => !owner.has(c))
   .map((c) => `selection-rules.json: a representation names <${c}>, which is not in the registry`)
 
+/* The layer under "cards": which FAMILY of card, chosen by what it carries and
+ * what the reader does with it. Same shape as above — data in
+ * screen-specs/card-rules.json, engine in lib, this file only runs it. */
+const cardDoc = JSON.parse(readFileSync(`${DIR}/card-rules.json`, 'utf8'))
+const cards = makeCardEngine(cardDoc, { collectionTasks: rulesDoc.collectionTasks })
+
+/* Same rot check, one level down: a family built from a component the registry
+ * does not have would quietly stop being buildable. A family still `planned`
+ * is allowed to name components that do not exist yet — that is what planned
+ * means — and the gate rejects USING one, which is the part that matters. */
+for (const f of cardDoc.families ?? []) {
+  if (f.status === 'planned') continue
+  for (const c of f.components?.required ?? []) {
+    if (!owner.has(c) && !blocks.includes(c)) {
+      rulesFileProblems.push(`card-rules.json: family "${f.id}" is built from <${c}>, which is not in the registry`)
+    }
+  }
+}
+for (const r of cardDoc.rules ?? []) {
+  for (const id of r.choose ?? []) {
+    if (!cards.familyIds.includes(id)) rulesFileProblems.push(`card-rules.json: rule ${r.id} chooses family "${id}", which does not exist`)
+  }
+}
+
+/* The layer on the other side of the screen: which KIND of form a zone that
+ * takes input is, chosen by its size, its familiarity, its context and how it
+ * commits. Data in screen-specs/form-rules.json, engine in lib, this file only
+ * runs it. */
+const formDoc = JSON.parse(readFileSync(`${DIR}/form-rules.json`, 'utf8'))
+const forms = makeFormEngine(formDoc)
+
+/* Same rot check, one layer along: a kind built from a component the registry
+ * does not have would quietly stop being buildable. `planned` kinds are allowed
+ * to name what does not exist yet — that is what planned means — and the gate
+ * rejects USING one. */
+for (const [id, kind] of Object.entries(formDoc.formKinds ?? {})) {
+  if (kind.status === 'planned') continue
+  for (const c of [...(kind.components?.required ?? []), ...(kind.templates ?? [])]) {
+    if (!owner.has(c) && !blocks.includes(c)) {
+      rulesFileProblems.push(`form-rules.json: kind "${id}" is built from <${c}>, which is not in the registry`)
+    }
+  }
+}
+for (const r of formDoc.rules ?? []) {
+  for (const id of r.choose ?? []) {
+    if (!forms.kindIds.includes(id)) rulesFileProblems.push(`form-rules.json: rule ${r.id} chooses kind "${id}", which does not exist`)
+  }
+}
+for (const h of formDoc.hard ?? []) {
+  for (const id of [...(h.forbid ?? []), h.instead].filter(Boolean)) {
+    if (!forms.kindIds.includes(id)) rulesFileProblems.push(`form-rules.json: hard rule ${h.id} names kind "${id}", which does not exist`)
+  }
+}
+
+/* The layer under "table": which KIND of table a zone that shows one is,
+ * chosen by what a row is, what the reader does, how many rows there are and
+ * whether a cell interacts. Data in screen-specs/table-rules.json, engine in
+ * lib, this file only runs it. */
+const tableDoc = JSON.parse(readFileSync(`${DIR}/table-rules.json`, 'utf8'))
+const tables = makeTableEngine(tableDoc)
+
+for (const [id, kind] of Object.entries(tableDoc.tableKinds ?? {})) {
+  if (kind.status === 'planned') continue
+  for (const c of kind.components?.required ?? []) {
+    if (!owner.has(c) && !blocks.includes(c)) {
+      rulesFileProblems.push(`table-rules.json: kind "${id}" is built from <${c}>, which is not in the registry`)
+    }
+  }
+}
+for (const r of tableDoc.rules ?? []) {
+  for (const id of r.choose ?? []) {
+    if (!tables.kindIds.includes(id)) rulesFileProblems.push(`table-rules.json: rule ${r.id} chooses kind "${id}", which does not exist`)
+  }
+}
+for (const h of tableDoc.hard ?? []) {
+  for (const id of [...(h.forbid ?? []), h.instead].filter(Boolean)) {
+    if (!tables.kindIds.includes(id)) rulesFileProblems.push(`table-rules.json: hard rule ${h.id} names kind "${id}", which does not exist`)
+  }
+}
+
+/* A family that decides nothing a reader can SEE is a rule without a picture.
+ * card-rules.json names 31 of them and, until 2026-08-25, the system rendered
+ * none: a family is a composition, so no component's golden example is one.
+ * src/specimens/cards.tsx holds them. It fails BOTH ways: a family with no
+ * specimen, and a specimen for a family that does not exist.
+ *
+ * The first half was a warning until 2026-08-26 — right while the specimens
+ * were being written family by family, since a gate that went red on the first
+ * one would have stopped them being written at all, and wrong from the moment
+ * the last one landed. A mutation test is what found it: deleting a specimen
+ * left the gate green and printed "30/31" in grey. Coverage that only counts
+ * is not a check. */
+const readSpecimens = (file) => {
+  /* Two things a coverage check must not care about: how the key is quoted, and
+     how the body is written. 'verified-confirm' cannot be a bare identifier,
+     and `() => column(...)` is as much a specimen as `() => (…)`. The old
+     pattern demanded a parenthesised body and reported three real specimens as
+     missing across three layers before anyone noticed it was the READER that
+     was wrong (2026-08-26). Anything at the map's own indent counts. */
+  const src = readFileSync(`${DIR}/../src/specimens/${file}`, 'utf8')
+  return [...src.matchAll(/^ {2}'?([a-z-]+)'?: \(\) =>/gm)].map((m) => m[1])
+}
+const specimenIds = readSpecimens('cards.tsx')
+const formSpecimenIds = readSpecimens('forms.tsx')
+const tableSpecimenIds = readSpecimens('tables.tsx')
+const cellSpecimenIds = readSpecimens('cells.tsx')
+const familyIds = (cardDoc.families ?? []).map((f) => f.id)
+for (const id of specimenIds) {
+  if (!familyIds.includes(id)) rulesFileProblems.push(`src/specimens/cards.tsx: specimen "${id}" is not a card family`)
+}
+const missingSpecimens = familyIds.filter((id) => !specimenIds.includes(id))
+for (const id of missingSpecimens) {
+  rulesFileProblems.push(`src/specimens/cards.tsx: card family "${id}" has no specimen — the rules can choose it and nobody has seen it`)
+}
+
+/* Forms and tables are held to the same standard as the card families: a kind
+ * the rules can choose and nobody has ever seen is a rule taught blind. They
+ * had no specimens at all until 2026-08-26, which is why this is a check and
+ * not a note — the coverage went to 18/18 and 20/20 the day it was written, so
+ * anything less from here is a regression, not a backlog. */
+const formKindIds = Object.keys(formDoc.formKinds ?? {})
+const tableKindIds = Object.keys(tableDoc.tableKinds ?? {})
+for (const id of formSpecimenIds) {
+  if (!formKindIds.includes(id)) rulesFileProblems.push(`src/specimens/forms.tsx: specimen "${id}" is not a form kind`)
+}
+for (const id of tableSpecimenIds) {
+  if (!tableKindIds.includes(id)) rulesFileProblems.push(`src/specimens/tables.tsx: specimen "${id}" is not a table kind`)
+}
+for (const id of formKindIds.filter((k) => !formSpecimenIds.includes(k))) {
+  rulesFileProblems.push(`src/specimens/forms.tsx: form kind "${id}" has no specimen — the rules can choose it and nobody has seen it`)
+}
+for (const id of tableKindIds.filter((k) => !tableSpecimenIds.includes(k))) {
+  rulesFileProblems.push(`src/specimens/tables.tsx: table kind "${id}" has no specimen — the rules can choose it and nobody has seen it`)
+}
+
+/* The LIFECYCLE layer: what the screen DOES to the resource, and the three
+ * decisions that hang off it — which variant of a detail page, which shape an
+ * edit takes, how hard a destruction is to confirm. Data in
+ * screen-specs/lifecycle-rules.json, engine in lib, this file only runs it. */
+const lifeDoc = JSON.parse(readFileSync(`${DIR}/lifecycle-rules.json`, 'utf8'))
+const life = makeLifecycleEngine(lifeDoc)
+
+/* The same rot check the layers beside it get: a kind built from a component
+ * the registry does not have would quietly stop being buildable. `planned`
+ * kinds are allowed to name what does not exist yet — that is what planned
+ * means — and using one is what the gate rejects. */
+for (const [group, kinds] of [['detailVariants', lifeDoc.detailVariants], ['editKinds', lifeDoc.editKinds], ['deleteKinds', lifeDoc.deleteKinds]]) {
+  for (const [id, kind] of Object.entries(kinds ?? {})) {
+    if (kind.status === 'planned') continue
+    for (const c of [...(kind.components?.required ?? []), ...(kind.components?.oneOf ?? [])]) {
+      if (!owner.has(c) && !blocks.includes(c)) {
+        rulesFileProblems.push(`lifecycle-rules.json: ${group} "${id}" is built from <${c}>, which is not in the registry`)
+      }
+    }
+  }
+}
+for (const [group, rules, ids] of [['detailRules', lifeDoc.detailRules, life.detailIds], ['editRules', lifeDoc.editRules, life.editIds], ['deleteRules', lifeDoc.deleteRules, life.deleteIds]]) {
+  for (const r of rules ?? []) {
+    for (const id of r.choose ?? []) {
+      if (!ids.includes(id)) rulesFileProblems.push(`lifecycle-rules.json: ${group} rule ${r.id} chooses "${id}", which does not exist`)
+    }
+  }
+}
+for (const h of lifeDoc.hard ?? []) {
+  for (const id of [...(h.forbid ?? []), h.instead].filter(Boolean)) {
+    if (!life.deleteIds.includes(id)) rulesFileProblems.push(`lifecycle-rules.json: hard rule ${h.id} names delete kind "${id}", which does not exist`)
+  }
+}
+/* And the cross-check that keeps the two axes in step: every archetype the
+ * shape layer knows has to say which stages it serves, and no other. */
+for (const id of Object.keys(rulesDoc.archetypes ?? {})) {
+  if (!lifeDoc.archetypeStages?.[id]) rulesFileProblems.push(`lifecycle-rules.json: archetype "${id}" exists in selection-rules.json and names no lifecycle stage`)
+}
+for (const [id, stages] of Object.entries(lifeDoc.archetypeStages ?? {})) {
+  if (!rulesDoc.archetypes?.[id]) rulesFileProblems.push(`lifecycle-rules.json: archetypeStages names "${id}", which is not an archetype`)
+  for (const st of stages) {
+    if (!life.stageIds.includes(st)) rulesFileProblems.push(`lifecycle-rules.json: archetype "${id}" names stage "${st}", which does not exist`)
+  }
+}
+
+/* The GEOMETRY layer: which regions a page archetype has, which it may not
+ * have, and what shape its body takes. Data in screen-specs/page-rules.json,
+ * rendered by blocks/Page. Two ways this file can rot, and both are checked
+ * here rather than discovered on a screen:
+ *   1. it names a component, a shape or a region that does not exist, and
+ *   2. it disagrees with the PRESETS table inside Page.tsx, which is the same
+ *      decision at runtime — an archetype that means one thing to the gate and
+ *      another on screen is worse than no rule at all. */
+const pageDoc = JSON.parse(readFileSync(`${DIR}/page-rules.json`, 'utf8'))
+const pageRegions = Object.keys(pageDoc.regions ?? {})
+const pageShapes = Object.keys(pageDoc.shapes ?? {})
+const pageWidths = Object.keys(pageDoc.widths ?? {})
+const REGION_STATES = ['required', 'optional', 'forbidden']
+
+for (const [id, region] of Object.entries(pageDoc.regions ?? {})) {
+  if (region.carries === 'anything') continue
+  for (const c of region.carries ?? []) {
+    if (!owner.has(c) && !blocks.includes(c)) {
+      rulesFileProblems.push(`page-rules.json: region "${id}" carries <${c}>, which is not in the registry`)
+    }
+  }
+  for (const sh of region.onlyWithShape ?? []) {
+    if (!pageShapes.includes(sh)) rulesFileProblems.push(`page-rules.json: region "${id}" names shape "${sh}", which does not exist`)
+  }
+}
+
+/* page-rules and selection-rules name the SAME archetypes, and until 2026-08-23
+ * they quietly did not: one said `status`, the other `system`. Two files with
+ * two names for one archetype is the rot every cross-check here exists to
+ * stop, so the two vocabularies are held equal. */
+for (const id of Object.keys(rulesDoc.archetypes ?? {})) {
+  if (!pageDoc.archetypes?.[id]) rulesFileProblems.push(`page-rules.json: archetype "${id}" exists in selection-rules.json and has no geometry here`)
+}
+for (const id of Object.keys(pageDoc.archetypes ?? {})) {
+  if (!rulesDoc.archetypes?.[id]) rulesFileProblems.push(`page-rules.json: archetype "${id}" is not an archetype in selection-rules.json`)
+}
+for (const [id, a] of Object.entries(pageDoc.archetypes ?? {})) {
+  if (a.carriedBy && !owner.has(a.carriedBy) && !blocks.includes(a.carriedBy)) {
+    rulesFileProblems.push(`page-rules.json: archetype "${id}" is carried by <${a.carriedBy}>, which is not in the registry`)
+  }
+  if (!pageShapes.includes(a.shape)) rulesFileProblems.push(`page-rules.json: archetype "${id}" has shape "${a.shape}", which does not exist`)
+  if (!pageWidths.includes(a.width)) rulesFileProblems.push(`page-rules.json: archetype "${id}" has width "${a.width}", which does not exist`)
+  for (const [region, state] of Object.entries(a.regions ?? {})) {
+    if (!pageRegions.includes(region)) rulesFileProblems.push(`page-rules.json: archetype "${id}" names region "${region}", which does not exist`)
+    if (!REGION_STATES.includes(state)) rulesFileProblems.push(`page-rules.json: archetype "${id}" gives region "${region}" the state "${state}" — use ${REGION_STATES.join(' | ')}`)
+  }
+  for (const c of a.toolbarForbids ?? []) {
+    if (!owner.has(c) && !blocks.includes(c)) rulesFileProblems.push(`page-rules.json: archetype "${id}" forbids <${c}> in its toolbar, and that component is not in the registry`)
+  }
+}
+
+/* One line per archetype in Page.tsx, which is why this can be read rather than
+ * parsed. If the shape of that table changes, this check says so instead of
+ * quietly passing on nothing. */
+const pageSrc = readFileSync(`${ROOT}/src/blocks/Page/Page.tsx`, 'utf8')
+const presetLines = [...pageSrc.matchAll(/^\s{2}(\w+): \{ shape: '([^']+)', width: '([^']+)'(?:, align: '([^']+)')? \},$/gm)]
+if (presetLines.length !== Object.keys(pageDoc.archetypes ?? {}).length) {
+  rulesFileProblems.push(
+    `page-rules.json has ${Object.keys(pageDoc.archetypes ?? {}).length} archetype(s) and Page.tsx's PRESETS table reads as ${presetLines.length} — they are the same decision and must stay in step`,
+  )
+} else {
+  for (const [, id, shape, width, align] of presetLines) {
+    const a = pageDoc.archetypes[id]
+    if (!a) { rulesFileProblems.push(`Page.tsx presets an archetype "${id}" that page-rules.json does not define`); continue }
+    if (a.shape !== shape) rulesFileProblems.push(`archetype "${id}": page-rules.json says shape "${a.shape}", Page.tsx renders "${shape}"`)
+    if (a.width !== width) rulesFileProblems.push(`archetype "${id}": page-rules.json says width "${a.width}", Page.tsx renders "${width}"`)
+    if ((a.align ?? 'start') !== (align ?? 'start')) {
+      rulesFileProblems.push(`archetype "${id}": page-rules.json says align "${a.align ?? 'start'}", Page.tsx renders "${align ?? 'start'}"`)
+    }
+  }
+}
+
+/* And the layer under THAT: what a column is made of. A column carries one kind
+ * of value, and the kind decides its alignment, its width behaviour, whether it
+ * sorts and what it owes. Data in screen-specs/cell-rules.json. */
+const cellDoc = JSON.parse(readFileSync(`${DIR}/cell-rules.json`, 'utf8'))
+
+/* The cell layer, held like the three above it. Declared here because this is
+   where cell-rules.json is read. */
+const cellKindIds = Object.keys(cellDoc.cellKinds ?? {})
+for (const id of cellSpecimenIds) {
+  if (!cellKindIds.includes(id)) rulesFileProblems.push(`src/specimens/cells.tsx: specimen "${id}" is not a cell kind`)
+}
+for (const id of cellKindIds.filter((k) => !cellSpecimenIds.includes(k))) {
+  rulesFileProblems.push(`src/specimens/cells.tsx: cell kind "${id}" has no specimen — the rules can choose it and nobody has seen it`)
+}
+const cells = makeCellEngine(cellDoc)
+
+for (const [id, kind] of Object.entries(cellDoc.cellKinds ?? {})) {
+  if (kind.status === 'planned') continue
+  for (const c of [...(kind.components?.required ?? []), ...(kind.components?.expect ?? [])]) {
+    if (!owner.has(c) && !blocks.includes(c)) {
+      rulesFileProblems.push(`cell-rules.json: cell kind "${id}" names <${c}>, which is not in the registry`)
+    }
+  }
+}
+
 /* Coverage across every spec, printed at the end like the behaviour line: a
  * collection zone that names no task is a zone the rules cannot see. */
 let questionCount = 0
 let acceptanceCount = 0
 const unchecked = []
+const uncheckedTables = []
+const uncheckedForms = []
 
 function validate(name, spec) {
   const out = []
@@ -212,15 +491,34 @@ function validate(name, spec) {
         continue
       }
       if (entry.status === 'deprecated') fail(`zone "${zone.name}": <${component}> is deprecated, do not build on it`)
+      /* A PART is held to its own props, never to its parent's: `CardMedia
+       * ratio` is real and `CardMedia flush` is not, and falling back to the
+       * parent's list would pass both. */
+      const slot = component === entry.main ? null : (entry.slots ?? []).find((sl) => sl.name === component)
+      const declaredProps = slot ? (slot.props ?? []) : (entry.props ?? [])
       for (const pin of pins) {
-        const [prop, value] = pin.split('=')
-        const declared = (entry.props ?? []).find((p) => p.name === prop)
+        const [path, value] = pin.split('=')
+        /* A pin may reach INTO an object prop: `Modal actions.tone=destructive`.
+         * The registry publishes an object prop's fields, so the leaf is held to
+         * the same standard as a top-level prop — existence and allowed values —
+         * rather than being waved through because it has a dot in it. */
+        const [prop, leaf] = path.split('.')
+        const declared = declaredProps.find((p) => p.name === prop)
         if (!declared) {
           fail(`zone "${zone.name}": <${component} ${prop}> — no such prop`)
           continue
         }
-        if (value && declared.values?.length && !declared.values.map(String).includes(value)) {
-          fail(`zone "${zone.name}": <${component} ${prop}="${value}"> — allowed values are ${declared.values.join(' | ')}`)
+        let target = declared
+        if (leaf) {
+          const field = (declared.fields ?? []).find((f) => f.name === leaf)
+          if (!field) {
+            fail(`zone "${zone.name}": <${component} ${path}> — <${component} ${prop}> has no field "${leaf}"`)
+            continue
+          }
+          target = field
+        }
+        if (value && target.values?.length && !target.values.map(String).includes(value)) {
+          fail(`zone "${zone.name}": <${component} ${path}="${value}"> — allowed values are ${target.values.join(' | ')}`)
         }
       }
     }
@@ -242,6 +540,7 @@ function validate(name, spec) {
   }
   if (spec.acceptance?.length) acceptanceCount++
   collect(engine.checkArchetype(spec, allComponents))
+  collect(life.checkLifecycle(spec))
   collect(checkPrimaryActions(spec.zones))
   collect(checkPriority(spec))
   if (spec.primaryQuestion) questionCount++
@@ -249,6 +548,14 @@ function validate(name, spec) {
     const r = engine.checkZone(zone)
     collect(r)
     if (r.unchecked) unchecked.push(`${name}/${zone.name}`)
+    collect(cards.checkCardZone(zone, engine.detect(zone)))
+    const f = forms.checkFormZone(zone, spec)
+    collect(f)
+    if (f.unchecked) uncheckedForms.push(`${name}/${zone.name}`)
+    const tbl = tables.checkTableZone(zone, engine.detect(zone))
+    collect(tbl)
+    if (tbl.unchecked) uncheckedTables.push(`${name}/${zone.name}`)
+    collect(cells.checkColumns(zone))
   }
 
   /* States: the ones that exist must be described in terms of a real component,
@@ -268,7 +575,7 @@ const arg = process.argv[2]
 const files = arg
   ? [arg]
   : existsSync(DIR)
-    ? readdirSync(DIR).filter((f) => f.endsWith('.json') && f !== 'schema.json' && !f.endsWith('.schema.json') && f !== 'selection-rules.json').map((f) => `${DIR}/${f}`)
+    ? readdirSync(DIR).filter((f) => f.endsWith('.json') && f !== 'schema.json' && !f.endsWith('.schema.json') && f !== 'selection-rules.json' && f !== 'card-rules.json' && f !== 'form-rules.json' && f !== 'table-rules.json' && f !== 'cell-rules.json' && f !== 'page-rules.json' && f !== 'lifecycle-rules.json').map((f) => `${DIR}/${f}`)
     : []
 
 if (!files.length) {
@@ -281,7 +588,7 @@ let failed = 0
 const parsedSpecs = {}
 if (rulesFileProblems.length) {
   failed++
-  console.log(`  \x1b[31m✗ selection-rules\x1b[0m (${rulesFileProblems.length})`)
+  console.log(`  \x1b[31m✗ decision rules\x1b[0m (${rulesFileProblems.length})`)
   for (const p of rulesFileProblems) console.log(`      ${p}`)
 }
 for (const file of files) {
@@ -378,7 +685,11 @@ const withBehaviours = files.filter((f) => {
 }).length
 console.log(`  \x1b[2mbehaviour: ${behaviourCount} scenario(s) across ${withBehaviours}/${files.length} screens; ${proven} proven by a test, ${pending.length} pending\x1b[0m`)
 console.log(`  \x1b[2mdecision: ${questionCount}/${files.length} screens name their primaryQuestion; ${acceptanceCount}/${files.length} carry acceptance criteria; ${unchecked.length} collection zone(s) the rules cannot see${modelCount ? `; ${modelCount} content model(s), ${objectCount} object(s)` : ''}\x1b[0m`)
+console.log(`  \x1b[2m${specimenIds.length}/${familyIds.length} card families, ${formSpecimenIds.length}/${formKindIds.length} form kinds and ${tableSpecimenIds.length}/${tableKindIds.length} table kinds, ${cellSpecimenIds.length}/${cellKindIds.length} cell kinds have a rendered specimen\x1b[0m`)
+if (missingSpecimens.length) console.log(`      \x1b[33m!\x1b[0m \x1b[2mno picture yet: ${missingSpecimens.join(', ')}\x1b[0m`)
 for (const z of unchecked) console.log(`      \x1b[33m!\x1b[0m \x1b[2m${z} shows a collection but names no task — say what the user does there and the representation rules apply\x1b[0m`)
+for (const z of uncheckedForms) console.log(`      \x1b[33m!\x1b[0m \x1b[2m${z} takes input but names no task — say task: "input" plus data.commit and the form rules apply\x1b[0m`)
+for (const z of uncheckedTables) console.log(`      \x1b[33m!\x1b[0m \x1b[2m${z} shows a table but names no task — say what the user does there and the table rules apply\x1b[0m`)
 for (const p of pending) console.log(`      \x1b[33m!\x1b[0m \x1b[2m${p}\x1b[0m`)
 if (withBehaviours < files.length) {
   console.log(`  \x1b[2m${files.length - withBehaviours} screen(s) describe only what they are MADE OF. A spec with no behaviours cannot be wrong, which is why it is worth so little.\x1b[0m`)

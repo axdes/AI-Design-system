@@ -1,0 +1,138 @@
+/* A LINE CHART: which way it is going, with the scale that says by how much.
+ *
+ * The system had a <Sparkline> (a shape beside a number, no axes on purpose)
+ * and a <BarChart> (categories), and nothing for the commonest analytical
+ * question of all — one or more measures over time, read against a grid.
+ *
+ * The scale, the grid, the goal line, the readout, the legend and the row of
+ * labels live in src/lib/chart.css: they are the same furniture every chart in
+ * this system wears. What is here is the MARK — the lines, their dots and the
+ * crosshair that reads them.
+ */
+.line-chart {
+  /* Local to this component: the three heights a line chart is read at, the
+   * width the scale column reserves, and the values set per element from the
+   * data (declared so the stylesheet stands on its own). */
+  --chart-height: calc(var(--space-16) * 1.75);
+  --chart-scale-width: 2.5rem;
+  --tick-at: 0%;
+  --dot-x: 0%;
+  --dot-y: 0%;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  min-inline-size: 0;
+}
+.line-chart[data-size="sm"] { --chart-height: var(--space-16); }
+.line-chart[data-size="lg"] { --chart-height: calc(var(--space-16) * 2.5); }
+
+.line-chart-plot {
+  position: relative;
+  flex: 1 1 auto;
+  block-size: 100%;
+  min-inline-size: 0;
+  /* The whole plot is the hit area for the crosshair: a reader should not have
+   * to find a 6px dot to be told what it says. */
+  touch-action: none;
+  cursor: crosshair;
+}
+.line-chart-plot > svg { display: block; inline-size: 100%; block-size: 100%; overflow: visible; }
+
+/* THE LINE. 2px, round joins, and the plot wipes itself in once: the shape
+ * arriving left to right is the same gesture the reader makes reading it.
+ *
+ * A WIPE, not a dash. The obvious way to draw a line on is a dash offset, and
+ * it does not survive this SVG: `preserveAspectRatio="none"` stretches the
+ * viewBox, `vector-effect: non-scaling-stroke` takes the stroke back out of
+ * that stretch, and the dash pattern ends up measured in one space and drawn in
+ * the other — the line came out in fragments with gaps between the months
+ * (measured 23.08, both with a percentage dash and with pathLength="1"). A clip
+ * on the plot is geometry the stretch does not touch. */
+.line-chart-plot > svg {
+  animation: line-chart-wipe var(--duration-slow) var(--ease-out) both;
+}
+@keyframes line-chart-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0); }
+}
+/* Right to left, the axis reads right to left, and so does the wipe. */
+[dir="rtl"] .line-chart-plot > svg {
+  transform: scaleX(-1);
+  animation-name: line-chart-wipe-rtl;
+}
+@keyframes line-chart-wipe-rtl {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0); }
+}
+
+.line-chart-line {
+  fill: none;
+  stroke: var(--chart-1);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.line-chart-area {
+  fill: var(--chart-1);
+  opacity: 0.12;
+}
+
+/* THE SERIES SLOTS, in fixed order — never cycled, so a filter that drops a
+ * line leaves the others the colour they were. */
+.line-chart-series[data-series="2"] .line-chart-line { stroke: var(--chart-2); }
+.line-chart-series[data-series="3"] .line-chart-line { stroke: var(--chart-3); }
+.line-chart-series[data-series="4"] .line-chart-line { stroke: var(--chart-4); }
+.line-chart-series[data-series="5"] .line-chart-line { stroke: var(--chart-5); }
+.line-chart-series[data-series="6"] .line-chart-line { stroke: var(--chart-6); }
+.line-chart-series[data-tone="success"] .line-chart-line { stroke: var(--chart-success); }
+.line-chart-series[data-tone="warning"] .line-chart-line { stroke: var(--chart-warning); }
+.line-chart-series[data-tone="danger"]  .line-chart-line { stroke: var(--chart-danger); }
+
+/* THE CROSSHAIR AND ITS DOTS. One vertical rule, one dot per series, so every
+ * line is read at the same x. */
+.line-chart-crosshair {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--dot-x);
+  inline-size: 1px;
+  background: var(--chart-grid);
+  pointer-events: none;
+}
+.line-chart-dot {
+  position: absolute;
+  inset-inline-start: var(--dot-x);
+  inset-block-start: var(--dot-y);
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  margin-inline-start: calc(var(--space-2) / -2);
+  margin-block-start: calc(var(--space-2) / -2);
+  border-radius: var(--radius-full);
+  background: var(--chart-1);
+  /* A ring in the surface colour, so a dot that lands on a grid line or on
+   * another series still reads as one mark. */
+  box-shadow: 0 0 0 var(--space-2xs) var(--card);
+  pointer-events: none;
+}
+.line-chart-dot[data-series="2"] { background: var(--chart-2); }
+.line-chart-dot[data-series="3"] { background: var(--chart-3); }
+.line-chart-dot[data-series="4"] { background: var(--chart-4); }
+.line-chart-dot[data-series="5"] { background: var(--chart-5); }
+.line-chart-dot[data-series="6"] { background: var(--chart-6); }
+.line-chart-dot[data-tone="success"] { background: var(--chart-success); }
+.line-chart-dot[data-tone="warning"] { background: var(--chart-warning); }
+.line-chart-dot[data-tone="danger"]  { background: var(--chart-danger); }
+
+/* The ends of a line are POINTS, not the middles of columns: the first and last
+ * labels sit under them rather than over a slot that is not there. */
+.line-chart .chart-labels > span:first-child { text-align: start; }
+.line-chart .chart-labels > span:last-child { text-align: end; }
+
+/* In a card the chart takes the spare height, the same way <BarChart> does. */
+.card > .line-chart { flex: 1 1 auto; }
+.card > .line-chart .chart-frame {
+  block-size: auto;
+  min-block-size: var(--chart-height);
+  flex: 1 1 auto;
+}

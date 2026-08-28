@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "expand-button",
+  "type": "registry:ui",
+  "title": "ExpandButton",
+  "description": "The chevron that opens and closes a row or a panel, with the rotation and the aria-expanded wiring already done. Copy: the label names what opens, not the direction — \"Show the transcript\", not \"Expand\".",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ExpandButton/ExpandButton.css",
+      "content": "/* Pill button that's icon-only by default and expands to icon+label on hover\n * (and while `data-expanded` is set — useful when a dropdown is open). */\n.expand-button {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0;\n  height: var(--control-height);\n  min-width: var(--control-height);\n  padding: 0;\n  border: none;\n  border-radius: var(--radius-full);\n  background: var(--primary);\n  color: var(--primary-foreground);\n  font-size: var(--font-sm);\n  font-weight: var(--font-weight-regular);\n  font-family: inherit;\n  cursor: pointer;\n  transition: background var(--duration-fast), gap var(--duration-fast), padding var(--duration-fast), min-width var(--duration-fast);\n  overflow: hidden;\n}\n.expand-button:hover,\n.expand-button[data-expanded] {\n  background: var(--primary-hover);\n  padding: 0 var(--space-3);\n  min-width: 0;\n  gap: var(--space-1);\n}\n\n.expand-button-label,\n.expand-button-chevron {\n  max-width: 0;\n  opacity: 0;\n  transition: max-width var(--duration-fast), opacity var(--duration-fast);\n  overflow: hidden;\n  white-space: nowrap;\n}\n.expand-button:hover .expand-button-label,\n.expand-button:hover .expand-button-chevron,\n.expand-button[data-expanded] .expand-button-label,\n.expand-button[data-expanded] .expand-button-chevron {\n  max-width: 8rem;   /* label reveal cap */\n  opacity: 1;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ExpandButton/ExpandButton.css"
+    },
+    {
+      "path": "src/components/ExpandButton/ExpandButton.tsx",
+      "content": "import './ExpandButton.css'\nimport { type ButtonHTMLAttributes, type Ref } from 'react'\nimport { cn } from '../lib/cn'\nimport { Icon, type IconName } from '../Icon'\n\ntype Props = ButtonHTMLAttributes<HTMLButtonElement> & {\n  /** Forwarded to the underlying <button>. */\n  ref?: Ref<HTMLButtonElement>\n  /** Icon shown always (collapsed and expanded state). */\n  icon: IconName\n  /** Label shown when expanded (hover or active). */\n  label: string\n  /** Show a chevron indicating dropdown / disclosure. */\n  withChevron?: boolean\n  /** Force expanded state (for use inside open dropdowns). */\n  expanded?: boolean\n}\n\n/**\n * The chevron that opens and closes a row or a panel, with the rotation and\n * the aria-expanded wiring already done.\n *\n * Copy: the label names what opens, not the direction — \"Show the transcript\",\n * not \"Expand\".\n */\nexport function ExpandButton({ icon, label, withChevron, expanded, className, type = 'button', ref, ...rest }: Props) {\n  return (\n    <button\n      ref={ref}\n      type={type}\n      className={cn('expand-button', className)}\n      aria-label={label}\n      data-expanded={expanded || undefined}\n      {...rest}\n    >\n      <Icon name={icon} size=\"md\" />\n      <span className=\"expand-button-label\">{label}</span>\n      {withChevron && <Icon name=\"arrow_drop_down\" size=\"md\" className=\"expand-button-chevron\" />}\n    </button>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ExpandButton/ExpandButton.tsx"
+    },
+    {
+      "path": "src/components/ExpandButton/index.ts",
+      "content": "export { ExpandButton } from './ExpandButton'\n",
+      "type": "registry:ui",
+      "target": "@ui/ExpandButton/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/ExpandButton.json"
+}

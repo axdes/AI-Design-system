@@ -1,0 +1,68 @@
+/* A stack in a corner, above everything except a tooltip (--z-toast sits between
+ * the dropdown layer and the tooltip layer, which is what the scale already
+ * reserved for it). Fixed, so it does not move with the page under it. */
+.toast-stack {
+  position: fixed;
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* The region is only as wide as its widest toast, and never wider than the
+   * phone it is on. */
+  inline-size: min(24rem, calc(100vw - var(--space-8)));
+  /* Nothing to click through when the stack is empty. */
+  pointer-events: none;
+}
+.toast-stack > * { pointer-events: auto; }
+
+.toast-stack[data-side="bottom"] { inset-block-end: var(--space-6); }
+.toast-stack[data-side="top"] { inset-block-start: var(--space-6); }
+.toast-stack[data-align="end"] { inset-inline-end: var(--space-6); }
+.toast-stack[data-align="center"] { inset-inline: 0; margin-inline: auto; }
+/* Newest nearest the edge it came from. */
+.toast-stack[data-side="bottom"] { flex-direction: column-reverse; }
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border-radius: var(--popover-radius);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  /* Border AND shadow: the shadow says "floating", the border is what keeps the
+   * shape when it lands on a surface its own colour. */
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+/* The tone is a stripe of ink, not a tinted surface: a toast is read against
+ * whatever the page happens to be, and a tint that works on white goes muddy
+ * over a photograph. The icon carries the meaning, so colour is never alone. */
+.toast[data-tone="info"] .toast-icon { color: var(--primary-accent); }
+.toast[data-tone="success"] .toast-icon { color: var(--success-emphasis); }
+.toast[data-tone="warning"] .toast-icon { color: var(--warning-emphasis); }
+.toast[data-tone="danger"] .toast-icon { color: var(--destructive-emphasis); }
+.toast[data-tone="neutral"] .toast-icon { color: var(--icon-muted); }
+
+.toast-icon { flex: none; margin-block-start: var(--space-2xs); }
+.toast-body { flex: 1; min-inline-size: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.toast-title {
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-snug);
+}
+.toast-description {
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+  line-height: var(--leading-snug);
+}
+.toast-action { flex: none; align-self: center; }
+.toast-close { flex: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .toast { animation: toast-in var(--duration-normal) var(--ease-out); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(var(--space-2)); }
+  to { opacity: 1; transform: none; }
+}

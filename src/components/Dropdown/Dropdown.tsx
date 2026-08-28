@@ -1,10 +1,9 @@
 import './Dropdown.css'
-import { computePlacement, type Placement } from './placement'
+import { computePlacement, type Placement } from '../../lib/placement'
 import {
   useCallback,
   useEffect,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -16,6 +15,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
+import { useAnchoredLayer } from '../../lib/useAnchoredLayer'
 import { Icon, type IconName } from '../Icon'
 
 type Align = 'start' | 'end'
@@ -43,6 +43,10 @@ type DropdownProps = {
    *  at least the trigger's width but growing with longer content. Default
    *  false (intrinsic width). */
   matchTriggerWidth?: boolean | 'min'
+  /** Name the trigger yourself instead of letting one be generated. Use it when
+   *  something outside has to reach the control by id: `<Field htmlFor>`, or an
+   *  `ErrorSummary` row that puts focus on the field it names. */
+  triggerId?: string
 }
 
 /* Position is computed against the viewport (menu uses position: fixed). */
@@ -54,19 +58,27 @@ type Position = Placement
  * Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are
  * built in, so spread `triggerProps` onto your own button. Items, sections and
  * dividers are the parts.
+ *
+ * When the trigger is an ordinary labelled button, `<MenuButton>` is that
+ * already assembled — including the split form where a default action sits on
+ * its own half. Come here when the trigger is something else: an avatar, a
+ * table row, a field.
  */
 export function Dropdown({
   trigger, children, align = 'end', className, menuClassName, closeOnSelect = true,
-  matchTriggerWidth = false,
+  matchTriggerWidth = false, triggerId: triggerIdProp,
 }: DropdownProps) {
   const [open, setOpen] = useState(false)
-  const [menuMounted, setMenuMounted] = useState(false)
-  const triggerRef = useRef<HTMLButtonElement | null>(null)
-  const menuRef = useRef<HTMLDivElement | null>(null)
   const itemsRef = useRef<HTMLElement[]>([])
-  const [position, setPosition] = useState<Position | null>(null)
   const menuId = useId()
-  const triggerId = useId()
+  /* The trigger's id is generated UNLESS the caller names it. It has to be one
+   * id and not two: the menu points `aria-labelledby` at it, and a field wants
+   * to reach the same element by `<Field htmlFor>` or from an `ErrorSummary`
+   * row. Select used to set its own `id` on the button and then spread
+   * `triggerProps` over the top of it, so the caller's name was silently
+   * replaced and a summary row that linked to it led nowhere (2026-08-23). */
+  const generatedTriggerId = useId()
+  const triggerId = triggerIdProp ?? generatedTriggerId
 
   /* Single close path: outside-click, ESC, Tab, item-click all funnel here.
    * Returns focus to the actual trigger element saved in triggerRef. */
@@ -95,49 +107,12 @@ export function Dropdown({
     })
   }, [align, matchTriggerWidth])
 
-  /* Position is computed whenever: menu opens, menu mounts (so dimensions are
-   * real), or align changes. Ref callback only updates `menuMounted` flag —
-   * stable identity prevents the measurement-via-ref-rerun loop. */
-  const menuRefCallback = useCallback((node: HTMLDivElement | null) => {
-    menuRef.current = node
-    setMenuMounted(Boolean(node))
-  }, [])
-
-  useLayoutEffect(() => {
-    if (!open) return
-    // eslint-disable-next-line @eslint-react/set-state-in-effect -- positions the portal from measured geometry; not derivable during render
-    setPosition(computePosition())
-  }, [open, menuMounted, computePosition])
-
-  /* Reposition on scroll / resize while open. rAF-throttled, passive. */
-  useEffect(() => {
-    if (!open) return
-    let raf = 0
-    const update = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => setPosition(computePosition()))
-    }
-    window.addEventListener('scroll', update, { capture: true, passive: true })
-    window.addEventListener('resize', update, { passive: true })
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', update, true)
-      window.removeEventListener('resize', update)
-    }
-  }, [open, computePosition])
-
-  /* Outside click closes (returns focus to trigger via close). */
-  useEffect(() => {
-    if (!open) return
-    const onDocClick = (e: globalThis.MouseEvent) => {
-      const target = e.target as Node
-      if (triggerRef.current?.contains(target)) return
-      if (menuRef.current?.contains(target)) return
-      close()
-    }
-    document.addEventListener('mousedown', onDocClick)
-    return () => document.removeEventListener('mousedown', onDocClick)
-  }, [open, close])
+  /* The mechanism — measurement timing, rAF-throttled reflow, outside press and
+     Escape — is shared with <Popover>. Only the geometry above is this
+     component's. `setLayer` is the menu's ref: it flags the mount so the
+     measurement re-runs once the menu has a real size. */
+  const { triggerRef, layerRef: menuRef, setLayer: menuRefCallback, position, mounted: menuMounted } =
+    useAnchoredLayer<Position>({ open, onClose: close, measure: computePosition })
 
   /* Cache menuitems on open; focus first */
   useEffect(() => {
@@ -219,6 +194,7 @@ export function Dropdown({
             ref={menuRefCallback}
             id={menuId}
             className={cn('dropdown-menu', menuClassName)}
+            data-raised="popover"
             role="menu"
             aria-labelledby={triggerId}
             tabIndex={-1}

@@ -1,0 +1,74 @@
+{
+  "ref": "MenuIconButton",
+  "level": "molecule",
+  "description": "A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra actions a toolbar has no room to name. It is <MenuButton>'s pair, and the split between them is the same one the system already makes between `Button` and `IconButton`: a control with no words in it has to carry a name and a tooltip, and a separate component is what makes that unavoidable rather than remembered. Folding it into MenuButton as an optional label would make the name optional, which is the whole thing this prevents. Built 2026-08-26, after four screens assembled it by hand from a Dropdown render prop, an IconButton and an aria-label. Copy: the label names WHOSE actions these are — \"Actions for the March invoice\" — because \"More actions\" on six rows tells a screen-reader user nothing about which row they are on.",
+  "exports": [
+    "MenuIconButton"
+  ],
+  "main": "MenuIconButton",
+  "from": "@/components/MenuIconButton",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true,
+      "description": "What the control is called. It is the accessible name AND the tooltip — required, because a lone glyph names nothing and this is the shape where that is forgotten. \"More actions\" is not it: say whose actions."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The menu: `<DropdownItem>`, `<DropdownSection>`, `<DropdownDivider>`."
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false,
+      "description": "Defaults to the overflow glyph, which is what this nearly always is."
+    },
+    {
+      "name": "variant",
+      "type": "Variant",
+      "required": false,
+      "values": [
+        "ghost",
+        "filled",
+        "quiet"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "align",
+      "type": "Align",
+      "required": false,
+      "description": "Which edge of the trigger the menu lines up with.",
+      "values": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/MenuIconButton/MenuIconButton.tsx",
+  "uses": [
+    "Dropdown",
+    "Icon",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "<MenuIconButton label=\"Actions for the March invoice\">\n  <DropdownItem icon=\"edit\" onClick={() => undefined}>Rename</DropdownItem>\n  <DropdownItem icon=\"content_copy\" onClick={() => undefined}>Duplicate</DropdownItem>\n  <DropdownDivider />\n  <DropdownItem icon=\"delete\" tone=\"danger\" onClick={() => undefined}>Delete</DropdownItem>\n</MenuIconButton>"
+}

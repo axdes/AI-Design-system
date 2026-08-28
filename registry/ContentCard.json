@@ -1,0 +1,125 @@
+{
+  "ref": "ContentCard",
+  "level": "organism",
+  "description": "One CONTENT entry: media, eyebrow, title, excerpt, meta, actions — the six slots every feed shares, from a repo list to a news teaser. ONE component, two surfaces. `layout` says where the media sits, and `row` is the list form: no card of its own, a hairline between neighbours, sized to sit inside a flush <Card>. `density` says how much of the anatomy survives, and the two are orthogonal — a tile can be dense, a row comfortable. ContentRow was a separate component until 2026-08-26; it had the same six slots in the same order, which is the definition of one thing in two forms. The card reads its OWN width, not the window's: in a sidebar it is a row, in a grid a tile, across a feature strip a tile with the media beside the words. Reach for <Identity> when the item is a person, <Stat> when it is a number, and <ListItem> when the entry is one clickable line with no anatomy. Copy: the eyebrow says what KIND of thing this is, the title is the entry's own name, and the excerpt is the first sentences unedited — it exists so the reader can skip the item without opening it, which a summary written to fit cannot do.",
+  "exports": [
+    "ContentCard"
+  ],
+  "main": "ContentCard",
+  "from": "@/components/ContentCard",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true,
+      "description": "What it is called, in the reader's words. The one part that never drops."
+    },
+    {
+      "name": "media",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Picture, frame or wash. Omit and the entry is words only."
+    },
+    {
+      "name": "eyebrow",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What KIND of thing this is, above the title."
+    },
+    {
+      "name": "excerpt",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The first sentences, so the reader can judge without opening. Clamped by the layout rather than cut by hand."
+    },
+    {
+      "name": "meta",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Provenance: author, date, counts. Pinned to the foot."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What can be done, named. One primary at most — if `onOpen` is given, the whole entry is already the way in."
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "required": false,
+      "description": "Makes the whole entry one target."
+    },
+    {
+      "name": "layout",
+      "type": "Layout",
+      "required": false,
+      "description": "Where the media sits and which way the entry reads. `auto` (the default) lets it answer its OWN width: a row with a thumbnail under 360px, a tile up to 560, media beside the words above it. Name a layout to fix it, and `row` for the list form — no surface, a hairline between neighbours.",
+      "values": [
+        "auto",
+        "tile",
+        "side",
+        "cover",
+        "row"
+      ]
+    },
+    {
+      "name": "density",
+      "type": "Density",
+      "required": false,
+      "description": "How much of the anatomy survives; the entry degrades from the bottom up. `compact` drops the excerpt, `dense` is a single reading line. The default keeps everything and lets `auto` decide by width.",
+      "values": [
+        "comfortable",
+        "compact",
+        "dense"
+      ]
+    },
+    {
+      "name": "fill",
+      "type": "boolean",
+      "required": false,
+      "description": "Stretches to fill its grid cell. Only when stretching buys the reader something — on a plain card it buys a hole above the meta."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ContentCard/ContentCard.tsx",
+  "context": "region",
+  "variants": {
+    "density": {
+      "prop": "density",
+      "values": [
+        "comfortable",
+        "compact",
+        "dense"
+      ]
+    },
+    "layout": {
+      "prop": "layout",
+      "values": [
+        "auto",
+        "tile",
+        "side",
+        "cover",
+        "row"
+      ]
+    },
+    "fill": {
+      "prop": "fill",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Button",
+    "Card",
+    "Layout",
+    "MetaItem"
+  ],
+  "example": "<Stack gap={6}>\n  <ContentCard\n    eyebrow=\"Report\"\n    title=\"The quarter in numbers, and what moved them\"\n    excerpt=\"Two sites closed their findings early, one audit slipped, and the reason turned out to be the same in both.\"\n    media={<img src={PHOTO} alt=\"\" width={640} height={360} />}\n    meta={<MetaItem icon=\"schedule\">19 February</MetaItem>}\n    actions={<Button variant=\"link\" size=\"sm\">Read</Button>}\n    onOpen={() => undefined}\n  />\n  <Card flush>\n    {ENTRIES.map((e) => (\n      <ContentCard\n        key={e.title}\n        layout=\"row\"\n        density=\"compact\"\n        title={e.title}\n        meta={<MetaItem icon=\"schedule\">{e.meta}</MetaItem>}\n        onOpen={() => undefined}\n      />\n    ))}\n  </Card>\n</Stack>"
+}

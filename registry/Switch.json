@@ -1,7 +1,7 @@
 {
   "ref": "Switch",
   "level": "atom",
-  "description": "An on/off setting that applies the moment it is flipped (role=\"switch\"). A checkbox is for something that applies when a form is submitted.",
+  "description": "An on/off setting that applies the moment it is flipped (role=\"switch\"). A checkbox is for something that applies when a form is submitted. Copy: the label names the state when ON, and never repeats the word \"on\": \"Weekly digest\", not \"Weekly digest on/off\".",
   "exports": [
     "Switch"
   ],
@@ -23,6 +23,12 @@
       "name": "label",
       "type": "string",
       "required": true
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false,
+      "description": "The form rejected this setting. Red track and a red focus ring; the message belongs to the `<Field>` around it."
     }
   ],
   "sourcePath": "src/components/Switch/Switch.tsx",

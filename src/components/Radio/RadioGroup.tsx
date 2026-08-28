@@ -12,12 +12,16 @@ type Props<T extends string> = {
   /** Accessible group label (for screen readers). */
   label?: string
   size?: 'sm' | 'md' | 'lg'
+  /** The form rejected the set: nothing chosen where a choice was required.
+   *  Marks every option red AND announces it here, on the group — which is the
+   *  only element allowed to carry it, and the only one the fact is about. */
+  invalid?: boolean
 }
 
 /* A set of radios sharing one name. Native radios handle arrow-key navigation. */
-export function RadioGroup<T extends string>({ name, value, onChange, options, label, size }: Props<T>) {
+export function RadioGroup<T extends string>({ name, value, onChange, options, label, size, invalid }: Props<T>) {
   return (
-    <div className="radio-group" role="radiogroup" aria-label={label}>
+    <div className="radio-group" role="radiogroup" aria-label={label} aria-invalid={invalid || undefined}>
       {options.map((o) => (
         <Radio
           key={o.value}
@@ -27,6 +31,7 @@ export function RadioGroup<T extends string>({ name, value, onChange, options, l
           checked={value === o.value}
           disabled={o.disabled}
           onChange={() => onChange(o.value)}
+          invalid={invalid}
           label={o.label}
         />
       ))}

@@ -22,7 +22,11 @@ type Props = {
 const clamp = (n: number) => Math.max(0, Math.min(100, n));
 
 /** A linear progress / gauge on a fixed scale, with an optional target marker.
- *  The fill width and marker position are the only dynamic inline styles. */
+ *  The fill width and marker position are the only dynamic inline styles. 
+ *
+ * Copy: the label carries the sentence, because a gauge with a number and no
+ * subject is a decoration: "Storage used, 62 of 100 GB".
+ */
 export function Meter({ value, max = 100, target, tone = "primary", size, ticks, label, className }: Props) {
   const pct = clamp((value / max) * 100);
   const targetPct = target != null ? clamp((target / max) * 100) : null;

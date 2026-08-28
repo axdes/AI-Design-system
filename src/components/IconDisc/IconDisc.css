@@ -1,0 +1,31 @@
+/* The disc is one cell and the glyph is centred in it, so the circle never
+   resizes around a wider or narrower path. The two steps are the grid, not a
+   choice: 32/16 and 48/24 — a glyph at exactly half its disc on both, so the
+   pair cannot drift as the ladder grows. */
+.icon-disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+}
+
+.icon-disc[data-size='sm'] { inline-size: var(--space-8); block-size: var(--space-8); }
+.icon-disc[data-size='md'] { inline-size: var(--space-12); block-size: var(--space-12); }
+
+/* A quiet ground with one step of separation drawn on it: on a card, which is
+   white, the tint alone reads as no disc at all. */
+.icon-disc[data-tone='neutral'] {
+  background: var(--accent);
+  /* The ink that goes WITH this surface. `--primary` on `--accent` is 1.29:1 in dark — the brand
+   * indigo against a near-black band — and a neutral disc has no reason to carry the brand ink
+   * anyway: every other accent surface in the system pairs with `--accent-foreground`. */
+  color: var(--accent-foreground);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+/* The brand at full strength needs no edge — it separates itself. */
+.icon-disc[data-tone='primary'] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}

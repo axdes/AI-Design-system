@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "breadcrumb",
+  "type": "registry:ui",
+  "title": "Breadcrumb",
+  "description": "The trail back up a record hierarchy, e.g. Library / Reports / Q3. Routing agnostic: pass `href` for anchors, `onSelect` for buttons. The last item is always the current page (aria-current), not a link. Replaces the old habit of faking a breadcrumb with a subtitle string. Copy: each crumb is the page's own title, unshortened. A trail that renames its steps is a trail the reader cannot match to whe",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Breadcrumb/Breadcrumb.css",
+      "content": ".breadcrumb-list {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: var(--space-1);\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  font-size: var(--font-sm);\n}\n\n.breadcrumb-item {\n  display: inline-flex;\n  align-items: center;\n}\n\n.breadcrumb-link {\n  padding: var(--space-1) var(--space-2);\n  border: none;\n  border-radius: var(--radius-sm);\n  background: transparent;\n  /* --link-quiet: a breadcrumb is a link in chrome. See the LINKS block in\n   * semantic.css — one decision for what a link is coloured, four hand-picked\n   * answers before it. */\n  color: var(--link-quiet);\n  font: inherit;\n  text-decoration: none;\n  cursor: pointer;\n  transition: color var(--duration-fast), background var(--duration-fast);\n}\n/* Pressed: one stop past hover, the third answer every control now gives. */\n.breadcrumb-link:active { color: var(--link-hover); }\n.breadcrumb-link:hover {\n  color: var(--foreground);\n  background: var(--accent-soft);\n}\n.breadcrumb-link:focus-visible {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n\n.breadcrumb-current {\n  padding: var(--space-1) var(--space-2);\n  color: var(--foreground);\n  font-weight: var(--font-weight-medium);\n}\n\n.breadcrumb-sep {\n  display: inline-flex;\n  align-items: center;\n  color: var(--icon-muted);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Breadcrumb/Breadcrumb.css"
+    },
+    {
+      "path": "src/components/Breadcrumb/Breadcrumb.tsx",
+      "content": "import './Breadcrumb.css'\nimport { Fragment, type ReactNode } from 'react'\nimport { cn } from '../lib/cn'\nimport { Icon } from '../Icon'\n\nexport type Crumb = {\n  label: string\n  /** Anchor href, or omit for an onSelect button. The LAST crumb ignores both\n   *  and renders as plain current-page text. */\n  href?: string\n  onSelect?: () => void\n}\n\ntype Props = {\n  items: Crumb[]\n  /** Accessible name for the nav landmark. Default \"Breadcrumb\". */\n  label?: string\n  className?: string\n}\n\n/* The trail back up a record hierarchy, e.g. Library / Reports / Q3. Routing\n * agnostic: pass `href` for anchors, `onSelect` for buttons. The last item is\n * always the current page (aria-current), not a link. Replaces the old habit of\n * faking a breadcrumb with a subtitle string. \n   *\n   * Copy: each crumb is the page's own title, unshortened. A trail that renames\n   * its steps is a trail the reader cannot match to where they have been.\n   */\nexport function Breadcrumb({ items, label = 'Breadcrumb', className }: Props) {\n  return (\n    <nav className={cn('breadcrumb', className)} aria-label={label}>\n      <ol className=\"breadcrumb-list\">\n        {items.map((item, i) => {\n          const last = i === items.length - 1\n          let content: ReactNode\n          if (last) content = <span className=\"breadcrumb-current\" aria-current=\"page\">{item.label}</span>\n          else if (item.href) content = <a className=\"breadcrumb-link\" href={item.href}>{item.label}</a>\n          else content = <button type=\"button\" className=\"breadcrumb-link\" onClick={item.onSelect}>{item.label}</button>\n\n          return (\n            <Fragment key={item.label}>\n              <li className=\"breadcrumb-item\">{content}</li>\n              {!last && <li className=\"breadcrumb-sep\" aria-hidden=\"true\"><Icon name=\"chevron_right\" /></li>}\n            </Fragment>\n          )\n        })}\n      </ol>\n    </nav>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Breadcrumb/Breadcrumb.tsx"
+    },
+    {
+      "path": "src/components/Breadcrumb/index.ts",
+      "content": "export { Breadcrumb, type Crumb } from './Breadcrumb'\n",
+      "type": "registry:ui",
+      "target": "@ui/Breadcrumb/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Breadcrumb.json"
+}

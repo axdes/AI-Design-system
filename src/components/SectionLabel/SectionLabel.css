@@ -20,3 +20,13 @@
 .section-label + * {
   margin-block-start: var(--space-3);
 }
+
+/* INSIDE A CARD THE CARD OWNS THE RHYTHM. Card.css states that once, for every
+ * guest; this margin was added on top of the card's own gap and the two summed
+ * to 20px — five grid units, a step the scale does not have (found on a product's
+ * team screen, 2026-08-26, by the audit rule that had been quietly rejecting
+ * real steps and so hid this one). The card's gap already separates its
+ * children, and where a component needs the extra step, Card.css gives it. */
+.card > .section-label + * {
+  margin-block-start: 0;
+}

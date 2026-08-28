@@ -15,7 +15,7 @@ export function Example() {
     <ListCluster
       title="Workshops"
       subtitle="Pick a workshop or start a new one."
-      cta={<Button variant="primary" size="lg" iconEnd>New workshop<Icon name="add" /></Button>}
+      cta={<Button variant="primary" size="lg">New workshop<Icon name="add" /></Button>}
     >
       <Grid gap={4}>
         {items.map((i) => (

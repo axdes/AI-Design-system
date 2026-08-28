@@ -1,7 +1,7 @@
 {
   "ref": "EmptyState",
   "level": "molecule",
-  "description": "What a screen shows when it has nothing: an icon, a sentence about why it is empty, and the action that would fill it.",
+  "description": "What a screen shows when it has nothing: an icon, a sentence about why it is empty, and the action that would fill it. Copy: the title says what is missing, not that something is missing — \"No invoices yet\", never \"No results\". The description says WHY it is empty and what would fill it; if the reason is a filter, say so, because that is a different screen from a first run.",
   "exports": [
     "EmptyState"
   ],
@@ -33,6 +33,7 @@
       "name": "as",
       "type": "Heading",
       "required": false,
+      "description": "Heading level for the title. Pick to fit the page hierarchy. Default `h2`.",
       "values": [
         "h1",
         "h2",
@@ -44,6 +45,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "`sm` = tight content areas (chat-history panel, side panels, small cards); `md` (default) = section/page; `lg` = full-screen hero.",
       "values": [
         "sm",
         "md",
@@ -54,6 +56,7 @@
       "name": "surface",
       "type": "'card' | 'page'",
       "required": false,
+      "description": "Surface the empty state sits on, so the icon badge contrasts: `card` (default) = white surface → grey badge; `page` = grey page → white badge.",
       "values": [
         "card",
         "page"
@@ -81,7 +84,8 @@
   },
   "uses": [
     "Button",
-    "Icon"
+    "Icon",
+    "Layout"
   ],
-  "example": "<EmptyState\n  icon=\"folder\"\n  title=\"No documents yet\"\n  description=\"Upload a file or create one from a template.\"\n  as=\"h2\"\n  action={<Button variant=\"primary\" iconEnd>New document<Icon name=\"add\" /></Button>}\n/>"
+  "example": "<Stack gap={6}>\n  <EmptyState\n    icon=\"folder\"\n    title=\"No documents yet\"\n    description=\"Upload a file or create one from a template.\"\n    as=\"h2\"\n    size=\"lg\"\n    surface=\"page\"\n    action={<Button variant=\"primary\">New document<Icon name=\"add\" /></Button>}\n  />\n  <EmptyState\n    icon=\"search\"\n    title=\"Nothing matches “invoice”\"\n    description=\"Try a shorter word, or clear the status filter.\"\n    as=\"h3\"\n    size=\"sm\"\n    surface=\"card\"\n    action={<Button variant=\"secondary\">Clear filters</Button>}\n  />\n</Stack>"
 }

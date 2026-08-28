@@ -1,7 +1,7 @@
 {
   "ref": "InlineText",
   "level": "molecule",
-  "description": "True inline editing (the vanilla `.editable` contract): the SAME element becomes editable on click — same font, same layout, no control chrome. Enter commits, Escape reverts, blur saves. Key it by `value` upstream so a server-confirmed update re-renders the committed text.",
+  "description": "True inline editing (the vanilla `.editable` contract): the SAME element becomes editable on click — same font, same layout, no control chrome. Enter commits, Escape reverts, blur saves. Key it by `value` upstream so a server-confirmed update re-renders the committed text. Copy: the accessible label names the value being edited, not the act — \"Recording title\", not \"Edit title\".",
   "exports": [
     "InlineText"
   ],
@@ -42,7 +42,8 @@
     {
       "name": "onAbort",
       "type": "() => void",
-      "required": false
+      "required": false,
+      "description": "Called when editing ends without a change (composer rows close on this)."
     },
     {
       "name": "autoFocus",

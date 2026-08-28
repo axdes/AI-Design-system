@@ -1,0 +1,78 @@
+{
+  "ref": "PivotTable",
+  "level": "organism",
+  "description": "Two categorical axes and one measure in the cell: teams by month, region by product, skill by level. A crosstab, in other words, and the one table shape where a cell is identified by both of its headers rather than by its row. Not for one axis (that is a `<Table>` with a sortable column), and not for a value the reader has to read exactly while it is painted (`heat` off). Copy: row and column headers are the dimensions' own names; the measure is named once, with its unit, rather than repeated in every cell.",
+  "exports": [
+    "PivotTable"
+  ],
+  "main": "PivotTable",
+  "from": "@/components/PivotTable",
+  "slots": [],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true,
+      "description": "The name of the table. Say what is crossed with what: \"Hours by team and month\" tells the reader which axis is which before they read a cell."
+    },
+    {
+      "name": "captionHidden",
+      "type": "boolean",
+      "required": false,
+      "description": "Also rendered as the table's caption unless `captionHidden`."
+    },
+    {
+      "name": "rows",
+      "type": "readonly PivotAxis[]",
+      "required": true,
+      "description": "The vertical axis: one row per entry, each a row header."
+    },
+    {
+      "name": "columns",
+      "type": "readonly PivotAxis[]",
+      "required": true,
+      "description": "The horizontal axis: one column per entry, each a column header."
+    },
+    {
+      "name": "value",
+      "type": "(rowKey: string, columnKey: string) => number | undefined",
+      "required": true,
+      "description": "The measure at a crossing. Undefined means no observation, which is not the same fact as zero and is not printed as one."
+    },
+    {
+      "name": "format",
+      "type": "(value: number) => string",
+      "required": false,
+      "description": "How a number is written. Defaults to the local integer format."
+    },
+    {
+      "name": "totals",
+      "type": "boolean",
+      "required": false,
+      "description": "Row totals in a last column and column totals in the footer. A matrix is usually read for the margins as much as for the cells."
+    },
+    {
+      "name": "heat",
+      "type": "boolean",
+      "required": false,
+      "description": "Paints every cell on the heatmap ramp, scaled to the largest value. For the matrix read as a pattern rather than as numbers."
+    },
+    {
+      "name": "rowHeader",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The header of the corner cell: what the ROWS are."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/PivotTable/PivotTable.tsx",
+  "context": "region",
+  "uses": [
+    "Table"
+  ],
+  "example": "<PivotTable\n  label=\"Hours by team and month\"\n  captionHidden\n  rowHeader=\"Team\"\n  rows={TEAMS}\n  columns={MONTHS}\n  totals\n  heat\n  value={(team, month) => HOURS[team]?.[month]}\n/>"
+}

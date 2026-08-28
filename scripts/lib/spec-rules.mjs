@@ -149,6 +149,133 @@ export function makeRuleEngine(rulesDoc) {
   return { detect, checkZone, decide, checkArchetype, representationComponents: [...repOf.keys()], collectionTasks }
 }
 
+/* ── the layer under "cards" ──────────────────────────────────────────────
+ *
+ * selection-rules.json answers WHICH REPRESENTATION. When the answer is cards
+ * the next question used to be taste: which card. card-rules.json makes it a
+ * computation too — a family is chosen by what the card CARRIES (the content
+ * kind) and what the reader does with it, and every family names the parts it
+ * may not ship without and the components that build it.
+ *
+ * Same division of labour as the layer above: the spec author says what the
+ * zone carries and which family it is, and this decides whether that pair is
+ * permitted. Same three consumers: the gate, the tests, and the MCP `decide`
+ * tool for agents that never run the gate.
+ */
+
+export function makeCardEngine(cardDoc, { collectionTasks = [] } = {}) {
+  const families = new Map((cardDoc.families ?? []).map((f) => [f.id, f]))
+  const kinds = Object.keys(cardDoc.contentKinds ?? {})
+  /* The task vocabulary is declared once, in selection-rules.json, and handed
+   * in here so the two files cannot disagree about which verbs show a
+   * collection. Only those verbs make a family compulsory: a Card that is a
+   * PANEL around a read zone is a surface, not a family. */
+  const collection = new Set(collectionTasks)
+
+  function familyMatches(when, task, carries, data = {}) {
+    if (when.task && task && !when.task.includes(task)) return false
+    if (when.carries && carries !== when.carries) return false
+    if (when.cardinality && data.cardinality !== when.cardinality) return false
+    return true
+  }
+
+  /* The verdict as data, for whoever asks before writing. */
+  function chooseFamily(task, carries, data = {}) {
+    const matched = (cardDoc.rules ?? []).filter((r) => familyMatches(r.when, task, carries, data))
+    const allowed = [...new Set(matched.flatMap((r) => r.choose))]
+    const forbidden = (cardDoc.hard ?? [])
+      .filter((h) => familyMatches(h.when, task, carries, data))
+      .map((h) => ({ id: h.id, forbid: h.forbid, instead: h.instead, because: h.because }))
+    return { matched, allowed, forbidden, families: allowed.map((id) => families.get(id)).filter(Boolean) }
+  }
+
+  /* One zone, once the layer above has already decided it shows cards. `rep`
+   * is that decision, so a zone whose cards are only a SURFACE (a Card holding
+   * a Table) is never asked to name a family it does not have. */
+  function checkCardZone(zone, rep) {
+    const problems = []
+    const notes = []
+    const at = (msg) => `zone "${zone.name}": ${msg}`
+    const declared = zone.card
+    const carries = zone.data?.carries
+
+    if (declared && !families.has(declared)) {
+      problems.push(at(`card family "${declared}" does not exist — use ${[...families.keys()].join(' | ')}`))
+      return { problems, notes }
+    }
+    if (carries && !kinds.includes(carries)) {
+      problems.push(at(`data.carries "${carries}" — use ${kinds.join(' | ')}`))
+      return { problems, notes }
+    }
+    if (declared && rep !== 'cards') {
+      problems.push(at(`declares card family "${declared}" while its components read as "${rep ?? 'no collection'}" — a family belongs to a zone the reader reads AS cards`))
+      return { problems, notes }
+    }
+    if (rep !== 'cards') return { problems, notes }
+
+    const isCollection = zone.task && collection.has(zone.task)
+    if (!isCollection) return { problems, notes }
+
+    if (!carries) {
+      problems.push(at('a cards zone must say what one card carries (data.carries) — the family rules cannot fire on a representation alone'))
+    }
+    if (!declared) {
+      problems.push(at(`a cards zone must name its card family (card) — ${carries ? `for ${carries} the rules choose ${chooseFamily(zone.task, carries, zone.data).allowed.join(' | ') || 'nothing yet'}` : 'see screen-specs/card-rules.json'}`))
+    }
+    if (!carries || !declared) return { problems, notes }
+
+    const family = families.get(declared)
+    if (!family.carries.includes(carries)) {
+      problems.push(at(`family "${declared}" carries ${family.carries.join(' or ')}, not ${carries} — ${family.intent}`))
+    }
+    if (family.status === 'planned') {
+      problems.push(at(`family "${declared}" is planned, not built${family.waitingFor ? ` (waiting for: ${family.waitingFor})` : ''} — agree the component first (requests/), then the screen`))
+    }
+
+    const { matched, allowed, forbidden } = chooseFamily(zone.task, carries, zone.data)
+    for (const h of forbidden) {
+      if (h.forbid.includes(declared)) problems.push(at(`"${declared}" is ruled out for ${carries} — ${h.because} Use "${h.instead}".`))
+    }
+    if (matched.length && !allowed.includes(declared)) {
+      const cite = matched[0]
+      problems.push(
+        at(`task=${zone.task} over ${carries} — "${declared}" is not what any matching rule chooses (${matched.map((r) => r.id).join(', ')} choose ${allowed.join(' | ')}). ${cite.id}: ${cite.because}`),
+      )
+    }
+    if (!matched.length) {
+      notes.push(at(`no card rule matches task=${zone.task} + carries=${carries} — either the declaration is off, or card-rules.json is missing a rule and should gain one`))
+    }
+
+    /* What the family is BUILT from: `required` must all be there, `oneOf` is
+     * satisfied by any one of them (the purpose-built component or the honest
+     * composition), and `expect` is a note — the part that has a component
+     * nobody remembered to use. */
+    const named = new Set((zone.components ?? []).map((c) => String(c).split(' ')[0]))
+    const comps = family.components ?? {}
+    const missing = (comps.required ?? []).filter((c) => !named.has(c))
+    if (missing.length) {
+      problems.push(at(`family "${declared}" is built from ${comps.required.join(' + ')}; the zone never names ${missing.join(', ')}`))
+    }
+    if (comps.oneOf?.length && !comps.oneOf.some((c) => named.has(c))) {
+      problems.push(at(`family "${declared}" needs one of ${comps.oneOf.join(' or ')}; the zone names neither`))
+    }
+    if (comps.expect?.length && !comps.expect.some((c) => named.has(c))) {
+      notes.push(at(`a "${declared}" card has ${comps.expect.join(' / ')} for exactly this — hand-rolling it inside a Card is how the same shape gets built twice`))
+    }
+    if (family.maxFields !== undefined && typeof zone.data?.fields === 'number' && zone.data.fields > family.maxFields) {
+      notes.push(at(`${zone.data.fields} fields on a "${declared}" card — past ${family.maxFields} it reads as a detail page in a grid; drop to the fields that decide, or make the zone a table (R1)`))
+    }
+    for (const n of cardDoc.notes ?? []) {
+      if (n.if !== 'any' && n.if !== declared) continue
+      if (!familyMatches(n.when ?? {}, zone.task, carries, zone.data)) continue
+      if (n.if === declared) notes.push(at(n.say))
+    }
+    return { problems, notes }
+  }
+
+  return { chooseFamily, checkCardZone, familyIds: [...families.keys()], family: (id) => families.get(id), contentKinds: kinds, doc: cardDoc }
+}
+
 /* The content model against the specs it claims: the ORCA-lite layer. The
  * model says what the product is about (objects, attributes, relations,
  * actions); this verifies the DERIVATION — every named screen exists, every
@@ -271,3 +398,271 @@ export function checkPriority(spec) {
   return { problems, notes }
 }
 
+
+/* ── the layer on the other side of the screen ────────────────────────────
+ *
+ * selection-rules.json and card-rules.json decide how a collection is SHOWN.
+ * This one decides how input is TAKEN: once a zone's task is `input`, which
+ * kind of form it is, what it is built from, and how it commits. The kind is
+ * chosen by four things and nothing else — how many fields, how familiar the
+ * task is, whether the context behind it must stay visible, and who commits —
+ * which is exactly what a spec author can state and a reviewer can approve.
+ *
+ * Same three consumers as the layers above: the gate, the test that proves it
+ * can fail, and the MCP `decide` tool for agents that never run the gate.
+ */
+
+export const COMMIT_MODELS = ['explicit', 'per-row', 'autosave', 'none']
+export const FORM_CONTEXTS = ['standalone', 'over-list', 'beside-context', 'in-place']
+export const FAMILIARITY = ['routine', 'unfamiliar']
+
+export function makeFormEngine(formDoc) {
+  const kinds = new Map(Object.entries(formDoc.formKinds ?? {}))
+  /* Every component any kind is built from: what makes a zone READ as a form
+   * even when its author forgot to declare the task. */
+  const formComponents = new Set(
+    [...kinds.values()].flatMap((k) => [
+      ...(k.components?.required ?? []),
+      ...(k.components?.oneOf ?? []),
+    ]),
+  )
+  for (const c of ['Field', 'FormStack', 'FormSection', 'ErrorSummary']) formComponents.add(c)
+
+  function shapeOf(zone, spec) {
+    const d = zone.data ?? {}
+    return {
+      fields: d.fields,
+      commit: d.commit,
+      context: d.context,
+      familiarity: d.familiarity,
+      audience: spec?.audience,
+    }
+  }
+
+  function matches(when = {}, shape) {
+    if (when.minFields !== undefined && !(typeof shape.fields === 'number' && shape.fields >= when.minFields)) return false
+    if (when.maxFields !== undefined && !(typeof shape.fields === 'number' && shape.fields <= when.maxFields)) return false
+    if (when.commit && shape.commit !== when.commit) return false
+    if (when.familiarity && shape.familiarity !== when.familiarity) return false
+    if (when.audience && shape.audience !== when.audience) return false
+    if (when.context && !(shape.context && when.context.includes(shape.context))) return false
+    return true
+  }
+
+  /* The verdict as data, for whoever asks BEFORE writing. */
+  function chooseKind(shape = {}) {
+    const matched = (formDoc.rules ?? []).filter((r) => matches(r.when, shape))
+    const allowed = [...new Set(matched.flatMap((r) => r.choose))]
+    const forbidden = (formDoc.hard ?? [])
+      .filter((h) => matches(h.when, shape))
+      .map((h) => ({ id: h.id, forbid: h.forbid, instead: h.instead, because: h.because }))
+    const permitted = allowed.filter((id) => !forbidden.some((h) => h.forbid.includes(id)))
+    return { matched, allowed, permitted, forbidden, kinds: permitted.map((id) => kinds.get(id)).filter(Boolean) }
+  }
+
+  /* Does this zone take input at all? A zone that names a form template or a
+   * Field is one, whatever its author called the task. */
+  function detect(zone) {
+    return (zone.components ?? []).some((c) => formComponents.has(String(c).split(' ')[0]))
+  }
+
+  function checkFormZone(zone, spec) {
+    const problems = []
+    const notes = []
+    let unchecked = false
+    const at = (msg) => `zone "${zone.name}": ${msg}`
+    const declared = zone.form
+    const shape = shapeOf(zone, spec)
+    const isInput = zone.task === 'input'
+
+    if (declared && !kinds.has(declared)) {
+      problems.push(at(`form kind "${declared}" does not exist — use ${[...kinds.keys()].join(' | ')}`))
+      return { problems, notes, unchecked }
+    }
+    if (shape.commit && !COMMIT_MODELS.includes(shape.commit)) {
+      problems.push(at(`data.commit "${shape.commit}" — use ${COMMIT_MODELS.join(' | ')}`))
+    }
+    if (shape.context && !FORM_CONTEXTS.includes(shape.context)) {
+      problems.push(at(`data.context "${shape.context}" — use ${FORM_CONTEXTS.join(' | ')}`))
+    }
+    if (shape.familiarity && !FAMILIARITY.includes(shape.familiarity)) {
+      problems.push(at(`data.familiarity "${shape.familiarity}" — use ${FAMILIARITY.join(' | ')}`))
+    }
+    if (problems.length) return { problems, notes, unchecked }
+
+    if (declared && !isInput) {
+      problems.push(at(`declares form kind "${declared}" while its task is "${zone.task ?? 'unset'}" — a form kind belongs to a zone whose task is input`))
+      return { problems, notes, unchecked }
+    }
+    if (!isInput) {
+      /* A zone built from form parts that names NO task at all: countable, the
+       * same way an unlabelled collection zone is. A zone that says find, read
+       * or navigate has already been declared and is the other layers' business
+       * — a SearchInput in a toolbar is a narrowing, not a form. */
+      if (!zone.task && detect(zone) && zone.name !== 'dialogs') unchecked = true
+      return { problems, notes, unchecked }
+    }
+
+    if (!shape.commit) {
+      problems.push(at('an input zone must say how it commits (data.commit: explicit | per-row | autosave | none) — the rules cannot fire on a verb alone'))
+    }
+    if (!declared) {
+      const { permitted } = chooseKind(shape)
+      problems.push(at(`an input zone must name its form kind (form) — ${permitted.length ? `for this shape the rules choose ${permitted.join(' | ')}` : 'see screen-specs/form-rules.json'}`))
+    }
+    if (!shape.commit || !declared) return { problems, notes, unchecked }
+
+    const kind = kinds.get(declared)
+    if (!kind.commit.includes(shape.commit)) {
+      problems.push(at(`"${declared}" commits ${kind.commit.join(' or ')}, not ${shape.commit} — ${kind.means}`))
+    }
+    if (kind.status === 'planned') {
+      problems.push(at(`form kind "${declared}" is planned, not built${kind.waitingFor ? ` (waiting for: ${kind.waitingFor})` : ''} — agree the parts first (requests/), then the screen`))
+    }
+
+    const { matched, permitted, forbidden } = chooseKind(shape)
+    for (const h of forbidden) {
+      if (h.forbid.includes(declared)) problems.push(at(`"${declared}" is ruled out here — ${h.because} Use "${h.instead}".`))
+    }
+    if (matched.length && !permitted.includes(declared)) {
+      const cite = matched[0]
+      problems.push(
+        at(`this shape (${describeShape(shape)}) — "${declared}" is not what any matching rule chooses (${matched.map((r) => r.id).join(', ')} choose ${permitted.join(' | ') || 'nothing left'}). ${cite.id}: ${cite.because}`),
+      )
+    }
+    if (!matched.length) {
+      notes.push(at('no form rule matches this shape — either the declaration is off, or form-rules.json is missing a rule and should gain one'))
+    }
+
+    /* What the kind is BUILT from, the same contract card families carry. The
+     * screen's template counts as named: an auth zone does not repeat
+     * <AuthTemplate> inside itself, the template IS the screen. */
+    const named = new Set((zone.components ?? []).map((c) => String(c).split(' ')[0]))
+    if (spec?.template) named.add(spec.template)
+    const comps = kind.components ?? {}
+    const missing = (comps.required ?? []).filter((c) => !named.has(c))
+    if (missing.length) {
+      problems.push(at(`form kind "${declared}" is built from ${comps.required.join(' + ')}; the zone never names ${missing.join(', ')}`))
+    }
+    if (comps.oneOf?.length && !comps.oneOf.some((c) => named.has(c))) {
+      problems.push(at(`form kind "${declared}" needs one of ${comps.oneOf.join(' or ')}; the zone names neither`))
+    }
+    if (comps.expect?.length && !comps.expect.some((c) => named.has(c))) {
+      notes.push(at(`a "${declared}" form has ${comps.expect.join(' / ')} for exactly this — hand-rolling it is how the same shape gets built twice`))
+    }
+    if (kind.maxFields !== undefined && typeof shape.fields === 'number' && shape.fields > kind.maxFields) {
+      notes.push(at(`${shape.fields} fields in a "${declared}" form — past ${kind.maxFields} it stops fitting the container it lives in`))
+    }
+    for (const n of formDoc.notes ?? []) {
+      if (n.if !== 'any' && n.if !== declared) continue
+      if (!matches(n.when ?? {}, shape)) continue
+      /* A note that asks for a part the zone already names is noise; the point
+       * is the zone that forgot it. */
+      if ((n.unless ?? []).some((c) => named.has(c))) continue
+      notes.push(at(n.say))
+    }
+    return { problems, notes, unchecked }
+  }
+
+  function describeShape(shape) {
+    const parts = []
+    if (typeof shape.fields === 'number') parts.push(`${shape.fields} fields`)
+    if (shape.commit) parts.push(`commit=${shape.commit}`)
+    if (shape.context) parts.push(shape.context)
+    if (shape.familiarity) parts.push(shape.familiarity)
+    if (shape.audience) parts.push(`audience=${shape.audience}`)
+    return parts.join(', ') || 'nothing declared'
+  }
+
+  return {
+    chooseKind,
+    checkFormZone,
+    detect,
+    kindIds: [...kinds.keys()],
+    kind: (id) => kinds.get(id),
+    kindComponents: [...formComponents],
+    doc: formDoc,
+  }
+}
+
+/* The table layer lives in its own module (this file is at its size ceiling)
+ * and is re-exported here, so every consumer keeps one import for the whole
+ * decision layer: representation, card, form, table. */
+export { makeTableEngine, makeCellEngine, ROW_UNITS, TABLE_AXES, CELL_MODES, SELECT_MODES, NESTING } from './table-rules.mjs'
+
+/* ── the LIFECYCLE axis ───────────────────────────────────────────────────
+ *
+ * Every layer above asks what a screen LOOKS like. This one asks what it DOES
+ * to the resource, and decides the three things that hung off that question and
+ * were decided by taste: which variant of a detail page, which shape an edit
+ * takes, and how hard a destruction is to confirm.
+ *
+ * Same division of labour as the layers beside it: the spec author says what
+ * the screen does and to how much, and this decides whether the pair is
+ * permitted. Same three consumers: the gate, the tests, and the MCP `decide`
+ * tool for agents that never run the gate.
+ */
+export function makeLifecycleEngine(doc) {
+  const stageIds = Object.keys(doc.stages ?? {})
+  const detailIds = Object.keys(doc.detailVariants ?? {})
+  const editIds = Object.keys(doc.editKinds ?? {})
+  const deleteIds = Object.keys(doc.deleteKinds ?? {})
+
+  /* `when` clauses here are ranges and equalities over a small shape, the way
+   * form-rules' are. Kept in one place so a rule cannot mean one thing to the
+   * gate and another to `decide`. */
+  function matches(when = {}, shape = {}) {
+    for (const [key, cond] of Object.entries(when)) {
+      const v = shape[key]
+      if (cond && typeof cond === 'object' && !Array.isArray(cond)) {
+        if (cond.min !== undefined && !(typeof v === 'number' && v >= cond.min)) return false
+        if (cond.max !== undefined && !(typeof v === 'number' && v <= cond.max)) return false
+        continue
+      }
+      if (Array.isArray(cond)) { if (!cond.includes(v)) return false; continue }
+      if (v !== cond) return false
+    }
+    return true
+  }
+
+  function choose(rules, hard, shape) {
+    const matched = (rules ?? []).filter((r) => matches(r.when, shape))
+    const allowed = [...new Set(matched.flatMap((r) => r.choose ?? []))]
+    const forbidden = (hard ?? [])
+      .filter((h) => matches(h.when, shape))
+      .map((h) => ({ id: h.id, forbid: h.forbid, instead: h.instead, because: h.because }))
+    const permitted = allowed.filter((id) => !forbidden.some((h) => (h.forbid ?? []).includes(id)))
+    return { matched, allowed, permitted, forbidden }
+  }
+
+  const chooseDetail = (shape) => choose(doc.detailRules, [], shape)
+  const chooseEdit = (shape) => choose(doc.editRules, [], shape)
+  const chooseDelete = (shape) => choose(doc.deleteRules, doc.hard, shape)
+
+  /* A screen may say which stages it serves. It is checked against the archetype
+   * rather than taken on trust: an archetype that reads and a screen that claims
+   * to delete on it is either the wrong archetype or an action that belongs
+   * somewhere else, and both are worth stopping before the code. */
+  function checkLifecycle(spec) {
+    const problems = []
+    const notes = []
+    const declared = spec.lifecycle
+    if (!declared) return { problems, notes }
+    const list = Array.isArray(declared) ? declared : [declared]
+    for (const stage of list) {
+      if (!stageIds.includes(stage)) {
+        problems.push(`lifecycle "${stage}" — use ${stageIds.join(' | ')}`)
+        continue
+      }
+      const allowed = doc.archetypeStages?.[spec.archetype]
+      if (spec.archetype && allowed && !allowed.includes(stage)) {
+        problems.push(
+          `archetype "${spec.archetype}" serves ${allowed.join(' + ')}, and this screen declares "${stage}" — either the archetype is wrong, or that stage happens on another screen`,
+        )
+      }
+    }
+    return { problems, notes }
+  }
+
+  return { stageIds, detailIds, editIds, deleteIds, chooseDetail, chooseEdit, chooseDelete, checkLifecycle }
+}

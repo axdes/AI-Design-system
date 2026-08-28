@@ -27,7 +27,12 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', R = '\x1b[0m'
 
 /* Written in the working language on purpose, and never published as itself. */
 const EXEMPT = new Set(['docs/CHANGELOG-REVIEW.md'])
-const BINARY = /\.(png|jpe?g|gif|ico|woff2?|ttf|mp3|wav|zip|pdf|xlsx)$/i
+/* WebP joined the list the day six demo photographs were converted to it: a
+   compressed image is bytes that occasionally look like Cyrillic, and the check
+   reported six "published files carrying the working language" that were
+   pictures (2026-08-28). An extension list is the wrong shape for this and a
+   content sniff would be the right one; until then, keep it complete. */
+const BINARY = /\.(png|jpe?g|gif|ico|webp|avif|svgz|woff2?|ttf|otf|mp4|webm|mp3|wav|zip|pdf|xlsx)$/i
 /* Cyrillic is the working language here. Other scripts are legitimate content:
  * the ar locale is Arabic BECAUSE the system ships an Arabic translation.
  *

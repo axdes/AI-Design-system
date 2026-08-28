@@ -22,7 +22,11 @@ type Props = {
 /* A bounded pair on one track: a price between two values, any filter with a
  * "from" and a "to" on the same scale. Two native range inputs share the
  * track, so the keyboard contract comes for free; each thumb clamps against
- * the other instead of crossing it. Single value? That is <Slider>. */
+ * the other instead of crossing it. Single value? That is <Slider>. 
+   *
+   * Copy: the label names the span and its unit; the two thumbs need one name
+   * between them, not "min" and "max".
+   */
 export function RangeSlider({
   value, onChange, min = 0, max = 100, step = 1, label, showValue, formatValue, disabled, className,
 }: Props) {

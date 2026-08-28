@@ -41,7 +41,7 @@
   justify-content: center;
   border: 2px solid var(--border);
   border-radius: var(--radius-full);
-  color: var(--success);
+  color: var(--success-emphasis);
   margin-block-start: var(--space-1);
 }
 

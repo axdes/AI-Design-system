@@ -40,4 +40,14 @@ describe('Slider', () => {
     fireEvent.change(input, { target: { value: '30' } })
     expect(input).toHaveValue('30')
   })
+
+  /* A mutation test removed this component's aria-label and the whole suite —
+     471 tests, axe over every golden example — stayed green (2026-08-26). The
+     examples give the control a name another way, so axe is satisfied there and
+     the standalone case, which is how a product uses it, went unchecked. The
+     name IS the contract for a control whose label is not text beside it. */
+  it('carries its label as the accessible name of the control', () => {
+    render(<Slider value={20} onChange={() => {}} label="Volume" />)
+    expect(screen.getByRole('slider', { name: 'Volume' })).toBeInTheDocument()
+  })
 })

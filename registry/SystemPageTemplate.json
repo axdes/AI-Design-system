@@ -1,7 +1,7 @@
 {
   "ref": "SystemPageTemplate",
   "level": "block",
-  "description": "The SYSTEM page skeleton — not found, service unavailable, something broke: a narrow centred column with the fact as its h1, the triage or the consequences as body text, then contact and one onward action. No breadcrumbs, no error codes, no apology graphics: the reader's questions are \"what happened, did you keep my answers, what do I do\", in that order.",
+  "description": "The SYSTEM page skeleton — not found, service unavailable, something broke: a narrow centred column with the fact as its h1, the triage or the consequences as body text, then contact and one onward action. No breadcrumbs, no error codes, no apology graphics: the reader's questions are \"what happened, did you keep my answers, what do I do\", in that order. Copy: say what happened and what the reader can do, in that order, without blame or apology — \"This page has moved\" then the way onward. Never a status code as the headline.",
   "exports": [
     "SystemPageTemplate"
   ],
@@ -12,22 +12,26 @@
     {
       "name": "title",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "The plain fact, GOV.UK style: \"Page not found\", \"Sorry, there is a problem with the service\". Never a code, never \"Oops\"."
     },
     {
       "name": "children",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The body: for a not-found page, the triage of the ways the user got here; for a failure, what to do and what happened to their answers."
     },
     {
       "name": "contact",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "How to reach a human — the recovery that always works."
     },
     {
       "name": "action",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "One onward action (home, search) for products where self-service recovery fits."
     },
     {
       "name": "className",

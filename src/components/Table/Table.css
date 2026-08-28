@@ -17,6 +17,24 @@
 }
 .table[data-size="sm"] .table-th, .table[data-size="sm"] .table-td { padding: var(--space-2) var(--space-3); }
 
+/* A table that bleeds to the card frame still shares the card's left edge: the
+ * outer columns take the card padding, so the first column starts under the
+ * title rather than 8px to the right of it (owner, 23.08). The rules stay
+ * full-bleed — that is what `flush` was for. */
+.card[data-flush] .table-th:first-child,
+.card[data-flush] .table-td:first-child { padding-inline-start: var(--card-padding); }
+.card[data-flush] .table-th:last-child,
+.card[data-flush] .table-td:last-child { padding-inline-end: var(--card-padding); }
+/* THE TABLE MEETS THE CARD, WITH NO STRIP UNDER IT.
+ *
+ * Two answers were wrong before this one. `padding-block-end` on the final
+ * row's cells made that row 24px taller than the others with its text still at
+ * the top, and the hover tint ran down through the empty part. Moving the room
+ * onto the table box fixed the row and left a band of card under the last rule,
+ * which reads as an unfinished table and cuts a highlighted column short
+ * (owner, 23.08, both times). A flush card exists so the rules can reach the
+ * frame: the answer is no room at all. */
+
 .table-head .table-th {
   /* The card surface, not `--muted`: a table lives inside a card, and a header
    * painted in the PAGE colour read as a hole cut through it — worst at the top
@@ -43,15 +61,41 @@
 .table[data-nowrap] .table-th,
 .table[data-nowrap] .table-td { white-space: nowrap; vertical-align: middle; }
 
-.table-row:last-child .table-td { border-block-end: 0; }
-/* The pointer's row reads without shouting: one whisper lighter than the page
- * tint, so it never matches --muted and never fights the selected fill. */
-.table-row:hover .table-td { background: var(--surface-hover); }
-.table-row[data-selected] .table-td { background: var(--accent-soft); }
+/* THE LAST ROW OWES NO LINE, AND THE ROW HEADER IS PART OF THE LAST ROW.
+ * This zeroed `.table-td` only, so the identifier cell (a <th scope="row">)
+ * still drew its border and the last rule ran the width of one column and
+ * stopped (owner, 23.08: the bottom row's border does not go all the way). */
+/* IN THE BODY. The header row is a <Tr> too, and in a one-row <THead> it is
+ * also :last-child — so this rule was silently taking the line out from under
+ * every column header in the system, and only a table with a group row above
+ * its headers (two header rows) still had one. Measured on the live page, not
+ * guessed: computed border-bottom was 0px on twenty of twenty-one headers
+ * (owner, 23.08: why do the table headers have no bottom border). */
+tbody .table-row:last-child .table-td,
+tbody .table-row:last-child .table-th { border-block-end: 0; }
+/* Unless something follows it: a detail row, a group heading or a footer are
+ * the next block, and the line between them is what says so. */
+tbody .table-row:last-child:has(+ .table-detail) .table-td,
+tbody .table-row:last-child:has(+ .table-detail) .table-th { border-block-end: 1px solid var(--border); }
+/* THE ROW'S STATE IS PAINTED ON THE ROW, NOT ON ITS CELLS.
+ *
+ * It used to be `.table-row:hover .table-td`, which outranks
+ * `.table-td[data-tone]` and `[data-heat]` by one class: hovering a row wiped
+ * out every semantic fill and every heatmap step in it, so a pointer moving
+ * down a table erased the information the table was painted with (owner,
+ * 23.08: the behaviour overrides the coloured cells). Painting the ROW instead
+ * fixes it by construction rather than by a longer selector: a cell with a fill
+ * of its own paints over the row, a cell without one lets the row show through,
+ * and nothing has to know about anything else. */
+.table-row:hover { background: var(--surface-hover); }
+.table-row[data-selected] { background: var(--accent-soft); }
 
 /* Sortable header: a full-width button so the whole cell is the hit target. The
  * sort arrow is faint until this column is the active sort. */
 .table-sort {
+  /* 24px floor: with padding 0 this button was as tall as its line of text
+   * (19.5px), under SC 2.5.8, and column headers sit shoulder to shoulder. */
+  min-block-size: var(--space-6);
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
@@ -75,7 +119,217 @@
 .table-th[data-align="end"], .table-td[data-align="end"] { text-align: end; font-variant-numeric: tabular-nums; }
 .table-th[data-align="center"], .table-td[data-align="center"] { text-align: center; }
 
+/* The same rule as the comparison table's tinted column: a hairline mixed for
+ * the card is invisible on a filled cell, so a filled cell mixes its own. */
+.table-td[data-tone="success"] { border-block-end-color: color-mix(in oklch, var(--success-soft), var(--foreground) 16%); }
+.table-td[data-tone="warning"] { border-block-end-color: color-mix(in oklch, var(--warning-soft), var(--foreground) 16%); }
+.table-td[data-tone="danger"] { border-block-end-color: color-mix(in oklch, var(--destructive-soft), var(--foreground) 16%); }
+.table-td[data-heat="1"], .table-td[data-heat="2"], .table-td[data-heat="3"], .table-td[data-heat="4"] {
+  border-block-end-color: color-mix(in oklch, var(--primary) 55%, var(--card));
+}
+
 .table-td[data-emphasis] { font-weight: var(--font-weight-semibold); color: var(--foreground); }
 .table-td[data-tone="success"] { background: var(--success-soft); color: var(--success-soft-foreground); }
 .table-td[data-tone="warning"] { background: var(--warning-soft); color: var(--warning-soft-foreground); }
 .table-td[data-tone="danger"] { background: var(--destructive-soft); color: var(--destructive-soft-foreground); }
+
+/* A row header (scope="row") is a body cell that happens to be a <th>: the
+ * column-label treatment (uppercase, muted, no wrap) belongs to the head only. */
+tbody .table-th {
+  background: transparent;
+  color: var(--foreground);
+  font-size: inherit;
+  font-weight: var(--font-weight-regular);
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
+}
+tbody .table-th[data-emphasis] { font-weight: var(--font-weight-semibold); }
+
+/* THE TABLE'S NAME. A caption is the only name that travels with the table
+ * itself: an aria-label on the scroll region names the region, and a heading
+ * above names the section. [data-hidden] keeps the name for a screen reader
+ * when the visible heading already says the same words. */
+.table-caption {
+  caption-side: top;
+  text-align: start;
+  padding: var(--space-2) 0 var(--space-3);
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+/* Hidden the same way `.sr-only` is, and pinned for the same reason: left at
+ * its static position deep inside a scrolling pane, a 1px caption stretches the
+ * document past the shell and leaves a strip of body colour under the page
+ * (measured 2026-08-24: 82px, after the same fault in .sr-only was fixed). */
+.table-caption[data-hidden] {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 1px; block-size: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* The row under the rows. A double line, because the total is not one more
+ * record: it is what the records add up to. */
+.table-foot .table-td, .table-foot .table-th {
+  border-block-start: 1px solid var(--border);
+  border-block-end: 0;
+  background: var(--card);
+  font-weight: var(--font-weight-semibold);
+  color: var(--foreground);
+}
+.table[data-sticky-foot] .table-foot .table-td,
+.table[data-sticky-foot] .table-foot .table-th {
+  position: sticky;
+  inset-block-end: 0;
+  z-index: var(--z-sticky);
+  /* Same reason as the sticky header: with collapsed borders the line stays
+   * with the row, so the travelling cell paints its own. */
+  box-shadow: inset 0 1px 0 var(--border);
+}
+
+/* The anchor column. A sideways scroll that takes the identifier with it
+ * leaves the reader on an unnamed row, so the first column stays put. */
+.table[data-sticky-col] .table-th:first-child,
+.table[data-sticky-col] .table-td:first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  background: var(--card);
+  /* Under the sticky header (--z-sticky), over the rows it scrolls past. */
+  z-index: calc(var(--z-sticky) - 1);
+}
+/* The corner belongs to both: it outranks the header row and the frozen column. */
+.table[data-sticky-col][data-sticky] .table-head .table-th:first-child {
+  z-index: calc(var(--z-sticky) + 1);
+}
+/* The frozen column is opaque by necessity: it covers the columns scrolling
+ * under it, so it is the one cell that has to repeat the row's own state. */
+.table[data-sticky-col] .table-row:hover .table-td:first-child,
+.table[data-sticky-col] .table-row:hover .table-th:first-child { background: var(--surface-hover); }
+.table[data-sticky-col] .table-row[data-selected] .table-td:first-child,
+.table[data-sticky-col] .table-row[data-selected] .table-th:first-child { background: var(--accent-soft); }
+
+/* The checkbox column is as wide as its control and no wider. */
+.table-th[data-select], .table-td[data-select] {
+  inline-size: var(--space-8);
+  padding-inline-end: 0;
+  vertical-align: middle;
+}
+
+/* THE GROUP HEADING. The whole heading is the toggle, so the target is the
+ * width of the table rather than a 16px chevron, and it carries its own name
+ * instead of needing one. */
+/* A QUIET BAND ON A CARD, and the three wrong answers it went through.
+ * --muted is the PAGE colour, so inside a card it reads as a hole cut through
+ * it. --surface-hover is 1.5% off white: a band nobody can see (owner, 23.08:
+ * the backgrounds merge). --accent-soft is what a SELECTED row is painted with,
+ * so a group heading in it would say "selected". This is the card's own surface
+ * pulled a third of the way to its border: visible on white, correct in dark
+ * without a second declaration, and it means nothing else in the system. */
+.table-group-cell { padding: 0; background: color-mix(in oklch, var(--card), var(--border) 30%); border-block-end: 1px solid var(--border); }
+.table-group-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  text-align: start;
+  cursor: pointer;
+}
+.table-group-toggle:hover { background: color-mix(in oklch, var(--card), var(--border) 55%); }
+.table-group-toggle:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(var(--ring-offset) * -1);
+}
+.table-group-label { flex: 1; }
+.table-group-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-weight-regular);
+  color: var(--muted-foreground);
+}
+
+/* One chevron, two disclosures (the group heading and the row), one rotation. */
+.table-chevron { transition: transform var(--duration-fast); }
+[aria-expanded="true"] > .table-chevron { transform: rotate(90deg); }
+[dir="rtl"] .table-chevron { transform: rotate(180deg); }
+[dir="rtl"] [aria-expanded="true"] > .table-chevron { transform: rotate(90deg); }
+
+.table-expand-cell { inline-size: var(--space-8); padding-inline-end: 0; vertical-align: middle; }
+.table-expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 24px floor, the same one the sort control carries (SC 2.5.8). */
+  inline-size: var(--space-6); block-size: var(--space-6);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.table-expand:hover { color: var(--foreground); background: var(--surface-hover); }
+.table-expand:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+/* The second layer, in the row's own width. It is not a row of data, so it
+ * carries the muted surface rather than the card's. */
+.table-detail-cell {
+  padding: var(--space-4);
+  background: color-mix(in oklch, var(--card), var(--border) 30%);
+  border-block-end: 1px solid var(--border);
+}
+
+/* No rows. The cell spans the table so the message sits under the columns it
+ * is about, not squeezed into the first one. */
+.table-empty-cell {
+  padding: var(--space-6) var(--space-4);
+  border-block-end: 0;
+  text-align: center;
+}
+
+/* THE HEATMAP RAMP. Five steps of one hue: the eye separates five, and a
+ * continuous fill invites a colour nobody can read a value off. The mix stops
+ * at 42% so the cell stays a surface the body text can be read on in both
+ * themes, rather than a block that needs its own ink. */
+.table-td[data-heat="0"] { background: var(--card); }
+.table-td[data-heat="1"] { background: color-mix(in oklch, var(--primary) 10%, var(--card)); }
+.table-td[data-heat="2"] { background: color-mix(in oklch, var(--primary) 21%, var(--card)); }
+.table-td[data-heat="3"] { background: color-mix(in oklch, var(--primary) 32%, var(--card)); }
+.table-td[data-heat="4"] { background: color-mix(in oklch, var(--primary) 42%, var(--card)); }
+
+/* THE COLUMN LAYER.
+ *
+ * `fixed` is what makes a declared width real: with the default algorithm the
+ * column widens to fit its longest value, so a width is a suggestion and a
+ * truncation never happens. */
+.table[data-layout="fixed"] { table-layout: fixed; }
+
+/* A group heading: the second axis of a header, over the columns it names. It
+ * centres over its span and carries the line that says where the group ends. */
+.table-colgroup {
+  border-inline-end: 1px solid var(--border);
+  padding-block-end: var(--space-2);
+}
+.table-colgroup:last-child { border-inline-end: 0; }
+
+/* Column priority. A dropped column is a dropped VALUE, so this is the last
+ * resort and never the identifier or the actions: the rule is in the prop's
+ * own documentation, and the CSS only does what it is told. */
+/* --bp-sm and --bp-md; media queries cannot read a custom property, so the
+ * numbers are repeated and the linter holds them to the scale. */
+@media (max-width: 30rem) {
+  .table-th[data-hide-below="sm"], .table-td[data-hide-below="sm"] { display: none; }
+}
+@media (max-width: 48rem) {
+  .table-th[data-hide-below="md"], .table-td[data-hide-below="md"] { display: none; }
+}

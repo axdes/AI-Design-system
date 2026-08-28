@@ -34,6 +34,8 @@
   max-block-size: 16rem;
   overflow-y: auto;
   background: var(--popover);
+  /* Its own popover surface, so it answers for what a row hovers to. */
+  --surface-hover: var(--popover-hover);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-popover);
@@ -52,8 +54,10 @@
 }
 /* Keyboard-active OR hovered option: one highlight, driven by data-active. */
 .combobox-option[data-active] {
-  background: var(--accent-soft);
+  background: var(--surface-hover);
 }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.combobox-option:active { background: var(--accent-soft); }
 .combobox-option[aria-selected="true"] {
   font-weight: var(--font-weight-medium);
   color: var(--primary-accent);
@@ -85,4 +89,21 @@
 .combobox-check {
   margin-inline-start: auto;
   color: var(--primary-accent);
+}
+
+/* WHERE ENTER WILL LAND. The fill alone cannot say it: on this surface a tint
+ * measures 1.15:1 in light and 1.33 in dark, and SC 2.4.11 asks a focus
+ * indicator for 3:1. `data-active` is set by the arrow keys AND by the pointer,
+ * and in both cases it names the row Enter fires — so the mark is the same for
+ * both. A pseudo-element, not an inset box-shadow: a shadow offset is physical
+ * and would sit on the wrong side in Arabic. */
+.combobox-option[data-active] { position: relative; }
+.combobox-option[data-active]::before {
+  content: "";
+  position: absolute;
+  inset-block: var(--space-1);
+  inset-inline-start: 0;
+  inline-size: var(--space-2xs);
+  border-radius: var(--radius-full);
+  background: var(--primary-accent);
 }

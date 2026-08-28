@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "quote",
+  "type": "registry:ui",
+  "title": "Quote",
+  "description": "A quotation with its attribution, in real <figure>/<blockquote> semantics — a testimonial, a finding quoted from a report, a line from an interview. For the system's own voice use ordinary text; this is for someone else's. Copy: the words are the speaker's, unedited; trimming a quote to fit is how a testimonial stops being one. `by` is a person, `source` is where they said it or what they do — an ",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Quote/Quote.css",
+      "content": ".quote {\n  display: flex;\n  flex-direction: column;\n  gap: var(--space-3);\n  margin: 0;\n  min-inline-size: 0;\n}\n\n/* The mark is a glyph, not a rail: a coloured bar down the side is decoration\n * the system does not use, and the icon says the same thing in one place. */\n.quote-mark { color: var(--primary-accent); }\n\n.quote-body {\n  margin: 0;\n  font-size: var(--font-md);\n  line-height: var(--leading-snug);\n  color: var(--foreground);\n  text-wrap: pretty;\n}\n.quote[data-size=\"lg\"] .quote-body { font-size: var(--font-lg); }\n\n/* THE SOURCE READS WITH THE ROLE, ON THE LAST LINE OF THE ATTRIBUTION.\n *\n * Three positions were tried on one card. `center` (as shipped) floated it in\n * the gutter between the name and the role with nothing to align to. `baseline`\n * is worse and not fixable from here: measured in Chromium, a flex container\n * exports its FIRST item's baseline, and an <Identity>'s first item is the\n * avatar, whose baseline is its bottom edge — the source dropped 17px. Aligned\n * to the TOP it landed on the name's line and read as part of the name.\n *\n * The last line is where it belongs, because that is the line it continues:\n * \"Head of Safety · Site 14\" is one fact about one person, and the role and the\n * place are the same size and the same colour already (owner, 23.08). Aligning\n * to the end puts them on one line without Quote reaching inside whatever `by`\n * happens to be. */\n.quote-by {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: flex-end;\n  gap: var(--space-2);\n  font-size: var(--font-sm);\n  color: var(--muted-foreground);\n}\n.quote-source::before { content: \"·\"; margin-inline-end: var(--space-2); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Quote/Quote.css"
+    },
+    {
+      "path": "src/components/Quote/Quote.tsx",
+      "content": "import \"./Quote.css\";\nimport type { ReactNode } from \"react\";\nimport { cn } from \"../lib/cn\";\nimport { Icon } from \"../Icon\";\n\ntype Size = \"md\" | \"lg\";\n\ntype Props = {\n  /** The words. Somebody else's, which is the whole point of the component. */\n  children: ReactNode;\n  /** Who said it: an <Identity>, or a name and a role. Required, because an\n   *  unattributed quote proves nothing — it is copy we wrote about ourselves. */\n  by: ReactNode;\n  /** Where it comes from: a company, a report, a date. */\n  source?: ReactNode;\n  size?: Size;\n  className?: string;\n};\n\n/** A quotation with its attribution, in real <figure>/<blockquote> semantics —\n *  a testimonial, a finding quoted from a report, a line from an interview.\n *  For the system's own voice use ordinary text; this is for someone else's. \n *\n * Copy: the words are the speaker's, unedited; trimming a quote to fit is how a\n * testimonial stops being one. `by` is a person, `source` is where they\n * said it or what they do — an unattributed quote is copy, not evidence.\n */\nexport function Quote({ children, by, source, size, className }: Props) {\n  return (\n    <figure className={cn(\"quote\", className)} data-size={size}>\n      <Icon name=\"quote\" size=\"md\" className=\"quote-mark\" aria-hidden=\"true\" />\n      <blockquote className=\"quote-body\">{children}</blockquote>\n      <figcaption className=\"quote-by\">\n        {by}\n        {source && <span className=\"quote-source\">{source}</span>}\n      </figcaption>\n    </figure>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Quote/Quote.tsx"
+    },
+    {
+      "path": "src/components/Quote/index.ts",
+      "content": "export { Quote } from \"./Quote\";\n",
+      "type": "registry:ui",
+      "target": "@ui/Quote/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Quote.json"
+}

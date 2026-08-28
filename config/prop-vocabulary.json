@@ -14,6 +14,157 @@
     "`axis` names the ONE question a prop answers. A prop name that answers two",
     "different questions is two props wearing one name."
   ],
+  "align": {
+    "axis": "where children sit on the cross axis of the thing that lays them out",
+    "values": {
+      "start": "at the beginning of the cross axis: tops aligned, each child its natural size",
+      "center": "centred on the cross axis",
+      "end": "at the end of the cross axis"
+    }
+  },
+  "appearance": {
+    "axis": "which of this component's OWN looks, when the choice is local and not a system-wide scale",
+    "scoped": true,
+    "why": "Tabs are underline or pills; a meta line is meta or eyebrow. Those words mean nothing outside their component, which is exactly why they must not sit in `variant` — `variant` is the control emphasis scale, and one prop name answering two questions is how an agent learns the system wrong. This axis is the honest home for a local look, and its values are deliberately not policed.",
+    "values": {
+      "muted": "secondary ink: the text is context around what the reader came for",
+      "plain": "the component's ordinary ink, for when this text IS the content",
+      "meta": "a line of small facts under or beside a title",
+      "eyebrow": "a small label ABOVE a title, naming what kind of thing follows",
+      "underline": "tabs marked by a rule under the active one — the quiet form, for tabs inside a page",
+      "pills": "tabs as filled pills — the loud form, for a switch between whole views"
+    }
+  },
+  "arrangement": {
+    "axis": "how a COMPOSITION is put together — which parts sit where, and whether they are attached or detached",
+    "values": {
+      "rail": "a navigation column attached to the content: the two read as one composition and the page surface runs behind both",
+      "float": "the same column detached into a card with air around it, for a product whose pages are documents rather than desks",
+      "top": "a horizontal bar and no side column, which is what a shallow navigation earns: a rail holding four links spends a sixth of the screen saying very little",
+      "none": "no navigation at all — sign-in, a status page, a focused reading view"
+    }
+  },
+  "as": {
+    "axis": "which HTML element this renders as, when the choice is the document's and not the component's",
+    "why": "A heading level is a property of the page, not of the component: the same EmptyState is the page's h1 on an empty route and an h2 inside a card. Declaring the words keeps that a document decision and stops `as` drifting into a styling prop.",
+    "values": {
+      "h1": "this heading names the page. Only where nothing else does",
+      "h2": "a section of the page",
+      "h3": "a subsection",
+      "h4": "a heading below that",
+      "p": "a paragraph of text",
+      "span": "inline text, no block semantics",
+      "div": "a plain box, when the document has no opinion",
+      "ul": "an unordered list, when the children are items and their number matters to a screen reader",
+      "ol": "an ordered list, when the order is part of the meaning",
+      "section": "a titled region of the page",
+      "nav": "a set of links to elsewhere"
+    }
+  },
+  "columns": {
+    "axis": "how many columns this thing divides itself into",
+    "values": {
+      "1": "one column: the list reads straight down",
+      "2": "two columns of pairs",
+      "3": "three columns of pairs",
+      "12": "twelve equal tracks a GridItem takes a share of — the layout grid, not a column count you read"
+    }
+  },
+  "density": {
+    "axis": "how much of the anatomy survives, and how much room it takes",
+    "values": {
+      "comfortable": "the default: everything the entry carries, with room around it",
+      "compact": "one level drops (the excerpt) and the air tightens — more entries on screen",
+      "dense": "the tightest step: a single reading line, scanned in bulk"
+    }
+  },
+  "direction": {
+    "axis": "which way the part resolves in space",
+    "values": {
+      "collapse": "toward the smaller form when the room runs out",
+      "expand": "toward the fuller form while the room allows"
+    }
+  },
+  "fill": {
+    "axis": "how a STATUS SURFACE is painted",
+    "values": {
+      "solid": "the tone at full strength",
+      "soft": "the tone's tint, for a quieter badge",
+      "plain": "no surface, the tone as ink only"
+    }
+  },
+  "layout": {
+    "axis": "how the part arranges its own pieces",
+    "values": {
+      "auto": "the part decides from its own width, which is the default wherever it exists",
+      "tile": "a card read top to bottom: media above the words",
+      "side": "media beside the words, sharing the height",
+      "cover": "the media is the surface and the words sit over it",
+      "row": "the list form: no surface of its own, a hairline between neighbours",
+      "stacked": "label above value, one pair per line",
+      "inline": "label and value on one line, several pairs to a row",
+      "fixed": "the column widths are declared rather than measured from content"
+    }
+  },
+  "orientation": {
+    "axis": "which way this thing runs",
+    "values": {
+      "horizontal": "across: a rule drawn left to right, bars that grow sideways from a column of names",
+      "vertical": "up and down: a rule between two columns, bars that grow from a baseline"
+    }
+  },
+  "placement": {
+    "axis": "where a SURFACE sits against the viewport",
+    "values": {
+      "center": "centred, the default dialog",
+      "drawer": "attached to an edge",
+      "top": "above the trigger",
+      "bottom": "below the trigger",
+      "start": "before the trigger in reading order (left in LTR, right in RTL)",
+      "end": "after the trigger in reading order",
+      "side": "beside the content, a fixed column (a card's horizontal media)",
+      "cover": "behind the content, filling the surface (a card's media under its own text, scrim included)"
+    }
+  },
+  "shape": {
+    "axis": "what outline a BOX traces",
+    "values": {
+      "text": "a line of text",
+      "block": "a rectangular area",
+      "circle": "a round box: a person's avatar, a round control",
+      "square": "a rounded rectangle where a circle is the default: a team or an organisation rather than a person",
+      "bar": "a horizontal track that fills from the start edge",
+      "ring": "a circular track that fills clockwise from twelve o'clock"
+    }
+  },
+  "size": {
+    "axis": "how much room this thing takes",
+    "values": {
+      "sm": "denser than the default",
+      "md": "the default",
+      "lg": "roomier than the default",
+      "xl": "display scale",
+      "2xl": "hero scale"
+    }
+  },
+  "sortDirection": {
+    "axis": "which way a sorted column is ordered",
+    "values": {
+      "asc": "smallest, earliest or A first",
+      "desc": "largest, latest or Z first"
+    }
+  },
+  "surface": {
+    "axis": "what this thing is sitting ON, so it can stay visible against it",
+    "why": "Nine components answer this question and none of them was declared here, because the check only ever validated the words of props the file already knew. A control that dissolves into the surface behind it is the exact failure this axis exists to prevent, and it was the most-shared word in the system with nothing written down about it.",
+    "values": {
+      "base": "the default surface — a card or the page body. Form controls draw their resting border here",
+      "muted": "the tinted surface (--muted): a page background, a PageHeader. A control drops its resting border and lets its white fill do the separating",
+      "card": "inside a card, on white: an icon badge goes grey so it reads",
+      "page": "on the grey page body: the same badge inverts to white"
+    },
+    "note": "Form controls answer `base` or `muted`; a block that sizes itself to a surface answers `card` or `page`. One axis, two grains of answer — a component takes the subset that makes sense for it, the way it does for `tone`."
+  },
   "tone": {
     "axis": "what this thing's state IS",
     "values": {
@@ -31,16 +182,6 @@
       }
     }
   },
-  "size": {
-    "axis": "how much room this thing takes",
-    "values": {
-      "sm": "denser than the default",
-      "md": "the default",
-      "lg": "roomier than the default",
-      "xl": "display scale",
-      "2xl": "hero scale"
-    }
-  },
   "variant": {
     "axis": "how much emphasis this CONTROL carries, and what role it plays",
     "values": {
@@ -53,66 +194,8 @@
       "success": "it confirms something",
       "dark": "it sits on a dark surface",
       "link": "it navigates and looks like text",
-      "ai": "it invokes a model"
+      "ai": "it invokes a model",
+      "bare": "no paint of its own at any state, because the thing it wraps is the affordance — a card that lifts, a row that highlights"
     }
-  },
-  "fill": {
-    "axis": "how a STATUS SURFACE is painted",
-    "values": {
-      "solid": "the tone at full strength",
-      "soft": "the tone's tint, for a quieter badge",
-      "plain": "no surface, the tone as ink only"
-    }
-  },
-  "shape": {
-    "axis": "what outline a BOX traces",
-    "values": {
-      "text": "a line of text",
-      "block": "a rectangular area",
-      "circle": "a round box: a person's avatar, a round control",
-      "square": "a rounded rectangle where a circle is the default: a team or an organisation rather than a person"
-    }
-  },
-  "placement": {
-    "axis": "where a SURFACE sits against the viewport",
-    "values": {
-      "center": "centred, the default dialog",
-      "drawer": "attached to an edge",
-      "top": "above the trigger",
-      "bottom": "below the trigger",
-      "start": "before the trigger in reading order (left in LTR, right in RTL)",
-      "end": "after the trigger in reading order",
-      "side": "beside the content, a fixed column (a card's horizontal media)",
-      "cover": "behind the content, filling the surface (a card's media under its own text, scrim included)"
-    }
-  },
-  "surface": {
-    "axis": "what this thing is sitting ON, so it can stay visible against it",
-    "why": "Nine components answer this question and none of them was declared here, because the check only ever validated the words of props the file already knew. A control that dissolves into the surface behind it is the exact failure this axis exists to prevent, and it was the most-shared word in the system with nothing written down about it.",
-    "values": {
-      "base": "the default surface — a card or the page body. Form controls draw their resting border here",
-      "muted": "the tinted surface (--muted): a page background, a PageHeader. A control drops its resting border and lets its white fill do the separating",
-      "card": "inside a card, on white: an icon badge goes grey so it reads",
-      "page": "on the grey page body: the same badge inverts to white"
-    },
-    "note": "Form controls answer `base` or `muted`; a block that sizes itself to a surface answers `card` or `page`. One axis, two grains of answer — a component takes the subset that makes sense for it, the way it does for `tone`."
-  },
-  "as": {
-    "axis": "which HTML element this renders as, when the choice is the document's and not the component's",
-    "why": "A heading level is a property of the page, not of the component: the same EmptyState is the page's h1 on an empty route and an h2 inside a card. Declaring the words keeps that a document decision and stops `as` drifting into a styling prop.",
-    "values": {
-      "h1": "this heading names the page. Only where nothing else does",
-      "h2": "a section of the page",
-      "h3": "a subsection",
-      "h4": "a heading below that",
-      "p": "a paragraph of text",
-      "span": "inline text, no block semantics"
-    }
-  },
-  "appearance": {
-    "axis": "which of this component's OWN looks, when the choice is local and not a system-wide scale",
-    "scoped": true,
-    "why": "Tabs are underline or pills; a meta line is meta or eyebrow. Those words mean nothing outside their component, which is exactly why they must not sit in `variant` — `variant` is the control emphasis scale, and one prop name answering two questions is how an agent learns the system wrong. This axis is the honest home for a local look, and its values are deliberately not policed.",
-    "values": {}
   }
 }

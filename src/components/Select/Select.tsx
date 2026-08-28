@@ -1,14 +1,12 @@
 import './Select.css'
 import { cn } from '../../lib/cn'
+import { type Option } from '../../lib/option'
 import { Icon } from '../Icon'
 import { Dropdown, DropdownItem } from '../Dropdown'
 
-export type SelectOption<V extends string> = {
-  value: V
-  label: string
-  /** A choice that is shown but cannot be picked (e.g. an out-of-stock plan). */
-  disabled?: boolean
-}
+/** A Select choice: the shared <Option> plus the one thing this control also
+ *  renders — a choice shown but not pickable (an out-of-stock plan). */
+export type SelectOption<V extends string> = Option<V> & { disabled?: boolean }
 
 type Props<V extends string> = {
   value: V | undefined
@@ -17,6 +15,11 @@ type Props<V extends string> = {
   placeholder?: string
   /** Accessible label — applied to the trigger button. */
   label: string
+  /** Lands on the trigger, so `<Field htmlFor>` reaches it and an `ErrorSummary`
+   *  row can put focus on it. Without one the field is unreachable by name: a
+   *  failed submit listed "Choose who takes this request", the row linked to an
+   *  id nothing carried, and clicking it did nothing at all (owner, 2026-08-23). */
+  id?: string
   className?: string
   /** sm / md (default) / lg — matches the control scale. */
   size?: 'sm' | 'md' | 'lg'
@@ -42,9 +45,12 @@ type Props<V extends string> = {
 /**
  * Single choice from a short list, built on Dropdown so the menu can match the
  * trigger width. Combobox is the one for a long list.
+ *
+ * Copy: the label names the value, the placeholder names the choice not yet made
+ * — "Choose a region". Options are parallel and never restate the label.
  */
 export function Select<V extends string>({
-  value, onChange, options, placeholder, label, className, size, disabled, invalid, surface = 'base',
+  value, onChange, options, placeholder, label, id, className, size, disabled, invalid, surface = 'base',
 }: Props<V>) {
   const selected = options.find((o) => o.value === value)
   const display = selected?.label ?? placeholder ?? ''
@@ -58,6 +64,9 @@ export function Select<V extends string>({
          pass was styled by nobody. A choice list narrower or wider than the
          field it belongs to reads as a different control. */
       matchTriggerWidth
+      /* Through the Dropdown, not onto the button: the menu labels itself by the
+         trigger's id, so the two have to be the same one. */
+      triggerId={id}
       trigger={({ isOpen, ...triggerProps }) => (
         <button
           type="button"
@@ -71,7 +80,7 @@ export function Select<V extends string>({
           aria-label={label}
           {...triggerProps}
         >
-          <span>{display}</span>
+          <span className="select-value">{display}</span>
           <Icon name="arrow_drop_down" />
         </button>
       )}

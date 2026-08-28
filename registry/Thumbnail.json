@@ -1,0 +1,74 @@
+{
+  "ref": "Thumbnail",
+  "level": "atom",
+  "description": "The picture that identifies a row: a product, a document, a frame of a recording. A fixed box, so it never becomes the row's height driver and every row in the column is the same height whatever the image is. `Avatar` is the one for a person (it is round and falls back to initials); `CardMedia` is the one for a card, where the frame IS the content. Copy: the `alt` says what the picture shows, not that it is a picture; an empty alt is correct only when the image adds nothing the words do not already carry.",
+  "exports": [
+    "Thumbnail"
+  ],
+  "main": "Thumbnail",
+  "from": "@/components/Thumbnail",
+  "slots": [],
+  "props": [
+    {
+      "name": "src",
+      "type": "string",
+      "required": false,
+      "description": "The picture. Leave it out and the fallback icon stands in, which is what a row with no image needs: the column still has one width."
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "required": true,
+      "description": "Always required, and empty when the picture repeats the text beside it."
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false,
+      "description": "The stand-in when there is no picture."
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "description": "sm (24px, a dense table) / md (40px, the default).",
+      "values": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "ratio",
+      "type": "'1/1' | '16/9'",
+      "required": false,
+      "description": "Square (the default) for a thing, 16/9 for a frame of video.",
+      "values": [
+        "1/1",
+        "16/9"
+      ]
+    }
+  ],
+  "sourcePath": "src/components/Thumbnail/Thumbnail.tsx",
+  "inherits": "Omit<ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height'>",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md"
+      ]
+    },
+    "ratio": {
+      "prop": "ratio",
+      "values": [
+        "1/1",
+        "16/9"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "Table"
+  ],
+  "example": "<TableScroll label=\"Files\">\n  <Table caption=\"Files\" captionHidden>\n    <THead>\n      <Tr>\n        {/* The thumbnail column is as wide as the box and no wider. */}\n        <Th width=\"4rem\"><span className=\"sr-only\">Preview</span></Th>\n        <Th>File</Th>\n        <Th>Kind</Th>\n      </Tr>\n    </THead>\n    <TBody>\n      {ROWS.map((r) => (\n        <Tr key={r.id}>\n          {/* No src here: the fallback keeps the column one width, which is\n              what stops a row without a picture from collapsing. */}\n          <Td><Thumbnail alt=\"\" icon={r.icon} size=\"sm\" /></Td>\n          <Th scope=\"row\" emphasis>{r.id}</Th>\n          <Td>{r.kind}</Td>\n        </Tr>\n      ))}\n    </TBody>\n  </Table>\n</TableScroll>"
+}

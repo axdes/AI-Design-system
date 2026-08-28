@@ -56,10 +56,18 @@ function parseTag(src, start) {
   let j = start + m[0].length
   if (src[j] === '<') j = skipAngles(src, j) // <FilterDropdown<Status> …>
   const attrs = []
+  let spread = false
   while (j < src.length) {
     while (WS.test(src[j])) j++
     if (src[j] === '>') { j++; break }
     if (src[j] === '/' && src[j + 1] === '>') { j += 2; break }
+    /* `{...props}` is a SPREAD, not an attribute. Walking it one character at a
+       time reached the `p` and filed it as a prop named "p" — harmless while an
+       `inherits` entry skipped the prop check entirely, and 114 false reports
+       the moment that stopped (2026-08-26). A spread also means the tag's props
+       are not all visible here, which is why `spread` is recorded rather than
+       ignored. */
+    if (src[j] === '{') { spread = true; j = skipBraces(src, j); continue }
     const nm = /^[A-Za-z_$][\w$-]*/.exec(src.slice(j))
     if (!nm) { j++; continue }
     const name = nm[0]
@@ -80,7 +88,7 @@ function parseTag(src, start) {
     }
     attrs.push({ name, literal })
   }
-  return { name: m[1], attrs, end: j }
+  return { name: m[1], attrs, spread, end: j }
 }
 
 /* Comments are blanked (newlines kept, so line numbers still point at the real
@@ -120,7 +128,7 @@ export function readTags(source) {
     if (/^<[A-Z][\w]*\s+extends\b/.test(src.slice(m.index, m.index + 40))) continue
     const tag = parseTag(src, m.index)
     if (!tag) continue
-    out.push({ name: tag.name, attrs: tag.attrs, line: src.slice(0, m.index).split('\n').length })
+    out.push({ name: tag.name, attrs: tag.attrs, spread: tag.spread, line: src.slice(0, m.index).split('\n').length })
   }
   return out
 }
@@ -133,7 +141,15 @@ function localComponents(src) {
 }
 
 /* Props that any component inheriting DOM attributes legitimately accepts. */
-const DOM_OK = /^(key|ref|className|id|style|role|type|title|tabIndex|href|target|rel|name|value|placeholder|disabled|checked|required|readOnly|autoFocus|maxLength|rows|cols|src|alt|width|height|form|htmlFor|children)$/
+/* Real HTML/React attributes. A component that spreads `...rest` accepts these
+   and nothing else: `padding="huge"` is not one of them, it is an invented prop
+   that React itself warns about at runtime. Until 2026-08-26 an entry marked
+   `inherits` skipped this check altogether, which exempted 27 of 143 entries —
+   Button, Card, Badge, Alert, Avatar, Checkbox, the most-written components in
+   the system — from the failure class measured most often on real agent runs.
+   The list is meant to grow: a missing attribute is reported, which is loud and
+   fixable, rather than a whole component being silently unchecked. */
+const DOM_OK = /^(key|ref|className|id|style|role|type|title|tabIndex|href|target|rel|name|value|placeholder|disabled|checked|required|readOnly|autoFocus|maxLength|minLength|rows|cols|src|alt|width|height|form|htmlFor|children|autoComplete|min|max|step|pattern|inputMode|spellCheck|colSpan|rowSpan|scope|loading|decoding|download|hidden|lang|dir|draggable|contentEditable|accept|multiple|defaultValue|defaultChecked|list|wrap|open|selected|poster|preload|autoPlay|muted|playsInline|controls|srcSet|sizes|crossOrigin|referrerPolicy|action|method|encType|noValidate|capture|inert|popover|popoverTarget|slot|translate|accessKey|enterKeyHint|maxWidth)$/
 const DOM_PREFIX = /^(data-|aria-|on[A-Z])/
 
 /* ── the scorers ───────────────────────────────────────────────────────
@@ -160,6 +176,12 @@ export function unknownComponents(src, registry) {
 /** Passes only props that exist, with values from the declared union. */
 export function inventedProps(src, registry) {
   const entries = { ...registry.components, ...registry.blocks }
+  /* A component DEFINED in this file wins over one of the same name in the
+     registry — it is a different component that happens to share a word. Test
+     files do this constantly (`function Page()` wrapping the thing under test),
+     and checking those tags against the registry's contract reported thirteen
+     props that were perfectly real (2026-08-26). */
+  const local = localComponents(src)
   /* export name -> the entry that owns it (Card, CardTitle, … all map to Card) */
   const owner = new Map()
   for (const entry of Object.values(entries)) {
@@ -168,6 +190,7 @@ export function inventedProps(src, registry) {
   }
   const out = []
   for (const tag of readTags(src)) {
+    if (local.has(tag.name.split('.')[0])) continue
     const entry = owner.get(tag.name)
     if (!entry) continue
     const props = new Map((entry.props ?? []).map((p) => [p.name, p]))
@@ -178,7 +201,7 @@ export function inventedProps(src, registry) {
       if (DOM_PREFIX.test(attr.name)) continue
       const prop = props.get(attr.name)
       if (!prop) {
-        if (!isMain || entry.inherits || DOM_OK.test(attr.name)) continue
+        if (!isMain || DOM_OK.test(attr.name)) continue
         out.push(`line ${tag.line}: <${tag.name} ${attr.name}> — no such prop (registry lists: ${[...props.keys()].join(', ') || 'none'})`)
         continue
       }

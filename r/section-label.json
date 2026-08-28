@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-label",
+  "type": "registry:ui",
+  "title": "SectionLabel",
+  "description": "The heading that names a section inside a page or a panel: the voice of a card title, one step larger. Rank comes from size and colour, not from caps. Copy: names what the section holds, in the reader's words. It is a heading and reads like one — not a shouted category.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/SectionLabel/SectionLabel.css",
+      "content": "/* The section head: a plain, light heading — the same voice as a card title, one step larger.\n *\n * It was uppercase, tracked and grey, and a column of those read as shouted grey labels rather\n * than headings (owner, 2026-08-07). The rank now comes from size and colour alone: caps and\n * letter-spacing were doing the work that a heading does by being a heading, and they made a\n * long label (\"THE SQUAD · 2 PEOPLE\") harder to read than the content under it. */\n.section-label {\n  font-family: var(--font-family-display);\n  font-size: var(--font-lg);\n  font-weight: var(--font-weight-medium);\n  line-height: var(--leading-tight);\n  color: var(--foreground);\n}\n\n/* The label owns a small gap to the thing it introduces (reported 2026-08-20:\n * headings sat glued to their cards wherever the wrapper was a plain <section>).\n * A sibling margin rather than per-screen stacks, so the rhythm is the system's\n * decision; where a flex parent already spaces children the margin adds a step,\n * which is the same visual statement — the label belongs to what follows. */\n.section-label + * {\n  margin-block-start: var(--space-3);\n}\n\n/* INSIDE A CARD THE CARD OWNS THE RHYTHM. Card.css states that once, for every\n * guest; this margin was added on top of the card's own gap and the two summed\n * to 20px — five grid units, a step the scale does not have (found on a product's\n * team screen, 2026-08-26, by the audit rule that had been quietly rejecting\n * real steps and so hid this one). The card's gap already separates its\n * children, and where a component needs the extra step, Card.css gives it. */\n.card > .section-label + * {\n  margin-block-start: 0;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/SectionLabel/SectionLabel.css"
+    },
+    {
+      "path": "src/components/SectionLabel/SectionLabel.tsx",
+      "content": "import './SectionLabel.css'\nimport type { HTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\n\n/** Which element the label really is. A page of sections needs real headings so\n *  the outline can be walked; a label inside a card usually does not, which is\n *  why the default stays a div. */\ntype Heading = 'h2' | 'h3' | 'h4'\n\ntype Props = HTMLAttributes<HTMLElement> & {\n  /**\n   * The heading level, and whether this is a heading at all. Give it on a page:\n   * a section nobody can reach by walking the outline is a section a screen\n   * reader has to scroll for. Pick the level from the page, not from the look —\n   * one step under whatever heading contains it, never skipping one.\n   *\n   * Left off it renders a div, which is right inside a card, where the card's\n   * own title is already the heading.\n   */\n  as?: Heading\n}\n\n/**\n * The heading that names a section inside a page or a panel: the voice of a card\n * title, one step larger. Rank comes from size and colour, not from caps.\n *\n * Copy: names what the section holds, in the reader's words. It is a heading and\n * reads like one — not a shouted category.\n */\nexport function SectionLabel({ as, className, ...rest }: Props) {\n  const Tag = as ?? 'div'\n  return <Tag className={cn('section-label', className)} {...rest} />\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/SectionLabel/SectionLabel.tsx"
+    },
+    {
+      "path": "src/components/SectionLabel/index.ts",
+      "content": "export { SectionLabel } from './SectionLabel'\n",
+      "type": "registry:ui",
+      "target": "@ui/SectionLabel/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/SectionLabel.json"
+}

@@ -160,10 +160,10 @@ export function checkContrast({
     ['warning ink on page', '--warning-emphasis', '--background', TEXT],
     ['destructive ink on page', '--destructive-emphasis', '--background', TEXT],
     /* The selected nav row. Measured against --accent, which is the surface the
-       sidebars actually paint: --nav-active-bg belongs to ChatHistory and is a
+       sidebars actually paint: --nav-active belongs to ChatHistory and is a
        different tint. Measuring a colour against a surface it never lands on is
        how the dark nav sat at 1.39:1 with a green check beside it. */
-    ['nav active text', '--nav-active-fg', '--accent', TEXT],
+    ['nav active text', '--nav-active-foreground', '--accent', TEXT],
     /* --primary-accent is the brand as INK, and it lands on more than the page:
        a dropdown item, a selected tree row, a filter trigger. Those sit on --muted
        and --accent, and it had only ever been measured against --background. */

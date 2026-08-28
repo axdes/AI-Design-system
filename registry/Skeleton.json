@@ -13,6 +13,7 @@
       "name": "shape",
       "type": "Shape",
       "required": false,
+      "description": "text = a line of body text (default). block = a rectangular area (card, image). circle = an avatar-sized disc.",
       "values": [
         "text",
         "block",
@@ -22,12 +23,14 @@
     {
       "name": "lines",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Number of text lines. Only meaningful for shape=\"text\"; the last line is rendered short so the block reads as a paragraph, not a bar. Default 1."
     },
     {
       "name": "width",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Width / height overrides for block and circle (a token or length). Text fills its container."
     },
     {
       "name": "height",

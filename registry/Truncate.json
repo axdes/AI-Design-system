@@ -1,0 +1,49 @@
+{
+  "ref": "Truncate",
+  "level": "molecule",
+  "description": "A value that does not fit, cut with an ellipsis, with the whole of it in a tooltip. The tooltip appears only when the text is ACTUALLY clipped, so a column of short values has no hover behaviour at all. A table gets one of three answers to a long value: wrap it (and lose the scan), widen the row (and lose the page), or this. Never use it on a column header: a header nobody can read is a column nobody can use.",
+  "exports": [
+    "Truncate"
+  ],
+  "main": "Truncate",
+  "from": "@/components/Truncate",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "string",
+      "required": true,
+      "description": "The whole value. What is shown is whatever fits; the tooltip carries the rest, so the text has to be a string."
+    },
+    {
+      "name": "lines",
+      "type": "Lines",
+      "required": false,
+      "description": "One line (the default) or two. Two is for the one description column a table is allowed; three is a paragraph, and a paragraph is not a cell.",
+      "values": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Truncate/Truncate.tsx",
+  "variants": {
+    "lines": {
+      "prop": "lines",
+      "values": [
+        1,
+        2
+      ]
+    }
+  },
+  "uses": [
+    "Table",
+    "Tooltip"
+  ],
+  "example": "/* `layout=\"fixed\"` is what makes a truncation possible at all: without it\n   the column widens to fit the longest value and nothing is ever clipped. */\n<TableScroll label=\"Invoice notes\">\n  <Table layout=\"fixed\" caption=\"Invoice notes\" captionHidden>\n    <THead>\n      <Tr>\n        <Th width=\"8rem\">Invoice</Th>\n        <Th>Note</Th>\n      </Tr>\n    </THead>\n    <TBody>\n      {ROWS.map((r) => (\n        <Tr key={r.id}>\n          <Th scope=\"row\" emphasis>{r.id}</Th>\n          {/* The tooltip appears on the first row and not on the second:\n              it is measured, so a value that fits has no hover at all. */}\n          <Td><Truncate>{r.note}</Truncate></Td>\n        </Tr>\n      ))}\n    </TBody>\n  </Table>\n</TableScroll>"
+}

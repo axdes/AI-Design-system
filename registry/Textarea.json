@@ -18,6 +18,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "sm / md (default) / lg — matches the control scale (font + min-height).",
       "values": [
         "sm",
         "md",

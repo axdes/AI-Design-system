@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio",
+  "type": "registry:ui",
+  "title": "Radio",
+  "description": "Single custom radio, one option in a set where exactly one is chosen. Native <input type=\"radio\"> (so a shared `name` gives arrow-key navigation + form semantics for free), visually themed. Copy: options are parallel: same part of speech, same length, same grain. \"Weekly\" beside \"Every Monday at 9\" reads as two different questions.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Radio/Radio.css",
+      "content": ".radio {\n  /* 24px floor — see Checkbox.css; radios stack the same way. */\n  min-block-size: var(--space-6);\n  --dot-size: 1.25rem;   /* md default; sm/lg below */\n  /* Containing block for the hidden input — see Checkbox.css for what escapes\n   * without it. */\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  gap: var(--space-2);\n  cursor: pointer;\n  font-size: var(--font-base);\n  color: var(--foreground);\n  line-height: var(--leading-snug);\n}\n.radio[data-size=\"sm\"] { --dot-size: 1rem; font-size: var(--font-sm); }\n.radio[data-size=\"lg\"] { --dot-size: 1.5rem; font-size: var(--font-md); }\n.radio[data-disabled] { opacity: 0.5; cursor: not-allowed; }\n/* The same three answers every other control gives. The selection family gave\n * none of them: a checkbox did not acknowledge the pointer, did not answer the\n * press, and had no way to be marked wrong — so a required consent box could be\n * rejected by a form with nothing on screen saying which box was the problem. */\n.radio:hover:not([data-disabled]) .radio-circle { border-color: var(--ring); }\n.radio:active:not([data-disabled]) .radio-circle { border-color: var(--primary-active); }\n.radio[data-invalid] .radio-circle { border-color: var(--destructive); }\n.radio[data-invalid] .radio-input:focus-visible + .radio-circle { outline-color: var(--destructive); }\n\n\n.radio-input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }\n\n.radio-circle {\n  position: relative;\n  flex-shrink: 0;\n  width: var(--dot-size);\n  height: var(--dot-size);\n  border: 1.5px solid var(--border-strong, var(--border));\n  border-radius: var(--radius-full);\n  background: var(--background);\n  transition: border-color var(--duration-fast);\n}\n.radio-input:checked + .radio-circle { border-color: var(--primary-accent); }\n.radio-input:checked + .radio-circle::after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  margin: auto;\n  width: 50%;\n  height: 50%;\n  border-radius: var(--radius-full);\n  background: var(--primary);\n}\n.radio-input:focus-visible + .radio-circle {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n\n.radio-group { display: flex; flex-direction: column; gap: var(--space-2); }\n",
+      "type": "registry:ui",
+      "target": "@ui/Radio/Radio.css"
+    },
+    {
+      "path": "src/components/Radio/Radio.tsx",
+      "content": "import './Radio.css'\nimport type { InputHTMLAttributes } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> & {\n  /** Visible label beside the dot. */\n  label?: string\n  /** Dot size: sm / md (default) / lg. */\n  size?: 'sm' | 'md' | 'lg'\n  /** The form rejected this set. Draws the red circle and the red focus ring —\n   *  the VISUAL half only. The announcement belongs to `<RadioGroup invalid>`,\n   *  because a single radio cannot carry `aria-invalid`: ARIA does not support\n   *  it on `role=\"radio\"`, and \"nothing is chosen\" is a fact about the set, not\n   *  about any one option in it. */\n  invalid?: boolean\n}\n\n/* Single custom radio, one option in a set where exactly one is chosen. Native <input type=\"radio\"> (so a shared `name` gives\n * arrow-key navigation + form semantics for free), visually themed. \n   *\n   * Copy: options are parallel: same part of speech, same length, same grain.\n   * \"Weekly\" beside \"Every Monday at 9\" reads as two different questions.\n   */\nexport function Radio({ label, size, invalid, className, disabled, ...rest }: Props) {\n  return (\n    <label\n      className={cn('radio', className)}\n      data-size={size}\n      data-disabled={disabled || undefined}\n      data-invalid={invalid || undefined}\n    >\n      <input type=\"radio\" className=\"radio-input\" disabled={disabled} {...rest} />\n      <span className=\"radio-circle\" aria-hidden=\"true\" />\n      {label && <span className=\"radio-label\">{label}</span>}\n    </label>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Radio/Radio.tsx"
+    },
+    {
+      "path": "src/components/Radio/RadioGroup.tsx",
+      "content": "import './Radio.css'\nimport { Radio } from './Radio'\n\ntype Option<T extends string> = { value: T; label: string; disabled?: boolean }\n\ntype Props<T extends string> = {\n  /** Shared input name (groups the radios for keyboard nav + single selection). */\n  name: string\n  value: T\n  onChange: (value: T) => void\n  options: Option<T>[]\n  /** Accessible group label (for screen readers). */\n  label?: string\n  size?: 'sm' | 'md' | 'lg'\n  /** The form rejected the set: nothing chosen where a choice was required.\n   *  Marks every option red AND announces it here, on the group — which is the\n   *  only element allowed to carry it, and the only one the fact is about. */\n  invalid?: boolean\n}\n\n/* A set of radios sharing one name. Native radios handle arrow-key navigation. */\nexport function RadioGroup<T extends string>({ name, value, onChange, options, label, size, invalid }: Props<T>) {\n  return (\n    <div className=\"radio-group\" role=\"radiogroup\" aria-label={label} aria-invalid={invalid || undefined}>\n      {options.map((o) => (\n        <Radio\n          key={o.value}\n          name={name}\n          value={o.value}\n          size={size}\n          checked={value === o.value}\n          disabled={o.disabled}\n          onChange={() => onChange(o.value)}\n          invalid={invalid}\n          label={o.label}\n        />\n      ))}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Radio/RadioGroup.tsx"
+    },
+    {
+      "path": "src/components/Radio/index.ts",
+      "content": "export { Radio } from './Radio'\nexport { RadioGroup } from './RadioGroup'\n",
+      "type": "registry:ui",
+      "target": "@ui/Radio/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Radio.json"
+}

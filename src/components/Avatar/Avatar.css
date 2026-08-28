@@ -6,7 +6,7 @@
    * instead of on this box. */
   position: relative;
   border-radius: var(--radius-full);
-  background: var(--avatar-bg);
+  background: var(--avatar);
   color: var(--avatar-foreground);
   font-weight: var(--font-weight-semibold);
   /* Never let a flex parent squash the circle into an oval (e.g. next to a

@@ -1,9 +1,21 @@
 .app-layout {
-  display: grid;
-  grid-template-columns: auto 1fr;
   min-block-size: 100dvh;
   background: var(--muted);
   color: var(--foreground);
+}
+
+/* Nav and content are ONE composition, so the cap belongs to the pair rather
+ * than to the content alone: capping only the content leaves the nav against
+ * the screen edge and the content column reading right of centre (measured at
+ * 2560: 130px off). The surface above still fills the screen, so the margins
+ * read as page, not as a hole. */
+.app-layout-inner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-block-size: 100dvh;
+  inline-size: 100%;
+  max-inline-size: var(--shell-max-width);
+  margin-inline: auto;
 }
 .app-layout-nav { position: sticky; inset-block-start: 0; block-size: 100dvh; }
 .app-layout-main { min-inline-size: 0; }
@@ -15,6 +27,7 @@
  * this. Desktop only — the panelled layout itself only exists from 62rem up. */
 @media (min-width: 62rem) {
   .app-layout:has([data-panels]) { block-size: 100dvh; overflow: hidden; }
+  .app-layout:has([data-panels]) .app-layout-inner { block-size: 100dvh; min-block-size: 0; }
   .app-layout:has([data-panels]) .app-layout-main {
     min-block-size: 0;
     display: flex;
@@ -24,8 +37,11 @@
 
 /* Mobile: nav becomes an overlay drawer. */
 @media (max-width: 48rem) {
-  .app-layout { grid-template-columns: 1fr; }
-  .app-layout-nav {
+  .app-layout-inner { grid-template-columns: 1fr; }
+  /* `top` keeps its bar and `none` has nothing to slide, so only the two side
+     arrangements turn into a drawer. */
+  .app-layout[data-arrangement='rail'] .app-layout-nav,
+  .app-layout[data-arrangement='float'] .app-layout-nav {
     position: fixed; inset-block: 0; inset-inline-start: 0; z-index: var(--z-modal);
     background: var(--card); box-shadow: var(--shadow-lg);
     transform: translateX(-100%); transition: transform var(--duration-normal);
@@ -35,4 +51,44 @@
     position: fixed; inset: 0; z-index: var(--z-sticky);
     border: 0; padding: 0; background: var(--overlay); cursor: pointer;
   }
+}
+
+/* ── Where the navigation sits ───────────────────────────────────────────────
+ * `rail` is the default and is everything above: a column attached to the
+ * content, the pair capped and centred together. */
+
+/* Detached: the nav is a card with air around it and the page surface runs
+ * under it. The gap is the whole difference, so it is the only thing declared —
+ * the column, the stickiness and the cap are still the rail's. */
+.app-layout[data-arrangement='float'] .app-layout-inner {
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+.app-layout[data-arrangement='float'] .app-layout-nav {
+  block-size: calc(100dvh - var(--space-8));
+  inset-block-start: var(--space-4);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+
+/* A bar above the content and no side column. A shallow navigation earns this:
+ * a rail holding four links spends a sixth of the screen saying very little. */
+.app-layout[data-arrangement='top'] .app-layout-inner {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+.app-layout[data-arrangement='top'] .app-layout-nav {
+  position: sticky;
+  inset-block-start: 0;
+  block-size: auto;
+  z-index: var(--z-sticky);
+  background: var(--card);
+  border-block-end: 1px solid var(--border);
+}
+
+/* No navigation: the content is the whole composition. */
+.app-layout[data-arrangement='none'] .app-layout-inner {
+  grid-template-columns: 1fr;
 }

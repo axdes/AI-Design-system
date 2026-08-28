@@ -19,7 +19,11 @@ type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onC
 /* Single-value range input. Built on the native <input type="range">, so the
  * keyboard contract (arrows, Home/End, Page Up/Down) and screen-reader support
  * come for free; this adds the label row, the value read-out and the themed
- * track. The filled portion is driven by a --pct custom property. */
+ * track. The filled portion is driven by a --pct custom property. 
+   *
+   * Copy: the label carries the unit; the value is announced as the reader would
+   * say it, not as a raw number.
+   */
 export function Slider({
   value, onChange, min = 0, max = 100, step = 1, label, showValue, formatValue, className, disabled, ...rest
 }: Props) {
@@ -42,7 +46,11 @@ export function Slider({
         step={step}
         value={value}
         disabled={disabled}
-        aria-label={label}
+        /* No `aria-label`: the visible <label> above already names this input,
+           and an aria-label OVERRIDES it. Two names for one control are the same
+           name only until one of them changes, and the one people hear would be
+           the one nobody can see (WCAG 2.5.3, Label in Name). Removed 2026-08-26
+           after a mutation test showed deleting it changed nothing. */
         onChange={(e) => onChange(Number(e.target.value))}
         style={{ ['--pct' as string]: `${pct}%` }}
         {...rest}

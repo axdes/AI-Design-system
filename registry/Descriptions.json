@@ -18,6 +18,7 @@
       "name": "layout",
       "type": "'stacked' | 'inline'",
       "required": false,
+      "description": "stacked (term above value, default) or inline (term beside value).",
       "values": [
         "stacked",
         "inline"
@@ -27,6 +28,7 @@
       "name": "columns",
       "type": "1 | 2 | 3",
       "required": false,
+      "description": "Columns on wide screens (stacked layout only). Default 1.",
       "values": [
         1,
         2,
@@ -60,5 +62,5 @@
   "uses": [
     "Badge"
   ],
-  "example": "/* Read-only field/value metadata (a real <dl>). Use a Table for rows of\n * records, a form for editing. Values can be any node, e.g. a Badge. */\n\n<Descriptions\n  columns={2}\n  items={[\n    { term: 'Invoice', value: 'INV-1042' },\n    { term: 'Status', value: <Badge tone=\"warning\" fill=\"soft\">Due</Badge> },\n    { term: 'Client', value: 'Sabic' },\n    { term: 'Amount', value: 'SAR 8,600.00' },\n  ]}\n/>"
+  "example": "/* Read-only field/value metadata (a real <dl>). Use a Table for rows of\n * records, a form for editing. Values can be any node, e.g. a Badge. */\n\n<Descriptions\n  columns={2}\n  items={[\n    { term: 'Invoice', value: 'INV-1042' },\n    { term: 'Status', value: <Badge tone=\"warning\" fill=\"soft\">Due</Badge> },\n    { term: 'Client', value: 'Northwind' },\n    { term: 'Amount', value: 'SAR 8,600.00' },\n  ]}\n/>"
 }

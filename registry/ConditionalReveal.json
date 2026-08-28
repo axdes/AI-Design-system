@@ -1,0 +1,37 @@
+{
+  "ref": "ConditionalReveal",
+  "level": "molecule",
+  "description": "The dependent field under an option: present only while that option is chosen, indented under it so the two read as one question.",
+  "exports": [
+    "ConditionalReveal"
+  ],
+  "main": "ConditionalReveal",
+  "from": "@/components/ConditionalReveal",
+  "slots": [],
+  "props": [
+    {
+      "name": "when",
+      "type": "boolean",
+      "required": true,
+      "description": "True when the option this content belongs to is the chosen one."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/ConditionalReveal/ConditionalReveal.tsx",
+  "uses": [
+    "Field",
+    "Input",
+    "Layout",
+    "Radio"
+  ],
+  "example": "const [reason, setReason] = useState('scope')\nconst [other, setOther] = useState('')\n/* The reveal sits under the option it belongs to, not at the end of the\n * group: read in order, \"Something else\" is immediately followed by the field\n * that finishes the sentence. */\n\n/* A Stack, not a bare <div>: `Radio` is inline-flex, so a hand-rolled\n   container gives the options no gap at all and they touch (owner,\n   2026-08-24). The group is hand-composed rather than a `RadioGroup`\n   because the reveal belongs UNDER one option, not after the set. */\n<Stack gap={2} role=\"radiogroup\" aria-label=\"Why is the session moving?\">\n  <Radio\n    name=\"reason\"\n    value=\"scope\"\n    label=\"The scope changed\"\n    checked={reason === 'scope'}\n    onChange={() => setReason('scope')}\n  />\n  <Radio\n    name=\"reason\"\n    value=\"other\"\n    label=\"Something else\"\n    checked={reason === 'other'}\n    onChange={() => setReason('other')}\n  />\n  <ConditionalReveal when={reason === 'other'}>\n    <Field label=\"What happened?\" htmlFor=\"reason-other\">\n      <Input id=\"reason-other\" value={other} onChange={(e) => setOther(e.target.value)} />\n    </Field>\n  </ConditionalReveal>\n</Stack>"
+}

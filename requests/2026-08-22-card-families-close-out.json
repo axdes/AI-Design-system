@@ -1,0 +1,88 @@
+{
+  "name": "card-families close-out (7 components + CardMedia ratio)",
+  "level": "mixed",
+  "date": "2026-08-22",
+  "requestedBy": "agent",
+  "status": "approved",
+  "decidedBy": "user",
+  "decision": "\"Take it all the way\": after the decision layer and queue 1 (see 2026-08-22-card-families-batch.json), the owner asked for the remaining card families to be closed rather than left waiting for a second use. These seven parts are what the families that had NOTHING actually needed; the fourteen families that only needed a recipe were closed as compositions and the recipe written into card-rules.json instead of turned into a component nobody ordered.",
+  "need": "Ten of the 31 families were `planned` or `partial`: the analytical card had no chart of any kind beyond a line, the stack, the entity preview, the testimonial, the logo wall and the event card had no part to build from at all, and the embed card had no answer for whose aspect ratio wins when the content is not ours.",
+  "consideredAlternatives": [
+    {
+      "ref": "ProgressCircle",
+      "whyNot": "One value on a scale as a ring. A donut of NAMED SHARES is a different question (how much of the whole is bad), and folding them would make `value` conditional on a prop."
+    },
+    {
+      "ref": "Meter",
+      "whyNot": "One value against one target. A column per category is not that, and neither is a share of a total."
+    },
+    {
+      "ref": "Time",
+      "whyNot": "A timestamp inside a sentence. An event is scanned BY date, which is a block the eye lands on, not a line of prose."
+    },
+    {
+      "ref": "HoverCard",
+      "whyNot": "The preview on hover. Atlassian's inline and card views are the same entity shown in the page, which is a different affordance from a hover."
+    },
+    {
+      "ref": "Card + an <img> grid for logos",
+      "whyNot": "Unlike marks are drawn at unlike weights; normalising that per page is done by eye and looks it."
+    },
+    {
+      "ref": "A charting library",
+      "whyNot": "A dependency, a bundle and a second design system inside ours. Three shapes drawn in SVG cover what a CARD can hold; anything past that is an analysis screen, not a card."
+    }
+  ],
+  "components": [
+    {
+      "name": "BarChart",
+      "level": "atom",
+      "surface": "card",
+      "why": "A value per category with the target drawn across it and one column accented. The quiet columns take --border-strong rather than --muted: --muted IS the page, and a bar painted in it disappears on every screen that is not a white card."
+    },
+    {
+      "name": "DonutChart",
+      "level": "atom",
+      "surface": "card",
+      "why": "A whole split into named shares, toned by MEANING (success / warning / danger), never by a palette of unrelated hues — which is also why this system needs no categorical colour scale to have a donut."
+    },
+    {
+      "name": "CardStack",
+      "level": "organism",
+      "surface": "region",
+      "why": "Many cards of one kind as one: the top card, the count, two sheets drawn below it. Fiori caps the pile at twenty; below about five, showing them beats hiding them."
+    },
+    {
+      "name": "Quote",
+      "level": "molecule",
+      "surface": "card",
+      "why": "A quotation in real figure/blockquote semantics, with `by` REQUIRED: attribution is the evidence, and the same sentence without a name is copy we wrote about ourselves."
+    },
+    {
+      "name": "LogoWall",
+      "level": "molecule",
+      "surface": "region",
+      "why": "Customer marks in one optical weight — one height, one greyscale, one opacity, with `colour` as the deliberate opt-out."
+    },
+    {
+      "name": "DateBlock",
+      "level": "atom",
+      "surface": "card",
+      "why": "The date as a tile the eye finds first, carrying the machine-readable instant the way <Time> does."
+    },
+    {
+      "name": "EntityLink",
+      "level": "molecule",
+      "surface": "card",
+      "why": "One entity that lives elsewhere, inline inside a sentence or as a card with its state and meta. The AUTHOR picks how much context the sentence owes."
+    }
+  ],
+  "variants": [
+    {
+      "on": "CardMedia",
+      "add": "ratio",
+      "why": "Foreign content brings its own aspect ratio and its own padding, and the card has to decide whose wins before the first one lands. `ratio` is that decision, made once, which is what closes the embed family."
+    }
+  ],
+  "waitingFor": ""
+}

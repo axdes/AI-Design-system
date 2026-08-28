@@ -3,83 +3,106 @@
     "name": "--accent",
     "group": "color",
     "value": "var(--neutral-200)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
+  },
+  {
+    "name": "--accent-active",
+    "group": "color",
+    "value": "var(--neutral-400)",
+    "layer": "semantic",
+    "role": "state"
   },
   {
     "name": "--accent-foreground",
     "group": "color",
     "value": "var(--neutral-900)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--accent-soft",
     "group": "color",
-    "value": "var(--neutral-100)",
-    "layer": "semantic"
+    "value": "var(--neutral-200)",
+    "layer": "semantic",
+    "role": "brand"
+  },
+  {
+    "name": "--accent-strong",
+    "group": "color",
+    "value": "var(--neutral-300)",
+    "layer": "semantic",
+    "role": "brand"
   },
   {
     "name": "--ai",
     "group": "color",
     "value": "var(--violet-600)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
   },
   {
     "name": "--ai-foreground",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--ai-soft",
     "group": "color",
     "value": "var(--violet-50)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
   },
   {
     "name": "--ai-soft-foreground",
     "group": "color",
     "value": "var(--violet-700)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
+  },
+  {
+    "name": "--avatar",
+    "group": "color",
+    "value": "var(--neutral-700)",
+    "layer": "semantic",
+    "role": "component"
   },
   {
     "name": "--avatar-2xl",
-    "group": "color",
+    "group": "size",
     "value": "8rem",
-    "layer": "semantic"
-  },
-  {
-    "name": "--avatar-bg",
-    "group": "color",
-    "value": "var(--neutral-700)",
     "layer": "semantic"
   },
   {
     "name": "--avatar-foreground",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--avatar-lg",
-    "group": "color",
+    "group": "size",
     "value": "2.5rem",
     "layer": "semantic"
   },
   {
     "name": "--avatar-md",
-    "group": "color",
+    "group": "size",
     "value": "2rem",
     "layer": "semantic"
   },
   {
     "name": "--avatar-sm",
-    "group": "color",
+    "group": "size",
     "value": "1.5rem",
     "layer": "semantic"
   },
   {
     "name": "--avatar-xl",
-    "group": "color",
+    "group": "size",
     "value": "5rem",
     "layer": "semantic"
   },
@@ -87,47 +110,50 @@
     "name": "--background",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "surface"
   },
   {
     "name": "--border",
     "group": "color",
     "value": "var(--neutral-200)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "edge"
   },
   {
     "name": "--border-strong",
     "group": "color",
     "value": "var(--neutral-300)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "edge"
   },
   {
     "name": "--bp-2xl",
-    "group": "color",
+    "group": "size",
     "value": "100rem",
     "layer": "semantic"
   },
   {
     "name": "--bp-lg",
-    "group": "color",
+    "group": "size",
     "value": "62rem",
     "layer": "semantic"
   },
   {
     "name": "--bp-md",
-    "group": "color",
+    "group": "size",
     "value": "48rem",
     "layer": "semantic"
   },
   {
     "name": "--bp-sm",
-    "group": "color",
+    "group": "size",
     "value": "30rem",
     "layer": "semantic"
   },
   {
     "name": "--bp-xl",
-    "group": "color",
+    "group": "size",
     "value": "75rem",
     "layer": "semantic"
   },
@@ -195,107 +221,206 @@
     "name": "--card",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "surface"
   },
   {
     "name": "--card-foreground",
     "group": "color",
     "value": "var(--neutral-900)",
+    "layer": "semantic",
+    "role": "ink"
+  },
+  {
+    "name": "--card-media-ratio",
+    "group": "ratio",
+    "value": "16 / 9",
     "layer": "semantic"
   },
   {
     "name": "--card-padding",
-    "group": "color",
+    "group": "spacing",
     "value": "var(--space-6)",
     "layer": "semantic"
   },
   {
     "name": "--card-padding-nested",
-    "group": "color",
-    "value": "var(--space-3)",
+    "group": "spacing",
+    "value": "var(--space-6)",
     "layer": "semantic"
   },
   {
     "name": "--card-radius",
-    "group": "color",
+    "group": "radius",
     "value": "var(--radius-xl)",
     "layer": "semantic"
   },
   {
     "name": "--card-shadow",
-    "group": "color",
+    "group": "shadow",
     "value": "var(--shadow-popover)",
     "layer": "semantic"
   },
   {
     "name": "--card-title-size",
-    "group": "color",
+    "group": "type",
     "value": "var(--font-lg)",
     "layer": "semantic"
   },
   {
-    "name": "--chat-message-max-width",
+    "name": "--chart-1",
     "group": "color",
+    "value": "var(--series-1)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-2",
+    "group": "color",
+    "value": "var(--series-2)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-3",
+    "group": "color",
+    "value": "var(--series-3)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-4",
+    "group": "color",
+    "value": "var(--series-4)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-5",
+    "group": "color",
+    "value": "var(--series-5)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-6",
+    "group": "color",
+    "value": "var(--series-6)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-axis",
+    "group": "color",
+    "value": "var(--muted-foreground)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-danger",
+    "group": "color",
+    "value": "var(--danger-600)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-grid",
+    "group": "color",
+    "value": "var(--border)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-success",
+    "group": "color",
+    "value": "var(--success-600)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-track",
+    "group": "color",
+    "value": "var(--accent)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chart-warning",
+    "group": "color",
+    "value": "var(--warning-800)",
+    "layer": "semantic",
+    "role": "chart"
+  },
+  {
+    "name": "--chat-message-max-width",
+    "group": "size",
     "value": "44rem",
     "layer": "semantic"
   },
   {
     "name": "--chat-panel-width",
-    "group": "color",
+    "group": "size",
     "value": "24rem",
     "layer": "semantic"
   },
   {
     "name": "--chat-sidebar-width",
-    "group": "color",
+    "group": "size",
     "value": "22.5rem",
     "layer": "semantic"
   },
   {
-    "name": "--control-font-size",
+    "name": "--control-edge",
     "group": "color",
+    "value": "var(--neutral-550)",
+    "layer": "semantic",
+    "role": "edge"
+  },
+  {
+    "name": "--control-font-size",
+    "group": "type",
     "value": "var(--font-base)",
     "layer": "semantic"
   },
   {
     "name": "--control-font-size-lg",
-    "group": "color",
+    "group": "size",
     "value": "1rem",
     "layer": "semantic"
   },
   {
     "name": "--control-font-weight",
-    "group": "color",
+    "group": "type",
     "value": "var(--font-weight-semibold)",
     "layer": "semantic"
   },
   {
     "name": "--control-height",
-    "group": "color",
+    "group": "size",
     "value": "2.5rem",
     "layer": "semantic"
   },
   {
     "name": "--control-height-lg",
-    "group": "color",
+    "group": "size",
     "value": "3.25rem",
     "layer": "semantic"
   },
   {
     "name": "--control-height-sm",
-    "group": "color",
+    "group": "size",
     "value": "2rem",
     "layer": "semantic"
   },
   {
     "name": "--control-padding-x",
-    "group": "color",
+    "group": "spacing",
     "value": "var(--space-6)",
     "layer": "semantic"
   },
   {
     "name": "--control-radius",
-    "group": "color",
+    "group": "radius",
     "value": "var(--radius-full)",
     "layer": "semantic"
   },
@@ -369,54 +494,66 @@
     "name": "--destructive",
     "group": "color",
     "value": "var(--danger-800)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--destructive-border",
     "group": "color",
     "value": "var(--danger-200)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--destructive-emphasis",
     "group": "color",
     "value": "var(--danger-800)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--destructive-foreground",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--destructive-soft",
     "group": "color",
     "value": "var(--danger-50)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--destructive-soft-foreground",
     "group": "color",
     "value": "var(--danger-900)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--duration-fast",
-    "group": "color",
+    "group": "motion",
     "value": "120ms",
     "layer": "semantic"
   },
   {
     "name": "--duration-normal",
-    "group": "color",
+    "group": "motion",
     "value": "200ms",
     "layer": "semantic"
   },
   {
     "name": "--duration-slow",
-    "group": "color",
+    "group": "motion",
     "value": "320ms",
+    "layer": "semantic"
+  },
+  {
+    "name": "--ease-out",
+    "group": "motion",
+    "value": "cubic-bezier(0.2, 0, 0, 1)",
     "layer": "semantic"
   },
   {
@@ -519,7 +656,8 @@
     "name": "--foreground",
     "group": "color",
     "value": "var(--neutral-900)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--gradient-brand",
@@ -535,19 +673,19 @@
   },
   {
     "name": "--icon-2xl",
-    "group": "color",
+    "group": "size",
     "value": "5rem",
     "layer": "semantic"
   },
   {
     "name": "--icon-lg",
-    "group": "color",
+    "group": "size",
     "value": "1.5rem",
     "layer": "semantic"
   },
   {
     "name": "--icon-md",
-    "group": "color",
+    "group": "size",
     "value": "1.25rem",
     "layer": "semantic"
   },
@@ -555,23 +693,24 @@
     "name": "--icon-muted",
     "group": "color",
     "value": "var(--neutral-500)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--icon-sm",
-    "group": "color",
+    "group": "size",
     "value": "1rem",
     "layer": "semantic"
   },
   {
     "name": "--icon-stroke",
-    "group": "color",
+    "group": "other",
     "value": "2",
     "layer": "semantic"
   },
   {
     "name": "--icon-xl",
-    "group": "color",
+    "group": "size",
     "value": "2.5rem",
     "layer": "semantic"
   },
@@ -579,7 +718,8 @@
     "name": "--input",
     "group": "color",
     "value": "var(--neutral-300)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "surface"
   },
   {
     "name": "--leading-none",
@@ -612,40 +752,59 @@
     "layer": "semantic"
   },
   {
-    "name": "--logo-height",
+    "name": "--link",
     "group": "color",
-    "value": "2rem",
-    "layer": "semantic"
+    "value": "var(--primary-accent)",
+    "layer": "semantic",
+    "role": "brand"
   },
   {
-    "name": "--logo-mark-height",
+    "name": "--link-hover",
     "group": "color",
-    "value": "1.5rem",
+    "value": "var(--primary-hover)",
+    "layer": "semantic",
+    "role": "state"
+  },
+  {
+    "name": "--link-quiet",
+    "group": "color",
+    "value": "var(--muted-foreground)",
+    "layer": "semantic",
+    "role": "brand"
+  },
+  {
+    "name": "--logo-height",
+    "group": "size",
+    "value": "2rem",
     "layer": "semantic"
   },
   {
     "name": "--muted",
     "group": "color",
     "value": "var(--neutral-100)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "surface"
   },
   {
     "name": "--muted-foreground",
     "group": "color",
     "value": "var(--neutral-700)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
-    "name": "--nav-active-bg",
+    "name": "--nav-active",
     "group": "color",
     "value": "var(--muted)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "state"
   },
   {
-    "name": "--nav-active-fg",
+    "name": "--nav-active-foreground",
     "group": "color",
     "value": "var(--primary-accent)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--neutral-0",
@@ -690,6 +849,12 @@
     "layer": "primitive"
   },
   {
+    "name": "--neutral-550",
+    "group": "color",
+    "value": "#858a91",
+    "layer": "primitive"
+  },
+  {
     "name": "--neutral-600",
     "group": "color",
     "value": "#73777d",
@@ -729,11 +894,12 @@
     "name": "--overlay",
     "group": "color",
     "value": "rgb(0 0 0 / 0.4)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "surface"
   },
   {
     "name": "--page-max-width",
-    "group": "color",
+    "group": "size",
     "value": "96rem",
     "layer": "semantic"
   },
@@ -741,23 +907,32 @@
     "name": "--popover",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "surface"
   },
   {
     "name": "--popover-foreground",
     "group": "color",
     "value": "var(--neutral-900)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
+  },
+  {
+    "name": "--popover-hover",
+    "group": "color",
+    "value": "var(--neutral-100)",
+    "layer": "semantic",
+    "role": "state"
   },
   {
     "name": "--popover-item-radius",
-    "group": "color",
+    "group": "radius",
     "value": "var(--radius-md)",
     "layer": "semantic"
   },
   {
     "name": "--popover-radius",
-    "group": "color",
+    "group": "radius",
     "value": "var(--radius-lg)",
     "layer": "semantic"
   },
@@ -765,47 +940,61 @@
     "name": "--primary",
     "group": "color",
     "value": "var(--brand-400)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
   },
   {
     "name": "--primary-accent",
     "group": "color",
     "value": "var(--brand-400)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
+  },
+  {
+    "name": "--primary-active",
+    "group": "color",
+    "value": "var(--brand-600)",
+    "layer": "semantic",
+    "role": "state"
   },
   {
     "name": "--primary-border",
     "group": "color",
     "value": "var(--brand-200)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
   },
   {
     "name": "--primary-foreground",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--primary-hover",
     "group": "color",
     "value": "var(--brand-500)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "state"
   },
   {
     "name": "--primary-soft",
     "group": "color",
     "value": "var(--brand-50)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
   },
   {
     "name": "--primary-soft-foreground",
     "group": "color",
     "value": "var(--brand-700)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--prose-max-width",
-    "group": "color",
+    "group": "size",
     "value": "32rem",
     "layer": "semantic"
   },
@@ -855,17 +1044,18 @@
     "name": "--ring",
     "group": "color",
     "value": "var(--brand-400)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "edge"
   },
   {
     "name": "--ring-offset",
-    "group": "color",
+    "group": "size",
     "value": "2px",
     "layer": "semantic"
   },
   {
     "name": "--ring-width",
-    "group": "color",
+    "group": "size",
     "value": "2px",
     "layer": "semantic"
   },
@@ -888,45 +1078,95 @@
     "layer": "primitive"
   },
   {
-    "name": "--scrim-fade",
-    "group": "color",
-    "value": "linear-gradient(to top, var(--scrim-85), var(--scrim-70) 40%, var(--scrim-0) 80%)",
-    "layer": "semantic"
-  },
-  {
-    "name": "--scrim-foreground",
-    "group": "color",
-    "value": "var(--neutral-0)",
-    "layer": "semantic"
-  },
-  {
-    "name": "--scrim-strong",
-    "group": "color",
-    "value": "var(--scrim-85)",
-    "layer": "semantic"
-  },
-  {
     "name": "--secondary",
     "group": "color",
     "value": "var(--neutral-100)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "brand"
   },
   {
     "name": "--secondary-foreground",
     "group": "color",
     "value": "var(--neutral-700)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
-    "name": "--secondary-hover",
+    "name": "--series-1",
     "group": "color",
-    "value": "var(--neutral-200)",
-    "layer": "semantic"
+    "value": "var(--brand-400)",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-1-dark",
+    "group": "color",
+    "value": "var(--brand-300)",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-2",
+    "group": "color",
+    "value": "#eb6834",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-2-dark",
+    "group": "color",
+    "value": "#d95926",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-3",
+    "group": "color",
+    "value": "#1baf7a",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-3-dark",
+    "group": "color",
+    "value": "#199e70",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-4",
+    "group": "color",
+    "value": "#eda100",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-4-dark",
+    "group": "color",
+    "value": "#c98500",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-5",
+    "group": "color",
+    "value": "#e87ba4",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-5-dark",
+    "group": "color",
+    "value": "#d55181",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-6",
+    "group": "color",
+    "value": "#008300",
+    "layer": "primitive"
+  },
+  {
+    "name": "--series-6-dark",
+    "group": "color",
+    "value": "var(--series-6)",
+    "layer": "primitive"
   },
   {
     "name": "--shadow-card-hover",
     "group": "shadow",
-    "value": "0 0 24px rgb(0 0 0 / 0.30)",
+    "value": "0 6px 20px rgb(0 0 0 / 0.45)",
     "layer": "semantic"
   },
   {
@@ -954,32 +1194,38 @@
     "layer": "primitive"
   },
   {
+    "name": "--shell-max-width",
+    "group": "size",
+    "value": "112rem",
+    "layer": "semantic"
+  },
+  {
     "name": "--side-panel-width",
-    "group": "color",
+    "group": "size",
     "value": "24rem",
     "layer": "semantic"
   },
   {
     "name": "--sidebar-drawer-width",
-    "group": "color",
+    "group": "size",
     "value": "min(20rem, 85vw)",
     "layer": "semantic"
   },
   {
     "name": "--sidebar-rail-item-size",
-    "group": "color",
+    "group": "size",
     "value": "2.5rem",
     "layer": "semantic"
   },
   {
     "name": "--sidebar-width",
-    "group": "color",
+    "group": "size",
     "value": "16.25rem",
     "layer": "semantic"
   },
   {
     "name": "--sidebar-width-collapsed",
-    "group": "color",
+    "group": "size",
     "value": "5.625rem",
     "layer": "semantic"
   },
@@ -1026,6 +1272,12 @@
     "layer": "primitive"
   },
   {
+    "name": "--space-5",
+    "group": "spacing",
+    "value": "calc(var(--grid-unit) * 5)",
+    "layer": "primitive"
+  },
+  {
     "name": "--space-6",
     "group": "spacing",
     "value": "calc(var(--grid-unit) * 6)",
@@ -1047,7 +1299,8 @@
     "name": "--success",
     "group": "color",
     "value": "var(--success-800)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--success-100",
@@ -1113,49 +1366,78 @@
     "name": "--success-border",
     "group": "color",
     "value": "var(--success-300)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--success-emphasis",
     "group": "color",
     "value": "var(--success-800)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--success-foreground",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--success-soft",
     "group": "color",
     "value": "var(--success-50)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--success-soft-foreground",
     "group": "color",
     "value": "var(--success-800)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
+  },
+  {
+    "name": "--surface-contrast",
+    "group": "color",
+    "value": "var(--card)",
+    "layer": "semantic",
+    "role": "surface"
+  },
+  {
+    "name": "--surface-contrast-active",
+    "group": "color",
+    "value": "var(--accent-strong)",
+    "layer": "semantic",
+    "role": "state"
+  },
+  {
+    "name": "--surface-contrast-hover",
+    "group": "color",
+    "value": "var(--accent)",
+    "layer": "semantic",
+    "role": "state"
   },
   {
     "name": "--surface-hover",
     "group": "color",
     "value": "var(--neutral-50)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "state"
   },
   {
-    "name": "--switch-thumb-bg",
+    "name": "--switch-thumb",
     "group": "color",
     "value": "var(--neutral-0)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "component"
   },
   {
     "name": "--switch-track-off",
     "group": "color",
     "value": "var(--neutral-300)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "component"
   },
   {
     "name": "--tracking-wide",
@@ -1227,7 +1509,8 @@
     "name": "--warning",
     "group": "color",
     "value": "var(--warning-700)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--warning-100",
@@ -1299,59 +1582,64 @@
     "name": "--warning-border",
     "group": "color",
     "value": "var(--warning-700)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--warning-emphasis",
     "group": "color",
     "value": "var(--warning-950)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--warning-foreground",
     "group": "color",
     "value": "var(--neutral-900)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--warning-soft",
     "group": "color",
     "value": "var(--warning-100)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "status"
   },
   {
     "name": "--warning-soft-foreground",
     "group": "color",
     "value": "var(--neutral-900)",
-    "layer": "semantic"
+    "layer": "semantic",
+    "role": "ink"
   },
   {
     "name": "--z-dropdown",
-    "group": "color",
+    "group": "layer",
     "value": "200",
     "layer": "primitive"
   },
   {
     "name": "--z-modal",
-    "group": "color",
+    "group": "layer",
     "value": "100",
     "layer": "primitive"
   },
   {
     "name": "--z-sticky",
-    "group": "color",
+    "group": "layer",
     "value": "50",
     "layer": "primitive"
   },
   {
     "name": "--z-toast",
-    "group": "color",
+    "group": "layer",
     "value": "300",
     "layer": "primitive"
   },
   {
     "name": "--z-tooltip",
-    "group": "color",
+    "group": "layer",
     "value": "400",
     "layer": "primitive"
   }

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-shell",
+  "type": "registry:ui",
+  "title": "ChatShell",
+  "description": "Shared chrome for chat screens: full-height column → padded region → one rounded card surface that lays its children out in a grid [history | thread | optional panel]. Lives inside <AppShell>.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/nav-drawer-button.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ChatShell/ChatShell.css",
+      "content": "/* Chat screen chrome. Locks inside <AppShell> (which sets viewport height for\n * `:has(.chat-shell)`); only the inner regions scroll. Columns:\n *   default            [history | thread]\n *   data-with-panel    [history | thread | panel]\n *   collapsed          history column shrinks to its icon rail (auto). */\n.chat-shell {\n  height: 100%;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  color: var(--foreground);\n}\n/* The leading slot, mobile only: the chat has no PageHeader to hold it. */\n.chat-shell-bar { display: none; }\n.chat-shell-content {\n  flex: 1;\n  min-height: 0;\n  display: flex;\n  padding: var(--space-4);\n}\n.chat-shell-body {\n  flex: 1;\n  min-height: 0;\n  display: grid;\n  grid-template-columns: var(--chat-sidebar-width) 1fr;\n  background: var(--card);\n  /* A white surface that is not `.card`, so it owes its own answer — see\n   * --surface-contrast in semantic.css. Without these a quiet control on it\n   * takes the PAGE's answer, which is white, and stands white on white. */\n  border-radius: var(--card-radius);\n  overflow: hidden;\n}\n.chat-shell-body[data-with-panel] {\n  grid-template-columns: var(--chat-sidebar-width) 1fr var(--chat-panel-width);\n}\n.chat-shell[data-chat-collapsed] .chat-shell-body {\n  grid-template-columns: auto 1fr;\n}\n.chat-shell[data-chat-collapsed] .chat-shell-body[data-with-panel] {\n  grid-template-columns: auto 1fr var(--chat-panel-width);\n}\n/* No history column (no chats yet): thread spans the surface. */\n.chat-shell-body[data-no-sidebar] { grid-template-columns: 1fr; }\n.chat-shell-body[data-no-sidebar][data-with-panel] { grid-template-columns: 1fr var(--chat-panel-width); }\n\n/* <72rem: drop the panel column (the page hides the panel element itself). */\n@media (max-width: 72rem) {\n  .chat-shell-body[data-with-panel],\n  .chat-shell[data-chat-collapsed] .chat-shell-body[data-with-panel] {\n    grid-template-columns: var(--chat-sidebar-width) 1fr;\n  }\n}\n/* <48rem: single column (sidebar becomes the app drawer). */\n@media (max-width: 48rem) {\n  .chat-shell-bar {\n    display: flex;\n    padding: var(--space-3) var(--space-4) 0;\n  }\n  .chat-shell-body,\n  .chat-shell-body[data-with-panel] { grid-template-columns: 1fr; }\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ChatShell/ChatShell.css"
+    },
+    {
+      "path": "src/components/ChatShell/ChatShell.tsx",
+      "content": "import './ChatShell.css'\nimport { type ReactNode } from 'react'\nimport { NavDrawerButton } from '../NavDrawerButton'\n\ntype Props = {\n  /** Icon-rail state of the chat-history column (drives the grid + ChatHistory). */\n  collapsed?: boolean\n  /** Show the optional right-hand panel column (e.g. a form). */\n  panel?: boolean\n  /** Drop the history column entirely (e.g. when there are no chats). */\n  noSidebar?: boolean\n  children: ReactNode\n}\n\n/* Shared chrome for chat screens: full-height column → padded region → one\n * rounded card surface that lays its children out in a grid\n * [history | thread | optional panel]. Lives inside <AppShell>. */\nexport function ChatShell({ collapsed, panel, noSidebar, children }: Props) {\n  return (\n    <div className=\"chat-shell\" data-chat-collapsed={collapsed || undefined}>\n      {/* The chat is the one top-level destination in this system with no\n          <PageHeader>, so it carries the leading slot itself. That single\n          exception is why the trigger used to float over every OTHER screen:\n          one screen's missing bar was solved by putting a fixed button on all of\n          them, where it collided with the header. It renders nothing above the\n          drawer breakpoint. */}\n      <div className=\"chat-shell-bar\">\n        <NavDrawerButton />\n      </div>\n      <div className=\"chat-shell-content\">\n        <div className=\"chat-shell-body\" data-raised=\"card\" data-with-panel={panel || undefined} data-no-sidebar={noSidebar || undefined}>\n          {children}\n        </div>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ChatShell/ChatShell.tsx"
+    },
+    {
+      "path": "src/components/ChatShell/index.ts",
+      "content": "export { ChatShell } from './ChatShell'\n",
+      "type": "registry:ui",
+      "target": "@ui/ChatShell/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/ChatShell.json"
+}

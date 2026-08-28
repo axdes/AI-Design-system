@@ -1,13 +1,13 @@
 import './Combobox.css'
 import { useId, useRef, useState, type KeyboardEvent } from 'react'
 import { cn } from '../../lib/cn'
+import { type Option } from '../../lib/option'
 import { Icon } from '../Icon'
 import { Tag } from '../Tag'
 
-export type ComboboxOption<V extends string> = {
-  value: V
-  label: string
-}
+/** A Combobox choice. Nothing beyond the shared <Option>: this control renders
+ *  a label and filters on it, and any field it does not draw would be a lie. */
+export type ComboboxOption<V extends string> = Option<V>
 
 type Props<V extends string> = {
   options: readonly ComboboxOption<V>[]
@@ -45,7 +45,12 @@ const defaultFilter = <V extends string>(o: ComboboxOption<V>, q: string) =>
 /** Searchable select — the ARIA combobox pattern (input + listbox), for when a
  *  plain <Select> has too many options to scan. Type to filter, Arrow keys to
  *  move, Enter to pick, Escape to close. `multiple` turns it into a token input
- *  where picks render as removable <Tag>s and the list stays open. */
+ *  where picks render as removable <Tag>s and the list stays open. 
+ *
+ * Copy: the empty label says what was searched for and offers the way out — "No
+ * supplier matches 'nortwind'. Check the spelling, or add a supplier." A
+ * bare "No results" leaves the reader stuck on their own typo.
+ */
 export function Combobox<V extends string>(props: Props<V>) {
   const { options, label, placeholder, className, filter = defaultFilter, emptyLabel = 'No matches', surface = 'base', size } = props
   const multiple = props.multiple === true

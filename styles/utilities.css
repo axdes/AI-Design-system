@@ -49,8 +49,23 @@
  * layout carries visually: a live region confirming a copy, the "+3 more" behind
  * an avatar stack. Not `display: none` — that removes it from the accessibility
  * tree too, which is the opposite of the point. */
+/* Pinned, not left at its static position.
+ *
+ * With `inset: auto` an absolutely positioned element stays where it would have
+ * been in flow, and its containing block is the nearest positioned ancestor —
+ * the PAGE, when there is none. Deep inside a pane that scrolls, that static
+ * position is far below the fold, so a 1px hidden span stretched the document
+ * past the shell and left a strip of body colour under the page (measured
+ * 2026-08-24: 184px on a laptop, 364px on a short one, on a screen whose only
+ * offender was <CopyButton>'s live region).
+ *
+ * Nine of the ten components that hide text this way have no positioned root,
+ * so positioning each of them would be nine chances to forget the tenth.
+ * Pinning here fixes all of them and cannot be forgotten. */
 .sr-only {
   position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   inline-size: 1px;
   block-size: 1px;
   padding: 0;
@@ -114,4 +129,34 @@
   max-inline-size: var(--page-max-width);
   margin-inline: auto;
   background: transparent;
+}
+
+/* ── A RAISED SURFACE ──────────────────────────────────────────────────────
+ * An element that other things sit ON, rather than one that sits on something.
+ * Note the direction: `data-surface` is the OTHER question — what a control is
+ * standing on — and it is already a declared word meaning exactly that, so this
+ * one could not borrow it (vocabulary, 2026-08-26).
+ *
+ * A raised surface is white in light and near-black in dark, so a quiet control
+ * placed on it has to contrast the OTHER WAY: on the grey page it goes white,
+ * here it goes grey. Those three tokens are how `--surface-contrast` answers
+ * "what does a quiet thing fill itself with so it does not dissolve".
+ *
+ * This was declared in eleven stylesheets, with the same explanatory comment
+ * copied word for word into nine of them. Eleven copies of one decision is
+ * eleven places to forget it — and a twelfth surface added tomorrow would have
+ * had to know to copy it. Now it declares one attribute.
+ *
+ *   card     the surface is --card: a Card, an Alert, a SidePanel, a ChatShell
+ *   popover  the surface is --popover: a menu, a dialog, a toast — and a row
+ *            inside it hovers against THAT surface, not against the page
+ */
+[data-raised] {
+  --surface-contrast: var(--accent);
+  --surface-contrast-hover: var(--accent-strong);
+  --surface-contrast-active: var(--accent-active);
+}
+
+[data-raised='popover'] {
+  --surface-hover: var(--popover-hover);
 }

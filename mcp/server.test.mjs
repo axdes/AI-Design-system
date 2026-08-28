@@ -72,6 +72,48 @@ describe('the design system over MCP', () => {
     expect(textOf(guide)).toContain('FilterBar')
   })
 
+  it('decides WHICH table once the answer is a table, and rejects a wrong kind', async () => {
+    const [, verdict, plan] = await talk([
+      init,
+      callTool(2, 'decide', {
+        task: 'process',
+        data: { item: 'record', cardinality: 'many', fields: 6, select: 'batch' },
+      }),
+      callTool(3, 'decide', {
+        task: 'find',
+        data: { item: 'record', cardinality: 'unbounded', fields: 6 },
+        table: 'list',
+        components: ['Table'],
+      }),
+    ])
+    /* The queue with a batch action: the layer names the kind, what builds it
+     * and what it owes, without being asked a second question. */
+    expect(textOf(verdict)).toContain('selection')
+    expect(textOf(verdict)).toContain('BatchActions')
+    expect(textOf(verdict)).toContain('owes')
+    /* Unbounded rows rule every Table kind out, and the answer says so. */
+    expect(textOf(plan)).toContain('virtualized')
+  })
+
+  it('decides a form kind from the shape of the input, and rejects a wrong plan', async () => {
+    const [, verdict, plan] = await talk([
+      init,
+      callTool(2, 'decide', {
+        task: 'input',
+        data: { fields: 14, commit: 'explicit', context: 'standalone', familiarity: 'routine' },
+      }),
+      callTool(3, 'decide', {
+        task: 'input',
+        data: { fields: 14, commit: 'explicit', context: 'standalone', familiarity: 'routine', form: 'dialog' },
+        components: ['FormModal', 'Field'],
+      }),
+    ])
+    expect(textOf(verdict)).toContain('page')
+    expect(textOf(verdict)).toContain('FormPageTemplate')
+    expect(textOf(plan)).toContain('✗')
+    expect(textOf(plan)).toContain('ruled out')
+  })
+
   it('serves the index and the contract of one component', async () => {
     const [, list, one] = await talk([
       init,
@@ -100,6 +142,27 @@ describe('the design system over MCP', () => {
     ])
     expect(textOf(red)).toContain('props-exist')
     expect(textOf(red)).toContain('inline style')
+    expect(textOf(green)).toContain('✓')
+  })
+
+  /* The failure this whole harness exists for, and the one an agent walks into
+     by doing the most natural thing available: it makes up a component and then
+     writes the import for it. The import used to buy silence unconditionally —
+     the exemption is for the caller's OWN components, and `@ds/…` is not one of
+     those. Found by an audit on 2026-08-26; the tool called this file clean. */
+  it('an invented component is not excused by an import from the system itself', async () => {
+    const invented = 'import { DataTable } from "@ds/DataTable"\nexport function Screen(){ return <DataTable rows={[]} /> }'
+    const theirs = 'import { OrderTable } from "../components/OrderTable"\nexport function Screen(){ return <OrderTable /> }'
+    const [, red, green] = await talk([
+      init,
+      callTool(2, 'verify', { files: [{ name: 'Screen.tsx', code: invented }] }),
+      callTool(3, 'verify', { files: [{ name: 'Screen.tsx', code: theirs }] }),
+    ])
+    expect(textOf(red)).toContain('components-exist')
+    expect(textOf(red)).toContain('DataTable')
+    /* And the reason the exemption exists still holds: a component from the
+       caller's own app is theirs, and whether the import resolves is tsc's
+       question, not this tool's. */
     expect(textOf(green)).toContain('✓')
   })
 

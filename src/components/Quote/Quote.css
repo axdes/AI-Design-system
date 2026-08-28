@@ -1,0 +1,44 @@
+.quote {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  min-inline-size: 0;
+}
+
+/* The mark is a glyph, not a rail: a coloured bar down the side is decoration
+ * the system does not use, and the icon says the same thing in one place. */
+.quote-mark { color: var(--primary-accent); }
+
+.quote-body {
+  margin: 0;
+  font-size: var(--font-md);
+  line-height: var(--leading-snug);
+  color: var(--foreground);
+  text-wrap: pretty;
+}
+.quote[data-size="lg"] .quote-body { font-size: var(--font-lg); }
+
+/* THE SOURCE READS WITH THE ROLE, ON THE LAST LINE OF THE ATTRIBUTION.
+ *
+ * Three positions were tried on one card. `center` (as shipped) floated it in
+ * the gutter between the name and the role with nothing to align to. `baseline`
+ * is worse and not fixable from here: measured in Chromium, a flex container
+ * exports its FIRST item's baseline, and an <Identity>'s first item is the
+ * avatar, whose baseline is its bottom edge — the source dropped 17px. Aligned
+ * to the TOP it landed on the name's line and read as part of the name.
+ *
+ * The last line is where it belongs, because that is the line it continues:
+ * "Head of Safety · Site 14" is one fact about one person, and the role and the
+ * place are the same size and the same colour already (owner, 23.08). Aligning
+ * to the end puts them on one line without Quote reaching inside whatever `by`
+ * happens to be. */
+.quote-by {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2);
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+.quote-source::before { content: "·"; margin-inline-end: var(--space-2); }

@@ -1,7 +1,7 @@
 {
   "ref": "FileUpload",
   "level": "molecule",
-  "description": "A drop area plus a native file picker, with a removable list of attached files. Wraps the raw <input type=\"file\"> (the one control with no DS equivalent) and adds drag-and-drop. The input stays the accessible control; the drop area is a labelled convenience on top.",
+  "description": "A drop area plus a native file picker, with a removable list of attached files. Wraps the raw <input type=\"file\"> (the one control with no DS equivalent) and adds drag-and-drop. The input stays the accessible control; the drop area is a labelled convenience on top. Copy: the hint states the limits BEFORE the choosing: which formats, what size, how many. A rule discovered by failing is a rule stated too late.",
   "exports": [
     "FileUpload"
   ],
@@ -12,12 +12,14 @@
     {
       "name": "onFiles",
       "type": "(files: File[]) => void",
-      "required": true
+      "required": true,
+      "description": "Called with the picked/dropped files (appended, not replaced)."
     },
     {
       "name": "files",
       "type": "File[]",
-      "required": false
+      "required": false,
+      "description": "Currently attached files, rendered as a removable list."
     },
     {
       "name": "onRemove",
@@ -40,9 +42,16 @@
       "required": false
     },
     {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false,
+      "description": "The form rejected the attachment (nothing picked where a file was required, or the wrong type). Red dashed border and a red focus ring."
+    },
+    {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Prompt shown in the drop area."
     },
     {
       "name": "hint",
@@ -57,6 +66,12 @@
   ],
   "sourcePath": "src/components/FileUpload/FileUpload.tsx",
   "variants": {
+    "invalid": {
+      "prop": "invalid",
+      "values": [
+        "true"
+      ]
+    },
     "disabled": {
       "prop": "disabled",
       "values": [

@@ -20,7 +20,11 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 /* Rounded selectable label. A Button with a toggle state, always pill-shaped:
- * quick actions, quick replies, pick-a-reason chips, filters, etc. */
+ * quick actions, quick replies, pick-a-reason chips, filters, etc. 
+   *
+   * Copy: names the filter it applies, not the act of filtering — "Overdue", not
+   * "Filter by overdue".
+   */
 export function Chip({ variant = 'secondary', size = 'md', selected, icon, className, type = 'button', children, ref, ...rest }: Props) {
   return (
     <button

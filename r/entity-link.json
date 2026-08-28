@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "entity-link",
+  "type": "registry:ui",
+  "title": "EntityLink",
+  "description": "One entity that lives ELSEWHERE, shown with enough of itself to be recognised: inline inside a sentence, or as a card with its state and its meta. Wrap it in <HoverCard> when the preview should appear on hover instead of on the page. Copy: the title is the record's name; the meta says what is waiting inside it, which is the reason to follow the link at all.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/EntityLink/EntityLink.css",
+      "content": ".entity-link {\n  display: inline-flex;\n  align-items: center;\n  gap: var(--space-2);\n  color: var(--foreground);\n  text-decoration: none;\n  min-inline-size: 0;\n}\n.entity-link:hover .entity-link-title { text-decoration: underline; }\n.entity-link:focus-visible {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n  border-radius: var(--radius-sm);\n}\n\n.entity-link-icon { color: var(--muted-foreground); flex: none; }\n.entity-link-title { font-weight: var(--font-weight-medium); }\n\n/* Inline: it has to sit in a line of prose without changing its rhythm, so no\n * surface, no padding block, and the baseline stays the sentence's. */\n.entity-link[data-view=\"inline\"] {\n  padding-inline: var(--space-1);\n  border-radius: var(--radius-sm);\n  background: var(--muted);\n  vertical-align: baseline;\n}\n\n/* Card: the entity gets its own surface, which is what a link owes when it is\n * the subject of the paragraph rather than a mention inside it. */\n.entity-link[data-view=\"card\"] {\n  display: grid;\n  grid-template-columns: auto 1fr auto;\n  gap: var(--space-1) var(--space-3);\n  align-items: center;\n  padding: var(--space-3) var(--space-4);\n  border: 1px solid var(--border);\n  border-radius: var(--card-radius);\n  background: var(--card);\n}\n.entity-link[data-view=\"card\"] .entity-link-icon { grid-row: 1 / span 2; }\n.entity-link[data-view=\"card\"]:hover { border-color: var(--border-strong, var(--border)); }\n/* Pressed: one stop past hover, the third answer every control now gives. */\n.entity-link:active .entity-link-title { color: var(--link-hover); }\n.entity-link[data-view=\"card\"]:active { background: var(--surface-hover); }\n.entity-link-meta {\n  grid-column: 2 / -1;\n  display: flex;\n  flex-wrap: wrap;\n  gap: var(--space-3);\n  font-size: var(--font-sm);\n  color: var(--muted-foreground);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/EntityLink/EntityLink.css"
+    },
+    {
+      "path": "src/components/EntityLink/EntityLink.tsx",
+      "content": "import \"./EntityLink.css\";\nimport type { ReactNode } from \"react\";\nimport { cn } from \"../lib/cn\";\nimport { Icon, type IconName } from \"../Icon\";\n\ntype View = \"inline\" | \"card\";\n\ntype Props = {\n  /** What it is called where it lives — the issue key, the document title. */\n  title: ReactNode;\n  /** Where it goes. */\n  href: string;\n  /** Which system it lives in, as an icon: an audit, a document, a chat. */\n  icon?: IconName;\n  /** How much context the sentence owes: `inline` reads as a link inside running\n   *  text, `card` gives the entity its own surface with the meta under it. The\n   *  AUTHOR picks the view; the entity is the same either way. */\n  view?: View;\n  /** The entity's state — a <Badge>, kept out of the title so it can be read\n   *  separately. */\n  status?: ReactNode;\n  /** Owner, date, size: shown in the card view, dropped inline. */\n  meta?: ReactNode;\n  className?: string;\n};\n\n/** One entity that lives ELSEWHERE, shown with enough of itself to be\n *  recognised: inline inside a sentence, or as a card with its state and its\n *  meta. Wrap it in <HoverCard> when the preview should appear on hover instead\n *  of on the page. \n *\n * Copy: the title is the record's name; the meta says what is waiting inside it,\n * which is the reason to follow the link at all.\n */\nexport function EntityLink({ title, href, icon, view = \"inline\", status, meta, className }: Props) {\n  return (\n    <a className={cn(\"entity-link\", className)} href={href} data-view={view}>\n      {icon && <Icon name={icon} size={view === \"card\" ? \"md\" : \"sm\"} className=\"entity-link-icon\" aria-hidden=\"true\" />}\n      <span className=\"entity-link-title\">{title}</span>\n      {status}\n      {view === \"card\" && meta && <span className=\"entity-link-meta\">{meta}</span>}\n    </a>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/EntityLink/EntityLink.tsx"
+    },
+    {
+      "path": "src/components/EntityLink/index.ts",
+      "content": "export { EntityLink } from \"./EntityLink\";\n",
+      "type": "registry:ui",
+      "target": "@ui/EntityLink/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/EntityLink.json"
+}

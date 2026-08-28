@@ -1,0 +1,59 @@
+/* THE FIELD FRAME, worn by the group instead of the field. See the recipe at
+ * the top of Input.css — this is a seventh wearer, and the only one that hands
+ * the frame to a wrapper: an addon outside the border reads as a label, and an
+ * addon inside a second border reads as a box in a box. */
+.input-group {
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  block-size: var(--control-height);
+  padding-inline: var(--control-padding-x);
+  gap: var(--space-2);
+  border: 1px solid var(--input);
+  border-radius: var(--control-radius);
+  background: var(--background);
+  color: var(--foreground);
+  transition: border-color var(--duration-fast);
+}
+.input-group[data-size="sm"] { block-size: var(--control-height-sm); padding-inline: var(--space-3); font-size: var(--font-sm); }
+.input-group[data-size="lg"] { block-size: var(--control-height-lg); font-size: var(--control-font-size-lg); }
+
+.input-group:hover:not([data-disabled]) { border-color: var(--ring); }
+.input-group:focus-within {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+.input-group[data-invalid] { border-color: var(--destructive); }
+.input-group[data-invalid]:focus-within { outline-color: var(--destructive); }
+.input-group[data-surface="muted"]:not([data-invalid]),
+.input-group[data-surface="muted"]:not([data-invalid]):hover { border-color: transparent; }
+.input-group[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* The field goes frameless and gives up its own ring: the group draws both, so
+ * a focused group shows ONE outline rather than two nested ones. */
+.input-group > .input,
+.input-group > .textarea {
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 100%;
+  padding-inline: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+}
+.input-group > .input:hover:not(:disabled) { border-color: transparent; }
+.input-group > .input:focus-visible,
+.input-group > .textarea:focus-visible { outline: none; }
+
+/* An affix is quiet by default — it labels the value, it is not the value. A
+ * control passed as an affix keeps its own colour. */
+.input-group-affix {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+/* A button on the end sits flush with the frame rather than floating inside it. */
+.input-group-affix[data-side="end"]:has(.btn, .icon-button) { margin-inline-end: calc(var(--control-padding-x) * -1 + var(--space-1)); }
+.input-group-affix[data-side="start"]:has(.btn, .icon-button) { margin-inline-start: calc(var(--control-padding-x) * -1 + var(--space-1)); }

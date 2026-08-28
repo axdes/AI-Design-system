@@ -31,7 +31,7 @@
 .slider-input {
   --pct: 0%; /* filled fraction; overridden inline from the value */
   inline-size: 100%;
-  block-size: var(--space-4);
+  block-size: var(--space-6);
   margin: 0;
   appearance: none;
   background: transparent;
@@ -59,19 +59,31 @@
   background: var(--primary);
 }
 
+/* 24px, not 16: the thumb is the target, and a 16px one is under SC 2.5.8 with
+ * no spacing exception available — it is the only thing on the track. */
 .slider-input::-webkit-slider-thumb {
   appearance: none;
-  inline-size: var(--space-4);
-  block-size: var(--space-4);
-  margin-block-start: calc((var(--space-1) - var(--space-4)) / 2);
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  margin-block-start: calc((var(--space-1) - var(--space-6)) / 2);
   border-radius: var(--radius-full);
   background: var(--primary);
   border: 2px solid var(--background);
   box-shadow: var(--shadow-sm);
 }
+
+/* The thumb answers the pointer. It is the only part you grab, and it gave no
+ * sign it knew you were there — the same silence the whole selection family
+ * kept. Vendor-prefixed twice because the two engines expose different
+ * pseudo-elements and neither accepts a selector list with the other. */
+.slider-input:hover::-webkit-slider-thumb { background: var(--primary-hover); }
+.slider-input:active::-webkit-slider-thumb { background: var(--primary-active); }
+.slider-input:hover::-moz-range-thumb { background: var(--primary-hover); }
+.slider-input:active::-moz-range-thumb { background: var(--primary-active); }
+
 .slider-input::-moz-range-thumb {
-  inline-size: var(--space-4);
-  block-size: var(--space-4);
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
   border-radius: var(--radius-full);
   background: var(--primary);
   border: 2px solid var(--background);

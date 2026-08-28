@@ -1,7 +1,7 @@
 {
   "ref": "Calendar",
   "level": "molecule",
-  "description": "A month grid for picking a single date. Keyboard: Arrow keys move day, Page Up/Down move month, Home/End jump to the week's start/end, Enter/Space select. Month and weekday names come from Intl (locale + RTL aware). Standalone, or the body of <DatePicker>.",
+  "description": "A month grid for picking a single date. Keyboard: Arrow keys move day, Page Up/Down move month, Home/End jump to the week's start/end, Enter/Space select. Month and weekday names come from Intl (locale + RTL aware). Standalone, or the body of <DatePicker>. Copy: the accessible name says what the date is FOR — \"Delivery date\", not \"Calendar\".",
   "exports": [
     "Calendar"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "value",
       "type": "Date",
-      "required": false
+      "required": false,
+      "description": "Currently selected day."
     },
     {
       "name": "onChange",
@@ -22,7 +23,8 @@
     {
       "name": "month",
       "type": "Date",
-      "required": false
+      "required": false,
+      "description": "Controlled visible month; omit to let the calendar manage it."
     },
     {
       "name": "onMonthChange",
@@ -32,7 +34,8 @@
     {
       "name": "min",
       "type": "Date",
-      "required": false
+      "required": false,
+      "description": "Selectable range bounds (inclusive)."
     },
     {
       "name": "max",
@@ -42,7 +45,8 @@
     {
       "name": "rangeStart",
       "type": "Date",
-      "required": false
+      "required": false,
+      "description": "Display a picked span (a DateRangePicker's selection): the edges read as selected and the days between get a soft band. Display only; clicks still report through onChange."
     },
     {
       "name": "rangeEnd",
@@ -53,6 +57,7 @@
       "name": "weekStartsOn",
       "type": "0 | 1",
       "required": false,
+      "description": "0 = Sunday, 1 = Monday (default).",
       "values": [
         0,
         1
@@ -61,12 +66,14 @@
     {
       "name": "locale",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "BCP-47 locale for month/weekday names. Defaults to the document language."
     },
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Accessible name for the grid."
     },
     {
       "name": "className",

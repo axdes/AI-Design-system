@@ -1,0 +1,33 @@
+{
+  "name": "Code, Prose",
+  "level": "atom",
+  "date": "2026-08-23",
+  "requestedBy": "agent (building the system's own site)",
+  "need": "The system is being asked to render its own documentation, and it turns out to have no documentation-shaped parts. Measured while building the site: 181 lines of hand-written CSS across 37 classes, of which roughly half were flex stacks that <Stack>, <Row> and <Grid> already cover — a discovery failure on the agent's side, now fixed — and the rest split into three things the registry genuinely does not have. A system that cannot describe itself in its own parts is a real gap, and it is the gap every consumer hits the moment they write a README page, an empty-state explanation or a settings hint.",
+  "consideredAlternatives": [
+    {
+      "ref": "components/Layout (Stack, Row, Grid)",
+      "whyNot": "Covers the stacking and is now used for it. It does not set a measure, a reading colour or a monospace context, which is what the three below are for."
+    },
+    {
+      "ref": "components/Card + CardTitle",
+      "whyNot": "Covers the surface an example is shown on and the code block's frame; it says nothing about the text inside them."
+    },
+    {
+      "ref": "components/Kbd, Highlight, Quote",
+      "whyNot": "Kbd is one key, Highlight is a matched substring, Quote is an attributed passage. None is a block of code or a paragraph of body text."
+    },
+    {
+      "ref": "let each product write it",
+      "whyNot": "That is the status quo and it is what this request measured: every app writes the same muted paragraph at the same measure, and gets the measure slightly different each time."
+    }
+  ],
+  "proposedApi": {
+    "Code": "children (the source), inline (a fragment in a sentence vs a block), language (labelling only, no highlighting in v1), copy (renders the existing <CopyButton>). Monospace face, the system's own scroll contract for anything wide — a code block that reflows lies about the code.",
+    "Prose": "children, size (sm | md), tone (default | muted), as (p | div). One job: body text at a MEASURE. The measure is the whole reason it exists — 68ch was arrived at independently in four files while writing the site."
+  },
+  "sources": "The system's own site, built 2026-08-23. Every documentation system that exists ships these (Primer, Polaris, Carbon, Material all have a code block and a text/prose primitive); this one shipped 126 components without them because it had never been asked to explain itself.",
+  "status": "approved",
+  "decision": "Code and Prose approved and built 2026-08-23 — a system that cannot describe itself in its own parts is a real gap, and both shipped the same day. The decision was never written here, so the folder claimed for three days that the system was waiting on a call already made; the check that should have said so read the batch name as one phrase and found no registry file called \"Code, Prose, ColorSwatch\" (fixed 2026-08-26). ColorSwatch was neither built nor decided and is not a documentation part at all — it is a colour CONTROL. Split out as its own request rather than carried along by a batch it only ever shared a day with.",
+  "decidedBy": "owner (2026-08-26, told the pending requests to be worked)"
+}

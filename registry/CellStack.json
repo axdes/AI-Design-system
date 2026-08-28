@@ -1,0 +1,35 @@
+{
+  "ref": "CellStack",
+  "level": "atom",
+  "description": "Two facts in one cell, stacked: a title over its path, an invoice over its supplier, a product over its SKU. The one place a table row is allowed two lines, and only in ONE column of the table. `Identity` is this for a person (it brings the face). `MetaItem` is one piece of secondary information with its icon, under a title rather than beside it. Copy: the secondary line is the first line's context, never a repeat of it: an invoice over its supplier, a file over its folder.",
+  "exports": [
+    "CellStack"
+  ],
+  "main": "CellStack",
+  "from": "@/components/CellStack",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The value the column is about."
+    },
+    {
+      "name": "secondary",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The line under it: the address, the path, the code, the owner. One line, smaller and quieter, and never a second fact the column also sorts by."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/CellStack/CellStack.tsx",
+  "uses": [
+    "Table"
+  ],
+  "example": "<TableScroll label=\"Invoices\">\n  <Table caption=\"Invoices\" captionHidden>\n    <THead>\n      <Tr>\n        <Th>Invoice</Th>\n        {/* The unit is named once, in the header, not in two hundred cells. */}\n        <Th align=\"end\">Amount (EUR)</Th>\n      </Tr>\n    </THead>\n    <TBody>\n      {ROWS.map((r) => (\n        <Tr key={r.id}>\n          {/* One column carries two facts; every other column stays one\n              line, or the table stops scanning as rows. */}\n          <Th scope=\"row\" emphasis>\n            <CellStack secondary={r.supplier}>{r.id}</CellStack>\n          </Th>\n          <Td align=\"end\">{money(r.amount, { currency: false })}</Td>\n        </Tr>\n      ))}\n    </TBody>\n  </Table>\n</TableScroll>"
+}

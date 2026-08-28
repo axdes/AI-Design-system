@@ -4,6 +4,7 @@
   max-inline-size: 20rem;
   padding: var(--space-4);
   background: var(--popover);
+
   color: var(--popover-foreground);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);

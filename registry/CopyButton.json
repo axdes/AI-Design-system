@@ -1,7 +1,7 @@
 {
   "ref": "CopyButton",
   "level": "molecule",
-  "description": "Copy a value, and say so. The clipboard call, the two-second confirmation and the failure case in one place, because five apps had written all three.",
+  "description": "Copy a value, and say so. The clipboard call, the two-second confirmation and the failure case in one place, because five apps had written all three. Copy: the label says what will be copied, not that copying happens — \"Copy the invoice number\". The confirmation is past tense and short.",
   "exports": [
     "CopyButton"
   ],
@@ -12,17 +12,20 @@
     {
       "name": "value",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "What lands on the clipboard."
     },
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Visible label. Without one the control is icon-only, in a Tooltip."
     },
     {
       "name": "copiedLabel",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "What the label becomes for two seconds after a successful copy. Defaults to the translated \"Copied\"."
     },
     {
       "name": "size",

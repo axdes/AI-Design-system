@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "form-stack",
+  "type": "registry:ui",
+  "title": "FormStack",
+  "description": "Vertical stack of Fields inside a modal or panel. The single shared layout for create/edit forms: every form gets identical rhythm from one place instead of each page hand-rolling its own flex column.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/FormStack/FormStack.css",
+      "content": ".form-stack {\n  display: flex;\n  flex-direction: column;\n  gap: var(--space-6);\n}\n\n/* THE form rule: inside a form, a control fills its Field. Text inputs already\n * do; Select and Combobox size to their content everywhere else (a toolbar\n * pill should hug its label), which inside a form gave every dropdown its own\n * width — a form whose rows are ragged reads as unrelated questions. The\n * form is where the exception lives, so the form declares it. */\n.form-stack .select-trigger,\n.form-stack .select,\n.form-stack .combobox {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/FormStack/FormStack.css"
+    },
+    {
+      "path": "src/components/FormStack/FormStack.tsx",
+      "content": "import './FormStack.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\n/* Vertical stack of Fields inside a modal or panel. The single shared layout\n * for create/edit forms: every form gets identical rhythm from one place\n * instead of each page hand-rolling its own flex column. */\nexport function FormStack({ children, className }: { children: ReactNode; className?: string }) {\n  return <div className={cn('form-stack', className)}>{children}</div>\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/FormStack/FormStack.tsx"
+    },
+    {
+      "path": "src/components/FormStack/index.ts",
+      "content": "export { FormStack } from './FormStack'\n",
+      "type": "registry:ui",
+      "target": "@ui/FormStack/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/FormStack.json"
+}

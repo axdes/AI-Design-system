@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "inline-text",
+  "type": "registry:ui",
+  "title": "InlineText",
+  "description": "True inline editing (the vanilla `.editable` contract): the SAME element becomes editable on click — same font, same layout, no control chrome. Enter commits, Escape reverts, blur saves. Key it by `value` upstream so a server-confirmed update re-renders the committed text. Copy: the accessible label names the value being edited, not the act — \"Recording title\", not \"Edit title\".",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/InlineText/InlineText.css",
+      "content": "/* The one thing a contentEditable does not say for itself: that it can be edited.\n *\n * This component had no stylesheet at all. It rendered text that happened to be editable, and the\n * only way to find that out was to click it — which nobody does to a paragraph. \"No control\n * chrome\" means the field does not sit in a box all day; it does not mean the reader has to guess.\n *\n * So: a cursor that says text, a quiet ground on hover that says \"this responds\", and a real box\n * with the focus ring while it IS being edited, because the one moment the reader must not be in\n * doubt is when their typing is going somewhere.\n */\n.inline-text {\n  cursor: text;\n  border-radius: var(--radius-sm);\n  /* Pulled back by the same amount it pads, so the resting text sits exactly where it would\n   * without this: an affordance that moves the words is one that has to be paid for on every\n   * screen the component appears on. */\n  padding-inline: var(--space-1);\n  margin-inline: calc(var(--space-1) * -1);\n  transition: background-color var(--duration-fast) var(--ease-out);\n}\n\n.inline-text:hover {\n  /* NOT --muted. In dark, --muted and --background are one colour by design\n     (the page has no second tier there), so a hover painted with it was\n     invisible in every dark theme — the control said \"this responds\" and then\n     did not. --surface-hover is the token for exactly this question: one stop\n     off whatever surface the thing is standing on. Found 2026-08-26, by\n     widening the boundary check to read every stylesheet in a folder rather\n     than only the one named after it. */\n  background: var(--surface-hover);\n}\n\n.inline-text:focus {\n  background: var(--background);\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: 0;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .inline-text { transition: none; }\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/InlineText/InlineText.css"
+    },
+    {
+      "path": "src/components/InlineText/InlineText.tsx",
+      "content": "import './InlineText.css'\nimport type { ElementType } from 'react'\nimport { cn } from '../lib/cn'\n\n/* True inline editing (the vanilla `.editable` contract): the SAME element\n * becomes editable on click — same font, same layout, no control chrome.\n * Enter commits, Escape reverts, blur saves. Key it by `value` upstream so a\n * server-confirmed update re-renders the committed text.\n *\n * Copy: the accessible label names the value being edited, not the act —\n * \"Recording title\", not \"Edit title\". */\nexport function InlineText({\n  as: Tag = 'span',\n  className,\n  value,\n  label,\n  onSave,\n  onAbort,\n  autoFocus,\n}: {\n  as?: 'h2' | 'p' | 'span'\n  className?: string\n  value: string\n  label: string\n  onSave: (next: string) => void\n  /** Called when editing ends without a change (composer rows close on this). */\n  onAbort?: () => void\n  autoFocus?: boolean\n}) {\n  const Element = Tag as ElementType\n  /* A heading cannot carry role=\"textbox\" (ARIA forbids overriding it, and axe\n   * fails the element). So for `as=\"h2\"` the heading stays a heading and the\n   * editable textbox is a bare inline child, which inherits the heading's font\n   * and layout — visually the same element, semantically valid. */\n  const Editable = (Tag === 'h2' ? 'span' : Tag) as ElementType\n  const editable = (\n    <Editable\n      ref={(el: HTMLElement | null) => {\n        if (el && autoFocus) el.focus()\n      }}\n      className={cn('inline-text', Tag === 'h2' ? undefined : className)}\n      contentEditable\n      suppressContentEditableWarning\n      spellCheck={false}\n      role=\"textbox\"\n      aria-label={label}\n      onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {\n        if (e.key === 'Enter') {\n          e.preventDefault()\n          ;(e.target as HTMLElement).blur()\n        }\n        if (e.key === 'Escape') {\n          ;(e.target as HTMLElement).textContent = value\n          ;(e.target as HTMLElement).blur()\n        }\n      }}\n      onBlur={(e: React.FocusEvent<HTMLElement>) => {\n        const next = (e.currentTarget.textContent ?? '').trim()\n        if (next && next !== value) onSave(next)\n        else {\n          e.currentTarget.textContent = value\n          onAbort?.()\n        }\n      }}\n    >\n      {value}\n    </Editable>\n  )\n\n  if (Tag === 'h2') return <Element className={className}>{editable}</Element>\n  return editable\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/InlineText/InlineText.tsx"
+    },
+    {
+      "path": "src/components/InlineText/index.ts",
+      "content": "export { InlineText } from './InlineText'\n",
+      "type": "registry:ui",
+      "target": "@ui/InlineText/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/InlineText.json"
+}

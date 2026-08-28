@@ -11,15 +11,17 @@
     "preview": "vite preview",
     "rebrand": "node scripts/rebrand.mjs",
     "gen-registry": "node scripts/gen-component-registry.mjs",
+    "new": "node scripts/new-part.mjs",
     "gen-registry:check": "node scripts/gen-component-registry.mjs --check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:css": "stylelint \"src/**/*.css\" \"styles/**/*.css\" \"visual/**/*.css\"",
     "lint:rules": "node scripts/lint-rules.mjs",
+    "check:copy": "node scripts/copy-check.mjs",
     "lint:graph": "node scripts/lint-graph.mjs",
     "typecheck:next": "tsgo --noEmit -p tsconfig.json",
     "lint:dead": "knip",
-    "lint:dup": "jscpd src styles --min-tokens 50 --threshold 1.7 --reporters console --silent",
+    "lint:dup": "jscpd src styles --min-tokens 50 --threshold 1.2 --reporters console --silent",
     "scout": "node scripts/promotion-scout.mjs",
     "check:harness": "node scripts/check-harness.mjs",
     "typecheck": "tsc -b",
@@ -27,6 +29,9 @@
     "test:cov": "vitest run --coverage",
     "test:watch": "vitest",
     "contrast": "node scripts/contrast-check.mjs",
+    "boundary": "node scripts/boundary-check.mjs",
+    "states": "node scripts/states-check.mjs",
+    "ink": "node scripts/ink-check.mjs",
     "size": "node scripts/size-check.mjs",
     "audit": "node scripts/audit-gate.mjs",
     "context": "node scripts/context-budget.mjs",
@@ -49,6 +54,7 @@
     "gen:checks:check": "node scripts/monorepo-step.mjs ../../../scripts/gen-checks-manifest.mjs --check",
     "check:products": "node scripts/monorepo-step.mjs ../../../scripts/check-products.mjs",
     "lint:vocab": "node scripts/lint-vocab.mjs",
+    "lint:tokens": "node scripts/lint-token-vocab.mjs",
     "lint:twins": "node scripts/lint-twins.mjs",
     "lint:behaviour": "node scripts/lint-behaviour.mjs",
     "check:routes": "node scripts/monorepo-step.mjs ../../../scripts/check-routes.mjs",
@@ -64,7 +70,16 @@
     "build:gate": "tsc -b && vite build",
     "postinstall": "node scripts/gen-component-registry.mjs",
     "check:lang": "node scripts/check-language.mjs",
-    "check:requests": "node scripts/check-requests.mjs"
+    "check:requests": "node scripts/check-requests.mjs",
+    "gen:data": "node scripts/gen-site-data.mjs",
+    "gen:data:check": "node scripts/gen-site-data.mjs --check",
+    "mutate": "node scripts/mutate.mjs",
+    "mutate:check": "node scripts/mutate.mjs --check",
+    "gate-redteam": "node scripts/gate-redteam.mjs",
+    "gen:shadcn": "node scripts/gen-shadcn-registry.mjs",
+    "gen:shadcn:check": "node scripts/gen-shadcn-registry.mjs --check",
+    "check:claims": "node scripts/check-claims.mjs",
+    "check:publishable": "node scripts/check-publishable.mjs"
   },
   "dependencies": {
     "i18next": "^26.2.0",
@@ -106,5 +121,5 @@
     "vitest": "^4.1.9",
     "vitest-axe": "^0.1.0"
   },
-  "//lint:dup": "1.7, raised from 1.5 on 2026-08-21 when the showcase screens moved to apps/showcase: the same 51 clones over ~3100 fewer lines read as 1.56% instead of 1.44%. The absolute number did not move, the denominator did. Lower it again when the clones are folded, never raise it to clear red."
+  "//lint:dup": "1.2, LOWERED from 1.7 on 2026-08-26 after the raised-surface tokens were folded: eleven stylesheets declared the same three --surface-contrast values, nine of them with the same explanatory comment copied word for word, and they now read one [data-raised] rule in utilities.css. 67 clones/1.36% became 58/1.10%, and the visual baselines did not move a pixel, which is the proof it was a copy and not a difference. Before that: 1.7, raised from 1.5 on 2026-08-21 when the showcase screens moved to apps/showcase - the same 51 clones over ~3100 fewer lines read as 1.56% instead of 1.44%; the absolute number did not move, the denominator did. Lower it again when the clones are folded, never raise it to clear red."
 }

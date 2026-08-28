@@ -27,7 +27,11 @@ type Props = {
 /* Hierarchical expand/collapse list (files, categories). The WAI-ARIA tree:
  * Up/Down move between VISIBLE rows, Right expands or steps into a group, Left
  * collapses or steps out, Enter selects. Controlled selection and expansion, or
- * self-managed. */
+ * self-managed. 
+   *
+   * Copy: node labels are the things' own names, and the level is carried by the
+   * structure, so a label never repeats its parent.
+   */
 export function Tree({
   nodes, selectedId, onSelect, expandedIds, onExpandedChange, defaultExpandedIds = [], label, className,
 }: Props) {

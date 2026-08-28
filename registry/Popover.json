@@ -1,7 +1,7 @@
 {
   "ref": "Popover",
   "level": "molecule",
-  "description": "Click-triggered floating panel for RICH content: a form, a group of controls, a detail card. <Tooltip> is text on hover, <Dropdown> is a menu of items; this is neither. Closes on outside click or Escape, returning focus to the trigger. The content is a labelled role=\"dialog\".",
+  "description": "Click-triggered floating panel for RICH content: a form, a group of controls, a detail card. <Tooltip> is text on hover, <Dropdown> is a menu of items; this is neither. Closes on outside click or Escape, returning focus to the trigger. The content is a labelled role=\"dialog\". Copy: the accessible name says what the panel holds, because it is a dialog and announces itself before its content.",
   "exports": [
     "Popover"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "trigger",
       "type": "(props: PopoverTriggerProps) => ReactNode",
-      "required": true
+      "required": true,
+      "description": "Render the control that opens the popover; spread the given props onto it."
     },
     {
       "name": "children",
@@ -22,12 +23,14 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the popover dialog."
     },
     {
       "name": "placement",
       "type": "'top' | 'bottom'",
       "required": false,
+      "description": "Preferred side; flips to the other if there is not enough room. Default 'bottom'.",
       "values": [
         "top",
         "bottom"

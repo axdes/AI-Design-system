@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logo-wall",
+  "type": "registry:ui",
+  "title": "LogoWall",
+  "description": "Customer or partner marks in ONE optical weight: unlike logos are drawn at unlike strengths, and a row of them at full colour reads as noise rather than as proof. Normalising that is systems work — done per page it is done by eye, and looks it. Copy: every `alt` is the organisation's name in full. The mark IS the information here, so a reader who cannot see it learns who is on the wall only from t",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/LogoWall/LogoWall.css",
+      "content": "/* A WALL, not a paragraph of logos.\n *\n * It used to be `flex-wrap`, which packs the marks from the leading edge and\n * leaves whatever is left over at the end of the last line: four wordmarks in a\n * card came out as a ragged 2x2 block pinned to the left, and read as a list of\n * headings someone had failed to align (owner, 23.08). A wall is a GRID —\n * even cells, each mark centred in its own, however many fit. */\n.logo-wall {\n  /* Local to this component: the cap on how tall any mark may draw itself, and\n   * the narrowest cell a wordmark still reads in. */\n  --logo-height: var(--space-8);\n  --logo-cell: 8rem;\n\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(var(--logo-cell), 1fr));\n  place-items: center;\n  gap: var(--space-6) var(--space-4);\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.logo-wall[data-size=\"sm\"] { --logo-height: var(--space-6); --logo-cell: 7rem; gap: var(--space-4); }\n.logo-wall[data-size=\"lg\"] { --logo-height: var(--space-12); --logo-cell: 10rem; }\n\n/* The normalisation, and the whole reason this is a component: one height, one\n * weight, one opacity, so a heavy wordmark and a thin one carry the same\n * emphasis. `colour` opts out for the row somebody negotiated. */\n.logo-wall img {\n  display: block;\n  block-size: var(--logo-height);\n  inline-size: auto;\n  max-inline-size: 100%;\n  object-fit: contain;\n  filter: grayscale(1);\n  opacity: 0.7;\n}\n.logo-wall[data-colour] img { filter: none; opacity: 1; }\n",
+      "type": "registry:ui",
+      "target": "@ui/LogoWall/LogoWall.css"
+    },
+    {
+      "path": "src/components/LogoWall/LogoWall.tsx",
+      "content": "import \"./LogoWall.css\";\nimport { cn } from \"../lib/cn\";\n\ntype Size = \"sm\" | \"md\" | \"lg\";\n\nexport type Logo = {\n  src: string;\n  /** The organisation's name. Never empty: the mark IS the information here, so\n   *  a reader who cannot see it still has to learn who is on the wall. */\n  alt: string;\n};\n\ntype Props = {\n  logos: Logo[];\n  size?: Size;\n  /** Full colour instead of the normalised weight. For one row of partners the\n   *  client insisted on; the default exists because unlike marks at full\n   *  strength read as a jumble. */\n  colour?: boolean;\n  /** What the wall is: \"Customers\", \"Partners\". */\n  label?: string;\n  className?: string;\n};\n\n/** Customer or partner marks in ONE optical weight: unlike logos are drawn at\n *  unlike strengths, and a row of them at full colour reads as noise rather\n *  than as proof. Normalising that is systems work — done per page it is done\n *  by eye, and looks it. \n *\n * Copy: every `alt` is the organisation's name in full. The mark IS the\n * information here, so a reader who cannot see it learns who is on the\n * wall only from that word.\n */\nexport function LogoWall({ logos, size, colour, label, className }: Props) {\n  if (!logos.length) return null;\n  return (\n    <ul className={cn(\"logo-wall\", className)} data-size={size} data-colour={colour ? \"\" : undefined} aria-label={label}>\n      {logos.map((l) => (\n        <li key={l.src}>\n          <img src={l.src} alt={l.alt} />\n        </li>\n      ))}\n    </ul>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/LogoWall/LogoWall.tsx"
+    },
+    {
+      "path": "src/components/LogoWall/index.ts",
+      "content": "export { LogoWall } from \"./LogoWall\";\n",
+      "type": "registry:ui",
+      "target": "@ui/LogoWall/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/LogoWall.json"
+}

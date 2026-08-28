@@ -30,7 +30,27 @@
       "rules": {
         "declaration-no-important": null
       }
+    },
+    {
+      "files": [
+        "src/components/Card/CardMedia.css"
+      ],
+      "rules": {
+        "csstools/value-no-unknown-custom-properties": [
+          true,
+          {
+            "importFrom": [
+              "styles/settings.css",
+              "styles/primitives.css",
+              "styles/semantic.css",
+              "styles/fonts.css",
+              "src/components/Card/Card.css"
+            ]
+          }
+        ]
+      }
     }
   ],
-  "//": "A brand layer IS a primitive layer: it replaces the ramp primitives.css defines, which is the one place hex belongs. styles/brands/*.css is held to that same exception and to nothing else — a brand file that restates the spacing or type scale is a copied scale waiting to drift."
+  "//": "A brand layer IS a primitive layer: it replaces the ramp primitives.css defines, which is the one place hex belongs. styles/brands/*.css is held to that same exception and to nothing else — a brand file that restates the spacing or type scale is a copied scale waiting to drift.",
+  "//CardMedia": "CardMedia.css is the second half of Card.css, split out on 2026-08-26 when that file reached 717 lines carrying two subjects. It reads --card-motion, a token the card declares on itself and the media inherits at runtime; only the linter cannot see across the file boundary. The override names Card.css for this ONE file rather than adding a component's private tokens to the global importFrom, which would let every component's privates resolve everywhere."
 }

@@ -1,7 +1,7 @@
 {
   "ref": "Modal",
   "level": "organism",
-  "description": "Dialog in a portal: focus trap, ESC, body scroll lock and a footer for the actions. `size` widens it, and sm is for a yes/no confirmation only.",
+  "description": "Dialog in a portal: focus trap, ESC, body scroll lock and a foot for the actions. `size` widens it, and `sm` is for a yes/no confirmation only — a dialog that collects anything needs `md` or wider. ONE dialog, any content. A confirmation is this with a sentence in it; a form is this with a <FormStack> of Fields in it. Both used to be blocks of their own and neither carried behaviour, so both are now `actions` plus children. Copy: the title is the question or the job, not the widget — \"Delete this recording?\", not \"Confirmation\". The confirm button repeats the verb from the title, so a reader who skipped the sentence still knows what the button does.",
   "exports": [
     "Modal"
   ],
@@ -38,6 +38,7 @@
       "name": "placement",
       "type": "Placement",
       "required": false,
+      "description": "center = floating dialog (default). drawer = panel docked to the inline-end edge, full height, sliding in from the side.",
       "values": [
         "center",
         "drawer"
@@ -46,7 +47,8 @@
     {
       "name": "dismissible",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Click outside / Escape close. Default true."
     },
     {
       "name": "className",
@@ -59,9 +61,56 @@
       "required": true
     },
     {
+      "name": "actions",
+      "type": "Actions",
+      "required": false,
+      "description": "The decision this dialog asks for. Cancel is a ghost on the leading side, confirm on the trailing one — one order, decided here, so no caller re-decides it. Use `footer` instead for a foot that is not a decision.",
+      "fields": [
+        {
+          "name": "onConfirm",
+          "type": "() => void",
+          "required": true,
+          "description": "The commitment."
+        },
+        {
+          "name": "confirmLabel",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "cancelLabel",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "tone",
+          "type": "'primary' | 'destructive'",
+          "required": false,
+          "description": "`destructive` for anything that deletes or cannot be undone, so a delete never looks like a save.",
+          "values": [
+            "primary",
+            "destructive"
+          ]
+        },
+        {
+          "name": "busy",
+          "type": "boolean",
+          "required": false,
+          "description": "The action is IN FLIGHT: the confirm shows a spinner. Not the same as `confirmDisabled`, and the two used to share one `busy` prop across the two blocks — one disabled the button and the other spun it, for the same word."
+        },
+        {
+          "name": "confirmDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Nothing to confirm YET: the form is empty or invalid. Greys the button."
+        }
+      ]
+    },
+    {
       "name": "footer",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Anything in the foot that is NOT a cancel/confirm pair. Ignored when `actions` is given: a dialog has one foot."
     }
   ],
   "sourcePath": "src/components/Modal/Modal.tsx",
@@ -85,8 +134,11 @@
   },
   "uses": [
     "Button",
+    "Field",
+    "FormStack",
     "IconButton",
+    "Input",
     "Tooltip"
   ],
-  "example": "const [open, setOpen] = useState(true)\n\n<>\n  <Button onClick={() => setOpen(true)}>Edit profile</Button>\n  <Modal\n    open={open}\n    onClose={() => setOpen(false)}\n    title=\"Edit profile\"\n    size=\"md\"\n    footer={\n      <>\n        <Button variant=\"ghost\" onClick={() => setOpen(false)}>Cancel</Button>\n        <Button onClick={() => setOpen(false)}>Save</Button>\n      </>\n    }\n  >\n    <p>Update your name and contact details.</p>\n  </Modal>\n</>"
+  "example": "const [open, setOpen] = useState(true)\n\n<>\n  <Button onClick={() => setOpen(true)}>Edit profile</Button>\n  <Modal\n    open={open}\n    onClose={() => setOpen(false)}\n    title=\"Edit profile\"\n    size=\"md\"\n    actions={{ confirmLabel: 'Save', onConfirm: () => setOpen(false) }}\n  >\n    <FormStack>\n      <Field label=\"Full name\" htmlFor=\"modal-example-name\">\n        <Input id=\"modal-example-name\" autoComplete=\"name\" defaultValue=\"Ada Meridian\" data-autofocus />\n      </Field>\n      <Field label=\"Email\" htmlFor=\"modal-example-email\">\n        <Input id=\"modal-example-email\" type=\"email\" autoComplete=\"email\" defaultValue=\"ada@example.com\" />\n      </Field>\n    </FormStack>\n  </Modal>\n</>"
 }

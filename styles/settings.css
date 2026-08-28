@@ -66,10 +66,23 @@
     var(--radius) + var(--grid-unit) * 4
   ); /* soft rounded-rect (textarea, multi-line composer) — follows the radius knob, on-grid */
 
-  /* Motion. */
+  /* Motion. Durations AND the curve, because a duration without a curve is
+   * half a decision: everything that had no `transition-timing-function` fell
+   * back to CSS `ease`, which starts fast and ends slow — the shape a thing
+   * makes when it is thrown, not when it answers. One curve for the system.
+   *
+   * --ease-out is THE curve: fast off the mark, settling into the end state.
+   * --ease-in-out is for something that leaves and comes back (a drawer, a
+   * carousel slide), where both ends need to be soft.
+   *
+   * The rule the card was breaking (owner, 23.08: the animation on the cards is
+   * jerky, it should be smooth and crisp): ONE gesture moves at ONE speed. The
+   * hover used to run a 120ms shadow, a 200ms scrim and a 320ms zoom at once,
+   * so the parts of a single card arrived one after another. */
   --duration-fast: 120ms;
   --duration-normal: 200ms;
   --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
 
   /* Focus ring — single source for the universal focus-visible outline. */
   --ring-width: 2px;
@@ -104,12 +117,27 @@
 
   /* Elevation — shadows shared by cards/popovers (shadow-sm/md/lg in primitives). */
   --shadow-popover: 0 4px 24px rgb(0 0 0 / 0.08);
-  --shadow-card-hover: 0 0 24px rgb(0 0 0 / 0.06);
+  /* Soft, and actually visible. It was 0 0 24px at 6% black — a glow so faint
+   * that the only feedback a card gave under the pointer was the cursor. A lift
+   * has a direction: a small downward offset reads as the card coming up off the
+   * page, which is what the gesture means. */
+  --shadow-card-hover: 0 6px 20px rgb(0 0 0 / 0.12);
 
   /* Cards. */
   --card-radius: var(--radius-xl);
+  /* The picture keeps its SHAPE, not its height. A fixed 9rem made the same
+   * card's media a 2.6:1 letterbox in a grid column and a 5.2:1 strip across a
+   * feature row, so the same component looked like two different ones on one
+   * screen (owner, 22.08: the cards do not look designed). */
+  --card-media-ratio: 16 / 9;
   --card-padding: var(--space-6); /* 24px */
-  --card-padding-nested: var(--space-3); /* 12px */
+  /* The same room as the parent. It was 12px, then 16px, and the owner called
+   * both cramped (2026-08-22): a nested card holds the same kind of content the
+   * outer one does — an avatar, a name, an action — and content does not need
+   * less air for sitting one level in. The concentric radius and the outline
+   * say "inside"; the padding does not have to say it as well. The knob stays,
+   * so a dense product can still tighten it in one place. */
+  --card-padding-nested: var(--space-6); /* 24px */
   --card-shadow: var(--shadow-popover);
   /* One step above body, not four. At --font-xl a card title was 24px over 13px metadata: the
    * name shouted and nothing under it had a rank, which is why every card in every app read as a
@@ -148,6 +176,12 @@
 
   /* Content widths. */
   --page-max-width: 96rem; /* cap for header + main content (was 80rem; one tier up) */
+  /* The whole shell: nav column + capped content. Past this the composition
+   * stops growing and centres on the screen instead, so a 2560px monitor gets
+   * equal margins on both sides rather than a nav pinned to the left edge and
+   * a content column that reads 130px right of centre. 112rem = the 96rem cap
+   * plus the 16.25rem nav, rounded to the scale. */
+  --shell-max-width: 112rem;
   --prose-max-width: 32rem; /* narrative / error pages */
   --side-panel-width: 24rem; /* right rail content panel (Comments/Versions/etc) */
 
@@ -158,5 +192,4 @@
 
   /* Brand marks (used by Sidebar + LoginPage). */
   --logo-height: 2rem; /* full wordmark */
-  --logo-mark-height: 1.5rem; /* collapsed mark inside the primary cap */
 }

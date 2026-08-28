@@ -1,7 +1,7 @@
 {
   "ref": "Stat",
   "level": "atom",
-  "description": "A KPI tile: a large value with a caption. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>.",
+  "description": "A KPI tile: a large value with a caption, and — when the number is judged rather than just read — the comparison and the trend behind it. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>. Copy: the label says what the number counts, with its unit and its period — \"Invoices paid this quarter\". The delta says what it is compared to, or it is not a comparison.",
   "exports": [
     "Stat"
   ],
@@ -12,27 +12,76 @@
     {
       "name": "value",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "The headline metric (rendered tabular-nums)."
     },
     {
       "name": "label",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "Caption under the value."
     },
     {
       "name": "tone",
       "type": "Tone",
-      "required": false
+      "required": false,
+      "description": "Semantic emphasis for the value.",
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "ai"
+      ]
     },
     {
       "name": "unit",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Small suffix after the value, e.g. \"/3\" or \"%\"."
+    },
+    {
+      "name": "delta",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The comparison that makes the value mean something: \"+12% vs last week\"."
+    },
+    {
+      "name": "deltaDirection",
+      "type": "DeltaDirection",
+      "required": false,
+      "description": "Which way it moved. Separate from `deltaTone` on purpose — up is good for revenue and bad for latency, so the arrow and the colour answer different questions. Named for the delta it describes, because `direction` alone was three different questions across the system (2026-08-26).",
+      "values": [
+        "up",
+        "down",
+        "flat"
+      ]
+    },
+    {
+      "name": "deltaTone",
+      "type": "DeltaTone",
+      "required": false,
+      "description": "Whether that move is good news. Defaults to neutral, which colours nothing.",
+      "values": [
+        "success",
+        "danger",
+        "neutral"
+      ]
+    },
+    {
+      "name": "trend",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The shape behind the number: pass a <Sparkline>."
     },
     {
       "name": "size",
       "type": "Size",
-      "required": false
+      "required": false,
+      "values": [
+        "md",
+        "lg"
+      ]
     }
   ],
   "sourcePath": "src/components/Stat/Stat.tsx",
@@ -40,12 +89,40 @@
   "variants": {
     "tone": {
       "prop": "tone",
-      "values": null
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "ai"
+      ]
     },
     "size": {
       "prop": "size",
-      "values": null
+      "values": [
+        "md",
+        "lg"
+      ]
+    },
+    "delta-tone": {
+      "prop": "deltaTone",
+      "values": [
+        "success",
+        "danger",
+        "neutral"
+      ]
+    },
+    "delta-direction": {
+      "prop": "deltaDirection",
+      "values": [
+        "up",
+        "down",
+        "flat"
+      ]
     }
   },
-  "example": "<Stat value=\"2.0\" label=\"Avg maturity\" />"
+  "uses": [
+    "Sparkline"
+  ],
+  "example": "<Stat\n  value=\"221\"\n  label=\"Sessions this week\"\n  delta=\"+9% vs last week\"\n  deltaDirection=\"up\"\n  deltaTone=\"success\"\n  trend={<Sparkline values={week} tone=\"success\" size=\"sm\" area />}\n/>"
 }

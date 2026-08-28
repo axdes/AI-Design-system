@@ -79,6 +79,91 @@ is the trade the index makes — discovery is cheap, detail is one call away, an
 an agent that skips the call guesses. What changed is that the guess is now
 caught by the fast check instead of by `tsc` two minutes later.
 
+## Contract cut — same eight tasks, 2026-08-28
+
+`AGENTS.md` went from 514 lines to 312 (7.1k tokens to 4.3k) by moving six
+reference sections to `docs/contract/`, named in a table the contract still
+carries. The question a cut like that has to answer is whether the agent got
+worse, and the only way to know is to run the same measurement again.
+
+| | Before the cut | After |
+|---|---|---|
+| mean over eight tasks | 100% | **100%** |
+| perfect runs | 8/8 | **8/8** |
+
+Nothing moved. Read that as "the six sections were not load-bearing for these
+eight tasks", not as "the contract can be cut in half again for free": these
+tasks build screens from existing parts, and the sections that left were about
+diagnosing the gate, the file map, and choosing between neighbours. A task that
+needed those would fetch them by path — which is the arrangement, and is not
+what this measured.
+
+## Agent runs — Claude Code (`claude -p`), Opus 5, 2026-08-27
+
+Re-measured the day after the registry started publishing prop descriptions
+(463 of 782, having published none since the generator was written) and the
+contract gained the heading-outline rule. Eight tasks, one run each, `cwd` = the
+repo root.
+
+| | |
+|---|---|
+| mean score | **100%** |
+| perfect runs | **8/8** |
+| runs that produced no file | 0 |
+
+`list-screen`, `form-modal`, `data-table`, `detail-screen`, `settings-panel`,
+`async-form`, `search-select`, `states-screen` — all 100.
+
+The three that moved are the ones worth reading. `detail-screen` was 88 the day
+before and failed `renders` on an axe `heading-order`; the contract now states
+the outline rule and `SectionLabel` publishes the `as` prop that decides it.
+`search-select` was 88 on 2026-08-14 and `settings-panel` 92, and both were lost
+to the same thing every time: the agent did not fetch the component entry before
+writing it, so it guessed at a prop. The entry it would have fetched now says
+what each prop MEANS, not only that it exists.
+
+Read it with its limits. Eight tasks is not twelve, one run each is not three,
+and a ceiling tells you less than a middle — the next honest measurement of this
+harness needs harder tasks, not another pass at these.
+
+## Agent runs — Claude Code (`claude -p`), Opus 5, 2026-08-26
+
+Re-measured because the number above was twelve days old and the system had
+gained four decision layers and about thirty parts since. Six tasks, one run
+each, `cwd` = the repo root.
+
+| | |
+|---|---|
+| mean score | **98%** (5 tasks at 100, one at 88) |
+| perfect runs | 5/6 |
+| runs that produced no file | 0 |
+
+`list-screen`, `form-modal`, `data-table`, `settings-panel`, `async-form` 100.
+`detail-screen` 88 — the only loss, and not a design-system one on its face:
+`renders` failed on an axe `heading-order`, an outline that skips a level.
+
+Read it against the 12-task run above rather than as a replacement: six tasks is
+not twelve, and the four hardest-scoring tasks of that run (`search-select`,
+`states-screen`, `action-toolbar`, `detail-screen`) are exactly the ones this
+subset mostly leaves out.
+
+### What the one failure was worth
+
+Chasing it found the defect underneath. `SectionLabel` — the part that names a
+section, and the one that decides whether that section is a heading at all —
+published `props: []`. Its `as` prop was typed as an INTERSECTION in the
+signature (`HTMLAttributes<HTMLElement> & { as?: Heading }`), and the generator's
+two fallbacks each miss that shape: one needs `}: {`, the other needs the type to
+end the parameter list. So the contract an agent reads said the component takes
+nothing, the agent left the default (`div`), and the section never entered the
+outline.
+
+Fixed at the root — the main export now falls back to the same signature reader
+the PARTS already used, which handles intersections — and guarded: a main export
+that destructures named parameters while publishing no props is now an error in
+the generator, because that is the shape the failure took and nothing said a
+word about it for three days.
+
 ## Drift — one session, 12 turns, 2026-08-14
 
 `npm run eval:drift`, Opus 5, session pinned by id, every task also run in a

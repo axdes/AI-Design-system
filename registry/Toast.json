@@ -1,0 +1,91 @@
+{
+  "ref": "Toast",
+  "level": "organism",
+  "description": "A single transient confirmation — what happened, and the one thing to do about it. Reach for it directly only when the message belongs inside a panel rather than in the corner of the screen; everywhere else render <ToastStack>, which is a positioned list of these and owns the timers. Copy: past tense and short: it appears after the fact. \"Invoice sent\", not \"Sending invoice\". If there is an undo, the words say what will be undone.",
+  "exports": [
+    "Toast",
+    "ToastStack"
+  ],
+  "main": "Toast",
+  "from": "@/components/Toast",
+  "slots": [
+    {
+      "name": "ToastStack"
+    }
+  ],
+  "props": [
+    {
+      "name": "item",
+      "type": "ToastItem",
+      "required": true,
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "description": "One line. What happened, in the past tense: \"Report published\"."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional second line, when the title cannot carry the consequence."
+        },
+        {
+          "name": "tone",
+          "type": "ToastTone",
+          "required": false,
+          "values": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "danger"
+          ]
+        },
+        {
+          "name": "action",
+          "type": "{ label: string; onAction: () => void }",
+          "required": false,
+          "description": "The one thing to do about it — almost always Undo."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "description": "Milliseconds before it leaves. 0 keeps it until dismissed; that is the default for `danger`, because an error nobody read is an error nobody had."
+        }
+      ]
+    },
+    {
+      "name": "onDismiss",
+      "type": "(id: string) => void",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "type": "boolean",
+      "required": false,
+      "description": "The countdown is frozen (the stack is hovered or holds focus)."
+    },
+    {
+      "name": "dismissLabel",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Toast/Toast.tsx",
+  "context": "page",
+  "uses": [
+    "Button",
+    "Icon",
+    "IconButton",
+    "Tooltip"
+  ],
+  "example": "/* The consumer owns the array, the way <Modal open> owns its flag: no\n * provider to mount, and a test can put a toast on screen directly. */\nconst [toasts, setToasts] = useState<ToastItem[]>([])\nconst dismiss = (id: string) => { setToasts((list) => list.filter((t) => t.id !== id)) }\nconst publish = () => {\n  const id = `t${String(Date.now())}`\n  setToasts((list) => [\n    ...list,\n    {\n      id,\n      tone: 'success',\n      title: 'Report published',\n      description: 'Everyone on the workspace can open it now.',\n      /* One action, and it is almost always Undo — a toast is the last\n       * chance to take the thing back, not a place to start new work. */\n      action: { label: 'Undo', onAction: () => undefined },\n    },\n  ])\n}\n\n<>\n  <Button onClick={publish}>Publish report</Button>\n  <ToastStack toasts={toasts} onDismiss={dismiss} />\n</>"
+}

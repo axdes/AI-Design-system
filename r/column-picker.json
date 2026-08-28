@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "column-picker",
+  "type": "registry:ui",
+  "title": "ColumnPicker",
+  "description": "Which columns a table shows, and in what order. A card of controls on click, so it is a `<Popover>` rather than a menu: the reader ticks several boxes in one visit and the table changes under it. The choice belongs to the reader and to this collection, so persist it per table (localStorage or the user's settings) rather than resetting it on every visit.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/checkbox.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/popover.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ColumnPicker/ColumnPicker.css",
+      "content": "/* The picker is a card of controls, so its rows are as tall as the controls\n * and no taller: a list of fourteen columns has to stay one glance. */\n.column-picker-list {\n  list-style: none;\n  margin: 0 0 var(--space-2);\n  padding: 0;\n  display: flex;\n  flex-direction: column;\n  gap: var(--space-1);\n}\n\n.column-picker-row {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: var(--space-4);\n}\n\n/* The move controls appear for every movable column, not on hover: an action\n * that only exists under a pointer does not exist on a touch screen. */\n.column-picker-move { display: inline-flex; gap: var(--space-1); }\n",
+      "type": "registry:ui",
+      "target": "@ui/ColumnPicker/ColumnPicker.css"
+    },
+    {
+      "path": "src/components/ColumnPicker/ColumnPicker.tsx",
+      "content": "import './ColumnPicker.css'\nimport { useTranslation } from 'react-i18next'\nimport { Button } from '../Button'\nimport { Checkbox } from '../Checkbox'\nimport { Icon } from '../Icon'\nimport { IconButton } from '../IconButton'\nimport { Popover } from '../Popover'\nimport { Tooltip } from '../Tooltip'\nimport { cn } from '../lib/cn'\n\nexport type PickableColumn = {\n  key: string\n  label: string\n  /** The identifier column. It cannot be hidden or moved: a table whose first\n   *  column is gone is a table of unlabelled values. */\n  locked?: boolean\n}\n\ntype Props = {\n  /** Every column the table CAN show, in the order it shows them. */\n  columns: readonly PickableColumn[]\n  /** The keys currently shown. */\n  visible: readonly string[]\n  onChange: (keys: string[]) => void\n  /** Moves a column one place, so the order is reachable without dragging.\n   *  Leave it out and the picker only hides and shows. */\n  onMove?: (key: string, direction: -1 | 1) => void\n  /** Back to the columns the table shipped with. A picker with no way back is\n   *  a picker nobody tries twice. */\n  onReset?: () => void\n  className?: string\n}\n\n/**\n * Which columns a table shows, and in what order. A card of controls on click,\n * so it is a `<Popover>` rather than a menu: the reader ticks several boxes in\n * one visit and the table changes under it.\n *\n * The choice belongs to the reader and to this collection, so persist it per\n * table (localStorage or the user's settings) rather than resetting it on every\n * visit.\n */\nexport function ColumnPicker({ columns, visible, onChange, onMove, onReset, className }: Props) {\n  const { t } = useTranslation()\n  const shown = new Set(visible)\n\n  const toggle = (key: string) => {\n    const next = columns.filter((c) => (c.key === key ? !shown.has(key) : shown.has(c.key))).map((c) => c.key)\n    onChange(next)\n  }\n\n  return (\n    <Popover\n      label={t('table.columns')}\n      trigger={(props) => (\n        <Button variant=\"secondary\" size=\"sm\" {...props}>\n          {t('table.columns')}\n          <Icon name=\"arrow_drop_down\" />\n        </Button>\n      )}\n      className={cn('column-picker', className)}\n    >\n      <ul className=\"column-picker-list\">\n        {columns.map((col, i) => (\n          <li key={col.key} className=\"column-picker-row\">\n            <Checkbox\n              label={col.label}\n              checked={col.locked || shown.has(col.key)}\n              disabled={col.locked}\n              onChange={() => toggle(col.key)}\n            />\n            {onMove && !col.locked && (\n              <span className=\"column-picker-move\">\n                <Tooltip content={`Move ${col.label} up`}>\n                  <IconButton\n                    icon=\"arrow_upward\"\n                    size=\"sm\"\n                    variant=\"quiet\"\n                    aria-label={`Move ${col.label} up`}\n                    disabled={i === 0}\n                    onClick={() => onMove(col.key, -1)}\n                  />\n                </Tooltip>\n                <Tooltip content={`Move ${col.label} down`}>\n                  <IconButton\n                    icon=\"arrow_downward\"\n                    size=\"sm\"\n                    variant=\"quiet\"\n                    aria-label={`Move ${col.label} down`}\n                    disabled={i === columns.length - 1}\n                    onClick={() => onMove(col.key, 1)}\n                  />\n                </Tooltip>\n              </span>\n            )}\n          </li>\n        ))}\n      </ul>\n      {onReset && (\n        <Button variant=\"ghost\" size=\"sm\" onClick={onReset}>{t('table.resetColumns')}</Button>\n      )}\n    </Popover>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ColumnPicker/ColumnPicker.tsx"
+    },
+    {
+      "path": "src/components/ColumnPicker/index.ts",
+      "content": "export { ColumnPicker, type PickableColumn } from './ColumnPicker'\n",
+      "type": "registry:ui",
+      "target": "@ui/ColumnPicker/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/ColumnPicker.json"
+}

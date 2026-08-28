@@ -14,6 +14,9 @@ type Props = {
   accept?: string
   multiple?: boolean
   disabled?: boolean
+  /** The form rejected the attachment (nothing picked where a file was
+   *  required, or the wrong type). Red dashed border and a red focus ring. */
+  invalid?: boolean
   /** Prompt shown in the drop area. */
   label?: string
   hint?: string
@@ -23,9 +26,14 @@ type Props = {
 /* A drop area plus a native file picker, with a removable list of attached
  * files. Wraps the raw <input type="file"> (the one control with no DS
  * equivalent) and adds drag-and-drop. The input stays the accessible control;
- * the drop area is a labelled convenience on top. */
+ * the drop area is a labelled convenience on top. 
+   *
+   * Copy: the hint states the limits BEFORE the choosing: which formats, what
+   * size, how many. A rule discovered by failing is a rule stated too late.
+   */
 export function FileUpload({
-  onFiles, files = [], onRemove, accept, multiple, disabled, label = 'Drag files here or browse', hint, className,
+  onFiles, files = [], onRemove, accept, multiple, disabled, invalid,
+  label = 'Drag files here or browse', hint, className,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [over, setOver] = useState(false)
@@ -45,6 +53,7 @@ export function FileUpload({
     <div className={cn('file-upload', className)}>
       <label
         className="file-upload-drop"
+        data-invalid={invalid || undefined}
         htmlFor={id}
         data-over={over || undefined}
         data-disabled={disabled || undefined}

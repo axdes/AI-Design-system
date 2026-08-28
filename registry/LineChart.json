@@ -1,0 +1,100 @@
+{
+  "ref": "LineChart",
+  "level": "atom",
+  "description": "A value over time, as a line: the analytical card's first form when the question is \"which way is it going\". Carries its own scale, grid, legend and a crosshair readout, and reads as a table to a screen reader. Reach for <Sparkline> when the shape sits beside a number and needs no axis, and for <BarChart> when the x axis is categories rather than time. Copy: the accessible label says what the line measures and over what period. Series names are the things themselves, because a legend of \"Series 1\" is a legend of nothing.",
+  "exports": [
+    "LineChart"
+  ],
+  "main": "LineChart",
+  "from": "@/components/LineChart",
+  "slots": [],
+  "props": [
+    {
+      "name": "labels",
+      "type": "string[]",
+      "required": true,
+      "description": "The x axis, oldest first: months, weeks, sites."
+    },
+    {
+      "name": "series",
+      "type": "LineSeries[]",
+      "required": true,
+      "description": "One entry per line. Two or more bring a legend with them."
+    },
+    {
+      "name": "area",
+      "type": "boolean",
+      "required": false,
+      "description": "Fills under the line. For ONE series only: two filled areas overlapping is a chart nobody can read."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false,
+      "description": "Top of the scale. Defaults to the first nice number above the data."
+    },
+    {
+      "name": "target",
+      "type": "number",
+      "required": false,
+      "description": "A goal drawn across the plot. Its own label is deliberately not a prop: a word printed inside the plot sits on the lines (owner, 23.08). Name the goal in the card's meta line."
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "axis",
+      "type": "boolean",
+      "required": false,
+      "description": "The scale down the side and the grid with it. On by default."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": "What the chart measures. Names it for a screen reader, which reads the table this component renders for it."
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "required": false,
+      "description": "BCP-47 tag for the numbers. Omit to follow the browser."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/LineChart/LineChart.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "axis": {
+      "prop": "axis",
+      "values": [
+        "true"
+      ]
+    },
+    "area": {
+      "prop": "area",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "example": "<LineChart\n  labels={MONTHS}\n  series={[\n    { label: 'Raised', values: [52, 61, 48, 67, 72] },\n    { label: 'Closed', values: [34, 41, 28, 47, 52] },\n  ]}\n  target={60}\n  label=\"Findings raised and closed per month\"\n/>"
+}

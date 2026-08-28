@@ -1,0 +1,59 @@
+{
+  "ref": "Quote",
+  "level": "molecule",
+  "description": "A quotation with its attribution, in real <figure>/<blockquote> semantics — a testimonial, a finding quoted from a report, a line from an interview. For the system's own voice use ordinary text; this is for someone else's. Copy: the words are the speaker's, unedited; trimming a quote to fit is how a testimonial stops being one. `by` is a person, `source` is where they said it or what they do — an unattributed quote is copy, not evidence.",
+  "exports": [
+    "Quote"
+  ],
+  "main": "Quote",
+  "from": "@/components/Quote",
+  "slots": [],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The words. Somebody else's, which is the whole point of the component."
+    },
+    {
+      "name": "by",
+      "type": "ReactNode",
+      "required": true,
+      "description": "Who said it: an <Identity>, or a name and a role. Required, because an unattributed quote proves nothing — it is copy we wrote about ourselves."
+    },
+    {
+      "name": "source",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Where it comes from: a company, a report, a date."
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "values": [
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Quote/Quote.tsx",
+  "variants": {
+    "size": {
+      "prop": "size",
+      "values": [
+        "md",
+        "lg"
+      ]
+    }
+  },
+  "uses": [
+    "Identity"
+  ],
+  "example": "<Quote\n  by={<Identity avatarName=\"Dev Okonkwo\" name=\"Dev Okonkwo\" secondary=\"Head of Safety\" size=\"sm\" />}\n  source=\"Site 14\"\n>\n  The audit that used to take a week now takes an afternoon, and the findings\n  arrive in the words the crew actually uses.\n</Quote>"
+}

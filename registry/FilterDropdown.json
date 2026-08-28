@@ -1,7 +1,7 @@
 {
   "ref": "FilterDropdown",
   "level": "molecule",
-  "description": "One filter as a chip: the current selection reads on the trigger and the options are typed by their value.",
+  "description": "One filter as a chip: the current selection reads on the trigger and the options are typed by their value. Copy: the label is the field being filtered; `allLabel` is the unfiltered state in the reader's words — \"Any region\", not \"All\".",
   "exports": [
     "FilterDropdown"
   ],
@@ -16,7 +16,7 @@
     },
     {
       "name": "options",
-      "type": "readonly { value: V; label: string; icon?: IconName; count?: number }[]",
+      "type": "readonly FilterOption<V>[]",
       "required": true
     },
     {
@@ -30,54 +30,64 @@
       "required": true
     },
     {
-      "name": "multi",
+      "name": "multiple",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Default true — several choices at once, and each toggle keeps the menu open. The word is `multiple`, matching <Combobox> and <SelectableTile>: this control called it `multiple` and nothing caught it, because lint:vocab reads union props and a boolean has no union (2026-08-26)."
     },
     {
       "name": "allLabel",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Label of the permanent \"all\" row (e.g. \"All types\"). Empty value = all."
     },
     {
       "name": "allCount",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Optional trailing count on the \"all\" row (total across options)."
     },
     {
       "name": "allIcon",
       "type": "IconName",
-      "required": false
+      "required": false,
+      "description": "Optional leading icon on the \"all\" row (pair it with option icons)."
     },
     {
       "name": "showValue",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Render the trigger as \"Label: selected values\" instead of the static label + count chip; values fall back to `allLabel` when nothing is selected."
     },
     {
       "name": "valueText",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Overrides the trigger value text (showValue mode) when something is selected, e.g. \"2 operators\" or a picked date range."
     },
     {
       "name": "menuExtra",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Extra rows/controls rendered after the \"all\" row (e.g. an option that reveals a date range). Rendered as-is: rows that must keep the menu open and free-form inputs bring their own propagation guards."
     },
     {
       "name": "searchable",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "A search row pinned at the top of the menu that narrows the option rows as you type — for a vocabulary too long to scan (a 21-value role list is why it exists). The \"all\" row stays put, and closing the menu clears the query."
     },
     {
       "name": "showTags",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "The current selection as removable tags directly under THIS trigger — read what is picked and undo a piece of it without reopening the menu. Under its own row, not pooled at the bottom of the panel: a tag beside the control that made it needs no second label saying where it came from."
     },
     {
       "name": "searchPlaceholder",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Placeholder (and accessible name) of the search row. Default \"Search\"."
     },
     {
       "name": "className",
@@ -99,5 +109,5 @@
     "SearchInput",
     "Tag"
   ],
-  "example": "const [status, setStatus] = useState<Status[]>([])\n/* Typed by the option value: `value`/`onChange` speak Status, not string.\n * An empty array means \"all\", which is what `allLabel` renders on the chip. */\n\n<FilterDropdown<Status>\n  label=\"Status\"\n  allLabel=\"All statuses\"\n  multi\n  options={[\n    { value: 'draft', label: 'Draft', count: 4 },\n    { value: 'review', label: 'In review', count: 2 },\n    { value: 'published', label: 'Published', count: 11 },\n  ]}\n  value={status}\n  onChange={setStatus}\n/>"
+  "example": "const [status, setStatus] = useState<Status[]>([])\n/* Typed by the option value: `value`/`onChange` speak Status, not string.\n * An empty array means \"all\", which is what `allLabel` renders on the chip. */\n\n<FilterDropdown<Status>\n  label=\"Status\"\n  allLabel=\"All statuses\"\n  multiple\n  options={[\n    { value: 'draft', label: 'Draft', count: 4 },\n    { value: 'review', label: 'In review', count: 2 },\n    { value: 'published', label: 'Published', count: 11 },\n  ]}\n  value={status}\n  onChange={setStatus}\n/>"
 }

@@ -1,0 +1,94 @@
+/* The page wrapper comes from <Page archetype="form">. What stays here is the
+ * measure that this block is actually about: the SURFACE takes the page's full
+ * width and what is capped is the COLUMN OF FIELDS inside it. A form is read
+ * line by line, so a field stretched across a wide monitor loses its label —
+ * but that is an argument about the fields, not about the card they sit on,
+ * and capping the card left a narrow white strip in the middle of an empty
+ * page. Block-private knob, co-located per the token conventions. */
+.form-page-shell {
+  --form-max-width: 52rem;
+}
+
+/* THE form surface. A page-sized form is an object being filled in, not text
+ * lying on the page: it gets the same white card a panelled detail page gets,
+ * so the fields read against a surface of their own and the actions have
+ * something to sit at the bottom OF. */
+.form-page {
+  flex: 1;
+  min-block-size: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border-radius: var(--card-radius);
+}
+
+.form-page-body {
+  display: flex;
+  flex-direction: column;
+  /* The column is centred by the CONTAINER, not by a margin on each child: a
+   * child's own `margin: 0` (every fieldset resets it) would win against a
+   * margin set from here, and did. */
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--card-padding);
+}
+
+/* The reading column: the fields stop at the measure and sit in the middle of
+ * the surface, so the card is as wide as the page and the answers are still
+ * one column the eye can follow. */
+.form-page-body > * {
+  inline-size: 100%;
+  max-inline-size: var(--form-max-width);
+}
+
+/* The actions live at the bottom edge of the card, separated by the one
+ * hairline this system draws. Not sticky over the page: a bar floating on the
+ * page surface reads as belonging to the screen, and this belongs to the form
+ * (Fiori footer bar in create and edit mode). */
+.form-page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--card-padding);
+  border-block-start: 1px solid var(--border);
+}
+
+/* The actions line up with the reading column rather than with the card's own
+ * edge: a Save button 700px to the right of the last field belongs to nothing. */
+.form-page-actions-inner {
+  inline-size: 100%;
+  max-inline-size: var(--form-max-width);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.form-page-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-inline-start: auto;
+}
+
+/* A card placed INSIDE the form surface is white on white, the exception
+ * Card.css names. Same answer the panelled detail page gives: a hairline. */
+.form-page .card { border: 1px solid var(--border); }
+
+/* From the width where the card is taller than it is wide, the FORM scrolls and
+ * the page holds still, so the actions never leave the screen and the header
+ * stays put. Below it the page scrolls normally: a full-height scroller on a
+ * phone puts the submit button under the keyboard.
+ *
+ * The number is the SHELL'S 62rem, not a number of its own (ListPageTemplate
+ * makes the same point). At 64rem there was a 32px band where the shell had
+ * already stopped scrolling and this card had not started: the last fields sat
+ * 400px below a viewport that nothing could scroll. */
+@media (min-width: 62rem) {
+  .form-page-body {
+    flex: 1;
+    min-block-size: 0;
+    overflow-y: auto;
+  }
+}

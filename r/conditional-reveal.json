@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "conditional-reveal",
+  "type": "registry:ui",
+  "title": "ConditionalReveal",
+  "description": "The dependent field under an option: present only while that option is chosen, indented under it so the two read as one question.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ConditionalReveal/ConditionalReveal.css",
+      "content": "/* The rule is structural, not decorative: it is the same neutral hairline the\n * system draws everywhere else, and it exists to show which option the content\n * hangs off. */\n.conditional-reveal {\n  margin-block-start: var(--space-2);\n  margin-inline-start: var(--space-3);\n  padding-inline-start: var(--space-4);\n  border-inline-start: 2px solid var(--border);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ConditionalReveal/ConditionalReveal.css"
+    },
+    {
+      "path": "src/components/ConditionalReveal/ConditionalReveal.tsx",
+      "content": "import './ConditionalReveal.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** True when the option this content belongs to is the chosen one. */\n  when: boolean\n  children: ReactNode\n  className?: string\n}\n\n/* The follow-up question that only exists because of an answer above it: \"Other\n * — please say what\", \"Yes — from which date\". Two rules make it work and both\n * are easy to get wrong by hand. It is UNMOUNTED rather than hidden, so a\n * hidden field cannot be submitted, focused or validated; and it is rendered\n * directly under its own option rather than at the end of the group, so the\n * connection is visible instead of remembered (GOV.UK conditional reveal). */\n\n/** The dependent field under an option: present only while that option is\n *  chosen, indented under it so the two read as one question. */\nexport function ConditionalReveal({ when, children, className }: Props) {\n  if (!when) return null\n  return <div className={cn('conditional-reveal', className)}>{children}</div>\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ConditionalReveal/ConditionalReveal.tsx"
+    },
+    {
+      "path": "src/components/ConditionalReveal/index.ts",
+      "content": "export { ConditionalReveal } from './ConditionalReveal'\n",
+      "type": "registry:ui",
+      "target": "@ui/ConditionalReveal/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/ConditionalReveal.json"
+}

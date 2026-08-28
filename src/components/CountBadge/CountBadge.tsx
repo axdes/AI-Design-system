@@ -21,7 +21,12 @@ type Props = {
 
 /* A count or dot pinned to the top-inline-end corner of whatever it wraps —
  * notifications on a bell, unread on an avatar. Distinct from <Badge>, which is
- * a standalone status pill. Hidden entirely when count is 0 and no dot. */
+ * a standalone status pill. Hidden entirely when count is 0 and no dot. 
+   *
+   * Copy: the accessible label counts the thing, not the badge — "3 unread
+   * messages". A number alone is read as "three" with nothing to attach it
+   * to.
+   */
 export function CountBadge({ children, count, dot, max = 99, tone = 'danger', label, className }: Props) {
   const show = dot || (count !== undefined && count > 0)
   const text = count !== undefined ? (count > max ? `${max}+` : String(count)) : ''
@@ -29,7 +34,7 @@ export function CountBadge({ children, count, dot, max = 99, tone = 'danger', la
     <span className={cn('count-badge', className)}>
       {children}
       {show && (
-        <span className="count-badge-marker" data-tone={tone} data-dot={dot || undefined} aria-hidden={label ? undefined : 'true'}>
+        <span className="count-badge-marker" data-tone={tone} data-dot={dot || undefined} data-wide={text.length > 1 || undefined} aria-hidden={label ? undefined : 'true'}>
           {!dot && text}
           {label && <span className="sr-only">{label}</span>}
         </span>

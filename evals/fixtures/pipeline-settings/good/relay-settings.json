@@ -35,6 +35,7 @@
     {
       "name": "sections",
       "task": "input",
+      "form": "settings",
       "purpose": "Grouped rows of explained knobs — delivery (host, sender), the secret (token: write-only, paste to replace, a Badge says configured, the value never renders), and cadence (digest frequency, quiet hours). Every row's description says what changing it affects, because the operator finds things by scanning labels.",
       "components": [
         "SettingsSection",
@@ -44,7 +45,12 @@
         "Select",
         "Switch",
         "Badge"
-      ]
+      ],
+      "data": {
+        "fields": 8,
+        "commit": "per-row",
+        "context": "standalone"
+      }
     }
   ],
   "states": {

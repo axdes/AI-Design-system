@@ -1,0 +1,82 @@
+/* Buttons that are one decision. Attached, the pair has to read as a single
+ * control: the radii flatten where they meet, and the seam is a hairline in the
+ * fill's own ink rather than a gap, because a gap says "two things". */
+.button-group {
+  display: inline-flex;
+  align-items: center;
+  /* The seam's ink, named once so the tone below can move it. */
+  --button-group-seam: var(--control-edge);
+}
+/* A SPLIT PRIMARY ACTION IS ONE COLOUR.
+ * Both halves carry the brand fill — the owner read a grey caret beside a brand
+ * Save and said the button should be one colour (2026-08-24), which is what
+ * every split button does — so the divider is a darker step of that fill. The
+ * grey control edge belongs between quiet controls; drawn across a brand pill
+ * it reads as a scratch. */
+.button-group[data-tone="primary"] { --button-group-seam: var(--primary-active); }
+
+/* A HALF THAT ARRIVES WRAPPED IS STILL A HALF.
+ *
+ * `Dropdown` renders a positioning div around its trigger, so the second child
+ * of the group was that div and not the caret button: the flattened radii and
+ * the seam were painted on a box with no surface, and the split button came
+ * apart on the page — a primary half with one square edge beside a caret
+ * floating in space (owner, 2026-08-24). `display: contents` removes the
+ * wrapper's box, so the control inside is the group's own item for layout, and
+ * the weld below reaches it as well as a bare button. */
+.button-group > .dropdown { display: contents; }
+
+/* Logical, not `:first-child` + `border-radius`: in Arabic the first button is
+ * on the right, and `border-start-start-radius` follows the writing mode while
+ * `border-top-left-radius` does not. The second selector in each pair is the
+ * wrapped case above: the wrapper matches, its control is what paints. */
+.button-group> :not(:first-child),
+.button-group> :not(:first-child)> :is(button, a) {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.button-group> :not(:last-child),
+.button-group> :not(:last-child)> :is(button, a) {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+/* The seam: exactly one hairline where two buttons meet, whether or not the
+ * buttons themselves carry an edge. A solid --control-edge, not a color-mix
+ * with `transparent` — mixing into transparent in oklch drops the hue channel
+ * and resolves to `oklch(... none ...)`, which is a grey by luck rather than by
+ * decision. The neighbour's own leading border is switched off so the line is
+ * never drawn twice. */
+.button-group > :not(:first-child),
+.button-group > :not(:first-child) > :is(button, a) {
+  box-shadow: inset 1px 0 0 0 var(--button-group-seam);
+  border-inline-start-color: transparent;
+}
+.button-group:dir(rtl) > :not(:first-child),
+.button-group:dir(rtl) > :not(:first-child) > :is(button, a) {
+  box-shadow: inset -1px 0 0 0 var(--button-group-seam);
+}
+
+/* A pressed or focused button owns the seam next to it, so the ring is never
+ * cut in half by its neighbour. */
+.button-group> :focus-visible,
+.button-group> * > :focus-visible { z-index: 1; }
+
+/* ONE CONTROL, SO THE INNER EDGE IS A SEAM AND NOT TWO PADDINGS MEETING.
+ * Each half kept the full `--control-padding-x` it wears when it stands alone,
+ * so the label sat one padding away from the seam and the caret another one
+ * past it: the pair read as two buttons that happen to touch (owner,
+ * 2026-08-24). The outer edges keep the family's padding; only the edges that
+ * meet give some back.
+ *
+ * NOT the icon half. `IconButton` is a SQUARE: its width is the control height,
+ * stated, and its padding is zero because the glyph is centred by the box, not
+ * by the padding. Under `box-sizing: border-box` a padding on it cannot make it
+ * narrower, so the give-back had nothing to take from and shoved the glyph
+ * instead - measured on the rendered frame, the caret sat 16px from the seam
+ * and 4px from its own round edge, off centre by 6px inside a 40px box. A half
+ * that already has a width gives nothing back; it is already the size it means
+ * to be. */
+.button-group > :not(:last-child, .icon-button),
+.button-group > :not(:last-child) > :is(button, a):not(.icon-button) { padding-inline-end: var(--space-3); }
+.button-group > :not(:first-child, .icon-button),
+.button-group > :not(:first-child) > :is(button, a):not(.icon-button) { padding-inline-start: var(--space-3); }

@@ -1,7 +1,7 @@
 {
   "ref": "DatePicker",
   "level": "molecule",
-  "description": "A date field: a trigger that reads like an input and opens a <Calendar> in a <Popover>. Picking a day sets the value and closes. The shown date is formatted with Intl; the calendar carries the keyboard contract.",
+  "description": "A date field: a trigger that reads like an input and opens a <Calendar> in a <Popover>. Picking a day sets the value and closes. The shown date is formatted with Intl; the calendar carries the keyboard contract. Copy: the label names the event, not the field — \"Delivery date\". The placeholder shows the format the reader may type, and it is the format their locale writes.",
   "exports": [
     "DatePicker"
   ],
@@ -32,7 +32,14 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the trigger."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "description": "Lands on the trigger, so `<Field htmlFor>` reaches it and an `ErrorSummary` row can put focus on it (see Select — same gap, same day)."
     },
     {
       "name": "placeholder",
@@ -42,7 +49,8 @@
     {
       "name": "locale",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "BCP-47 locale for the shown date + the calendar. Defaults to document lang."
     },
     {
       "name": "invalid",
@@ -53,6 +61,7 @@
       "name": "surface",
       "type": "'base' | 'muted'",
       "required": false,
+      "description": "Which surface the field sits on. On `muted` (a page/PageHeader) the border is dropped since the white fill separates it; `base` (default, a white card or form) keeps the border. Invalid + focus stay visible on both.",
       "values": [
         "base",
         "muted"
@@ -62,6 +71,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "sm / md (default) / lg — matches the shared control height/padding scale.",
       "values": [
         "sm",
         "md",

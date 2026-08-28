@@ -1,9 +1,14 @@
+import './InlineText.css'
 import type { ElementType } from 'react'
+import { cn } from '../../lib/cn'
 
 /* True inline editing (the vanilla `.editable` contract): the SAME element
  * becomes editable on click — same font, same layout, no control chrome.
  * Enter commits, Escape reverts, blur saves. Key it by `value` upstream so a
- * server-confirmed update re-renders the committed text. */
+ * server-confirmed update re-renders the committed text.
+ *
+ * Copy: the accessible label names the value being edited, not the act —
+ * "Recording title", not "Edit title". */
 export function InlineText({
   as: Tag = 'span',
   className,
@@ -33,7 +38,7 @@ export function InlineText({
       ref={(el: HTMLElement | null) => {
         if (el && autoFocus) el.focus()
       }}
-      className={Tag === 'h2' ? undefined : className}
+      className={cn('inline-text', Tag === 'h2' ? undefined : className)}
       contentEditable
       suppressContentEditableWarning
       spellCheck={false}

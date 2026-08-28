@@ -12,7 +12,7 @@
   "h1@0/0/0/1/0/0/0": {"box":[16,16,1248,35],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-family":"Commissioner, Onest, ui-sans-serif, system-ui, sans-serif","font-size":"30px","font-weight":"600","line-height":"34.5px"},
   "form.chat-composer@0/0/0/1/0/0/1": {"box":[16,51,1248,52],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","gap":"8px","padding":"4px 4px 4px 16px","border-radius":"9999px","background-color":"rgb(255, 255, 255)","border-style":"solid","border-width":"2px","border-color":"rgb(221, 226, 233)"},
   "textarea.chat-composer-field@0/0/0/1/0/0/1/0": {"box":[34,57,1176,40],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"8.75px 2px"},
-  "button.icon-button@0/0/0/1/0/0/1/1": {"box":[1218,57,40,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","border-radius":"9999px","color":"rgb(95, 99, 105)","text-align":"center"},
+  "button.icon-button@0/0/0/1/0/0/1/1": {"box":[1218,57,40,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","border-radius":"9999px","text-align":"center"},
   "svg.lucide@0/0/0/1/0/0/1/1/0": {"box":[1228,67,20,20],"display":"block","flex-direction":"row","flex-wrap":"nowrap","overflow":"hidden"},
   "path@0/0/0/1/0/0/1/1/0/0": {"box":[1238,82,0,3],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
   "path@0/0/0/1/0/0/1/1/0/1": {"box":[1232,75,12,8],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},

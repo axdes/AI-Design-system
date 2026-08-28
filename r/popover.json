@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "Click-triggered floating panel for RICH content: a form, a group of controls, a detail card. <Tooltip> is text on hover, <Dropdown> is a menu of items; this is neither. Closes on outside click or Escape, returning focus to the trigger. The content is a labelled role=\"dialog\". Copy: the accessible name says what the panel holds, because it is a dialog and announces itself before its content.",
+  "dependencies": [
+    "react-dom"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Popover/Popover.css",
+      "content": ".popover {\n  position: fixed;\n  z-index: var(--z-dropdown);\n  max-inline-size: min(22rem, calc(100vw - var(--space-8)));\n  padding: var(--space-4);\n  background: var(--popover);\n\n  color: var(--popover-foreground);\n  border: 1px solid var(--border);\n  border-radius: var(--radius-lg);\n  box-shadow: var(--shadow-lg);\n}\n.popover:focus-visible {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Popover/Popover.css"
+    },
+    {
+      "path": "src/components/Popover/Popover.tsx",
+      "content": "import './Popover.css'\nimport {\n  useCallback,\n  useEffect,\n  useId,\n  useState,\n  type MouseEvent,\n  type ReactNode,\n  type Ref,\n} from 'react'\nimport { createPortal } from 'react-dom'\nimport { cn } from '../lib/cn'\nimport { useAnchoredLayer } from '../lib/useAnchoredLayer'\n\nexport type PopoverTriggerProps = {\n  ref: Ref<HTMLButtonElement>\n  onClick: (e: MouseEvent) => void\n  'aria-haspopup': 'dialog'\n  'aria-expanded': boolean\n  'aria-controls': string\n}\n\ntype Props = {\n  /** Render the control that opens the popover; spread the given props onto it. */\n  trigger: (props: PopoverTriggerProps) => ReactNode\n  children: ReactNode\n  /** Accessible name for the popover dialog. */\n  label: string\n  /** Preferred side; flips to the other if there is not enough room. Default 'bottom'. */\n  placement?: 'top' | 'bottom'\n  className?: string\n}\n\ntype Position = { top: number; left: number }\n\nconst GAP = 8\nconst EDGE = 8\n\n/* Portaled and positioned below the trigger: flips up when tight, clamps to the\n * viewport edge. */\n\n/** Click-triggered floating panel for RICH content: a form, a group of controls,\n *  a detail card. <Tooltip> is text on hover, <Dropdown> is a menu of items; this\n *  is neither. Closes on outside click or Escape, returning focus to the trigger.\n *  The content is a labelled role=\"dialog\". \n *\n * Copy: the accessible name says what the panel holds, because it is a dialog\n * and announces itself before its content.\n */\nexport function Popover({ trigger, children, label, placement = 'bottom', className }: Props) {\n  const [open, setOpen] = useState(false)\n  const panelId = useId()\n\n  const close = useCallback(() => {\n    setOpen(false)\n    triggerRef.current?.focus()\n  }, [])\n\n  /* WHERE the panel goes. The listeners, the rAF throttling, the mount timing\n     and the two dismissals are `useAnchoredLayer`'s — shared with <Dropdown>,\n     which is where Popover picked up the throttled reflow it never had. */\n  const measure = useCallback((): Position | null => {\n    const t = triggerRef.current\n    const panel = layerRef.current\n    if (!t || !panel) return null\n    const r = t.getBoundingClientRect()\n    const pw = panel.offsetWidth\n    const ph = panel.offsetHeight\n    const below = r.bottom + GAP\n    const above = r.top - GAP - ph\n    const flip = placement === 'bottom' ? below + ph > window.innerHeight && above > EDGE : above > EDGE\n    const top = flip ? above : (placement === 'bottom' ? below : r.top - GAP - ph)\n    const left = Math.min(Math.max(EDGE, r.left), window.innerWidth - pw - EDGE)\n    return { top: Math.max(EDGE, top), left }\n  }, [placement])\n\n  const { triggerRef, layerRef, setLayer, position: pos } = useAnchoredLayer<Position>({\n    open,\n    onClose: close,\n    measure,\n  })\n\n  /* Move focus into the panel on open. */\n  useEffect(() => {\n    if (open) layerRef.current?.focus()\n  }, [open, layerRef])\n\n  const triggerProps: PopoverTriggerProps = {\n    ref: (el) => { triggerRef.current = el },\n    onClick: (e) => { e.stopPropagation(); setOpen((v) => !v) },\n    'aria-haspopup': 'dialog',\n    'aria-expanded': open,\n    'aria-controls': panelId,\n  }\n\n  return (\n    <>\n      {trigger(triggerProps)}\n      {open &&\n        createPortal(\n          <div\n            ref={setLayer}\n            id={panelId}\n            role=\"dialog\"\n            aria-label={label}\n            tabIndex={-1}\n            className={cn('popover', className)} data-raised=\"popover\"\n            style={pos ? { top: pos.top, left: pos.left } : { visibility: 'hidden' }}\n          >\n            {children}\n          </div>,\n          document.body,\n        )}\n    </>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Popover/Popover.tsx"
+    },
+    {
+      "path": "src/components/Popover/index.ts",
+      "content": "export { Popover, type PopoverTriggerProps } from './Popover'\n",
+      "type": "registry:ui",
+      "target": "@ui/Popover/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Popover.json"
+}

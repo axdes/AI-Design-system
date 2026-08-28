@@ -2,13 +2,30 @@
  * renders it, and the registry publishes the usage below to agents. */
 import { Button } from './Button'
 import { Icon } from '../Icon'
+import { Row } from '../Layout'
 
-/* Add-type action: icon trails the label via `iconEnd`. */
+/* THE CHOICE IS THE VARIANT, and it is a choice about the SCREEN, not the button:
+ * exactly one action on a screen is `primary` — the thing the reader came to do.
+ * Everything else beside it is `secondary`. `ghost` is for a control that must not
+ * compete with the content it sits on, and `destructive` is reserved for the action
+ * that cannot be undone, where the colour IS the warning.
+ *
+ * Two of these have no variant at all, on purpose: a button that leaves it off is
+ * secondary, which is the right default for a control you have not thought about.
+ *
+ * The icon always trails the label — one line of CSS, not a prop. `iconEnd` is an
+ * inert leftover and passing it does nothing.
+ */
 export function Example() {
   return (
-    <Button iconEnd>
-      Create document
-      <Icon name="add" />
-    </Button>
+    <Row gap={2} align="center">
+      <Button variant="primary">
+        Create document
+        <Icon name="add" />
+      </Button>
+      <Button>Save draft</Button>
+      <Button variant="ghost">Cancel</Button>
+      <Button variant="destructive" loading loadingLabel="Deleting">Delete</Button>
+    </Row>
   )
 }

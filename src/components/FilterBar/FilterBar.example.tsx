@@ -15,7 +15,7 @@ export function Example() {
       <FilterDropdown<Status>
         label="Status"
         allLabel="All statuses"
-        multi
+        multiple
         options={[
           { value: 'draft', label: 'Draft' },
           { value: 'review', label: 'In review' },

@@ -1,0 +1,57 @@
+.sparkline {
+  position: relative;
+  inline-size: 100%;
+  block-size: var(--sparkline-height);
+  min-inline-size: var(--space-12);
+  /* Local to this component: the three heights a trend is read at. */
+  --sparkline-height: var(--space-8);
+  /* Slot 1, the same colour a single-series chart takes everywhere else. */
+  --sparkline-color: var(--chart-1);
+}
+.sparkline[data-size="sm"] { --sparkline-height: var(--space-6); }
+.sparkline[data-size="lg"] { --sparkline-height: var(--space-12); }
+
+.sparkline svg { display: block; inline-size: 100%; block-size: 100%; overflow: visible; }
+[dir="rtl"] .sparkline svg { transform: scaleX(-1); }
+
+.sparkline-line {
+  fill: none;
+  stroke: var(--sparkline-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sparkline-area { fill: var(--sparkline-color); opacity: 0.12; stroke: none; }
+
+.sparkline-point {
+  position: absolute;
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  margin-block-start: calc(var(--space-2) / -2);
+  /* No negative inline margin: the endpoint dot stays INSIDE the frame. Half a
+   * dot hanging off the end is invisible in a padded card and clipped at the
+   * edge of anything else, and the last point is the one the reader stands on. */
+  border-radius: var(--radius-full);
+  background: var(--sparkline-color);
+  /* The ring is the surface the sparkline actually sits on, which is a card
+   * (surfaces.json says so). In dark theme --background is the page, one tier
+   * below the card, so the dot came with a dark halo on it. */
+  box-shadow: 0 0 0 2px var(--card);
+}
+
+.sparkline[data-tone="neutral"] { --sparkline-color: var(--muted-foreground); }
+/* -emphasis, not the fill: a sparkline is a 2px stroke, which SC 1.4.11
+ * holds to 3:1, and the solid tones sit at 2.78-2.94 on a dark card. */
+.sparkline[data-tone="success"] { --sparkline-color: var(--success-emphasis); }
+.sparkline[data-tone="warning"] { --sparkline-color: var(--warning-emphasis); }
+.sparkline[data-tone="danger"]  { --sparkline-color: var(--destructive-emphasis); }
+
+/* In a card the chart takes the spare height. Cards in a row are the same
+ * height (owner's rule, 23.08), so a card whose subject is a chart gets extra
+ * room — and the honest place for it is the plot, not a band of white between
+ * the plot and the footer. Its own height stays the floor. */
+.card > .sparkline {
+  flex: 1 1 auto;
+  block-size: auto;
+  min-block-size: var(--sparkline-height);
+}

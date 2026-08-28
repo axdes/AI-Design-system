@@ -17,32 +17,43 @@
     {
       "name": "logo",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Full brand lockup, shown when expanded (mark + wordmark)."
     },
     {
       "name": "logoMark",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "The mark alone, shown when collapsed. Provide it whenever the rail can collapse: the fallback is `logo`, and a wordmark does not fit the rail."
     },
     {
       "name": "footer",
       "type": "ReactNode",
-      "required": false
+      "required": false,
+      "description": "Pinned to the bottom (e.g. a user menu)."
     },
     {
       "name": "collapsible",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Master switch for the collapse affordance (default true)."
     },
     {
       "name": "collapseControl",
       "type": "CollapseControl",
-      "required": false
+      "required": false,
+      "description": "Which control collapses the rail. `logo` is the default and is the decided answer: collapsed, the biggest target on the rail is what opens the rail, and expanded, hovering the mark says what pressing it will do. It used to default to `bottom`, and the measurement on 2026-08-23 was that no product passed this prop at all — so every one of them carried a Collapse button nobody had chosen, while the behaviour they wanted sat behind a default.",
+      "values": [
+        "bottom",
+        "logo",
+        "both"
+      ]
     },
     {
       "name": "collapsed",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Controlled collapsed state. Omit to let the component manage it."
     },
     {
       "name": "defaultCollapsed",
@@ -68,6 +79,10 @@
       "values": [
         "true"
       ]
+    },
+    "has-mark": {
+      "prop": "logoMark",
+      "values": null
     }
   },
   "uses": [

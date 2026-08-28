@@ -1,0 +1,27 @@
+/* The answers sit together at the foot of the card, reading order first: this
+ * is one question with two answers, not two unrelated controls at opposite
+ * ends. CardMeta is not used for them because it spreads its children. */
+.action-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: auto;
+  padding-block-start: var(--space-1);
+}
+.action-card-meta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+/* The outcome sits where the actions were, so the card's height does not jump
+ * when it is answered. */
+
+.action-card-outcome {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding-block-start: var(--space-3);
+  margin-block-start: auto;
+  font-size: var(--font-sm);
+  color: var(--muted-foreground);
+}
+.action-card-outcome[data-tone="success"] { color: var(--success-emphasis); }
+.action-card-outcome[data-tone="danger"] { color: var(--destructive-emphasis); }

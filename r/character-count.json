@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "character-count",
+  "type": "registry:ui",
+  "title": "CharacterCount",
+  "description": "The remaining budget of a limited field, stated under it: instant on screen, announced only once typing stops.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/CharacterCount/CharacterCount.css",
+      "content": ".character-count {\n  font-size: var(--font-sm);\n  line-height: var(--leading-normal);\n  color: var(--muted-foreground);\n  font-variant-numeric: tabular-nums;\n}\n.character-count[data-error] { color: var(--destructive-emphasis); }\n\n/* Announced, never painted: the visible copy above says the same thing without\n * waiting, and two visible copies of one sentence is a bug. */\n.character-count-live {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  overflow: hidden;\n  clip-path: inset(50%);\n  white-space: nowrap;\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/CharacterCount/CharacterCount.css"
+    },
+    {
+      "path": "src/components/CharacterCount/CharacterCount.tsx",
+      "content": "import './CharacterCount.css'\nimport { useEffect, useState } from 'react'\nimport { useTranslation } from 'react-i18next'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** The control's current value. The count is derived, never stored twice. */\n  value: string\n  /** The budget. Past it the count turns into an error rather than a warning. */\n  max: number\n  className?: string\n}\n\n/* A limit the user only learns about when the form rejects them is a trap, and\n * a limit announced on every keystroke is a screen reader that never stops\n * talking. So there are two copies of the same fact: the visible one updates\n * instantly and is hidden from assistive tech, and the announced one waits for\n * a pause in typing (GOV.UK character count). */\n\nconst ANNOUNCE_AFTER = 1000\n\n/** The remaining budget of a limited field, stated under it: instant on screen,\n *  announced only once typing stops. */\nexport function CharacterCount({ value, max, className }: Props) {\n  const { t } = useTranslation()\n  const remaining = max - value.length\n  const over = remaining < 0\n  const label = over\n    ? t('field.charsOver', { count: -remaining })\n    : t('field.charsLeft', { count: remaining })\n\n  const [announced, setAnnounced] = useState(label)\n  useEffect(() => {\n    const id = window.setTimeout(() => setAnnounced(label), ANNOUNCE_AFTER)\n    return () => { window.clearTimeout(id) }\n  }, [label])\n\n  return (\n    <>\n      <span className={cn('character-count', className)} data-error={over ? '' : undefined} aria-hidden=\"true\">\n        {label}\n      </span>\n      {/* The same sentence, late and polite: it never interrupts the letter the\n        * user is in the middle of typing. */}\n      <span className=\"character-count-live\" role=\"status\">{announced}</span>\n    </>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/CharacterCount/CharacterCount.tsx"
+    },
+    {
+      "path": "src/components/CharacterCount/index.ts",
+      "content": "export { CharacterCount } from './CharacterCount'\n",
+      "type": "registry:ui",
+      "target": "@ui/CharacterCount/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/CharacterCount.json"
+}

@@ -1,7 +1,7 @@
 {
   "ref": "TagInput",
   "level": "molecule",
-  "description": "Free-text tags: type, press Enter or comma, get a removable <Tag>. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag.",
+  "description": "Free-text tags: type, press Enter or comma, get a removable <Tag>. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag. Copy: the placeholder says how to add one — \"Type and press Enter\" — because a field that accepts many values does not look like one that does.",
   "exports": [
     "TagInput"
   ],
@@ -12,7 +12,8 @@
     {
       "name": "value",
       "type": "string[]",
-      "required": true
+      "required": true,
+      "description": "The committed tags, in order."
     },
     {
       "name": "onChange",
@@ -22,7 +23,8 @@
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the text field."
     },
     {
       "name": "placeholder",

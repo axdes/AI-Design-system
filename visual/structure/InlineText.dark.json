@@ -5,7 +5,7 @@
   "div@0": {"box":[0,0,1280,26],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "div.visual-case@0/0": {"box":[0,0,1280,26],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "h2@0/0/0": {"box":[0,0,1280,26],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-family":"Commissioner, Onest, ui-sans-serif, system-ui, sans-serif","font-size":"22.5px","font-weight":"600","line-height":"25.875px"},
-  "span@0/0/0/0": {"box":[0,-2,194,28],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
+  "span.inline-text@0/0/0/0": {"box":[-4,-2,202,28],"display":"inline","flex-direction":"row","flex-wrap":"nowrap","padding":"0px 4px","margin":"0px -4px","border-radius":"4px"},
   "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
  }
 }

@@ -1,0 +1,21 @@
+/* The picker is a card of controls, so its rows are as tall as the controls
+ * and no taller: a list of fourteen columns has to stay one glance. */
+.column-picker-list {
+  list-style: none;
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.column-picker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* The move controls appear for every movable column, not on hover: an action
+ * that only exists under a pointer does not exist on a touch screen. */
+.column-picker-move { display: inline-flex; gap: var(--space-1); }

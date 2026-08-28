@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nav-drawer-button",
+  "type": "registry:ui",
+  "title": "NavDrawerButton",
+  "description": "Opens the navigation drawer, in the leading slot of the screen's top bar and only below the drawer breakpoint. `<PageHeader>` renders it when the screen has no `onBack`; a screen with its own bar renders it there instead.",
+  "dependencies": [
+    "react-i18next"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/NavDrawerButton/NavDrawerButton.css",
+      "content": "/* In the flow, in the leading slot of whatever bar the screen has. Never fixed.\n *\n * It WAS `position: fixed` in the viewport corner, and that is exactly what put\n * it under the page header: the header is `position: sticky` with an opaque\n * background at the same `--z-sticky` level, so at equal z-index the later\n * element in the DOM wins and painted over the top half of the button. A\n * floating control and an opaque bar were competing for the same corner, and no\n * z-index fixes that — one of them has to not be there.\n *\n * Above the drawer breakpoint the sidebar is on screen and the button has\n * nothing to do, so it is not rendered at all. */\n.nav-drawer-button { display: none; }\n\n@media (max-width: 48rem) {\n  .nav-drawer-button { display: inline-flex; }\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/NavDrawerButton/NavDrawerButton.css"
+    },
+    {
+      "path": "src/components/NavDrawerButton/NavDrawerButton.tsx",
+      "content": "import './NavDrawerButton.css'\nimport { useTranslation } from 'react-i18next'\nimport { IconButton } from '../IconButton'\nimport { useSidebarOptional } from '../lib/SidebarProvider'\n\n/* Why it exists, and where it goes — kept out of the JSDoc because the registry\n * publishes that text to every agent on every task, and this is history.\n *\n * Below 48rem the sidebar slides off screen and nothing called `openMobile`, so\n * the navigation was unreachable on a phone in the system and in two apps.\n *\n * Placement took three tries and the third is the one every platform already\n * uses. It sits in the LEADING SLOT of whatever bar the screen has, opposite\n * \"back\", and the two are mutually exclusive: Material 3 calls this the top app\n * bar's leading navigation icon, the Apple HIG the navigation bar's leading item.\n * A sub-screen shows back and no trigger; you reach the navigation by going up.\n *\n * The two rejected tries: in `PageHeader` competing with back for the same\n * position (right place, no rule about which wins), then `position: fixed` in the\n * viewport corner, which put it underneath the sticky opaque header at the same\n * z-index with only its bottom half visible.\n *\n * Renders nothing without a SidebarProvider (gallery, golden examples): there is\n * no drawer to open. */\n\n/** Opens the navigation drawer, in the leading slot of the screen's top bar and\n *  only below the drawer breakpoint. `<PageHeader>` renders it when the screen\n *  has no `onBack`; a screen with its own bar renders it there instead. */\nexport function NavDrawerButton() {\n  const { t } = useTranslation()\n  const sidebar = useSidebarOptional()\n  if (!sidebar) return null\n  return (\n    <IconButton\n      icon=\"menu\"\n      size=\"md\"\n      variant=\"filled\"\n      className=\"nav-drawer-button\"\n      aria-label={t('a11y.openMenu', { defaultValue: 'Open menu' })}\n      onClick={sidebar.openMobile}\n    />\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/NavDrawerButton/NavDrawerButton.tsx"
+    },
+    {
+      "path": "src/components/NavDrawerButton/index.ts",
+      "content": "export { NavDrawerButton } from './NavDrawerButton'\n",
+      "type": "registry:ui",
+      "target": "@ui/NavDrawerButton/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/NavDrawerButton.json"
+}

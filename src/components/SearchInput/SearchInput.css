@@ -9,7 +9,10 @@
   height: var(--control-height);
   width: var(--control-height);            /* collapsed: just an icon button */
   border: 1px solid transparent;
-  border-radius: var(--radius-full);
+  /* --control-radius, not --radius-full: the shape is the brand's decision, and
+   * hard-coding the pill here meant a rebrand to square controls left the
+   * search a lozenge in a row of rectangles. */
+  border-radius: var(--control-radius);
   background: transparent;
   overflow: hidden;
   transition: width var(--duration-normal) ease, background var(--duration-normal) ease,
@@ -41,6 +44,9 @@
   transition: color var(--duration-fast);
 }
 .search-input-toggle:hover { color: var(--foreground); }
+/* Pressed: one stop past hover, the third answer every control now gives. */
+.search-input-toggle:active,
+.search-input-clear:active { color: var(--primary-accent); }
 .search-input[data-open] .search-input-toggle { cursor: default; pointer-events: none; }
 
 .search-input-field {
@@ -79,15 +85,29 @@
   transition: color var(--duration-fast);
 }
 .search-input-clear:hover { color: var(--foreground); }
+.search-input-clear:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(-1 * var(--ring-offset));
+  border-radius: var(--radius-full);
+}
 
-/* Focus reads on the border, not an outer ring: the ring added visual bulk
- * and made the open search look taller than its sibling filter pills. */
+/* The ring, drawn INSIDE. The note that used to sit here was right about the
+ * cost — an outer ring made the open search taller than the filter pills beside
+ * it — and wrong about the fix: dropping to a 1px border recolour left the one
+ * field in the system whose focus was thinner than everywhere else, under the
+ * 2px perimeter SC 2.4.11 asks for. A negative offset gives the full ring and
+ * changes no dimension, which is what the original objection actually wanted. */
 .search-input[data-open]:focus-within {
   border-color: var(--primary-accent);
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: calc(-1 * var(--ring-offset));
 }
 /* Collapsed state is a plain icon button; keep a visible keyboard focus. */
 .search-input-toggle:focus-visible {
   outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(-1 * var(--ring-width));
+  /* --ring-offset, not --ring-width: the two happen to be the same number today,
+   * so this read as correct and would have drifted the moment either knob moved.
+   * Inset is the shape; the offset token is the value. */
+  outline-offset: calc(-1 * var(--ring-offset));
   border-radius: var(--radius-full);
 }

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "plan-card",
+  "type": "registry:ui",
+  "title": "PlanCard",
+  "description": "One plan in a pricing row: what it is called, what it costs, what it includes and the single action that takes it. Copy: the name is what the reader will call it afterwards, not a tier number. Features are outcomes, not switches: \"Everyone sees the same board\", not \"Shared board: yes\". The price says its period every time.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/badge.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/card.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/PlanCard/PlanCard.css",
+      "content": "/* The action is pinned to the bottom so a row of plans with different numbers of\n * features still lines its buttons up: a ragged row of CTAs reads as a mistake\n * and makes the plans hard to compare, which is the whole job of the row. */\n.plan-card { display: flex; flex-direction: column; }\n.plan-card-action { margin-block-start: auto; padding-block-start: var(--space-4); }\n\n.plan-card-head { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }\n\n/* The recommended plan is outlined, not filled: a filled one turns the row into\n * one loud card and two grey ones, and the grey ones are still for sale. */\n.plan-card[data-recommended] { border-color: var(--primary); }\n\n.plan-card-price { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }\n.plan-card-amount { font-size: var(--font-2xl); font-weight: var(--font-weight-semibold); }\n.plan-card-period { color: var(--muted-foreground); font-size: var(--font-sm); }\n.plan-card-desc { color: var(--muted-foreground); font-size: var(--font-sm); }\n\n.plan-card-features {\n  display: grid;\n  gap: var(--space-2);\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  font-size: var(--font-sm);\n}\n.plan-card-features li { display: flex; align-items: flex-start; gap: var(--space-2); }\n.plan-card-tick { flex: none; margin-block-start: var(--space-2xs); color: var(--success-emphasis); }\n",
+      "type": "registry:ui",
+      "target": "@ui/PlanCard/PlanCard.css"
+    },
+    {
+      "path": "src/components/PlanCard/PlanCard.tsx",
+      "content": "import './PlanCard.css'\nimport type { ReactNode } from 'react'\nimport { cn } from '../lib/cn'\nimport { Badge } from '../Badge'\nimport { Card, CardTitle } from '../Card'\nimport { Icon } from '../Icon'\n\ntype Props = {\n  name: string\n  /** Already formatted, including the currency: this component does not know\n   *  the locale, the currency or whether the number is per seat. */\n  price: string\n  /** What the price is per, e.g. \"per month\". */\n  period?: string\n  description?: string\n  features: string[]\n  /** The one thing to do with this plan. A `<Button>`, usually. */\n  action: ReactNode\n  /** Marks the plan being steered toward. One per row, or it steers nowhere. */\n  recommended?: boolean\n  recommendedLabel?: string\n  className?: string\n}\n\n/** One plan in a pricing row: what it is called, what it costs, what it includes\n *  and the single action that takes it. \n *\n * Copy: the name is what the reader will call it afterwards, not a tier number.\n * Features are outcomes, not switches: \"Everyone sees the same board\", not\n * \"Shared board: yes\". The price says its period every time.\n */\nexport function PlanCard({\n  name, price, period, description, features, action, recommended, recommendedLabel = 'Recommended', className,\n}: Props) {\n  return (\n    <Card fill className={cn('plan-card', className)} data-recommended={recommended || undefined}>\n      <div className=\"plan-card-head\">\n        <CardTitle as=\"h3\">{name}</CardTitle>\n        {recommended && <Badge tone=\"primary\" fill=\"soft\">{recommendedLabel}</Badge>}\n      </div>\n      <p className=\"plan-card-price\">\n        <span className=\"plan-card-amount\">{price}</span>\n        {period && <span className=\"plan-card-period\">{period}</span>}\n      </p>\n      {description && <p className=\"plan-card-desc\">{description}</p>}\n      {/* A list, not a stack of divs: how many things are included is part of\n          what a plan is, and a screen reader should be able to say \"6 items\". */}\n      <ul className=\"plan-card-features\">\n        {features.map((feature) => (\n          <li key={feature}>\n            <Icon name=\"check\" className=\"plan-card-tick\" />\n            {feature}\n          </li>\n        ))}\n      </ul>\n      <div className=\"plan-card-action\">{action}</div>\n    </Card>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/PlanCard/PlanCard.tsx"
+    },
+    {
+      "path": "src/components/PlanCard/index.ts",
+      "content": "export { PlanCard } from './PlanCard'\n",
+      "type": "registry:ui",
+      "target": "@ui/PlanCard/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/PlanCard.json"
+}

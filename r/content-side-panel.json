@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "content-side-panel",
+  "type": "registry:ui",
+  "title": "ContentSidePanel",
+  "description": "Document side panel: an icon rail that slides a SidePanel out over the content, one panel per icon.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/icon-button.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/side-panel.json",
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ContentSidePanel/ContentSidePanel.css",
+      "content": "/* ContentSidePanel — slide-out content panel + icon rail, glued to the document\n * card to form ONE white surface. No shadow; only the outer (end) corners round.\n * Order in the surface: [document] [content panel] [rail]. */\n.content-side-panel {\n  display: flex;\n  align-items: stretch;\n  align-self: stretch;\n}\n\n/* Icon rail = white strip glued to the end; icons centered vertically. Rounds\n * only the end (right) corners — the outer edge of the whole surface. */\n.content-side-panel-rail {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  gap: var(--space-3);\n  padding-inline: var(--space-2);\n  background: var(--card);\n  /* Divider from the content/document — also terminates the header underline. */\n  border-inline-start: 1px solid var(--border);\n  border-start-end-radius: var(--card-radius);\n  border-end-end-radius: var(--card-radius);\n}\n\n/* Active rail icon: light-grey circle (app-bg tone) + primary icon — matches\n * the left sidebar's active treatment (the default --accent reads too heavy). */\n.content-side-panel-rail .icon-button:hover {\n  background: var(--nav-active);\n}\n.content-side-panel-rail .icon-button[data-open] {\n  background: var(--nav-active);\n  color: var(--nav-active-foreground);\n}\n\n/* Slide-out panel (chrome via <SidePanel>) sits between document and rail —\n * square, flush (glued). Only the container styling lives here. */\n.content-side-panel-content {\n  align-self: stretch;\n  width: var(--side-panel-width);\n  border-inline-start: 1px solid var(--border);   /* hairline divider from the document */\n}\n\n/* On mobile the panel stacks below the document — standalone surfaces again. */\n@media (max-width: 62rem) {\n  .content-side-panel { flex-direction: column-reverse; align-items: stretch; gap: var(--space-4); }\n  .content-side-panel-rail {\n    align-self: center;\n    flex-direction: row;\n    justify-content: center;\n    padding: var(--space-2);\n    border-inline-start: none;\n    border-radius: var(--radius-full);\n  }\n  .content-side-panel-content {\n    width: 100%;\n    border-inline-start: none;\n    border-radius: var(--card-radius);\n  }\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ContentSidePanel/ContentSidePanel.css"
+    },
+    {
+      "path": "src/components/ContentSidePanel/ContentSidePanel.tsx",
+      "content": "import './ContentSidePanel.css'\nimport { useId, useState, type ReactNode } from 'react'\nimport { type IconName } from '../Icon'\nimport { IconButton } from '../IconButton'\nimport { Tooltip } from '../Tooltip'\nimport { SidePanel } from '../SidePanel'\n\nexport type SidePanelSection = {\n  /** Stable key — also URL fragment for deep-linking later. */\n  key: string\n  icon: IconName\n  /** Accessible label / tooltip text / panel heading. */\n  label: string\n  content: ReactNode\n}\n\ntype Props = {\n  sections: readonly SidePanelSection[]\n  /** Optional default-open section by key. */\n  defaultOpen?: string\n}\n\n/**\n * Document side panel: an icon rail that slides a SidePanel out over the\n * content, one panel per icon.\n */\nexport function ContentSidePanel({ sections, defaultOpen }: Props) {\n  const [open, setOpen] = useState<string | null>(defaultOpen ?? null)\n  const active = sections.find((s) => s.key === open) ?? null\n  const panelId = useId()\n\n  const toggle = (key: string) => setOpen((cur) => (cur === key ? null : key))\n\n  return (\n    <aside className=\"content-side-panel\">\n      {active && (\n        <SidePanel\n          id={panelId}\n          className=\"content-side-panel-content\"\n          title={active.label}\n          onClose={() => setOpen(null)}\n        >\n          {active.content}\n        </SidePanel>\n      )}\n      {/* Disclosure buttons (not tabs — no tabpanel pattern). Each toggles its\n       * panel via aria-expanded + aria-controls. */}\n      <div className=\"content-side-panel-rail\">\n        {sections.map((s) => (\n          <Tooltip key={s.key} content={s.label} placement=\"start\">\n            <IconButton\n              icon={s.icon}\n              size=\"md\"\n              aria-label={s.label}\n              aria-expanded={open === s.key}\n              aria-controls={open === s.key ? panelId : undefined}\n              data-open={open === s.key || undefined}\n              onClick={() => toggle(s.key)}\n            />\n          </Tooltip>\n        ))}\n      </div>\n    </aside>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/ContentSidePanel/ContentSidePanel.tsx"
+    },
+    {
+      "path": "src/components/ContentSidePanel/index.ts",
+      "content": "export { ContentSidePanel } from './ContentSidePanel'\nexport type { SidePanelSection } from './ContentSidePanel'\n",
+      "type": "registry:ui",
+      "target": "@ui/ContentSidePanel/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/ContentSidePanel.json"
+}

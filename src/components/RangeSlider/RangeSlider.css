@@ -80,6 +80,13 @@
   box-shadow: var(--shadow-sm);
   cursor: pointer;
 }
+
+/* The thumb answers the pointer — see the note in Slider.css. */
+.rangeslider-input:hover::-webkit-slider-thumb { background: var(--primary-hover); }
+.rangeslider-input:active::-webkit-slider-thumb { background: var(--primary-active); }
+.rangeslider-input:hover::-moz-range-thumb { background: var(--primary-hover); }
+.rangeslider-input:active::-moz-range-thumb { background: var(--primary-active); }
+
 .rangeslider-input::-moz-range-thumb {
   pointer-events: auto;
   inline-size: var(--space-4);

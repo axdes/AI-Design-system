@@ -1,0 +1,36 @@
+{
+  "ref": "CharacterCount",
+  "level": "atom",
+  "description": "The remaining budget of a limited field, stated under it: instant on screen, announced only once typing stops.",
+  "exports": [
+    "CharacterCount"
+  ],
+  "main": "CharacterCount",
+  "from": "@/components/CharacterCount",
+  "slots": [],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "required": true,
+      "description": "The control's current value. The count is derived, never stored twice."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": true,
+      "description": "The budget. Past it the count turns into an error rather than a warning."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/CharacterCount/CharacterCount.tsx",
+  "uses": [
+    "Field",
+    "Textarea"
+  ],
+  "example": "const [summary, setSummary] = useState('One line on what the team is building.')\n/* No `maxLength` on the control: a field that silently stops accepting keys\n * leaves the user unsure whether the text was cut, so the limit is stated and\n * the submit is what enforces it. */\n\n<Field\n  label=\"Summary\"\n  htmlFor=\"summary\"\n  hint=\"Shown in the team list.\"\n  count={<CharacterCount value={summary} max={MAX} />}\n>\n  <Textarea\n    id=\"summary\"\n    rows={3}\n    value={summary}\n    invalid={summary.length > MAX}\n    onChange={(e) => setSummary(e.target.value)}\n  />\n</Field>"
+}

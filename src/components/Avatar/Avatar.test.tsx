@@ -8,39 +8,39 @@ import { Avatar } from './Avatar'
 
 describe('Avatar', () => {
   it('falls back to the initial when the image fails to load', () => {
-    render(<Avatar name="Sarah Al-Mansouri" src="/gone.png" />)
+    render(<Avatar name="Ada Meridian" src="/gone.png" />)
 
-    const img = screen.getByRole('img', { name: 'Sarah Al-Mansouri' }).querySelector('img')
+    const img = screen.getByRole('img', { name: 'Ada Meridian' }).querySelector('img')
     expect(img).not.toBeNull()
 
     fireEvent.error(img as HTMLImageElement)
 
-    expect(screen.getByRole('img', { name: 'Sarah Al-Mansouri' }).querySelector('img')).toBeNull()
-    expect(screen.getByText('S')).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Ada Meridian' }).querySelector('img')).toBeNull()
+    expect(screen.getByText('A')).toBeInTheDocument()
   })
 
   it('retries when the src changes after a failure', () => {
-    const { rerender } = render(<Avatar name="Omar Haddad" src="/gone.png" />)
+    const { rerender } = render(<Avatar name="Ben Calloway" src="/gone.png" />)
     fireEvent.error(screen.getByRole('img').querySelector('img') as HTMLImageElement)
     expect(screen.getByRole('img').querySelector('img')).toBeNull()
 
-    rerender(<Avatar name="Omar Haddad" src="/there.png" />)
+    rerender(<Avatar name="Ben Calloway" src="/there.png" />)
     expect(screen.getByRole('img').querySelector('img')).toHaveAttribute('src', '/there.png')
   })
 
   it('puts the status into the accessible name, not only into the dot colour', () => {
-    render(<Avatar name="Omar Haddad" status="online" statusLabel="Online" />)
-    expect(screen.getByRole('img', { name: 'Omar Haddad, Online' })).toBeInTheDocument()
+    render(<Avatar name="Ben Calloway" status="online" statusLabel="Online" />)
+    expect(screen.getByRole('img', { name: 'Ben Calloway, Online' })).toBeInTheDocument()
   })
 
   it('reads the raw status when no label is given', () => {
-    render(<Avatar name="Omar Haddad" status="busy" />)
-    expect(screen.getByRole('img', { name: 'Omar Haddad, busy' })).toBeInTheDocument()
+    render(<Avatar name="Ben Calloway" status="busy" />)
+    expect(screen.getByRole('img', { name: 'Ben Calloway, busy' })).toBeInTheDocument()
   })
 
   it('says nothing extra without a status', () => {
-    const { container } = render(<Avatar name="Omar Haddad" />)
-    expect(screen.getByRole('img', { name: 'Omar Haddad' })).toBeInTheDocument()
+    const { container } = render(<Avatar name="Ben Calloway" />)
+    expect(screen.getByRole('img', { name: 'Ben Calloway' })).toBeInTheDocument()
     expect(container.querySelector('.avatar-status')).toBeNull()
   })
 

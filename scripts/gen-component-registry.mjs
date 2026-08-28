@@ -121,10 +121,17 @@ async function parseComponent(
   // Exports come from ALL .tsx files in the folder (Layout splits Stack/Row/
   // Grid across files); main file first so exports[0] stays the main export.
   const exports = extractExports(source);
+  /* Which file each export came from, so a PART's props can be read out of the
+   * file that declares it (Layout splits Grid/Row/Stack across three). */
+  const sourceOf = new Map(exports.map((e) => [e.name, source]));
   for (const f of tsxFiles) {
     if (f === mainFile) continue;
-    for (const e of extractExports(await readFile(join(path, f), "utf8"))) {
-      if (!exports.some((x) => x.name === e.name)) exports.push(e);
+    const src = await readFile(join(path, f), "utf8");
+    for (const e of extractExports(src)) {
+      if (!exports.some((x) => x.name === e.name)) {
+        exports.push(e);
+        sourceOf.set(e.name, src);
+      }
     }
   }
   if (exports.length === 0) return null;
@@ -132,7 +139,32 @@ async function parseComponent(
   const main = exports[0];
   // `Example` is the golden-example export (the demo), not a consumable slot —
   // keep it out of the emitted slots so it doesn't add noise to every entry.
-  const slots = exports.slice(1).filter((e) => e.name !== "Example");
+  /* Parts carry their own props, because that is where several of the system's
+   * real decisions live: `CardMedia placement`, `wash`, `playable`, `duration`,
+   * `ratio` are the card's media contract, and until they were published here
+   * the registry said a part had no props at all — which is the same as saying
+   * "invent them", the one thing this file exists to prevent. */
+  const slots = exports.slice(1).filter((e) => e.name !== "Example").map((e) => {
+    const src = sourceOf.get(e.name) ?? source;
+    /* A PART's props are the part's own: `<Name>Props` if it has one, otherwise
+     * the type written into its own signature. NOT the generic `Props` of the
+     * file, which is the MAIN component's — that fallback published Table's
+     * stickyHeader on every one of Td, Th, Tr and TFoot, made the entry 1892
+     * tokens of the same three props thirteen times, and told `verify` that
+     * <Td stickyHeader> was a real thing. (Owner, 23.08, while the table layer
+     * was being built.) */
+    const match = extractPropsTypeFor(src, e.name, { own: true });
+    const slotProps = match ? parsePropFields(match.body) : [];
+    const slotAliases = collectLiteralUnionAliases(src);
+    for (const p of slotProps) {
+      const values = resolveUnionValues(p.type, slotAliases);
+      if (values) p.values = values;
+    }
+    /* Name and props only: the source LINE of a part was never read by
+     * anything (the entry already carries sourcePath) and it costs a field on
+     * every part of every compound. */
+    return slotProps.length ? { name: e.name, props: slotProps } : { name: e.name };
+  });
   const ref = refIn || `${level}s/${folder}`;
 
   // VERIFY: everything index.ts re-exports must be visible in the registry —
@@ -158,9 +190,23 @@ async function parseComponent(
   // annotation (`}: { children: ReactNode }`) or a bare passthrough
   // annotation (`}: ButtonHTMLAttributes<HTMLButtonElement>`).
   if (!propsMatch) {
-    const inline = extractInlineParamType(source);
-    if (inline.body) props = parsePropFields(inline.body);
-    if (inline.name) inherits = inline.name;
+    /* The same reader the PARTS use, first: it is the only one that handles an
+       INTERSECTION annotation (`}: HTMLAttributes<HTMLElement> & { as?: X })`),
+       which the two below cannot see — the object reader needs `}: {` and the
+       passthrough reader needs the type to end the parameter list. SectionLabel
+       was published with `props: []` because of that, hiding the one prop that
+       decides whether a section is a heading or a div, and a live eval run
+       failed axe's heading-order on exactly that (2026-08-26). */
+    const own = extractSignatureProps(source, main.name);
+    if (own?.body) {
+      props = parsePropFields(own.body);
+      inherits = extractInherits(own.prefix ?? "");
+    }
+    if (!props.length) {
+      const inline = extractInlineParamType(source);
+      if (inline.body) props = parsePropFields(inline.body);
+      if (inline.name) inherits = inline.name;
+    }
   }
 
   // Resolve string-literal unions so agents see the allowed values,
@@ -168,6 +214,24 @@ async function parseComponent(
   for (const p of props) {
     const values = resolveUnionValues(p.type, aliases);
     if (values) p.values = values;
+    const fields = resolveObjectFields(p.type, source, aliases);
+    if (fields) p.fields = fields;
+  }
+
+  /* VERIFY: the main export takes named parameters and the entry publishes
+     nothing — the parser met a shape it does not read, and a component that
+     announces no props is a component an agent will not configure. This is how
+     SectionLabel hid its `as` for three days: no error, no empty-Props
+     annotation, just a contract that quietly said there was nothing to pass
+     (2026-08-26). Components that genuinely take nothing destructure nothing. */
+  if (props.length === 0 && !inherits) {
+    const sig = new RegExp(`export function ${main.name}\\s*(?:<[^>]*>)?\\s*\\(\\s*\\{([^}]*)\\}`).exec(source);
+    const named = (sig?.[1] ?? "").split(",").map((s) => s.trim()).filter((s) => s && !s.startsWith("..."));
+    if (named.length) {
+      errors.push(
+        `${ref}: the main export destructures ${named.length} parameter(s) (${named.slice(0, 4).join(", ")}) and the registry publishes no props — the parser did not read this signature`,
+      );
+    }
   }
 
   // VERIFY: the source annotates with a Props type but extraction came
@@ -227,7 +291,11 @@ async function parseComponent(
     if (value === undefined || !(attr in dataAttrs)) continue;
     const v = variants[attr];
     if (!v || !v.values) continue;
-    const allowed = v.values.concat(v.values.includes("true") ? ["false"] : []);
+    /* Compared as strings: a CSS selector value is always a string, and a
+     * numeric union (`lines?: 1 | 2`, `columns?: 1 | 2 | 3`) is always numbers.
+     * Without this the check rejected `[data-lines="2"]` against a prop that
+     * allows exactly 2, which is the check being wrong rather than the code. */
+    const allowed = v.values.map(String).concat(v.values.includes("true") ? ["false"] : []);
     if (!allowed.includes(value)) {
       errors.push(
         `${ref}: CSS styles [data-${attr}="${value}"] but prop '${v.prop}' only allows: ${v.values.join(", ")}`,
@@ -313,12 +381,67 @@ function extractIndexExports(indexSrc) {
   return names.filter((n) => /^[A-Z]/.test(n));
 }
 
-function extractPropsTypeFor(source, componentName) {
+function extractPropsTypeFor(source, componentName, { own = false } = {}) {
   // Try named match first: `type ${Name}Props = {...}` or `interface ${Name}Props {...}`
   const named = matchTypeOrInterface(source, `${componentName}Props`);
   if (named) return named;
+  /* `own` is for the parts: they may not borrow the file's generic `Props`,
+   * so the only other place to look is their own signature. */
+  if (own) return extractSignatureProps(source, componentName);
   // Fallback: a generic `type Props = {...}` block defined above the component.
   return matchTypeOrInterface(source, "Props");
+}
+
+/* The props a part declares inline in its own parameter list:
+ *   export function Td({ align, tone }: TdHTMLAttributes<…> & { align?: Align })
+ * Returns the object half of that annotation, which is where a part's real
+ * contract lives when the file has no <Name>Props type. */
+function extractSignatureProps(source, componentName) {
+  const re = new RegExp(`export\\s+function\\s+${componentName}\\s*(?:<[^>]*>)?\\s*\\(`);
+  const m = re.exec(source);
+  if (!m) return null;
+  const open = source.indexOf("(", m.index + m[0].length - 1);
+  if (open === -1) return null;
+  const close = matchClosingParen(source, open);
+  if (close === -1) return null;
+  const params = source.slice(open + 1, close);
+  /* The annotation is everything after the LAST top-level colon of the
+   * parameter list; the object half of an intersection is the part we publish,
+   * the same half the main export publishes. */
+  const colon = annotationColon(params);
+  if (colon === -1) return null;
+  const annotation = params.slice(colon + 1);
+  const brace = annotation.indexOf("{");
+  if (brace === -1) return null;
+  const end = matchClosingBrace(annotation, brace);
+  if (end === -1) return null;
+  return { body: annotation.slice(brace + 1, end), prefix: annotation.slice(0, brace) };
+}
+
+function matchClosingParen(source, openIdx) {
+  let depth = 1;
+  for (let i = openIdx + 1; i < source.length; i++) {
+    const ch = source[i];
+    if (ch === "(") depth++;
+    else if (ch === ")") {
+      depth--;
+      if (depth === 0) return i;
+    }
+  }
+  return -1;
+}
+
+/* The colon that separates the destructured parameter from its type: the first
+ * one AFTER the destructuring pattern closes. Counting bracket depth across the
+ * whole list does not work — `() => void` inside the type body drops the depth
+ * below zero and the scan then finds a colon inside the object it was meant to
+ * stop before. */
+function annotationColon(params) {
+  const start = params.indexOf("{");
+  if (start === -1 || params.slice(0, start).trim()) return params.indexOf(":");
+  const end = matchClosingBrace(params, start);
+  if (end === -1) return -1;
+  return params.indexOf(":", end);
 }
 
 function matchTypeOrInterface(source, name) {
@@ -334,6 +457,13 @@ function matchTypeOrInterface(source, name) {
     if (!m) continue;
     const start = source.indexOf("{", m.index);
     if (start === -1) continue;
+    /* The brace has to belong to THIS declaration. `type Size = "sm" | "md";`
+     * has no object body at all, and indexOf walked forward to the next one in
+     * the file — which handed Table's `size` the whole Props body (2026-08-26).
+     * Anything between the declaration and the brace that ends a statement or
+     * starts another means the brace is somebody else's. */
+    const between = source.slice(m.index + m[0].length, start);
+    if (/[;=]|\b(?:type|interface|function|const)\s/.test(between)) continue;
     const end = matchClosingBrace(source, start);
     if (end === -1) continue;
     return {
@@ -385,10 +515,19 @@ function parsePropFields(body) {
   for (let raw of fields) {
     raw = raw.trim();
     if (!raw) continue;
-    // Strip leading JSDoc comment if present.
+    /* A leading comment is stripped whichever way it was opened, and only the
+       DOC form is published: a plain block comment is the house mark for a note
+       to whoever edits the file, not something an agent should read. Stripping
+       only the doc form left the other kind glued to its field and dropped the
+       prop entirely - Alert.onDismiss, Layout.alignRows and PivotTable.rowHeader
+       went missing for exactly one generation (2026-08-26). */
     const docMatch = raw.match(/^\/\*\*([\s\S]*?)\*\//);
     const description = docMatch ? cleanDoc(docMatch[1]) : "";
-    raw = raw.replace(/^\/\*\*[\s\S]*?\*\/\s*/, "").trim();
+    /* ALL of them, not the first: a prop may carry a doc comment and a note to
+       the editor, and stripping one left the other glued to the field and threw
+       the prop away (PivotTable.rowHeader, which is the one prop whose absence
+       fails axe). */
+    raw = raw.replace(/^(?:\/\*[\s\S]*?\*\/\s*)+/, "").trim();
     // Match: `name?: type` or `name: type` (allow string-literal keys '...')
     const fieldMatch = raw.match(/^(['"]?[\w-]+['"]?)(\?)?:\s*([\s\S]+)$/);
     if (!fieldMatch) continue;
@@ -414,12 +553,26 @@ function splitTopLevel(body) {
   const parts = [];
   let depth = 0;
   let buf = "";
+  let inComment = false;
   for (let i = 0; i < body.length; i++) {
     const ch = body[i];
+    /* A JSDoc block belongs to the field BELOW it, and it spans lines. Splitting
+       on those newlines tore every comment off its prop and dropped it on the
+       floor: 0 of 782 props carried a description, in a file whose whole job is
+       to tell an agent what a prop means (found 2026-08-26). Inside a block
+       comment, a newline is not a separator. */
+    if (!inComment && ch === "/" && body[i + 1] === "*") inComment = true;
+    else if (inComment && ch === "/" && body[i - 1] === "*") inComment = false;
+    if (inComment) { buf += ch; continue; }
     if (ch === "{" || ch === "(") depth++;
     else if (ch === "}" || ch === ")") depth--;
     if (depth === 0 && (ch === ";" || ch === "\n")) {
-      if (buf.trim()) parts.push(buf);
+      /* A buffer that is ONLY a comment is not a field — it is the doc for the
+         field on the next line, and cutting here is what dropped every one of
+         them. Keep accumulating until something else arrives. */
+      const sofar = buf.trim();
+      if (sofar.startsWith("/*") && sofar.endsWith("*/")) { buf += "\n"; continue; }
+      if (sofar) parts.push(buf);
       buf = "";
       continue;
     }
@@ -427,6 +580,32 @@ function splitTopLevel(body) {
   }
   if (buf.trim()) parts.push(buf);
   return parts;
+}
+
+/* An OBJECT-typed prop publishes its shape, not just its alias name.
+ *
+ * `actions: Actions` tells an agent nothing it can build a value from, and an
+ * agent that cannot construct the value cannot use the component at all — which
+ * for this system is the same as the component not existing. Modal's `actions`
+ * was the case that found it (2026-08-26): folding two dialog blocks into one
+ * object prop would have made the dialog opaque to exactly the reader this
+ * package is written for.
+ *
+ * Only a local alias resolves. An imported or built-in type stays a name, which
+ * is honest: the shape is not in this file to publish. */
+function resolveObjectFields(type, source, aliases) {
+  const t = String(type ?? "").trim().replace(/\s*\|\s*undefined$/, "");
+  if (!/^[A-Z]\w*$/.test(t)) return null;
+  if (aliases[t]) return null; // a literal union, already published as `values`
+  const match = matchTypeOrInterface(source, t);
+  if (!match?.body) return null;
+  const fields = parsePropFields(match.body);
+  if (!fields.length) return null;
+  for (const f of fields) {
+    const values = resolveUnionValues(f.type, aliases);
+    if (values) f.values = values;
+  }
+  return fields;
 }
 
 // ── union / alias resolution ────────────────────────────────────────
@@ -469,8 +648,12 @@ function collectLiteralUnionAliases(source) {
 function literalUnionValues(text) {
   // Pure string-literal unions: 'a' | 'b' | 'c'
   const cleaned = text.trim().replace(/;$/, "");
-  if (/^[\s|]*'[^']*'(\s*\|\s*'[^']*')*\s*$/.test(cleaned)) {
-    return (cleaned.match(/'([^']*)'/g) || []).map((s) => s.slice(1, -1));
+  /* Either quote. The file's own style decides which, and `type Size = "sm" |
+   * "md"` is the same contract as `type Size = 'sm' | 'md'` — but only the
+   * single-quoted half was read, so Table's `size` and `layout` shipped for
+   * months without publishing their allowed values (found 2026-08-26). */
+  if (/^[\s|]*(['"])[^'"]*\1(\s*\|\s*(['"])[^'"]*\3)*\s*$/.test(cleaned)) {
+    return (cleaned.match(/(['"])([^'"]*)\1/g) || []).map((s) => s.slice(1, -1));
   }
   /* And numeric ones: `type Gap = 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16`.
    *
@@ -610,14 +793,89 @@ function extractUses(src) {
   return [...set].sort();
 }
 
-function tokenGroup(name) {
-  const n = name.slice(2);
-  if (n.startsWith("space")) return "spacing";
-  if (n.startsWith("radius")) return "radius";
-  if (n.startsWith("grid")) return "grid";
-  if (/^(font|leading|tracking|text|weight)/.test(n)) return "type";
-  if (/^(shadow|elevation)/.test(n)) return "shadow";
-  return "color";
+// WHAT KIND OF THING A TOKEN IS — from its name where the name is a family, and
+// from its VALUE everywhere else.
+//
+// This used to end in `return "color"`, so every token that was not obviously a
+// space, radius, type or shadow was published as a colour: --bp-md (48rem),
+// --avatar-lg (2.5rem), --duration-fast, --z-modal, --card-media-ratio. An agent
+// asking this registry for the colour layer got breakpoints and durations, and
+// the system's own foundations page drew 60 empty swatches for them (owner,
+// 2026-08-24). A value knows what it is; ask it.
+/* WHAT A COLOUR ROLE IS FOR, which is the question a reader arrives with.
+ *
+ * `group` says a token is a colour. That is true of 163 of them, and a list of
+ * 163 colours in alphabetical order is a list nobody can enter: the owner said
+ * so looking at the site (2026-08-25). `semantic.css` is already written in
+ * named sections — links, charges, charts, statuses, surfaces, hover states —
+ * and the export threw that structure away.
+ *
+ * Derived from the name rather than parsed out of the comments: the same "ask
+ * the name, nearest first" the group above uses, and it cannot go stale when
+ * somebody reformats a comment. Order matters — `--accent-foreground` is ink
+ * before it is brand, and `--chart-danger` is a chart before it is a status.
+ */
+function tokenRole(name) {
+  const n = name.slice(2)
+  if (/^(chart|series)/.test(n)) return 'chart'
+  if (/foreground$|^foreground$|^icon-muted$/.test(n)) return 'ink'
+  if (/^(success|warning|danger|destructive|info)/.test(n)) return 'status'
+  if (/^(border|control-edge|divider|ring)/.test(n)) return 'edge'
+  if (/(hover|active|pressed|selected|disabled)/.test(n)) return 'state'
+  if (/^(background|card|muted|popover|overlay|input|sidebar|scrim|surface)/.test(n)) return 'surface'
+  if (/^(primary|secondary|link|accent|ai|brand)/.test(n)) return 'brand'
+  if (/^(avatar|nav|chat|toast|badge|table|tooltip|switch|slider|meter)/.test(n)) return 'component'
+  return 'other'
+}
+
+function tokenGroup(name, value, resolve) {
+  /* An alias belongs to what it aliases: `--card-padding: var(--space-6)` is
+     spacing, and reading only its own name says nothing. So every name in the
+     chain gets asked, nearest first. */
+  for (const link of resolve.chain(name, value)) {
+    const n = link.slice(2);
+    if (n.startsWith("space")) return "spacing";
+    if (n.startsWith("radius")) return "radius";
+    if (n.startsWith("grid")) return "grid";
+    if (/^(font|leading|tracking|text|weight)/.test(n)) return "type";
+    if (/^(shadow|elevation)/.test(n)) return "shadow";
+    if (/^z-/.test(n)) return "layer";
+    if (/^(duration|ease)/.test(n)) return "motion";
+  }
+  const v = resolve(value);
+  if (/gradient\(/.test(v)) return "color";
+  // A shadow is a length list ending in a colour, so it has to be read before
+  // the colour test and before the size test, both of which it partly matches.
+  if (/\d+px .*(rgb|#|hsl|oklch|color-mix)/i.test(v)) return "shadow";
+  if (/^(#|rgb|hsl|oklch|lab|color-mix|light-dark|currentcolor|transparent)/i.test(v)) return "color";
+  if (/^-?[\d.]+(rem|px|em|ch|vw|vh|dvw|dvh|%)$/.test(v)) return "size";
+  // A width that is a choice between two lengths is still a width.
+  if (/^(min|max|clamp|calc)\(/.test(v) && /[\d.]+(rem|px|em|ch|vw|vh|dvw|dvh)/.test(v)) return "size";
+  if (/^-?[\d.]+m?s$/.test(v) || /cubic-bezier|steps\(/.test(v)) return "motion";
+  if (/^[\d.]+\s*\/\s*[\d.]+$/.test(v)) return "ratio";
+  return "other";
+}
+
+// Follow `var(--x)` to the value that is actually a value. Five hops is more
+// than this system ever nests, and a cycle stops at the depth rather than
+// hanging the generator.
+function makeResolver(byName) {
+  const hops = (value) => {
+    const names = [];
+    let v = String(value).trim();
+    for (let i = 0; i < 5; i += 1) {
+      const m = /^var\((--[a-z0-9-]+)[^)]*\)$/.exec(v);
+      if (!m || !byName.has(m[1])) break;
+      names.push(m[1]);
+      v = byName.get(m[1]);
+    }
+    return { names, value: v };
+  };
+  const resolve = (value) => hops(value).value;
+  /* The token itself, then everything it points at: the group question is asked
+     of each in turn. */
+  resolve.chain = (name, value) => [name, ...hops(value).names];
+  return resolve;
 }
 
 // GOLDEN EXAMPLE — a real usage snippet per component, the single biggest lever for
@@ -724,7 +982,6 @@ async function parseTokenCatalog() {
       seen.add(name);
       const token = {
         name,
-        group: tokenGroup(name),
         value: m[2].trim().replace(/\s+/g, " "),
         layer: file === "primitives.css" ? "primitive" : "semantic",
       };
@@ -733,7 +990,22 @@ async function parseTokenCatalog() {
     }
     re.lastIndex = 0;
   }
-  return out.sort((a, b) => a.name.localeCompare(b.name));
+  /* The group is decided once every token is known, because deciding it needs
+     the value a `var()` chain ends at. */
+  const resolve = makeResolver(new Map(out.map((t) => [t.name, t.value])));
+  for (const t of out) {
+    t.group = tokenGroup(t.name, t.value, resolve);
+    /* Only a semantic colour has a role: a primitive stop is a value, and a
+       spacing token's job is already its name. */
+    if (t.group === 'color' && t.layer === 'semantic') t.role = tokenRole(t.name);
+  }
+  return out
+    .map(({ name, group, value, layer, role, description }) => ({
+      name, group, value, layer,
+      ...(role ? { role } : {}),
+      ...(description ? { description } : {}),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // Parse + verify + example one layer (components or blocks) into a { ref -> entry }
@@ -925,6 +1197,14 @@ async function main() {
   }
 
   if (check) {
+    /* A verification problem is the FIRST thing to say, and it changes the
+       advice: `npm run gen-registry` cannot clear the drift while the problems
+       stand, because the generator refuses on them too. Telling an agent to run
+       a command that fails the same way is how it loops (2026-08-26). */
+    if (errors.length) {
+      console.error(`✗ fix the ${errors.length} problem(s) above first — \`npm run gen-registry\` refuses on them too.`);
+      process.exit(1);
+    }
     const drift = await entriesDrift(components, blocks, tokens);
     if (drift.length) {
       console.error(`✗ registry/ is out of date. Run \`npm run gen-registry\`.`);

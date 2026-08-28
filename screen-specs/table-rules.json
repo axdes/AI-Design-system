@@ -1,0 +1,900 @@
+{
+  "$comment": "The table decision layer. selection-rules.json answers WHICH REPRESENTATION a collection gets; card-rules.json answers WHICH CARD once the answer is cards; form-rules.json answers WHICH FORM once the zone takes input. This file answers the one that was left: once the answer is a table, WHICH KIND of table. A worklist, a comparison matrix, a spreadsheet and a totals report are four different objects that all render as rows and columns, and the system used to offer one component for all four. A kind is chosen by four questions and nothing else: what a row IS (rowUnit and axes), what the reader DOES with it (the same task verbs), HOW MANY rows there are (cardinality), and whether a CELL INTERACTS (editable, select, cells). Consolidated 2026-08-23 from SAP Fiori (responsive / grid / analytical / tree table and the thresholds between them), IBM Carbon (variants, row sizes, toolbar and batch action bar, expansion, skeleton), NN/g (the four user tasks with data tables, frozen headers, editing without a modal), Pencil and Paper (enterprise table patterns), uxpatterns.dev, Shopify Polaris (index table), Smashing Magazine (responsive and comparison tables), W3C WAI-ARIA APG (table, grid, treegrid) and WCAG 2.2 (1.3.1, 2.1.1, 2.5.8). The survey behind it is docs/RESEARCH-TABLES.md. check-screen-spec.mjs enforces it: a zone whose representation is a table or a grid must say which kind it is, and may only use a kind some matching rule chooses. Three craft rules hold for EVERY kind and are therefore not notes (a note that fires on every zone is noise): every table carries its own name (a caption, or an aria-label where the heading above already says the words); a table wide enough to scroll sideways freezes its first column, because a reader whose identifier scrolled away is on an unnamed row; and a table owes three states, not one \u2014 nothing yet, nothing matches, and loading.",
+  "rowUnits": {
+    "record": {
+      "means": "A thing with fields of its own: an invoice, a user, a team.",
+      "test": "The row has an id and a page it could be opened on."
+    },
+    "fact": {
+      "means": "A stated value in a reference: a rate, a limit, a definition.",
+      "test": "Nobody acts on the row; they look it up and leave."
+    },
+    "field": {
+      "means": "One attribute of ONE record, read top to bottom.",
+      "test": "There is only one record on the screen, so nothing is compared across rows."
+    },
+    "attribute": {
+      "means": "A property compared across a few subjects that are the COLUMNS.",
+      "test": "Turning the table on its side would give one row per subject, and there are only a handful of them."
+    },
+    "crossing": {
+      "means": "The cell where two categorical axes meet.",
+      "test": "A value is identified by both of its headers, not by its row."
+    },
+    "event": {
+      "means": "Something that happened at a time, appended to a stream.",
+      "test": "The newest row is at one end and the set only grows."
+    },
+    "change": {
+      "means": "A difference between two versions of the same thing.",
+      "test": "The row has a before and an after."
+    },
+    "resource": {
+      "means": "Something booked or scheduled against time.",
+      "test": "The reader is looking for a gap rather than for a total."
+    }
+  },
+  "axes": {
+    "rows": {
+      "means": "One axis: the columns are fields of the row."
+    },
+    "cross": {
+      "means": "Two axes: the columns are a second category, and the cell is a measure."
+    }
+  },
+  "cells": {
+    "static": {
+      "means": "Nothing in a cell is operated. The ARIA role is `table`.",
+      "owes": "Nothing beyond the table's own name and header scopes."
+    },
+    "interactive": {
+      "means": "Cells are focused, typed into or walked. The ARIA role is `grid` (or `treegrid` with hierarchy).",
+      "owes": "One tab stop for the whole widget, arrow keys between cells, Home and End. A grid role with no keyboard is worse than a plain table."
+    }
+  },
+  "selectModes": {
+    "none": {
+      "means": "Rows are read and acted on one at a time."
+    },
+    "single": {
+      "means": "One row at a time is picked, usually to open it."
+    },
+    "batch": {
+      "means": "Several rows are picked and ONE action is applied to all of them."
+    }
+  },
+  "nesting": {
+    "flat": {
+      "means": "Every row is a sibling."
+    },
+    "grouped": {
+      "means": "Rows fall into named sets the reader can collapse."
+    },
+    "hierarchy": {
+      "means": "Rows contain rows: the nesting is part of the data."
+    }
+  },
+  "tableKinds": {
+    "reference": {
+      "means": "A static table of stated values: rates, limits, a glossary of levels.",
+      "useWhen": "The rows are looked up and left. No sorting, no selection, no pager.",
+      "notWhen": "The reader has to find one row among many, which is a list table.",
+      "rowUnit": [
+        "fact",
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ],
+        "expect": [
+          "TableScroll"
+        ]
+      },
+      "owes": [
+        "A caption or an aria-label: a reference nobody can name is a reference nobody can cite."
+      ],
+      "status": "built"
+    },
+    "list": {
+      "means": "Find and act: the table a collection screen is built around.",
+      "useWhen": "Filters and a search narrow it, columns sort it, the first column opens the record.",
+      "notWhen": "The queue is given and nobody goes looking, which is a worklist.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ],
+        "expect": [
+          "TableToolbar",
+          "Pagination",
+          "FilterBar",
+          "SearchInput"
+        ]
+      },
+      "owes": [
+        "A default sort that answers 'what would I look at first'.",
+        "An empty state for nothing-yet and a different one for nothing-matches."
+      ],
+      "status": "built"
+    },
+    "worklist": {
+      "means": "A given queue where every row needs a decision or a completion.",
+      "useWhen": "The set arrives already narrowed: status, one action per row, and the reading order IS the priority order.",
+      "notWhen": "The user still has to find the rows first, which is a list table.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ],
+        "expect": [
+          "Badge",
+          "TableToolbar"
+        ]
+      },
+      "owes": [
+        "Static headers: a sortable column hands back the ranking the screen decided.",
+        "One action per row, in the last column, always visible."
+      ],
+      "status": "built"
+    },
+    "selection": {
+      "means": "Picking N rows and applying one action to all of them.",
+      "useWhen": "The job is the selection: a checkbox column, a tri-state select all, and a bar that names the count.",
+      "notWhen": "Only one row is ever acted on, which is a row action rather than a batch.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table",
+          "BatchActions"
+        ],
+        "expect": [
+          "Checkbox",
+          "TableToolbar"
+        ]
+      },
+      "owes": [
+        "The header checkbox is indeterminate when some rows are picked, never off.",
+        "A selection that can reach past the page says so in words ('Select all 1,284').",
+        "A destructive batch action confirms and names the number."
+      ],
+      "status": "built"
+    },
+    "editable-grid": {
+      "means": "A spreadsheet: editing across records is the primary task.",
+      "useWhen": "Cells are focused and typed over, and each commits on its own.",
+      "notWhen": "One record at a time, which is a form, or occasional edits on a table, which are a row action.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "DataGrid"
+        ]
+      },
+      "owes": [
+        "Editing is entered deliberately (Enter, F2 or a double click), never on a stray click.",
+        "The editor looks different from the value it replaced.",
+        "The grid keyboard model, in full: one tab stop, arrows, Home and End."
+      ],
+      "status": "built"
+    },
+    "virtualized": {
+      "means": "A windowed table: thousands of rows, only the visible ones in the DOM.",
+      "useWhen": "The row count is unbounded or large enough that a page of them is not the unit.",
+      "notWhen": "Fewer rows than one page holds: the machinery costs more than it saves.",
+      "rowUnit": [
+        "record",
+        "event"
+      ],
+      "components": {
+        "required": [
+          "DataGrid"
+        ]
+      },
+      "owes": [
+        "A fixed row height, which is what the windowing is built on.",
+        "The keyboard moving the WINDOW, not only the focus: a row the arrow key reaches has to exist."
+      ],
+      "status": "built"
+    },
+    "tree": {
+      "means": "Hierarchy with columns: a bill of materials, an org rollup, a folder tree with size and owner.",
+      "useWhen": "The nesting is part of the data and the values matter at every level.",
+      "notWhen": "The hierarchy has no columns, which is `Tree`; or the rows are siblings, which is a table.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "TreeTable"
+        ]
+      },
+      "owes": [
+        "role=treegrid, and the keyboard that goes with it: Right opens or steps in, Left closes or steps out.",
+        "aria-level, aria-posinset and aria-setsize on every row."
+      ],
+      "status": "built"
+    },
+    "grouped": {
+      "means": "Rows under named headings the reader can collapse.",
+      "useWhen": "The set falls into groups that are part of the data: by owner, by status, by month.",
+      "notWhen": "The grouping is really a filter the reader changes, which is a filter.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ],
+        "expect": [
+          "TableToolbar"
+        ]
+      },
+      "owes": [
+        "A collapsed group still says its name and how many rows it is holding."
+      ],
+      "status": "built"
+    },
+    "expandable": {
+      "means": "A row with a second layer, revealed in place.",
+      "useWhen": "Most readers need six columns and a few need the twentieth field, and the page must not change under them.",
+      "notWhen": "Everyone needs the detail, which means the columns are wrong.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ]
+      },
+      "owes": [
+        "aria-expanded on the disclosure, and a name that says WHICH row it opens.",
+        "The detail row spans every column, including the checkbox and disclosure cells."
+      ],
+      "status": "built"
+    },
+    "analytical": {
+      "means": "Transactions under a total: subtotals, a totals row, a drill from the sum to the rows.",
+      "useWhen": "Aggregation is the point, and the aggregate is read as often as the rows.",
+      "notWhen": "Nothing is summed, so a footer would say nothing.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ],
+        "expect": [
+          "Stat"
+        ]
+      },
+      "owes": [
+        "The total lives in TFoot, not in a body row: a total that scrolls away is a total nobody reads.",
+        "Money and counts end-aligned, on tabular figures, units named once in the header."
+      ],
+      "status": "built"
+    },
+    "pivot": {
+      "means": "Two categorical axes and one measure in the cell.",
+      "useWhen": "Teams by month, region by product, skill by level: the reader is looking at a crossing.",
+      "notWhen": "One axis, which is a plain table with a sortable column.",
+      "rowUnit": [
+        "crossing"
+      ],
+      "components": {
+        "required": [
+          "PivotTable"
+        ]
+      },
+      "owes": [
+        "Both headers scoped: a cell belongs to a row AND a column.",
+        "No observation is written as such, never as a zero."
+      ],
+      "status": "built"
+    },
+    "comparison": {
+      "means": "A few subjects as COLUMNS and their attributes as rows.",
+      "useWhen": "Plans, vendors, candidates, options: three to five things compared across many properties.",
+      "notWhen": "Many subjects: past about five, the subjects are records and belong in rows.",
+      "rowUnit": [
+        "attribute"
+      ],
+      "components": {
+        "required": [
+          "ComparisonTable"
+        ]
+      },
+      "owes": [
+        "A tick carries its own words: colour and shape are the shorthand, the text is the fact.",
+        "The recommended column is marked down its whole length, not on the header alone."
+      ],
+      "status": "built"
+    },
+    "key-value": {
+      "means": "One record's fields, read top to bottom.",
+      "useWhen": "There is exactly one record on the screen, so nothing is compared across rows.",
+      "notWhen": "More than one record, which is columns.",
+      "rowUnit": [
+        "field"
+      ],
+      "components": {
+        "required": [
+          "Descriptions"
+        ]
+      },
+      "owes": [
+        "A real description list, so a screen reader hears field and value as a pair."
+      ],
+      "status": "built"
+    },
+    "schedule": {
+      "means": "A resource against time: rooms by hour, people by day, machines by week.",
+      "useWhen": "The reader is looking for a gap or for a clash.",
+      "notWhen": "A single date is being picked, which is `Calendar`.",
+      "rowUnit": [
+        "resource"
+      ],
+      "components": {
+        "required": [
+          "ScheduleGrid"
+        ]
+      },
+      "owes": [
+        "The resource column frozen: a schedule scrolled sideways belongs to nobody.",
+        "A free slot says it is free rather than being an empty box."
+      ],
+      "status": "built"
+    },
+    "heatmap": {
+      "means": "A matrix read as a pattern: the shape across the grid matters more than any one number.",
+      "useWhen": "Density, coverage, adoption: the reader is looking for where it is hot.",
+      "notWhen": "The exact values are read, where the colour becomes decoration over the number.",
+      "rowUnit": [
+        "crossing"
+      ],
+      "components": {
+        "required": [
+          "PivotTable"
+        ]
+      },
+      "owes": [
+        "The ramp is discrete and scaled to the largest observation in the table.",
+        "The number stays in the cell: a colour without its value is a picture, not a table."
+      ],
+      "status": "built"
+    },
+    "bar-in-cell": {
+      "means": "A ranking read at a glance: the number and its length in the same cell.",
+      "useWhen": "The rows are comparable on one scale and the order is the point.",
+      "notWhen": "The numbers are not on one scale, where a bar compares nothing.",
+      "rowUnit": [
+        "record"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ],
+        "expect": [
+          "Meter",
+          "Progress",
+          "Sparkline"
+        ]
+      },
+      "owes": [
+        "One scale for every bar in the column, stated in the header."
+      ],
+      "status": "built"
+    },
+    "log": {
+      "means": "A dense append-only stream: time first, payload after it.",
+      "useWhen": "Events are scanned and filtered rather than sorted, and the set only grows.",
+      "notWhen": "The events are read one at a time, which is a timeline.",
+      "rowUnit": [
+        "event"
+      ],
+      "components": {
+        "required": [
+          "Table"
+        ],
+        "expect": [
+          "SearchInput"
+        ]
+      },
+      "owes": [
+        "Compact density and one line per event: a wrapped payload turns a log into a wall.",
+        "Filtering, not sorting: the order is the clock."
+      ],
+      "status": "built"
+    },
+    "diff": {
+      "means": "Before and after, side by side: an audit trail, a review of an edit.",
+      "useWhen": "The row is a change rather than a record.",
+      "notWhen": "Only the current value matters, which is a plain table.",
+      "rowUnit": [
+        "change"
+      ],
+      "components": {
+        "required": [
+          "DiffTable"
+        ]
+      },
+      "owes": [
+        "Added, removed and changed said in words as well as in colour."
+      ],
+      "status": "built"
+    },
+    "card-table": {
+      "means": "The top rows inside a card on an overview, with no table chrome.",
+      "useWhen": "A glance at what is in a collection, with the whole card linking onward.",
+      "notWhen": "The reader acts on the rows here, which needs a real table with its toolbar.",
+      "rowUnit": [
+        "record",
+        "fact"
+      ],
+      "components": {
+        "required": [
+          "Card",
+          "Table"
+        ]
+      },
+      "owes": [
+        "No pager, no filters, no sort: the card is a glance and the link is the way in.",
+        "A row count or a 'see all' so the reader knows this is the top of something."
+      ],
+      "status": "built"
+    },
+    "ticks": {
+      "means": "Binary coverage across a set: supported or not.",
+      "useWhen": "Every cell is a yes or a no, and the pattern of yeses is the answer.",
+      "notWhen": "The cell holds a value rather than a yes or a no, which is a comparison or a pivot.",
+      "rowUnit": [
+        "attribute",
+        "crossing"
+      ],
+      "components": {
+        "required": [
+          "ComparisonTable"
+        ]
+      },
+      "owes": [
+        "The tick and the blank both carry their words for anyone not reading the shape."
+      ],
+      "status": "built"
+    }
+  },
+  "rules": [
+    {
+      "id": "T1",
+      "title": "Looked-up values are a reference table",
+      "when": {
+        "task": [
+          "read",
+          "scan"
+        ],
+        "rowUnit": [
+          "fact",
+          "record"
+        ]
+      },
+      "choose": [
+        "reference",
+        "card-table",
+        "list"
+      ],
+      "because": "A table nobody acts on owes no chrome: sorting, selection and a pager on a rate card are controls with nothing behind them (Fiori: a display table is not a list report). Records that are only READ land here too, which is what a detail page's small table and an overview card's top five are.",
+      "good": "<Table size=\"sm\"> of levels and their thresholds, captioned",
+      "bad": "a rate card with sortable headers and a Load more"
+    },
+    {
+      "id": "T2",
+      "title": "Find and act is a list table",
+      "when": {
+        "task": [
+          "find",
+          "compare"
+        ],
+        "rowUnit": [
+          "record"
+        ],
+        "minFields": 4
+      },
+      "choose": [
+        "list",
+        "selection",
+        "expandable",
+        "grouped",
+        "bar-in-cell"
+      ],
+      "because": "Finding is narrowing then choosing: filters, a search, a default sort that answers 'what first', and a first column that opens the record (NN/g: the four tasks).",
+      "good": "TableToolbar + FilterBar over a <Table> with a sortable header and Pagination",
+      "bad": "a table of 400 rows with no search, no filter and no total"
+    },
+    {
+      "id": "T3",
+      "title": "A given queue is a worklist",
+      "when": {
+        "task": [
+          "process"
+        ],
+        "rowUnit": [
+          "record"
+        ]
+      },
+      "choose": [
+        "worklist",
+        "selection",
+        "expandable"
+      ],
+      "because": "The set is already narrowed, so the chrome that finds is dead weight and the reading order IS the priority order (Fiori worklist = list report minus the filter bar).",
+      "good": "<Table> of items with a status Badge and one action per row",
+      "bad": "a worklist with sortable columns, which un-decides what the screen decided"
+    },
+    {
+      "id": "T4",
+      "title": "Picking rows for one action is a selection table",
+      "when": {
+        "select": [
+          "batch"
+        ]
+      },
+      "choose": [
+        "selection",
+        "worklist",
+        "list"
+      ],
+      "because": "The moment one action applies to many rows, the count and the way out are part of the interface (Carbon batch action bar).",
+      "good": "checkbox column + tri-state header + <BatchActions count={3}>",
+      "bad": "an Export button beside a table with three rows ticked and no count anywhere"
+    },
+    {
+      "id": "T5",
+      "title": "Editing across records is a grid",
+      "when": {
+        "editable": true
+      },
+      "choose": [
+        "editable-grid"
+      ],
+      "because": "When cell-level editing is the primary task the surface is a data grid; a plain table carries occasional inline edits only (Smart Interface Design Patterns).",
+      "good": "<DataGrid> with editable columns and onCellChange",
+      "bad": "a table with an Edit dialog behind every cell"
+    },
+    {
+      "id": "T6",
+      "title": "An unbounded set is windowed",
+      "when": {
+        "cardinality": [
+          "unbounded"
+        ]
+      },
+      "choose": [
+        "virtualized",
+        "editable-grid"
+      ],
+      "because": "A table renders a known number of rows; past a few thousand the browser is the bottleneck and the answer is windowing, not a taller page.",
+      "good": "<DataGrid rowHeight={40} height={480}>",
+      "bad": "a <Table> mapping 40,000 rows into the DOM"
+    },
+    {
+      "id": "T7",
+      "title": "Nesting with columns is a tree table",
+      "when": {
+        "nesting": [
+          "hierarchy"
+        ]
+      },
+      "choose": [
+        "tree"
+      ],
+      "because": "Hierarchy plus values is the treegrid pattern: rows that contain rows, with the level announced rather than only indented (W3C APG).",
+      "good": "<TreeTable> with aria-level and Right/Left opening and closing",
+      "bad": "an indented <Table> where the nesting is a padding class"
+    },
+    {
+      "id": "T8",
+      "title": "Named sets are groups",
+      "when": {
+        "nesting": [
+          "grouped"
+        ]
+      },
+      "choose": [
+        "grouped",
+        "list",
+        "worklist"
+      ],
+      "because": "A group is part of the data, and a collapsed one still has to say what it is holding.",
+      "good": "TrGroup with the name and the count, over the rows it heads",
+      "bad": "a repeated value in the first column standing in for a heading"
+    },
+    {
+      "id": "T9",
+      "title": "A second layer belongs in the row",
+      "when": {
+        "rowDetail": true
+      },
+      "choose": [
+        "expandable",
+        "grouped",
+        "list"
+      ],
+      "because": "Expansion presents a large amount of data in a small space without leaving the page (Carbon); the alternative is either twenty columns or a route change.",
+      "good": "TdExpand + TrDetail with the fields most readers do not need",
+      "bad": "a twentieth column nobody reads, or a modal over the table"
+    },
+    {
+      "id": "T10",
+      "title": "Aggregation earns a footer",
+      "when": {
+        "aggregate": true
+      },
+      "choose": [
+        "analytical",
+        "pivot"
+      ],
+      "because": "Analysis is one loop: the aggregate and the rows it came from, on one screen, acted on where they are (Fiori analytical list page).",
+      "good": "<TFoot> with the total, Stat row above the table",
+      "bad": "the total on another screen, or as the last body row"
+    },
+    {
+      "id": "T11",
+      "title": "Two axes are a matrix",
+      "when": {
+        "axes": [
+          "cross"
+        ]
+      },
+      "choose": [
+        "pivot",
+        "heatmap",
+        "schedule",
+        "ticks"
+      ],
+      "because": "A cell identified by both of its headers is a crossing, not a field: the shape is a crosstab and both headers have to be scoped.",
+      "good": "<PivotTable rows={teams} columns={months} value={hours}>",
+      "bad": "a table with a column per month and a hand-built total row"
+    },
+    {
+      "id": "T12",
+      "title": "A few subjects are columns",
+      "when": {
+        "rowUnit": [
+          "attribute"
+        ]
+      },
+      "choose": [
+        "comparison",
+        "ticks"
+      ],
+      "because": "Three to five subjects across twenty properties reads down the column; the same data as rows reads as twenty tables (Smashing: feature comparison tables).",
+      "good": "<ComparisonTable subjects={plans} rows={features}>",
+      "bad": "three <Card>s the reader has to hold in their head to compare"
+    },
+    {
+      "id": "T13",
+      "title": "One record is a description list",
+      "when": {
+        "rowUnit": [
+          "field"
+        ],
+        "cardinality": [
+          "one"
+        ]
+      },
+      "choose": [
+        "key-value"
+      ],
+      "because": "With one record there is nothing to compare across rows, and a two-column table of labels is a description list wearing a grid (NN/g).",
+      "good": "<Descriptions items={fields}>",
+      "bad": "a two-column <Table> whose header row says Field and Value"
+    },
+    {
+      "id": "T14",
+      "title": "A stream is a log",
+      "when": {
+        "rowUnit": [
+          "event"
+        ]
+      },
+      "choose": [
+        "log",
+        "virtualized"
+      ],
+      "because": "An append-only set is scanned and filtered rather than sorted: the order is the clock, and density is what makes it readable.",
+      "good": "<Table size=\"sm\" nowrap> with the time first and a search over it",
+      "bad": "a log with sortable columns and 56px rows"
+    },
+    {
+      "id": "T15",
+      "title": "A before and an after is a diff",
+      "when": {
+        "rowUnit": [
+          "change"
+        ]
+      },
+      "choose": [
+        "diff"
+      ],
+      "because": "A change has two values of one field; two columns of the same field at two times is the only shape that shows it.",
+      "good": "<DiffTable changes={changes}>",
+      "bad": "two tables side by side and the reader doing the comparing"
+    },
+    {
+      "id": "T16",
+      "title": "A resource against time is a schedule",
+      "when": {
+        "rowUnit": [
+          "resource"
+        ]
+      },
+      "choose": [
+        "schedule"
+      ],
+      "because": "Time on one axis and the resource on the other is what makes a gap visible; a list of bookings hides exactly the thing being looked for.",
+      "good": "<ScheduleGrid resources={rooms} slots={hours}>",
+      "bad": "a list of bookings sorted by start time"
+    },
+    {
+      "id": "T17",
+      "title": "A glance inside a card is a card table",
+      "when": {
+        "task": [
+          "monitor",
+          "navigate"
+        ],
+        "cardinality": [
+          "few"
+        ]
+      },
+      "choose": [
+        "card-table",
+        "reference",
+        "list"
+      ],
+      "because": "An overview card shows the top of a collection and links onward; the chrome of a real table would outweigh three rows (Fiori overview page, table card).",
+      "good": "<Card flush> with a five-row <Table> and a link to all of them",
+      "bad": "a card with a pager, a filter bar and four rows"
+    }
+  ],
+  "hard": [
+    {
+      "id": "TH1",
+      "when": {
+        "cardinality": [
+          "unbounded"
+        ]
+      },
+      "forbid": [
+        "reference",
+        "list",
+        "worklist",
+        "selection",
+        "grouped",
+        "expandable",
+        "analytical",
+        "comparison",
+        "pivot",
+        "heatmap",
+        "schedule",
+        "log",
+        "diff",
+        "card-table",
+        "ticks",
+        "tree",
+        "bar-in-cell",
+        "key-value"
+      ],
+      "instead": "virtualized",
+      "because": "<Table> renders every row it is given; an unbounded set has to be windowed (AGENTS.md: choosing between neighbours)."
+    },
+    {
+      "id": "TH2",
+      "when": {
+        "editable": true
+      },
+      "forbid": [
+        "reference",
+        "list",
+        "worklist",
+        "comparison",
+        "key-value",
+        "card-table",
+        "log"
+      ],
+      "instead": "editable-grid",
+      "because": "Editing as the primary task needs cells that take focus, which is the grid pattern and not a table with inputs in it."
+    },
+    {
+      "id": "TH3",
+      "when": {
+        "select": [
+          "batch"
+        ]
+      },
+      "forbid": [
+        "reference",
+        "card-table",
+        "key-value"
+      ],
+      "instead": "selection",
+      "because": "A batch action needs a count, a select-all and a way out; a reference table and a card glance have nowhere to put them."
+    },
+    {
+      "id": "TH4",
+      "when": {
+        "cells": [
+          "interactive"
+        ]
+      },
+      "forbid": [
+        "reference",
+        "card-table"
+      ],
+      "instead": "editable-grid",
+      "because": "Interactive cells make the widget a grid, which owes a keyboard model a static reference table does not have."
+    }
+  ],
+  "notes": [
+    {
+      "id": "TN-paging",
+      "when": {
+        "cardinality": [
+          "many"
+        ]
+      },
+      "if": "any",
+      "unless": [
+        "Pagination",
+        "LoadMore",
+        "DataGrid"
+      ],
+      "say": "hundreds of rows need a pager with the total (Pagination) or a LoadMore: the total is orientation, and without it a filtered table and a small table look identical."
+    },
+    {
+      "id": "TN-empty",
+      "when": {
+        "cardinality": [
+          "many",
+          "unbounded"
+        ]
+      },
+      "if": "any",
+      "unless": [
+        "EmptyState",
+        "TableEmpty",
+        "Skeleton"
+      ],
+      "say": "three states, not one: empty because nothing exists yet, empty because the filters match nothing, and loading. TableEmpty and TableSkeleton are the parts."
+    },
+    {
+      "id": "TN-many-subjects",
+      "when": {},
+      "if": "comparison",
+      "say": "a comparison table holds three to five subjects: past that the columns run out, and the subjects are records that belong in rows."
+    },
+    {
+      "id": "TN-heat-values",
+      "when": {},
+      "if": "heatmap",
+      "say": "the number stays in the cell. A ramp with the values taken out is a picture of the data, and the reader cannot get back to the number they came for."
+    },
+    {
+      "id": "TN-grid-keyboard",
+      "when": {
+        "cells": [
+          "interactive"
+        ]
+      },
+      "if": "any",
+      "say": "interactive cells make this a grid, and the grid pattern is a contract: one tab stop, arrow keys between cells, Home and End. DataGrid implements it; a hand-rolled table with inputs in it does not."
+    }
+  ],
+  "$componentsNote": "Every component named above is in the registry and is built. Sub-parts of Table (TFoot, TrGroup, TdExpand, TrDetail, TableEmpty, TableSkeleton) are named in `owes` rather than in `components`, because the registry lists the component and the spec names the component: a zone says <Table>, and the parts it owes are what the review checks."
+}

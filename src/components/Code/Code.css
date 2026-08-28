@@ -1,0 +1,47 @@
+.code {
+  margin: 0;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--foreground);
+}
+
+/* A BLOCK OF CODE IS A PANEL, not a paragraph in a different typeface. It had
+ * no surface at all — no ground, no edge, no padding — so a sample sat directly
+ * on the page and the reader had to work out where it started and where the
+ * prose came back (owner, 2026-08-24). Every system does this the same way,
+ * and for the same reason: the tint says "this is literal text, copy it".
+ *
+ * It also scrolls inside itself, and it is allowed to be narrower than its
+ * content. Without the floor a flex or grid child sizes to its longest line and
+ * takes the document sideways with it. */
+.code:not([data-inline]) {
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow-x: auto;
+  padding: var(--space-4);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.code:not([data-inline]):focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+
+/* Inline: a fragment in a line of text, so it takes a tint to separate it from
+ * the words around it and nothing else — no border, no block spacing. */
+.code[data-inline] {
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--muted);
+}
+
+/* On a phone the measure is narrower than a line of most code. A page that
+ * scrolls sideways is the worse of the two failures. */
+@media (max-width: 48rem) {
+  .code:not([data-inline]) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}

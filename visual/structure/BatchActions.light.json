@@ -1,0 +1,15 @@
+{
+ "truncated": 0,
+ "elements": {
+  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(241, 246, 253)","color":"rgb(31, 35, 40)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
+  "div@0": {"box":[0,0,1280,48],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.visual-case@0/0": {"box":[0,0,1280,48],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.batch-actions@0/0/0": {"box":[0,0,1280,48],"display":"flex","flex-direction":"row","flex-wrap":"wrap","align-items":"center","gap":"12px","padding":"8px 12px","border-radius":"8px","background-color":"rgb(235, 240, 247)"},
+  "span.batch-actions-count@0/0/0/0": {"box":[12,14,65,20],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-size":"13px","font-weight":"600","line-height":"19.5px"},
+  "div.batch-actions-list@0/0/0/1": {"box":[959,8,181,32],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","gap":"8px","margin":"0px 0px 0px 870.047px"},
+  "button.btn@0/0/0/1/0": {"box":[959,8,65,32],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"1px 12px","border-radius":"9999px","background-color":"rgb(255, 255, 255)","color":"rgb(95, 99, 105)","font-size":"13px","font-weight":"600","line-height":"19.5px","text-align":"center"},
+  "button.btn@0/0/0/1/1": {"box":[1032,8,108,32],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"1px 12px","border-radius":"9999px","background-color":"rgb(255, 255, 255)","color":"rgb(95, 99, 105)","font-size":"13px","font-weight":"600","line-height":"19.5px","text-align":"center"},
+  "button.btn@0/0/0/2": {"box":[1153,8,115,32],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"1px 12px","border-radius":"9999px","font-size":"13px","font-weight":"600","line-height":"19.5px","text-align":"center"},
+  "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
+ }
+}

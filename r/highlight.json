@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "highlight",
+  "type": "registry:ui",
+  "title": "Highlight",
+  "description": "Marks the matched part of a result, so a list of hits shows WHY each one is a hit. Uses a real `<mark>`: the highlight is a semantic emphasis, not a colour, and a screen reader is entitled to know which words matched.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/axdes/AI-Design-system/main/r/design-tokens.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/Highlight/Highlight.css",
+      "content": "/* A tint, not a block of colour: the mark sits inside running text, so it has to\n * stay readable at body size on both themes. The default browser <mark> is a\n * saturated yellow that fails contrast in dark mode. */\n.highlight-hit {\n  border-radius: var(--radius-sm);\n  padding-inline: var(--space-2xs);\n  background: var(--warning-soft);\n  color: var(--warning-soft-foreground);\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Highlight/Highlight.css"
+    },
+    {
+      "path": "src/components/Highlight/Highlight.tsx",
+      "content": "import './Highlight.css'\nimport { Fragment } from 'react'\nimport { cn } from '../lib/cn'\n\ntype Props = {\n  /** The full text to render. */\n  text: string\n  /** What to mark inside it. An empty query marks nothing. */\n  query: string\n  caseSensitive?: boolean\n  className?: string\n}\n\n/** Marks the matched part of a result, so a list of hits shows WHY each one is a\n *  hit. Uses a real `<mark>`: the highlight is a semantic emphasis, not a colour,\n *  and a screen reader is entitled to know which words matched. */\nexport function Highlight({ text, query, caseSensitive, className }: Props) {\n  const needle = query.trim()\n  if (!needle) return <span className={cn('highlight', className)}>{text}</span>\n\n  const haystack = caseSensitive ? text : text.toLowerCase()\n  const target = caseSensitive ? needle : needle.toLowerCase()\n  const parts: { value: string; hit: boolean }[] = []\n  let cursor = 0\n\n  /* indexOf rather than a RegExp: the query is user input, and building a\n   * pattern out of it is either an escaping bug or a catastrophic-backtracking\n   * one. Scanning is also linear, which a search result list wants. */\n  for (;;) {\n    const at = haystack.indexOf(target, cursor)\n    if (at === -1) break\n    if (at > cursor) parts.push({ value: text.slice(cursor, at), hit: false })\n    parts.push({ value: text.slice(at, at + needle.length), hit: true })\n    cursor = at + needle.length\n  }\n  if (cursor < text.length) parts.push({ value: text.slice(cursor), hit: false })\n\n  return (\n    <span className={cn('highlight', className)}>\n      {parts.map((part, i) => (\n        <Fragment key={`${String(i)}-${part.value}`}>\n          {part.hit ? <mark className=\"highlight-hit\">{part.value}</mark> : part.value}\n        </Fragment>\n      ))}\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "@ui/Highlight/Highlight.tsx"
+    },
+    {
+      "path": "src/components/Highlight/index.ts",
+      "content": "export { Highlight } from './Highlight'\n",
+      "type": "registry:ui",
+      "target": "@ui/Highlight/index.ts"
+    }
+  ],
+  "docs": "Part of the AI Design System. Its full contract — every prop, its allowed values and what each one means — is at https://github.com/axdes/AI-Design-system/blob/main/registry/Highlight.json"
+}

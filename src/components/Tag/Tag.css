@@ -14,7 +14,9 @@
   padding-inline: var(--space-3);
   padding-inline-end: var(--space-2);   /* tighter on the remove side */
   border-radius: var(--radius-full);
-  background: var(--secondary);
+  /* Same as .chip, and for the same reason — --secondary is --muted, so on the
+   * page the token had no pill. See the note in Chip.css. */
+  background: var(--surface-contrast);
   color: var(--secondary-foreground);
   font-size: var(--font-sm);
   font-weight: var(--control-font-weight);
@@ -30,6 +32,12 @@
   font-size: var(--control-font-size);
 }
 .tag-remove {
+  /* 24x24. It had no size at all and took the icon's 16px, which is under the
+   * SC 2.5.8 floor and sits hard against the label, so the spacing exception
+   * does not rescue it either. The glyph inside is unchanged. */
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -43,9 +51,16 @@
   cursor: pointer;
   transition: opacity var(--duration-fast), background var(--duration-fast);
 }
-.tag-remove:hover,
-.tag-remove:focus-visible {
+.tag-remove:hover {
   opacity: 1;
   background: color-mix(in oklch, var(--secondary-foreground) 15%, transparent);
-  outline: none;
+}
+.tag-remove:active { opacity: 1; background: color-mix(in oklch, var(--secondary-foreground) 25%, transparent); }
+/* The ring. It used to trade the outline for that same tint, which is a hover
+ * by another name: keyboard focus and the pointer produced identical pixels,
+ * and the tint measures ~1.2:1 where SC 2.4.11 asks 3:1. */
+.tag-remove:focus-visible {
+  opacity: 1;
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
 }

@@ -24,7 +24,7 @@ import { PageHeader } from '../src/components/PageHeader'
 import { SectionLabel } from '../src/components/SectionLabel'
 import surfaces from '../src/components/surfaces.json'
 import registry from '../component-registry.json'
-import { RENDER, type RenderProps } from '../src/test/render-map'
+import { RENDER, type RenderProps } from '../src/specimens'
 
 const modules = import.meta.glob<{ Example?: () => ReactElement }>('../src/**/*.example.tsx', {
   eager: true,

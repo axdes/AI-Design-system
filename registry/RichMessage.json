@@ -12,12 +12,14 @@
     {
       "name": "blocks",
       "type": "RichBlock[]",
-      "required": false
+      "required": false,
+      "description": "The message as typed blocks. Absent (an old cache, a plain producer) falls back to `text` as one paragraph."
     },
     {
       "name": "text",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "The flat text, always present — the words survive even when the shapes did not."
     },
     {
       "name": "className",

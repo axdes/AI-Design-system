@@ -12,7 +12,7 @@ export function Example() {
       items={[
         { term: 'Invoice', value: 'INV-1042' },
         { term: 'Status', value: <Badge tone="warning" fill="soft">Due</Badge> },
-        { term: 'Client', value: 'Sabic' },
+        { term: 'Client', value: 'Northwind' },
         { term: 'Amount', value: 'SAR 8,600.00' },
       ]}
     />

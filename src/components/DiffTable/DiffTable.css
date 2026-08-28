@@ -1,0 +1,7 @@
+/* The old value is struck through only where a value was really replaced: a
+ * strike on an unchanged line reads as a deletion that did not happen. */
+.diff-table .diff-before { color: var(--muted-foreground); }
+
+/* The change word is the row's own label, not a badge: four of them in a
+ * column of forty rows would be forty pills and no table. */
+.diff-kind { text-transform: capitalize; color: var(--muted-foreground); }

@@ -1,7 +1,7 @@
 {
   "ref": "DataGrid",
   "level": "organism",
-  "description": "A virtualized table: only the rows in view (plus a small overscan) are in the DOM, so tens of thousands of rows scroll smoothly. Rows are a fixed height (the windowing needs it); a spacer sizes the scroll area to the full list. For a short, static table use <Table>; reach for this when the row count is large.",
+  "description": "A virtualized table: only the rows in view (plus a small overscan) are in the DOM, so tens of thousands of rows scroll smoothly. Rows are a fixed height (the windowing needs it); a spacer sizes the scroll area to the full list. For a short, static table use <Table>; reach for this when the row count is large. It is a GRID, and the ARIA pattern is a contract rather than a name: one tab stop for the whole thing, arrow keys between cells, Home and End along the row, Ctrl+Home and Ctrl+End to the corners. A grid role with no keyboard is worse than a plain table, because it promises a model that is not there. Copy: the accessible name says WHICH collection this is — \"Invoices due\", not \"Data grid\". Column headers are the field's own name, short enough to sit above its values.",
   "exports": [
     "DataGrid"
   ],
@@ -27,22 +27,66 @@
     {
       "name": "rowHeight",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Fixed row height in px — required for windowing. Default 40."
     },
     {
       "name": "height",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Visible viewport height in px. Default 400."
     },
     {
       "name": "overscan",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Extra rows rendered above/below the viewport to smooth scrolling. Default 6."
     },
     {
       "name": "label",
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Accessible name for the grid."
+    },
+    {
+      "name": "sort",
+      "type": "DataGridSort",
+      "required": false,
+      "description": "The current sort, for the column that carries it.",
+      "fields": [
+        {
+          "name": "key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "sortDirection",
+          "type": "'asc' | 'desc'",
+          "required": true,
+          "values": [
+            "asc",
+            "desc"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "onSortChange",
+      "type": "(sort: DataGridSort) => void",
+      "required": false,
+      "description": "Asked for when a sortable header is activated."
+    },
+    {
+      "name": "onCellChange",
+      "type": "(row: Row, key: string, value: string) => void | Promise<string | null>",
+      "required": false,
+      "description": "Called when an editable cell is committed. Return a promise and the grid says what happened to that cell: writing, written, or the words the caller resolves with. A cell that goes somewhere real — a shared sheet, an API — is a cell whose value on screen is a claim until something confirms it, and a grid that stays silent leaves the reader to guess which of fifty rows landed. Resolve with `null` for \"it went\", or with the message to show against that cell."
+    },
+    {
+      "name": "empty",
+      "type": "ReactNode",
+      "required": false,
+      "description": "What the grid shows instead of rows: an <EmptyState>, with the action that would fill it. A grid that renders nothing reads as broken."
     },
     {
       "name": "className",
@@ -52,5 +96,11 @@
   ],
   "sourcePath": "src/components/DataGrid/DataGrid.tsx",
   "context": "region",
-  "example": "<DataGrid<Row>\n  label=\"Customers\"\n  rows={ROWS}\n  rowKey={(r) => r.id}\n  height={320}\n  columns={[\n    { key: 'name', header: 'Name', cell: (r) => r.name, width: '1.5fr' },\n    { key: 'email', header: 'Email', cell: (r) => r.email, width: '2fr' },\n    { key: 'amount', header: 'Amount', align: 'end', cell: (r) => `SAR ${r.amount.toLocaleString()}` },\n  ]}\n/>"
+  "uses": [
+    "EmptyState",
+    "Icon",
+    "Input",
+    "Spinner"
+  ],
+  "example": "const [rows, setRows] = useState(ROWS)\nconst [sort, setSort] = useState<DataGridSort>({ key: 'name', sortDirection: 'asc' })\n/* The grid reports the sort; the caller owns the order. It has to: the rows\n   may come from a server that sorts them, and a grid that sorted its own\n   window would only sort the part that happens to be in the DOM. */\nconst sorted = [...rows].sort((a, b) => {\n  const dir = sort.sortDirection === 'asc' ? 1 : -1\n  return sort.key === 'amount' ? (a.amount - b.amount) * dir : a.name.localeCompare(b.name) * dir\n})\n\n<DataGrid<Row>\n  label=\"Customers\"\n  rows={sorted}\n  rowKey={(r) => r.id}\n  height={320}\n  rowHeight={56}\n  sort={sort}\n  onSortChange={setSort}\n  /* A TEXT cell is entered deliberately: Enter or F2 on the focused cell, or\n     a single click. A cell with `options` has no editor to enter — it is the\n     select. `value` is what the control shows, since the cell itself may be\n     formatted. */\n  onCellChange={(row, key, value) => {\n    if (key !== 'name' && key !== 'status') return\n    setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, [key]: value } : r)))\n  }}\n  empty={<EmptyState icon=\"search\" title=\"No customers\" description=\"Nothing mat"
 }

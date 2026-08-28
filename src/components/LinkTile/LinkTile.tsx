@@ -10,7 +10,11 @@ import { Card, CardTitle } from '../Card'
 
 /** A clickable tile: navigates on click/Enter/Space, with an overflow (⋮) menu
  *  in its top-inline-end corner. The caller supplies the title, the menu items,
- *  the open handler and the body. */
+ *  the open handler and the body. 
+ *
+ * Copy: the title is the destination's own name, so a reader arriving there
+ * recognises where they are.
+ */
 export function LinkTile({
   title,
   menuLabel,

@@ -1,7 +1,7 @@
 import './SettingsPageTemplate.css'
 import { type ReactNode } from 'react'
 import { Card } from '../../components/Card'
-import { PageHeader } from '../../components/PageHeader'
+import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 
 type Props = {
@@ -19,16 +19,20 @@ type Props = {
  * The SETTINGS page skeleton: a deliberately narrow column of sections, each a
  * Card of explained rows. Found by scanning, so the words carry it: group by
  * who a knob affects, and every row says what it actually changes.
+ *
+ * Copy: the title is the area, not the word "Settings" twice over. Each row's
+ * label is the setting as the reader would ask for it, and its description
+ * says what changes when it does.
  */
 export function SettingsPageTemplate({ title, actions, children, className }: Props) {
   return (
-    /* The header lives INSIDE the narrow column, unlike the other templates:
-     * settings content is deliberately narrower than the page, and a title
-     * flush to the far page edge above a centred column reads as two screens. */
-    <div className={cn('settings-shell', className)}>
-      <PageHeader title={title} actions={actions} />
+    /* The narrow column and the header inside it are the `settings` archetype's
+     * geometry now, held once in <Page>: settings are read line by line, and a
+     * title flush to the far page edge above a narrow column reads as two
+     * screens. This block's own argument, generalised. */
+    <Page archetype="settings" className={cn('settings-shell', className)} title={title} actions={actions}>
       <div className="settings-page">{children}</div>
-    </div>
+    </Page>
   )
 }
 

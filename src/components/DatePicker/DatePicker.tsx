@@ -12,6 +12,9 @@ type Props = {
   max?: Date
   /** Accessible name for the trigger. */
   label: string
+  /** Lands on the trigger, so `<Field htmlFor>` reaches it and an `ErrorSummary`
+   *  row can put focus on it (see Select — same gap, same day). */
+  id?: string
   placeholder?: string
   /** BCP-47 locale for the shown date + the calendar. Defaults to document lang. */
   locale?: string
@@ -28,9 +31,14 @@ type Props = {
 
 /* A date field: a trigger that reads like an input and opens a <Calendar> in a
  * <Popover>. Picking a day sets the value and closes. The shown date is
- * formatted with Intl; the calendar carries the keyboard contract. */
+ * formatted with Intl; the calendar carries the keyboard contract. 
+   *
+   * Copy: the label names the event, not the field — "Delivery date". The
+   * placeholder shows the format the reader may type, and it is the format
+   * their locale writes.
+   */
 export function DatePicker({
-  value, onChange, min, max, label, placeholder = 'Select date',
+  value, onChange, min, max, label, id, placeholder = 'Select date',
   locale = typeof document !== 'undefined' ? document.documentElement.lang || 'en' : 'en',
   invalid, disabled, surface = 'base', size, className,
 }: Props) {
@@ -45,6 +53,7 @@ export function DatePicker({
       trigger={(props) => (
         <button
           type="button"
+          id={id}
           className={cn('datepicker-trigger', className)}
           data-invalid={invalid || undefined}
           data-surface={surface}

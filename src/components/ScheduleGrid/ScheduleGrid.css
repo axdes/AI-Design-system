@@ -1,0 +1,41 @@
+/* Every slot is the same width, so a booking's POSITION is its time and its
+ * WIDTH is its duration. Uneven columns turn a schedule into a list that
+ * happens to be laid out sideways. */
+.schedule-grid { table-layout: fixed; }
+.schedule-cell, .schedule-event { min-inline-size: var(--space-16); vertical-align: middle; }
+
+/* Busy is filled and free is EMPTY, the way every scheduler paints it: the eye
+ * is looking for the gap, and a grid whose gaps are the filled cells makes it
+ * hunt. (It was the wrong way round until the owner said so, 23.08.)
+ *
+ * Empty means no background at all, not the card colour painted on: an opaque
+ * cell covers the row's own hover, so pointing at a row lit up its first column
+ * and nothing else (owner, same pass). The row paints, the cell lets it. */
+
+.schedule-event { padding: var(--space-1); }
+.schedule-event-body {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--foreground);
+  font-size: var(--font-sm);
+  /* The block is the booking: it fills the slots it occupies, so two hours
+   * looks like two hours. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.schedule-event[data-tone="primary"] .schedule-event-body { background: var(--primary-soft); color: var(--primary-accent); }
+.schedule-event[data-tone="success"] .schedule-event-body { background: var(--success-soft); color: var(--success-soft-foreground); }
+.schedule-event[data-tone="warning"] .schedule-event-body { background: var(--warning-soft); color: var(--warning-soft-foreground); }
+.schedule-event[data-tone="danger"] .schedule-event-body { background: var(--destructive-soft); color: var(--destructive-soft-foreground); }
+
+/* NOW. The column that is happening carries the line at its leading edge, and
+ * the header says which one it is: without it the reader works out where they
+ * are from the clock on their own wall. */
+.schedule-grid .table-th[data-now],
+.schedule-grid .table-td[data-now] {
+  box-shadow: inset 1px 0 0 var(--primary);
+}
+.schedule-grid .table-th[data-now] { color: var(--primary-accent); }

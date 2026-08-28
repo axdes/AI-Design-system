@@ -36,10 +36,10 @@ export function Example() {
       onSubmit={handleSubmit}
     >
       <Field label="Email" htmlFor="auth-email" required>
-        <Input id="auth-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input id="auth-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </Field>
       <Field label="Password" htmlFor="auth-password" required>
-        <PasswordInput id="auth-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <PasswordInput id="auth-password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </Field>
     </AuthTemplate>
   )

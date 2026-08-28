@@ -1,7 +1,7 @@
 {
   "ref": "Meter",
   "level": "atom",
-  "description": "A linear progress / gauge on a fixed scale, with an optional target marker. The fill width and marker position are the only dynamic inline styles.",
+  "description": "A linear progress / gauge on a fixed scale, with an optional target marker. The fill width and marker position are the only dynamic inline styles. Copy: the label carries the sentence, because a gauge with a number and no subject is a decoration: \"Storage used, 62 of 100 GB\".",
   "exports": [
     "Meter"
   ],
@@ -17,32 +17,46 @@
     {
       "name": "max",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Scale maximum (default 100)."
     },
     {
       "name": "target",
       "type": "number",
-      "required": false
+      "required": false,
+      "description": "Optional goal marker rendered on the track."
     },
     {
       "name": "tone",
       "type": "Tone",
-      "required": false
+      "required": false,
+      "values": [
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
     },
     {
       "name": "size",
       "type": "Size",
-      "required": false
+      "required": false,
+      "values": [
+        "sm",
+        "md"
+      ]
     },
     {
       "name": "ticks",
       "type": "number[] | boolean",
-      "required": false
+      "required": false,
+      "description": "Tick labels under the track: an explicit list, or `true` for [0, max]."
     },
     {
       "name": "label",
       "type": "string",
-      "required": false
+      "required": false,
+      "description": "Accessible description of what the meter measures."
     },
     {
       "name": "className",
@@ -54,11 +68,19 @@
   "variants": {
     "tone": {
       "prop": "tone",
-      "values": null
+      "values": [
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
     },
     "size": {
       "prop": "size",
-      "values": null
+      "values": [
+        "sm",
+        "md"
+      ]
     }
   },
   "example": "<Meter value={1.4} max={3} target={2} tone=\"warning\" ticks={[0, 1, 2, 3]} label=\"Maturity 1.4 of 3\" />"

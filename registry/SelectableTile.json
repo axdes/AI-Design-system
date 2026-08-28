@@ -1,0 +1,98 @@
+{
+  "ref": "SelectableTile",
+  "level": "molecule",
+  "description": "A card that IS the control: the whole surface picks the option it shows, over a real radio or checkbox so the keyboard and the form get it for free. Reach for <LinkTile> when the tile navigates instead, for <Radio> or <Checkbox> when the options are words, and for <PlanCard> when the option is a priced plan. Copy: the title is the choice, the description is what picking it means for the reader — not a feature list. Options in one set stay parallel.",
+  "exports": [
+    "SelectableTile"
+  ],
+  "main": "SelectableTile",
+  "from": "@/components/SelectableTile",
+  "slots": [],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": true,
+      "description": "What this option is."
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "required": true,
+      "description": "Whether it is currently chosen — this is a controlled control."
+    },
+    {
+      "name": "onSelect",
+      "type": "(selected: boolean) => void",
+      "required": true,
+      "description": "Called with what the state becomes."
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "required": false,
+      "description": "true when several tiles can be chosen at once: a checkbox mark instead of a radio one, and no group name needed."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "The group this tile belongs to. Required for a single-choice set — it is what makes the browser treat the tiles as one radio group (arrow keys, one choice, form submission)."
+    },
+    {
+      "name": "icon",
+      "type": "IconName",
+      "required": false,
+      "description": "Icon name, above the title."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "required": false,
+      "description": "One line: what choosing this one means."
+    },
+    {
+      "name": "meta",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Trailing facts — a price, a region, a size."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/SelectableTile/SelectableTile.tsx",
+  "context": "region",
+  "variants": {
+    "selected": {
+      "prop": "selected",
+      "values": [
+        "true"
+      ]
+    },
+    "multiple": {
+      "prop": "multiple",
+      "values": [
+        "true"
+      ]
+    },
+    "disabled": {
+      "prop": "disabled",
+      "values": [
+        "true"
+      ]
+    }
+  },
+  "uses": [
+    "Icon",
+    "Layout"
+  ],
+  "example": "const [region, setRegion] = useState('eu')\n\n<Grid gap={3}>\n  {regions.map((r) => (\n    <SelectableTile\n      key={r.id}\n      name=\"region\"\n      title={r.title}\n      icon={r.icon}\n      description={r.description}\n      meta={r.meta}\n      selected={region === r.id}\n      onSelect={() => setRegion(r.id)}\n    />\n  ))}\n</Grid>"
+}

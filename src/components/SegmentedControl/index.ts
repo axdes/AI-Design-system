@@ -1,1 +1,1 @@
-export { SegmentedControl, type Segment } from './SegmentedControl'
+export { SegmentedControl, type SegmentOption } from './SegmentedControl'

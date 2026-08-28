@@ -1,15 +1,35 @@
+/* A FIELD FILLS THE COLUMN IT IS PUT IN.
+ * Without a width of its own it was sized by its content wherever the parent
+ * was shrink-to-fit — a flex row, a grid cell with `justify-items: start`, the
+ * gallery's example stage — and content sizing for a field means the ~20
+ * characters an <input> is intrinsically wide, whatever the value is. The owner
+ * read that twice off the components page as "why is it so short" (2026-08-24).
+ * Forms in this system are one column and the control spans it, so the width is
+ * stated rather than inherited from an accident of layout. */
 .field {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  inline-size: 100%;
 }
-.field-required { color: var(--destructive); }
+/* --destructive-emphasis, not --destructive. The first is INK and the second
+ * is a FILL: as text on the dark page the fill measures 3.17:1 against a 4.5
+ * floor, and 2.63 inside a popover. The ink role exists for exactly this and
+ * the system already documents it as "Ink, not fill" — it was simply not used
+ * here. Light is unchanged (both resolve to danger-800, 4.98 on white). */
+.field-required { color: var(--destructive-emphasis); }
+.field-optional {
+  color: var(--muted-foreground);
+  font-weight: var(--font-weight-regular);
+}
 
-/* The line under the control: a quiet hint, or the reason it was rejected. */
+/* The line between label and control: a quiet hint, or the reason the value was
+ * rejected. Above the control on purpose (GOV.UK): read before typing, and on
+ * screen when the control is magnified. */
 .field-message {
   margin: 0;
   font-size: var(--font-sm);
   line-height: var(--leading-normal);
   color: var(--muted-foreground);
 }
-.field-message[data-error] { color: var(--destructive); }
+.field-message[data-error] { color: var(--destructive-emphasis); }

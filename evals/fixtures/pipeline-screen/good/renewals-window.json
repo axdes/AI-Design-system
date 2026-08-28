@@ -21,7 +21,12 @@
     {
       "name": "window",
       "task": "process",
-      "data": { "item": "record", "cardinality": "many", "fields": 6 },
+      "table": "worklist",
+      "data": {
+        "item": "record",
+        "cardinality": "many",
+        "fields": 6
+      },
       "answers": "Which contract do I handle first?",
       "purpose": "One row per contract, ordered by endDate ascending — soonest first, so reading order IS priority order and comparing annualValue and endDate across the whole window is a glance down two columns. A table, not cards, by R8 (a queue of records wants density and status) and R1's reason (six comparable fields want columns; cards would make comparing two contracts mean reading two paragraphs). Columns: id, counterparty, accountManager, annualValue (align end), endDate, status as a Badge, and the decision. An awaiting-review row carries its two decisions in place — Send for renewal and Let lapse, small, neither primary: they are peers and there are many per screen; a decided row shows its status and nothing pressable. The table sits in a Card flush inside a TableScroll, on the template's panels mode with stickyHeader, so only the rows scroll and the column names survive the scroll.",
       "components": [
