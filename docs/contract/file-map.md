@@ -57,6 +57,25 @@ tokens/                  ← the DTCG export, generated from styles/ by
 screen-specs/            ← agreed screen structure, validated against the registry
   schema.json  documents-list.json          (see screen-specs/README.md)
 
+intake/                  ← somebody else's requirements document, reconciled
+                            against this system BEFORE a spec is written: every
+                            value it pins looked up and answered carried /
+                            refused / brand. `npm run intake -- <file>`, guarded
+                            by `check:intake` (see intake/README.md).
+
+brand/<name>/            ← the one legitimate home for a foreign colour or
+                            typeface. `npm run rebrand` writes it into the
+                            token layer; nothing else may.
+
+scripts/adoption.mjs     ← how much of each product's UI is actually this
+                            system, against floors at the monorepo root that
+                            only rise. `npm run adoption`.
+
+scripts/cost.mjs         ← what a task costs in tokens and money, from the
+                            agent's own account of it in the eval traces.
+                            `npm run cost`. The other half of the context
+                            budget: that one guards the input, this one bills it.
+
 src/layouts/             ← route-level layout templates named `*Page`. The
                             routes ARE the template demos; Playground is the
                             gallery.

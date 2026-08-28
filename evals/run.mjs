@@ -34,6 +34,7 @@ import { fileURLToPath } from 'node:url'
 import { staticScore, DIMENSIONS } from './scorers.mjs'
 import { deepCheck, deepCheckMany } from '../scripts/lib/deep-check.mjs'
 import { checkContentModel } from '../scripts/lib/spec-rules.mjs'
+import { costOf } from '../scripts/lib/agent-cost.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const TASKS_DIR = `${ROOT}/evals/tasks`
@@ -294,7 +295,7 @@ if (agentCmd) {
         transcript = `${e.stdout ?? ''}\n${e.stderr ?? ''}`
         writeFileSync(`${dir}/../run-${i}.agent.log`, transcript)
         console.log(`  ${RED}run ${i}: the agent command failed${OFF}`)
-        trace({ task: task.id, run: i, ok: false, why: 'agent-command', ms: Date.now() - started, tail: transcript.slice(-1200) })
+        trace({ task: task.id, run: i, ok: false, why: 'agent-command', ms: Date.now() - started, cost: costOf(transcript), tail: transcript.slice(-1200) })
         runs.push({ score: 0, failed: ['agent-command'] })
         exitCode = 1
         continue
@@ -302,7 +303,7 @@ if (agentCmd) {
       const files = readCandidate(dir)
       if (!Object.keys(files).length) {
         console.log(`  ${RED}run ${i}: the agent produced no .tsx/.css files in ${outDir}${OFF}`)
-        trace({ task: task.id, run: i, ok: false, why: 'no-output', ms: Date.now() - started, tail: transcript.slice(-1200) })
+        trace({ task: task.id, run: i, ok: false, why: 'no-output', ms: Date.now() - started, cost: costOf(transcript), tail: transcript.slice(-1200) })
         runs.push({ score: 0, failed: ['no-output'] })
         exitCode = 1
         continue
@@ -314,6 +315,10 @@ if (agentCmd) {
       const run = report(repeat > 1 ? `run ${i}` : 'agent', result, dyn, pipeOrNull)
       trace({
         task: task.id, run: i, ok: true, ms: Date.now() - started,
+        /* What it cost, from the agent's own account. Null when the command was
+         * not asked for one — `npm run cost` says so rather than averaging an
+         * unmeasured run in as a free one. */
+        cost: costOf(transcript),
         score: run.score, failed: run.failed,
         files: Object.keys(files),
         /* The findings, not just the dimension names: "props-exist failed" is a

@@ -100,7 +100,7 @@ const REQUIRED = [
    * cap to 80 characters elides half the rows mid-phrase, which is measured and
    * recorded in the generator. It is either a deliberate raise, or search becomes
    * the only path and this file stops being must-read. */
-  { path: 'component-index.md', why: 'what exists, one line each — discovery reads this', budget: 4170 },  /* 3600 -> 3800 on 2026-08-23: seven index rows for the form layer, 28 tokens each. The rows are the cheap half of a component — this is the file that keeps a component findable at all. 3800 -> 3900 the same day for the table layer's eight rows (TableToolbar, BatchActions, ColumnPicker, TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable). Eight rows at 28 would be 224; it costs 57, because the generator fix that went in with them (parts publish their OWN props, not the main component's) shortened the index rows of every compound as well. 3900 -> 4050 for the CELL layer's four rows (Truncate, CellStack, TagGroup, Thumbnail): the parts a real cell needs, which the table layer's exhibits proved were missing the moment the content stopped being text. */
+  { path: 'component-index.md', why: 'what exists, one line each — discovery reads this', budget: 4600 },  /* 4050 -> 4170 -> 4600 on 2026-08-28, and this is the deliberate raise the note above says the runway ends in. It was taken with a number rather than a feeling, because 2026-08-28 is also the day the harness first PRICED a run: one screen, 4,350k tokens, 61 turns, $3.45, of which 98% is context re-read turn after turn (evals/BASELINE.md). That gives the multiplier this budget never had. 1k of must-read is not 1k; it is 1k x 61 = 61k, 1.4% of the run. So this 430-token raise costs about 26k tokens and two cents per screen, and buys room for roughly seventeen more components instead of three. The alternative on the table was making search the only path and dropping this file from must-read, and the measurement argues against it: the index is 5.7% of a run's tokens and it is what stops an agent guessing a component that does not exist — the defect the eval baseline traced most of its lost points to. Taken knowingly, and the next raise needs its own number. 3600 -> 3800 on 2026-08-23: seven index rows for the form layer, 28 tokens each. The rows are the cheap half of a component — this is the file that keeps a component findable at all. 3800 -> 3900 the same day for the table layer's eight rows (TableToolbar, BatchActions, ColumnPicker, TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable). Eight rows at 28 would be 224; it costs 57, because the generator fix that went in with them (parts publish their OWN props, not the main component's) shortened the index rows of every compound as well. 3900 -> 4050 for the CELL layer's four rows (Truncate, CellStack, TagGroup, Thumbnail): the parts a real cell needs, which the table layer's exhibits proved were missing the moment the content stopped being text. */
 ]
 
 /* Read on demand, not on every task: `npm run registry -- <Name>` returns these
@@ -416,9 +416,27 @@ const ON_DEMAND = [
  * named in a table the contract still carries, so any tool can open them by path
  * when a task needs them. Lowering the ceiling with the cut is the point: a
  * budget that stays where it was is a file that refills. */
-const TOTAL_BUDGET = 8600 // must-read context, tokens
+/* 8600 -> 9030 on 2026-08-28, carrying the index raise argued at its own line
+ * above and nothing else. The total is not a separate decision — it is the sum
+ * of two that were each made in the open — but it is kept as its own number so
+ * that a raise nobody argued for cannot arrive as an accident of arithmetic. */
+const TOTAL_BUDGET = 9030 // must-read context, tokens
 
 let failed = 0
+/** The median number of turns a measured run took, or null when none was.
+ *  Written by `npm run eval` through scripts/lib/agent-cost.mjs; read here so
+ *  the budget and the bill are one system rather than two. */
+function medianTurns() {
+  const file = `${ROOT}/evals/.traces/runs.jsonl`
+  if (!existsSync(file)) return null
+  const ns = readFileSync(file, 'utf8').split('\n').filter(Boolean)
+    .map((l) => { try { return JSON.parse(l).cost?.turns } catch { return null } })
+    .filter((n) => Number.isFinite(n) && n > 0)
+    .sort((a, b) => a - b)
+  if (!ns.length) return null
+  return ns.length % 2 ? ns[(ns.length - 1) / 2] : Math.round((ns[ns.length / 2 - 1] + ns[ns.length / 2]) / 2)
+}
+
 console.log('\x1b[1mContext budget (estimated tokens, chars/4)\x1b[0m\n')
 
 let total = 0
@@ -518,6 +536,20 @@ if (existsSync(registryPath)) {
     const idxAvg = Math.round(perRow)
     console.log(`\n    \x1b[2mMarginal cost of one more component: ${idxAvg} tokens on every task (its index row),\x1b[0m`)
     console.log(`    \x1b[2mplus about ${avg} tokens on the tasks that fetch it. Before the index it was ${avg} on every task.\x1b[0m`)
+    /* And what that actually costs, from a run that was billed rather than from
+     * this file's chars/4. Must-read context is not paid once per task: it is
+     * paid once and re-read on every turn, so the real multiplier is the number
+     * of turns a task takes — 61 on the first run this harness ever priced. A
+     * budget argued without it undercounts itself by two orders of magnitude.
+     *
+     * Optional on purpose. A clone with no traces still gets its budget; it just
+     * does not get the multiplier, and saying so is better than defaulting to a
+     * number from somebody else's machine. */
+    const turns = medianTurns()
+    if (turns) {
+      console.log(`    \x1b[2mMeasured: a task takes ${turns} turns and re-reads its must-read context on each,`)
+      console.log(`    so 1k of must-read costs about ${fmt(turns * 1000)} tokens per task. This index costs ${fmt(turns * tokens(raw))}.\x1b[0m`)
+    }
     if (indexBudget) {
       const room = Math.floor((indexBudget - tokens(raw)) / perRow)
       const colour = room <= 5 ? '\x1b[31m' : room <= 15 ? '\x1b[33m' : '\x1b[2m'

@@ -1,0 +1,27 @@
+{
+  "_why": "Values supplier-portal.md pins that this system has nothing like. NOT a manifest: merge the ones you accept into brand/<name>/manifest.json, then run npm run rebrand. See supplier-portal.findings.md for what each one displaces.",
+  "source": "intake/fixtures/supplier-portal.md",
+  "colours": [
+    {
+      "value": "#e4002b",
+      "line": 18,
+      "nearestExisting": "--danger-900"
+    },
+    {
+      "value": "#00a3e0",
+      "line": 19,
+      "nearestExisting": "--series-3"
+    },
+    {
+      "value": "#2e7d32",
+      "line": 20,
+      "nearestExisting": "--success-800"
+    },
+    {
+      "value": "#f9a825",
+      "line": 20,
+      "nearestExisting": "--warning-800"
+    }
+  ],
+  "typefaces": []
+}

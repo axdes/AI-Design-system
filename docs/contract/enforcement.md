@@ -45,6 +45,13 @@ work; one small custom linter covers what only this project knows.
   tool rather than a gate step.
 - **`npm run scout`** — what belongs here but sits in an app (see the promotion
   rule); findings carry a reason and a closing condition, like `ALLOW`.
+- **`check:adoption`** — the other half of that question, as a number rather
+  than a verdict: of the elements this system HAS an answer for, the share of
+  each product that took it, plus how many of its screens sit on a page
+  template. Against floors at the monorepo root that only rise, so a product
+  may climb slowly and may not slide back. Structural markup (div, span,
+  section) is never counted against anything: a metric that punishes a div
+  measures nothing and gets ignored.
 - **`audit` + `scan:secrets`, and `lint:sast` in every app** — advisories with
   a written decision each; secrets in what git CARRIES; semgrep over `src` and
   over whatever spawns processes or holds keys. A local server binds loopback
@@ -52,12 +59,25 @@ work; one small custom linter covers what only this project knows.
 - **`typecheck:next`** — the same project through TypeScript 7, a second opinion
   in every package's gate. `tsc` 5.9 stays THE compiler.
 - **`check:spec`** — screen specs match the system (see below).
+- **`check:intake`** — one step before a spec exists. `npm run intake` reads
+  somebody else's requirements document and answers every value it pins:
+  carried (the system has it), refused (with the nearest thing that does), or
+  brand (the client's own colour or typeface, which belongs in a manifest and
+  nowhere else). Each refusal is a question put to a person, and this fails on
+  one that was never answered — the same rule as `check:requests`, which was
+  written after three of those sat unanswered for six weeks.
 - **`tokens:check`** — the DTCG export in `tokens/` still matches `styles/`:
   every alias resolves, every value survives a round trip to CSS, and no token
   is declared twice in one theme with two values.
 - **`npm run context`** — the must-read context (AGENTS.md +
   `component-index.md`) has a budget like bundle size; the registry is held to
-  a per-entry ceiling.
+  a per-entry ceiling. It reports the measured multiplier as well: context is
+  re-read on every turn, so 1k of must-read costs 1k x turns, and a raise is
+  argued against that number rather than against the file size.
+- **`npm run cost`** (by hand, not gated) — what a task actually cost, read out
+  of the agent's own transcript by the eval runner. The budget above guards the
+  input side; this is the bill. A run whose command reported no usage is counted
+  separately and never averaged in as free.
 - The same five answers are served over MCP (`npm run mcp`, `mcp/README.md`).
 - **`redteam`** — breaks the reference solutions the nine ways agents really
   break code and fails if a break survives: every other check asks whether the

@@ -98,6 +98,49 @@ diagnosing the gate, the file map, and choosing between neighbours. A task that
 needed those would fetch them by path — which is the arrangement, and is not
 what this measured.
 
+## 2026-08-28 — the first run this harness ever priced
+
+Every measurement above is about how WELL an agent does here. None of them says
+what it cost, and that is a hole in the argument the whole design rests on:
+discovery reads a 4.1k index instead of a 100k registry SO THAT a task is cheap,
+`npm run context` guards the input side of that with a chars/4 estimate, and
+nothing has ever counted what actually got spent.
+
+The runner now reads the agent's own account of it out of the transcript
+(`scripts/lib/agent-cost.mjs`, from `--output-format json`) and writes it into
+the trace. `npm run cost` reports it. One task, one run, `list-screen`, Opus 5,
+`cwd` = repo root — scored 100% on all eight dimensions, as it has since 27.08:
+
+| | |
+|---|---|
+| tokens | **4,350k** |
+| cost | **$3.45** |
+| wall clock | **256s** |
+| of which output | 16.6k, under 0.4% |
+| re-read from cache | **98%** |
+
+Two things in that table are worth more than the headline.
+
+**Output is a rounding error.** 16.6k tokens of the 4,350k are the thing the
+agent actually wrote. Everything else is reading — the contract, the index, the
+entries it fetched, its own accumulated turns — which means the cost of working
+in this system is almost entirely the cost of the context it hands out.
+
+**98% is cache re-reads**, and that is what makes the context budget a real
+budget rather than housekeeping. The must-read set is not paid once per task. It
+is paid once and then re-read on every turn of that task, so a contract that
+grows by 1k tokens costs a multiple of 1k, set by how many turns the task takes.
+The budget in `scripts/context-budget.mjs` has said "this is paid on EVERY task,
+by every agent, forever" since August; this is the first evidence of the
+multiplier on top.
+
+Read it with its limits, and they are large. One task, one run, one model, one
+day. The number to watch is not $3.45 — it is whether a change to the contract
+moves it, which is the comparison this makes possible for the first time. Every
+trace written before today carries no cost and never will: nothing reconstructs
+it after the fact, and `npm run cost` counts those runs separately rather than
+averaging them in as free.
+
 ## Agent runs — Claude Code (`claude -p`), Opus 5, 2026-08-27
 
 Re-measured the day after the registry started publishing prop descriptions

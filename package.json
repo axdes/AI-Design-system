@@ -71,6 +71,11 @@
     "postinstall": "node scripts/gen-component-registry.mjs",
     "check:lang": "node scripts/check-language.mjs",
     "check:requests": "node scripts/check-requests.mjs",
+    "cost": "node scripts/cost.mjs",
+    "adoption": "node scripts/adoption.mjs",
+    "check:adoption": "node scripts/adoption.mjs --check",
+    "intake": "node scripts/intake.mjs",
+    "check:intake": "node scripts/check-intake.mjs",
     "gen:data": "node scripts/gen-site-data.mjs",
     "gen:data:check": "node scripts/gen-site-data.mjs --check",
     "mutate": "node scripts/mutate.mjs",
@@ -79,7 +84,8 @@
     "gen:shadcn": "node scripts/gen-shadcn-registry.mjs",
     "gen:shadcn:check": "node scripts/gen-shadcn-registry.mjs --check",
     "check:claims": "node scripts/check-claims.mjs",
-    "check:publishable": "node scripts/check-publishable.mjs"
+    "check:publishable": "node scripts/check-publishable.mjs",
+    "check:agent-ready": "node scripts/check-agent-ready.mjs"
   },
   "dependencies": {
     "i18next": "^26.2.0",
