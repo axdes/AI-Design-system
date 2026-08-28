@@ -60,7 +60,8 @@
     }
   },
   "uses": [
-    "Badge"
+    "Badge",
+    "Layout"
   ],
-  "example": "/* Read-only field/value metadata (a real <dl>). Use a Table for rows of\n * records, a form for editing. Values can be any node, e.g. a Badge. */\n\n<Descriptions\n  columns={2}\n  items={[\n    { term: 'Invoice', value: 'INV-1042' },\n    { term: 'Status', value: <Badge tone=\"warning\" fill=\"soft\">Due</Badge> },\n    { term: 'Client', value: 'Northwind' },\n    { term: 'Amount', value: 'SAR 8,600.00' },\n  ]}\n/>"
+  "example": "<Stack gap={6}>\n  <Descriptions columns={2} items={RECORD} />\n  <Descriptions layout=\"inline\" items={RECORD.slice(0, 3)} />\n</Stack>"
 }

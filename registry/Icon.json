@@ -43,5 +43,8 @@
       ]
     }
   },
-  "example": "<Icon name=\"calendar\" />"
+  "uses": [
+    "Layout"
+  ],
+  "example": "<Row gap={4} align=\"center\">\n  <Icon name=\"calendar\" />\n  <Icon name=\"calendar\" size=\"md\" />\n  <Icon name=\"calendar\" size=\"lg\" />\n  <Icon name=\"calendar\" size=\"xl\" />\n</Row>"
 }

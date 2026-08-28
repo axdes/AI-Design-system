@@ -111,22 +111,22 @@ const ALLOW = {
   noExample: [],
   /* Examples that render one instance and carry no axis to show. This list is
      WORK, not policy: each entry is an example nobody has written yet, and it
-     only shrinks. 76 of 131 on 2026-08-27, when the rule was written; five off
-     the same day (Button, Badge, Select, EmptyState, Tabs — the ones an agent
-     and a reader meet first). Take a name off this list by rewriting its
+     only shrinks. 76 of 131 on 2026-08-27, when the rule was written; 59 by the
+     next day. The ones taken off first are the ones an agent and a reader meet
+     most: Button, Badge, Select, EmptyState, Tabs, then Icon, Tooltip,
+     IconButton, Input, MetaItem, Chip, Spinner, Descriptions. Take a name off this list by rewriting its
      example, never by adding one back. */
   flatExample: [
-    'Accordion', 'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 
-    'ButtonGroup', 'Calendar', 'ChatMessage', 'Checkbox', 'Chip', 'ColorSwatch', 'Combobox',
-    'CopyButton', 'CountBadge', 'DateBlock', 'DatePicker', 'DateRangePicker', 'Descriptions',
-    'Divider', 'DonutChart', 'Dropdown', 'ExpandButton', 'Icon', 'IconButton',
-    'Identity', 'InlineText', 'Input', 'InputGroup', 'Kbd', 'Label', 'Layout', 'LineChart',
-    'Link', 'ListItem', 'LoadMore', 'LogoWall', 'MenuButton', 'MenuIconButton', 'MetaItem',
-    'Meter', 'NumberInput', 'PasswordInput', 'PivotTable', 'Popover', 'Quote', 'Radio',
-    'Rating', 'RichMessage', 'SaveStatus', 'SearchInput', 'SectionLabel', 'SegmentedControl',
-    'SessionPill', 'SetupGuide', 'SideNav', 'SidePanel', 'Sparkline', 'Spinner',
-    'Stat', 'TableToolbar', 'Tag', 'Textarea', 'Thumbnail', 'Time', 'TimeInput',
-    'Tooltip', 'Truncate', 'AuthTemplate', 'Page', 'SystemPageTemplate', 'WizardTemplate'
+    'Accordion', 'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'ButtonGroup',
+    'Calendar', 'ChatMessage', 'Checkbox', 'ColorSwatch', 'Combobox', 'CopyButton',
+    'CountBadge', 'DateBlock', 'DatePicker', 'DateRangePicker', 'Divider', 'DonutChart',
+    'ExpandButton', 'Identity', 'InlineText', 'InputGroup', 'Kbd', 'Label', 'LineChart',
+    'Link', 'ListItem', 'LoadMore', 'LogoWall', 'MenuButton', 'MenuIconButton', 'Meter',
+    'NumberInput', 'PasswordInput', 'PivotTable', 'Popover', 'Quote', 'Radio', 'Rating',
+    'RichMessage', 'SearchInput', 'SectionLabel', 'SegmentedControl', 'SessionPill',
+    'SetupGuide', 'SideNav', 'SidePanel', 'Sparkline', 'Stat', 'Tag', 'Textarea',
+    'Thumbnail', 'Time', 'TimeInput', 'Truncate', 'AuthTemplate', 'Page',
+    'SystemPageTemplate', 'WizardTemplate'
   ],
 }
 
@@ -304,10 +304,19 @@ function rExampleShowsTheChoice(c) {
     const unions = (entry.props ?? []).filter((p) => (p.values ?? []).length > 1)
     if (unions.length) {
       const body = src.slice(at)
+      /* Any of the entry's EXPORTS, not just its main one. <Layout> ships Grid,
+         GridItem, Row and Stack; its example varies `gap` across Stack and Row
+         and was read as showing no axis because both <Grid> tags happened to
+         agree (2026-08-28). A compound teaches on whichever part carries the
+         decision. */
+      const tags = [entry.main ?? ref, ...(entry.exports ?? [])].filter(Boolean)
       const shown = unions.some((p) => {
-        const used = new Set([...body.matchAll(new RegExp(p.name + '="([^"]+)"', 'g'))].map((m) => m[1]))
+        const used = new Set([
+          ...[...body.matchAll(new RegExp(p.name + '="([^"]+)"', 'g'))].map((m) => m[1]),
+          ...[...body.matchAll(new RegExp(p.name + '=\\{([^}]+)\\}', 'g'))].map((m) => m[1]),
+        ])
         /* A prop left off is its default, which is a second value on that axis. */
-        return used.size >= 2 || (used.size === 1 && new RegExp('<' + entry.main + '\\b(?![^>]*' + p.name + '=)').test(body))
+        return used.size >= 2 || (used.size === 1 && tags.some((tag) => new RegExp('<' + tag + '\\b(?![^>]*' + p.name + '=)').test(body)))
       })
       if (!shown) {
         out.push(`src/${layer}/${ref}/${ref}.example.tsx:1  shows one instance and no axis — render ${unions[0].name} at two of its values (${(unions[0].values ?? []).slice(0, 3).join(' | ')}…) so the example teaches the choice`)

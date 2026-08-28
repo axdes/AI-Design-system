@@ -79,7 +79,8 @@
     }
   },
   "uses": [
-    "Icon"
+    "Icon",
+    "Layout"
   ],
-  "example": "<Chip icon=\"calendar\" onClick={() => undefined}>Request leave</Chip>"
+  "example": "const [on, setOn] = useState<string[]>(['In review'])\nconst toggle = (f: string) => setOn((s) => (s.includes(f) ? s.filter((x) => x !== f) : [...s, f]))\n\n<Row gap={2} align=\"center\">\n  {FILTERS.map((f) => (\n    <Chip key={f} selected={on.includes(f)} onClick={() => toggle(f)}>{f}</Chip>\n  ))}\n  <Chip variant=\"ghost\" icon=\"add\" onClick={() => undefined}>Add filter</Chip>\n</Row>"
 }

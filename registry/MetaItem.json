@@ -37,7 +37,8 @@
     }
   },
   "uses": [
-    "Icon"
+    "Icon",
+    "Layout"
   ],
-  "example": "<MetaItem icon=\"text_fields\">1,240 words</MetaItem>"
+  "example": "<Stack gap={2}>\n  <MetaItem icon=\"description\" appearance=\"eyebrow\">Design sprint</MetaItem>\n  <Row gap={3}>\n    <MetaItem icon=\"schedule\">Updated 2 days ago</MetaItem>\n    <MetaItem icon=\"group\">3 editors</MetaItem>\n    <MetaItem icon=\"text_fields\">1,240 words</MetaItem>\n  </Row>\n</Stack>"
 }

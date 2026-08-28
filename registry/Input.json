@@ -56,7 +56,9 @@
     }
   },
   "uses": [
+    "Field",
+    "Layout",
     "Textarea"
   ],
-  "example": "<Input aria-label=\"Search\" placeholder=\"Search documents\" />"
+  "example": "<Stack gap={4}>\n  <Field label=\"Document title\" htmlFor=\"title\" hint=\"Shown in the list and in search.\">\n    <Input id=\"title\" defaultValue=\"Q3 onboarding guide\" />\n  </Field>\n  <Field label=\"Reply-to address\" htmlFor=\"mail\" error=\"That does not look like an address.\">\n    <Input id=\"mail\" invalid defaultValue=\"not-an-address\" />\n  </Field>\n  <Input aria-label=\"Search documents\" placeholder=\"Search documents\" surface=\"muted\" size=\"sm\" />\n</Stack>"
 }

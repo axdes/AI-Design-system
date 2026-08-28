@@ -46,7 +46,8 @@
     }
   },
   "uses": [
-    "Icon"
+    "Icon",
+    "Layout"
   ],
-  "example": "/* `label` is the accessible name a screen reader announces — a spinner\n * without one is a silent \"something is happening\". Inline by default; the\n * layout around it does the centering. */\n\n<Spinner label=\"Loading your workspace\" />"
+  "example": "<Row gap={6} align=\"center\">\n  <Spinner label=\"Saving the draft\" />\n  <Spinner size=\"md\" label=\"Loading invoices\" />\n  <Spinner size=\"lg\" label=\"Preparing the report\" />\n</Row>"
 }

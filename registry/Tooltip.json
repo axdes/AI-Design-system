@@ -46,7 +46,9 @@
   "sourcePath": "src/components/Tooltip/Tooltip.tsx",
   "context": "region",
   "uses": [
-    "IconButton"
+    "Button",
+    "IconButton",
+    "Layout"
   ],
-  "example": "<Tooltip content=\"Duplicate\">\n  <IconButton icon=\"content_copy\" aria-label=\"Duplicate\" />\n</Tooltip>"
+  "example": "<Row gap={3} align=\"center\">\n  <Tooltip content=\"Duplicate\">\n    <IconButton icon=\"content_copy\" aria-label=\"Duplicate\" onClick={() => undefined} />\n  </Tooltip>\n  <Tooltip content=\"Archive\" placement=\"bottom\">\n    <IconButton icon=\"folder\" aria-label=\"Archive\" onClick={() => undefined} />\n  </Tooltip>\n  <Tooltip content=\"Saves as you type\" placement=\"end\">\n    <Button variant=\"secondary\">Autosave</Button>\n  </Tooltip>\n</Row>"
 }

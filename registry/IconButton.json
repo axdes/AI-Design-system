@@ -106,8 +106,9 @@
   },
   "uses": [
     "Icon",
+    "Layout",
     "Spinner",
     "Tooltip"
   ],
-  "example": "/* Icon-only controls carry BOTH an aria-label (the accessible name) and a\n * Tooltip (the visible name on hover/focus). Neither is optional. */\n\n<Tooltip content=\"Delete\">\n  <IconButton icon=\"delete\" tone=\"destructive\" aria-label=\"Delete\" onClick={() => undefined} />\n</Tooltip>"
+  "example": "<Row gap={2} align=\"center\">\n  <Tooltip content=\"Duplicate\">\n    <IconButton icon=\"content_copy\" aria-label=\"Duplicate invoice INV-1041\" onClick={() => undefined} />\n  </Tooltip>\n  <Tooltip content=\"Send\">\n    <IconButton icon=\"share\" variant=\"filled\" tone=\"primary\" aria-label=\"Send invoice INV-1041\" onClick={() => undefined} />\n  </Tooltip>\n  <Tooltip content=\"More\">\n    <IconButton icon=\"more_vert\" variant=\"quiet\" aria-label=\"More actions for INV-1041\" onClick={() => undefined} />\n  </Tooltip>\n  <Tooltip content=\"Delete\">\n    <IconButton icon=\"delete\" tone=\"destructive\" aria-label=\"Delete invoice INV-1041\" onClick={() => undefined} />\n  </Tooltip>\n</Row>"
 }

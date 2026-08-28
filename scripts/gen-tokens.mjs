@@ -63,32 +63,59 @@ function parseCss(text, file) {
       continue
     }
     if (ch === '}') {
-      collect(blanked.slice(chunkStart, i), stack.join(' >> '))
+      collect(blanked.slice(chunkStart, i), stack.join(' >> '), chunkStart)
       stack.pop()
       chunkStart = i + 1
       i++
       continue
     }
     if (ch === ';' && stack.length) {
-      collect(blanked.slice(chunkStart, i + 1), stack.join(' >> '))
+      collect(blanked.slice(chunkStart, i + 1), stack.join(' >> '), chunkStart)
       chunkStart = i + 1
     }
     i++
   }
 
-  function collect(chunk, context) {
+  function collect(chunk, context, offset) {
     for (const m of chunk.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) {
       const name = m[1]
       const value = m[2].replace(/\s+/g, ' ').trim()
-      /* The description is the comment that trails the declaration in the
-       * ORIGINAL text, on the same line. */
-      const at = text.indexOf(`${name}:`, Math.max(0, text.indexOf(name)))
+      /* The declaration's own offset, not the first place the file mentions this
+       * name. `--card` is declared in the light block and again in the dark one;
+       * searching from the top handed the dark declaration the light one's
+       * comment. `blanked` is the same length as `text` by construction, so the
+       * offset carried in from the scanner indexes both. */
+      const at = offset + m.index
       const lineEnd = text.indexOf('\n', at)
-      const line = at === -1 ? '' : text.slice(at, lineEnd === -1 ? undefined : lineEnd)
+      const line = text.slice(at, lineEnd === -1 ? undefined : lineEnd)
       const trailing = line.match(/\/\*\s*(.*?)\s*\*\//)
-      decls.push({ name, value, context, file, description: trailing?.[1] ?? null })
+      decls.push({ name, value, context, file, description: trailing?.[1] ?? leadingComment(at) })
     }
   }
+  /* Reasoning in this system is written ABOVE the declaration when it does not
+   * fit at the end of the line, and taking only the trailing form dropped it:
+   * 22 of semantic.css's declarations carry a trailing comment and 36 more carry
+   * only a preceding block. The contrast argument behind --muted-foreground, the
+   * reason --primary-active exists, the whole decision behind --link — all of it
+   * was in the CSS and none of it reached the format an agent reads.
+   *
+   * Only when nothing but whitespace separates the comment from the declaration.
+   * A section header is followed by a selector or a brace, so it does not attach. */
+  function leadingComment(at) {
+    const before = text.slice(0, at).replace(/[ \t\r\n]*$/, '')
+    if (!before.endsWith('*/')) return null
+    const start = before.lastIndexOf('/*')
+    if (start === -1) return null
+    const body = before
+      .slice(start + 2, before.length - 2)
+      .split('\n')
+      .map((l) => l.replace(/^\s*\*?\s?/, ''))
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+    return body || null
+  }
+
   return decls
 }
 
