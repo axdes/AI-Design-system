@@ -1,8 +1,8 @@
 {
-  "score": 59,
-  "floor": 59,
-  "killed": 123,
-  "survived": 84,
+  "score": 65,
+  "floor": 65,
+  "killed": 135,
+  "survived": 72,
   "components": {
     "Accordion": {
       "hash": "b76be8850153",
@@ -27,11 +27,11 @@
       "hash": "0e02315a728e",
       "killed": [
         "strip-aria",
-        "drop-optional-render"
+        "drop-optional-render",
+        "drop-spread"
       ],
       "survived": [
-        "and-to-or",
-        "drop-spread"
+        "and-to-or"
       ]
     },
     "AppLayout": {
@@ -46,12 +46,11 @@
       "hash": "25b192bcb09c",
       "killed": [
         "and-to-or",
-        "strip-aria"
-      ],
-      "survived": [
+        "strip-aria",
         "drop-optional-render",
         "drop-spread"
-      ]
+      ],
+      "survived": []
     },
     "BarChart": {
       "hash": "77f44440aad1",
@@ -135,10 +134,10 @@
       "hash": "1858d7b05f4d",
       "killed": [
         "and-to-or",
+        "strip-aria",
         "drop-optional-render"
       ],
       "survived": [
-        "strip-aria",
         "negate-cond",
         "invert-comparison"
       ]
@@ -307,11 +306,11 @@
     "FileUpload": {
       "hash": "4f90f00bbe0b",
       "killed": [
-        "strip-aria"
+        "strip-aria",
+        "drop-optional-render"
       ],
       "survived": [
         "and-to-or",
-        "drop-optional-render",
         "invert-comparison"
       ]
     },
@@ -386,12 +385,13 @@
     },
     "LineChart": {
       "hash": "2741976dc428",
-      "killed": [],
+      "killed": [
+        "drop-optional-render"
+      ],
       "survived": [
         "boolean-default",
         "and-to-or",
         "negate-cond",
-        "drop-optional-render",
         "off-by-one",
         "invert-comparison"
       ]
@@ -442,12 +442,12 @@
       "hash": "8b320fe9cb91",
       "killed": [
         "and-to-or",
-        "strip-aria"
+        "strip-aria",
+        "drop-spread"
       ],
       "survived": [
         "negate-cond",
-        "invert-comparison",
-        "drop-spread"
+        "invert-comparison"
       ]
     },
     "Pagination": {
@@ -490,11 +490,11 @@
     "Radio": {
       "hash": "3ae3810c8fe7",
       "killed": [
-        "drop-optional-render"
+        "drop-optional-render",
+        "drop-spread"
       ],
       "survived": [
-        "and-to-or",
-        "drop-spread"
+        "and-to-or"
       ]
     },
     "RangeSlider": {
@@ -531,12 +531,12 @@
       "hash": "684dbeb24de6",
       "killed": [
         "strip-aria",
-        "drop-optional-render"
+        "drop-optional-render",
+        "drop-spread"
       ],
       "survived": [
         "and-to-or",
-        "invert-comparison",
-        "drop-spread"
+        "invert-comparison"
       ]
     },
     "SegmentedControl": {
@@ -580,11 +580,10 @@
       "hash": "ca1d71c4e58a",
       "killed": [
         "and-to-or",
-        "drop-optional-render"
-      ],
-      "survived": [
+        "drop-optional-render",
         "drop-spread"
-      ]
+      ],
+      "survived": []
     },
     "Stepper": {
       "hash": "60e96714efeb",
@@ -598,20 +597,18 @@
     "Switch": {
       "hash": "e1b1f3908413",
       "killed": [
-        "strip-aria"
-      ],
-      "survived": [
+        "strip-aria",
         "drop-spread"
-      ]
+      ],
+      "survived": []
     },
     "Table": {
       "hash": "08d9ca42398c",
       "killed": [
-        "strip-aria"
-      ],
-      "survived": [
+        "strip-aria",
         "drop-spread"
-      ]
+      ],
+      "survived": []
     },
     "Tabs": {
       "hash": "7ec39f460d40",
