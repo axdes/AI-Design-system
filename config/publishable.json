@@ -10,16 +10,62 @@
     "the first; `genesysGroupId` is the second and identifies a client from a public",
     "URL.",
     "",
-    "scripts/check-publishable.mjs fails the gate on anything listed here."
+    "scripts/check-publishable.mjs fails the gate on anything listed here.",
+    "",
+    "`neverShips` is the same list scripts/publish-ds.mjs drops, held here so the",
+    "check and the publisher cannot disagree. Scanning the whole package instead",
+    "reported eleven references in files that have never left the monorepo",
+    "(2026-08-28): noise, and the kind that gets a check weakened."
   ],
   "identifiers": [
-    { "word": "genesys", "why": "a client's platform; naming it identifies the client" },
-    { "word": "epam", "why": "the employer, and by extension every internal product below" },
-    { "word": "airun", "why": "an internal product, not part of this system" },
-    { "word": "salim", "why": "a client product built ON this system, not part of it" },
-    { "word": "codemie", "why": "an internal platform" },
-    { "word": "telescope", "why": "an internal system" },
-    { "word": "leap", "why": "an internal system" }
+    {
+      "word": "genesys",
+      "why": "a client's platform; naming it identifies the client"
+    },
+    {
+      "word": "epam",
+      "why": "the employer, and by extension every internal product below"
+    },
+    {
+      "word": "airun",
+      "why": "an internal product, not part of this system"
+    },
+    {
+      "word": "salim",
+      "why": "a client product built ON this system, not part of it"
+    },
+    {
+      "word": "codemie",
+      "why": "an internal platform"
+    },
+    {
+      "word": "telescope",
+      "why": "an internal system"
+    },
+    {
+      "word": "leap",
+      "why": "an internal system"
+    }
   ],
-  "allow": []
+  "allow": [],
+  "neverShips": [
+    "screen-specs/models/",
+    "screen-specs/cockpit.json",
+    "screen-specs/coach-catalog.json",
+    "screen-specs/coach-questions.json",
+    "screen-specs/program-coach.json",
+    "screen-specs/team-catalog.json",
+    "screen-specs/team-detail.json",
+    "screen-specs/admin-login.json",
+    "screen-specs/admin-users.json",
+    "screen-specs/digest-chats.json",
+    "screen-specs/digest-chat-detail.json",
+    "screen-specs/workshops-settings.json",
+    "screen-specs/handbook-profiles.json",
+    "screen-specs/handbook-profile.json",
+    "screen-specs/handbook-skills.json",
+    "screen-specs/handbook-skill.json",
+    "screen-specs/handbook-candidates.json",
+    "screen-specs/handbook-candidate.json"
+  ]
 }

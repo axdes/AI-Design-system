@@ -33,6 +33,11 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', O
 const config = JSON.parse(readFileSync(`${ROOT}/config/publishable.json`, 'utf8'))
 const NAMES = config.identifiers.map((i) => ({ ...i, re: new RegExp(`\\b${i.word}`, 'i') }))
 const ALLOW = new Set(config.allow ?? [])
+/* What publish-ds.mjs drops before it pushes. Scanning the whole package meant
+   reporting product specs that have never left the monorepo — a check that
+   cries about files nobody publishes is a check somebody turns off. */
+const NEVER = config.neverShips ?? []
+const ships = (rel) => !NEVER.some((d) => (d.endsWith('/') ? rel.startsWith(d) : rel === d))
 
 /* The working log is replaced by a stub on publish and is the one file allowed
    to narrate client work; everything else in the tree ships as it stands. */
@@ -55,7 +60,7 @@ walk(ROOT)
 
 const hits = []
 for (const rel of files) {
-  if (ALLOW.has(rel)) continue
+  if (ALLOW.has(rel) || !ships(rel)) continue
   const src = readFileSync(`${ROOT}/${rel}`, 'utf8')
   for (const id of NAMES) {
     if (!id.re.test(src) && !id.re.test(rel)) continue
@@ -64,7 +69,7 @@ for (const rel of files) {
   }
 }
 
-console.log(`${BOLD}Publishable${OFF} ${DIM}${files.length} file(s) that would ship, ${NAMES.length} declared identifier(s)${OFF}`)
+console.log(`${BOLD}Publishable${OFF} ${DIM}${files.filter(ships).length} file(s) that would ship, ${NAMES.length} declared identifier(s)${OFF}`)
 
 if (hits.length) {
   console.error(`\n${RED}✗ ${hits.length} client-identifying reference(s) in the published tree:${OFF}`)
