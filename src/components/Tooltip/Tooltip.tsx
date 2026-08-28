@@ -23,7 +23,17 @@ type ChildProps = {
 }
 
 type Props = {
+  /** What the control is CALLED — one or two words, the same verb it would
+   *  carry if it had room. Not an explanation: a tooltip cannot be reached by
+   *  touch, cannot be selected, and disappears the moment the pointer leaves, so
+   *  anything the reader actually needs belongs on the page. On an icon-only
+   *  control this is the VISIBLE name and `aria-label` is the announced one;
+   *  both, always. */
   content: string
+  /** Which side it prefers, chosen by the room available rather than the look —
+   *  `start`/`end` beside a control at the edge of a panel, where a tooltip
+   *  above it would be clipped. A preference, not an instruction: the layer
+   *  flips itself when the chosen side does not fit. */
   placement?: Placement
   /** Hover delay before the tooltip appears (ms). Default 300. */
   delay?: number

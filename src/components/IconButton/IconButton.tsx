@@ -11,6 +11,10 @@ type Tone = 'primary' | 'destructive'
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
   /** Forwarded to the underlying <button>. */
   ref?: Ref<HTMLButtonElement>
+  /** The glyph, which is also the entire label a sighted reader gets. It has to
+   *  survive being the only thing there: a picture that needs a caption is a
+   *  `<Button>` with words. The announced name comes from `aria-label`, which is
+   *  not optional on this component. */
   icon: IconName
   /** Square button matching control heights: sm 32 / md 40 / lg 52. Default 'sm'.
    *  NOTE: `Button` defaults to 'md', so a pair of them needs this stated — an

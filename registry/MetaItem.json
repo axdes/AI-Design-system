@@ -12,7 +12,8 @@
     {
       "name": "icon",
       "type": "IconName",
-      "required": false
+      "required": false,
+      "description": "A glyph before the words, and decoration only: it is hidden from screen readers because the words beside it already say it. A meta item with an icon and no words is not a meta item."
     },
     {
       "name": "appearance",

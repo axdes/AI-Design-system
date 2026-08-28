@@ -26,6 +26,7 @@
       "name": "gap",
       "type": "Gap",
       "required": false,
+      "description": "Space between the tracks, as a step of the 4pt scale — spacing lives on the container, never as margins on the children. The scale is the whole point: a number that is not a step is a decision nobody made.",
       "values": [
         1,
         2,
@@ -71,7 +72,8 @@
     {
       "name": "alignRows",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Makes every row as tall as its tallest item, so cards in a grid line up across rows instead of each row setting its own height. Leave it off when the items are meant to be their own size."
     }
   ],
   "sourcePath": "src/components/Layout/Grid.tsx",

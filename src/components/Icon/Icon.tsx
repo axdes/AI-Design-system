@@ -174,7 +174,15 @@ export type IconName = keyof typeof ICONS
 type Size = 'sm' | 'md' | 'lg' | 'xl'
 
 type Props = {
+  /** Which glyph, by its Material-style name. Every name the system has is a
+   *  member of `IconName`; there is no free-text escape, because an icon nobody
+   *  can find is an icon nobody reuses. */
   name: IconName
+  /** How big, and it follows the JOB rather than taste. `sm` (default) sits
+   *  inline with text and inside buttons. `md` is for navigation and list rows,
+   *  where the glyph is a landmark. `lg`/`xl` are for the single mark on an
+   *  empty state or a page with nothing else on it — in a row of controls they
+   *  make everything beside them look broken. */
   size?: Size
   className?: string
 }

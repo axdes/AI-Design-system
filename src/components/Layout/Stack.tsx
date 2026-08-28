@@ -5,6 +5,9 @@ import { cn } from '../../lib/cn'
 type Gap = 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16
 
 type Props = HTMLAttributes<HTMLElement> & {
+  /** Space between the children, as a step of the 4pt scale. On the container,
+   *  never as margins on the children: margins collapse and double, a gap does
+   *  neither. */
   gap?: Gap
   /**
    * The element this renders as, when the DOCUMENT has an opinion the layout

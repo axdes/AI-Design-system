@@ -5,9 +5,16 @@ import { cn } from '../../lib/cn'
 import { Label } from '../Label'
 
 type Props = {
+  /** What the control is asking for, in the reader's words. Required, and it is
+   *  the field's whole reason to exist: a control with no label announces only
+   *  its current value, so a screen reader hears "Annual leave" and never learns
+   *  what question that answers. */
   label: ReactNode
   /** Links the label to a control id (for native inputs/textarea). */
   htmlFor?: string
+  /** Marks the field as required, to the reader and to the control. Use it when
+   *  most of the form is optional; when most of it is required, mark the few
+   *  that are not with `optional` instead. */
   required?: boolean
   /** Marks the MINORITY. In a form where most fields are required, the few that
    *  are not say so; a star on every field tells nobody anything. */

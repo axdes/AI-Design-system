@@ -56,6 +56,17 @@ Either way that file is the system: if a thing is not in it, it does not exist.
 Every icon in a button trails the label — one line of CSS, not a choice.
 `iconEnd` is an inert leftover; passing it does nothing (owner, 2026-06-10).
 
+## The props every component takes, said once
+
+`className`, `children`, `ref`, `id` and `style` mean the same on all 131 and are
+not repeated per component. `className` is ADDED to the component's own classes
+and lands on the element it owns — for a wrapped control, the wrapper. Anything
+else a caller passes reaches that same element: a component that declares
+`inherits` spreads the rest,
+which is how an `aria-describedby` from elsewhere on the page arrives.
+
+Every prop that carries a DECISION is documented on the component.
+
 ## What this contract points at
 
 Everything below is binding. Everything a task needs only SOMETIMES lives beside

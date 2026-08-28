@@ -521,7 +521,11 @@ function parsePropFields(body) {
        only the doc form left the other kind glued to its field and dropped the
        prop entirely - Alert.onDismiss, Layout.alignRows and PivotTable.rowHeader
        went missing for exactly one generation (2026-08-26). */
-    const docMatch = raw.match(/^\/\*\*([\s\S]*?)\*\//);
+    /* The FIRST doc comment among the leading ones, not the first comment. A
+       prop may carry a note to the editor and a doc for the reader, in either
+       order, and requiring `/**` to come first lost the description whenever the
+       note came before it — Grid.alignRows, silently (2026-08-28). */
+    const docMatch = raw.match(/\/\*\*([\s\S]*?)\*\//);
     const description = docMatch ? cleanDoc(docMatch[1]) : "";
     /* ALL of them, not the first: a prop may carry a doc comment and a note to
        the editor, and stripping one left the other glued to the field and threw

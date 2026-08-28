@@ -18,7 +18,8 @@
     {
       "name": "icon",
       "type": "IconName",
-      "required": true
+      "required": true,
+      "description": "The glyph, which is also the entire label a sighted reader gets. It has to survive being the only thing there: a picture that needs a caption is a `<Button>` with words. The announced name comes from `aria-label`, which is not optional on this component."
     },
     {
       "name": "size",

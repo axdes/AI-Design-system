@@ -4,6 +4,9 @@ import { cn } from '../../lib/cn'
 import { Icon, type IconName } from '../Icon'
 
 type Props = HTMLAttributes<HTMLSpanElement> & {
+  /** A glyph before the words, and decoration only: it is hidden from screen
+   *  readers because the words beside it already say it. A meta item with an
+   *  icon and no words is not a meta item. */
   icon?: IconName
   /** `meta` (default) = ambient text + dimmed icon (dates, counters). `eyebrow` =
    *  small fully-muted kicker label above a title. Absorbs the old <Eyebrow>. */

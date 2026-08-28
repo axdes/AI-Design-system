@@ -9,8 +9,21 @@ type Size = 'sm' | 'md' | 'lg'
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   /** Forwarded to the underlying <button>. */
   ref?: Ref<HTMLButtonElement>
+  /** How much weight this action carries ON THE SCREEN — which makes it a
+   *  decision about the screen, not about the button. Exactly one action is
+   *  `primary`: the thing the reader came to do. Everything beside it is
+   *  `secondary`, which is also what a button with no variant gets, and that is
+   *  the right default for a control nobody has thought about yet. `ghost` is
+   *  for a control that must not compete with the content under it.
+   *  `destructive` is reserved for what cannot be undone, where the colour IS
+   *  the warning — and it does not remove the need to confirm. */
   variant?: Variant
+  /** Control height: sm 32 / md 40 (default) / lg 52. State it whenever the
+   *  button sits beside an `<IconButton>`, which defaults to `sm`. */
   size?: Size
+  /** Fills the width it is given. For a button that is the whole of a narrow
+   *  column — a form's submit on a phone, a card's single action — never as a
+   *  way to make one button look important in a row. */
   block?: boolean
   /**
    * @deprecated Inert. Every icon in a button trails the label from one line of

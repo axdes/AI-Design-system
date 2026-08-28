@@ -288,7 +288,13 @@ const ON_DEMAND = [
      * onDismiss>` on a warning the reader has not resolved, `iconEnd` on a
      * button where it does nothing. The file is fetched per component, so the
      * real price is about 120 tokens on the one entry an agent asked for. */
-    budget: 101000,
+    /* 101000 -> 106000 on 2026-08-28. The same growth the previous raise was
+     * for, continuing: 478 of 782 props now say what they mean, against 463 a
+     * day ago and 0 before the generator was fixed. The five universal props —
+     * className, children, ref, id, style — are stated once in AGENTS.md instead
+     * of 88 times here, which is the only trimming available that does not cost
+     * an agent something it would otherwise guess. */
+    budget: 106000,
     /* 600 -> 620 on 2026-08-20 for WizardTemplate, the first entry that carries
      * a template plus two sub-components (WizardReview, WizardReviewRow) in one
      * contract. Paid for first: the entry was cut 680 -> 605 (two props removed

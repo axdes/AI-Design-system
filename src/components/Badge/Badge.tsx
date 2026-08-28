@@ -7,6 +7,11 @@ type Fill = 'solid' | 'soft' | 'plain'
 type Size = 'sm' | 'md'
 
 type Props = HTMLAttributes<HTMLSpanElement> & {
+  /** The MEANING, never decoration: `success` is a state the reader can stop
+   *  worrying about, `warning` needs them eventually, `danger` needs them now.
+   *  `neutral` (default) is the honest answer when a value has no state at all —
+   *  a category, a plan name, a count. A tone chosen because it looks good on
+   *  the card is a badge that lies. */
   tone?: Tone
   /** Visual fill. `solid` (default) = saturated bg; `soft` = tinted bg + dark text; `plain` = no bg, tone-coloured text. */
   fill?: Fill

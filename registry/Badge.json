@@ -13,6 +13,7 @@
       "name": "tone",
       "type": "Tone",
       "required": false,
+      "description": "The MEANING, never decoration: `success` is a state the reader can stop worrying about, `warning` needs them eventually, `danger` needs them now. `neutral` (default) is the honest answer when a value has no state at all — a category, a plan name, a count. A tone chosen because it looks good on the card is a badge that lies.",
       "values": [
         "neutral",
         "primary",

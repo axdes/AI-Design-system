@@ -6,6 +6,9 @@ type Gap = 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16
 type Span = 3 | 4 | 6 | 8 | 9 | 12
 
 type Props = HTMLAttributes<HTMLDivElement> & {
+  /** Space between the tracks, as a step of the 4pt scale — spacing lives on the
+   *  container, never as margins on the children. The scale is the whole point:
+   *  a number that is not a step is a decision nobody made. */
   gap?: Gap
   /**
    * Twelve equal tracks instead of the auto-fitting default: the layout where
@@ -36,6 +39,9 @@ type Props = HTMLAttributes<HTMLDivElement> & {
    * title in one card no longer pushes its neighbour's excerpt and meta out of
    * line. Only <ContentCard> knows how to take part; other children are
    * unaffected. */
+  /** Makes every row as tall as its tallest item, so cards in a grid line up
+   *  across rows instead of each row setting its own height. Leave it off when
+   *  the items are meant to be their own size. */
   alignRows?: boolean
 }
 

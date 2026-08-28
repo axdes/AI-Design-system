@@ -12,7 +12,8 @@
     {
       "name": "label",
       "type": "ReactNode",
-      "required": true
+      "required": true,
+      "description": "What the control is asking for, in the reader's words. Required, and it is the field's whole reason to exist: a control with no label announces only its current value, so a screen reader hears \"Annual leave\" and never learns what question that answers."
     },
     {
       "name": "htmlFor",
@@ -23,7 +24,8 @@
     {
       "name": "required",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Marks the field as required, to the reader and to the control. Use it when most of the form is optional; when most of it is required, mark the few that are not with `optional` instead."
     },
     {
       "name": "optional",

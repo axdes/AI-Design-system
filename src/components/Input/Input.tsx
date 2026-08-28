@@ -7,6 +7,10 @@ import { cn } from '../../lib/cn'
  * could focus or select the field programmatically, and every dialog that wanted
  * to reached for `autoFocus` instead. `ref` rides along in `...rest`. */
 type Props = Omit<ComponentPropsWithRef<'input'>, 'size'> & {
+  /** The field failed validation. A STATE, not a style: it turns the border and
+   *  gives `<Field>` the hook that ties the error message to this control, so
+   *  the reason is read out as part of the field. Colouring a border red by hand
+   *  produces the look without the announcement. */
   invalid?: boolean
   /** Which surface the field sits on. On `muted` (a page/PageHeader) the border
    *  is dropped since the white fill separates it; `base` (default, a white card
