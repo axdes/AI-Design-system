@@ -53,8 +53,8 @@ const mark = (text: string) =>
     `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="32"><text x="0" y="24" font-family="sans-serif" font-size="22" font-weight="700">${text}</text></svg>`,
   )}`
 
-const PHOTO = '/demo/coast.webp'
-const FACE = '/demo/avatar-cleo.jpg'
+const PHOTO = `${import.meta.env.BASE_URL}demo/coast.webp`
+const FACE = `${import.meta.env.BASE_URL}demo/avatar-cleo.jpg`
 
 export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
   /* The face IS the card: portrait above the name, the role under it, one way

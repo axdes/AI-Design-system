@@ -9,13 +9,13 @@ export function Example() {
     <AvatarGroup
       max={3}
       items={[
-        { name: 'Ada Meridian', src: '/demo/avatar-ada.jpg' },
-        { name: 'Cleo Nakamura', src: '/demo/avatar-cleo.jpg' },
+        { name: 'Ada Meridian', src: `${import.meta.env.BASE_URL}demo/avatar-ada.jpg` },
+        { name: 'Cleo Nakamura', src: `${import.meta.env.BASE_URL}demo/avatar-cleo.jpg` },
         /* One without a picture on purpose: a real team always has one, and the
            stack has to stay a stack when a face is missing. */
         { name: 'Dev Okonkwo' },
-        { name: 'Eve Lindqvist', src: '/demo/avatar-eve.jpg' },
-        { name: 'Finn Barros', src: '/demo/avatar-finn.jpg' },
+        { name: 'Eve Lindqvist', src: `${import.meta.env.BASE_URL}demo/avatar-eve.jpg` },
+        { name: 'Finn Barros', src: `${import.meta.env.BASE_URL}demo/avatar-finn.jpg` },
       ]}
     />
   )

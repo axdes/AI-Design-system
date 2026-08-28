@@ -62,8 +62,8 @@ export const CELL_SPECIMENS: Record<string, () => ReactElement> = {
   /* A person as the value of a column: the face makes the row scannable, and
      the name still carries it for anyone who cannot see the face. */
   identity: () => column('Owner', [
-    <Identity key="1" size="sm" src="/demo/avatar-ada.jpg" name="Ada Meridian" />,
-    <Identity key="2" size="sm" src="/demo/avatar-ben.jpg" name="Ben Calloway" />,
+    <Identity key="1" size="sm" src={`${import.meta.env.BASE_URL}demo/avatar-ada.jpg`} name="Ada Meridian" />,
+    <Identity key="2" size="sm" src={`${import.meta.env.BASE_URL}demo/avatar-ben.jpg`} name="Ben Calloway" />,
   ]),
 
   /* A short value read as a word. Left, unformatted, and never truncated
@@ -134,7 +134,7 @@ export const CELL_SPECIMENS: Record<string, () => ReactElement> = {
   /* A picture that identifies the row — small, square, and never the point of
      the row: it is how the eye finds the record it already knows. */
   media: () => column('File', [
-    <Thumbnail key="1" src="/demo/coast.webp" alt="Coast road at dusk" size="sm" />,
+    <Thumbnail key="1" src={`${import.meta.env.BASE_URL}demo/coast.webp`} alt="Coast road at dusk" size="sm" />,
     <Thumbnail key="2" alt="No preview" icon="description" size="sm" />,
   ]),
 

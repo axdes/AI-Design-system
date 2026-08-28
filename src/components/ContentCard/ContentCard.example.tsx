@@ -11,7 +11,7 @@ import { ContentCard } from './ContentCard'
  * crop, nor how the eyebrow reads over an image, nor that the slot takes a
  * picture at all — and an SVG without intrinsic width and height has no aspect
  * ratio, so it spilled over the text (2026-08-25). */
-const PHOTO = '/demo/landscape.webp'
+const PHOTO = `${import.meta.env.BASE_URL}demo/landscape.webp`
 
 const ENTRIES = [
   { title: 'Two sites closed their findings early', meta: '19 February' },

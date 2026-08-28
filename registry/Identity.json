@@ -85,5 +85,5 @@
   "uses": [
     "Avatar"
   ],
-  "example": "<Identity src=\"/demo/avatar-ben.jpg\" name=\"Ada Meridian\" secondary=\"Product designer\" size=\"lg\" />"
+  "example": "<Identity src={`${import.meta.env.BASE_URL}demo/avatar-ben.jpg`} name=\"Ada Meridian\" secondary=\"Product designer\" size=\"lg\" />"
 }

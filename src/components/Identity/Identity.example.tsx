@@ -3,5 +3,5 @@
 import { Identity } from './Identity'
 
 export function Example() {
-  return <Identity src="/demo/avatar-ben.jpg" name="Ada Meridian" secondary="Product designer" size="lg" />
+  return <Identity src={`${import.meta.env.BASE_URL}demo/avatar-ben.jpg`} name="Ada Meridian" secondary="Product designer" size="lg" />
 }

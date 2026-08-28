@@ -6,7 +6,7 @@ import { Row } from '../Layout'
 /* Photographs, shipped with the package (public/demo, licence noted there).
  * A letter cannot show what the disc does to a picture — that it crops it to a
  * circle and that the subject has to survive that crop. */
-const FACES = ['/demo/avatar-ada.jpg', '/demo/avatar-ben.jpg']
+const FACES = [`${import.meta.env.BASE_URL}demo/avatar-ada.jpg`, `${import.meta.env.BASE_URL}demo/avatar-ben.jpg`]
 
 /* `name` gives the initial and the label. A `src` that fails to load falls back
  * to that initial. `statusLabel` carries the presence meaning; colour alone

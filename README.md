@@ -1,5 +1,8 @@
 # AI Design System
 
+**[See it running](https://axdes.github.io/AI-Design-system/)** — every component
+with its real example, the rules it decides by, and the checks that hold it.
+
 131 React components that an agent can assemble into screens CORRECTLY — and the
 machinery that proves it did. The failure this exists to fix is the one review
 does not catch: a screen that compiles, reads fine, and is still wrong. Cards
