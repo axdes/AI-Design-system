@@ -63,7 +63,8 @@
     }
   },
   "uses": [
-    "Icon"
+    "Icon",
+    "Layout"
   ],
-  "example": "const [assigned, setAssigned] = useState(false)\nconst [channels, setChannels] = useState(['email'])\n\n<>\n  <Checkbox\n    label=\"Email me when a review is assigned\"\n    checked={assigned}\n    onChange={(e) => setAssigned(e.target.checked)}\n  />\n  <CheckboxGroup\n    label=\"How should we reach you?\"\n    options={CHANNELS}\n    value={channels}\n    onChange={setChannels}\n  />\n</>"
+  "example": "const [assigned, setAssigned] = useState(false)\nconst [channels, setChannels] = useState(['email'])\n/* ONE BOX IS A YES/NO; a group is \"any number of these\". They are different\n * questions and the reader can tell them apart by shape, which is why a lone\n * <Checkbox> repeated three times is the wrong answer to the second — it loses\n * the group's name, and a screen reader then reads three unrelated questions.\n *\n * `indeterminate` is not a third value the reader can choose. It is what a\n * PARENT box shows when some of its children are on, and it exists so a\n * select-all never lies about the state below it.\n *\n * `label` is required on both: a checkbox whose words sit beside it as loose\n * text is a checkbox with no name, and the hit area stops at the box.\n *\n * One thing the group does NOT do: show its own label. `CheckboxGroup label`\n * is announced and not painted, so the question a sighted reader needs comes\n * from the `<Field>` around it. A group dropped into a form on its own reads\n * as a list of unrelated boxes.\n */\n\n<Stack gap={4}>\n  <Checkbox\n    label=\"Email me when a review is assigned\"\n    checked={assigned}\n    onChange={(e) => setAssigned(e.target.checked)}\n  />\n "
 }
