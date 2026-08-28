@@ -30,13 +30,19 @@ const AGENTS = `${ROOT}/.claude/agents`
 const PKG = `${ROOT}/packages/design-system`
 const pkgRoot = existsSync(PKG) ? PKG : ROOT
 const stale = []
-for (const dir of [`${pkgRoot}/.claude`, `${pkgRoot}/docs/contract`]) {
+/* Every markdown the package ships, not two folders: the first pass looked at
+   `.claude` and `docs/contract` and missed `mcp/README.md`, which tells a
+   stranger to register the server at a path that is not there. The working log
+   is exempt — it narrates the monorepo on purpose and is stubbed on publish. */
+const SKIP_MD = /(docs\/CHANGELOG-REVIEW\.md|node_modules|coverage|^r\/|visual\/)/
+for (const dir of [pkgRoot]) {
   if (!existsSync(dir)) continue
   const walk = (d) => {
     for (const name of readdirSync(d)) {
       const f = `${d}/${name}`
-      if (statSync(f).isDirectory()) { walk(f); continue }
+      if (statSync(f).isDirectory()) { if (!SKIP_MD.test(name)) walk(f); continue }
       if (!name.endsWith('.md')) continue
+      if (SKIP_MD.test(f.replace(pkgRoot + '/', ''))) continue
       readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
         /* A mention that EXPLAINS the two layouts names them both; one that
            instructs names only the monorepo and breaks in the other. */

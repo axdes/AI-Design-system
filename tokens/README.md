@@ -56,7 +56,7 @@ Style Dictionary v5 and Terrazzo read these files directly:
 ```js
 // style-dictionary.config.js
 export default {
-  source: ['packages/design-system/tokens/design.tokens.json'],
+  source: ['tokens/design.tokens.json'],
   platforms: { css: { transformGroup: 'css', files: [{ destination: 'tokens.css', format: 'css/variables' }] } },
 }
 ```

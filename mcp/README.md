@@ -44,7 +44,7 @@ asks once whether to trust it.
   "mcpServers": {
     "design-system": {
       "command": "node",
-      "args": ["/absolute/path/to/packages/design-system/mcp/server.mjs"]
+      "args": ["/absolute/path/to/design-system/mcp/server.mjs"]
     }
   }
 }
@@ -53,7 +53,7 @@ asks once whether to trust it.
 **Claude Code, elsewhere**:
 
 ```bash
-claude mcp add design-system -- node /absolute/path/to/packages/design-system/mcp/server.mjs
+claude mcp add design-system -- node /absolute/path/to/design-system/mcp/server.mjs
 ```
 
 The path has to be absolute outside this repository, and the checkout has to be
