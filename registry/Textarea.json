@@ -12,7 +12,18 @@
     {
       "name": "invalid",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "The field failed validation. A STATE, not a style: it sets `aria-invalid`, which is what ties the error message `<Field>` renders to this control."
+    },
+    {
+      "name": "surface",
+      "type": "'base' | 'muted'",
+      "required": false,
+      "description": "Which surface it stands on — the same question `<Input>` answers, and it had no way to answer it: this wears `.input`, so the muted styling was already there and only the prop was missing. A textarea beside an input on the same card could not match it (2026-08-28). `muted` drops the border, because the fill separates it there; `base` (default) keeps it.",
+      "values": [
+        "base",
+        "muted"
+      ]
     },
     {
       "name": "size",
@@ -36,7 +47,19 @@
         "md",
         "lg"
       ]
+    },
+    "surface": {
+      "prop": "surface",
+      "values": [
+        "base",
+        "muted"
+      ]
     }
   },
-  "example": "<Textarea aria-label=\"Remarks\" rows={4} placeholder=\"Add any remarks\" />"
+  "uses": [
+    "CharacterCount",
+    "Field",
+    "Layout"
+  ],
+  "example": "<Stack gap={4}>\n  <Field label=\"Why is this on hold?\" htmlFor=\"why\" hint=\"One or two sentences the next reviewer can act on.\">\n    <Textarea id=\"why\" rows={3} placeholder=\"Waiting on the client to confirm the scope\" />\n  </Field>\n  <Field label=\"Internal note\" htmlFor=\"note\" count={<CharacterCount value=\"\" max={280} />}>\n    <Textarea id=\"note\" rows={2} size=\"sm\" surface=\"muted\" />\n  </Field>\n</Stack>"
 }

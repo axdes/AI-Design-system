@@ -124,9 +124,8 @@ const ALLOW = {
     'Link', 'ListItem', 'LoadMore', 'LogoWall', 'MenuButton', 'MenuIconButton', 'Meter',
     'NumberInput', 'PasswordInput', 'PivotTable', 'Popover', 'Quote', 'Radio', 'Rating',
     'RichMessage', 'SearchInput', 'SectionLabel', 'SegmentedControl', 'SessionPill',
-    'SetupGuide', 'SideNav', 'SidePanel', 'Sparkline', 'Stat', 'Tag', 'Textarea',
-    'Thumbnail', 'Time', 'TimeInput', 'Truncate', 'AuthTemplate', 'Page',
-    'SystemPageTemplate', 'WizardTemplate'
+    'SetupGuide', 'SideNav', 'SidePanel', 'Sparkline', 'Stat', 'Thumbnail', 'Time',
+    'TimeInput', 'Truncate', 'AuthTemplate', 'Page', 'SystemPageTemplate', 'WizardTemplate'
   ],
 }
 

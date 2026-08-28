@@ -7,8 +7,17 @@ import { Row } from '../Layout'
 export function Example() {
   const [recipients, setRecipients] = useState(['Sarah', 'Ahmed'])
 
-  /* Tag is the read-only counterpart to Chip: a selection token, not a button.
-   * Use Chip when the pill itself is the control. */
+  /* A TAG IS A LABEL; a Chip is a control. If pressing the pill does something,
+   * it is the wrong part — that is the choice this example is about, and it is
+   * the one that gets made wrong.
+   *
+   * `onRemove` does not contradict that: the tag stays a label and gains ONE
+   * control inside it, which is why `removeLabel` is required and has to name
+   * WHAT is being removed. A row of buttons all announced as "Remove" tells a
+   * screen-reader user nothing about which one they are on.
+   *
+   * `size` follows what the tag sits in, not how important it is: `sm` in a
+   * table cell or a dense row, `md` beside body text. */
   return (
     <Row gap={2}>
       {recipients.map((name) => (
@@ -16,6 +25,9 @@ export function Example() {
           {name}
         </Tag>
       ))}
+      {/* The same part with nothing to remove: a plain label, at the smaller
+          scale a table cell wants. */}
+      <Tag size="sm">Internal</Tag>
     </Row>
   )
 }

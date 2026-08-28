@@ -7,9 +7,17 @@ import { Input } from '../Input'
 import { Stack } from '../Layout'
 
 export function Example() {
-  /* For RICH content on click (a form, a set of controls, a detail card). Use
-   * <Tooltip> for text hints and <Dropdown> for a menu of actions. Spread the
-   * given trigger props onto whatever opens it. */
+  /* THREE THINGS OPEN OVER A PAGE and choosing between them is the decision
+   * here. A <Tooltip> names a control in a word and cannot be reached by touch.
+   * A <Dropdown> is a menu: a list of actions, one of which gets chosen. A
+   * Popover holds anything else — a form, a set of controls, a detail card — and
+   * is the only one of the three the reader can work INSIDE.
+   *
+   * `label` is required because the panel is a dialog: without a name a screen
+   * reader announces that something opened and nothing about what.
+   *
+   * `placement` is a preference decided by the room available, not the look, and
+   * the layer flips itself when the chosen side does not fit. */
   return (
     <Popover
       label="Quick filter"
