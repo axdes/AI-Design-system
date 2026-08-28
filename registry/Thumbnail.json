@@ -49,7 +49,7 @@
     }
   ],
   "sourcePath": "src/components/Thumbnail/Thumbnail.tsx",
-  "inherits": "Omit<ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height'>",
+  "inherits": "Omit<HTMLAttributes<HTMLSpanElement>, 'children'>",
   "variants": {
     "size": {
       "prop": "size",

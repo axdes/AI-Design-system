@@ -1,11 +1,19 @@
 import './Thumbnail.css'
-import type { ImgHTMLAttributes } from 'react'
+import type { HTMLAttributes } from 'react'
 import { cn } from '../../lib/cn'
 import { Icon, type IconName } from '../Icon'
 
 type Size = 'sm' | 'md'
 
-type Props = Omit<ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height'> & {
+/* SPAN attributes, not image ones, and the difference is not pedantry. The
+   contract used to inherit `ImgHTMLAttributes` and spread them onto the `<img>`,
+   which meant that a thumbnail with no `src` — the fallback branch, which is the
+   whole reason this component exists — silently dropped everything the caller
+   passed: the `id` a label pointed at, an `aria-describedby`, a `data-*` hook.
+   Found 2026-08-28 by a test asserting the passthrough across every component
+   that declares one. A Thumbnail IS the span; the image inside it is an
+   implementation of one branch. */
+type Props = Omit<HTMLAttributes<HTMLSpanElement>, 'children'> & {
   /** The picture. Leave it out and the fallback icon stands in, which is what
    *  a row with no image needs: the column still has one width. */
   src?: string
@@ -33,9 +41,9 @@ type Props = Omit<ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height'> & {
  */
 export function Thumbnail({ src, alt, icon = 'insert_drive_file', size, ratio, className, ...rest }: Props) {
   return (
-    <span className={cn('thumbnail', className)} data-size={size} data-ratio={ratio}>
+    <span className={cn('thumbnail', className)} data-size={size} data-ratio={ratio} {...rest}>
       {src
-        ? <img src={src} alt={alt} loading="lazy" {...rest} />
+        ? <img src={src} alt={alt} loading="lazy" />
         : (
           /* The fallback is not empty space: a column of images with a hole in
            * it reads as a broken image, not as a record without one. */

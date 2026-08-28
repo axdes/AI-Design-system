@@ -26,6 +26,16 @@
  * when the score falls under it. Lowering the floor is a decision somebody
  * makes, not a side effect of an edit.
  *
+ * TWO PASSES, and the second is why the number is honest. A component's own
+ * tests run first because they are fast and kill most of it. What they cannot
+ * kill is anything a CROSS-CUTTING test holds — the axe sweep over every golden
+ * example, the passthrough test over every component that spreads its props,
+ * the specimen coverage — because those live in src/test and a folder-scoped run
+ * never loads them. Measured 2026-08-28: the passthrough test killed six
+ * mutants the score still counted as survivors. So a survivor is re-run against
+ * src/test before it is recorded, and only what survives BOTH is a survivor.
+ * The cheap pass does the volume; the expensive one only pays for the tail.
+ *
  * WHY --check only re-measures changed components. A full pass is ~14 minutes,
  * which is twenty times the whole gate, so running it on every commit would end
  * with someone deleting the step. A component whose source is byte-identical to
@@ -100,8 +110,18 @@ for (const name of todo) {
     if (mutated === original) continue
     writeFileSync(file, mutated)
     let died = false
-    try { execSync(`npx vitest run src/components/${name} --reporter=dot`, { cwd: ROOT, stdio: 'pipe', timeout: 300000 }) }
+    /* `ignore`, not `pipe`: only the exit code matters, and piping a full test
+       run's output through execSync throws ENOBUFS on the wide passes — which is
+       how a sweep died silently and left the baseline a generation behind
+       (2026-08-28). */
+    try { execSync(`npx vitest run src/components/${name} --reporter=dot`, { cwd: ROOT, stdio: 'ignore', timeout: 300000 }) }
     catch { died = true }
+    /* Survived its own tests — ask the ones that hold every component at once
+       before believing it. */
+    if (!died) {
+      try { execSync('npx vitest run src/test --reporter=dot', { cwd: ROOT, stdio: 'ignore', timeout: 600000 }) }
+      catch { died = true }
+    }
     writeFileSync(file, original)
     ;(died ? row.killed : row.survived).push(op.id)
     /* A mutant that used to die and now lives is a test that stopped biting —

@@ -17,6 +17,9 @@ import { Page } from '@/blocks/Page'
 import { Prose } from '@/components/Prose'
 import { AppLayout } from '@/components/AppLayout'
 import { Avatar } from '@/components/Avatar'
+import { SectionLabel } from '@/components/SectionLabel'
+import { Slider } from '@/components/Slider'
+import { Switch } from '@/components/Switch'
 import { AvatarGroup } from '@/components/AvatarGroup'
 import { Badge } from '@/components/Badge'
 import { BarChart } from '@/components/BarChart'
@@ -108,6 +111,11 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
   AppLayout: (p) => <AppLayout nav={<nav aria-label="Primary" />} {...p}>Body</AppLayout>,
   Avatar: (p) => <Avatar name="Ada Meridian" {...p} />,
   Badge: (p) => <Badge {...p}>Draft</Badge>,
+  /* Controlled parts need a value to render at all; these three carry the
+     smallest one that is still real, so the passthrough test can reach them. */
+  SectionLabel: (p) => <SectionLabel {...p}>This quarter</SectionLabel>,
+  Slider: (p) => <Slider value={20} onChange={() => undefined} label="Volume" {...p} />,
+  Switch: (p) => <Switch checked onChange={() => undefined} label="Notify me" {...p} />,
   ColorSwatch: (p) => <ColorSwatch value="#4638d3" label="Indigo" {...p} />,
   IconDisc: (p) => <IconDisc icon="campaign" {...p} />,
   Button: (p) => <Button {...p}>{kids(p, 'Save')}</Button>,
