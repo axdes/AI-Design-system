@@ -86,12 +86,38 @@ const layers = LAYERS.map(([id, file, means]) => ({ id, means, doc: ds(`screen-s
  * 2026-08-25).
  */
 const NOT_A_SPEC = /(^schema|rules|\.schema)\.json$/
+
+/* And it cannot be recounted in a PUBLISHED checkout, because the specs are
+ * exactly what does not ship. `npm run check` in a fresh clone of the public
+ * repository is this package's own proof that it stands alone, and on 2026-08-28
+ * that proof went red here: the clone counted zero specs, the published
+ * public/data said seventeen, and `gen:data:check` called the data stale. It was
+ * not stale. It was a fact from a repository the clone cannot see.
+ *
+ * So the count is carried rather than recomputed when — and only when — every
+ * spec the drop list names is absent. In the monorepo those files are all there
+ * and this recomputes as it always did; in a published tree it reproduces what
+ * the publisher wrote, which is the only honest answer available. Deleting the
+ * specs in the monorepo does not freeze the number, because the drop list would
+ * still name files that are simply gone rather than dropped, and the two cases
+ * differ in nothing this can see — which is why the signature is ALL of them,
+ * not any of them. */
+const droppedSpecs = JSON.parse(readFileSync(`${ROOT}/config/publishable.json`, 'utf8'))
+  .neverShips.filter((p) => /^screen-specs\/[^/]+\.json$/.test(p))
+const publishedTree = droppedSpecs.length > 0 && droppedSpecs.every((p) => !existsSync(`${ROOT}/${p}`))
+
 const specCounts = {}
 let specTotal = 0
-for (const f of readdirSync(`${ROOT}/screen-specs`).filter((f) => f.endsWith('.json') && !NOT_A_SPEC.test(f))) {
-  const a = ds(`screen-specs/${f}`).archetype
-  specTotal += 1
-  if (a) specCounts[a] = (specCounts[a] ?? 0) + 1
+if (publishedTree) {
+  const carried = JSON.parse(readFileSync(`${OUT}/specs.json`, 'utf8'))
+  Object.assign(specCounts, carried.counts ?? {})
+  specTotal = carried.total ?? 0
+} else {
+  for (const f of readdirSync(`${ROOT}/screen-specs`).filter((f) => f.endsWith('.json') && !NOT_A_SPEC.test(f))) {
+    const a = ds(`screen-specs/${f}`).archetype
+    specTotal += 1
+    if (a) specCounts[a] = (specCounts[a] ?? 0) + 1
+  }
 }
 
 /* Every step of THIS package's gate, with the reason each one runs.
