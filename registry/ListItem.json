@@ -25,7 +25,10 @@
     }
   },
   "uses": [
-    "Icon"
+    "Card",
+    "Icon",
+    "Layout",
+    "MetaItem"
   ],
-  "example": "<ListItem onClick={() => undefined}>\n  <strong>Ada Meridian</strong>\n  <span> Product designer</span>\n</ListItem>"
+  "example": "const files = [\n  { id: 'a', name: 'Q3 delivery review', meta: 'Edited 2 days ago' },\n  { id: 'b', name: 'Onboarding checklist', meta: 'Edited last week' },\n  { id: 'c', name: 'Incident postmortem', meta: 'Edited in March' },\n]\n\n<Card>\n  <Stack gap={1}>\n    {files.map((file) => (\n      <ListItem key={file.id} icon=\"description\" onClick={() => undefined}>\n        <Row gap={3} align=\"center\" justify=\"between\">\n          <strong>{file.name}</strong>\n          <MetaItem icon=\"schedule\">{file.meta}</MetaItem>\n        </Row>\n      </ListItem>\n    ))}\n  </Stack>\n</Card>"
 }

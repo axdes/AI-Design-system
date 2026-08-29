@@ -120,11 +120,10 @@ const ALLOW = {
     'Accordion', 'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'Calendar',
     'ChatMessage', 'ColorSwatch', 'Combobox', 'CopyButton', 'CountBadge', 'DateBlock',
     'DatePicker', 'DateRangePicker', 'Divider', 'DonutChart', 'ExpandButton', 'InlineText',
-    'InputGroup', 'Kbd', 'LineChart', 'Link', 'ListItem', 'LoadMore', 'LogoWall',
-    'MenuButton', 'MenuIconButton', 'Meter', 'NumberInput', 'PasswordInput', 'PivotTable',
-    'Quote', 'Rating', 'RichMessage', 'SectionLabel', 'SessionPill', 'SetupGuide', 'SideNav',
-    'SidePanel', 'Stat', 'Thumbnail', 'Time', 'TimeInput', 'Truncate', 'AuthTemplate',
-    'Page', 'SystemPageTemplate', 'WizardTemplate'
+    'InputGroup', 'Kbd', 'LineChart', 'Link', 'LoadMore', 'LogoWall', 'MenuButton',
+    'MenuIconButton', 'NumberInput', 'PasswordInput', 'PivotTable', 'Quote', 'Rating',
+    'RichMessage', 'SessionPill', 'SetupGuide', 'SideNav', 'SidePanel', 'Thumbnail',
+    'TimeInput', 'Truncate', 'AuthTemplate', 'Page', 'SystemPageTemplate', 'WizardTemplate'
   ],
 }
 

@@ -57,6 +57,12 @@
   flex: none;
   color: var(--icon-muted);
 }
-.list-item-body { min-inline-size: 0; }
+/* THE BODY IS THE REST OF THE ROW, not the width of its words. The row is
+ * already `width: 100%`; without `flex: 1` the body shrank to its content, so
+ * anything laid out inside it — a title with its meta pushed to the far end, a
+ * trailing action — had no room to be pushed to, and `justify: space-between`
+ * silently did nothing (2026-08-29). `min-inline-size: 0` is what lets a long
+ * title truncate instead of forcing the row wider than the list. */
+.list-item-body { flex: 1; min-inline-size: 0; }
 .list-item[data-icon]:hover .list-item-marker,
 .list-item[data-icon]:focus-visible .list-item-marker { color: inherit; }
