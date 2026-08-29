@@ -47,6 +47,16 @@
   text-decoration: none; border-radius: var(--radius-sm);
 }
 button.side-nav-logo { cursor: pointer; }
+/* A BRAND THAT LINKS HOME IS STILL THE BRAND. When `collapseControl` moves the
+ * toggle off the mark, the slot is a plain span, and whatever a product puts
+ * inside it keeps its own styles: an <a href> home came out underlined and
+ * link-blue with the wordmark stacked under the icon, because the anchor is
+ * inline and the slot's rules stop at the slot (2026-08-29). The brand's box
+ * and its ink belong to anything standing in for the brand. */
+.side-nav-logo a {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  color: inherit; text-decoration: none;
+}
 .side-nav-logo:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * 2); }
 
 /* The rail (menu + anything under it) sits in the MIDDLE of the row between the

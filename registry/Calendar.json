@@ -85,7 +85,9 @@
   "context": "region",
   "uses": [
     "IconButton",
+    "Layout",
+    "SectionLabel",
     "Tooltip"
   ],
-  "example": "const [date, setDate] = useState<Date | undefined>(new Date(2026, 0, 15))\nconst [month, setMonth] = useState(MONTH)\n/* Standalone month grid. Keyboard: arrows move day, PageUp/Down move month.\n * Month/weekday names come from Intl (locale + RTL aware). For a field that\n * opens this in a popover, use <DatePicker>. */\n\n<Calendar value={date} onChange={setDate} month={month} onMonthChange={setMonth} />"
+  "example": "const [date, setDate] = useState<Date | undefined>(new Date(2026, 0, 15))\nconst [month, setMonth] = useState(MONTH)\nconst [usDate, setUsDate] = useState<Date | undefined>(new Date(2026, 0, 15))\nconst [usMonth, setUsMonth] = useState(MONTH)\n\n<Row gap={8} align=\"start\">\n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">de-DE</SectionLabel>\n    <Calendar\n      label=\"Delivery date\"\n      locale=\"de-DE\"\n      weekStartsOn={1}\n      value={date}\n      onChange={setDate}\n      month={month}\n      onMonthChange={setMonth}\n    />\n  </Stack>\n  {/* Same month, same selected day, one column of difference. */}\n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">en-US</SectionLabel>\n    <Calendar\n      label=\"Delivery date\"\n      locale=\"en-US\"\n      weekStartsOn={0}\n      value={usDate}\n      onChange={setUsDate}\n      month={usMonth}\n      onMonthChange={setUsMonth}\n    />\n  </Stack>\n</Row>"
 }

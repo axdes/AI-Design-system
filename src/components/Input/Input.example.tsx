@@ -13,9 +13,12 @@ import { Stack } from '../Layout'
  * hook it needs to read the error out as part of the field. Never colour a
  * border red by hand — the reason a screen reader gets comes from this prop.
  *
- * `surface` is the one prop about where it stands rather than what it does.
- * `muted` is for an input on a card or a toolbar, whose own fill would otherwise
- * disappear into the surface behind it.
+ * `surface` NAMES WHAT IS BEHIND THE INPUT, not the input. `muted` is for a
+ * `--muted` ground — a toolbar, a tinted strip, the page's own muted
+ * background — where the field's white fill already separates it, so the
+ * resting border comes off. A card is white, so there the fill separates
+ * nothing and `base` keeps the border that does. The wrong way round on a card
+ * leaves a field with no fill and no border, which is a field nobody can see.
  */
 export function Example() {
   return (

@@ -110,7 +110,13 @@ export function SideNav({
   const brand = isCollapsed ? (logoMark ?? logo) : logo;
 
   return (
-    <aside className="side-nav" data-collapsed={isCollapsed || undefined} data-has-mark={logoMark ? "" : undefined} aria-label={ariaLabel}>
+    /* THE NAVIGATION IS THE LANDMARK, and the rail around it is chrome.
+       This was an <aside aria-label> wrapping an unnamed <nav>, which is two
+       landmarks for one thing and only one of them named: axe reported
+       `landmark-unique` the moment a second rail appeared on the page, and the
+       same fires on any page carrying a breadcrumb or a footer nav beside this
+       one (2026-08-29). The name belongs on the element it names. */
+    <div className="side-nav" data-collapsed={isCollapsed || undefined} data-has-mark={logoMark ? "" : undefined}>
       {brand && (
         <div className="side-nav-header">
           {logoTogglable ? (
@@ -130,7 +136,7 @@ export function SideNav({
       )}
 
       <div className="side-nav-rail">
-        <nav className="side-nav-menu">
+        <nav className="side-nav-menu" aria-label={ariaLabel}>
           {groups.map((group, gi) => (
             // eslint-disable-next-line @eslint-react/no-array-index-key -- the label IS the key; the index only covers an unlabelled group, of which there is at most one
             <Fragment key={group.label ?? gi}>
@@ -199,6 +205,6 @@ export function SideNav({
       </div>
 
       {footer && <div className="side-nav-footer">{footer}</div>}
-    </aside>
+    </div>
   );
 }

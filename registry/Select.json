@@ -109,5 +109,5 @@
     "Icon",
     "Layout"
   ],
-  "example": "const [type, setType] = useState<Leave>('annual')\nconst [second, setSecond] = useState<Leave>('sick')\n\n<Row gap={3} align=\"end\">\n  <Select<Leave> label=\"Leave type\" value={type} onChange={setType} options={LEAVE} />\n  <Select<Leave> label=\"On a card\" surface=\"muted\" size=\"sm\" value={second} onChange={setSecond} options={LEAVE} />\n</Row>"
+  "example": "const [type, setType] = useState<Leave>('annual')\nconst [second, setSecond] = useState<Leave>('sick')\n\n<Row gap={3} align=\"end\">\n  <Select<Leave> label=\"Leave type\" value={type} onChange={setType} options={LEAVE} />\n  <Select<Leave> label=\"In a toolbar\" surface=\"muted\" size=\"sm\" value={second} onChange={setSecond} options={LEAVE} />\n</Row>"
 }

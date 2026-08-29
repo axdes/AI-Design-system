@@ -20,7 +20,7 @@ describe('SideNav', () => {
   it('is a named landmark with its items inside', () => {
     render(<SideNav groups={groups} aria-label="Primary" />)
 
-    expect(screen.getByRole('complementary', { name: 'Primary' })).toBeInTheDocument()
+    expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Inbox' })).toBeInTheDocument()
   })
 

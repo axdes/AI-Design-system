@@ -17,9 +17,11 @@ const LEAVE = [
  * More than a dozen, or a set the reader has to search, and it is a <Combobox>.
  * Above a list, filtering rather than choosing, it is a <FilterDropdown>.
  *
- * `surface` is the one prop that is about where it stands rather than what it
- * does: `muted` for a control on a card or a toolbar, whose own fill would
- * otherwise disappear into the surface behind it.
+ * `surface` NAMES WHAT IS BEHIND THE CONTROL, not the control: `muted` for a
+ * `--muted` ground — a toolbar, a tinted strip, the page's own muted background
+ * — where the control's white fill already separates it, so the resting border
+ * comes off. A card is white, so there the fill separates nothing and `base`
+ * keeps the border that does.
  *
  * `label` is required and it is not decoration — a select with no name announces
  * only its current value, so a screen reader user hears "Annual leave" and has
@@ -31,7 +33,7 @@ export function Example() {
   return (
     <Row gap={3} align="end">
       <Select<Leave> label="Leave type" value={type} onChange={setType} options={LEAVE} />
-      <Select<Leave> label="On a card" surface="muted" size="sm" value={second} onChange={setSecond} options={LEAVE} />
+      <Select<Leave> label="In a toolbar" surface="muted" size="sm" value={second} onChange={setSecond} options={LEAVE} />
     </Row>
   )
 }
