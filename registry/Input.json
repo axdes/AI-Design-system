@@ -38,6 +38,7 @@
     }
   ],
   "sourcePath": "src/components/Input/Input.tsx",
+  "context": "region",
   "inherits": "Omit<ComponentPropsWithRef<'input'>, 'size'>",
   "variants": {
     "size": {

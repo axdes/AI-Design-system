@@ -83,6 +83,7 @@
     }
   ],
   "sourcePath": "src/components/Combobox/Combobox.tsx",
+  "context": "region",
   "variants": {
     "multiple": {
       "prop": "multiple",

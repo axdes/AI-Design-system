@@ -67,6 +67,7 @@
     }
   ],
   "sourcePath": "src/components/InputGroup/InputGroup.tsx",
+  "context": "region",
   "variants": {
     "size": {
       "prop": "size",

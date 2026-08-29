@@ -92,6 +92,7 @@
     }
   ],
   "sourcePath": "src/components/DatePicker/DatePicker.tsx",
+  "context": "region",
   "variants": {
     "invalid": {
       "prop": "invalid",

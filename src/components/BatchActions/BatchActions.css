@@ -7,8 +7,19 @@
   gap: var(--space-3);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
-  background: var(--accent-soft);
-  color: var(--accent-foreground);
+  /* THE MODE HAS TO BE VISIBLE, AND IT IS THE BRAND THAT SAYS IT.
+   *
+   * This read `--accent-soft`, which is `--neutral-200`, on a page whose ground
+   * is `--neutral-100`: a step of six per channel, about 1.05:1, so the bar the
+   * comment above calls "the accent wash" was the same colour as the page it
+   * was meant to stand out from (measured 2026-08-29). A mode nobody can see is
+   * not a mode.
+   *
+   * `--primary-soft` is the brand's lightest tint and its paired ink, which is
+   * what the intent was: selection is not a neutral state that happens to the
+   * table, it is the reader having taken hold of it. */
+  background: var(--primary-soft);
+  color: var(--primary-soft-foreground);
 }
 
 .batch-actions-count {
@@ -22,3 +33,11 @@
 /* The actions take the trailing edge; Clear is last, after them, because it is
  * the way out rather than one more thing to do to the rows. */
 .batch-actions-list { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }
+
+/* THE WAY OUT SPEAKS THE BAR'S INK. Clear is a ghost button, and a ghost takes
+ * `--foreground` — the page's ordinary dark, which on this brand wash is the one
+ * thing in the row that belongs to a different palette. Inheriting puts it in
+ * the same ink as the count at the other end, so the bar reads as one strip
+ * with two weights rather than as three unrelated treatments (owner, read off
+ * the gallery, 2026-08-29). */
+.batch-actions .btn[data-variant="ghost"] { color: inherit; }

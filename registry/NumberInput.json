@@ -79,6 +79,7 @@
     }
   ],
   "sourcePath": "src/components/NumberInput/NumberInput.tsx",
+  "context": "region",
   "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step' | 'size'>",
   "variants": {
     "invalid": {

@@ -33,6 +33,7 @@
     }
   ],
   "sourcePath": "src/components/SearchInput/SearchInput.tsx",
+  "context": "region",
   "inherits": "InputHTMLAttributes<HTMLInputElement>",
   "variants": {
     "surface": {
