@@ -1,6 +1,6 @@
 # Intake — supplier-portal
 
-Read: 2026-08-28 · Source: `intake/fixtures/supplier-portal.md` · 45 lines · 19 findings
+Read: 2026-08-29 · Source: `intake/fixtures/supplier-portal.md` · 45 lines · 19 findings
 
 Written by `npm run intake`. It reports what it can CITE and nothing else: every
 line below names the token or the registry entry it was decided against. What the

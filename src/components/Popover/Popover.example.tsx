@@ -4,7 +4,7 @@ import { Popover } from './Popover'
 import { Button } from '../Button'
 import { Field } from '../Field'
 import { Input } from '../Input'
-import { Stack } from '../Layout'
+import { Row, Stack } from '../Layout'
 
 export function Example() {
   /* THREE THINGS OPEN OVER A PAGE and choosing between them is the decision
@@ -19,16 +19,32 @@ export function Example() {
    * `placement` is a preference decided by the room available, not the look, and
    * the layer flips itself when the chosen side does not fit. */
   return (
-    <Popover
-      label="Quick filter"
-      trigger={(props) => <Button variant="secondary" {...props}>Filter</Button>}
-    >
-      <Stack gap={3}>
-        <Field label="Minimum amount" htmlFor="min">
-          <Input id="min" type="number" placeholder="0" />
-        </Field>
-        <Button variant="primary" block>Apply</Button>
-      </Stack>
-    </Popover>
+    <Row gap={3} align="center">
+      {/* The second one prefers to open UPWARD — what a control near the bottom
+          of a page needs. Both are preferences: the layer flips itself when the
+          side it was asked for does not fit. */}
+      <Popover
+        label="Quick filter"
+        placement="bottom"
+        trigger={(props) => <Button variant="secondary" {...props}>Filter</Button>}
+      >
+        <Stack gap={3}>
+          <Field label="Minimum amount" htmlFor="min">
+            <Input id="min" type="number" placeholder="0" />
+          </Field>
+          <Button variant="primary" block>Apply</Button>
+        </Stack>
+      </Popover>
+      <Popover
+        label="Sort"
+        placement="top"
+        trigger={(props) => <Button variant="ghost" {...props}>Sort</Button>}
+      >
+        <Stack gap={2}>
+          <Button variant="link">Newest first</Button>
+          <Button variant="link">Oldest first</Button>
+        </Stack>
+      </Popover>
+    </Row>
   )
 }

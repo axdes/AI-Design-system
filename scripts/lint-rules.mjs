@@ -118,14 +118,13 @@ const ALLOW = {
      example, never by adding one back. */
   flatExample: [
     'Accordion', 'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'ButtonGroup',
-    'Calendar', 'ChatMessage', 'Checkbox', 'ColorSwatch', 'Combobox', 'CopyButton',
-    'CountBadge', 'DateBlock', 'DatePicker', 'DateRangePicker', 'Divider', 'DonutChart',
-    'ExpandButton', 'Identity', 'InlineText', 'InputGroup', 'Kbd', 'Label', 'LineChart',
-    'Link', 'ListItem', 'LoadMore', 'LogoWall', 'MenuButton', 'MenuIconButton', 'Meter',
-    'NumberInput', 'PasswordInput', 'PivotTable', 'Popover', 'Quote', 'Radio', 'Rating',
-    'RichMessage', 'SectionLabel', 'SessionPill', 'SetupGuide', 'SideNav', 'SidePanel',
-    'Sparkline', 'Stat', 'Thumbnail', 'Time', 'TimeInput', 'Truncate', 'AuthTemplate',
-    'Page', 'SystemPageTemplate', 'WizardTemplate'
+    'Calendar', 'ChatMessage', 'ColorSwatch', 'Combobox', 'CopyButton', 'CountBadge',
+    'DateBlock', 'DatePicker', 'DateRangePicker', 'Divider', 'DonutChart', 'ExpandButton',
+    'Identity', 'InlineText', 'InputGroup', 'Kbd', 'Label', 'LineChart', 'Link', 'ListItem',
+    'LoadMore', 'LogoWall', 'MenuButton', 'MenuIconButton', 'Meter', 'NumberInput',
+    'PasswordInput', 'PivotTable', 'Quote', 'Radio', 'Rating', 'RichMessage', 'SectionLabel',
+    'SessionPill', 'SetupGuide', 'SideNav', 'SidePanel', 'Stat', 'Thumbnail', 'Time',
+    'TimeInput', 'Truncate', 'AuthTemplate', 'Page', 'SystemPageTemplate', 'WizardTemplate'
   ],
 }
 

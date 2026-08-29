@@ -50,6 +50,9 @@ export function Example() {
       {/* The parent of a partly-chosen set: neither on nor off, and it says so
           rather than picking one. */}
       <Checkbox label="All channels" indeterminate checked={false} onChange={() => undefined} />
+      {/* `size` follows the density of the form around it, not the importance of
+          the question: `sm` in a table row or a filter panel, `md` in a form. */}
+      <Checkbox label="Compact row" size="sm" checked onChange={() => undefined} />
     </Stack>
   )
 }

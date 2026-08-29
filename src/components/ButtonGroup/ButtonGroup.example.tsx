@@ -10,6 +10,16 @@ import { ButtonGroup } from './ButtonGroup'
  * names the GROUP, because "Save" next to a bare caret does not say what the
  * caret opens. `size="md"` on the icon half is not optional — IconButton
  * defaults to sm and Button to md, so an unsized pair is 32px beside 40px. */
+/* ONE ACTION WITH A SECOND WAY TO DO IT — not two actions side by side. The
+ * group welds a button to a menu of its variants: Save, and the other ways to
+ * save. Two unrelated actions belong in a <Row> with their own weights, because
+ * a group says they are the same thing and the reader believes it.
+ *
+ * `label` names the pair for a screen reader, which otherwise announces two
+ * controls with no relationship. `tone` belongs to the action, not to the group:
+ * `primary` when this is what the screen is for, `neutral` when it is one of
+ * several things the reader might do here.
+ */
 export function Example() {
   return (
     <ButtonGroup label="Save options" tone="primary">
