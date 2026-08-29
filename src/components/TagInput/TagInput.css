@@ -7,7 +7,13 @@
   gap: var(--space-1);
   min-block-size: var(--control-height);
   padding-inline: var(--space-2);
-  padding-block: var(--space-1);
+  /* 2px, NOT 4. The tag inside stands at --control-height-sm (32); at 4px of
+   * padding the content box is 40 and the borders take it to 42, so the field
+   * pushed past its own floor and stood 2px taller than every other control in
+   * the row (measured 2026-08-29). At 2px the content is 38, the 40 floor wins,
+   * and a tag that wraps to a second line still grows the field the way it
+   * should. */
+  padding-block: var(--space-2xs);
   border: 1px solid var(--input);
   border-radius: var(--control-radius);
   background: var(--background);

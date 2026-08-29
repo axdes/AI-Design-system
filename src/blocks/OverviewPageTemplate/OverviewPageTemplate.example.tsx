@@ -41,8 +41,17 @@ export function Example() {
           </Row>
         ))}
       </OverviewWidget>
-      <OverviewWidget title="Monthly budget">
-        {/* A value on a fixed scale is a Meter, not a sentence. */}
+      <OverviewWidget
+        title="Monthly budget"
+        footer={<Button variant="link">Budget breakdown</Button>}
+      >
+        {/* A value on a fixed scale is a Meter, not a sentence. But `label` on a
+            Meter is SPOKEN AND NOT DRAWN, so a bar on its own is an anonymous
+            bar: this widget showed a sighted reader a blue line at 72% of its
+            track and no number anywhere (owner, read off the gallery,
+            2026-08-29). Meter's own example says the reading comes from what
+            the meter sits in, and here that is the Stat above it. */}
+        <Stat value={72} unit="%" label="of the review budget used" size="lg" />
         <Meter value={72} max={100} label="72% of the review budget used" />
       </OverviewWidget>
     </OverviewPageTemplate>

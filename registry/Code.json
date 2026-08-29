@@ -34,7 +34,6 @@
     }
   ],
   "sourcePath": "src/components/Code/Code.tsx",
-  "context": "region",
   "uses": [
     "Prose"
   ],

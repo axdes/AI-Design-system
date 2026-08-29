@@ -85,19 +85,19 @@
   {
     "name": "--avatar-lg",
     "group": "size",
-    "value": "2.5rem",
+    "value": "var(--control-height-lg)",
     "layer": "semantic"
   },
   {
     "name": "--avatar-md",
     "group": "size",
-    "value": "2rem",
+    "value": "var(--control-height)",
     "layer": "semantic"
   },
   {
     "name": "--avatar-sm",
     "group": "size",
-    "value": "1.5rem",
+    "value": "var(--control-height-sm)",
     "layer": "semantic"
   },
   {
@@ -403,7 +403,7 @@
   {
     "name": "--control-height-lg",
     "group": "size",
-    "value": "3.25rem",
+    "value": "3rem",
     "layer": "semantic"
   },
   {

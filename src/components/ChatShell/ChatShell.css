@@ -59,3 +59,34 @@
   .chat-shell-body,
   .chat-shell-body[data-with-panel] { grid-template-columns: 1fr; }
 }
+
+/* THE THREAD COLUMN, WHICH THE SHELL OWES AND DID NOT SHIP.
+ * The golden example put `<h1>` and the composer inside `.chat-shell-thread`
+ * and the class existed nowhere: not here, not in styles/, not in any app.
+ * With `* { margin: 0 }` from the reset that is a block box with no padding
+ * and no gap, so the greeting sat directly on the composer and its descenders
+ * crossed the 2px border (owner, read off the gallery, 2026-08-29). The
+ * registry publishes that snippet to agents as the shape to copy, so the class
+ * had to become real rather than leave the example. It carries the three
+ * things the column has to answer: it is the region that scrolls (the shell
+ * itself never does), the conversation keeps the 44rem measure the system
+ * already named, and the turns are separated. */
+.chat-shell-thread {
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+}
+/* A conversation full-bleed on a 1280px card puts the two turns against
+ * opposite edges and stops reading as an exchange (the same reason
+ * ChatMessage's own example spans six columns of twelve). The measure lives on
+ * the children so the SCROLLBAR stays on the column edge, where a reader looks
+ * for it, rather than on a centred box inside it. */
+.chat-shell-thread > * {
+  inline-size: 100%;
+  max-inline-size: var(--chat-message-max-width);
+  margin-inline: auto;
+}

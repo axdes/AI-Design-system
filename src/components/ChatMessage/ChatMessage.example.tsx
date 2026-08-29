@@ -1,7 +1,7 @@
 /* Golden example. A real module: tsc compiles it, src/test/examples.test.tsx
  * renders it, and the registry publishes the usage below to agents. */
 import { ChatMessage } from './ChatMessage'
-import { Grid, GridItem, Stack } from '../Layout'
+import { Stack } from '../Layout'
 
 const QUESTION = 'Can I carry unused leave into next year?'
 const ANSWER = 'Up to five days carry over, and they expire at the end of March.'
@@ -23,19 +23,19 @@ const ANSWER = 'Up to five days carry over, and they expire at the end of March.
  * worse than not asking.
  */
 export function Example() {
-  /* A conversation is a COLUMN. Full-bleed, the two turns end up hugging
-     opposite edges of a 1280px page and stop reading as an exchange at all. */
+  /* A conversation is a COLUMN, and the column's measure belongs to what the
+     thread sits in — `.chat-shell-thread` supplies it in a product, and both
+     places this example is shown supply one too. It used to carry half of a
+     twelve-column grid instead, which was a measure of its own on top of
+     theirs: on the catalogue's 32rem stage that left the turns 250px wide and
+     a five-word question broke over three lines (owner, 2026-08-29). */
   return (
-    <Grid columns={12}>
-      <GridItem span={6}>
-        <Stack gap={4}>
-          <ChatMessage role="user" text={QUESTION}>{QUESTION}</ChatMessage>
+    <Stack gap={4}>
+      <ChatMessage role="user" text={QUESTION}>{QUESTION}</ChatMessage>
 
-          <ChatMessage role="assistant" text={ANSWER} onDislike={() => undefined}>
-            {ANSWER}
-          </ChatMessage>
-        </Stack>
-      </GridItem>
-    </Grid>
+      <ChatMessage role="assistant" text={ANSWER} onDislike={() => undefined}>
+        {ANSWER}
+      </ChatMessage>
+    </Stack>
   )
 }

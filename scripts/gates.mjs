@@ -61,6 +61,7 @@ export const GATES = [
   { run: 'contrast', why: 'WCAG pairs in both themes, from the token files' , lane: 'main' },
   { run: 'boundary', why: 'SC 1.4.11 — a control edge against every surface it can land on', lane: 'main' },
   { run: 'states', why: 'one control, one set of answers: hover, press, focus, disabled, invalid', lane: 'main' },
+  { run: 'heights', why: 'one ladder: every part that stands in a row stands on 32/40/48', lane: 'browser' },
   { run: 'context', why: 'what the must-read context costs every agent on every task' , lane: 'main' },
   { run: 'check:spec', why: 'screen specs match the system, and their behaviours name a test that claims them' , lane: 'main' },
   { run: 'gen:data:check', why: 'public/data still says what the package says — the account an agent fetches may not drift', lane: 'main' },

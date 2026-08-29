@@ -50,12 +50,11 @@
     }
   ],
   "sourcePath": "src/components/ChatMessage/ChatMessage.tsx",
-  "context": "region",
   "uses": [
     "Chip",
     "IconButton",
     "Layout",
     "Tooltip"
   ],
-  "example": "<Grid columns={12}>\n  <GridItem span={6}>\n    <Stack gap={4}>\n      <ChatMessage role=\"user\" text={QUESTION}>{QUESTION}</ChatMessage>\n      <ChatMessage role=\"assistant\" text={ANSWER} onDislike={() => undefined}>\n        {ANSWER}\n      </ChatMessage>\n    </Stack>\n  </GridItem>\n</Grid>"
+  "example": "<Stack gap={4}>\n  <ChatMessage role=\"user\" text={QUESTION}>{QUESTION}</ChatMessage>\n  <ChatMessage role=\"assistant\" text={ANSWER} onDislike={() => undefined}>\n    {ANSWER}\n  </ChatMessage>\n</Stack>"
 }

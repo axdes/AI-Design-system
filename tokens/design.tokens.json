@@ -754,11 +754,11 @@
     },
     "height-lg": {
       "$value": {
-        "value": 3.25,
+        "value": 3,
         "unit": "rem"
       },
       "$type": "dimension",
-      "$description": "52px — block/CTA buttons",
+      "$description": "48px — block/CTA buttons",
       "$extensions": {
         "org.css-design-system": {
           "var": "--control-height-lg",
@@ -1865,12 +1865,8 @@
   },
   "avatar": {
     "sm": {
-      "$value": {
-        "value": 1.5,
-        "unit": "rem"
-      },
-      "$type": "dimension",
-      "$description": "24px",
+      "$value": "{control.height-sm}",
+      "$description": "32px — in a row",
       "$extensions": {
         "org.css-design-system": {
           "var": "--avatar-sm",
@@ -1879,12 +1875,8 @@
       }
     },
     "md": {
-      "$value": {
-        "value": 2,
-        "unit": "rem"
-      },
-      "$type": "dimension",
-      "$description": "32px",
+      "$value": "{control.height}",
+      "$description": "40px — beside a title",
       "$extensions": {
         "org.css-design-system": {
           "var": "--avatar-md",
@@ -1893,12 +1885,8 @@
       }
     },
     "lg": {
-      "$value": {
-        "value": 2.5,
-        "unit": "rem"
-      },
-      "$type": "dimension",
-      "$description": "40px",
+      "$value": "{control.height-lg}",
+      "$description": "48px — leading a card",
       "$extensions": {
         "org.css-design-system": {
           "var": "--avatar-lg",
@@ -1912,7 +1900,7 @@
         "unit": "rem"
       },
       "$type": "dimension",
-      "$description": "80px — hero",
+      "$description": "80px — hero, off the ladder",
       "$extensions": {
         "org.css-design-system": {
           "var": "--avatar-xl",
@@ -1926,7 +1914,7 @@
         "unit": "rem"
       },
       "$type": "dimension",
-      "$description": "128px — profile header",
+      "$description": "128px — profile header, off the ladder",
       "$extensions": {
         "org.css-design-system": {
           "var": "--avatar-2xl",
