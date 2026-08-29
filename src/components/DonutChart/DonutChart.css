@@ -21,6 +21,13 @@
 }
 .donut-chart[data-size="sm"] { --donut-size: var(--space-16); }
 .donut-chart[data-size="sm"] .donut-chart-value { font-size: var(--font-sm); }
+/* THE CAPTION SHRINKS WITH THE RING, and the gap under the number goes with it.
+ * The value scaled at `sm` and the word under it did not, so on the small ring
+ * "findings" ran into the stroke it is supposed to sit inside (owner,
+ * 2026-08-29). The hole is a fixed share of the diameter, which only holds the
+ * promise if what goes in it scales too. */
+.donut-chart[data-size="sm"] .donut-chart-caption { font-size: calc(var(--font-xs) * 0.85); }
+.donut-chart[data-size="sm"] .donut-chart-center { gap: var(--space-2xs); }
 .donut-chart[data-size="lg"] .donut-chart-value { font-size: var(--font-xl); }
 .donut-chart[data-size="lg"] { --donut-size: calc(var(--space-16) * 2.25); }
 

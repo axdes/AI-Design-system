@@ -21,11 +21,15 @@ import { Tooltip } from '../Tooltip'
  * something here", `danger` is "something is wrong", `success` is "something
  * finished". A count that turns red as it grows teaches the reader that the
  * number is the problem, when it is the contents that decide.
+ *
+ * Note the DEFAULT is `danger`, which is why the first one below says `primary`
+ * out loud: left alone, every count in a product ships red, and a bell that is
+ * always red is a bell nobody reads.
  */
 export function Example() {
   return (
     <Row gap={6} align="center">
-      <CountBadge count={5} label="5 unread messages">
+      <CountBadge count={5} tone="primary" label="5 unread messages">
         <Tooltip content="Messages">
           <IconButton icon="message" aria-label="Messages" />
         </Tooltip>

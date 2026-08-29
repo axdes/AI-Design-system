@@ -6,7 +6,11 @@
   position: absolute;
   inset-block-start: 0;
   inset-inline-end: 0;
-  transform: translate(40%, -40%);
+  /* PINNED TO THE CORNER, NOT FLOATING OFF IT. At 40% the marker cleared the
+   * glyph entirely and read as a separate thing that happened to be nearby
+   * (owner, 2026-08-29). A quarter of its own width keeps the overlap that says
+   * "this belongs to that" while the 2px ring keeps it legible over the ink. */
+  transform: translate(25%, -25%);
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -171,7 +171,12 @@
  * with it, and the eye is meant to be on the card the reader is going TO. The
  * shadow says "live" without moving anything, and it says it on the same curve
  * and the same duration as every other part of the card. */
-.card:hover { box-shadow: var(--shadow-card-hover); }
+/* 2026-08-29, and it replaces the 22.08 rule above: a card the reader cannot act
+ * on must not answer the pointer at all (owner). Every card lifting was meant to
+ * make the family consistent; what it actually did was promise a click on a
+ * paragraph in a box. The lift is back to belonging to a card that IS a control,
+ * and `flat` stays the opt-out for one that is a control and does not want it. */
+.card[data-interactive]:hover { box-shadow: var(--shadow-card-hover); }
 
 /* flat = the resting card: the one explicit opt-out of the lift. */
 .card[data-flat],

@@ -64,7 +64,8 @@
   },
   "uses": [
     "Icon",
-    "Layout"
+    "Layout",
+    "SectionLabel"
   ],
-  "example": "const [assigned, setAssigned] = useState(false)\nconst [channels, setChannels] = useState(['email'])<Stack gap={4}>\n  <Checkbox\n    label=\"Email me when a review is assigned\"\n    checked={assigned}\n    onChange={(e) => setAssigned(e.target.checked)}\n  />\n  <CheckboxGroup\n    label=\"How should we reach you?\"\n    options={CHANNELS}\n    value={channels}\n    onChange={setChannels}\n  />\n  \n  <Checkbox label=\"All channels\" indeterminate checked={false} onChange={() => undefined} />\n  \n  <Checkbox label=\"Compact row\" size=\"sm\" checked onChange={() => undefined} />\n</Stack>"
+  "example": "const [assigned, setAssigned] = useState(false)\nconst [channels, setChannels] = useState(['email'])<Stack gap={4}>\n  <Checkbox\n    label=\"Email me when a review is assigned\"\n    checked={assigned}\n    onChange={(e) => setAssigned(e.target.checked)}\n  />\n  <CheckboxGroup\n    label=\"How should we reach you?\"\n    options={CHANNELS}\n    value={channels}\n    onChange={setChannels}\n  />\n  \n  <Checkbox label=\"All channels\" indeterminate checked={false} onChange={() => undefined} />\n  \n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">In a filter panel</SectionLabel>\n    <Checkbox label=\"Only mine\" size=\"sm\" checked onChange={() => undefined} />\n    <Checkbox label=\"Archived\" size=\"sm\" checked={false} onChange={() => undefined} />\n  </Stack>\n</Stack>"
 }

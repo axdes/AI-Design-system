@@ -123,6 +123,12 @@ const ALLOW = {
        beside it — the axis cannot be shown by rendering two, because two never
        exist. Its example shows the strict tone and names the other. */
     'SessionPill',
+    /* Also not work. <SideNav> showed `collapseControl` by rendering two rails
+       side by side, and the owner took it out on 2026-08-29: a product has ONE
+       navigation, and two of them next to each other to compare a prop teaches
+       an arrangement that never exists. The axis lives on the prop, where a
+       reader meets it. */
+    'SideNav',
   ],
 }
 

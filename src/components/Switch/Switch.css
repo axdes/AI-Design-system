@@ -1,8 +1,17 @@
 .switch {
-  /* Switch-local dimensions (atom-private knobs). */
+  /* Switch-local dimensions (atom-private knobs).
+   *
+   * `--switch-thumb-size`, NOT `--switch-thumb`: the semantic layer already owns
+   * `--switch-thumb` and it is the thumb's COLOUR. Declaring a length under that
+   * name here shadowed the token inside this rule, so `background:
+   * var(--switch-thumb)` resolved to `1rem`, which is not a colour — the
+   * declaration was dropped and the thumb was drawn with no fill at all. The
+   * switch rendered as a bare blue track with nothing on it, and neither tsc,
+   * the linters nor the axe sweep can see an invalid CSS value (owner,
+   * 2026-08-29). */
   --switch-width: 2.25rem;
   --switch-height: 1.25rem;
-  --switch-thumb: 1rem;
+  --switch-thumb-size: 1rem;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -42,11 +51,11 @@
   content: "";
   position: absolute;
   inset-inline-start: var(--space-2xs);
-  width: var(--switch-thumb);
-  height: var(--switch-thumb);
+  width: var(--switch-thumb-size);
+  height: var(--switch-thumb-size);
   border-radius: var(--radius-full);
   background: var(--switch-thumb);
   box-shadow: var(--shadow-sm);
   transition: inset-inline-start var(--duration-fast);
 }
-.switch[aria-checked="true"]::after { inset-inline-start: calc(100% - var(--switch-thumb) - var(--space-2xs)); }
+.switch[aria-checked="true"]::after { inset-inline-start: calc(100% - var(--switch-thumb-size) - var(--space-2xs)); }

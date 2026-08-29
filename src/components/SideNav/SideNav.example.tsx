@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { SideNav } from './SideNav'
 import { Badge } from '../Badge'
 import { Icon } from '../Icon'
-import { Row } from '../Layout'
 
 const BRAND = <Icon name="auto_awesome" size="md" />
 
@@ -24,11 +23,10 @@ const BRAND = <Icon name="auto_awesome" size="md" />
  * this prop at all — so every one of them carried a Collapse button nobody had
  * chosen, while the behaviour they wanted sat behind a default.
  *
- * Move it to `bottom` for the one case the default cannot serve: when the mark
- * is a LINK HOME and pressing it has to navigate. One control cannot do both,
- * and a mark that sometimes collapses and sometimes navigates is worse than
- * either. `both` is for neither — two controls for one state is two things to
- * explain.
+ * There is no second rail in this example on purpose (owner, 2026-08-29): a
+ * product has ONE navigation, and showing two side by side to compare a prop
+ * teaches an arrangement that never exists. `bottom` and `both` are described
+ * on the prop itself, where a reader meets them.
  *
  * `usage` is the name an entry answers to in a product's usage log. Set it
  * wherever `trailing` carries a number: without it the entry is read from its
@@ -37,39 +35,25 @@ const BRAND = <Icon name="auto_awesome" size="md" />
  */
 export function Example() {
   const [active, setActive] = useState('library')
-  const [homeActive, setHomeActive] = useState('library')
-
-  const workspace = (current: string, set: (id: string) => void) => [
-    {
-      label: 'Workspace',
-      items: [
-        { id: 'library', label: 'Library', icon: 'folder' as const, active: current === 'library', onSelect: () => set('library') },
-        { id: 'review', label: 'For review', icon: 'check_circle' as const, active: current === 'review', trailing: <Badge tone="warning">3</Badge>, usage: 'For review', onSelect: () => set('review') },
-      ],
-    },
-    {
-      label: 'Admin',
-      items: [{ id: 'users', label: 'Users', icon: 'group' as const, active: current === 'users', onSelect: () => set('users') }],
-    },
-  ]
 
   return (
-    <Row gap={8} align="start">
-      <SideNav
-        aria-label="Primary"
-        logo={<>{BRAND}<strong>Acme</strong></>}
-        logoMark={BRAND}
-        groups={workspace(active, setActive)}
-      />
-
-      {/* The mark is a link home here, so the collapse control moves off it. */}
-      <SideNav
-        aria-label="Primary, with a home link"
-        collapseControl="bottom"
-        logo={<a href="#top">{BRAND}<strong>Acme</strong></a>}
-        logoMark={<a href="#top">{BRAND}</a>}
-        groups={workspace(homeActive, setHomeActive)}
-      />
-    </Row>
+    <SideNav
+      aria-label="Primary"
+      logo={<>{BRAND}<strong>Acme</strong></>}
+      logoMark={BRAND}
+      groups={[
+        {
+          label: 'Workspace',
+          items: [
+            { id: 'library', label: 'Library', icon: 'folder', active: active === 'library', onSelect: () => setActive('library') },
+            { id: 'review', label: 'For review', icon: 'check_circle', active: active === 'review', trailing: <Badge tone="warning">3</Badge>, usage: 'For review', onSelect: () => setActive('review') },
+          ],
+        },
+        {
+          label: 'Admin',
+          items: [{ id: 'users', label: 'Users', icon: 'group', active: active === 'users', onSelect: () => setActive('users') }],
+        },
+      ]}
+    />
   )
 }

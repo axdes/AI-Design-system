@@ -40,11 +40,16 @@
    * it thickens on hover rather than appearing, so nothing shifts. */
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
-  transition: color var(--duration-fast), text-decoration-color var(--duration-fast);
 }
-/* In reading text: underlined at rest. Inside a paragraph the colour is the only
- * thing marking the link, and colour alone is not a mark everyone can see. */
-.link[data-variant="primary"] { text-decoration: underline; }
+/* NO UNDERLINE AT REST, AND NO ANIMATION (owner, 2026-08-29). It read underlined
+ * in reading text until today, on the argument that inside a paragraph the
+ * colour is the only thing marking a link and colour alone is not a mark
+ * everyone can see (WCAG 1.4.1). That cost is real and it is being paid
+ * knowingly: the brand ink is now the only resting mark, and the underline
+ * arrives with the pointer or the keyboard. If a product needs the resting
+ * underline back for an audit, it is this one rule. */
+.link[data-variant="primary"]:hover,
+.link[data-variant="primary"]:focus-visible { text-decoration: underline; }
 
 /* In chrome: secondary ink, underline on arrival. A breadcrumb sits in a row of
  * links and its position already says what it is. */
@@ -65,7 +70,7 @@
   text-decoration-thickness: 1px;
 }
 
-.link:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
+.link:hover { color: var(--link-hover); }
 .link:active { color: var(--primary-active); }
 .link:focus-visible {
   outline: var(--ring-width) solid var(--ring);
@@ -81,16 +86,11 @@
   display: inline-block;
   vertical-align: -0.15em;
   margin-inline-start: var(--space-1);
-  transition: transform var(--duration-fast) var(--ease-out);
 }
 .link:dir(rtl) .link-arrow { transform: scaleX(-1); }
-.link:hover .link-arrow { transform: translateX(var(--space-1)); }
-.link:dir(rtl):hover .link-arrow { transform: scaleX(-1) translateX(var(--space-1)); }
-/* An arrow that slides on every hover is motion; it obeys the global setting. */
-@media (prefers-reduced-motion: reduce) {
-  .link:hover .link-arrow { transform: none; }
-  .link:dir(rtl):hover .link-arrow { transform: scaleX(-1); }
-}
+/* The arrow no longer moves on hover (owner, 2026-08-29), so there is nothing
+ * left here for the reduced-motion setting to switch off. `scaleX(-1)` in Arabic
+ * stays: it is direction, not motion. */
 
 /* The new-tab glyph rides the text: same colour, slightly lower than cap height
  * so it reads as punctuation rather than as an icon parked after the word. */

@@ -77,5 +77,5 @@
     "Layout",
     "Tooltip"
   ],
-  "example": "<Row gap={6} align=\"center\">\n  <CountBadge count={5} label=\"5 unread messages\">\n    <Tooltip content=\"Messages\">\n      <IconButton icon=\"message\" aria-label=\"Messages\" />\n    </Tooltip>\n  </CountBadge>\n  <CountBadge count={2} tone=\"danger\" label=\"2 failed jobs\">\n    <Tooltip content=\"Jobs\">\n      <IconButton icon=\"progress_activity\" aria-label=\"Jobs\" />\n    </Tooltip>\n  </CountBadge>\n  \n  <CountBadge dot label=\"New activity\">\n    <Tooltip content=\"Activity\">\n      <IconButton icon=\"history\" aria-label=\"Activity\" />\n    </Tooltip>\n  </CountBadge>\n</Row>"
+  "example": "<Row gap={6} align=\"center\">\n  <CountBadge count={5} tone=\"primary\" label=\"5 unread messages\">\n    <Tooltip content=\"Messages\">\n      <IconButton icon=\"message\" aria-label=\"Messages\" />\n    </Tooltip>\n  </CountBadge>\n  <CountBadge count={2} tone=\"danger\" label=\"2 failed jobs\">\n    <Tooltip content=\"Jobs\">\n      <IconButton icon=\"progress_activity\" aria-label=\"Jobs\" />\n    </Tooltip>\n  </CountBadge>\n  \n  <CountBadge dot label=\"New activity\">\n    <Tooltip content=\"Activity\">\n      <IconButton icon=\"history\" aria-label=\"Activity\" />\n    </Tooltip>\n  </CountBadge>\n</Row>"
 }

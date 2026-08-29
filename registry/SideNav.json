@@ -89,8 +89,7 @@
   },
   "uses": [
     "Badge",
-    "Icon",
-    "Layout"
+    "Icon"
   ],
-  "example": "const [active, setActive] = useState('library')\nconst [homeActive, setHomeActive] = useState('library')\nconst workspace = (current: string, set: (id: string) => void) => [\n  {\n    label: 'Workspace',\n    items: [\n      { id: 'library', label: 'Library', icon: 'folder' as const, active: current === 'library', onSelect: () => set('library') },\n      { id: 'review', label: 'For review', icon: 'check_circle' as const, active: current === 'review', trailing: <Badge tone=\"warning\">3</Badge>, usage: 'For review', onSelect: () => set('review') },\n    ],\n  },\n  {\n    label: 'Admin',\n    items: [{ id: 'users', label: 'Users', icon: 'group' as const, active: current === 'users', onSelect: () => set('users') }],\n  },\n]\n\n<Row gap={8} align=\"start\">\n  <SideNav\n    aria-label=\"Primary\"\n    logo={<>{BRAND}<strong>Acme</strong></>}\n    logoMark={BRAND}\n    groups={workspace(active, setActive)}\n  />\n  \n  <SideNav\n    aria-label=\"Primary, with a home link\"\n    collapseControl=\"bottom\"\n    logo={<a href=\"#top\">{BRAND}<strong>Acme</strong></a>}\n    logoMark={<a href=\"#top\">{BRAND}</a>}\n    groups={workspace(homeActive, setHomeActive)}\n  />\n</Row>"
+  "example": "const [active, setActive] = useState('library')\n\n<SideNav\n  aria-label=\"Primary\"\n  logo={<>{BRAND}<strong>Acme</strong></>}\n  logoMark={BRAND}\n  groups={[\n    {\n      label: 'Workspace',\n      items: [\n        { id: 'library', label: 'Library', icon: 'folder', active: active === 'library', onSelect: () => setActive('library') },\n        { id: 'review', label: 'For review', icon: 'check_circle', active: active === 'review', trailing: <Badge tone=\"warning\">3</Badge>, usage: 'For review', onSelect: () => setActive('review') },\n      ],\n    },\n    {\n      label: 'Admin',\n      items: [{ id: 'users', label: 'Users', icon: 'group', active: active === 'users', onSelect: () => setActive('users') }],\n    },\n  ]}\n/>"
 }

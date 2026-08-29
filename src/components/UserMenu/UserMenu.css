@@ -10,10 +10,18 @@
   background: transparent; color: var(--foreground); font-family: inherit;
   text-align: start; cursor: pointer; transition: background var(--duration-fast);
 }
-.user-menu-trigger:hover, .user-menu-trigger[data-open] { background: var(--accent); }
+/* NO FILL ON HOVER. The trigger is the account, not a menu row: the pointer
+ * passes over it on the way to everything else in the footer, and a rail that
+ * lights up under the pointer reads as something being chosen (owner,
+ * 2026-08-29). Open still shows, because that IS a state. */
+.user-menu-trigger[data-open] { background: var(--accent); }
 .user-menu-trigger:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
 
-.user-menu-avatar { display: none; }
+/* THE AVATAR IS THE PERSON, AND IT SHOWS IN BOTH STATES. It used to be
+ * `display: none` unless the rail was collapsed, so the expanded footer — the
+ * state a product is in almost all the time — had a name and a role and no
+ * face at all (owner, 2026-08-29). Collapsed it grows to the rail's item size;
+ * expanded it stays the md avatar the trigger asks for. */
 
 .user-menu-trigger-text { flex: 1; display: flex; flex-direction: column; min-inline-size: 0; }
 .user-menu-trigger-name {

@@ -14,8 +14,12 @@
   cursor: pointer;
 }
 
-.color-swatch[data-size='md'] { padding: var(--space-2) var(--space-3); font-size: var(--font-sm); }
-.color-swatch[data-size='sm'] { padding: var(--space-1) var(--space-2); font-size: var(--font-xs); }
+/* MORE ROOM AT THE END THAN AT THE START. Equal padding measures equal and does
+ * not look it: the start holds a solid dot, which fills its side of the pill,
+ * and the end holds the last letter of a word, which does not. Matched numbers
+ * read as a label pressed against the right edge (owner, 2026-08-29). */
+.color-swatch[data-size='md'] { padding: var(--space-2) var(--space-4) var(--space-2) var(--space-3); font-size: var(--font-sm); }
+.color-swatch[data-size='sm'] { padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2); font-size: var(--font-xs); }
 
 /* The dot carries the colour and its own edge. The edge is what makes a white
    swatch on a white card a target rather than a gap. */

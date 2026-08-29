@@ -12,7 +12,6 @@
   min-block-size: var(--control-height-sm);
   padding-block: var(--space-1);
   padding-inline: var(--space-3);
-  padding-inline-end: var(--space-2);   /* tighter on the remove side */
   border-radius: var(--radius-full);
   /* Same as .chip, and for the same reason — --secondary is --muted, so on the
    * page the token had no pill. See the note in Chip.css. */
@@ -31,6 +30,13 @@
   padding-inline-end: var(--space-3);
   font-size: var(--control-font-size);
 }
+/* THE TIGHTER END BELONGS TO THE REMOVE BUTTON, NOT TO THE TAG. This padding was
+ * unconditional, so a tag with nothing to remove — the common case in a read-only
+ * row of labels — sat with 8px after its last letter and 12 before its first, and
+ * read as text pushed against the right edge (owner, 2026-08-29). The button
+ * brings its own visual weight; without it the pill is symmetric. */
+.tag:has(.tag-remove) { padding-inline-end: var(--space-2); }
+
 .tag-remove {
   /* 24x24. It had no size at all and took the icon's 16px, which is under the
    * SC 2.5.8 floor and sits hard against the label, so the spacing exception
@@ -41,7 +47,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-inline-start: var(--space-1);
+  /* NO MARGIN OF ITS OWN: `.tag` already sets the gap between its parts, and
+   * adding 4px here made it 12 — half again the space between the dot and the
+   * label on every other chip in the system, so the cross read as detached from
+   * the word it removes (owner, 2026-08-29). */
   padding: 0;
   border: none;
   border-radius: var(--radius-full);

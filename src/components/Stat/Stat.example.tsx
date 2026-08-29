@@ -1,7 +1,7 @@
 /* Golden example. A real module: tsc compiles it, src/test/examples.test.tsx
  * renders it, and the registry publishes the usage below to agents. */
 import { Card } from '../Card'
-import { Row } from '../Layout'
+import { Grid, GridItem } from '../Layout'
 import { Sparkline } from '../Sparkline'
 import { Stat } from './Stat'
 
@@ -27,40 +27,50 @@ const latency = [180, 186, 191, 205, 212, 224, 240]
  */
 export function Example() {
   return (
-    <Row gap={4} align="start">
-      <Card>
-        <Stat
-          value="221"
-          label="Sessions this week"
-          delta="+9% vs last week"
-          deltaDirection="up"
-          deltaTone="success"
-          trend={<Sparkline values={sessions} tone="success" size="sm" area />}
-        />
-      </Card>
+    /* A KPI ROW IS A GRID, NOT A ROW. Three cards carrying sparklines are wider
+       than their content suggests, and in a flex line the third one simply ran
+       off the end of the page. Twelve tracks give each tile a third of the
+       width and the row holds at any size. */
+    <Grid columns={12} gap={4}>
+      <GridItem span={4}>
+        <Card>
+          <Stat
+            value="221"
+            label="Sessions this week"
+            delta="+9% vs last week"
+            deltaDirection="up"
+            deltaTone="success"
+            trend={<Sparkline values={sessions} tone="success" size="sm" area />}
+          />
+        </Card>
+      </GridItem>
 
       {/* Same arrow, opposite news: the tone belongs to the metric. */}
-      <Card>
-        <Stat
-          value="240"
-          unit="ms"
-          label="p95 response time"
-          delta="+33% vs last week"
-          deltaDirection="up"
-          deltaTone="danger"
-          trend={<Sparkline values={latency} tone="danger" size="sm" />}
-        />
-      </Card>
+      <GridItem span={4}>
+        <Card>
+          <Stat
+            value="240"
+            unit="ms"
+            label="p95 response time"
+            delta="+33% vs last week"
+            deltaDirection="up"
+            deltaTone="danger"
+            trend={<Sparkline values={latency} tone="danger" size="sm" />}
+          />
+        </Card>
+      </GridItem>
 
-      <Card>
-        <Stat
-          value="12"
-          label="Open incidents"
-          delta="no change"
-          deltaDirection="flat"
-          deltaTone="neutral"
-        />
-      </Card>
-    </Row>
+      <GridItem span={4}>
+        <Card>
+          <Stat
+            value="12"
+            label="Open incidents"
+            delta="no change"
+            deltaDirection="flat"
+            deltaTone="neutral"
+          />
+        </Card>
+      </GridItem>
+    </Grid>
   )
 }

@@ -1,12 +1,20 @@
 .segmented {
   display: inline-flex;
   padding: var(--space-2xs);
-  /* The same grey a quiet button fills itself with, and for the same reason:
-   * this rail used to be `light-dark(--muted, --card)`, and --muted IS the page,
-   * so on a page the rail was the exact colour of the page — 1.00:1, no control
-   * at all — while on a card it read fine. One grey, both surfaces, both
-   * themes, and it is the grey the rest of the control family already uses. */
-  background: var(--surface-contrast);
+  /* THE TRACK IS ONE STEP FROM THE SURFACE, AND THE PILL IS ONE STEP BACK.
+   *
+   * This read `--surface-contrast`, on the belief that it was "the grey a quiet
+   * button fills itself with". It is not: `--surface-contrast` IS `--card`, so
+   * on a card the track was white, and the selected pill below is `--background`
+   * — also white. Track and selection measured the same colour, 1.00:1, and the
+   * one thing this control exists to say could not be seen at all (owner,
+   * 2026-08-29).
+   *
+   * The two surfaces are mirrors of each other, which is the whole rule: on a
+   * white card the track is the page's grey and the pill is white; on the page's
+   * grey the track is white and the pill is the grey. Whatever it stands on, the
+   * track is a step away from it and the pill is a step back. */
+  background: light-dark(var(--muted), var(--muted));
   border-radius: var(--control-radius);
 }
 .segmented-option {
@@ -54,7 +62,7 @@
  * and the selection has to be looked for. Text only, not a filled pill: a second
  * solid brand block would compete with the button for "the thing to press". */
 .segmented-option[data-selected] {
-  background: light-dark(var(--background), var(--popover));
+  background: light-dark(var(--background), var(--card));
   color: var(--primary-accent);
 }
 

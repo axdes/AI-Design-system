@@ -2,6 +2,7 @@
  * renders it, and the registry publishes the usage below to agents. */
 import { useState } from 'react'
 import { Stack } from '../Layout'
+import { SectionLabel } from '../SectionLabel'
 import { Checkbox } from './Checkbox'
 import { CheckboxGroup } from './CheckboxGroup'
 
@@ -50,9 +51,16 @@ export function Example() {
       {/* The parent of a partly-chosen set: neither on nor off, and it says so
           rather than picking one. */}
       <Checkbox label="All channels" indeterminate checked={false} onChange={() => undefined} />
-      {/* `size` follows the density of the form around it, not the importance of
-          the question: `sm` in a table row or a filter panel, `md` in a form. */}
-      <Checkbox label="Compact row" size="sm" checked onChange={() => undefined} />
+      {/* `size` follows the density of what is AROUND it, not the importance of
+          the question: `sm` in a table row or a filter panel, `md` in a form.
+          It sits in its own block here on purpose — a small box in a column of
+          full-size ones puts every label on a different left edge, and a ragged
+          column is the one thing this axis must not teach. */}
+      <Stack gap={2}>
+        <SectionLabel as="h3">In a filter panel</SectionLabel>
+        <Checkbox label="Only mine" size="sm" checked onChange={() => undefined} />
+        <Checkbox label="Archived" size="sm" checked={false} onChange={() => undefined} />
+      </Stack>
     </Stack>
   )
 }

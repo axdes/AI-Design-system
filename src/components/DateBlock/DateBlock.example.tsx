@@ -41,7 +41,7 @@ export function Example() {
 
       {/* Denser row, and the date is overdue rather than merely next. */}
       <Card>
-        <Row gap={3} align="center">
+        <Row gap={4} align="center">
           <DateBlock value="2026-08-14T09:00:00Z" tone="danger" size="sm" />
           <span>Safety audit, not yet signed off</span>
         </Row>
