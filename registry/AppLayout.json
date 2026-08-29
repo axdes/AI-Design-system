@@ -3,16 +3,11 @@
   "level": "organism",
   "description": "The application shell: navigation and a scrolling main, in one of four arrangements. Routing-agnostic — pass any nav in the `nav` slot. Below the drawer breakpoint a side arrangement becomes an overlay drawer toggled by `navOpen`; `top` and `none` have nothing to drawer and stay as they are.",
   "exports": [
-    "AppLayout",
-    "FloatingExample"
+    "AppLayout"
   ],
   "main": "AppLayout",
   "from": "@/components/AppLayout",
-  "slots": [
-    {
-      "name": "FloatingExample"
-    }
-  ],
+  "slots": [],
   "props": [
     {
       "name": "nav",
@@ -64,6 +59,7 @@
     }
   },
   "uses": [
+    "BrandMark",
     "Card",
     "Icon",
     "Layout",
@@ -71,5 +67,5 @@
     "Prose",
     "SideNav"
   ],
-  "example": "const [navOpen, setNavOpen] = useState(false)<AppLayout\n      arrangement=\"rail\"\n      navOpen={navOpen}\n      onNavClose={() => setNavOpen(false)}\n      nav={\n        <SideNav\n          aria-label=\"Primary\"\n          logo={<><Icon name=\"auto_awesome\" size=\"md\" /><strong>Acme</strong></>}\n          logoMark={<Icon name=\"auto_awesome\" size=\"md\" />}\n          groups={[\n            {\n              label: 'Workspace',\n              items: [\n                { id: 'library', label: 'Library', icon: 'folder', active: true },\n                { id: 'review', label: 'For review', icon: 'check_circle' },\n              ],\n            },\n          ]}\n        />\n      }\n    >\n      <PageHeader title=\"Content library\" />\n      <Stack gap={4}>\n        <Grid gap={4} min=\"md\">\n          <Card>\n            <CardTitle as=\"h2\">Drafts</CardTitle>\n            <Prose size=\"sm\">Twelve items, four of them edited this week.</Prose>\n          </Card>\n          <Card>\n            <CardTitle as=\"h2\">Published</CardTitle>\n            <Prose size=\"sm\">Ninety items. Nothing is waiting on you here.</Prose>\n          </Card>\n        </Grid>\n      </Stack>\n    </AppLayout>\n  )\n}export function FloatingExample() {\n  r"
+  "example": "const [navOpen, setNavOpen] = useState(false)\nconst [active, setActive] = useState('/library')\nconst item = (href: string, label: string, icon: 'folder' | 'check_circle') => ({\n  id: href,\n  label,\n  icon,\n  href,\n  active: active === href,render: (inner: React.ReactNode, props: Record<string, unknown>) => (\n    <a {...props} href={href} onClick={(e) => { e.preventDefault(); setActive(href) }}>{inner}</a>\n  ),\n})\n\n<AppLayout\n  arrangement=\"rail\"\n  navOpen={navOpen}\n  onNavClose={() => setNavOpen(false)}\n  nav={\n    <SideNav\n      aria-label=\"Primary\"\n      collapsible\n      collapseControl=\"logo\"\n      logo={<><BrandMark>{BRAND}</BrandMark><strong>Acme</strong></>}\n      logoMark={<BrandMark direction=\"expand\">{BRAND}</BrandMark>}\n      groups={[\n        {\n          label: 'Workspace',\n          items: [item('/library', 'Library', 'folder'), item('/review', 'For review', 'check_circle')],\n        },\n      ]}\n    />\n  }\n>\n  \n  <PageHeader title=\"Content library\" />\n  <Stack gap={4}>\n    <Grid gap={4} min=\"md\">\n      <Card>\n        <CardTitle as=\"h2\">Drafts</CardTitle>\n        <Prose size=\"sm\">Twelve items, four of them edited this week.</Prose>\n      </Card>\n      <Card>\n        <Ca"
 }

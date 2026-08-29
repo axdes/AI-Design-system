@@ -129,6 +129,11 @@ const ALLOW = {
        an arrangement that never exists. The axis lives on the prop, where a
        reader meets it. */
     'SideNav',
+    /* Same reason one level up. `arrangement` is a decision about the PRODUCT,
+       made once in the shell, and two app frames side by side to compare it
+       would teach an arrangement no product has. The four are on the prop.
+       Checked against the shell this system's own site runs on (2026-08-29). */
+    'AppLayout',
   ],
 }
 

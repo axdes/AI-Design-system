@@ -10,7 +10,7 @@ this package and `@ds/<Name>` from an app. Generated from registry/ — never ed
 Accordion · molecule · Disclosure list: a stack of headers that each reveal a panel.
 ActionCard · organism/region · A question put to THIS reader, answered on the spot: the ask, the context it needs, the answers,…
 Alert · molecule/region · Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible.
-AppLayout · organism/page · +FloatingExample · The application shell: navigation and a scrolling main, in one of four arrangements.
+AppLayout · organism/page · The application shell: navigation and a scrolling main, in one of four arrangements.
 Avatar · atom · A person or a team as an image with an initial fallback.
 AvatarGroup · molecule · Overlapping stack of avatars with a "+N" overflow — a team, the people on a thread.
 Badge · atom · Status chip: a small standalone pill that labels state through `tone`.

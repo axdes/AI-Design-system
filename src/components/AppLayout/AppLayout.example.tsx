@@ -2,6 +2,7 @@
  * renders it, and the registry publishes the usage below to agents. */
 import { useState } from 'react'
 import { AppLayout } from './AppLayout'
+import { BrandMark } from '../BrandMark'
 import { Card, CardTitle } from '../Card'
 import { Grid, Stack } from '../Layout'
 import { Icon } from '../Icon'
@@ -9,32 +10,54 @@ import { PageHeader } from '../PageHeader'
 import { Prose } from '../Prose'
 import { SideNav } from '../SideNav'
 
+/* THIS IS THE SHELL AS A PRODUCT ACTUALLY BUILDS IT, checked against the one
+ * this system's own site runs on (apps/showcase/src/site/SiteShell.tsx). An
+ * example that composes the frame differently from every product using it
+ * teaches a shell nobody has.
+ *
+ * Three things make it the real thing rather than a sketch:
+ *
+ *   THE BRAND IS <BrandMark> IN BOTH SLOTS, and the collapsed one points
+ *   outward. The cap is what keeps the mark the same shape when the rail
+ *   changes width; a bare glyph in `logo` and another in `logoMark` is two
+ *   pictures of one brand.
+ *
+ *   THE ITEMS ARE LINKS. `href` makes them anchors, which is what navigation
+ *   is: middle-click, copy-address and the browser's own back all work. In a
+ *   single-page app `href` alone reloads the document, so `render` hands the
+ *   anchor to the router — the escape SideNav gained on 2026-08-23 for exactly
+ *   this, and the reason `onSelect` is the fallback rather than the default.
+ *
+ *   THE RAIL SAYS IT COLLAPSES AND WHAT DOES IT. `collapsible` with
+ *   `collapseControl="logo"`: collapsed, the biggest target on the rail is what
+ *   opens it.
+ *
+ * `arrangement` is not varied here on purpose. It is a decision about the
+ * PRODUCT, made once in the shell — rail, float, top or none — and two shells
+ * side by side to compare it would teach an arrangement no product has. The
+ * four are described on the prop, where a reader meets them.
+ *
+ * On narrow screens a side arrangement becomes an overlay drawer, which is what
+ * `navOpen` and `onNavClose` drive.
+ */
+const BRAND = <Icon name="auto_awesome" size="md" />
+
 export function Example() {
   const [navOpen, setNavOpen] = useState(false)
+  const [active, setActive] = useState('/library')
 
-  /* The app frame: navigation plus the scrolling main column. Below the drawer
-   * breakpoint a side arrangement becomes an overlay, which is what
-   * navOpen/onNavClose drive.
-   *
-   * `arrangement` IS A DECISION ABOUT THE PRODUCT, NOT THE PAGE, so it is set
-   * once in the shell and never varied screen to screen — a rail that moves
-   * between screens is a reader relearning where they are.
-   *
-   *   `rail`  (default) the nav attached to the content, for a product with
-   *           enough places to go that the reader navigates constantly.
-   *   `float` the nav detached, for a calmer product where the shell should
-   *           read as one card rather than two panes welded together.
-   *   `top`   a horizontal bar, for a product with FEW destinations — a rail
-   *           holding three items is a wide margin saying very little.
-   *   `none`  no navigation at all: sign-in, a status page, a reading view
-   *           that must not offer a way out mid-task.
-   *
-   * The main column carries a REAL page — a header and content under it. It
-   * used to hold a bare <PageHeader> and nothing else, so the one thing this
-   * component exists to arrange (the relationship between the rail and what is
-   * beside it) was an empty grey field (owner: "AppLayout is wrong",
-   * 2026-08-24). What goes in `children` is always a page; showing one is what
-   * makes the arrangement legible. */
+  const item = (href: string, label: string, icon: 'folder' | 'check_circle') => ({
+    id: href,
+    label,
+    icon,
+    href,
+    active: active === href,
+    /* Stands in for a router link. A product returns its own <NavLink>. */
+    render: (inner: React.ReactNode, props: Record<string, unknown>) => (
+      <a {...props} href={href} onClick={(e) => { e.preventDefault(); setActive(href) }}>{inner}</a>
+    ),
+  })
+
   return (
     <AppLayout
       arrangement="rail"
@@ -43,20 +66,22 @@ export function Example() {
       nav={
         <SideNav
           aria-label="Primary"
-          logo={<><Icon name="auto_awesome" size="md" /><strong>Acme</strong></>}
-          logoMark={<Icon name="auto_awesome" size="md" />}
+          collapsible
+          collapseControl="logo"
+          logo={<><BrandMark>{BRAND}</BrandMark><strong>Acme</strong></>}
+          logoMark={<BrandMark direction="expand">{BRAND}</BrandMark>}
           groups={[
             {
               label: 'Workspace',
-              items: [
-                { id: 'library', label: 'Library', icon: 'folder', active: true },
-                { id: 'review', label: 'For review', icon: 'check_circle' },
-              ],
+              items: [item('/library', 'Library', 'folder'), item('/review', 'For review', 'check_circle')],
             },
           ]}
         />
       }
     >
+      {/* What goes in `children` is always a PAGE — a header and content under
+          it — because the one thing this component arranges is the relationship
+          between the rail and what stands beside it. */}
       <PageHeader title="Content library" />
       <Stack gap={4}>
         <Grid gap={4} min="md">
@@ -70,40 +95,6 @@ export function Example() {
           </Card>
         </Grid>
       </Stack>
-    </AppLayout>
-  )
-}
-
-/* The same shell with the nav DETACHED, which is the whole of what `float`
- * changes: the reader's route through the product is identical and the screen
- * reads as one composition rather than two panes. It is a house style, chosen
- * once. */
-export function FloatingExample() {
-  return (
-    <AppLayout
-      arrangement="float"
-      nav={
-        <SideNav
-          aria-label="Primary"
-          logo={<><Icon name="auto_awesome" size="md" /><strong>Acme</strong></>}
-          logoMark={<Icon name="auto_awesome" size="md" />}
-          groups={[
-            {
-              label: 'Workspace',
-              items: [
-                { id: 'library', label: 'Library', icon: 'folder', active: true },
-                { id: 'review', label: 'For review', icon: 'check_circle' },
-              ],
-            },
-          ]}
-        />
-      }
-    >
-      <PageHeader title="Content library" />
-      <Card>
-        <CardTitle as="h2">Drafts</CardTitle>
-        <Prose size="sm">Twelve items, four of them edited this week.</Prose>
-      </Card>
     </AppLayout>
   )
 }
