@@ -4,7 +4,14 @@ import { cn } from '../../lib/cn'
 import { IconButton } from '../IconButton'
 import { Tooltip } from '../Tooltip'
 
-type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step'> & {
+/* `size` IS OMITTED, and it has to be: `InputHTMLAttributes` carries its own
+ * `size?: number` — the ancient HTML attribute for a text field's width in
+ * characters — and intersecting that with this component's `'sm' | 'md' | 'lg'`
+ * leaves a prop nothing can be assigned to. The registry published `size` as a
+ * working union while every call passing one was a type error, and the only
+ * reason nobody hit it is that no test or example had ever set it
+ * (2026-08-29). */
+type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step' | 'size'> & {
   value: number
   onChange: (value: number) => void
   min?: number

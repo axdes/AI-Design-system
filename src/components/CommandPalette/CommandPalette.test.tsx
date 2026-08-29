@@ -57,4 +57,25 @@ describe('CommandPalette', () => {
     await user.keyboard('{Escape}')
     expect(onClose).toHaveBeenCalledTimes(1)
   })
+
+  /* THE END OF THE LIST IS A WALL. ArrowDown clamps to the last result; one past
+     it leaves nothing selected, so the highlight vanishes and Enter runs
+     nothing on a palette that still looks ready. A mutation run widened the
+     clamp and nothing failed (2026-08-29). */
+  it('ArrowDown stops on the last result and Enter still runs it', async () => {
+    const user = userEvent.setup()
+    const onSettings = vi.fn()
+    render(<CommandPalette open onClose={() => undefined} commands={makeCommands(() => undefined, onSettings)} />)
+
+    /* Four presses on a two-result list: everything after the second is a
+       no-op, and the selection has to stay on the last one. */
+    await user.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}{ArrowDown}')
+
+    const options = screen.getAllByRole('option')
+    expect(options[options.length - 1]).toHaveAttribute('aria-selected', 'true')
+    expect(options.filter((o) => o.getAttribute('aria-selected') === 'true')).toHaveLength(1)
+
+    await user.keyboard('{Enter}')
+    expect(onSettings).toHaveBeenCalledTimes(1)
+  })
 })

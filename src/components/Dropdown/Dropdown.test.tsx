@@ -452,4 +452,21 @@ describe('Dropdown', () => {
     expect(screen.getByRole('menu')).toBeInTheDocument()
     expect(screen.queryAllByRole('menuitem')).toHaveLength(0)
   })
+
+  /* THE DEFAULT IS PART OF THE CONTRACT, and every test above passes
+     `closeOnSelect` explicitly, so the component's own default was never
+     exercised: a mutation run flipped `closeOnSelect = true` to `false` and the
+     whole suite stayed green (2026-08-29). A menu that stays open after a pick
+     is a menu the reader has to dismiss twice. */
+  it('closes on select when nothing was said about it', async () => {
+    const user = userEvent.setup()
+    render(
+      <Dropdown trigger={(props) => <Button {...props}>Actions</Button>}>
+        <DropdownItem>Rename</DropdownItem>
+      </Dropdown>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Actions' }))
+    await user.click(screen.getByRole('menuitem', { name: 'Rename' }))
+    await waitFor(() => { expect(screen.queryByRole('menu')).toBeNull() })
+  })
 })

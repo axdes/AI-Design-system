@@ -70,4 +70,18 @@ describe('SelectableTile', () => {
     expect(screen.getByRole('radio')).toBeDisabled()
     expect(onSelect).not.toHaveBeenCalled()
   })
+
+  /* THE TICK BELONGS TO THE CHECKBOX SHAPE. A multi-select tile carries a tick
+     mark; the single-select one is a radio and carries a dot drawn in CSS, so a
+     tick there says "you can pick several" about a control that replaces its
+     answer. A mutation run made the tick unconditional and nothing failed
+     (2026-08-29). */
+  it('draws the tick only when several can be chosen', () => {
+    const { container, unmount } = render(<SelectableTile name="region" title="Europe" selected={false} onSelect={() => {}} />)
+    expect(container.querySelector('.selectable-tile-mark svg')).toBeNull()
+    unmount()
+
+    const { container: many } = render(<SelectableTile multiple title="Europe" selected={false} onSelect={() => {}} />)
+    expect(many.querySelector('.selectable-tile-mark svg')).not.toBeNull()
+  })
 })

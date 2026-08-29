@@ -18,7 +18,7 @@ import {
   Users, LayoutDashboard, MessageCircle, LogOut, User as UserIcon,
   Wind, Flame, HeartPulse, Shield, ZapOff, Droplet, Layers, Flag, Briefcase, Star,
 } from 'lucide-react'
-import { type SVGProps } from 'react'
+import { type SVGAttributes, type SVGProps } from 'react'
 import { cn } from '../../lib/cn'
 
 /* Spark: the concave four-point star, filled. Local SVG — Lucide's stroked
@@ -173,7 +173,17 @@ const ICONS = {
 export type IconName = keyof typeof ICONS
 type Size = 'sm' | 'md' | 'lg' | 'xl'
 
-type Props = {
+/* WHAT A CALLER PUTS ON AN ICON HAS TO ARRIVE.
+ *
+ * This took only `name`, `size` and `className`, and TypeScript did not object
+ * to the rest: it deliberately skips checking any JSX attribute whose name
+ * contains a hyphen, so every `data-*` a caller passed was accepted at the type
+ * level and thrown away at runtime. <Rating> computed `data-fill` per star and
+ * lost it, so `.rating-star[data-fill='full']` matched nothing and every star
+ * rendered as an outline — the exact failure the rule beside it was written to
+ * fix in the first place, back a second time and invisible because the visual
+ * baseline had been accepted with it (2026-08-29). */
+type Props = Omit<SVGAttributes<SVGSVGElement>, 'name' | 'ref'> & {
   /** Which glyph, by its Material-style name. Every name the system has is a
    *  member of `IconName`; there is no free-text escape, because an icon nobody
    *  can find is an icon nobody reuses. */
@@ -195,9 +205,9 @@ type Props = {
  * Copy: there is no copy here on purpose: an icon carries no words, so anything
  * it must say belongs on the control around it.
  */
-export function Icon({ name, size = 'sm', className }: Props) {
+export function Icon({ name, size = 'sm', className, ...rest }: Props) {
   const Component = ICONS[name]
   /* Size handled by CSS via data-size → --icon-* tokens. We don't pass `size`
    * to Lucide so settings.css can drive icon size globally. */
-  return <Component className={cn('icon', className)} data-size={size} aria-hidden="true" />
+  return <Component className={cn('icon', className)} data-size={size} aria-hidden="true" {...rest} />
 }

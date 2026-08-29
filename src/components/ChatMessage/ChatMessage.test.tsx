@@ -112,4 +112,38 @@ describe('ChatMessage', () => {
     await user.click(screen.getByRole('button', { name: 'Tell me more' }))
     expect(onClick).toHaveBeenCalledTimes(1)
   })
+
+  /* THE GLYPH AND THE STATE HAVE TO AGREE. The listen button shows a stop mark
+     while it is playing and a speaker when it is not; a mutation run swapped
+     the two arms of that ternary and nothing failed (2026-08-29), leaving a
+     control that says "pressed" to a screen reader and "not playing" to
+     everyone else. */
+  it('shows a stop mark while playing and a speaker when it is not', async () => {
+    const user = userEvent.setup()
+    vi.stubGlobal('speechSynthesis', { speak: vi.fn(), cancel: vi.fn() })
+    vi.stubGlobal('SpeechSynthesisUtterance', function Utterance(this: unknown) { return this })
+    render(assistant())
+
+    const glyph = (el: HTMLElement) => el.querySelector('svg')?.getAttribute('class') ?? ''
+    const listen = screen.getByRole('button', { name: /listen|read/i })
+    expect(glyph(listen)).toContain('lucide-volume')
+
+    await user.click(listen)
+    expect(listen).toHaveAttribute('aria-pressed', 'true')
+    expect(glyph(listen)).toContain('lucide-square')
+  })
+
+  /* AN EMPTY ROW OF CHOICES IS NOT A ROW OF CHOICES. The chips render behind
+     `choices.length > 0`; widened to `>= 0` the container is always there, so an
+     answer with nothing to offer still reserves the space and the gap under it.
+     A mutation run widened it and nothing failed (2026-08-29). */
+  it('renders no choices container when there are none', () => {
+    const { container } = render(assistant())
+    expect(container.querySelector('.chat-choices')).toBeNull()
+
+    const { container: withChoices } = render(
+      assistant({ choices: [{ label: 'Yes', onClick: () => undefined }] }),
+    )
+    expect(withChoices.querySelector('.chat-choices')).not.toBeNull()
+  })
 })

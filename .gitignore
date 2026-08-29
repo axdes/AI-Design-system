@@ -19,3 +19,12 @@ component-registry.json
 # proposal that git carries reads as part of the system, and this one was
 # swept into a commit by `git add -A` and published before anyone read it.
 .ds/
+
+# The source backups the two harnesses that REWRITE source leave behind: the
+# mutation run and the gate red team. Both put the original back and delete
+# theirs, and both leave one when a run is interrupted — which is the normal way
+# a fourteen-minute pass ends. A leftover is swept by the next run; this is here
+# so `git add -A` in between cannot commit a component's source under a second
+# name.
+*.mutbak
+*.gaterb

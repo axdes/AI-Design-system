@@ -729,6 +729,73 @@ export function rAutocompletePurpose(c) {
 }
 
 
+/** A PROP THE DOM ALREADY OWNS HAS TO BE OMITTED BEFORE IT IS REDECLARED.
+ *
+ * `Props = Omit<InputHTMLAttributes<...>, 'value'> & { size?: 'sm' | 'md' | 'lg' }`
+ * looks right and is not: `InputHTMLAttributes` carries its own `size?: number`,
+ * and an intersection of `number` with a string union is a type nothing can be
+ * assigned to. The registry publishes the local declaration, so the prop reads
+ * as a working axis while every call that sets it is a type error.
+ *
+ * <NumberInput size> was that for as long as it existed, and nothing caught it
+ * because no test and no example had ever passed one (2026-08-29). tsc cannot
+ * report it on its own: an unused impossible prop is not an error until somebody
+ * writes the call.
+ *
+ * The map is per BASE TYPE, not one list of suspicious words: `size` collides on
+ * an input and on a select, and on a span it is simply free. A list that does
+ * not know the difference reports ten components that are fine, and a rule
+ * nobody believes is a rule nobody keeps. */
+const DOM_OWNED = {
+  /* Everything, through React's HTMLAttributes. */
+  HTMLAttributes: ['color', 'content', 'title', 'translate', 'dir', 'hidden', 'slot', 'prefix', 'property', 'resource', 'inputMode', 'popover', 'security', 'results'],
+  InputHTMLAttributes: ['size', 'value', 'type', 'list', 'width', 'height', 'form', 'step', 'min', 'max', 'checked', 'multiple', 'capture', 'alt', 'src', 'accept'],
+  SelectHTMLAttributes: ['size', 'value', 'multiple', 'form'],
+  TextareaHTMLAttributes: ['value', 'rows', 'cols', 'wrap', 'form'],
+  ButtonHTMLAttributes: ['value', 'type', 'form', 'name'],
+  AnchorHTMLAttributes: ['href', 'target', 'type', 'rel', 'download', 'media', 'ping'],
+  ImgHTMLAttributes: ['width', 'height', 'src', 'alt', 'sizes', 'loading'],
+  TableHTMLAttributes: ['align', 'summary', 'width'],
+  TdHTMLAttributes: ['align', 'width', 'height', 'scope', 'headers', 'abbr'],
+  ThHTMLAttributes: ['align', 'width', 'height', 'scope', 'headers', 'abbr'],
+  OlHTMLAttributes: ['start', 'type'],
+  ColHTMLAttributes: ['span', 'width'],
+  SVGAttributes: ['color', 'width', 'height', 'values', 'filter', 'mask', 'opacity', 'overflow', 'rotate', 'scale', 'type', 'to', 'by', 'end', 'name', 'offset', 'path', 'points', 'radius', 'result', 'order', 'local', 'media', 'method', 'spacing', 'speed', 'string'],
+}
+
+export function rShadowedDomProp(c) {
+  const out = []
+  for (const f of c.codeFiles) {
+    const src = c.read(f)
+    /* The Props declaration and everything to the opening brace of its literal
+       half; a component without both halves cannot collide. */
+    const m = /type Props\b[^=]*=\s*([\s\S]*?)\{/.exec(src)
+    if (!m) continue
+    const head = m[1]
+    /* Which base types this Props is built on, and therefore which names are
+       already taken. HTMLAttributes rides along with every specific one. */
+    const owned = new Set()
+    for (const [base, names] of Object.entries(DOM_OWNED)) {
+      if (base === 'HTMLAttributes' ? /\bHTMLAttributes</.test(head) : head.includes(`${base}<`)) {
+        for (const n of names) owned.add(n)
+      }
+    }
+    if (!owned.size) continue
+    const omitted = new Set([...head.matchAll(/'([A-Za-z-]+)'/g)].map((x) => x[1]))
+    const body = src.slice(m.index + m[0].length)
+    const close = body.indexOf('\n}')
+    const literal = close === -1 ? body : body.slice(0, close)
+    for (const name of owned) {
+      if (omitted.has(name)) continue
+      const decl = new RegExp(`^\\s*${name}\\??:`, 'm')
+      if (!decl.test(literal)) continue
+      const line = src.slice(0, m.index).split('\n').length
+      out.push(`${c.rel(f)}:${line}  Props redeclares \`${name}\`, which the DOM type it extends already owns — the intersection is not the type written here. Add '${name}' to the Omit<>.`)
+    }
+  }
+  return out
+}
+
 export const SHARED_RULES = {
   'spacing/radius via tokens (no raw px)': rSpacingPx,
   'components use semantic status roles (no tonal primitives)': rSemanticOnly,
@@ -752,6 +819,7 @@ export const SHARED_RULES = {
   'a part that takes words says what words': rCopyGuidance,
   'media queries on the declared breakpoint scale': rBreakpointScale,
   'files within the size ceiling': rFileSize,
+  'a redeclared DOM prop is omitted first': rShadowedDomProp,
 }
 
 /**

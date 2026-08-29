@@ -44,7 +44,7 @@
  * surviving — a test that quietly stopped biting. A component with tests and no
  * baseline row fails too; that is how a new part gets measured at all.
  */
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, unlinkSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { execSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
@@ -64,6 +64,32 @@ const OPS = [
   { id: 'invert-comparison', why: 'a boundary widened by one', re: / > /, to: ' >= ' },
   { id: 'drop-spread', why: 'the passthrough dropped: className, id and every data- attribute stop arriving', re: /\s\{\.\.\.rest\}/, to: '' },
 ]
+
+/* True when index `i` sits inside a // line comment or a /* block comment. A
+   character scan rather than a regex: the file is small, and a regex that tries
+   to know about strings and comments at once is how this goes wrong. */
+function inComment(src, i) {
+  let block = false, line = false
+  for (let p = 0; p < i; p++) {
+    if (line) { if (src[p] === '\n') line = false; continue }
+    if (block) { if (src[p] === '*' && src[p + 1] === '/') { block = false; p++ } ; continue }
+    if (src[p] === '/' && src[p + 1] === '*') { block = true; p++ }
+    else if (src[p] === '/' && src[p + 1] === '/') { line = true; p++ }
+  }
+  return block || line
+}
+
+/** Apply `op` to the first match that is real code. null when there is none. */
+function mutateOutsideComments(src, op) {
+  const re = new RegExp(op.re.source, op.re.flags.includes('g') ? op.re.flags : `${op.re.flags}g`)
+  for (const m of src.matchAll(re)) {
+    if (inComment(src, m.index)) continue
+    const head = src.slice(0, m.index)
+    const tail = src.slice(m.index + m[0].length)
+    return head + m[0].replace(op.re, op.to) + tail
+  }
+  return null
+}
 
 const argv = process.argv.slice(2)
 const check = argv.includes('--check')
@@ -98,6 +124,46 @@ if (check && !todo.length && !missing.length) {
 
 console.log(`${BOLD}Mutation${OFF} ${DIM}${todo.length} component(s)${check ? ' changed since the baseline' : ''}${OFF}\n`)
 
+/* A RUN THAT DIES MID-MUTANT MUST NOT LEAVE THE MUTANT BEHIND.
+ *
+ * The loop writes a broken version of a component, runs the suite, and writes
+ * the original back. Kill it in between — a timeout, Ctrl-C, a closed pipe —
+ * and the working tree keeps the break: a widened guard, an `&&` turned into
+ * `||`, sitting in the source with nothing to say it is there. A full pass is
+ * fourteen minutes, so being interrupted is the NORMAL case, and the next thing
+ * anybody runs then measures the mutant instead of the code (2026-08-29).
+ *
+ * A SIGNAL HANDLER IS NOT ENOUGH, and that was measured rather than assumed:
+ * the loop spends all its time inside a blocking `execSync`, so a handler
+ * registered on SIGTERM never gets a turn before the process is gone — killed
+ * mid-run with one in place, the mutated file stayed mutated.
+ *
+ * So the original goes to a file on disk before the mutation is written, and is
+ * removed once it has been put back. Anything left behind is a run that died,
+ * and the next run sweeps it before it measures anything. That survives a
+ * SIGKILL, which no handler can. Same guarantee, and the same reason, as the
+ * `.gaterb` backups in gate-redteam.mjs. */
+const BAK = '.mutbak'
+
+const sweep = () => {
+  let found = 0
+  for (const name of readdirSync(`${ROOT}/src/components`)) {
+    const dir = `${ROOT}/src/components/${name}`
+    /* src/components holds a few JSON files beside the folders. */
+    if (!statSync(dir).isDirectory()) continue
+    for (const f of readdirSync(dir)) {
+      if (!f.endsWith(BAK)) continue
+      const live = `${dir}/${f.slice(0, -BAK.length)}`
+      writeFileSync(live, readFileSync(`${dir}/${f}`, 'utf8'))
+      unlinkSync(`${dir}/${f}`)
+      console.error(`${RED}restored ${live.replace(`${ROOT}/`, '')}${OFF} ${DIM}— a previous run was interrupted mid-mutant${OFF}`)
+      found++
+    }
+  }
+  return found
+}
+if (sweep()) console.error('')
+
 const results = { ...prior.components }
 const regressions = []
 for (const name of todo) {
@@ -105,9 +171,16 @@ for (const name of todo) {
   const original = readFileSync(file, 'utf8')
   const row = { hash: digest(name), killed: [], survived: [] }
   for (const op of OPS) {
-    if (!op.re.test(original)) continue
-    const mutated = original.replace(op.re, op.to)
-    if (mutated === original) continue
+    /* A MUTANT IN A COMMENT CANNOT BE KILLED, AND COUNTING IT LOWERS THE SCORE
+     * FOR NOTHING. `invert-comparison` matched ` > ` inside three JSDoc blocks —
+     * a note about `.btn > .icon` in Button and MenuButton, and one about ARIA
+     * grid > row > gridcell in Calendar — and each one was recorded as a
+     * survivor no test could ever have caught (2026-08-29). The operator now
+     * skips past a match that lands in a comment and mutates the next real one,
+     * so an operator still applies wherever it genuinely can. */
+    const mutated = mutateOutsideComments(original, op)
+    if (mutated === null || mutated === original) continue
+    writeFileSync(`${file}${BAK}`, original)
     writeFileSync(file, mutated)
     let died = false
     /* `ignore`, not `pipe`: only the exit code matters, and piping a full test
@@ -123,6 +196,7 @@ for (const name of todo) {
       catch { died = true }
     }
     writeFileSync(file, original)
+    unlinkSync(`${file}${BAK}`)
     ;(died ? row.killed : row.survived).push(op.id)
     /* A mutant that used to die and now lives is a test that stopped biting —
        the one thing this check exists to catch, and it is louder than the score. */

@@ -34,6 +34,7 @@
     }
   ],
   "sourcePath": "src/components/Icon/Icon.tsx",
+  "inherits": "Omit<SVGAttributes<SVGSVGElement>, 'name' | 'ref'>",
   "variants": {
     "size": {
       "prop": "size",

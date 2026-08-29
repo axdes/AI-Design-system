@@ -32,4 +32,18 @@ describe('NumberInput', () => {
     await user.click(screen.getByRole('button', { name: 'Increase' }))
     expect(onChange).toHaveBeenCalledWith(2)
   })
+
+  /* THE STEPPERS SCALE WITH THE FIELD. A large field takes md buttons and
+     everything smaller takes sm; a mutation run swapped the two arms so a large
+     field got the small pair and a small field the large one, and nothing failed
+     (2026-08-29). An unsized pair beside a 48px field is the mismatch this
+     ternary exists to prevent. */
+  it('gives a large field the larger steppers and a default field the small ones', () => {
+    const { container, unmount } = render(<NumberInput label="Qty" size="lg" value={1} onChange={() => undefined} />)
+    for (const b of container.querySelectorAll<HTMLElement>('.icon-button')) expect(b).toHaveAttribute('data-size', 'md')
+    unmount()
+
+    const { container: small } = render(<NumberInput label="Qty" value={1} onChange={() => undefined} />)
+    for (const b of small.querySelectorAll<HTMLElement>('.icon-button')) expect(b).toHaveAttribute('data-size', 'sm')
+  })
 })

@@ -62,4 +62,20 @@ describe('TagInput', () => {
 
     expect(onChange).toHaveBeenCalledWith(['weekly'])
   })
+
+  /* BACKSPACE ON AN EMPTY FIELD WITH NO TAGS MUST DO NOTHING. The guard is
+     `value.length > 0`; widened to `>= 0` it calls onChange with a slice of an
+     empty array on every stray Backspace, so a component that looks idle is
+     writing to its caller. A mutation run widened it and nothing failed
+     (2026-08-29). */
+  it('does not call onChange when Backspace is pressed with no tags', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<TagInput label="Tags" value={[]} onChange={onChange} />)
+
+    await user.click(screen.getByRole('textbox', { name: 'Tags' }))
+    await user.keyboard('{Backspace}{Backspace}')
+
+    expect(onChange).not.toHaveBeenCalled()
+  })
 })

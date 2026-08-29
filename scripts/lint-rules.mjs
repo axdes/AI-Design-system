@@ -377,6 +377,7 @@ runLintRules({
     'icon-only buttons wrapped in <Tooltip>',
     'no reaching into primitive class+data contract',
     'no banned runtime constructs',
+    'a redeclared DOM prop is omitted first',
     'no static inline styles',
     'inner screens offer a way back',
     'destructive actions confirm first',

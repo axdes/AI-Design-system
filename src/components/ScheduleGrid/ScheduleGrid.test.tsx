@@ -53,4 +53,17 @@ describe('ScheduleGrid', () => {
     expect(screen.getAllByText('Free').length).toBeGreaterThan(0)
     expect(screen.getByRole('columnheader', { name: '11:00' })).toHaveAttribute('data-now', 'true')
   })
+
+  /* "NOW" IS ONE COLUMN, NOT EVERY COLUMN. A booking is marked as happening now
+     only when the current slot is inside it — `now >= from AND now <= to`.
+     Widened to OR, every booking on the grid is marked, which is the same as
+     marking none. A mutation run did exactly that and nothing failed
+     (2026-08-29). */
+  it('marks only the booking the current slot falls inside', () => {
+    render(<ScheduleGrid label="Rooms" resources={ROOMS} slots={HOURS} events={EVENTS} now="09:00" />)
+
+    const marked = document.querySelectorAll('.schedule-event[data-now]')
+    expect(marked).toHaveLength(1)
+    expect(marked[0]).toHaveTextContent('Kick-off')
+  })
 })

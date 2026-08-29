@@ -64,4 +64,25 @@ describe('Accordion', () => {
     await user.click(third)
     expect(screen.queryByText('Third body')).toBeNull()
   })
+
+  /* THE BOUNDARY, not the middle. `End` is `headers.length - 1`, and one past
+     the end focuses nothing at all — the reader presses End and the focus ring
+     vanishes. A mutation run flipped this to `headers.length` and 471 tests
+     stayed green (2026-08-29).
+
+     "Last" means the last ENABLED header: the list is queried with
+     `:not(:disabled)`, so Third is not in it and End belongs to Second. That is
+     the contract worth holding — End should never land on something the reader
+     cannot then open. */
+  it('End goes to the last enabled header and Home to the first', async () => {
+    const user = userEvent.setup()
+    render(<Accordion items={ITEMS} />)
+
+    await user.click(screen.getByRole('button', { name: 'First' }))
+    await user.keyboard('{End}')
+    expect(screen.getByRole('button', { name: 'Second' })).toHaveFocus()
+
+    await user.keyboard('{Home}')
+    expect(screen.getByRole('button', { name: 'First' })).toHaveFocus()
+  })
 })

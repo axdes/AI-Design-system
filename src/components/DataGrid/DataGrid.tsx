@@ -49,8 +49,10 @@ const SAVED_FOR_MS = 2500
 function cellMark(at?: { state: 'saving' | 'saved' | 'failed'; error?: string }) {
   if (!at) return null
   if (at.state === 'saving') return <Spinner size="sm" className="dg-cell-mark" label="Saving" />
-  /* The span carries the state, not the Icon: <Icon> takes a name and a size and passes nothing
-   * else through, so a `data-` attribute written on it never reaches the DOM. */
+  /* The span carries the state, not the Icon. That used to be forced — <Icon> took a name and a
+   * size and passed nothing else through, so a `data-` attribute written on it never reached the
+   * DOM (fixed 2026-08-29, after the same silence cost <Rating> its stars). It stays on the span
+   * because the state belongs to the CELL: the glyph is what the state chose, not what carries it. */
   if (at.state === 'saved') return <span className="dg-cell-mark" data-state="saved"><Icon name="check" /></span>
   /* The words go on `title` and to a screen reader: a cell is one line of a grid and has no room
    * for a sentence, and the caller shows the same message above the grid where there is. */

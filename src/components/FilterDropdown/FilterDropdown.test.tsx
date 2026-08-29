@@ -100,4 +100,29 @@ describe('FilterDropdown', () => {
        tells a screen-reader user nothing about which one they are in. */
     expect(await screen.findByRole('searchbox', { name: 'Filter by status' })).toBeInTheDocument()
   })
+
+  /* THE DEFAULT IS PART OF THE CONTRACT, and every test above passes `multiple`
+     explicitly through the harness, so the component's own default was never
+     exercised: a mutation run flipped `multiple = true` to `false` and the suite
+     stayed green (2026-08-29). A filter that silently replaces the last choice
+     instead of adding to it is a different control. */
+  it('adds to the selection when nothing was said about multiple', async () => {
+    const user = userEvent.setup()
+    function Bare() {
+      const [value, setValue] = useState<Status[]>([])
+      return (
+        <>
+          <FilterDropdown<Status> label="Status" allLabel="All statuses" options={OPTIONS} value={value} onChange={setValue} />
+          <output>{value.join(',') || 'none'}</output>
+        </>
+      )
+    }
+    render(<Bare />)
+
+    await user.click(screen.getByRole('button', { name: /Status|All statuses/ }))
+    await user.click(screen.getByRole('menuitem', { name: 'Draft' }))
+    await user.click(screen.getByRole('menuitem', { name: 'Published' }))
+
+    expect(screen.getByRole('status')).toHaveTextContent('draft,published')
+  })
 })

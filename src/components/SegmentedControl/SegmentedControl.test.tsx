@@ -47,4 +47,21 @@ describe('SegmentedControl', () => {
     await user.keyboard('{ArrowLeft}{ArrowLeft}')
     expect(screen.getByRole('status')).toHaveTextContent('calendar') // wrapped past the start
   })
+
+  /* THE BOUNDARY. `End` is `options.length - 1`; one past it is `undefined`,
+     and `options[next].value` then throws on a key the reader is entitled to
+     press. A mutation run flipped it and nothing failed (2026-08-29). */
+  it('End selects the LAST option and Home the first', async () => {
+    const user = userEvent.setup()
+    render(<Host />)
+    const radios = screen.getAllByRole('radio')
+
+    radios[0].focus()
+    await user.keyboard('{End}')
+    expect(screen.getByRole('radio', { name: 'Calendar' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('radio', { name: 'Calendar' })).toHaveFocus()
+
+    await user.keyboard('{Home}')
+    expect(screen.getByRole('radio', { name: 'List' })).toHaveAttribute('aria-checked', 'true')
+  })
 })

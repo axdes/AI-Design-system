@@ -260,4 +260,22 @@ describe('Tree', () => {
 
     expect(document.querySelector('[data-id="src/Other.tsx"]')).toHaveFocus()
   })
+
+  /* THE END OF THE TREE IS A WALL. ArrowDown clamps to the last VISIBLE row;
+     one past it reads `undefined` and the fallback puts focus back where it
+     was, so the bug hides — except that the row it clamps to is then wrong. A
+     mutation run widened the clamp and nothing failed (2026-08-29). */
+  it('ArrowDown stops on the last visible row', async () => {
+    const user = userEvent.setup()
+    render(<Host />)
+    const rows = screen.getAllByRole('treeitem')
+    const last = rows[rows.length - 1]
+
+    rows[0].focus()
+    /* One press per row, and three more that must change nothing. */
+    for (let i = 0; i < rows.length + 3; i++) await user.keyboard('{ArrowDown}')
+
+    expect(last).toHaveFocus()
+    expect(last).toHaveAccessibleName(/README/)
+  })
 })

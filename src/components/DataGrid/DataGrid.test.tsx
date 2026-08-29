@@ -275,4 +275,42 @@ describe("what became of the cell that was just committed", () => {
        read. */
     await waitFor(() => expect(screen.getByRole('alert', { name: 'Name is already taken' })).toBeInTheDocument())
   })
+
+})
+
+describe('which way the column is sorted', () => {
+  /* THE ARROW HAS TO POINT THE WAY THE COLUMN IS SORTED. `asc` is up and
+     everything else is down; a mutation run swapped the two arms and nothing
+     failed (2026-08-29), leaving a header that says "ascending" to a screen
+     reader and points downward to everyone else. `aria-sort` and the glyph are
+     one fact told twice, and the test holds them together. */
+  it('points the sort arrow the same way aria-sort says', () => {
+    const onSort = vi.fn()
+    function Sorted({ dir }: { dir: 'asc' | 'desc' }) {
+      return (
+        <DataGrid<Row>
+          label="Rows"
+          rows={ROWS.slice(0, 5)}
+          rowKey={(r) => r.id}
+          rowHeight={40}
+          height={400}
+          sort={{ key: 'name', sortDirection: dir }}
+          onSortChange={onSort}
+          columns={[{ key: 'name', header: 'Name', cell: (r) => r.name, sortable: true }]}
+        />
+      )
+    }
+    const glyph = (el: HTMLElement) => el.querySelector('svg')?.getAttribute('class') ?? ''
+
+    const { unmount } = render(<Sorted dir="asc" />)
+    const asc = screen.getByRole('columnheader', { name: /Name/ })
+    expect(asc).toHaveAttribute('aria-sort', 'ascending')
+    expect(glyph(asc)).toContain('lucide-arrow-up')
+    unmount()
+
+    render(<Sorted dir="desc" />)
+    const desc = screen.getByRole('columnheader', { name: /Name/ })
+    expect(desc).toHaveAttribute('aria-sort', 'descending')
+    expect(glyph(desc)).toContain('lucide-arrow-down')
+  })
 })

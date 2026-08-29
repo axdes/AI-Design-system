@@ -67,4 +67,20 @@ describe('Pagination', () => {
     render(<Pagination page={2} pageCount={5} onChange={() => {}} label="Search results" />)
     expect(screen.getByRole('navigation', { name: 'Search results' })).toBeInTheDocument()
   })
+
+  /* AN ELLIPSIS STANDS FOR SOMETHING SKIPPED. The gap is pushed only when the
+     window really starts past page 2 — `start > first + 1`. Widened to `>=`, an
+     ellipsis appears between 1 and 2 with nothing hidden behind it, which tells
+     the reader pages are missing that are right there. A mutation run widened it
+     and nothing failed (2026-08-29). */
+  it('draws no ellipsis when nothing is skipped', () => {
+    /* Page 3 of 5 with one sibling either side: the window is 2..4, so 1 2 3 4 5
+       are all listed and neither end hides anything. `start` is exactly
+       `first + 1` here, which is the boundary the guard turns on. */
+    const { container } = render(<Pagination page={3} pageCount={5} onChange={() => undefined} />)
+    expect(container.querySelectorAll('.pagination-gap')).toHaveLength(0)
+    for (const n of ['1', '2', '3', '4', '5']) {
+      expect(screen.getByRole('button', { name: new RegExp(`\\b${n}\\b`) })).toBeInTheDocument()
+    }
+  })
 })

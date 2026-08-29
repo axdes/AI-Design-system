@@ -143,4 +143,14 @@ describe('SideNav routing', () => {
     render(<SideNav aria-label="Primary" groups={[{ items: [{ id: 'a', label: 'Reports', icon: 'article', onSelect: () => undefined }] }]} />)
     expect(screen.getByRole('button', { name: 'Reports' })).toBeInTheDocument()
   })
+
+  /* A RULE SEPARATES TWO GROUPS, so the first one has nothing above it to be
+     separated from. The guard is `gi > 0`; widened to `>= 0` the rail opens with
+     a line hanging over its first heading, which reads as a group that lost its
+     name. A mutation run widened it and nothing failed (2026-08-29). */
+  it('draws a rule between groups and none above the first', () => {
+    const { container } = render(<SideNav aria-label="Primary" groups={groups} />)
+    /* Two groups in the fixture, so exactly one rule between them. */
+    expect(container.querySelectorAll('.side-nav-separator')).toHaveLength(groups.length - 1)
+  })
 })

@@ -79,7 +79,7 @@
     }
   ],
   "sourcePath": "src/components/NumberInput/NumberInput.tsx",
-  "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step'>",
+  "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step' | 'size'>",
   "variants": {
     "invalid": {
       "prop": "invalid",

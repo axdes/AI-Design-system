@@ -64,4 +64,27 @@ describe('CopyButton', () => {
     await user.click(screen.getByRole('button', { name: 'Copy key' }))
     expect(await screen.findByRole('status')).toHaveTextContent('Copied')
   })
+
+  /* THE GLYPH IS HALF THE CONFIRMATION. The words change to "Copied" and the
+     icon changes to a tick; a mutation run swapped the two arms of that ternary
+     so the button showed the copy glyph after a successful copy, and nothing
+     failed (2026-08-29). The two halves have to agree, or the control says one
+     thing in words and the opposite in the picture. */
+  it('shows a tick after a successful copy and the copy glyph before', async () => {
+    const user = userEvent.setup()
+    render(<CopyButton value="sk-live" label="Copy key" />)
+    stubClipboard({ writeText: () => Promise.resolve() })
+
+    /* The glyph is a Lucide svg, and its own class is what names it. */
+    const glyph = (el: HTMLElement) => el.querySelector('svg')?.getAttribute('class') ?? ''
+
+    const button = screen.getByRole('button', { name: 'Copy key' })
+    expect(glyph(button)).toContain('lucide-copy')
+
+    await user.click(button)
+
+    const done = await screen.findByRole('button', { name: /Copied/i })
+    expect(glyph(done)).toContain('lucide-check')
+    expect(glyph(done)).not.toContain('lucide-copy')
+  })
 })

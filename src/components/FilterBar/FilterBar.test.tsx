@@ -91,4 +91,19 @@ describe('FilterBar', () => {
 
     expect(screen.queryByRole('dialog')).toBeNull()
   })
+
+  /* THE TRIGGER IS ONLY "ACTIVE" WHEN A FILTER IS ON. `activeCount > 0` is what
+     that means; widened to `>= 0` the trigger is marked active on a bar where
+     nothing is filtered, so the one signal that says "you are not seeing
+     everything" says it always and stops meaning anything. A mutation run
+     widened it and nothing failed (2026-08-29). */
+  it('mobile: marks the trigger active only when a filter is on', () => {
+    setViewport(true)
+    const { unmount } = render(<FilterBar activeCount={0} onClear={() => undefined}><button>Owner</button></FilterBar>)
+    expect(screen.getByRole('button', { name: /filters/i })).not.toHaveAttribute('data-active')
+    unmount()
+
+    render(<FilterBar activeCount={2} onClear={() => undefined}><button>Owner</button></FilterBar>)
+    expect(screen.getByRole('button', { name: /filters/i })).toHaveAttribute('data-active')
+  })
 })

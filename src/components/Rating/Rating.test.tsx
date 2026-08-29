@@ -49,4 +49,19 @@ describe('Rating', () => {
     await user.keyboard('{ArrowLeft}{ArrowLeft}')
     expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '2')
   })
+
+  /* EMPTY IS NOT HALF. The star's fill is `full` at 1, `half` above 0, `empty`
+     at exactly 0 — and a mutation run widened that last boundary to `>= 0`, so
+     every unearned star rendered as a half one and a score of 2 looked like 4.5.
+     Nothing failed (2026-08-29). */
+  it('draws unearned stars as empty and a fraction as half', () => {
+    const { container, unmount } = render(<Rating label="Score" value={2} max={4} />)
+    expect([...container.querySelectorAll('.rating-star')].map((s) => s.getAttribute('data-fill')))
+      .toEqual(['full', 'full', 'empty', 'empty'])
+    unmount()
+
+    const { container: half } = render(<Rating label="Score" value={2.5} max={4} />)
+    expect([...half.querySelectorAll('.rating-star')].map((s) => s.getAttribute('data-fill')))
+      .toEqual(['full', 'full', 'half', 'empty'])
+  })
 })

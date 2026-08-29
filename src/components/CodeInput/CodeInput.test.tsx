@@ -97,4 +97,17 @@ describe('CodeInput', () => {
 
     expect(onChange).toHaveBeenLastCalledWith('4821')
   })
+
+  /* THE NUMERIC KEYPAD IS THE DEFAULT, and it is what makes this usable on a
+     phone: a one-time code typed on a full keyboard is four extra taps. A
+     mutation run flipped `numeric = true` to `false` and the suite stayed green
+     (2026-08-29), so nothing held the default OR the inputMode it drives. */
+  it('asks for the numeric keypad by default and a text one when told', () => {
+    const { unmount } = render(<Harness />)
+    for (const box of boxes()) expect(box).toHaveAttribute('inputmode', 'numeric')
+    unmount()
+
+    render(<CodeInput length={4} value="" onChange={() => undefined} label="Code" numeric={false} />)
+    for (const box of screen.getAllByRole('textbox')) expect(box).toHaveAttribute('inputmode', 'text')
+  })
 })
