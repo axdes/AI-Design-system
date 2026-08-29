@@ -1,0 +1,1 @@
+.timeinput{font-variant-numeric:tabular-nums}.timeinput::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer}.timeinput:hover::-webkit-calendar-picker-indicator{opacity:1}.timeinput:focus-visible::-webkit-calendar-picker-indicator{opacity:1}

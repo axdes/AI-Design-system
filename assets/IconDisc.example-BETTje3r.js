@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{a as t}from"./index-Dt8cRjU7.js";import{t as n}from"./IconDisc-DsO1rSj3.js";var r=e();function i(){return(0,r.jsxs)(t,{gap:3,align:`center`,children:[(0,r.jsx)(n,{icon:`campaign`}),(0,r.jsx)(n,{icon:`campaign`,tone:`primary`}),(0,r.jsx)(n,{icon:`campaign`,size:`sm`})]})}export{i as Example};

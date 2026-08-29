@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{t}from"./ChatComposer-DDW0RtdR.js";var n=e();function r(){return(0,n.jsx)(t,{placeholder:`Ask anything`,onSend:()=>void 0})}export{r as Example};

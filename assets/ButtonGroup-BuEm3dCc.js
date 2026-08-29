@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";var n=t();function r({children:t,label:r,tone:i,className:a}){return(0,n.jsx)(`div`,{className:e(`button-group`,a),"data-tone":i,role:`group`,"aria-label":r,children:t})}export{r as t};

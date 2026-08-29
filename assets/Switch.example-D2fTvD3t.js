@@ -1,0 +1,1 @@
+import{i as e,t}from"./jsx-runtime-Cl2o_4ln.js";import{t as n}from"./react-BG7FV4Tc.js";import{t as r}from"./Switch-BAhwozfe.js";var i=e(n(),1),a=t();function o(){let[e,t]=(0,i.useState)(!0);return(0,a.jsx)(r,{checked:e,onChange:t,label:`Weekly digest`})}export{o as Example};

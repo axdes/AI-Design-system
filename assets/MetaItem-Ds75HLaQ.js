@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";import{t as n}from"./Icon-41h94wY2.js";import"./Icon-C961t5lT.js";var r=t();function i({icon:t,appearance:i,children:a,className:o,...s}){return(0,r.jsxs)(`span`,{className:e(`meta-item`,o),"data-appearance":i,...s,children:[t&&(0,r.jsx)(n,{name:t}),a]})}export{i as t};

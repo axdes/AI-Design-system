@@ -1,0 +1,1 @@
+function e(e){if(!e)return!1;if(e.childElementCount===0)return(e.textContent??``).trim().length>0;for(let t of e.querySelectorAll(`*`))for(let e of t.getClientRects())if(e.width>0&&e.height>0)return!0;return!1}export{e as t};

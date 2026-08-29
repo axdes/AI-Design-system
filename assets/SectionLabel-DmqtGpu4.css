@@ -1,0 +1,1 @@
+.section-label{font-family:var(--font-family-display);font-size:var(--font-lg);font-weight:var(--font-weight-medium);line-height:var(--leading-tight);color:var(--foreground)}.section-label+*{margin-block-start:var(--space-3)}.card>.section-label+*{margin-block-start:0}

@@ -1,0 +1,1 @@
+.form-stack{gap:var(--space-6);flex-direction:column;display:flex}.form-stack .select-trigger,.form-stack .select,.form-stack .combobox{inline-size:100%;min-inline-size:0}

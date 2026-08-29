@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";import{t as n}from"./Icon-41h94wY2.js";import"./Icon-C961t5lT.js";var r=t();function i({icon:t,size:i=`md`,tone:a=`neutral`,className:o}){return(0,r.jsx)(`span`,{className:e(`icon-disc`,o),"data-size":i,"data-tone":a,children:(0,r.jsx)(n,{name:t,size:i===`md`?`lg`:`sm`})})}export{i as t};

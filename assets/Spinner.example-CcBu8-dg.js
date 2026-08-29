@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{t}from"./Spinner-CWOwMzVb.js";import{a as n}from"./index-Dt8cRjU7.js";var r=e();function i(){return(0,r.jsxs)(n,{gap:6,align:`center`,children:[(0,r.jsx)(t,{label:`Saving the draft`}),(0,r.jsx)(t,{size:`md`,label:`Loading invoices`}),(0,r.jsx)(t,{size:`lg`,label:`Preparing the report`})]})}export{i as Example};

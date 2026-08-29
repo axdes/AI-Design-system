@@ -1,0 +1,3 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{t}from"./Prose-BmhSuzER.js";import"./index-Dt8cRjU7.js";import{t as n}from"./Code-Bt91qBuf.js";var r=e(),i=`<Page archetype="list" header={<PageHeader title="Approvals" />}>
+  <Card flush>{rows}</Card>
+</Page>`;function a(){return(0,r.jsxs)(r.Fragment,{children:[(0,r.jsxs)(t,{children:[`The list archetype is carried by `,(0,r.jsx)(n,{inline:!0,children:`ListPageTemplate`}),`.`]}),(0,r.jsx)(n,{label:`A list page`,children:i})]})}export{a as Example};

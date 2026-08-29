@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";var n=t();function r({as:t=`p`,size:r=`md`,appearance:i=`muted`,className:a,...o}){return(0,n.jsx)(t,{className:e(`prose`,a),"data-size":r,"data-appearance":i,...o})}export{r as t};

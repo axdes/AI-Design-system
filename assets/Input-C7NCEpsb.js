@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";/* empty css              */var n=t();function r({invalid:t,size:r,surface:i=`base`,className:a,...o}){return(0,n.jsx)(`input`,{className:e(`input`,a),"data-size":r,"aria-invalid":t||void 0,"data-surface":i,...o})}export{r as t};

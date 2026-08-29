@@ -1,0 +1,1 @@
+function e(...e){return t=>{for(let n of e)typeof n==`function`?n(t):n&&typeof n==`object`&&(n.current=t)}}export{e as t};

@@ -1,0 +1,1 @@
+import{i as e,t}from"./jsx-runtime-Cl2o_4ln.js";import{t as n}from"./react-BG7FV4Tc.js";import{S as r}from"./examples-Cm58T3Dm.js";var i=e(n(),1),a=t();function o(){let[e,t]=(0,i.useState)([]);return(0,a.jsx)(r,{multiple:!0,hint:`PDF or PNG, up to 10 MB`,files:e,onFiles:e=>t(t=>[...t,...e]),onRemove:e=>t(t=>t.filter((t,n)=>n!==e))})}export{o as Example};

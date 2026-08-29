@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{h as t}from"./index-Dt8cRjU7.js";import{t as n}from"./NavDrawerButton-Cw2BM6qC.js";var r=e();function i(){return(0,r.jsx)(t,{children:(0,r.jsx)(n,{})})}export{i as Example};

@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";var n=t();function r({tone:t=`neutral`,fill:r,size:i,className:a,...o}){return(0,n.jsx)(`span`,{className:e(`badge`,a),"data-tone":t,"data-fill":r,"data-size":i,...o})}export{r as t};

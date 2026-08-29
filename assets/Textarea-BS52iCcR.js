@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";/* empty css              */var n=t();function r({invalid:t,size:r,surface:i=`base`,className:a,rows:o=4,...s}){return(0,n.jsx)(`textarea`,{className:e(`input`,`textarea`,a),"data-size":r,"data-surface":i,"aria-invalid":t||void 0,rows:o,...s})}export{r as t};

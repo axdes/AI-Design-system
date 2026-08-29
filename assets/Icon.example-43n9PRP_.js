@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{t}from"./Icon-41h94wY2.js";import{a as n}from"./index-Dt8cRjU7.js";var r=e();function i(){return(0,r.jsxs)(n,{gap:4,align:`center`,children:[(0,r.jsx)(t,{name:`calendar`}),(0,r.jsx)(t,{name:`calendar`,size:`md`}),(0,r.jsx)(t,{name:`calendar`,size:`lg`}),(0,r.jsx)(t,{name:`calendar`,size:`xl`})]})}export{i as Example};

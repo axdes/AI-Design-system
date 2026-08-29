@@ -1,0 +1,1 @@
+.spinner{color:currentColor;justify-content:center;align-items:center;display:inline-flex}.spinner .icon{animation:spinner-rotate var(--duration-slow) linear infinite;animation-duration:.9s}@keyframes spinner-rotate{to{transform:rotate(360deg)}}.sr-only{clip:rect(0, 0, 0, 0);white-space:nowrap;border:0;width:1px;height:1px;margin:-1px;padding:0;position:absolute;overflow:hidden}

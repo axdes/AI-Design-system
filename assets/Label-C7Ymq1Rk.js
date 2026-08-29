@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";var n=t();function r({size:t,className:r,...i}){return(0,n.jsx)(`label`,{className:e(`label`,r),"data-size":t,...i})}export{r as t};

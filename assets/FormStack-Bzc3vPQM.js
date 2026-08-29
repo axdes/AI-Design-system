@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";var n=t();function r({children:t,className:r}){return(0,n.jsx)(`div`,{className:e(`form-stack`,r),children:t})}export{r as t};

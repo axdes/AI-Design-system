@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";var n=t();function r({children:t,inline:r,label:i,className:a}){return r?(0,n.jsx)(`code`,{className:e(`code`,a),"data-inline":``,children:t}):(0,n.jsx)(`pre`,{className:e(`code`,a),tabIndex:0,role:`region`,"aria-label":i,children:(0,n.jsx)(`code`,{children:t})})}export{r as t};

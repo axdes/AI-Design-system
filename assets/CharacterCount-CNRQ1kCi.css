@@ -1,0 +1,1 @@
+.character-count{font-size:var(--font-sm);line-height:var(--leading-normal);color:var(--muted-foreground);font-variant-numeric:tabular-nums}.character-count[data-error]{color:var(--destructive-emphasis)}.character-count-live{clip-path:inset(50%);white-space:nowrap;block-size:1px;inline-size:1px;position:absolute;overflow:hidden}

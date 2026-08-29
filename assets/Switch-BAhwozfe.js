@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Cl2o_4ln.js";var n=t();function r({checked:t,onChange:r,label:i,invalid:a,className:o,...s}){return(0,n.jsx)(`button`,{type:`button`,role:`switch`,"aria-checked":t,"aria-invalid":a||void 0,"aria-label":i,className:e(`switch`,o),onClick:()=>r(!t),...s})}export{r as t};

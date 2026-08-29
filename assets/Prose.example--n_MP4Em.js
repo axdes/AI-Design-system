@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{t}from"./Prose-BmhSuzER.js";var n=e();function r(){return(0,n.jsxs)(t,{children:[`A queue is worked through rather than searched, so it carries no filter bar: the set is `,(0,n.jsx)(`strong`,{children:`given`}),`, and what it needs is density and status.`]})}export{r as Example};

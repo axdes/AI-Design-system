@@ -1,0 +1,1 @@
+.popover{z-index:var(--z-dropdown);max-inline-size:min(22rem, calc(100vw - var(--space-8)));padding:var(--space-4);background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);position:fixed}.popover:focus-visible{outline:var(--ring-width) solid var(--ring);outline-offset:var(--ring-offset)}

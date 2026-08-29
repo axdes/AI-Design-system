@@ -1,0 +1,1 @@
+.hover-card{z-index:var(--z-dropdown);max-inline-size:20rem;padding:var(--space-4);background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);font-size:var(--font-sm);position:fixed}

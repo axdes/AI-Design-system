@@ -1,0 +1,1 @@
+.system-page{padding-block-start:var(--space-16)}.system-page-title{font-size:var(--font-2xl);font-weight:var(--font-weight-semibold);text-wrap:wrap;margin:0}.system-page-body{gap:var(--space-3);flex-direction:column;display:flex}.system-page-body p{margin:0}.system-page-contact{color:var(--muted-foreground)}.system-page-action{gap:var(--space-3);display:flex}

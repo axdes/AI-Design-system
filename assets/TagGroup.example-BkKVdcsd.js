@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cl2o_4ln.js";import{i as t}from"./examples-Cm58T3Dm.js";var n=e();function r(){return(0,n.jsx)(t,{items:[`Finance`,`Q3`,`Reviewed`,`Frankfurt`]})}export{r as Example};

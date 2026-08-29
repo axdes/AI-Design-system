@@ -1,0 +1,1 @@
+import{i as e}from"./jsx-runtime-Cl2o_4ln.js";import{t}from"./react-BG7FV4Tc.js";var n=e(t(),1);function r(e){let t=(0,n.useRef)(e);return(0,n.useEffect)(()=>{t.current=e}),t}export{r as t};
