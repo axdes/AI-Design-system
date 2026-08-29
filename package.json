@@ -30,6 +30,7 @@
     "test:watch": "vitest",
     "contrast": "node scripts/contrast-check.mjs",
     "heights": "node scripts/heights-check.mjs",
+    "invisible": "node scripts/invisible-check.mjs",
     "boundary": "node scripts/boundary-check.mjs",
     "states": "node scripts/states-check.mjs",
     "ink": "node scripts/ink-check.mjs",

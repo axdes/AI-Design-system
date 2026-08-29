@@ -30,7 +30,7 @@ export default config(
     /* The visual checker is a Node script whose page.evaluate() callbacks are
      * serialised and run inside the browser, so it legitimately mentions window
      * and document. */
-    files: ['scripts/visual-check.mjs', 'scripts/ink-check.mjs', 'scripts/heights-check.mjs'],
+    files: ['scripts/visual-check.mjs', 'scripts/ink-check.mjs', 'scripts/heights-check.mjs', 'scripts/invisible-check.mjs'],
     languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
 )

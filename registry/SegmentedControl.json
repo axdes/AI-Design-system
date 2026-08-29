@@ -58,7 +58,6 @@
     }
   ],
   "sourcePath": "src/components/SegmentedControl/SegmentedControl.tsx",
-  "context": "region",
   "variants": {
     "size": {
       "prop": "size",

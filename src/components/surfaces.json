@@ -108,7 +108,7 @@
   "ScheduleGrid": "region",
   "SearchInput": "region",
   "SectionLabel": "card",
-  "SegmentedControl": "region",
+  "SegmentedControl": "card",
   "Select": "region",
   "SelectableTile": "region",
   "SessionPill": "page",
