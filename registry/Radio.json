@@ -56,5 +56,9 @@
       ]
     }
   },
-  "example": "const [plan, setPlan] = useState<Plan>('monthly')\n\n<RadioGroup<Plan>\n  name=\"plan\"\n  label=\"Billing period\"\n  value={plan}\n  onChange={setPlan}\n  options={[\n    { value: 'monthly', label: 'Monthly' },\n    { value: 'annual', label: 'Annual' },\n  ]}\n/>"
+  "uses": [
+    "Layout",
+    "SectionLabel"
+  ],
+  "example": "const [plan, setPlan] = useState<Plan>('monthly')\nconst [primary, setPrimary] = useState('ada')\n\n<Stack gap={6}>\n  {/* `label` is the group's ACCESSIBLE name, not a visible one: it becomes\n      aria-label on the radiogroup. A group a reader can see needs the text\n      on the screen as well, which is what SectionLabel is for. */}\n  <Stack gap={2}>\n    <SectionLabel>Billing period</SectionLabel>\n    <RadioGroup<Plan>\n      name=\"plan\"\n      label=\"Billing period\"\n      value={plan}\n      onChange={setPlan}\n      options={[\n        { value: 'monthly', label: 'Monthly' },\n        { value: 'annual', label: 'Annual' },\n      ]}\n    />\n  </Stack>\n  {/* One radio per row: the rows are the list, and `name` is all that makes\n      them exclusive. A RadioGroup would have to own the rows to do this. */}\n  <Stack gap={2}>\n    <SectionLabel>Primary contact</SectionLabel>\n    {[\n      { id: 'ada', name: 'Ada Meridian' },\n      { id: 'ben', name: 'Ben Torres' },\n    ].map((person) => (\n      <Row key={person.id} gap={3} align=\"center\">\n        <Radio\n          name=\"primary-contact\"\n          size=\"sm\"\n          value={person.id}\n          checked={primary === person.id}\n          onChange={() ="
 }

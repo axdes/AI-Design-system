@@ -83,7 +83,10 @@
     }
   },
   "uses": [
-    "Avatar"
+    "Avatar",
+    "Card",
+    "Layout",
+    "SectionLabel"
   ],
-  "example": "<Identity src={`${import.meta.env.BASE_URL}demo/avatar-ben.jpg`} name=\"Ada Meridian\" secondary=\"Product designer\" size=\"lg\" />"
+  "example": "<Row gap={8} align=\"start\">\n  {/* The person as the subject: the screen is about them, so the face leads\n      and nothing frames it. */}\n  <Identity src={AVATAR} name=\"Ada Meridian\" secondary=\"Product designer\" size=\"2xl\" vertical />\n  {/* The person as a cell: three rows, and none of them outweighs the list. */}\n  <Card>\n    <Stack gap={3}>\n      <SectionLabel>Reviewers</SectionLabel>\n      <Identity src={AVATAR} name=\"Ada Meridian\" secondary=\"Design\" size=\"sm\" />\n      <Identity name=\"Ben Torres\" secondary=\"Engineering\" size=\"sm\" />\n      <Identity name=\"Chen Wei\" secondary=\"Research\" size=\"sm\" />\n    </Stack>\n  </Card>\n</Row>"
 }

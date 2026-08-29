@@ -32,7 +32,7 @@
  * another OS stops reporting breakage it cannot have caused. Regenerate with
  * :update when a change is intended, never to silence one.
  */
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync, unlinkSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync, unlinkSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
 import { comparePng, serveDir, FROZEN_NOW } from './lib/visual.mjs'
@@ -52,6 +52,39 @@ const TOLERANCE = 0.001 // 0.1% of pixels
 
 if (!existsSync(`${DIST}/visual/index.html`)) {
   console.error('No dist/visual/index.html — run `npm run build` first.')
+  process.exit(1)
+}
+
+/* A BUILD THIS OLD IS A LIE, NOT A BASELINE.
+ *
+ * This script photographs `dist`; it does not produce it. In the gate that is
+ * right, because `build:gate` runs two lanes ahead of it. Run by hand it is a
+ * trap: three edits in a row were photographed against a stale bundle and every
+ * one of them came back "baselines match" on a file that had just changed
+ * (2026-08-29) — and `--update` would have written that stale rendering INTO
+ * the baseline, which is the way a wrong picture becomes the expected one.
+ *
+ * So the build has to be at least as new as everything it was built from. */
+const newestSource = (() => {
+  let newest = 0
+  const walk = (dir) => {
+    for (const name of readdirSync(dir)) {
+      if (name === 'node_modules' || name.startsWith('.')) continue
+      const path = `${dir}/${name}`
+      const info = statSync(path)
+      if (info.isDirectory()) walk(path)
+      else if (/\.(tsx?|css|json)$/.test(name)) newest = Math.max(newest, info.mtimeMs)
+    }
+  }
+  walk(`${ROOT}/src`)
+  return newest
+})()
+
+const builtAt = statSync(`${DIST}/visual/index.html`).mtimeMs
+if (newestSource > builtAt) {
+  const minutes = Math.round((newestSource - builtAt) / 60000)
+  console.error(`dist is ${minutes} minute(s) older than src — this would photograph the previous build.`)
+  console.error('Run `npm run build` first. (The gate does; running this script by hand does not.)')
   process.exit(1)
 }
 

@@ -117,14 +117,14 @@ const ALLOW = {
      IconButton, Input, MetaItem, Chip, Spinner, Descriptions. Take a name off this list by rewriting its
      example, never by adding one back. */
   flatExample: [
-    'Accordion', 'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'ButtonGroup',
-    'Calendar', 'ChatMessage', 'ColorSwatch', 'Combobox', 'CopyButton', 'CountBadge',
-    'DateBlock', 'DatePicker', 'DateRangePicker', 'Divider', 'DonutChart', 'ExpandButton',
-    'Identity', 'InlineText', 'InputGroup', 'Kbd', 'Label', 'LineChart', 'Link', 'ListItem',
-    'LoadMore', 'LogoWall', 'MenuButton', 'MenuIconButton', 'Meter', 'NumberInput',
-    'PasswordInput', 'PivotTable', 'Quote', 'Radio', 'Rating', 'RichMessage', 'SectionLabel',
-    'SessionPill', 'SetupGuide', 'SideNav', 'SidePanel', 'Stat', 'Thumbnail', 'Time',
-    'TimeInput', 'Truncate', 'AuthTemplate', 'Page', 'SystemPageTemplate', 'WizardTemplate'
+    'Accordion', 'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'Calendar',
+    'ChatMessage', 'ColorSwatch', 'Combobox', 'CopyButton', 'CountBadge', 'DateBlock',
+    'DatePicker', 'DateRangePicker', 'Divider', 'DonutChart', 'ExpandButton', 'InlineText',
+    'InputGroup', 'Kbd', 'LineChart', 'Link', 'ListItem', 'LoadMore', 'LogoWall',
+    'MenuButton', 'MenuIconButton', 'Meter', 'NumberInput', 'PasswordInput', 'PivotTable',
+    'Quote', 'Rating', 'RichMessage', 'SectionLabel', 'SessionPill', 'SetupGuide', 'SideNav',
+    'SidePanel', 'Stat', 'Thumbnail', 'Time', 'TimeInput', 'Truncate', 'AuthTemplate',
+    'Page', 'SystemPageTemplate', 'WizardTemplate'
   ],
 }
 
