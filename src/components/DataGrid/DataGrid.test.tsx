@@ -144,35 +144,53 @@ describe('a column with a closed list is chosen, not typed', () => {
   it('is the control itself, with no editor to open first', async () => {
     render(<DataGrid label="States" rows={rows} rowKey={(r) => r.id} columns={columns} onCellChange={() => {}} />)
     /* Present before anything is clicked: one press opens the list, which is
-     * the whole interaction a cell like this owes. */
-    expect(screen.getByRole('combobox', { name: 'State for row 1' })).toBeInTheDocument()
+     * the whole interaction a cell like this owes. It is the system's own
+     * <Select>, so the control is a button that opens a menu — not the
+     * browser's native list, which looked like a different product inside the
+     * sheet (owner, 2026-08-29). */
+    expect(screen.getByRole('button', { name: /State for row 1/ })).toBeInTheDocument()
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
   })
 
   it('commits the choice as soon as it is made, and offers only the list', async () => {
+    const user = userEvent.setup()
     const onCellChange = vi.fn()
     render(<DataGrid label="States" rows={rows} rowKey={(r) => r.id} columns={columns} onCellChange={onCellChange} />)
-    const select = screen.getByRole('combobox', { name: 'State for row 1' })
-    expect(screen.getAllByRole('option')).toHaveLength(2)
-    await userEvent.selectOptions(select, 'CONFIRMED')
+
+    await user.click(screen.getByRole('button', { name: /State for row 1/ }))
+    /* Only what the column offers, and nothing typed. */
+    expect(screen.getAllByRole('menuitem')).toHaveLength(2)
+
+    await user.click(screen.getByRole('menuitem', { name: 'CONFIRMED' }))
     expect(onCellChange).toHaveBeenCalledWith(rows[0], 'state', 'CONFIRMED')
   })
 
   it('shows a stored value the list does not offer, rather than the first option', () => {
     const typed = [{ id: '1', state: 'Team reorganizing' }]
     render(<DataGrid label="States" rows={typed} rowKey={(r) => r.id} columns={columns} onCellChange={() => {}} />)
-    expect(screen.getByRole('combobox', { name: 'State for row 1' })).toHaveValue('Team reorganizing')
+    /* The cell says what the row actually holds. A control handed a value it has
+       no option for shows nothing, and the cell would then report a value the
+       row does not have. */
+    expect(screen.getByRole('button', { name: /State for row 1/ })).toHaveTextContent('Team reorganizing')
   })
 
   it('walks the grid on an arrow rather than changing the value under the pointer', async () => {
     const onCellChange = vi.fn()
     const two = [{ id: '1', state: '' }, { id: '2', state: '' }]
     render(<DataGrid label="States" rows={two} rowKey={(r) => r.id} columns={columns} onCellChange={onCellChange} />)
-    const select = screen.getAllByRole('combobox')[0]!
-    select.focus()
+    const first = screen.getAllByRole('button', { name: /State for row/ })[0]!
+    first.focus()
     await userEvent.keyboard('{ArrowDown}')
     expect(onCellChange).not.toHaveBeenCalled()
-    expect(screen.getAllByRole('combobox')[1]).toHaveFocus()
+    expect(screen.getAllByRole('button', { name: /State for row/ })[1]).toHaveFocus()
+  })
+
+  it('keeps one tab stop for the whole sheet, and it follows the active cell', () => {
+    const two = [{ id: '1', state: '' }, { id: '2', state: '' }]
+    render(<DataGrid label="States" rows={two} rowKey={(r) => r.id} columns={columns} onCellChange={() => {}} />)
+    const triggers = screen.getAllByRole('button', { name: /State for row/ })
+    expect(triggers[0]).toHaveAttribute('tabindex', '0')
+    expect(triggers[1]).toHaveAttribute('tabindex', '-1')
   })
 })
 
@@ -219,6 +237,15 @@ describe("a column of sentences gets a second line", () => {
 })
 
 describe("what became of the cell that was just committed", () => {
+  /* One press opens the list, the second chooses — which is the whole
+     interaction a choice cell owes, and what the native <select> it replaced
+     could only be driven through by a different API. */
+  const pickChoice = async (label: string) => {
+    const user = userEvent.setup()
+    await user.click(screen.getByRole('button', { name: /State for row 1/ }))
+    await user.click(screen.getByRole('menuitem', { name: label }))
+  }
+
   const rows = [{ id: '1', state: '' }]
   const columns = [{ key: 'state', header: 'State', cell: (r: typeof rows[0]) => r.state || 'no', value: (r: typeof rows[0]) => r.state, editable: true, options: ['', 'CONFIRMED'] as const }]
 
@@ -226,7 +253,7 @@ describe("what became of the cell that was just committed", () => {
    * every grid that existed before this, so it must stay silent. */
   it('says nothing when the caller returns nothing', async () => {
     const { container } = render(<DataGrid label="States" rows={rows} rowKey={(r) => r.id} columns={columns} onCellChange={() => {}} />)
-    await userEvent.selectOptions(screen.getByRole('combobox'), 'CONFIRMED')
+    await pickChoice('CONFIRMED')
     expect(container.querySelector('.dg-cell-mark')).toBeNull()
   })
 
@@ -234,7 +261,7 @@ describe("what became of the cell that was just committed", () => {
     const { container } = render(
       <DataGrid label="States" rows={rows} rowKey={(r) => r.id} columns={columns} onCellChange={() => Promise.resolve(null)} />,
     )
-    await userEvent.selectOptions(screen.getByRole('combobox'), 'CONFIRMED')
+    await pickChoice('CONFIRMED')
     await waitFor(() => expect(container.querySelector('[data-state="saved"]')).not.toBeNull())
   })
 
@@ -245,7 +272,7 @@ describe("what became of the cell that was just committed", () => {
       <DataGrid label="States" rows={rows} rowKey={(r) => r.id} columns={columns}
         onCellChange={() => Promise.resolve('Somebody answered first.')} />,
     )
-    await userEvent.selectOptions(screen.getByRole('combobox'), 'CONFIRMED')
+    await pickChoice('CONFIRMED')
     await waitFor(() => expect(screen.getByRole('alert')).toHaveAttribute('title', 'Somebody answered first.'))
   })
 

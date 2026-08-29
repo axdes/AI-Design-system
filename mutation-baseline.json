@@ -231,7 +231,7 @@
       "survived": []
     },
     "DataGrid": {
-      "hash": "134fddc83bd3",
+      "hash": "512221f50b60",
       "killed": [
         "and-to-or",
         "negate-cond"
@@ -538,7 +538,7 @@
       "survived": []
     },
     "Select": {
-      "hash": "219967a8dcc3",
+      "hash": "edfa1d6a962f",
       "killed": [
         "strip-aria"
       ],

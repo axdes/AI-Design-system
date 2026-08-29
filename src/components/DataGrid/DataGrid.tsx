@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type Reac
 import { cn } from '../../lib/cn'
 import { Icon } from '../Icon'
 import { Input } from '../Input'
+import { Select } from '../Select'
 import { Spinner } from '../Spinner'
 
 export type DataGridColumn<Row> = {
@@ -44,6 +45,15 @@ export type DataGridSort = { key: string; sortDirection: 'asc' | 'desc' }
 
 /** Long enough to be read, short enough that the grid is not a field of ticks a minute later. */
 const SAVED_FOR_MS = 2500
+
+/* WHAT IS STORED, WHEN IT IS NOT ONE OF THE OFFERED ANSWERS. A choice control
+   handed a value it has no option for shows nothing, so the cell would quietly
+   report a value the row does not hold. It is carried at the head of the list,
+   so the cell always says what it actually holds. */
+function choiceOptions(options: readonly string[], value: string) {
+  const known = options.map((o) => ({ value: o, label: o || '—' }))
+  return options.includes(value) ? known : [{ value, label: value }, ...known]
+}
 
 /** What became of one cell, at the end of that cell. Nothing at all when nothing has happened. */
 function cellMark(at?: { state: 'saving' | 'saved' | 'failed'; error?: string }) {
@@ -182,7 +192,7 @@ export function DataGrid<Row>({
     /* A cell that IS a control hands the focus to the control: the tab stop is one
      * per grid either way, and landing on the wrapper instead would leave the
      * keyboard one press short of the value. */
-    ;(el?.querySelector<HTMLElement>('select') ?? el)?.focus()
+    ;(el?.querySelector<HTMLElement>('.select-trigger') ?? el)?.focus()
   }, [active.r, active.c, moved, startIndex])
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -361,32 +371,43 @@ export function DataGrid<Row>({
                         /* A CHOICE COLUMN IS A SELECT, always. Not a value that turns into an
                          * editor when you find the way in: the cell simply is the control it
                          * takes, so one click opens the list and that is the whole interaction
-                         * (owner, 26.08: clicked, the list opens, that is all). Native <select>
-                         * rather than <Select> on purpose — inside a grid cell the control has to
-                         * open and commit without a portal or a second tab stop of its own. */
+                         * (owner, 26.08: clicked, the list opens, that is all).
+                         *
+                         * It is the SYSTEM'S <Select>, since 2026-08-29. It was a native
+                         * `<select>` before, on the argument that a cell editor must open and
+                         * commit without a portal or a second tab stop of its own — and the owner
+                         * read the result off the gallery and said what it looks like: the
+                         * browser's own control, with the browser's own tick and the browser's
+                         * own rounding, inside a sheet built out of this system.
+                         *
+                         * Both worries turned out to be answerable rather than true. The tab stop
+                         * is the same one: `tabIndex` moves with the active cell, exactly as it
+                         * did on the native element, and <Select> gained that prop for this. The
+                         * portal unmounts with the row it belongs to, because it is a child of
+                         * that row in the React tree whatever the DOM does — which is also why
+                         * virtualising the row that owns an open menu takes the menu with it. And
+                         * a closed <Select> does not change its value on an arrow press, which
+                         * removes the hazard the grid's own key handler was written around. */
                         ? (
                           <span className="dg-choice-wrap">
-                            <select
+                            <Select
                               className="dg-choice"
-                              aria-label={`${String(col.header)} for row ${r + 1}`}
+                              size="sm"
+                              label={`${String(col.header)} for row ${r + 1}`}
                               value={col.value?.(row) ?? ''}
+                              /* ONE TAB STOP PER GRID, and it moves with the active
+                                 cell. Everything else in the sheet is -1, which is
+                                 what makes a thousand rows one stop rather than
+                                 thousands. */
                               tabIndex={active.r === r && active.c === c ? 0 : -1}
-                              onChange={(e) => commitCell(row, col.key, e.target.value)}
-                            >
-                              {/* What is STORED, when it is not one of the offered answers. A
-                                * <select> given a value it has no option for shows the first one
-                                * instead, so the cell would quietly report a value the row does
-                                * not hold. It is carried, not offered: leaving it selects nothing
-                                * and writes nothing. */}
-                              {(() => { const v = col.value?.(row) ?? ''; return col.options.includes(v) ? null : <option value={v}>{v}</option> })()}
-                              {col.options.map((o) => <option key={o} value={o}>{o || '—'}</option>)}
-                            </select>
-                            {/* The same mark the <Select> trigger carries, so a cell being chosen
-                              * in reads as this system and not as the browser's own control — and
-                              * where that cell has just been committed, what became of it instead:
-                              * one place at the end of the cell, never two marks fighting for it. */}
-                            {cellMark(saved[`${rowKey(row)}:${col.key}`])
-                              ?? <Icon name="arrow_drop_down" className="dg-choice-caret" />}
+                              options={choiceOptions(col.options, col.value?.(row) ?? '')}
+                              onChange={(next) => commitCell(row, col.key, next)}
+                            />
+                            {/* Where a cell has just been committed, what became of it.
+                              * The trigger draws its own caret, so the mark takes its
+                              * place rather than standing beside it — one mark at the
+                              * end of the cell, never two fighting for it. */}
+                            {cellMark(saved[`${rowKey(row)}:${col.key}`])}
                           </span>
                         )
                         : editing && editing.r === r && editing.c === c

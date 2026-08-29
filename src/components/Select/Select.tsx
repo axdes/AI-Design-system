@@ -13,6 +13,11 @@ type Props<V extends string> = {
   onChange: (next: V) => void
   options: readonly SelectOption<V>[]
   placeholder?: string
+  /** For a select inside a ROVING TABINDEX container — a grid cell, a toolbar —
+   *  where exactly one of many controls is in the tab order at a time. Left
+   *  alone the trigger is an ordinary tab stop, which is right everywhere else.
+   */
+  tabIndex?: number
   /** Accessible label — applied to the trigger button. */
   label: string
   /** Lands on the trigger, so `<Field htmlFor>` reaches it and an `ErrorSummary`
@@ -50,7 +55,7 @@ type Props<V extends string> = {
  * — "Choose a region". Options are parallel and never restate the label.
  */
 export function Select<V extends string>({
-  value, onChange, options, placeholder, label, id, className, size, disabled, invalid, surface = 'base',
+  value, onChange, options, placeholder, label, id, className, size, disabled, invalid, surface = 'base', tabIndex,
 }: Props<V>) {
   const selected = options.find((o) => o.value === value)
   const display = selected?.label ?? placeholder ?? ''
@@ -79,6 +84,7 @@ export function Select<V extends string>({
           disabled={disabled || undefined}
           aria-label={label}
           {...triggerProps}
+          tabIndex={tabIndex}
         >
           <span className="select-value">{display}</span>
           <Icon name="arrow_drop_down" />

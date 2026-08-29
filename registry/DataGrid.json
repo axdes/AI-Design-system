@@ -100,6 +100,7 @@
     "EmptyState",
     "Icon",
     "Input",
+    "Select",
     "Spinner"
   ],
   "example": "const [rows, setRows] = useState(ROWS)\nconst [sort, setSort] = useState<DataGridSort>({ key: 'name', sortDirection: 'asc' })const sorted = [...rows].sort((a, b) => {\n  const dir = sort.sortDirection === 'asc' ? 1 : -1\n  return sort.key === 'amount' ? (a.amount - b.amount) * dir : a.name.localeCompare(b.name) * dir\n})\n\n<DataGrid<Row>\n  label=\"Customers\"\n  rows={sorted}\n  rowKey={(r) => r.id}\n  height={320}\n  rowHeight={56}\n  sort={sort}\n  onSortChange={setSort}onCellChange={(row, key, value) => {\n    if (key !== 'name' && key !== 'status') return\n    setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, [key]: value } : r)))\n  }}\n  empty={<EmptyState icon=\"search\" title=\"No customers\" description=\"Nothing matches this filter yet.\" />}\n  columns={[\n    { key: 'name', header: 'Name', cell: (r) => r.name, value: (r) => r.name, width: '1.5fr', sortable: true, editable: true },\n    { key: 'email', header: 'Email', cell: (r) => r.email, width: '1.5fr' },{ key: 'note', header: 'Note', cell: (r) => <span title={r.note}>{r.note}</span>, width: '2fr', wrap: true },{ key: 'status', header: 'Status', cell: (r) => r.status, value: (r) => r.status, width: '9rem', editable: true, options: S"

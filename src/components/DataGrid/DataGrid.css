@@ -221,9 +221,8 @@
   pointer-events: none;
 }
 
-.dg-choice-caret {
-  position: absolute;
-  inset-inline-end: var(--space-1);
-  color: var(--muted-foreground);
-  pointer-events: none;
-}
+/* ONE MARK AT THE END OF THE CELL, NEVER TWO. <Select> draws its own caret, so
+ * a cell that has just been committed would carry the caret AND the tick side
+ * by side — the thing the note above was written to prevent. The trigger's caret
+ * steps aside for the mark, and comes back when the mark expires. */
+.dg-choice-wrap:has(> .dg-cell-mark) .select-trigger > .icon { visibility: hidden; }

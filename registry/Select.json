@@ -30,6 +30,12 @@
       "required": false
     },
     {
+      "name": "tabIndex",
+      "type": "number",
+      "required": false,
+      "description": "For a select inside a ROVING TABINDEX container — a grid cell, a toolbar — where exactly one of many controls is in the tab order at a time. Left alone the trigger is an ordinary tab stop, which is right everywhere else."
+    },
+    {
       "name": "label",
       "type": "string",
       "required": true,
