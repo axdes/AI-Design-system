@@ -117,13 +117,12 @@ const ALLOW = {
      IconButton, Input, MetaItem, Chip, Spinner, Descriptions. Take a name off this list by rewriting its
      example, never by adding one back. */
   flatExample: [
-    'Accordion', 'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'ChatMessage',
-    'ColorSwatch', 'Combobox', 'CopyButton', 'CountBadge', 'DateBlock', 'DatePicker',
-    'DateRangePicker', 'Divider', 'DonutChart', 'ExpandButton', 'InlineText', 'InputGroup',
-    'Kbd', 'LineChart', 'Link', 'LoadMore', 'LogoWall', 'MenuButton', 'MenuIconButton',
-    'NumberInput', 'PivotTable', 'Quote', 'Rating', 'RichMessage', 'SessionPill',
-    'SetupGuide', 'Thumbnail', 'TimeInput', 'Truncate', 'AuthTemplate', 'Page',
-    'SystemPageTemplate', 'WizardTemplate'
+    'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'ChatMessage', 'ColorSwatch',
+    'Combobox', 'CountBadge', 'DateBlock', 'DatePicker', 'DateRangePicker', 'Divider',
+    'DonutChart', 'ExpandButton', 'InlineText', 'InputGroup', 'Kbd', 'LineChart', 'Link',
+    'LoadMore', 'LogoWall', 'NumberInput', 'PivotTable', 'Quote', 'Rating', 'RichMessage',
+    'SessionPill', 'SetupGuide', 'Thumbnail', 'TimeInput', 'Truncate', 'AuthTemplate',
+    'Page', 'SystemPageTemplate', 'WizardTemplate'
   ],
 }
 

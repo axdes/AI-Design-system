@@ -64,7 +64,9 @@
     }
   },
   "uses": [
-    "Icon"
+    "Icon",
+    "Layout",
+    "SectionLabel"
   ],
-  "example": "/* One panel open at a time by default; pass `multiple` to allow several.\n * `defaultOpen` seeds the initial state by item id. */\n\n<Accordion\n  defaultOpen={['shipping']}\n  items={[\n    { id: 'shipping', title: 'Shipping', content: 'Ships in 2 to 4 business days across the GCC.' },\n    { id: 'returns', title: 'Returns', content: 'Free returns within 30 days of delivery.' },\n    { id: 'warranty', title: 'Warranty', content: 'One year manufacturer warranty on all items.' },\n  ]}\n/>"
+  "example": "<Stack gap={8}>\n  <Stack gap={3}>\n    <SectionLabel as=\"h2\">Delivery</SectionLabel>\n    {/* Inside a section, so the headers sit one level below it and read at\n        body size. One panel at a time: these are answers, not a comparison. */}\n    <Accordion\n      headingLevel={3}\n      defaultOpen={['shipping']}\n      items={[\n        { id: 'shipping', title: 'Shipping', content: 'Ships in 2 to 4 business days across the GCC.' },\n        { id: 'returns', title: 'Returns', content: 'Free returns within 30 days of delivery.' },\n        { id: 'warranty', title: 'Warranty', content: 'One year manufacturer warranty on all items.' },\n      ]}\n    />\n  </Stack>\n  {/* The blocks ARE the page here, so they speak at section-head size and\n      several stay open, because the reader is comparing them. */}\n  <Accordion\n    size=\"lg\"\n    headingLevel={2}\n    multiple\n    defaultOpen={['standard', 'express']}\n    items={[\n      { id: 'standard', title: 'Standard', content: '2 to 4 business days. Included in the price.' },\n      { id: 'express', title: 'Express', content: 'Next business day. SAR 35 per order.' },\n      { id: 'pickup', title: 'Collect in store', content: 'Ready within 2 hours at any "
 }
