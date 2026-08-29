@@ -122,8 +122,11 @@
   },
   "uses": [
     "Calendar",
+    "Card",
+    "Field",
     "Icon",
+    "Layout",
     "Popover"
   ],
-  "example": "const [stay, setStay] = useState<DateRange | undefined>()\n/* Two picks in one calendar: the first click marks the start, the second\n * closes with the ordered range. onChange only fires with both ends set. */\n\n<DateRangePicker\n  label=\"Stay dates\"\n  value={stay}\n  onChange={setStay}\n  placeholder=\"Select dates\"\n/>"
+  "example": "const [stay, setStay] = useState<DateRange | undefined>()\nconst [reporting, setReporting] = useState<DateRange | undefined>()\n\n<Stack gap={6}>\n  <Field label=\"Stay dates\" htmlFor=\"stay\">\n    <DateRangePicker\n      label=\"Stay dates\"\n      surface=\"muted\"\n      placeholder=\"Select dates\"\n      value={stay}\n      onChange={setStay}\n    />\n  </Field>\n  <Card>\n    <Field label=\"Reporting period\" htmlFor=\"reporting\">\n      <DateRangePicker\n        label=\"Reporting period\"\n        placeholder=\"Select a period\"\n        value={reporting}\n        onChange={setReporting}\n      />\n    </Field>\n  </Card>\n</Stack>"
 }

@@ -103,9 +103,11 @@
     }
   },
   "uses": [
+    "Card",
     "Field",
     "IconButton",
+    "Layout",
     "Tooltip"
   ],
-  "example": "const [qty, setQty] = useState(1)\n/* Clamps to min/max; the -/+ buttons and the native spinbutton stay in sync.\n * Wrap in a <Field> for the visible label. */\n\n<Field label=\"Quantity\" htmlFor=\"qty\">\n  <NumberInput label=\"Quantity\" value={qty} onChange={setQty} min={1} max={99} />\n</Field>"
+  "example": "const [qty, setQty] = useState(1)\nconst [seats, setSeats] = useState(12)\n\n<Stack gap={6}>\n  <Field label=\"Quantity\" htmlFor=\"qty\">\n    <NumberInput label=\"Quantity\" surface=\"muted\" value={qty} onChange={setQty} min={1} max={99} />\n  </Field>\n  <Card>\n    <Field label=\"Seats\" htmlFor=\"seats\" hint=\"Between 1 and 500.\">\n      <NumberInput label=\"Seats\" value={seats} onChange={setSeats} min={1} max={500} step={1} />\n    </Field>\n  </Card>\n</Stack>"
 }

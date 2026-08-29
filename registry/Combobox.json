@@ -107,9 +107,11 @@
     }
   },
   "uses": [
+    "Card",
     "Field",
     "Icon",
+    "Layout",
     "Tag"
   ],
-  "example": "const [country, setCountry] = useState<Country>()\n/* Reach for Combobox over Select when the list is long enough to want typing.\n * Wrap it in a <Field> for the visible label; `label` here is the input's\n * accessible name. */\n\n<Field label=\"Country\" htmlFor=\"country\">\n  <Combobox<Country>\n    label=\"Country\"\n    placeholder=\"Type to search\"\n    options={COUNTRIES}\n    value={country}\n    onChange={setCountry}\n  />\n</Field>"
+  "example": "const [country, setCountry] = useState<Country>()\nconst [tags, setTags] = useState<string[]>(['design'])\n\n<Stack gap={6}>\n  {/* On the page's muted ground. */}\n  <Field label=\"Country\" htmlFor=\"country\">\n    <Combobox<Country>\n      label=\"Country\"\n      surface=\"muted\"\n      placeholder=\"Type to search\"\n      options={COUNTRIES}\n      value={country}\n      onChange={setCountry}\n    />\n  </Field>\n  {/* On a card, and a question with more than one answer. */}\n  <Card>\n    <Field label=\"Topics\" htmlFor=\"topics\">\n      <Combobox\n        label=\"Topics\"\n        multiple\n        placeholder=\"Add a topic\"\n        options={TAGS}\n        value={tags}\n        onChange={setTags}\n      />\n    </Field>\n  </Card>\n</Stack>"
 }

@@ -118,10 +118,9 @@ const ALLOW = {
      example, never by adding one back. */
   flatExample: [
     'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'ChatMessage', 'ColorSwatch',
-    'Combobox', 'CountBadge', 'DateBlock', 'DatePicker', 'DateRangePicker', 'Divider',
-    'DonutChart', 'ExpandButton', 'InlineText', 'InputGroup', 'Kbd', 'LineChart', 'Link',
-    'LoadMore', 'LogoWall', 'NumberInput', 'PivotTable', 'Quote', 'Rating', 'RichMessage',
-    'SessionPill', 'SetupGuide', 'Thumbnail', 'TimeInput', 'Truncate', 'AuthTemplate',
+    'CountBadge', 'DateBlock', 'Divider', 'DonutChart', 'ExpandButton', 'InlineText', 'Kbd',
+    'LineChart', 'Link', 'LoadMore', 'LogoWall', 'PivotTable', 'Quote', 'Rating',
+    'RichMessage', 'SessionPill', 'SetupGuide', 'Thumbnail', 'Truncate', 'AuthTemplate',
     'Page', 'SystemPageTemplate', 'WizardTemplate'
   ],
 }

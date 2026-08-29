@@ -124,6 +124,9 @@ export function Combobox<V extends string>(props: Props<V>) {
       className={cn('combobox', className)}
       data-multiple={multiple || undefined}
       data-size={size}
+      /* The multi-select's field frame is the WRAPPER, not the input, so the
+         surface has to be readable from the root as well. */
+      data-surface={surface}
       onBlur={(e) => {
         if (!wrapRef.current?.contains(e.relatedTarget as Node)) {
           setOpen(false)

@@ -115,9 +115,11 @@
   },
   "uses": [
     "Calendar",
+    "Card",
     "Field",
     "Icon",
+    "Layout",
     "Popover"
   ],
-  "example": "const [date, setDate] = useState<Date>()\n/* A field that opens a Calendar in a popover. Wrap in <Field> for a visible\n * label; `label` here names the trigger. Pass min/max to bound the range. */\n\n<Field label=\"Delivery date\" htmlFor=\"delivery\">\n  <DatePicker label=\"Delivery date\" value={date} onChange={setDate} />\n</Field>"
+  "example": "const [delivery, setDelivery] = useState<Date>()\nconst [review, setReview] = useState<Date | undefined>(new Date(2026, 0, 15))\n\n<Stack gap={6}>\n  <Field label=\"Delivery date\" htmlFor=\"delivery\">\n    <DatePicker\n      id=\"delivery\"\n      label=\"Delivery date\"\n      surface=\"muted\"\n      value={delivery}\n      onChange={setDelivery}\n      min={new Date(2026, 0, 1)}\n    />\n  </Field>\n  <Card>\n    <Field label=\"Review on\" htmlFor=\"review\">\n      <DatePicker id=\"review\" label=\"Review on\" value={review} onChange={setReview} />\n    </Field>\n  </Card>\n</Stack>"
 }

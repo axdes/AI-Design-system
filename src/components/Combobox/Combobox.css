@@ -69,7 +69,16 @@
   color: var(--muted-foreground);
 }
 
-/* Multi-select: tags sit inline before the input; the field wraps. */
+/* Multi-select: tags sit inline before the input; the field wraps.
+ *
+ * A MULTI-SELECT IS STILL ONE FIELD. The input gives up its border below so the
+ * tags, the text and the caret read as one line — which left the control with
+ * no box at all: on a card the chips floated on the surface and nothing said
+ * where the field began or ended, and focus landed on a borderless input with
+ * no ring around the thing the reader is typing into (2026-08-29). The frame
+ * moves to the wrapper that is now the field, keeping the recipe in Input.css:
+ * 1px --input on --background at --control-radius, hover to --ring, a ring on
+ * focus, and the resting border dropped on a muted ground. */
 .combobox[data-multiple] .combobox-field {
   flex-wrap: wrap;
   align-items: center;
@@ -77,7 +86,21 @@
   min-block-size: var(--control-height);
   block-size: auto;
   padding: var(--space-1) var(--space-2);
+  border-radius: var(--control-radius);
+  border: 1px solid var(--input);
+  background: var(--background);
+  transition: border-color var(--duration-fast);
 }
+.combobox[data-multiple] .combobox-field:hover { border-color: var(--ring); }
+.combobox[data-multiple][data-surface="muted"] .combobox-field,
+.combobox[data-multiple][data-surface="muted"] .combobox-field:hover { border-color: transparent; }
+.combobox[data-multiple] .combobox-field:focus-within {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
+/* The input inside no longer draws its own ring — the field around it does, and
+   two rings on one control is two controls. */
+.combobox[data-multiple] .combobox-input:focus-visible { outline: none; }
 .combobox[data-multiple] .combobox-input {
   flex: 1;
   min-inline-size: 6rem;

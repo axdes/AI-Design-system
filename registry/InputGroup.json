@@ -95,8 +95,10 @@
     }
   },
   "uses": [
+    "Card",
     "Field",
-    "Input"
+    "Input",
+    "Layout"
   ],
-  "example": "const [value, setValue] = useState('acme-handbook')\n/* The scheme is not something anyone types, so it is an affix rather than\n * part of the value — the field holds the slug and nothing else. `Field`\n * around it still owns the label and any message. */\n\n<Field label=\"Workspace address\" htmlFor=\"workspace-slug\">\n  <InputGroup prefix=\"https://\" suffix=\".example.com\">\n    <Input\n      id=\"workspace-slug\"\n      value={value}\n      onChange={(e) => { setValue(e.target.value) }}\n    />\n  </InputGroup>\n</Field>"
+  "example": "const [slug, setSlug] = useState('acme-handbook')\nconst [amount, setAmount] = useState('8600.00')\n\n<Stack gap={6}>\n  <Field label=\"Workspace address\" htmlFor=\"workspace-slug\">\n    <InputGroup prefix=\"https://\" suffix=\".example.com\" surface=\"muted\">\n      <Input\n        id=\"workspace-slug\"\n        value={slug}\n        onChange={(e) => { setSlug(e.target.value) }}\n      />\n    </InputGroup>\n  </Field>\n  <Card>\n    <Field label=\"Invoice total\" htmlFor=\"amount\">\n      <InputGroup prefix=\"SAR\" suffix=\"incl. VAT\">\n        <Input\n          id=\"amount\"\n          inputMode=\"decimal\"\n          value={amount}\n          onChange={(e) => { setAmount(e.target.value) }}\n        />\n      </InputGroup>\n    </Field>\n  </Card>\n</Stack>"
 }
