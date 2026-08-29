@@ -2,52 +2,50 @@
  * renders it, and the registry publishes the usage below to agents. */
 import { useState } from 'react'
 import { ExpandButton } from './ExpandButton'
-import { Card } from '../Card'
 import { Row, Stack } from '../Layout'
+import { SectionLabel } from '../SectionLabel'
 
-/* THE CONTROL THAT OPENS SOMETHING ON THIS PAGE, with the rotation and the
- * `aria-expanded` wiring already done — which is the part hand-rolled versions
- * forget, and the part a screen reader depends on to say whether the thing is
- * open.
+/* AT REST IT IS A CIRCLE; THE WORDS ARRIVE WITH THE POINTER. That is the whole
+ * decision: it buys back the width a labelled button would take on every screen,
+ * and it costs a reader who never hovers the words entirely. So it is for the
+ * one action that is the same everywhere and already understood from its glyph
+ * — add, new, ask — and never for an action a reader has to read to understand.
  *
- * `label` NAMES WHAT OPENS, NEVER THE DIRECTION. "Show the transcript" is a
- * label; "Expand" is a description of the arrow, and a reader who cannot see
- * the arrow gets nothing from it. The label does not change when the state
- * does — `aria-expanded` carries that, and a label that flips between "Show"
- * and "Hide" is announced twice on every press.
+ * `label` IS THE ACCESSIBLE NAME AT EVERY SIZE, not just when the label is
+ * drawn. The collapsed circle is a control with no visible words, so without it
+ * a screen reader announces a button and nothing else.
  *
- * `withChevron` is for a DISCLOSURE, where the caret is the promise that
- * something appears in place. Leave it off when the icon already says what
- * happens — a plus that adds, a filter that opens a panel — because a caret
- * beside a plus promises a menu that is not coming.
+ * `expanded` holds it open. It is for a control whose panel or menu is showing:
+ * the button stays wide while the thing it opened is on screen, so the reader
+ * can see what is open without hovering it again.
  *
- * `expanded` is only for a control whose state lives elsewhere, such as one
- * driving an open dropdown. Left alone the component owns it.
+ * `withChevron` adds a mark that appears WITH the label. It does not rotate and
+ * it is not a disclosure caret — use it when pressing opens a list, and leave it
+ * off when the glyph already says what happens.
  */
 export function Example() {
   const [open, setOpen] = useState(false)
 
   return (
-    <Stack gap={4}>
-      {/* A disclosure: the caret promises the panel below. */}
-      <Card>
-        <Stack gap={3}>
-          <Row gap={3} align="center">
-            <span>Design sprint, day one</span>
-            <ExpandButton
-              icon="article"
-              label="Show the transcript"
-              withChevron
-              expanded={open}
-              onClick={() => { setOpen((v) => !v) }}
-            />
-          </Row>
-          {open && <p>Ada: let us start with what we learned from the pilot.</p>}
-        </Stack>
-      </Card>
+    <Stack gap={6}>
+      <Stack gap={2}>
+        <SectionLabel as="h3">At rest, and held open</SectionLabel>
+        <Row gap={4} align="center">
+          {/* The glyph says it: nothing has to be read. */}
+          <ExpandButton icon="add" label="Add a participant" />
 
-      {/* No caret: the plus already says what pressing it does. */}
-      <ExpandButton icon="add" label="Add a participant" />
+          {/* Held open, because what it opened is on screen. */}
+          <ExpandButton
+            icon="article"
+            label="Show the transcript"
+            withChevron
+            expanded={open}
+            onClick={() => { setOpen((v) => !v) }}
+          />
+        </Row>
+      </Stack>
+
+      {open && <p>Ada: let us start with what we learned from the pilot.</p>}
     </Stack>
   )
 }

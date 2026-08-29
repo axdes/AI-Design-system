@@ -25,6 +25,13 @@
   border: 1px solid var(--input);
   background: var(--background);
   color: var(--foreground);
+  /* WHAT DOES NOT FIT IS CUT WITH AN ELLIPSIS, and this is the one wearer of
+   * the recipe that was not doing it. A text input scrolls its value by
+   * default, so a title longer than the field ended mid-letter — "Community
+   * Outreach N" — and nothing on screen said there was more (owner, 2026-08-29).
+   * The ellipsis applies while the field is at rest; the moment it takes focus
+   * the browser goes back to scrolling, which is what a person editing needs. */
+  text-overflow: ellipsis;
   transition: border-color var(--duration-fast);
 }
 /* Sizes — mirror the button/control scale. */

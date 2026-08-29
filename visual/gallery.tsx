@@ -211,7 +211,18 @@ function Gallery() {
       <Example />
     </div>
   )
-  if (!BROWSE) return body
+  /* THE SHOT IS FRAMED THE SAME WAY THE GALLERY FRAMES IT.
+   * This used to return the raw case, and the note beside the rules below said
+   * the harness "must stay unframed". The consequence is what the owner read
+   * off the site: a control that ships inside a card was photographed on the
+   * page's ground, so 74 components had a baseline showing a surface they never
+   * stand on — and a part whose own fill IS `--muted`, like a chat bubble, was
+   * photographed as nothing at all (2026-08-29). A gate defends the picture it
+   * was given; the picture has to be the one that ships.
+   *
+   * `display: contents` for a page case, so a part that owns the viewport still
+   * gets one and there is no box between it and the body. */
+  if (!BROWSE) return <div className="gallery-stage" data-context={context}>{body}</div>
 
   const variantsAvailable = context !== 'page' && canShowVariants(name)
   const showVariants = variantsAvailable && mode === 'variants'

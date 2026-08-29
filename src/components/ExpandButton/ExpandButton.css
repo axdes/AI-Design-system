@@ -7,6 +7,14 @@
   gap: 0;
   height: var(--control-height);
   min-width: var(--control-height);
+  /* AS WIDE AS ITS CONTENT AND NEVER WIDER. `inline-flex` says that in a block
+   * parent and stops saying it the moment the button is a flex or grid item:
+   * a column Stack stretches its children by default, so the collapsed circle
+   * was drawn as a 500px blue pill with a plus in the middle of it (owner, read
+   * off the gallery, 2026-08-29). `min-width` is a floor and floors do not cap.
+   * The hover state still grows, because max-content follows the label as it is
+   * revealed. */
+  inline-size: max-content;
   padding: 0;
   border: none;
   border-radius: var(--radius-full);

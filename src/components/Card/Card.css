@@ -287,12 +287,21 @@
 /* Reveal-on-hover children (e.g. card-corner IconButton menu) */
 .card[data-interactive]:hover [data-reveal] { opacity: 1; }
 
-/* A card ON a card: white on white needs separation, and it takes the OUTLINE,
- * not a tier of fill. The tinted version shipped until 2026-08-22 and the owner
- * called it: three tinted tiles inside a white card read as a panel of disabled
- * things — muted is the fill this system paints DISABLED with, which is exactly
- * the note DetailPageTemplate.css already carried about a card on a panel. It
- * keeps the card's own fill and draws a hairline round itself. */
+/* A CARD ON WHITE NEEDS SEPARATION, AND IT TAKES THE OUTLINE — not a tier of
+ * fill. The tinted version shipped until 2026-08-22 and the owner called it:
+ * three tinted tiles inside a white card read as a panel of disabled things,
+ * because muted is the fill this system paints DISABLED with.
+ *
+ * `[data-surface="card"]` IS HOW A CONTAINER SAYS IT IS WHITE, and it is why
+ * this rule now has two selectors instead of a growing list. The outline used to
+ * be written once per white container that anyone remembered — `.card .card`
+ * here, `.detail-page[data-panels] .card` there — so a container nobody had
+ * written a rule for got white cards on a white ground and nothing at all: the
+ * showcase's own component stage was exactly that, and three cards in the
+ * <Layout> example read as bare titles floating in a box (owner, 2026-08-29).
+ * A surface that declares itself is one attribute; a surface that has to be
+ * remembered is a bug per container. */
+[data-surface="card"] .card,
 .card .card {
   background: var(--card);
   border: 1px solid var(--border);

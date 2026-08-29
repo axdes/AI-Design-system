@@ -69,7 +69,10 @@ const newestSource = (() => {
   let newest = 0
   const walk = (dir) => {
     for (const name of readdirSync(dir)) {
-      if (name === 'node_modules' || name.startsWith('.')) continue
+      /* `__eval__` is scratch the eval lane WRITES during a gate run, so counting
+         it as source made this refuse the build it had just been handed
+         (2026-08-29). Generated screens are not what dist is built from. */
+      if (name === 'node_modules' || name === '__eval__' || name.startsWith('.')) continue
       const path = `${dir}/${name}`
       const info = statSync(path)
       if (info.isDirectory()) walk(path)

@@ -61,7 +61,6 @@ export const GATES = [
   { run: 'contrast', why: 'WCAG pairs in both themes, from the token files' , lane: 'main' },
   { run: 'boundary', why: 'SC 1.4.11 — a control edge against every surface it can land on', lane: 'main' },
   { run: 'states', why: 'one control, one set of answers: hover, press, focus, disabled, invalid', lane: 'main' },
-  { run: 'heights', why: 'one ladder: every part that stands in a row stands on 32/40/48', lane: 'browser' },
   { run: 'context', why: 'what the must-read context costs every agent on every task' , lane: 'main' },
   { run: 'check:spec', why: 'screen specs match the system, and their behaviours name a test that claims them' , lane: 'main' },
   { run: 'gen:data:check', why: 'public/data still says what the package says — the account an agent fetches may not drift', lane: 'main' },
@@ -101,6 +100,11 @@ export const GATES = [
     localOnly:
       'Pixel baselines are machine-specific by design: fonts rasterise differently per OS, so on a Linux runner these fail for a reason that is not a regression (visual/README.md). The STRUCTURE half of the same frame is not machine-specific and runs everywhere through audit:pages.',
   },
+  /* `needs: build:gate` because it measures dist, exactly like `visual`. Left
+     without it, this ran beside the build in the same lane and measured whatever
+     dist happened to hold — a whole gate's worth of baselines came back
+     "different" for no reason at all (2026-08-29). */
+  { run: 'heights', why: 'one ladder: every part that stands in a row stands on 32/40/48', lane: 'browser', needs: 'build:gate' },
   /* size, audit:pages and screens moved to apps/showcase on 2026-08-21, with the
    * screens themselves. They measure a PRODUCT — a real bundle, a composed page,
    * a whole screen at three widths — and this package stopped being one: it is a

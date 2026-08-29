@@ -307,7 +307,7 @@
       "name": "expand-button",
       "type": "registry:ui",
       "title": "ExpandButton",
-      "description": "The chevron that opens and closes a row or a panel, with the rotation and the aria-expanded wiring already done. Copy: the label names what opens, not the direction — \"Show the transcript\", not \"Expand\"."
+      "description": "A BRAND-FILLED ICON THAT GROWS ITS LABEL WHEN THE POINTER ARRIVES. At rest it is a circle carrying one glyph; on hover, on focus and while `expanded` is set it widens into a pill and the words appear. That is the whole component, and it is for the ONE action a screen offers everywhere — new, add, ask — where a full pill would take room on every screen it appears on. It is NOT a disclosure caret, w"
     },
     {
       "name": "feedback-modal",

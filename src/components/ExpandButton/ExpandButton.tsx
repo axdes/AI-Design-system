@@ -17,10 +17,22 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 /**
- * The chevron that opens and closes a row or a panel, with the rotation and
- * the aria-expanded wiring already done.
+ * A BRAND-FILLED ICON THAT GROWS ITS LABEL WHEN THE POINTER ARRIVES. At rest it
+ * is a circle carrying one glyph; on hover, on focus and while `expanded` is
+ * set it widens into a pill and the words appear. That is the whole component,
+ * and it is for the ONE action a screen offers everywhere — new, add, ask —
+ * where a full pill would take room on every screen it appears on.
  *
- * Copy: the label names what opens, not the direction — "Show the transcript",
+ * It is NOT a disclosure caret, whatever the name suggests: it does not rotate,
+ * and `withChevron` adds a mark that appears WITH the label rather than turning.
+ * A row that opens a panel below it is <Accordion>, and a menu is <MenuButton>.
+ * This description used to say "the chevron that opens and closes a row", which
+ * described a component that was never here (2026-08-29).
+ *
+ * The label is the accessible name at every size, so the collapsed circle is
+ * never an unnamed control.
+ *
+ * Copy: the label names what happens, not the direction — "Add a participant",
  * not "Expand".
  */
 export function ExpandButton({ icon, label, withChevron, expanded, className, type = 'button', ref, ...rest }: Props) {

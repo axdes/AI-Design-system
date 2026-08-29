@@ -20,29 +20,38 @@ body {
   flex-direction: column;
   height: 100vh;
 }
-/* Scroll area under the header; centres the framed example, pads it off the edges. */
-.gallery-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
+/* Scroll area under the header, and the stage the screenshot harness renders
+ * into: ONE pair of rules, because what a reader sees in the gallery and what
+ * the baseline defends have to be the same picture. They were not — the harness
+ * rendered the case raw, so a control that ships inside a card was photographed
+ * on the page's ground and a part whose own fill IS `--muted` was photographed
+ * as nothing (owner, 2026-08-29). Centred, and padded off the edges. */
+.gallery-scroll,
+.gallery-stage {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: var(--space-8);
 }
+.gallery-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+/* A page case owns the viewport, so nothing may sit between it and the body. */
+.gallery-stage[data-context="page"] { display: contents; }
 
-/* Frame the example by its declared context (browse only — the screenshot
- * harness renders the raw example and must stay unframed). 'card' = a control
+/* Frame the example by its declared context (surfaces.json). 'card' = a control
  * that lives inside a card, so show it on a white card with padding; 'region'
  * brings its own surface, so show it on the muted page at a wider measure. */
-.gallery-shell .visual-case { width: 100%; }
-.gallery-shell .visual-case[data-context="card"] {
+.visual-case { width: 100%; }
+.visual-case[data-context="card"] {
   max-width: 44rem;
   background: var(--background);
   padding: var(--card-padding);
   border-radius: var(--card-radius);
 }
-.gallery-shell .visual-case[data-context="region"] {
+.visual-case[data-context="region"] {
   max-width: 60rem;
 }
 

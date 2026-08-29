@@ -1,7 +1,7 @@
 {
   "ref": "ExpandButton",
   "level": "atom",
-  "description": "The chevron that opens and closes a row or a panel, with the rotation and the aria-expanded wiring already done. Copy: the label names what opens, not the direction — \"Show the transcript\", not \"Expand\".",
+  "description": "A BRAND-FILLED ICON THAT GROWS ITS LABEL WHEN THE POINTER ARRIVES. At rest it is a circle carrying one glyph; on hover, on focus and while `expanded` is set it widens into a pill and the words appear. That is the whole component, and it is for the ONE action a screen offers everywhere — new, add, ask — where a full pill would take room on every screen it appears on. It is NOT a disclosure caret, whatever the name suggests: it does not rotate, and `withChevron` adds a mark that appears WITH the label rather than turning. A row that opens a panel below it is <Accordion>, and a menu is <MenuButton>. This description used to say \"the chevron that opens and closes a row\", which described a component that was never here (2026-08-29). The label is the accessible name at every size, so the collapsed circle is never an unnamed control. Copy: the label names what happens, not the direction — \"Add a participant\", not \"Expand\".",
   "exports": [
     "ExpandButton"
   ],
@@ -51,9 +51,9 @@
     }
   },
   "uses": [
-    "Card",
     "Icon",
-    "Layout"
+    "Layout",
+    "SectionLabel"
   ],
-  "example": "const [open, setOpen] = useState(false)\n\n<Stack gap={4}>\n  \n  <Card>\n    <Stack gap={3}>\n      <Row gap={3} align=\"center\">\n        <span>Design sprint, day one</span>\n        <ExpandButton\n          icon=\"article\"\n          label=\"Show the transcript\"\n          withChevron\n          expanded={open}\n          onClick={() => { setOpen((v) => !v) }}\n        />\n      </Row>\n      {open && <p>Ada: let us start with what we learned from the pilot.</p>}\n    </Stack>\n  </Card>\n  \n  <ExpandButton icon=\"add\" label=\"Add a participant\" />\n</Stack>"
+  "example": "const [open, setOpen] = useState(false)\n\n<Stack gap={6}>\n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">At rest, and held open</SectionLabel>\n    <Row gap={4} align=\"center\">\n      \n      <ExpandButton icon=\"add\" label=\"Add a participant\" />\n      \n      <ExpandButton\n        icon=\"article\"\n        label=\"Show the transcript\"\n        withChevron\n        expanded={open}\n        onClick={() => { setOpen((v) => !v) }}\n      />\n    </Row>\n  </Stack>\n  {open && <p>Ada: let us start with what we learned from the pilot.</p>}\n</Stack>"
 }
