@@ -44,5 +44,5 @@
   "uses": [
     "Button"
   ],
-  "example": "/* The bar exists only while something is selected, so the example opens in\n   the state it exists for: three rows picked, waiting for a verb. */\nconst [count, setCount] = useState(3)\nif (count === 0) return <Button size=\"sm\" onClick={() => setCount(3)}>Select three rows</Button>\n\n<BatchActions count={count} onClear={() => setCount(0)}>\n  <Button variant=\"secondary\" size=\"sm\">Export</Button>\n  <Button variant=\"secondary\" size=\"sm\">Assign owner</Button>\n</BatchActions>"
+  "example": "const [count, setCount] = useState(3)\nif (count === 0) return <Button size=\"sm\" onClick={() => setCount(3)}>Select three rows</Button>\n\n<BatchActions count={count} onClear={() => setCount(0)}>\n  <Button variant=\"secondary\" size=\"sm\">Export</Button>\n  <Button variant=\"secondary\" size=\"sm\">Assign owner</Button>\n</BatchActions>"
 }

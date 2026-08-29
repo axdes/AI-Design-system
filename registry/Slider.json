@@ -55,5 +55,5 @@
   ],
   "sourcePath": "src/components/Slider/Slider.tsx",
   "inherits": "Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step'>",
-  "example": "const [budget, setBudget] = useState(40)\n/* Controlled single value. `showValue` + `formatValue` put a live read-out at\n * the end of the label row. The native range keeps full keyboard support. */\n\n<Slider\n  label=\"Monthly budget\"\n  value={budget}\n  onChange={setBudget}\n  min={0}\n  max={100}\n  step={5}\n  showValue\n  formatValue={(v) => `SAR ${v}k`}\n/>"
+  "example": "const [budget, setBudget] = useState(40)<Slider\n  label=\"Monthly budget\"\n  value={budget}\n  onChange={setBudget}\n  min={0}\n  max={100}\n  step={5}\n  showValue\n  formatValue={(v) => `SAR ${v}k`}\n/>"
 }

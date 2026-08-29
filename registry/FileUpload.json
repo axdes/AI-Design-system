@@ -84,5 +84,5 @@
     "IconButton",
     "Tooltip"
   ],
-  "example": "const [files, setFiles] = useState<File[]>([])\n/* Drop area + native picker + removable list. The one component that owns a\n * raw <input type=\"file\"> (no other DS control covers uploads). */\n\n<FileUpload\n  multiple\n  hint=\"PDF or PNG, up to 10 MB\"\n  files={files}\n  onFiles={(picked) => setFiles((cur) => [...cur, ...picked])}\n  onRemove={(i) => setFiles((cur) => cur.filter((_, x) => x !== i))}\n/>"
+  "example": "const [files, setFiles] = useState<File[]>([])<FileUpload\n  multiple\n  hint=\"PDF or PNG, up to 10 MB\"\n  files={files}\n  onFiles={(picked) => setFiles((cur) => [...cur, ...picked])}\n  onRemove={(i) => setFiles((cur) => cur.filter((_, x) => x !== i))}\n/>"
 }

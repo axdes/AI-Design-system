@@ -28,5 +28,5 @@
     "Input",
     "Layout"
   ],
-  "example": "<Stack gap={6}>\n  <Stack gap={3}>\n    <SectionLabel as=\"h2\">Leave details</SectionLabel>\n    <Field label=\"Reason\" htmlFor=\"reason\">\n      <Input id=\"reason\" defaultValue=\"Annual leave\" />\n    </Field>\n  </Stack>\n  {/* One level down, because it is a group INSIDE the section above. */}\n  <Stack gap={3}>\n    <SectionLabel as=\"h3\">Who to notify</SectionLabel>\n    <Field label=\"Manager\" htmlFor=\"manager\">\n      <Input id=\"manager\" defaultValue=\"Ada Meridian\" />\n    </Field>\n  </Stack>\n</Stack>"
+  "example": "<Stack gap={6}>\n  <Stack gap={3}>\n    <SectionLabel as=\"h2\">Leave details</SectionLabel>\n    <Field label=\"Reason\" htmlFor=\"reason\">\n      <Input id=\"reason\" defaultValue=\"Annual leave\" />\n    </Field>\n  </Stack>\n  \n  <Stack gap={3}>\n    <SectionLabel as=\"h3\">Who to notify</SectionLabel>\n    <Field label=\"Manager\" htmlFor=\"manager\">\n      <Input id=\"manager\" defaultValue=\"Ada Meridian\" />\n    </Field>\n  </Stack>\n</Stack>"
 }

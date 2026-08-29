@@ -48,7 +48,10 @@
     }
   },
   "uses": [
-    "Avatar"
+    "Avatar",
+    "Card",
+    "Layout",
+    "SectionLabel"
   ],
-  "example": "/* Overlapping team stack. Anything past `max` collapses into a \"+N\" disc that\n * still announces the hidden count. */\n\n<AvatarGroup\n  max={3}\n  items={[\n    { name: 'Ada Meridian', src: `${import.meta.env.BASE_URL}demo/avatar-ada.jpg` },\n    { name: 'Cleo Nakamura', src: `${import.meta.env.BASE_URL}demo/avatar-cleo.jpg` },\n    /* One without a picture on purpose: a real team always has one, and the\n       stack has to stay a stack when a face is missing. */\n    { name: 'Dev Okonkwo' },\n    { name: 'Eve Lindqvist', src: `${import.meta.env.BASE_URL}demo/avatar-eve.jpg` },\n    { name: 'Finn Barros', src: `${import.meta.env.BASE_URL}demo/avatar-finn.jpg` },\n  ]}\n/>"
+  "example": "<Row gap={8} align=\"start\">\n  <Card>\n    <Stack gap={2}>\n      <SectionLabel as=\"h3\">On this project</SectionLabel>\n      <AvatarGroup size=\"lg\" max={3} items={TEAM} />\n    </Stack>\n  </Card>\n  \n  <Card>\n    <Row gap={3} align=\"center\">\n      <span>Q3 delivery review</span>\n      <AvatarGroup size=\"sm\" max={3} items={TEAM} />\n    </Row>\n  </Card>\n</Row>"
 }

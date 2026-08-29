@@ -32,5 +32,5 @@
     "Field",
     "Textarea"
   ],
-  "example": "const [summary, setSummary] = useState('One line on what the team is building.')\n/* No `maxLength` on the control: a field that silently stops accepting keys\n * leaves the user unsure whether the text was cut, so the limit is stated and\n * the submit is what enforces it. */\n\n<Field\n  label=\"Summary\"\n  htmlFor=\"summary\"\n  hint=\"Shown in the team list.\"\n  count={<CharacterCount value={summary} max={MAX} />}\n>\n  <Textarea\n    id=\"summary\"\n    rows={3}\n    value={summary}\n    invalid={summary.length > MAX}\n    onChange={(e) => setSummary(e.target.value)}\n  />\n</Field>"
+  "example": "const [summary, setSummary] = useState('One line on what the team is building.')<Field\n  label=\"Summary\"\n  htmlFor=\"summary\"\n  hint=\"Shown in the team list.\"\n  count={<CharacterCount value={summary} max={MAX} />}\n>\n  <Textarea\n    id=\"summary\"\n    rows={3}\n    value={summary}\n    invalid={summary.length > MAX}\n    onChange={(e) => setSummary(e.target.value)}\n  />\n</Field>"
 }

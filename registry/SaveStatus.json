@@ -50,5 +50,5 @@
     "Input",
     "Time"
   ],
-  "example": "const [title, setTitle] = useState('Community Outreach Newsletter')\n/* The pair, together, because neither is the whole answer: `useAutosave` owns\n * WHEN a draft is written (a pause in typing, once, not per keystroke) and\n * <SaveStatus> is the sentence that says it happened. A form that saves by\n * itself and never says so makes the user invent their own proof — they\n * retype a sentence, or they leave and hope. */\nconst { state, savedAt } = useAutosave(title, async () => {\n  await Promise.resolve()\n})\n\n<Field label=\"Title\" htmlFor=\"draft-title\">\n  <Input id=\"draft-title\" value={title} onChange={(e) => { setTitle(e.target.value) }} />\n  {/* `idle` renders nothing, so the line does not reserve space before the\n    * first change. A fixed instant keeps the visual baseline still. */}\n  <SaveStatus state={state} at={savedAt ?? '2026-08-23T09:14:00.000Z'} />\n</Field>"
+  "example": "const [title, setTitle] = useState('Community Outreach Newsletter')const { state, savedAt } = useAutosave(title, async () => {\n  await Promise.resolve()\n})\n\n<Field label=\"Title\" htmlFor=\"draft-title\">\n  <Input id=\"draft-title\" value={title} onChange={(e) => { setTitle(e.target.value) }} />\n  \n  <SaveStatus state={state} at={savedAt ?? '2026-08-23T09:14:00.000Z'} />\n</Field>"
 }

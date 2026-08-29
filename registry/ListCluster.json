@@ -50,5 +50,5 @@
     "Icon",
     "Layout"
   ],
-  "example": "const items = [{ id: '1', name: 'Kickoff' }, { id: '2', name: 'Retro' }]\n/* The centered \"welcome\" list: one shape shared by every list screen, so they\n * cannot drift apart. Cards go in the middle, the primary CTA underneath. */\n\n<ListCluster\n  title=\"Workshops\"\n  subtitle=\"Pick a workshop or start a new one.\"\n  cta={<Button variant=\"primary\" size=\"lg\">New workshop<Icon name=\"add\" /></Button>}\n>\n  <Grid gap={4}>\n    {items.map((i) => (\n      <Card key={i.id} interactive><CardTitle>{i.name}</CardTitle></Card>\n    ))}\n  </Grid>\n</ListCluster>"
+  "example": "const items = [{ id: '1', name: 'Kickoff' }, { id: '2', name: 'Retro' }]<ListCluster\n  title=\"Workshops\"\n  subtitle=\"Pick a workshop or start a new one.\"\n  cta={<Button variant=\"primary\" size=\"lg\">New workshop<Icon name=\"add\" /></Button>}\n>\n  <Grid gap={4}>\n    {items.map((i) => (\n      <Card key={i.id} interactive><CardTitle>{i.name}</CardTitle></Card>\n    ))}\n  </Grid>\n</ListCluster>"
 }

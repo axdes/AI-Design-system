@@ -141,5 +141,10 @@
       "values": null
     }
   },
-  "example": "<BarChart\n  data={CLOSED}\n  target={40}\n  emphasis=\"Aug\"\n  /* `label` is what the chart measures. It names the chart for a screen\n     reader, which then reads the table the component renders for it. */\n  label=\"Findings closed per month\"\n/>"
+  "uses": [
+    "Card",
+    "Layout",
+    "SectionLabel"
+  ],
+  "example": "<Grid columns={12} gap={4}>\n  <GridItem span={8}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Over time</SectionLabel>\n        \n        <BarChart\n          data={CLOSED}\n          target={40}\n          emphasis=\"Aug\"\n          tone=\"success\"label=\"Findings closed per month\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={4}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">By team</SectionLabel>\n        \n        <BarChart\n          data={BY_TEAM}\n          orientation=\"horizontal\"\n          size=\"sm\"\n          tone=\"warning\"\n          label=\"Open findings by team\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n</Grid>"
 }

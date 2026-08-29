@@ -3,11 +3,16 @@
   "level": "block",
   "description": "Centered auth-page skeleton: one Card with a brand slot, the caller's content, an error slot, and a full-width submit when there is a form. Structure only. Copy: the title is what the reader is here to do — \"Sign in\", not the product's name over again. The error says what to try, and never whether it was the address or the password that was wrong.",
   "exports": [
-    "AuthTemplate"
+    "AuthTemplate",
+    "DarkBrandExample"
   ],
   "main": "AuthTemplate",
   "from": "@/blocks/AuthTemplate",
-  "slots": [],
+  "slots": [
+    {
+      "name": "DarkBrandExample"
+    }
+  ],
   "props": [
     {
       "name": "brand",
@@ -106,5 +111,5 @@
     "Layout",
     "PasswordInput"
   ],
-  "example": "const [email, setEmail] = useState('')\nconst [password, setPassword] = useState('')\nconst [error, setError] = useState<string | null>(null)\n/* `busy` stops a second press. Copy this shape. */\nconst [busy, setBusy] = useState(false)\nconst handleSubmit = (e: FormEvent) => {\n  e.preventDefault()\n  if (!email || !password) return setError('Enter your email and password.')\n  setError(null)\n  setBusy(true)\n  /* `finally`, not `then`: a rejected sign-in releases the button too. */\n  void signIn().finally(() => setBusy(false))\n}\n\n<AuthTemplate\n  brand={<strong>Acme</strong>}\n  title=\"Sign in\"\n  subtitle=\"Sign in to continue\"\n  error={error}\n  submitLabel=\"Sign in\"\n  busy={busy}\n  busyLabel=\"Signing in\"\n  onSubmit={handleSubmit}\n>\n  <Field label=\"Email\" htmlFor=\"auth-email\" required>\n    <Input id=\"auth-email\" type=\"email\" autoComplete=\"email\" value={email} onChange={(e) => setEmail(e.target.value)} />\n  </Field>\n  <Field label=\"Password\" htmlFor=\"auth-password\" required>\n    <PasswordInput id=\"auth-password\" autoComplete=\"current-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n  </Field>\n</AuthTemplate>"
+  "example": "const [email, setEmail] = useState('')\nconst [password, setPassword] = useState('')\nconst [error, setError] = useState<string | null>(null)const [busy, setBusy] = useState(false)\nconst handleSubmit = (e: FormEvent) => {\n  e.preventDefault()\n  if (!email || !password) return setError('Enter your email and password.')\n  setError(null)\n  setBusy(true)void signIn().finally(() => setBusy(false))\n}\n\n<AuthTemplate\n      brand={<strong>Acme</strong>}\n      themeLock=\"light\"\n      title=\"Sign in\"\n      subtitle=\"Sign in to continue\"\n      error={error}\n      submitLabel=\"Sign in\"\n      busy={busy}\n      busyLabel=\"Signing in\"\n      onSubmit={handleSubmit}\n    >\n      <Field label=\"Email\" htmlFor=\"auth-email\" required>\n        <Input id=\"auth-email\" type=\"email\" autoComplete=\"email\" value={email} onChange={(e) => setEmail(e.target.value)} />\n      </Field>\n      <Field label=\"Password\" htmlFor=\"auth-password\" required>\n        <PasswordInput id=\"auth-password\" autoComplete=\"current-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n      </Field>\n    </AuthTemplate>\n  )\n}export function DarkBrandExample() {\n  return (\n    <AuthTemplate\n      brand={<strong>Acme</stro"
 }

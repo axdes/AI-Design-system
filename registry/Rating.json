@@ -59,7 +59,9 @@
     }
   },
   "uses": [
-    "Icon"
+    "Icon",
+    "Layout",
+    "SectionLabel"
   ],
-  "example": "const [score, setScore] = useState(4)\n/* Interactive when onChange is given (click or Arrow keys). Omit onChange for\n * a read-only display of an existing score. */\n\n<Rating label=\"Rate this article\" value={score} onChange={setScore} />"
+  "example": "const [score, setScore] = useState(4)\n\n<Stack gap={6}>\n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">Your rating</SectionLabel>\n    <Rating label=\"Rate this article\" value={score} onChange={setScore} />\n  </Stack>\n  \n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">Recent reviews</SectionLabel>\n    <Row gap={3} align=\"center\">\n      <span>Onboarding guide</span>\n      <Rating size=\"sm\" label=\"Rated 5 out of 5\" value={5} />\n    </Row>\n    <Row gap={3} align=\"center\">\n      <span>Release checklist</span>\n      <Rating size=\"sm\" label=\"Rated 3 out of 5\" value={3} />\n    </Row>\n  </Stack>\n</Stack>"
 }

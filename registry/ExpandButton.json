@@ -51,7 +51,9 @@
     }
   },
   "uses": [
-    "Icon"
+    "Card",
+    "Icon",
+    "Layout"
   ],
-  "example": "<ExpandButton icon=\"add\" label=\"Create\" withChevron />"
+  "example": "const [open, setOpen] = useState(false)\n\n<Stack gap={4}>\n  \n  <Card>\n    <Stack gap={3}>\n      <Row gap={3} align=\"center\">\n        <span>Design sprint, day one</span>\n        <ExpandButton\n          icon=\"article\"\n          label=\"Show the transcript\"\n          withChevron\n          expanded={open}\n          onClick={() => { setOpen((v) => !v) }}\n        />\n      </Row>\n      {open && <p>Ada: let us start with what we learned from the pilot.</p>}\n    </Stack>\n  </Card>\n  \n  <ExpandButton icon=\"add\" label=\"Add a participant\" />\n</Stack>"
 }

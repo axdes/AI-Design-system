@@ -26,5 +26,5 @@
     "Input",
     "Select"
   ],
-  "example": "const [name, setName] = useState('')\nconst [role, setRole] = useState('editor')\n/* FormStack owns the vertical rhythm between fields — do not add margins to\n * the <Field>s themselves. */\n\n<FormStack>\n  <Field label=\"Full name\" htmlFor=\"user-name\" required>\n    <Input id=\"user-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Role\" htmlFor=\"user-role\">\n    <Select\n      label=\"Role\"\n      value={role}\n      onChange={setRole}\n      options={[\n        { value: 'editor', label: 'Editor' },\n        { value: 'viewer', label: 'Viewer' },\n      ]}\n    />\n  </Field>\n</FormStack>"
+  "example": "const [name, setName] = useState('')\nconst [role, setRole] = useState('editor')<FormStack>\n  <Field label=\"Full name\" htmlFor=\"user-name\" required>\n    <Input id=\"user-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Role\" htmlFor=\"user-role\">\n    <Select\n      label=\"Role\"\n      value={role}\n      onChange={setRole}\n      options={[\n        { value: 'editor', label: 'Editor' },\n        { value: 'viewer', label: 'Viewer' },\n      ]}\n    />\n  </Field>\n</FormStack>"
 }

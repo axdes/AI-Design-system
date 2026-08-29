@@ -33,5 +33,5 @@
   ],
   "sourcePath": "src/components/Switch/Switch.tsx",
   "inherits": "Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'onChange'>",
-  "example": "const [on, setOn] = useState(true)\n/* `label` is the accessible name, not a visible caption — pair the switch with\n * a <Label> or a <Field> when the screen needs visible text. */\n\n<Switch checked={on} onChange={setOn} label=\"Weekly digest\" />"
+  "example": "const [on, setOn] = useState(true)<Switch checked={on} onChange={setOn} label=\"Weekly digest\" />"
 }

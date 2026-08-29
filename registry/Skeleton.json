@@ -58,5 +58,5 @@
   "uses": [
     "Layout"
   ],
-  "example": "/* The shape of a loading card: an avatar disc, a title line and a short\n * paragraph. Announce the loading state ONCE on the surrounding region\n * (aria-busy / a Spinner) — the skeletons themselves are decorative. */\n\n<Row gap={3} aria-busy=\"true\">\n  <Skeleton shape=\"circle\" />\n  <Stack gap={2} className=\"skeleton-lines\">\n    <Skeleton width=\"12rem\" height=\"1rem\" shape=\"block\" />\n    <Skeleton lines={3} />\n  </Stack>\n</Row>"
+  "example": "<Row gap={3} aria-busy=\"true\">\n  <Skeleton shape=\"circle\" />\n  <Stack gap={2} className=\"skeleton-lines\">\n    <Skeleton width=\"12rem\" height=\"1rem\" shape=\"block\" />\n    <Skeleton lines={3} />\n  </Stack>\n</Row>"
 }

@@ -40,5 +40,8 @@
       ]
     }
   },
-  "example": "/* One Kbd per key; the \"+\" between them is plain text. This is the hint that\n * sits next to a CommandPalette trigger or in a shortcuts help sheet. */\n\n<p>\n  Press <Kbd>Ctrl</Kbd>+<Kbd>K</Kbd> to open the command palette.\n</p>"
+  "uses": [
+    "Layout"
+  ],
+  "example": "<Stack gap={4}>\n  <p>\n    Press <Kbd size=\"sm\">Ctrl</Kbd>+<Kbd size=\"sm\">K</Kbd> to open the command palette.\n  </p>\n  \n  <Row gap={2} align=\"center\">\n    <Kbd>Cmd</Kbd>\n    <span>+</span>\n    <Kbd>Shift</Kbd>\n    <span>+</span>\n    <Kbd>P</Kbd>\n  </Row>\n</Stack>"
 }

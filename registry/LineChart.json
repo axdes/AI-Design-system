@@ -96,5 +96,10 @@
       ]
     }
   },
-  "example": "<LineChart\n  labels={MONTHS}\n  series={[\n    { label: 'Raised', values: [52, 61, 48, 67, 72] },\n    { label: 'Closed', values: [34, 41, 28, 47, 52] },\n  ]}\n  target={60}\n  label=\"Findings raised and closed per month\"\n/>"
+  "uses": [
+    "Card",
+    "Layout",
+    "SectionLabel"
+  ],
+  "example": "<Grid columns={12} gap={4}>\n  <GridItem span={8}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Raised against closed</SectionLabel>\n        <LineChart\n          labels={MONTHS}\n          series={[\n            { label: 'Raised', values: [52, 61, 48, 67, 72] },\n            { label: 'Closed', values: [34, 41, 28, 47, 52] },\n          ]}\n          target={60}\n          label=\"Findings raised and closed per month\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={4}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Sessions</SectionLabel>\n        \n        <LineChart\n          labels={MONTHS}\n          series={[{ label: 'Sessions', values: [180, 176, 191, 203, 221] }]}\n          area\n          size=\"sm\"\n          label=\"Sessions per month\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n</Grid>"
 }

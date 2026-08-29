@@ -73,5 +73,5 @@
       ]
     }
   },
-  "example": "const [budget, setBudget] = useState<[number, number]>([25, 70])\n/* A bounded filter: the tuple is [start, end] and each thumb clamps against\n * the other. `showValue` prints the span at the end of the label row. */\n\n<RangeSlider\n  label=\"Budget range\"\n  value={budget}\n  onChange={setBudget}\n  min={0}\n  max={100}\n  step={5}\n  showValue\n  formatValue={(v) => `SAR ${v}k`}\n/>"
+  "example": "const [budget, setBudget] = useState<[number, number]>([25, 70])<RangeSlider\n  label=\"Budget range\"\n  value={budget}\n  onChange={setBudget}\n  min={0}\n  max={100}\n  step={5}\n  showValue\n  formatValue={(v) => `SAR ${v}k`}\n/>"
 }

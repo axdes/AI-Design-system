@@ -77,5 +77,5 @@
     "Modal",
     "Textarea"
   ],
-  "example": "const [open, setOpen] = useState(true)\n/* Every string comes from the caller: the component stays i18n-agnostic, so\n * the app passes already-translated copy (t('...')) into `labels`. */\n\n<FeedbackModal\n  open={open}\n  onClose={() => setOpen(false)}\n  onSubmit={() => setOpen(false)}\n  labels={{\n    title: 'What went wrong?',\n    close: 'Close',\n    send: 'Send feedback',\n    desc: 'Tell us what the answer got wrong so we can fix it.',\n    detailsLabel: 'Details',\n    detailsPlaceholder: 'What did you expect to see?',\n    reasons: {\n      wrong: 'Wrong answer',\n      incomplete: 'Incomplete',\n      unclear: 'Unclear',\n      other: 'Something else',\n    },\n  }}\n/>"
+  "example": "const [open, setOpen] = useState(true)<FeedbackModal\n  open={open}\n  onClose={() => setOpen(false)}\n  onSubmit={() => setOpen(false)}\n  labels={{\n    title: 'What went wrong?',\n    close: 'Close',\n    send: 'Send feedback',\n    desc: 'Tell us what the answer got wrong so we can fix it.',\n    detailsLabel: 'Details',\n    detailsPlaceholder: 'What did you expect to see?',\n    reasons: {\n      wrong: 'Wrong answer',\n      incomplete: 'Incomplete',\n      unclear: 'Unclear',\n      other: 'Something else',\n    },\n  }}\n/>"
 }

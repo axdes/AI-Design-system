@@ -77,5 +77,10 @@
       ]
     }
   },
-  "example": "<DonutChart segments={FINDINGS} center=\"320\" caption=\"findings\" label=\"Findings by state\" />"
+  "uses": [
+    "Card",
+    "Layout",
+    "SectionLabel"
+  ],
+  "example": "<Row gap={4} align=\"start\">\n  <Card>\n    <Stack gap={3}>\n      <SectionLabel as=\"h3\">Findings by state</SectionLabel>\n      <DonutChart segments={FINDINGS} center=\"320\" caption=\"findings\" label=\"Findings by state\" />\n    </Stack>\n  </Card>\n  \n  <Card>\n    <Stack gap={3}>\n      <SectionLabel as=\"h3\">This quarter</SectionLabel>\n      <DonutChart\n        segments={FINDINGS}\n        size=\"sm\"\n        percent\n        center=\"320\"\n        caption=\"findings\"\n        label=\"Findings by state, this quarter\"\n      />\n    </Stack>\n  </Card>\n</Row>"
 }

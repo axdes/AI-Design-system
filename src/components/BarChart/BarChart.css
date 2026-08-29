@@ -201,6 +201,26 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* THE VALUE AXIS TURNED WITH THE BARS AND ITS LABELS DID NOT. `.chart-scale` is
+ * a vertical strip: every tick is placed by `--tick-at` DOWN its side, which is
+ * right standing up and puts all of them on one spot lying down — "80" printed
+ * over "40" over "20" over "0" in a 2.5rem column beside the first bar
+ * (2026-08-29). Lying down the scale is a strip ACROSS the top of the plot, and
+ * each tick is offset along it instead of down it. The grid lines below already
+ * turned; only the numbers naming them did not. */
+.bar-chart[data-orientation="horizontal"] .chart-scale {
+  inline-size: auto;
+  block-size: 1.25em;
+  margin-block-end: var(--space-1);
+}
+.bar-chart[data-orientation="horizontal"] .chart-tick {
+  inset-inline-end: auto;
+  inset-inline-start: var(--tick-at);
+  inset-block-end: 0;
+  transform: translateX(-50%);
+}
+.bar-chart[data-orientation="horizontal"]:dir(rtl) .chart-tick { transform: translateX(50%); }
+
 .bar-chart[data-orientation="horizontal"] .chart-grid {
   inset-block: 0;
   inset-inline: auto;

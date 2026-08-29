@@ -14,5 +14,5 @@
   "uses": [
     "IconButton"
   ],
-  "example": "/* An app shell renders this once, next to its sidebar; it needs the provider\n * that owns the drawer state. Without one it renders nothing at all, which is\n * why the provider is part of the example rather than assumed. Below 48rem it\n * appears pinned to the corner; above it there is a sidebar already, so it does\n * not. */\n\n<SidebarProvider>\n  <NavDrawerButton />\n</SidebarProvider>"
+  "example": "<SidebarProvider>\n  <NavDrawerButton />\n</SidebarProvider>"
 }

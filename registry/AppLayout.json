@@ -3,11 +3,16 @@
   "level": "organism",
   "description": "The application shell: navigation and a scrolling main, in one of four arrangements. Routing-agnostic — pass any nav in the `nav` slot. Below the drawer breakpoint a side arrangement becomes an overlay drawer toggled by `navOpen`; `top` and `none` have nothing to drawer and stay as they are.",
   "exports": [
-    "AppLayout"
+    "AppLayout",
+    "FloatingExample"
   ],
   "main": "AppLayout",
   "from": "@/components/AppLayout",
-  "slots": [],
+  "slots": [
+    {
+      "name": "FloatingExample"
+    }
+  ],
   "props": [
     {
       "name": "nav",
@@ -66,5 +71,5 @@
     "Prose",
     "SideNav"
   ],
-  "example": "const [navOpen, setNavOpen] = useState(false)\n/* The app frame: a nav rail plus the scrolling main column. On narrow screens\n * the rail becomes an overlay, which is what navOpen/onNavClose drive.\n *\n * The main column carries a REAL page — a header and content under it. It\n * used to hold a bare <PageHeader> and nothing else, so the one thing this\n * component exists to arrange (the relationship between the rail and what is\n * beside it) was an empty grey field (owner: \"AppLayout is wrong\",\n * 2026-08-24). What goes in `children` is always a page; showing one is what\n * makes the arrangement legible. */\n\n<AppLayout\n  navOpen={navOpen}\n  onNavClose={() => setNavOpen(false)}\n  nav={\n    <SideNav\n      aria-label=\"Primary\"\n      logo={<><Icon name=\"auto_awesome\" size=\"md\" /><strong>Acme</strong></>}\n      logoMark={<Icon name=\"auto_awesome\" size=\"md\" />}\n      groups={[\n        {\n          label: 'Workspace',\n          items: [\n            { id: 'library', label: 'Library', icon: 'folder', active: true },\n            { id: 'review', label: 'For review', icon: 'check_circle' },\n          ],\n        },\n      ]}\n    />\n  }\n>\n  <PageHeader title=\"Content library\" />\n  <Stack gap={4}>\n   "
+  "example": "const [navOpen, setNavOpen] = useState(false)<AppLayout\n      arrangement=\"rail\"\n      navOpen={navOpen}\n      onNavClose={() => setNavOpen(false)}\n      nav={\n        <SideNav\n          aria-label=\"Primary\"\n          logo={<><Icon name=\"auto_awesome\" size=\"md\" /><strong>Acme</strong></>}\n          logoMark={<Icon name=\"auto_awesome\" size=\"md\" />}\n          groups={[\n            {\n              label: 'Workspace',\n              items: [\n                { id: 'library', label: 'Library', icon: 'folder', active: true },\n                { id: 'review', label: 'For review', icon: 'check_circle' },\n              ],\n            },\n          ]}\n        />\n      }\n    >\n      <PageHeader title=\"Content library\" />\n      <Stack gap={4}>\n        <Grid gap={4} min=\"md\">\n          <Card>\n            <CardTitle as=\"h2\">Drafts</CardTitle>\n            <Prose size=\"sm\">Twelve items, four of them edited this week.</Prose>\n          </Card>\n          <Card>\n            <CardTitle as=\"h2\">Published</CardTitle>\n            <Prose size=\"sm\">Ninety items. Nothing is waiting on you here.</Prose>\n          </Card>\n        </Grid>\n      </Stack>\n    </AppLayout>\n  )\n}export function FloatingExample() {\n  r"
 }

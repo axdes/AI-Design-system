@@ -58,5 +58,5 @@
   "uses": [
     "Icon"
   ],
-  "example": "const [selected, setSelected] = useState<string>()\n/* Expand/collapse hierarchy with the WAI-ARIA tree keyboard (arrows + Enter).\n * Selection and expansion are controlled here, or self-managed if you omit\n * them. */\n\n<Tree\n  label=\"Files\"\n  selectedId={selected}\n  onSelect={setSelected}\n  defaultExpandedIds={['src']}\n  nodes={[\n    {\n      id: 'src', label: 'src', icon: 'folder', children: [\n        { id: 'app', label: 'App.tsx', icon: 'article' },\n        { id: 'components', label: 'components', icon: 'folder', children: [\n          { id: 'button', label: 'Button.tsx', icon: 'article' },\n        ] },\n      ],\n    },\n    { id: 'readme', label: 'README.md', icon: 'article' },\n  ]}\n/>"
+  "example": "const [selected, setSelected] = useState<string>()<Tree\n  label=\"Files\"\n  selectedId={selected}\n  onSelect={setSelected}\n  defaultExpandedIds={['src']}\n  nodes={[\n    {\n      id: 'src', label: 'src', icon: 'folder', children: [\n        { id: 'app', label: 'App.tsx', icon: 'article' },\n        { id: 'components', label: 'components', icon: 'folder', children: [\n          { id: 'button', label: 'Button.tsx', icon: 'article' },\n        ] },\n      ],\n    },\n    { id: 'readme', label: 'README.md', icon: 'article' },\n  ]}\n/>"
 }

@@ -87,5 +87,5 @@
     "Layout",
     "Stat"
   ],
-  "example": "/* Inside a <Stat trend>, which is where this belongs: the width comes from\n   the container, so on its own it stretches to whatever it is given and\n   stops reading as a sparkline at all. */\n<Row gap={4} align=\"start\">\n  <Card>\n    <Stat label=\"Revenue\" value=\"SAR 63k\" delta=\"+12%\" deltaDirection=\"up\"\n          trend={<Sparkline values={week} tone=\"success\" area />} />\n  </Card>\n  <Card>\n    <Stat label=\"Queue depth\" value=\"63\" delta=\"+12\" deltaDirection=\"up\" deltaTone=\"danger\"\n          trend={<Sparkline values={week} tone=\"warning\" size=\"sm\" />} />\n  </Card>\n</Row>"
+  "example": "<Row gap={4} align=\"start\">\n  <Card>\n    <Stat label=\"Revenue\" value=\"SAR 63k\" delta=\"+12%\" deltaDirection=\"up\"\n          trend={<Sparkline values={week} tone=\"success\" area />} />\n  </Card>\n  <Card>\n    <Stat label=\"Queue depth\" value=\"63\" delta=\"+12\" deltaDirection=\"up\" deltaTone=\"danger\"\n          trend={<Sparkline values={week} tone=\"warning\" size=\"sm\" />} />\n  </Card>\n</Row>"
 }

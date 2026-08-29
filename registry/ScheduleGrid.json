@@ -65,5 +65,5 @@
   "uses": [
     "Table"
   ],
-  "example": "<ScheduleGrid\n  label=\"Room bookings today\"\n  captionHidden\n  resourceHeader=\"Room\"\n  resources={ROOMS}\n  slots={HOURS}\n  events={EVENTS}\n  /* The column that is happening now, marked so the reader does not have to\n     work it out from the clock. */\n  now=\"11:00\"\n/>"
+  "example": "<ScheduleGrid\n  label=\"Room bookings today\"\n  captionHidden\n  resourceHeader=\"Room\"\n  resources={ROOMS}\n  slots={HOURS}\n  events={EVENTS}now=\"11:00\"\n/>"
 }

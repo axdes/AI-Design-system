@@ -43,5 +43,5 @@
   "uses": [
     "Icon"
   ],
-  "example": "const [step, setStep] = useState(1)\n/* Presentational: the parent owns `current`. Completed steps are clickable to\n * go back (upcoming ones are not); the wizard body lives next to this. */\n\n<Stepper\n  current={step}\n  onStepClick={setStep}\n  steps={[\n    { label: 'Account', description: 'Your details' },\n    { label: 'Shipping', description: 'Where to send it' },\n    { label: 'Payment', description: 'How to pay' },\n    { label: 'Review', description: 'Confirm and place' },\n  ]}\n/>"
+  "example": "const [step, setStep] = useState(1)<Stepper\n  current={step}\n  onStepClick={setStep}\n  steps={[\n    { label: 'Account', description: 'Your details' },\n    { label: 'Shipping', description: 'Where to send it' },\n    { label: 'Payment', description: 'How to pay' },\n    { label: 'Review', description: 'Confirm and place' },\n  ]}\n/>"
 }

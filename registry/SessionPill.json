@@ -81,5 +81,5 @@
     "Icon",
     "Tooltip"
   ],
-  "example": "<SessionPill\n  label=\"Recording: Design sprint\"\n  timer=\"12:47\"\n  actionLabel=\"Back to the board\"\n  icon=\"mic\"\n  onClick={() => undefined}\n/>"
+  "example": "<SessionPill\n  tone=\"danger\"\n  label=\"Recording: Design sprint\"\n  timer=\"12:47\"\n  actionLabel=\"Back to the board\"\n  icon=\"mic\"\n  onClick={() => undefined}\n/>"
 }

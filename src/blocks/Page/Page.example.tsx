@@ -12,9 +12,29 @@ const REQUESTS = [
   { id: 'r-2', title: 'New vendor onboarding', owner: 'Dmitri Volkov' },
 ]
 
-/* The list-detail shape: the queue on one side, the selection on the other. The
- * archetype supplies the width and the region rules; `shape` overrides the
- * geometry, which is the one case a worklist earns — items reviewed in place. */
+/* THE ARCHETYPE IS THE DECISION; EVERYTHING ELSE ON THIS COMPONENT IS AN
+ * OVERRIDE OF IT. Name what KIND of page this is and the geometry follows: the
+ * width, the shape of the body, and which regions the page may and may not
+ * have. Say `archetype="worklist"` and a screen stops restating what its own
+ * kind already implies.
+ *
+ * The eleven kinds are not a style menu. They are answers to what the reader
+ * came to do — read the state of things (`overview`), find one row (`list`),
+ * work a queue (`worklist`), interrogate numbers (`analytical`), read one
+ * record (`detail`), choose where to go (`hub`), give us something (`form`,
+ * `wizard`), change how it behaves (`settings`), get in (`auth`), or be told
+ * something went wrong (`system`).
+ *
+ * The table of defaults lives beside `screen-specs/page-rules.json`, which is
+ * the source of truth, and `check:spec` fails on drift — so an archetype
+ * cannot mean one thing to the gate and another on screen.
+ *
+ * `shape`, `width` and `align` OVERRIDE the archetype, and each one is a claim
+ * that this screen is the exception. `shape="list-detail"` below is the case a
+ * worklist earns: the items are reviewed in place, so the queue and the
+ * selection are on screen together. An override with no such reason is a page
+ * disagreeing with its own kind.
+ */
 export function Example() {
   const [selected, setSelected] = useState<string | null>('r-1')
   const current = REQUESTS.find((r) => r.id === selected)
@@ -36,6 +56,21 @@ export function Example() {
       <Card flush>
         {REQUESTS.map((r) => (
           <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>
+        ))}
+      </Card>
+    </Page>
+  )
+}
+
+/* The same mechanism with NO override: a `list` takes its shape, its width and
+ * its regions from its kind, and the screen says nothing about geometry at all.
+ * This is what most pages should look like. */
+export function ListExample() {
+  return (
+    <Page archetype="list" title="Requests">
+      <Card flush>
+        {REQUESTS.map((r) => (
+          <ListItem key={r.id}>{r.title}</ListItem>
         ))}
       </Card>
     </Page>

@@ -44,5 +44,5 @@
   "uses": [
     "Layout"
   ],
-  "example": "/* Plain rule between sections, and a labelled variant with centred text.\n * Vertical dividers need a sized flex parent (a <Row>). */\n\n<Stack gap={4}>\n  <p>Account details</p>\n  <Divider />\n  <p>Billing</p>\n  <Divider>OR</Divider>\n  <p>Continue with SSO</p>\n</Stack>"
+  "example": "<Stack gap={4}>\n  <p>Account details</p>\n  <Divider />\n  <p>Billing</p>\n  \n  <Divider>OR</Divider>\n  <p>Continue with SSO</p>\n  \n  <Row gap={3} align=\"center\">\n    <span>Draft</span>\n    <span>Edited 2 days ago</span>\n    <Divider orientation=\"vertical\" />\n    <span>3 comments</span>\n  </Row>\n</Stack>"
 }

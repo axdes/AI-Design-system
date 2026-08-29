@@ -67,8 +67,11 @@
     }
   },
   "uses": [
+    "Card",
     "Icon",
+    "Layout",
+    "SectionLabel",
     "Table"
   ],
-  "example": "<TableScroll label=\"Files\">\n  <Table caption=\"Files\" captionHidden>\n    <THead>\n      <Tr>\n        {/* The thumbnail column is as wide as the box and no wider. */}\n        <Th width=\"4rem\"><span className=\"sr-only\">Preview</span></Th>\n        <Th>File</Th>\n        <Th>Kind</Th>\n      </Tr>\n    </THead>\n    <TBody>\n      {ROWS.map((r) => (\n        <Tr key={r.id}>\n          {/* No src here: the fallback keeps the column one width, which is\n              what stops a row without a picture from collapsing. */}\n          <Td><Thumbnail alt=\"\" icon={r.icon} size=\"sm\" /></Td>\n          <Th scope=\"row\" emphasis>{r.id}</Th>\n          <Td>{r.kind}</Td>\n        </Tr>\n      ))}\n    </TBody>\n  </Table>\n</TableScroll>"
+  "example": "<Stack gap={6}>\n  <TableScroll label=\"Files\">\n    <Table caption=\"Files\" captionHidden>\n      <THead>\n        <Tr>\n          \n          <Th width=\"4rem\"><span className=\"sr-only\">Preview</span></Th>\n          <Th>File</Th>\n          <Th>Kind</Th>\n        </Tr>\n      </THead>\n      <TBody>\n        {ROWS.map((r) => (\n          <Tr key={r.id}>\n            \n            <Td><Thumbnail alt=\"\" icon={r.icon} size=\"sm\" /></Td>\n            <Th scope=\"row\" emphasis>{r.id}</Th>\n            <Td>{r.kind}</Td>\n          </Tr>\n        ))}\n      </TBody>\n    </Table>\n  </TableScroll>\n  \n  <Card>\n    <Stack gap={3}>\n      <SectionLabel as=\"h3\">Recording</SectionLabel>\n      <Row gap={3} align=\"center\">\n        <Thumbnail alt=\"\" icon=\"movie\" ratio=\"16/9\" />\n        <span>Site walkthrough, 14 minutes</span>\n      </Row>\n    </Stack>\n  </Card>\n</Stack>"
 }

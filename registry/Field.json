@@ -77,5 +77,5 @@
     "Input",
     "Label"
   ],
-  "example": "const [email, setEmail] = useState('not-an-address')\nconst invalid = !email.includes('@')\n/* `htmlFor` ties the label to the control's id; `error` is wired to the same\n * control with aria-describedby, so the reason is read as part of the field\n * rather than as a stray sentence underneath it. */\n\n<Field\n  label=\"Email address\"\n  htmlFor=\"email\"\n  required\n  hint=\"We only use it to send the invitation.\"\n  error={invalid ? 'Enter an address with an @ in it.' : undefined}\n>\n  <Input\n    id=\"email\"\n    type=\"email\"\n    autoComplete=\"email\"\n    value={email}\n    invalid={invalid}\n    onChange={(e) => setEmail(e.target.value)}\n  />\n</Field>"
+  "example": "const [email, setEmail] = useState('not-an-address')\nconst invalid = !email.includes('@')<Field\n  label=\"Email address\"\n  htmlFor=\"email\"\n  required\n  hint=\"We only use it to send the invitation.\"\n  error={invalid ? 'Enter an address with an @ in it.' : undefined}\n>\n  <Input\n    id=\"email\"\n    type=\"email\"\n    autoComplete=\"email\"\n    value={email}\n    invalid={invalid}\n    onChange={(e) => setEmail(e.target.value)}\n  />\n</Field>"
 }

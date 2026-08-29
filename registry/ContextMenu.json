@@ -32,5 +32,5 @@
     "Card",
     "Icon"
   ],
-  "example": "/* Right-click the target to open a menu at the pointer. For a left-click\n * trigger button use <Dropdown>. */\n\n<ContextMenu\n  items={[\n    { id: 'open', label: 'Open', icon: 'article', onSelect: () => undefined },\n    { id: 'rename', label: 'Rename', icon: 'edit', onSelect: () => undefined },\n    { id: 'delete', label: 'Delete', icon: 'delete', tone: 'destructive', onSelect: () => undefined },\n  ]}\n>\n  <Card>Right-click this card</Card>\n</ContextMenu>"
+  "example": "<ContextMenu\n  items={[\n    { id: 'open', label: 'Open', icon: 'article', onSelect: () => undefined },\n    { id: 'rename', label: 'Rename', icon: 'edit', onSelect: () => undefined },\n    { id: 'delete', label: 'Delete', icon: 'delete', tone: 'destructive', onSelect: () => undefined },\n  ]}\n>\n  <Card>Right-click this card</Card>\n</ContextMenu>"
 }

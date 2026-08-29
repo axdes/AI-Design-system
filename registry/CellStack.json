@@ -31,5 +31,5 @@
   "uses": [
     "Table"
   ],
-  "example": "<TableScroll label=\"Invoices\">\n  <Table caption=\"Invoices\" captionHidden>\n    <THead>\n      <Tr>\n        <Th>Invoice</Th>\n        {/* The unit is named once, in the header, not in two hundred cells. */}\n        <Th align=\"end\">Amount (EUR)</Th>\n      </Tr>\n    </THead>\n    <TBody>\n      {ROWS.map((r) => (\n        <Tr key={r.id}>\n          {/* One column carries two facts; every other column stays one\n              line, or the table stops scanning as rows. */}\n          <Th scope=\"row\" emphasis>\n            <CellStack secondary={r.supplier}>{r.id}</CellStack>\n          </Th>\n          <Td align=\"end\">{money(r.amount, { currency: false })}</Td>\n        </Tr>\n      ))}\n    </TBody>\n  </Table>\n</TableScroll>"
+  "example": "<TableScroll label=\"Invoices\">\n  <Table caption=\"Invoices\" captionHidden>\n    <THead>\n      <Tr>\n        <Th>Invoice</Th>\n        \n        <Th align=\"end\">Amount (EUR)</Th>\n      </Tr>\n    </THead>\n    <TBody>\n      {ROWS.map((r) => (\n        <Tr key={r.id}>\n          \n          <Th scope=\"row\" emphasis>\n            <CellStack secondary={r.supplier}>{r.id}</CellStack>\n          </Th>\n          <Td align=\"end\">{money(r.amount, { currency: false })}</Td>\n        </Tr>\n      ))}\n    </TBody>\n  </Table>\n</TableScroll>"
 }

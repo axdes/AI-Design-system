@@ -43,5 +43,5 @@
     "Layout",
     "SectionLabel"
   ],
-  "example": "<Stack gap={6}>\n  <Stack gap={1}>\n    <SectionLabel as=\"h3\">Auto</SectionLabel>\n    {/* Recent, so it reads relative; old, so it reads as a date. One prop,\n        both behaviours, no branch in the calling code. */}\n    <Time value={EDITED} />\n    <Time value={JOINED} />\n  </Stack>\n  <Stack gap={1}>\n    <SectionLabel as=\"h3\">Forced</SectionLabel>\n    <Time value={JOINED} mode=\"relative\" />\n    <Time value={EDITED} mode=\"absolute\" />\n  </Stack>\n</Stack>"
+  "example": "<Stack gap={6}>\n  <Stack gap={1}>\n    <SectionLabel as=\"h3\">Auto</SectionLabel>\n    \n    <Time value={EDITED} />\n    <Time value={JOINED} />\n  </Stack>\n  <Stack gap={1}>\n    <SectionLabel as=\"h3\">Forced</SectionLabel>\n    <Time value={JOINED} mode=\"relative\" />\n    <Time value={EDITED} mode=\"absolute\" />\n  </Stack>\n</Stack>"
 }

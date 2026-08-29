@@ -936,7 +936,29 @@ function authoredExample(src) {
       ? [dedent(short[1]), dedent(short[2])].filter(Boolean).join("\n\n")
       : dedent(body);
   }
-  return text.slice(0, 1200);
+  /* THE REGISTRY PUBLISHES CODE, NOT COMMENTARY.
+   *
+   * A golden example's file carries the reasoning — which prop is the decision,
+   * what the other value would mean, what goes wrong the other way round — and
+   * that reasoning is for whoever opens the file. It is NOT what belongs in a
+   * machine-read contract: the entry already has `description` for the
+   * component's own prose and a JSDoc line on every prop, and a comment inside
+   * a code field is prose in the wrong place.
+   *
+   * It was also making the code WRONG. The cap below is a hard character cut,
+   * so the comments were paid for out of the JSX: seventeen entries published
+   * an example that stopped mid-element (2026-08-29), and an agent copying one
+   * of those writes broken markup. Stripping the commentary first took that
+   * from seventeen to two and gave 4,860 tokens back to the context budget.
+   *
+   * The reasoning is not lost: it ships in the source, and `r/` installs the
+   * file whole. */
+  const code = text
+    .replace(/\{?\s*\/\*[\s\S]*?\*\/\s*\}?/g, '')
+    .replace(/^\s*\/\/.*$/gm, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return code.slice(0, 1200);
 }
 
 function dedent(text) {

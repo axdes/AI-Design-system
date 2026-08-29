@@ -39,5 +39,5 @@
     "Avatar",
     "Layout"
   ],
-  "example": "/* Rich card on hover OR focus. For a plain text hint use <Tooltip>; for a\n * click-opened panel use <Popover>. The trigger stays keyboard-reachable. */\n\n<HoverCard\n  content={\n    <Row gap={3}>\n      <Avatar name=\"Ada Meridian\" />\n      <Stack gap={1}>\n        <strong>Ada Meridian</strong>\n        <span>Brand manager, joined 2023</span>\n      </Stack>\n    </Row>\n  }\n>\n  <button type=\"button\">@sarah</button>\n</HoverCard>"
+  "example": "<HoverCard\n  content={\n    <Row gap={3}>\n      <Avatar name=\"Ada Meridian\" />\n      <Stack gap={1}>\n        <strong>Ada Meridian</strong>\n        <span>Brand manager, joined 2023</span>\n      </Stack>\n    </Row>\n  }\n>\n  <button type=\"button\">@sarah</button>\n</HoverCard>"
 }

@@ -34,7 +34,9 @@
   "sourcePath": "src/components/BrandMark/BrandMark.tsx",
   "context": "region",
   "uses": [
-    "Icon"
+    "Icon",
+    "Layout",
+    "SectionLabel"
   ],
-  "example": "/* What a product passes as <SideNav logoMark>: the mark in the cap, drawn in\n   inverse ink because it now sits on a brand fill. Hovering the collapsed\n   rail's logo cross-fades it to the arrow that opens the rail. */\n\n<BrandMark><Logo size={22} tone=\"inverse\" /></BrandMark>"
+  "example": "<Row gap={8} align=\"start\">\n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">Expanded rail</SectionLabel>\n    \n    <BrandMark direction=\"collapse\"><Logo size={22} tone=\"inverse\" /></BrandMark>\n  </Stack>\n  <Stack gap={2}>\n    <SectionLabel as=\"h3\">Collapsed rail</SectionLabel>\n    \n    <BrandMark direction=\"expand\"><Logo size={22} tone=\"inverse\" /></BrandMark>\n  </Stack>\n</Row>"
 }

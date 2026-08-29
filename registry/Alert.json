@@ -72,5 +72,5 @@
     "Layout",
     "Tooltip"
   ],
-  "example": "const [showTip, setShowTip] = useState(true)\n\n<Stack gap={3}>\n  {/* An unfixed error stays: no onDismiss, and role=\"alert\" to interrupt. */}\n  <Alert tone=\"danger\" role=\"alert\">Couldn&apos;t save. Check your connection.</Alert>\n  {/* Dismissal is the consumer's: the alert never unmounts itself. */}\n  {showTip && <Alert tone=\"info\" onDismiss={() => setShowTip(false)}>Drafts save automatically.</Alert>}\n</Stack>"
+  "example": "const [showTip, setShowTip] = useState(true)\n\n<Stack gap={3}>\n  \n  <Alert tone=\"danger\" role=\"alert\">Couldn&apos;t save. Check your connection.</Alert>\n  \n  {showTip && <Alert tone=\"info\" onDismiss={() => setShowTip(false)}>Drafts save automatically.</Alert>}\n</Stack>"
 }

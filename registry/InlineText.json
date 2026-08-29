@@ -52,5 +52,8 @@
     }
   ],
   "sourcePath": "src/components/InlineText/InlineText.tsx",
-  "example": "const [title, setTitle] = useState('Untitled document')\n/* Click-to-edit text: renders as `as` until activated, then as an input.\n * `label` is the accessible name of that input. */\n\n<InlineText as=\"h2\" value={title} label=\"Document title\" onSave={setTitle} />"
+  "uses": [
+    "Layout"
+  ],
+  "example": "const [title, setTitle] = useState('Untitled document')\nconst [note, setNote] = useState('Ships in 2 to 4 business days.')\n\n<Stack gap={6}>\n  \n  <InlineText as=\"h2\" value={title} label=\"Document title\" onSave={setTitle} />\n  \n  <InlineText as=\"p\" value={note} label=\"Delivery note\" onSave={setNote} />\n</Stack>"
 }

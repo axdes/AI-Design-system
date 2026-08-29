@@ -41,5 +41,5 @@
     "Input",
     "Select"
   ],
-  "example": "const [name, setName] = useState('Delivery review')\nconst [area, setArea] = useState('emea')\n/* The legend answers \"what are these fields about\"; if no sentence can say\n * that, the fields do not form a section and belong in the plain FormStack. */\n\n<FormSection title=\"Ownership\" description=\"Who this workspace belongs to.\">\n  <Field label=\"Workspace name\" htmlFor=\"ws-name\" required>\n    <Input id=\"ws-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Area\">\n    <Select label=\"Area\" options={AREAS} value={area} onChange={setArea} />\n  </Field>\n</FormSection>"
+  "example": "const [name, setName] = useState('Delivery review')\nconst [area, setArea] = useState('emea')<FormSection title=\"Ownership\" description=\"Who this workspace belongs to.\">\n  <Field label=\"Workspace name\" htmlFor=\"ws-name\" required>\n    <Input id=\"ws-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Area\">\n    <Select label=\"Area\" options={AREAS} value={area} onChange={setArea} />\n  </Field>\n</FormSection>"
 }

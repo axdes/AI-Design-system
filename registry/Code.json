@@ -38,5 +38,5 @@
   "uses": [
     "Prose"
   ],
-  "example": "/* A block owes a name: it scrolls, so a keyboard lands in it and has to be\n   told where. Inline needs none — it is part of the sentence. */\n\n<>\n  <Prose>\n    The list archetype is carried by <Code inline>ListPageTemplate</Code>.\n  </Prose>\n  <Code label=\"A list page\">{SOURCE}</Code>\n</>"
+  "example": "<>\n  <Prose>\n    The list archetype is carried by <Code inline>ListPageTemplate</Code>.\n  </Prose>\n  <Code label=\"A list page\">{SOURCE}</Code>\n</>"
 }

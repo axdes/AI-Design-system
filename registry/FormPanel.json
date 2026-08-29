@@ -69,5 +69,5 @@
     "Select",
     "SidePanel"
   ],
-  "example": "const [name, setName] = useState('Discovery workshop')\nconst [owner, setOwner] = useState('kira')\n/* The list this panel was opened from stays on screen beside it, which is the\n * whole reason to use a panel instead of a dialog. */\n\n<FormPanel title=\"Edit session\" submitLabel=\"Save changes\" onSubmit={() => {}} onClose={() => {}}>\n  <Field label=\"Session name\" htmlFor=\"session-name\" required>\n    <Input id=\"session-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Owner\">\n    <Select label=\"Owner\" options={OWNERS} value={owner} onChange={setOwner} />\n  </Field>\n</FormPanel>"
+  "example": "const [name, setName] = useState('Discovery workshop')\nconst [owner, setOwner] = useState('kira')<FormPanel title=\"Edit session\" submitLabel=\"Save changes\" onSubmit={() => {}} onClose={() => {}}>\n  <Field label=\"Session name\" htmlFor=\"session-name\" required>\n    <Input id=\"session-name\" value={name} onChange={(e) => setName(e.target.value)} />\n  </Field>\n  <Field label=\"Owner\">\n    <Select label=\"Owner\" options={OWNERS} value={owner} onChange={setOwner} />\n  </Field>\n</FormPanel>"
 }

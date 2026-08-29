@@ -63,5 +63,5 @@
     "Input",
     "Modal"
   ],
-  "example": "const [open, setOpen] = useState(false)\n/* The name lives with the row: `initial` seeds the field, `onSave` fires only\n * when the user actually changed it. */\nconst [name, setName] = useState('Kickoff call')\n\n<>\n  <Button variant=\"secondary\" onClick={() => setOpen(true)}>Rename</Button>\n  <RenameDialog\n    open={open}\n    title=\"Rename recording\"\n    label=\"Name\"\n    initial={name}\n    onClose={() => setOpen(false)}\n    onSave={(next) => { setName(next); setOpen(false) }}\n  />\n</>"
+  "example": "const [open, setOpen] = useState(false)const [name, setName] = useState('Kickoff call')\n\n<>\n  <Button variant=\"secondary\" onClick={() => setOpen(true)}>Rename</Button>\n  <RenameDialog\n    open={open}\n    title=\"Rename recording\"\n    label=\"Name\"\n    initial={name}\n    onClose={() => setOpen(false)}\n    onSave={(next) => { setName(next); setOpen(false) }}\n  />\n</>"
 }

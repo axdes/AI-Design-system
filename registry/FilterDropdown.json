@@ -109,5 +109,5 @@
     "SearchInput",
     "Tag"
   ],
-  "example": "const [status, setStatus] = useState<Status[]>([])\n/* Typed by the option value: `value`/`onChange` speak Status, not string.\n * An empty array means \"all\", which is what `allLabel` renders on the chip. */\n\n<FilterDropdown<Status>\n  label=\"Status\"\n  allLabel=\"All statuses\"\n  multiple\n  options={[\n    { value: 'draft', label: 'Draft', count: 4 },\n    { value: 'review', label: 'In review', count: 2 },\n    { value: 'published', label: 'Published', count: 11 },\n  ]}\n  value={status}\n  onChange={setStatus}\n/>"
+  "example": "const [status, setStatus] = useState<Status[]>([])<FilterDropdown<Status>\n  label=\"Status\"\n  allLabel=\"All statuses\"\n  multiple\n  options={[\n    { value: 'draft', label: 'Draft', count: 4 },\n    { value: 'review', label: 'In review', count: 2 },\n    { value: 'published', label: 'Published', count: 11 },\n  ]}\n  value={status}\n  onChange={setStatus}\n/>"
 }

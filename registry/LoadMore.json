@@ -55,5 +55,5 @@
     "Layout",
     "ListItem"
   ],
-  "example": "const [shown, setShown] = useState(PAGE)\n\n<Stack gap={1}>\n  {Array.from({ length: shown }, (_, i) => (\n    <ListItem key={i}>Update {i + 1}</ListItem>\n  ))}\n  {/* hasMore false renders nothing at all, so the end of the feed is quiet. */}\n  <LoadMore\n    hasMore={shown < TOTAL}\n    label=\"Load more\"\n    onLoad={() => { setShown((n) => n + PAGE) }}\n  />\n</Stack>"
+  "example": "const [shown, setShown] = useState(PAGE)\n\n<Stack gap={1}>\n  {Array.from({ length: shown }, (_, i) => (\n    <ListItem key={i}>Update {i + 1}</ListItem>\n  ))}\n  <LoadMore\n    hasMore={shown < TOTAL}\n    label=\"Load more\"\n    onLoad={() => { setShown((n) => n + PAGE) }}\n  />\n</Stack>"
 }

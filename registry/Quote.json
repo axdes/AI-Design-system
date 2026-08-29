@@ -53,7 +53,8 @@
     }
   },
   "uses": [
-    "Identity"
+    "Identity",
+    "Layout"
   ],
-  "example": "<Quote\n  by={<Identity avatarName=\"Dev Okonkwo\" name=\"Dev Okonkwo\" secondary=\"Head of Safety\" size=\"sm\" />}\n  source=\"Site 14\"\n>\n  The audit that used to take a week now takes an afternoon, and the findings\n  arrive in the words the crew actually uses.\n</Quote>"
+  "example": "<Stack gap={8}>\n  <Quote\n    size=\"lg\"\n    by={<Identity avatarName=\"Dev Okonkwo\" name=\"Dev Okonkwo\" secondary=\"Head of Safety\" size=\"sm\" />}\n    source=\"Site 14\"\n  >\n    The audit that used to take a week now takes an afternoon, and the findings\n    arrive in the words the crew actually uses.\n  </Quote>\n  \n  <Quote\n    by={<Identity avatarName=\"Ada Meridian\" name=\"Ada Meridian\" secondary=\"Product designer\" size=\"sm\" />}\n    source=\"Onboarding review\"\n  >\n    We stopped writing the checklist twice.\n  </Quote>\n</Stack>"
 }

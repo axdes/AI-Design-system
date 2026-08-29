@@ -63,7 +63,9 @@
     }
   },
   "uses": [
-    "Icon"
+    "Card",
+    "Icon",
+    "Layout"
   ],
-  "example": "/* In a paragraph the link is brand-coloured AND underlined: inside a line of\n * text there is nothing else marking it, and colour on its own is not a mark\n * everyone can see. `quiet` is the other case — a link in chrome, where its\n * position already says what it is. */\n\n<p className=\"link-example-prose\">\n  Everything the workspace publishes is listed in the{' '}\n  <Link href=\"/reports\">report library</Link>, and the retention rules are\n  in the <Link href=\"https://example.com/policy\" external>data policy</Link>.\n  {' '}\n  {/* `arrow` is for a link that CONTINUES the reading, standing on its own\n    * line. Inside the sentence above it would land mid-line and read as\n    * punctuation nobody typed. */}\n  <Link href=\"/reports/q4\" arrow>Read more</Link>\n</p>"
+  "example": "<Stack gap={6}>\n  <p className=\"link-example-prose\">\n    Everything the workspace publishes is listed in the{' '}\n    <Link href=\"/reports\">report library</Link>, and the retention rules are\n    in the <Link href=\"https://example.com/policy\" external>data policy</Link>.\n  </p>\n  <Link href=\"/reports/q4\" arrow>Read the Q4 report</Link>\n  \n  <Row gap={3} align=\"center\">\n    <Link href=\"/reports\" variant=\"quiet\">Reports</Link>\n    <span>/</span>\n    <Link href=\"/reports/q4\" variant=\"quiet\">Q4</Link>\n  </Row>\n  \n  <Card interactive>\n    <Link href=\"/reports/q4\" variant=\"bare\">\n      <strong>Q4 delivery report</strong>\n    </Link>\n  </Card>\n</Stack>"
 }

@@ -49,5 +49,5 @@
     "NavDrawerButton",
     "Tooltip"
   ],
-  "example": "/* Page chrome comes from the header, not from hand-rolled markup: title,\n * optional back affordance, and the action cluster on the inline end. */\n\n<PageHeader\n  title=\"Content library\"\n  actions={<Button variant=\"primary\">New document<Icon name=\"add\" /></Button>}\n/>"
+  "example": "<PageHeader\n  title=\"Content library\"\n  actions={<Button variant=\"primary\">New document<Icon name=\"add\" /></Button>}\n/>"
 }

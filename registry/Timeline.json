@@ -25,5 +25,5 @@
   "uses": [
     "Icon"
   ],
-  "example": "/* A vertical event history: audit trail, delivery status, changelog. Tone and\n * icon mark the important nodes; the caller orders and formats. */\n\n<Timeline\n  items={[\n    { id: '1', title: 'Order placed', time: '09:14', icon: 'check_circle', tone: 'success' },\n    { id: '2', title: 'Packed', time: '11:02', content: 'Warehouse 3, Riyadh' },\n    { id: '3', title: 'Out for delivery', time: '14:30', tone: 'primary' },\n    { id: '4', title: 'Delivered', time: 'pending', tone: 'neutral' },\n  ]}\n/>"
+  "example": "<Timeline\n  items={[\n    { id: '1', title: 'Order placed', time: '09:14', icon: 'check_circle', tone: 'success' },\n    { id: '2', title: 'Packed', time: '11:02', content: 'Warehouse 3, Riyadh' },\n    { id: '3', title: 'Out for delivery', time: '14:30', tone: 'primary' },\n    { id: '4', title: 'Delivered', time: 'pending', tone: 'neutral' },\n  ]}\n/>"
 }

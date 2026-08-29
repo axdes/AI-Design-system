@@ -46,5 +46,5 @@
     "IconButton",
     "MetaItem"
   ],
-  "example": "const workshop = { id: 'w1', name: 'Discovery workshop', updated: '2 days ago' }\n/* One tile = one navigable record plus its overflow menu. The menu swallows\n * its own clicks, so the tile's onOpen does not fire behind it. */\n\n<LinkTile\n  title={workshop.name}\n  menuLabel={`Actions for ${workshop.name}`}\n  onOpen={() => undefined}\n  menu={\n    <>\n      <DropdownItem icon=\"edit\" onClick={() => undefined}>Rename</DropdownItem>\n      <DropdownItem icon=\"delete\" onClick={() => undefined}>Delete</DropdownItem>\n    </>\n  }\n>\n  <MetaItem icon=\"schedule\">Updated {workshop.updated}</MetaItem>\n</LinkTile>"
+  "example": "const workshop = { id: 'w1', name: 'Discovery workshop', updated: '2 days ago' }<LinkTile\n  title={workshop.name}\n  menuLabel={`Actions for ${workshop.name}`}\n  onOpen={() => undefined}\n  menu={\n    <>\n      <DropdownItem icon=\"edit\" onClick={() => undefined}>Rename</DropdownItem>\n      <DropdownItem icon=\"delete\" onClick={() => undefined}>Delete</DropdownItem>\n    </>\n  }\n>\n  <MetaItem icon=\"schedule\">Updated {workshop.updated}</MetaItem>\n</LinkTile>"
 }

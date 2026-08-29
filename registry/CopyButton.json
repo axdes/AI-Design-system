@@ -61,5 +61,5 @@
     "Layout",
     "Tooltip"
   ],
-  "example": "<Row gap={4} align=\"center\">\n  {/* The value is right there, so the glyph is the whole control. */}\n  <Card tight>\n    <Row gap={2} align=\"center\">\n      <Code>sk-live-2f8c41a9</Code>\n      <CopyButton value=\"sk-live-2f8c41a9\" size=\"sm\" />\n    </Row>\n  </Card>\n  {/* On its own the words have to say what would be copied. */}\n  <CopyButton value=\"https://example.com/invite/8f2a\" label=\"Copy the invite link\" variant=\"secondary\" />\n</Row>"
+  "example": "<Row gap={4} align=\"center\">\n  \n  <Card tight>\n    <Row gap={2} align=\"center\">\n      <Code>sk-live-2f8c41a9</Code>\n      <CopyButton value=\"sk-live-2f8c41a9\" size=\"sm\" />\n    </Row>\n  </Card>\n  \n  <CopyButton value=\"https://example.com/invite/8f2a\" label=\"Copy the invite link\" variant=\"secondary\" />\n</Row>"
 }

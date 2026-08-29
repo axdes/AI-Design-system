@@ -30,5 +30,5 @@
   "uses": [
     "Icon"
   ],
-  "example": "/* The trail back up the hierarchy. The last item is the current page and\n * renders as plain text, not a link — pass href or onSelect for the rest. */\n\n<Breadcrumb\n  items={[\n    { label: 'Library', onSelect: () => undefined },\n    { label: 'Reports', onSelect: () => undefined },\n    { label: 'Q3 revenue' },\n  ]}\n/>"
+  "example": "<Breadcrumb\n  items={[\n    { label: 'Library', onSelect: () => undefined },\n    { label: 'Reports', onSelect: () => undefined },\n    { label: 'Q3 revenue' },\n  ]}\n/>"
 }

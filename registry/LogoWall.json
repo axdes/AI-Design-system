@@ -60,5 +60,10 @@
       ]
     }
   },
-  "example": "<LogoWall logos={CUSTOMERS} label=\"Customers\" />"
+  "uses": [
+    "Card",
+    "Layout",
+    "SectionLabel"
+  ],
+  "example": "<Stack gap={6}>\n  <Card>\n    <Stack gap={3}>\n      <SectionLabel as=\"h3\">Trusted by</SectionLabel>\n      \n      <LogoWall logos={CUSTOMERS} label=\"Customers\" />\n    </Stack>\n  </Card>\n  <Card>\n    <Stack gap={3}>\n      <SectionLabel as=\"h3\">Featured partner</SectionLabel>\n      \n      <LogoWall logos={CUSTOMERS.slice(0, 2)} colour size=\"sm\" label=\"Featured partners\" />\n    </Stack>\n  </Card>\n</Stack>"
 }

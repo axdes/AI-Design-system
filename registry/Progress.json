@@ -99,5 +99,5 @@
   "uses": [
     "Layout"
   ],
-  "example": "/* The same statement in both shapes: a bar takes the width it is given and\n   suits a row of them, a ring is compact enough for a dashboard tile. Drop\n   `value` and the bar slides for \"working, duration unknown\" — a ring has no\n   such form, because a circle that never fills reads as broken. */\n\n<Stack gap={6}>\n  <Progress value={64} label=\"Documents processed\" showValue />\n  <Row gap={6}>\n    <Progress shape=\"ring\" value={64} label=\"Documents processed\" showValue />\n    <Progress shape=\"ring\" value={92} tone=\"success\" size=\"lg\" label=\"Coverage\" showValue />\n  </Row>\n  <Progress label=\"Importing\" />\n</Stack>"
+  "example": "<Stack gap={6}>\n  <Progress value={64} label=\"Documents processed\" showValue />\n  <Row gap={6}>\n    <Progress shape=\"ring\" value={64} label=\"Documents processed\" showValue />\n    <Progress shape=\"ring\" value={92} tone=\"success\" size=\"lg\" label=\"Coverage\" showValue />\n  </Row>\n  <Progress label=\"Importing\" />\n</Stack>"
 }

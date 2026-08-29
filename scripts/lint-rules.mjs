@@ -117,11 +117,12 @@ const ALLOW = {
      IconButton, Input, MetaItem, Chip, Spinner, Descriptions. Take a name off this list by rewriting its
      example, never by adding one back. */
   flatExample: [
-    'AppLayout', 'AvatarGroup', 'BarChart', 'BrandMark', 'ChatMessage', 'ColorSwatch',
-    'CountBadge', 'DateBlock', 'Divider', 'DonutChart', 'ExpandButton', 'InlineText', 'Kbd',
-    'LineChart', 'Link', 'LoadMore', 'LogoWall', 'PivotTable', 'Quote', 'Rating',
-    'RichMessage', 'SessionPill', 'SetupGuide', 'Thumbnail', 'Truncate', 'AuthTemplate',
-    'Page', 'SystemPageTemplate', 'WizardTemplate'
+    /* Zero work items on 2026-08-29, from 76 when the rule was written. This one
+       entry is not work: <SessionPill> is `position: fixed` at the bottom of the
+       viewport, so a second instance is drawn ON TOP of the first rather than
+       beside it — the axis cannot be shown by rendering two, because two never
+       exist. Its example shows the strict tone and names the other. */
+    'SessionPill',
   ],
 }
 
