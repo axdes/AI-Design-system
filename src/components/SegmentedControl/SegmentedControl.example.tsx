@@ -29,9 +29,14 @@ export function Example() {
   return (
     <Stack gap={4}>
       <SegmentedControl<View> label="View" value={view} onChange={setView} options={OPTIONS} />
-      {/* The same control in a toolbar: smaller, and on the surface the bar
-          already paints rather than one of its own. */}
-      <SegmentedControl<View> label="View" size="sm" surface="muted" value={view} onChange={setView} options={OPTIONS} />
+      {/* THE SAME CONTROL, ONE STEP DOWN THE SIZE LADDER AND NOTHING ELSE.
+          It used to carry `surface="muted"` as well, which paints a WHITE track
+          for a grey ground — and the ground here is the white card this control
+          declares. So the pair differed in two things at once and the second one
+          read as broken rather than as smaller (owner, 2026-08-29). `surface` is
+          answered by where the control stands, so it is not a thing to vary in a
+          row of two; the variants sheet shows it against the ground it is for. */}
+      <SegmentedControl<View> label="View" size="sm" value={view} onChange={setView} options={OPTIONS} />
     </Stack>
   )
 }

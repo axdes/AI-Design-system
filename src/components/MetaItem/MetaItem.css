@@ -7,7 +7,12 @@
    * two: the glyph drifts into the gutter between them and points at nothing
    * (owner, 23.08). Aligned to the start it stays beside the words it labels
    * however many lines they run to. The 16px glyph inside a 17px line box is
-   * already optically centred on that line, so no nudge is needed. */
+   * already optically centred on that line — except it is not, and the
+   * measurement says so: the glyph starts at 0 and the text's line box at 1, so
+   * on the single-line case, which is nearly all of them, the icon rides a pixel
+   * high (owner, 2026-08-29). The nudge below puts it on the first line's centre
+   * and changes nothing about the wrapped case, because it is still the FIRST
+   * line it is aligned to. */
   align-items: flex-start;
   gap: var(--space-1);
   /* Secondary by definition, so secondary in size. It used to inherit, which is right inside a card
@@ -20,7 +25,8 @@
   min-inline-size: 0;
   max-inline-size: 100%;
 }
-.meta-item .icon { flex: none; }
+.meta-item .icon {
+  margin-block-start: 1px; flex: none; }
 /* Dim the icon via the muted-icon token (theme-aware: neutral-500 light /
  * neutral-400 dark) rather than opacity, which crushed to near-invisible on the
  * dark page surface. */

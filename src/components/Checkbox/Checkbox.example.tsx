@@ -18,6 +18,12 @@ export function Example() {
   const [assigned, setAssigned] = useState(false)
   const [channels, setChannels] = useState(['email'])
 
+  /* The parent's state is DERIVED, never stored: a select-all that keeps its own
+     boolean is a select-all that can disagree with the boxes under it, which is
+     the one thing this control exists to prevent. */
+  const allOn = channels.length === CHANNELS.length
+  const someOn = channels.length > 0 && !allOn
+
   /* ONE BOX IS A YES/NO; a group is "any number of these". They are different
    * questions and the reader can tell them apart by shape, which is why a lone
    * <Checkbox> repeated three times is the wrong answer to the second — it loses
@@ -42,15 +48,25 @@ export function Example() {
         checked={assigned}
         onChange={(e) => setAssigned(e.target.checked)}
       />
+      {/* THE PARENT OF THE SET, AND IT IS WIRED TO IT. This used to be a box with
+          `indeterminate` hard-coded and a handler that dropped the change on the
+          floor, so the one thing the example was there to teach — that the third
+          state is a REPORT about the children and not a value you choose — could
+          not be seen, and a reader who clicked it got nothing (owner,
+          2026-08-29). It sits above the group because that is where a select-all
+          belongs: over what it selects. */}
+      <Checkbox
+        label="All channels"
+        checked={allOn}
+        indeterminate={someOn}
+        onChange={(e) => { setChannels(e.target.checked ? CHANNELS.map((c) => c.value) : []) }}
+      />
       <CheckboxGroup
         label="How should we reach you?"
         options={CHANNELS}
         value={channels}
         onChange={setChannels}
       />
-      {/* The parent of a partly-chosen set: neither on nor off, and it says so
-          rather than picking one. */}
-      <Checkbox label="All channels" indeterminate checked={false} onChange={() => undefined} />
       {/* `size` follows the density of what is AROUND it, not the importance of
           the question: `sm` in a table row or a filter panel, `md` in a form.
           It sits in its own block here on purpose — a small box in a column of

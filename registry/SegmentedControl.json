@@ -80,5 +80,5 @@
     "Icon",
     "Layout"
   ],
-  "example": "const [view, setView] = useState<View>('board')const OPTIONS = [\n  { value: 'list' as const, label: 'List' },\n  { value: 'board' as const, label: 'Board' },\n  { value: 'calendar' as const, label: 'Calendar' },\n]\n\n<Stack gap={4}>\n  <SegmentedControl<View> label=\"View\" value={view} onChange={setView} options={OPTIONS} />\n  \n  <SegmentedControl<View> label=\"View\" size=\"sm\" surface=\"muted\" value={view} onChange={setView} options={OPTIONS} />\n</Stack>"
+  "example": "const [view, setView] = useState<View>('board')const OPTIONS = [\n  { value: 'list' as const, label: 'List' },\n  { value: 'board' as const, label: 'Board' },\n  { value: 'calendar' as const, label: 'Calendar' },\n]\n\n<Stack gap={4}>\n  <SegmentedControl<View> label=\"View\" value={view} onChange={setView} options={OPTIONS} />\n  \n  <SegmentedControl<View> label=\"View\" size=\"sm\" value={view} onChange={setView} options={OPTIONS} />\n</Stack>"
 }

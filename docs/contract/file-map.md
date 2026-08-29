@@ -11,7 +11,6 @@ styles/                  ← foundation only
   semantic.css           ← role tokens (--primary, --background) via light-dark()
   reset.css              ← + prefers-reduced-motion
   fonts.css              ← @font-face, written by rebrand
-  demo.css               ← only loaded on /playground
   index.css              ← imports the foundation in order
 
 src/components/          ← FLAT component layer (one folder per component)

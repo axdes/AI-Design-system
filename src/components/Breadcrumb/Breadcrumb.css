@@ -17,7 +17,10 @@
 .breadcrumb-link {
   padding: var(--space-1) var(--space-2);
   border: none;
-  border-radius: var(--radius-sm);
+  /* The family's radius, not a smaller one of its own: every pressable thing in
+   * this system is a full-radius pill, and a breadcrumb crumb that rounds at 4px
+   * is the one control that does not look like the rest (owner, 2026-08-29). */
+  border-radius: var(--radius-full);
   background: transparent;
   /* --link-quiet: a breadcrumb is a link in chrome. See the LINKS block in
    * semantic.css — one decision for what a link is coloured, four hand-picked

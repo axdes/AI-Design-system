@@ -24,7 +24,20 @@
 
 /* Dismiss sits after the action, hugging the top edge so it stays put when the
  * body runs to several lines. `auto` here only bites when there is no action. */
-.alert-dismiss { flex: none; margin-inline-start: auto; align-self: flex-start; }
+/* THE DISMISS MUST NOT SET THE HEIGHT OF THE NOTICE. It is a 32px control beside
+ * a 19px line, so a one-line alert that could be dismissed stood 15px taller
+ * than the same alert that could not — and the icon and the words, aligned to
+ * the first line, then floated in the top half of a box with a gap under them
+ * (owner, 2026-08-29). The negative block margin is exactly the overshoot, in
+ * `lh` so it follows the line the button is centred on rather than a number
+ * somebody typed. The button keeps its full 32px target; only its contribution
+ * to the box comes off. */
+.alert-dismiss {
+  flex: none;
+  margin-inline-start: auto;
+  align-self: flex-start;
+  margin-block: calc((1lh - var(--control-height-sm)) / 2);
+}
 .alert-action + .alert-dismiss { margin-inline-start: 0; }
 .alert[data-compact] .alert-dismiss { align-self: center; }
 
