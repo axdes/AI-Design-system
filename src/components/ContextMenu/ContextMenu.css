@@ -31,10 +31,32 @@
  * set on mouseenter, but a stylesheet that only names data-active reads as a
  * menu with no hover at all. */
 .context-item:hover:not(:disabled) { background: var(--surface-hover); }
-.context-item[data-active] { background: var(--surface-hover); }
+/* THE ROW ENTER WILL LAND ON, AND IT IS A SOLID ROW — not a rail.
+ *
+ * This drew a brand-coloured bar down the leading edge. The owner asked three
+ * times for it to go (2026-08-29), and simply deleting it was not an option:
+ * this list keeps focus on the field and names the row through
+ * `aria-activedescendant`, so the row's mark IS the focus indicator, and the
+ * tint underneath measures 1.15:1 where SC 2.4.11 asks 3:1.
+ *
+ * So the mark changed rather than disappeared. A solid `--primary` row with its
+ * own foreground measures 7.59:1 against the popover — the same number the
+ * focus ring carries everywhere else in this system, which is the point: it is
+ * not a weaker answer wearing a different shape, it is the strongest mark the
+ * system has, and it is neither a border nor a ring on a row that is not
+ * focused. It is also what a menu highlight looks like on every desktop the
+ * reader already uses. */
+.context-item[data-active] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.context-item[data-active] .icon { color: var(--primary-foreground); }
 .context-item:active:not(:disabled) { background: var(--accent-soft); }
 .context-item[data-tone='destructive'] { color: var(--destructive-emphasis); }
-.context-item[data-tone='destructive'][data-active] { background: var(--destructive-soft); }
+/* Destructive keeps its own ink at full strength, for the same reason: the
+   mark has to be the indicator, and a soft tint is not one. */
+.context-item[data-tone='destructive'][data-active] { background: var(--destructive); color: var(--destructive-foreground); }
+.context-item[data-tone='destructive'][data-active] .icon { color: var(--destructive-foreground); }
 .context-item-icon { color: var(--muted-foreground); }
 .context-item[data-tone='destructive'] .context-item-icon { color: var(--destructive-emphasis); }
 .context-item:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -45,13 +67,4 @@
  * and in both cases it names the row Enter fires — so the mark is the same for
  * both. A pseudo-element, not an inset box-shadow: a shadow offset is physical
  * and would sit on the wrong side in Arabic. */
-.context-item[data-active] { position: relative; }
-.context-item[data-active]::before {
-  content: "";
-  position: absolute;
-  inset-block: var(--space-1);
-  inset-inline-start: 0;
-  inline-size: var(--space-2xs);
-  border-radius: var(--radius-full);
-  background: var(--primary-accent);
-}
+

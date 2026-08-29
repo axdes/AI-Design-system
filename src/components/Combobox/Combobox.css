@@ -52,10 +52,8 @@
   color: var(--popover-foreground);
   cursor: pointer;
 }
-/* Keyboard-active OR hovered option: one highlight, driven by data-active. */
-.combobox-option[data-active] {
-  background: var(--surface-hover);
-}
+/* Keyboard-active OR hovered option: one highlight, driven by data-active. The
+   rule that paints it is further down, with the reason. */
 /* Pressed: one stop past hover, the third answer every control now gives. */
 .combobox-option:active { background: var(--accent-soft); }
 .combobox-option[aria-selected="true"] {
@@ -114,19 +112,24 @@
   color: var(--primary-accent);
 }
 
-/* WHERE ENTER WILL LAND. The fill alone cannot say it: on this surface a tint
- * measures 1.15:1 in light and 1.33 in dark, and SC 2.4.11 asks a focus
- * indicator for 3:1. `data-active` is set by the arrow keys AND by the pointer,
- * and in both cases it names the row Enter fires — so the mark is the same for
- * both. A pseudo-element, not an inset box-shadow: a shadow offset is physical
- * and would sit on the wrong side in Arabic. */
-.combobox-option[data-active] { position: relative; }
-.combobox-option[data-active]::before {
-  content: "";
-  position: absolute;
-  inset-block: var(--space-1);
-  inset-inline-start: 0;
-  inline-size: var(--space-2xs);
-  border-radius: var(--radius-full);
-  background: var(--primary-accent);
+/* THE ROW ENTER WILL LAND ON, AND IT IS A SOLID ROW — not a rail.
+ *
+ * This drew a brand-coloured bar down the leading edge. The owner asked three
+ * times for it to go (2026-08-29), and simply deleting it was not an option:
+ * this list keeps focus on the field and names the row through
+ * `aria-activedescendant`, so the row's mark IS the focus indicator, and the
+ * tint underneath measures 1.15:1 where SC 2.4.11 asks 3:1.
+ *
+ * So the mark changed rather than disappeared. A solid `--primary` row with its
+ * own foreground measures 7.59:1 against the popover — the same number the
+ * focus ring carries everywhere else in this system, which is the point: it is
+ * not a weaker answer wearing a different shape, it is the strongest mark the
+ * system has, and it is neither a border nor a ring on a row that is not
+ * focused. It is also what a menu highlight looks like on every desktop the
+ * reader already uses. */
+.combobox-option[data-active] {
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
+.combobox-option[data-active] .combobox-check { color: var(--primary-foreground); }
+

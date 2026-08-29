@@ -100,7 +100,21 @@ for (const name of dirs) {
    * what the eye follows, so the mark on that row is the focus indicator. A
    * ring on the row would be wrong — the row is not focused. */
   const activedescendant = /aria-activedescendant/.test(tsx)
+  /* A MARK IS ANYTHING THE READER CAN SEE ON THAT ROW, not one shape.
+   *
+   * This used to accept only a `::before` — a rail down the leading edge — which
+   * is one way to mark a row and became the only way this check could recognise.
+   * When the owner took the rail out on 2026-08-29 the replacement was a solid
+   * `--primary` row at 7.59:1, the same number the focus ring carries, and the
+   * check called it "no indicator" because it was looking for the wrong noun.
+   *
+   * A rule that says "the mark must be a rail" is a rule about a decoration. The
+   * question is whether the row carries something, and either a pseudo-element
+   * or a background on `[data-active]` answers it. How strong that something is
+   * belongs to `boundary` and `invisible`, which measure colour; this file
+   * measures whether an answer exists at all. */
   const activeMark = /\[data-active\][^{]*::before\s*\{/.test(css)
+    || /\[data-active\][^{]*\{[^}]*background:/.test(css)
   const focus = activedescendant
     ? (activeMark ? 'active-row mark' : 'none (activedescendant)')
     : ringRules.length === 0 ? 'none'
