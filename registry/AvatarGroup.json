@@ -24,6 +24,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "The group's role on the screen: `sm` inside a row or a meta line, `lg` when the team is what the block is about. No middle position.",
       "values": [
         "sm",
         "md",

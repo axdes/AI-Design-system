@@ -12,7 +12,8 @@
     {
       "name": "open",
       "type": "boolean",
-      "required": true
+      "required": true,
+      "description": "The caller owns it. A modal renders nothing when closed, so mounting it conditionally as well is a second switch for one state."
     },
     {
       "name": "onClose",
@@ -28,6 +29,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "How much room the CONTENT needs, and md is the floor: sm is reserved for a yes-or-no confirmation and nothing else, because a form in a small dialog scrolls before it has asked anything.",
       "values": [
         "sm",
         "md",

@@ -71,7 +71,13 @@ type Props = {
   collapseControl?: CollapseControl;
   /** Controlled collapsed state. Omit to let the component manage it. */
   collapsed?: boolean;
+  /** The state on first render when the rail owns its own; ignored once `collapsed` is passed.
+   *  Start collapsed only where the product is a workspace people live in rather than navigate.
+   */
   defaultCollapsed?: boolean;
+  /** Called with the next collapsed state, for a product that persists the rail across sessions.
+   *  Omit it and the rail keeps its own state.
+   */
   onCollapsedChange?: (collapsed: boolean) => void;
   "aria-label"?: string;
 };

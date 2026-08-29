@@ -38,6 +38,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "How the row is used: `md` when the date leads a list being scanned, `sm` inside a denser row where the title leads.",
       "values": [
         "sm",
         "md"

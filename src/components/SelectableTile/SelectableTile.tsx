@@ -23,6 +23,9 @@ type Props = {
   description?: ReactNode;
   /** Trailing facts — a price, a region, a size. */
   meta?: ReactNode;
+  /** Dimmed and unpressable, but pointer events are KEPT so a Tooltip can say why this option is
+   *  not available.
+   */
   disabled?: boolean;
   className?: string;
 };

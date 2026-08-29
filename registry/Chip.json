@@ -19,6 +19,7 @@
       "name": "variant",
       "type": "Variant",
       "required": false,
+      "description": "How much the chip is claiming. `secondary` (default) is a label; `primary` is the one that is selected or active; `ghost` is a chip on a busy surface; `destructive` marks something failing.",
       "values": [
         "secondary",
         "primary",
@@ -31,6 +32,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "Follows the row it sits in: `sm` inside a table cell or a dense toolbar, `md` on its own.",
       "values": [
         "sm",
         "md",

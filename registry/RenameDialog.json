@@ -12,7 +12,8 @@
     {
       "name": "open",
       "type": "boolean",
-      "required": true
+      "required": true,
+      "description": "The caller owns it, and it should close once the rename has been accepted, not when the button was pressed."
     },
     {
       "name": "title",

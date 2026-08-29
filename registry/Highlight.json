@@ -24,7 +24,8 @@
     {
       "name": "caseSensitive",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Off by default, which is what a search box wants: a reader who typed lower case still means the capitalised word. Turn it on only where case is part of the value, such as a code or an identifier."
     },
     {
       "name": "className",

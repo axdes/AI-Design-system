@@ -30,6 +30,7 @@
       "name": "size",
       "type": "'sm' | 'md'",
       "required": false,
+      "description": "Follows the row it sits in: `sm` inside a cell or a field, `md` on its own.",
       "values": [
         "sm",
         "md"

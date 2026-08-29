@@ -33,6 +33,10 @@ export type DropdownTriggerProps = {
 type DropdownProps = {
   trigger: (props: DropdownTriggerProps) => ReactNode
   children: ReactNode
+  /** Which edge the menu lines up with, and it follows where the trigger SITS: the default `end`
+   *  for a control at the right, `start` on the left, so the menu opens into the page and not
+   *  off its edge.
+   */
   align?: Align
   className?: string
   /** Class on the menu element (portaled to body — needed for descendant selectors). */

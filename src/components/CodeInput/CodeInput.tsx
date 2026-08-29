@@ -11,6 +11,9 @@ type Props = {
   onChange: (value: string) => void
   /** Names the group, since the individual boxes are "digit 1 of 6". */
   label: string
+  /** A STATE, not a style: it turns the border and hands <Field> the hook it needs to read the
+   *  error out as part of the field. Never colour a border red by hand.
+   */
   invalid?: boolean
   /** Keep it to digits (default). Off for alphanumeric codes. */
   numeric?: boolean

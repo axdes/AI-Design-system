@@ -22,6 +22,7 @@ export type FeedbackLabels = {
 }
 
 type Props = {
+  /** The caller owns it, and it should close on a successful send rather than on the press. */
   open: boolean
   onClose: () => void
   /** Called with the picked reason + free-text details on send. */

@@ -50,7 +50,8 @@
     {
       "name": "busy",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Stops a second submit while one is in flight. Release it in `finally`, never in `then`: a rejected save has to give the button back."
     },
     {
       "name": "className",

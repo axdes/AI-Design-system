@@ -18,6 +18,8 @@ export function InlineText({
   onAbort,
   autoFocus,
 }: {
+  /** The element the value ALREADY is, not a size. A document title is the page's h2 whether or
+   *  not it can be edited, so editing it must not take it out of the heading outline. */
   as?: 'h2' | 'p' | 'span'
   className?: string
   value: string
@@ -25,6 +27,9 @@ export function InlineText({
   onSave: (next: string) => void
   /** Called when editing ends without a change (composer rows close on this). */
   onAbort?: () => void
+  /** Opens straight into the input. For the value the reader just created and is expected to
+   *  name, not for a field they merely walked past.
+   */
   autoFocus?: boolean
 }) {
   const Element = Tag as ElementType

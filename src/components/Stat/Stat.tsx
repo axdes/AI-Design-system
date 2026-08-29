@@ -28,6 +28,9 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   deltaTone?: DeltaTone;
   /** The shape behind the number: pass a <Sparkline>. */
   trend?: ReactNode;
+  /** `md` in a row of tiles, `lg` for the one figure a screen is built around. A row where every
+   *  tile is lg has no hierarchy.
+   */
   size?: Size;
 };
 

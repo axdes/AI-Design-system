@@ -7,6 +7,9 @@ import { Button } from '../Button'
 type Props = {
   /** Fetch the next page. Called once per intersection while `auto`. */
   onLoad: () => void
+  /** Comes from the caller, because only the caller knows when the fetch is done. While it is
+   *  true the label becomes `loadingLabel` and the control cannot be pressed twice.
+   */
   loading?: boolean
   /** Renders nothing when false — the end of a list needs no control. */
   hasMore: boolean

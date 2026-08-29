@@ -15,7 +15,13 @@ type Props = {
   /** What the label becomes for two seconds after a successful copy.
    *  Defaults to the translated "Copied". */
   copiedLabel?: string
+  /** Follows what it sits beside: `sm` inline next to the value, `md` when the copy is its own
+   *  control.
+   */
   size?: 'sm' | 'md'
+  /** The surface it stands on. `ghost` disappears into a code block or a row until wanted;
+   *  `secondary` is for a copy the screen is actually offering, where no edge reads as absent.
+   */
   variant?: 'ghost' | 'secondary'
   className?: string
 }

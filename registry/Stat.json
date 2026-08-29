@@ -78,6 +78,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "`md` in a row of tiles, `lg` for the one figure a screen is built around. A row where every tile is lg has no hierarchy.",
       "values": [
         "md",
         "lg"

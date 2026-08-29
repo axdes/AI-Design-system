@@ -31,6 +31,7 @@
       "name": "size",
       "type": "'sm' | 'md'",
       "required": false,
+      "description": "Follows what it sits beside: `sm` inline next to the value, `md` when the copy is its own control.",
       "values": [
         "sm",
         "md"
@@ -40,6 +41,7 @@
       "name": "variant",
       "type": "'ghost' | 'secondary'",
       "required": false,
+      "description": "The surface it stands on. `ghost` disappears into a code block or a row until wanted; `secondary` is for a copy the screen is actually offering, where no edge reads as absent.",
       "values": [
         "ghost",
         "secondary"

@@ -10,6 +10,7 @@ type Props = {
   onRemove?: () => void
   /** Accessible label + tooltip for the remove button (required when removable). */
   removeLabel?: string
+  /** Follows the row it sits in: `sm` inside a cell or a field, `md` on its own. */
   size?: 'sm' | 'md'
   className?: string
 }

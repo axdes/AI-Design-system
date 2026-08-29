@@ -36,7 +36,8 @@
     {
       "name": "disabled",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Dims the affixes with the control inside, so the group reads as one disabled field rather than a live frame around a dead input."
     },
     {
       "name": "surface",
@@ -52,6 +53,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "Matches the control inside it; the affixes follow. A group one step off its input reads as two parts that met by accident.",
       "values": [
         "sm",
         "md",

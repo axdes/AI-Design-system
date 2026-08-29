@@ -47,7 +47,13 @@ type Props = {
   /** The one column that carries the accent — the current period, the site
    *  under discussion. Single-series charts only; the others stay quiet. */
   emphasis?: string
+  /** What the whole measure MEANS, from the metric and not the numbers: findings closed rising
+   *  is `success`, incidents rising is `danger`, and the same bars carry both.
+   */
   tone?: Tone
+  /** How much of the page the chart is worth: `md` when it is the block, `sm` when it is one
+   *  card in a grid of them.
+   */
   size?: Size
   /** The scale down the side, and the grid lines with it. On by default: a bar
    *  with no scale is a shape, and the reader cannot say how big it is. */

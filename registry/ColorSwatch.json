@@ -37,6 +37,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "How the set is used: `md` when picking is the task, `sm` for a row read as a summary of what is already chosen.",
       "values": [
         "sm",
         "md"
@@ -45,7 +46,8 @@
     {
       "name": "disabled",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "For a colour that exists but cannot be chosen here — out of the plan, out of stock. Removing it instead would leave the reader wondering where it went."
     },
     {
       "name": "className",

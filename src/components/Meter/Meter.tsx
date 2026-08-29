@@ -10,7 +10,14 @@ type Props = {
   max?: number;
   /** Optional goal marker rendered on the track. */
   target?: number;
+  /** What the reading MEANS, and it does not come from the fill: 1.4 of 3 short of target is
+   *  `warning`; the same 1.4 against a target of 1 is `success`. Colour picked from the
+   *  percentage congratulates you for missing.
+   */
   tone?: Tone;
+  /** Density, not importance: `md` when the meter is the point of its block, `sm` in a row of
+   *  many where the reader scans for the odd one out.
+   */
   size?: Size;
   /** Tick labels under the track: an explicit list, or `true` for [0, max]. */
   ticks?: number[] | boolean;

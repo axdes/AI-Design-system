@@ -31,6 +31,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "How much of the page the quote is ASKING FOR. `md` sits inside something else that carries on around it; `lg` is the pull quote a section is built around, and a page gets one.",
       "values": [
         "md",
         "lg"

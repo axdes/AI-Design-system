@@ -7,8 +7,16 @@ import { Input } from '../Input'
 import { Tooltip } from '../Tooltip'
 
 type Props = Omit<ComponentPropsWithRef<'input'>, 'size' | 'type'> & {
+  /** A STATE, not a style: it turns the border and hands <Field> the hook it needs to read the
+   *  error out as part of the field.
+   */
   invalid?: boolean
+  /** Names what is BEHIND the field. On a --muted ground the white fill already separates it, so
+   *  the resting border comes off; on a card the surface is white too, and `base` keeps the
+   *  border that does the separating.
+   */
   surface?: 'base' | 'muted'
+  /** Follows the form it sits in; the reveal button follows it too. */
   size?: 'sm' | 'md' | 'lg'
 }
 

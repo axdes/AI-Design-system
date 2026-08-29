@@ -10,7 +10,11 @@ type Props = {
   /** Accessible name for the text field. */
   label: string
   placeholder?: string
+  /** A STATE, not a style: it turns the border and hands <Field> the hook it needs to read the
+   *  error out as part of the field.
+   */
   invalid?: boolean
+  /** Dims the field and its tags together; existing tags stop offering their remove button. */
   disabled?: boolean
   className?: string
 }

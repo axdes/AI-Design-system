@@ -17,7 +17,8 @@
     {
       "name": "captionHidden",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Hides the caption visually and KEEPS it for a screen reader. The caption is how a grid announces what it is, so this hides it; it never removes it."
     },
     {
       "name": "resources",

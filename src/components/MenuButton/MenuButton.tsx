@@ -30,7 +30,13 @@ type Props = {
    * already names the control and this is not read.
    */
   menuLabel?: string
+  /** The same rule as any button: `primary` for the one action the screen is for, `secondary`
+   *  for a real action that is not that one, `ghost` where a filled pill would shout.
+   */
   variant?: Variant
+  /** Follows the row it sits in, and both halves take it: `sm` in a toolbar or a card header,
+   *  `md` in the page's own action row.
+   */
   size?: Size
   /** Which edge of the trigger the menu lines up with. */
   align?: Align

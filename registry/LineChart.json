@@ -43,6 +43,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "How it is read: `md` when the lines are being compared, `sm` when the chart is a card in a grid and the shape is the whole message — at that size a second line is usually one too many.",
       "values": [
         "sm",
         "md",

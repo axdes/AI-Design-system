@@ -12,7 +12,8 @@
     {
       "name": "open",
       "type": "boolean",
-      "required": true
+      "required": true,
+      "description": "The caller owns it, because the shortcut that opens a palette is the app's to bind."
     },
     {
       "name": "onClose",

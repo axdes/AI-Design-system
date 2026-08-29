@@ -25,6 +25,9 @@ export type ComparisonRow = {
 
 type Props = {
   label: string
+  /** Hides the caption visually and KEEPS it for a screen reader. The caption is how a table
+   *  announces what it is, so this hides it; it never removes it.
+   */
   captionHidden?: boolean
   subjects: readonly ComparisonSubject[]
   rows: readonly ComparisonRow[]

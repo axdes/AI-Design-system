@@ -11,7 +11,12 @@ type Size = 'sm' | 'md' | 'lg'
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   /** Forwarded to the underlying <button>. */
   ref?: Ref<HTMLButtonElement>
+  /** How much the chip is claiming. `secondary` (default) is a label; `primary` is the one that
+   *  is selected or active; `ghost` is a chip on a busy surface; `destructive` marks something
+   *  failing.
+   */
   variant?: Variant
+  /** Follows the row it sits in: `sm` inside a table cell or a dense toolbar, `md` on its own. */
   size?: Size
   /** Toggled/active state for pick-one or multi-select chip groups (primary fill). */
   selected?: boolean

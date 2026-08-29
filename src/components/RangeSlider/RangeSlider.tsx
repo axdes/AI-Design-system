@@ -15,6 +15,7 @@ type Props = {
   showValue?: boolean
   /** Formats one bound of the shown span (e.g. `(v) => `${v}%``). */
   formatValue?: (value: number) => string
+  /** Dimmed and unpressable, but pointer events are KEPT so a Tooltip can say why. */
   disabled?: boolean
   className?: string
 }

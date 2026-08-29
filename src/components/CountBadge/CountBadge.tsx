@@ -12,6 +12,10 @@ type Props = {
   /** Show a small dot with no number (e.g. "unread", "online"). */
   dot?: boolean
   max?: number
+  /** What the count MEANS, never how big it is: `primary` there is something here, `danger`
+   *  something is wrong, `success` something finished. A count that reddens as it grows blames
+   *  the number.
+   */
   tone?: Tone
   /** Read out to a screen reader, e.g. "3 unread". Without it the marker is
    *  decorative (aria-hidden) — pass it whenever the count carries meaning. */

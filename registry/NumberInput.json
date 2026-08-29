@@ -43,7 +43,8 @@
     {
       "name": "invalid",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "A STATE, not a style: it turns the border and hands <Field> the hook it needs to read the error out as part of the field."
     },
     {
       "name": "surface",

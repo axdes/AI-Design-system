@@ -22,6 +22,9 @@ export type ScheduleEvent = {
 
 type Props = {
   label: string
+  /** Hides the caption visually and KEEPS it for a screen reader. The caption is how a grid
+   *  announces what it is, so this hides it; it never removes it.
+   */
   captionHidden?: boolean
   /** The rows: rooms, people, machines. What is being booked. */
   resources: readonly ScheduleResource[]

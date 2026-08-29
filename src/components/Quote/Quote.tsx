@@ -13,6 +13,9 @@ type Props = {
   by: ReactNode;
   /** Where it comes from: a company, a report, a date. */
   source?: ReactNode;
+  /** How much of the page the quote is ASKING FOR. `md` sits inside something else that carries
+   *  on around it; `lg` is the pull quote a section is built around, and a page gets one.
+   */
   size?: Size;
   className?: string;
 };

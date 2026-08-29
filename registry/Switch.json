@@ -12,12 +12,14 @@
     {
       "name": "checked",
       "type": "boolean",
-      "required": true
+      "required": true,
+      "description": "Controlled: the switch draws what it is told and never its own state, so a flip that the save rejects must not stay flipped."
     },
     {
       "name": "onChange",
       "type": "(next: boolean) => void",
-      "required": true
+      "required": true,
+      "description": "Called with the NEXT value. It is where the save goes; the switch does not move until `checked` comes back changed."
     },
     {
       "name": "label",

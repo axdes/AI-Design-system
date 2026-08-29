@@ -59,6 +59,7 @@
       "name": "tone",
       "type": "Tone",
       "required": false,
+      "description": "What the whole measure MEANS, from the metric and not the numbers: findings closed rising is `success`, incidents rising is `danger`, and the same bars carry both.",
       "values": [
         "neutral",
         "primary",
@@ -71,6 +72,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "How much of the page the chart is worth: `md` when it is the block, `sm` when it is one card in a grid of them.",
       "values": [
         "sm",
         "md",

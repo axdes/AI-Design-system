@@ -37,6 +37,7 @@
       "name": "variant",
       "type": "Variant",
       "required": false,
+      "description": "The same rule as any button: `primary` for the one action the screen is for, `secondary` for a real action that is not that one, `ghost` where a filled pill would shout.",
       "values": [
         "primary",
         "secondary",
@@ -47,6 +48,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "Follows the row it sits in, and both halves take it: `sm` in a toolbar or a card header, `md` in the page's own action row.",
       "values": [
         "sm",
         "md",

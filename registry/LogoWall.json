@@ -18,6 +18,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "How much the row carries: `md` when the wall is a section of its own, `sm` under a heading as supporting evidence.",
       "values": [
         "sm",
         "md",

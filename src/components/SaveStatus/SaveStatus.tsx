@@ -7,6 +7,10 @@ import { Time } from '../Time'
 type State = 'idle' | 'saving' | 'saved' | 'error'
 
 type Props = {
+  /** Where the save actually IS, and it must come from the request rather than from the
+   *  keystroke: `saving` while it is in flight, `saved` only once the server said so, `error`
+   *  when it did not, `idle` when there is nothing to report.
+   */
   state: State
   /** When the last successful save happened. Read with `state="saved"`. */
   at?: string | number | Date

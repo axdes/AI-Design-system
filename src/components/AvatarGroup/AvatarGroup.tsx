@@ -10,6 +10,9 @@ type Props = {
   items: AvatarGroupItem[]
   /** Show at most this many, then a "+N" overflow disc. Default 4. */
   max?: number
+  /** The group's role on the screen: `sm` inside a row or a meta line, `lg` when the team is
+   *  what the block is about. No middle position.
+   */
   size?: Size
   className?: string
 }

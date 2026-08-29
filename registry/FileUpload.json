@@ -34,12 +34,14 @@
     {
       "name": "multiple",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Changes what the control IS: one file that replaces itself, or a set the reader adds to and removes from. Picking it because they might want several gives everyone a list to manage for a question with one answer."
     },
     {
       "name": "disabled",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Dimmed and unpressable, but pointer events are KEPT so a Tooltip can say why."
     },
     {
       "name": "invalid",

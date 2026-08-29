@@ -15,6 +15,9 @@ type Props<V extends string> = {
   options: readonly SegmentOption<V>[]
   /** Accessible name for the group. */
   label: string
+  /** Follows what it sits beside: `sm` in a toolbar or a card header, `md` when the choice is
+   *  the page's own.
+   */
   size?: 'sm' | 'md' | 'lg'
   /** Which surface the control sits on, so its fills invert to stay visible.
    *  `base` (default): grey track on a white/card surface, white selected pill.

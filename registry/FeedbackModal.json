@@ -12,7 +12,8 @@
     {
       "name": "open",
       "type": "boolean",
-      "required": true
+      "required": true,
+      "description": "The caller owns it, and it should close on a successful send rather than on the press."
     },
     {
       "name": "onClose",

@@ -10,6 +10,10 @@ type Props = {
   max?: number
   /** Linear or a ring. A shape, not a meaning — both say the same thing about the same value. */
   shape?: 'bar' | 'ring'
+  /** What finishing would MEAN: `primary` for ordinary work, `success` when the bar reaching the
+   *  end is the good outcome, `warning` and `danger` when it is a budget or a quota being used
+   *  up.
+   */
   tone?: Tone
   /** Ring only: how big the ring is. A bar takes the width it is given. */
   size?: Size

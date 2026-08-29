@@ -3,7 +3,13 @@ import type { ButtonHTMLAttributes } from 'react'
 import { cn } from '../../lib/cn'
 
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'onChange'> & {
+  /** Controlled: the switch draws what it is told and never its own state, so a flip that the
+   *  save rejects must not stay flipped.
+   */
   checked: boolean
+  /** Called with the NEXT value. It is where the save goes; the switch does not move until
+   *  `checked` comes back changed.
+   */
   onChange: (next: boolean) => void
   label: string
   /** The form rejected this setting. Red track and a red focus ring; the

@@ -11,9 +11,15 @@ type Props = {
   suffix?: ReactNode
   /** Red frame + red focus ring. The message belongs to the `<Field>` around it. */
   invalid?: boolean
+  /** Dims the affixes with the control inside, so the group reads as one disabled field rather
+   *  than a live frame around a dead input.
+   */
   disabled?: boolean
   /** Which surface the group sits on — same contract as `<Input surface>`. */
   surface?: 'base' | 'muted'
+  /** Matches the control inside it; the affixes follow. A group one step off its input reads as
+   *  two parts that met by accident.
+   */
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }

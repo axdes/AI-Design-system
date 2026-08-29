@@ -13,6 +13,7 @@
       "name": "role",
       "type": "'user' | 'assistant'",
       "required": true,
+      "description": "Who is speaking, and the two turns are built differently: a user turn is a record with nothing to copy or rate, an assistant turn is an answer and carries the action row.",
       "values": [
         "user",
         "assistant"

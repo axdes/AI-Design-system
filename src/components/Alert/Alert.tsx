@@ -17,6 +17,10 @@ const TONE_ICON: Record<Tone, IconName> = {
 }
 
 type Props = HTMLAttributes<HTMLDivElement> & {
+  /** What KIND of news it is, and it decides whether the reader must act: `danger` something is
+   *  broken now, `warning` something will break, `success` it worked, `info` context they did
+   *  not ask for, `neutral` a note. Everything toned danger is nothing toned danger.
+   */
   tone?: Tone
   /** Override the tone icon (e.g. `sparkles` for AI-assist messages). */
   icon?: IconName

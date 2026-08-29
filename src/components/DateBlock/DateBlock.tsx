@@ -12,6 +12,9 @@ type Props = {
   /** Fills the block as a coloured tile. Omitted, the date is type in ink,
    *  which is what a card wants; a tone is for a calendar strip. */
   tone?: Tone;
+  /** How the row is used: `md` when the date leads a list being scanned, `sm` inside a denser
+   *  row where the title leads.
+   */
   size?: Size;
   className?: string;
 };

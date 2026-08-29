@@ -34,6 +34,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
+      "description": "Follows what it sits beside: `sm` in a toolbar or a card header, `md` when the choice is the page's own.",
       "values": [
         "sm",
         "md",

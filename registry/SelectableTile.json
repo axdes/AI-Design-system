@@ -60,7 +60,8 @@
     {
       "name": "disabled",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Dimmed and unpressable, but pointer events are KEPT so a Tooltip can say why this option is not available."
     },
     {
       "name": "className",

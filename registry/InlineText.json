@@ -13,6 +13,7 @@
       "name": "as",
       "type": "'h2' | 'p' | 'span'",
       "required": false,
+      "description": "The element the value ALREADY is, not a size. A document title is the page's h2 whether or not it can be edited, so editing it must not take it out of the heading outline.",
       "values": [
         "h2",
         "p",
@@ -48,7 +49,8 @@
     {
       "name": "autoFocus",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Opens straight into the input. For the value the reader just created and is expected to name, not for a field they merely walked past."
     }
   ],
   "sourcePath": "src/components/InlineText/InlineText.tsx",

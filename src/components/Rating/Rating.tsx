@@ -10,6 +10,9 @@ type Props = {
   max?: number
   /** Accessible name, e.g. "Rate this article". */
   label: string
+  /** Follows which kind it is: `md` when rating is the task, `sm` in a list row where the score
+   *  is one column among several.
+   */
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }

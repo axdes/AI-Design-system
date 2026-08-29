@@ -30,6 +30,10 @@ type Props = {
    *  word printed inside the plot sits on the lines (owner, 23.08). Name the
    *  goal in the card's meta line. */
   target?: number
+  /** How it is read: `md` when the lines are being compared, `sm` when the chart is a card in a
+   *  grid and the shape is the whole message — at that size a second line is usually one too
+   *  many.
+   */
   size?: Size
   /** The scale down the side and the grid with it. On by default. */
   axis?: boolean

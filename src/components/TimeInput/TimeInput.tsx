@@ -7,6 +7,9 @@ type Props = Omit<ComponentPropsWithRef<'input'>, 'size' | 'type' | 'value' | 'o
   /** 24-hour "HH:MM" (the native time value). Empty string = not set yet. */
   value?: string
   onChange?: (value: string) => void
+  /** A STATE, not a style: it turns the border and hands <Field> the hook it needs to read the
+   *  error out as part of the field.
+   */
   invalid?: boolean
   /** Which surface the field sits on; same contract as <Input>. */
   surface?: 'base' | 'muted'

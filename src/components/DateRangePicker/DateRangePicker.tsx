@@ -19,11 +19,15 @@ type Props = {
   placeholder?: string
   /** BCP-47 locale for the shown dates + the calendar. Defaults to document lang. */
   locale?: string
+  /** A STATE, not a style: it turns the border and hands <Field> the hook it needs to read the
+   *  error out as part of the field.
+   */
   invalid?: boolean
   /** Which surface the field sits on; same contract as <DatePicker>. */
   surface?: 'base' | 'muted'
   /** sm / md (default) / lg — matches the shared control height/padding scale. */
   size?: 'sm' | 'md' | 'lg'
+  /** Dimmed and unpressable, but pointer events are KEPT so a Tooltip can say why. */
   disabled?: boolean
   className?: string
 }

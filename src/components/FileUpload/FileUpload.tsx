@@ -12,7 +12,12 @@ type Props = {
   files?: File[]
   onRemove?: (index: number) => void
   accept?: string
+  /** Changes what the control IS: one file that replaces itself, or a set the reader adds to and
+   *  removes from. Picking it because they might want several gives everyone a list to manage
+   *  for a question with one answer.
+   */
   multiple?: boolean
+  /** Dimmed and unpressable, but pointer events are KEPT so a Tooltip can say why. */
   disabled?: boolean
   /** The form rejected the attachment (nothing picked where a file was
    *  required, or the wrong type). Red dashed border and a red focus ring. */

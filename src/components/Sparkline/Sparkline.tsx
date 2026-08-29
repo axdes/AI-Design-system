@@ -7,9 +7,15 @@ type Size = "sm" | "md" | "lg";
 type Props = {
   /** The series, oldest first. Two points is the minimum that has a shape. */
   values: number[];
+  /** What the trend MEANS to this metric, and it does not follow the direction: revenue climbing
+   *  is `success`, a queue climbing is `warning`, and the same rising line is both.
+   */
   tone?: Tone;
   /** Fills the area under the line — for a card that carries only this one series. */
   area?: boolean;
+  /** How much of the row it is allowed: `sm` beside a value in a stat, larger only when the
+   *  shape itself is being read.
+   */
   size?: Size;
   /** What the series measures. Given, the chart is an image to a screen reader;
    *  omitted, it is decoration beside a value that already says it. */

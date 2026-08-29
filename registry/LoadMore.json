@@ -18,7 +18,8 @@
     {
       "name": "loading",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "Comes from the caller, because only the caller knows when the fetch is done. While it is true the label becomes `loadingLabel` and the control cannot be pressed twice."
     },
     {
       "name": "hasMore",

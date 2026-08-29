@@ -12,6 +12,9 @@ type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onC
   step?: number
   /** Accessible name (there is no visible label; wrap in <Field> for one). */
   label: string
+  /** A STATE, not a style: it turns the border and hands <Field> the hook it needs to read the
+   *  error out as part of the field.
+   */
   invalid?: boolean
   /** Which surface the field sits on. On `muted` (a page/PageHeader) the border
    *  is dropped since the white fill separates it; `base` (default, a white card

@@ -34,6 +34,7 @@
       "name": "tone",
       "type": "Tone",
       "required": false,
+      "description": "What finishing would MEAN: `primary` for ordinary work, `success` when the bar reaching the end is the good outcome, `warning` and `danger` when it is a budget or a quota being used up.",
       "values": [
         "primary",
         "success",

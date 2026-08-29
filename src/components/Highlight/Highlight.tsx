@@ -7,6 +7,10 @@ type Props = {
   text: string
   /** What to mark inside it. An empty query marks nothing. */
   query: string
+  /** Off by default, which is what a search box wants: a reader who typed lower case still means
+   *  the capitalised word. Turn it on only where case is part of the value, such as a code or an
+   *  identifier.
+   */
   caseSensitive?: boolean
   className?: string
 }

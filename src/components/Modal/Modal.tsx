@@ -42,9 +42,16 @@ type Actions = {
 }
 
 type Props = {
+  /** The caller owns it. A modal renders nothing when closed, so mounting it conditionally as
+   *  well is a second switch for one state.
+   */
   open: boolean
   onClose: () => void
   title?: string
+  /** How much room the CONTENT needs, and md is the floor: sm is reserved for a yes-or-no
+   *  confirmation and nothing else, because a form in a small dialog scrolls before it has asked
+   *  anything.
+   */
   size?: Size
   /** center = floating dialog (default). drawer = panel docked to the inline-end
    * edge, full height, sliding in from the side. */

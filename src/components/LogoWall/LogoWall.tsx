@@ -12,6 +12,9 @@ export type Logo = {
 
 type Props = {
   logos: Logo[];
+  /** How much the row carries: `md` when the wall is a section of its own, `sm` under a heading
+   *  as supporting evidence.
+   */
   size?: Size;
   /** Full colour instead of the normalised weight. For one row of partners the
    *  client insisted on; the default exists because unlike marks at full

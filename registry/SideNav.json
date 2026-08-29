@@ -58,12 +58,14 @@
     {
       "name": "defaultCollapsed",
       "type": "boolean",
-      "required": false
+      "required": false,
+      "description": "The state on first render when the rail owns its own; ignored once `collapsed` is passed. Start collapsed only where the product is a workspace people live in rather than navigate."
     },
     {
       "name": "onCollapsedChange",
       "type": "(collapsed: boolean) => void",
-      "required": false
+      "required": false,
+      "description": "Called with the next collapsed state, for a product that persists the rail across sessions. Omit it and the rail keeps its own state."
     },
     {
       "name": "aria-label",

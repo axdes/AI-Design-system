@@ -30,6 +30,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
+      "description": "`md` when the ring is the block and the split is being studied, `sm` beside a headline number where it says how that breaks down.",
       "values": [
         "sm",
         "md",

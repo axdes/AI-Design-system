@@ -17,6 +17,9 @@ type Props = {
   cancelLabel?: string
   onSubmit: () => void
   onClose: () => void
+  /** Stops a second submit while one is in flight. Release it in `finally`, never in `then`: a
+   *  rejected save has to give the button back.
+   */
   busy?: boolean
   className?: string
 }

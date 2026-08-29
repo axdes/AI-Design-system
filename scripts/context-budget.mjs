@@ -294,7 +294,36 @@ const ON_DEMAND = [
      * className, children, ref, id, style — are stated once in AGENTS.md instead
      * of 88 times here, which is the only trimming available that does not cost
      * an agent something it would otherwise guess. */
-    budget: 106000,
+    /* 2026-08-29: 106000 -> 108000, and this is the raise the note above
+     * prescribes rather than the one it warns against — it is per-prop JSDoc,
+     * which that note names as the LAST thing to cut.
+     *
+     * What it buys: every decision-carrying prop in the system now says which
+     * value to pick and why. Measured before: 258 props whose type is a union
+     * or a boolean, 67 of them with no description at all — `Meter size`,
+     * `Alert tone`, `MenuIconButton variant`, `SaveStatus state`. An agent
+     * reading `size?: 'sm' | 'md' | 'lg'` with nothing beside it guesses, and
+     * the guess is the defect the eval baseline traced most of its lost points
+     * to. 67 lines, about 2,600 tokens, 39 each.
+     *
+     * PAID FOR FIRST, and more than covered: the same day the published
+     * example stopped carrying its own commentary, which gave 4,860 tokens
+     * back and took seventeen truncated examples down to two. The day started
+     * OVER this budget at 107.9k with none of these descriptions written and
+     * ends at 106.2k with all of them, so the net movement is -1.7k.
+     *
+     * The 2,000 is deliberately more than the 200 needed: at 552 tokens an
+     * entry, a ceiling 200 above the file is a ceiling the next component
+     * trips, and a budget that has to be raised to add anything is a rubber
+     * stamp rather than a decision. This leaves room for three.
+     *
+     * What is left to cut when this is next tight, in order: `sourcePath`
+     * (1,443 tokens, argued down once and still not taken — `npm run registry`
+     * prints it), then `variants` (2,307, which duplicates `props[].values`
+     * for every union prop and adds only the boolean-derived rows the variant
+     * sheet photographs). Neither is taken here, because both have named
+     * readers and refactoring a field to fit a number is the wrong reason. */
+    budget: 108000,
     /* 600 -> 620 on 2026-08-20 for WizardTemplate, the first entry that carries
      * a template plus two sub-components (WizardReview, WizardReviewRow) in one
      * contract. Paid for first: the entry was cut 680 -> 605 (two props removed

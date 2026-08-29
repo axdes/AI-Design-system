@@ -16,6 +16,7 @@ export type Command = {
 }
 
 type Props = {
+  /** The caller owns it, because the shortcut that opens a palette is the app's to bind. */
   open: boolean
   onClose: () => void
   commands: Command[]

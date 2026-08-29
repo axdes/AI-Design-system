@@ -18,7 +18,13 @@ type Props = {
   selected?: boolean
   /** Called with the value when it is picked. */
   onSelect?: (value: string) => void
+  /** How the set is used: `md` when picking is the task, `sm` for a row read as a summary of
+   *  what is already chosen.
+   */
   size?: Size
+  /** For a colour that exists but cannot be chosen here — out of the plan, out of stock.
+   *  Removing it instead would leave the reader wondering where it went.
+   */
   disabled?: boolean
   className?: string
 }

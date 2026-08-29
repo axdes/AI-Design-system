@@ -24,6 +24,9 @@ type Props = {
   center?: ReactNode;
   /** A word under it — "open", "of 320". */
   caption?: ReactNode;
+  /** `md` when the ring is the block and the split is being studied, `sm` beside a headline
+   *  number where it says how that breaks down.
+   */
   size?: Size;
   /** Off when the segments are already named beside the chart. */
   legend?: boolean;

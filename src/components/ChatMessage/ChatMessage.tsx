@@ -9,6 +9,9 @@ import { Tooltip } from '../Tooltip'
 export type ChatChoice = { label: string; onClick?: () => void }
 
 type Props = {
+  /** Who is speaking, and the two turns are built differently: a user turn is a record with
+   *  nothing to copy or rate, an assistant turn is an answer and carries the action row.
+   */
   role: 'user' | 'assistant'
   /** Plain text of the message — used by copy + read-aloud on assistant rows. */
   text?: string

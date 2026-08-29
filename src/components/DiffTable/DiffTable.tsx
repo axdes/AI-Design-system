@@ -14,6 +14,9 @@ export type DiffChange = {
 
 type Props = {
   label: string
+  /** Hides the caption visually and KEEPS it for a screen reader. The caption is how a table
+   *  announces what it is, so this hides it; it never removes it.
+   */
   captionHidden?: boolean
   changes: readonly DiffChange[]
   /** Column headings, when "Before" and "After" are not the words this domain

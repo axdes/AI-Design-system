@@ -19,7 +19,14 @@ type Props = {
   children: ReactNode
   /** Defaults to the overflow glyph, which is what this nearly always is. */
   icon?: IconName
+  /** Decides whether the control is discoverable. `ghost` is right in a list, quiet until
+   *  wanted; `filled` for a busy or coloured surface where a transparent glyph disappears;
+   *  `quiet` answers with ink only, for a dense inline toolbar.
+   */
   variant?: Variant
+  /** Follows the row: `sm` inside a table row or a dense toolbar, `md` beside full-size
+   *  controls.
+   */
   size?: Size
   /** Which edge of the trigger the menu lines up with. */
   align?: Align

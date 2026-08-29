@@ -5,6 +5,9 @@ import { Input } from '../../components/Input'
 import { Modal } from '../../components/Modal'
 
 type Props = {
+  /** The caller owns it, and it should close once the rename has been accepted, not when the
+   *  button was pressed.
+   */
   open: boolean
   /** Dialog title, e.g. "Rename recording". */
   title: string
