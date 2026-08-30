@@ -104,6 +104,7 @@
   },
   "uses": [
     "Alert",
+    "BrandMark",
     "Button",
     "Card",
     "Field",
@@ -111,5 +112,5 @@
     "Layout",
     "PasswordInput"
   ],
-  "example": "const [email, setEmail] = useState('')\nconst [password, setPassword] = useState('')\nconst [error, setError] = useState<string | null>(null)const [busy, setBusy] = useState(false)\nconst handleSubmit = (e: FormEvent) => {\n  e.preventDefault()\n  if (!email || !password) return setError('Enter your email and password.')\n  setError(null)\n  setBusy(true)void signIn().finally(() => setBusy(false))\n}\n\n<AuthTemplate\n      brand={<strong>Acme</strong>}\n      themeLock=\"light\"\n      title=\"Sign in\"\n      subtitle=\"Sign in to continue\"\n      error={error}\n      submitLabel=\"Sign in\"\n      busy={busy}\n      busyLabel=\"Signing in\"\n      onSubmit={handleSubmit}\n    >\n      <Field label=\"Email\" htmlFor=\"auth-email\" required>\n        <Input id=\"auth-email\" type=\"email\" autoComplete=\"email\" value={email} onChange={(e) => setEmail(e.target.value)} />\n      </Field>\n      <Field label=\"Password\" htmlFor=\"auth-password\" required>\n        <PasswordInput id=\"auth-password\" autoComplete=\"current-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n      </Field>\n    </AuthTemplate>\n  )\n}export function DarkBrandExample() {\n  return (\n    <AuthTemplate\n      brand={<strong>Acme</stro"
+  "example": "const [email, setEmail] = useState('')\nconst [password, setPassword] = useState('')\nconst [error, setError] = useState<string | null>(null)const [busy, setBusy] = useState(false)\nconst handleSubmit = (e: FormEvent) => {\n  e.preventDefault()\n  if (!email || !password) return setError('Enter your email and password.')\n  setError(null)\n  setBusy(true)void signIn().finally(() => setBusy(false))\n}\n\n<AuthTemplatebrand={<BrandMark><Logo size={28} tone=\"inverse\" /></BrandMark>}\n      themeLock=\"light\"\n      title=\"Sign in\"\n      subtitle=\"Sign in to continue\"\n      error={error}\n      submitLabel=\"Sign in\"\n      busy={busy}\n      busyLabel=\"Signing in\"\n      onSubmit={handleSubmit}\n    >\n      <Field label=\"Email\" htmlFor=\"auth-email\" required>\n        <Input id=\"auth-email\" type=\"email\" autoComplete=\"off\" value={email} onChange={(e) => setEmail(e.target.value)} />\n      </Field>\n      <Field label=\"Password\" htmlFor=\"auth-password\" required>\n        <PasswordInput id=\"auth-password\" autoComplete=\"new-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n      </Field>\n    </AuthTemplate>\n  )\n}export function DarkBrandExample() {\n  return (\n    <AuthTemplate\n      bra"
 }
