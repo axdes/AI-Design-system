@@ -1,9 +1,24 @@
 .datagrid {
+  /* Declared here so the token is the component's own, and set per instance from
+     the sum of the column widths: the grid knows its columns, the stylesheet
+     cannot. `100%` is the honest fallback — a sheet with no computed floor is
+     the sheet we had. */
+  --dg-min-width: 100%;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  /* THE FRAME IS THE ONE HORIZONTAL SCROLLER, and the header and the body are
+   * one width inside it, so they move together. `overflow: hidden` used to clip
+   * what did not fit instead of letting the reader reach it. */
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   background: var(--card);
 }
+/* Both halves take the same floor, from the sum of the column widths that
+   <DataGrid> computes. This is what keeps the header over its own columns while
+   the sheet is scrolled sideways. */
+.datagrid-header,
+.datagrid-body { min-inline-size: var(--dg-min-width); }
 /* The card surface, not --muted: --muted is the PAGE colour, so the header band
  * read as the page showing through the grid's own frame (owner, 23.08: the
  * header background merges, leave it white). This is the same answer <Table>
@@ -15,6 +30,10 @@
 }
 .datagrid-body {
   overflow-y: auto;
+  /* Stated, not left to the browser: with only `overflow-y` set the other axis
+     becomes `auto` too, and the body then scrolls sideways ON ITS OWN while the
+     header stays where it is. The frame above owns that axis. */
+  overflow-x: hidden;
   position: relative;
 }
 .datagrid-spacer { position: relative; }

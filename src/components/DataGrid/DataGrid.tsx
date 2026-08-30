@@ -1,5 +1,5 @@
 import './DataGrid.css'
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type UIEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode, type UIEvent } from 'react'
 import { cn } from '../../lib/cn'
 import { Icon } from '../Icon'
 import { Input } from '../Input'
@@ -156,7 +156,29 @@ export function DataGrid<Row>({
   const endIndex = Math.min(total, startIndex + visibleCount)
   const slice = rows.slice(startIndex, endIndex)
 
-  const template = columns.map((c) => c.width ?? '1fr').join(' ')
+  /* A COLUMN WITH NO WIDTH TAKES A FLOOR, AND THE SHEET SCROLLS SIDEWAYS RATHER
+     THAN COMPRESSING. `1fr` alone lets a track shrink to nothing, and on a phone
+     it did: five columns squeezed into 390px turned "NAME" into "NAM", every
+     value into "Cust" and "SAR 3,663" into "63" (owner, 2026-08-30). A sheet the
+     reader scrolls sideways is readable; a sheet compressed to fit is not,
+     whatever it fits into — which is what <Table> has always done through
+     <TableScroll>.
+
+     `--dg-min-width` is the same set of floors added up, and BOTH the header and
+     the body take it, so the two are one width and the frame scrolls them
+     together. Without that the body scrolls alone — `overflow-y: auto` makes the
+     other axis `auto` too — and the header stays put while the columns walk out
+     from under it, which is exactly what the first attempt at this did. */
+  const AUTO_MIN = '8rem'
+  /* A WIDTH IN `fr` IS NOT A WIDTH. It is a share of what is left, so it says
+     nothing about how narrow the column may get and it cannot be added up: the
+     first version of this summed the declared widths straight into a `calc`,
+     which with `1.5fr` in it is not a length, so the whole declaration was
+     dropped and the floor never arrived. A track declared in fractions gets the
+     same floor as one declared with nothing. */
+  const share = (w?: string) => !w || w.includes('fr')
+  const template = columns.map((c) => (share(c.width) ? `minmax(${AUTO_MIN}, ${c.width ?? '1fr'})` : c.width)).join(' ')
+  const minWidth = `calc(${columns.map((c) => (share(c.width) ? AUTO_MIN : c.width)).join(' + ')})`
   /* Whether this grid edits at all: it decides whether a read-only cell is
    * worth saying so about. */
   const editable = columns.some((c) => c.editable)
@@ -272,6 +294,7 @@ export function DataGrid<Row>({
   return (
     <div
       className={cn('datagrid', className)}
+      style={{ '--dg-min-width': minWidth } as CSSProperties}
       role="grid"
       aria-label={label}
       aria-rowcount={total}
