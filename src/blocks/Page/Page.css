@@ -107,9 +107,24 @@
  * squeeze to a column of ellipses, and the detail takes the spare width because
  * it is what the reader is actually looking at. Below the point where both
  * floors fit, they stack and the detail reads under the list. */
-.page[data-shape='list-detail'] .page-body { flex: 1 1 20rem; }
+/* THE LIST GROWS, THE DETAIL GROWS FASTER, AND THE LIST STOPS.
+ *
+ * The grow factors were 1 against 100, so of every pixel past the two bases the
+ * list took one hundredth: on a 1920 screen the catalogue was still a 325px
+ * strip while the detail had 1141, and the list looked frozen because it
+ * effectively was (measured 2026-08-30). A hundred-to-one ratio is a fixed width
+ * wearing flex, and if the width is fixed it should say so.
+ *
+ * What it should say instead: the list is a NAVIGATION column. It earns room
+ * until its rows are comfortable and then stops, because the detail is what the
+ * reader came for. 3:1 while both grow, and a stated ceiling — not an accident
+ * that happens to land near one. */
+.page[data-shape='list-detail'] .page-body {
+  flex: 1 1 20rem;
+  max-inline-size: 26rem;
+}
 .page-detail {
-  flex: 100 1 26rem;
+  flex: 3 1 26rem;
   min-inline-size: 0;
 }
 /* The pane is a tab stop when it scrolls (see Page.tsx), so it owes a visible

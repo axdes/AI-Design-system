@@ -47,8 +47,19 @@
     transform: translateX(-100%); transition: transform var(--duration-normal);
   }
   .app-layout[data-nav-open] .app-layout-nav { transform: translateX(0); }
+  /* THE BACKDROP IS PART OF THE MODAL LAYER, NOT LEVEL WITH THE PAGE'S CHROME.
+   *
+   * It read `--z-sticky`, which is exactly what a sticky <PageHeader> carries —
+   * so with the drawer open the header painted straight through the dimming and
+   * stayed bright and pressable above a modal (measured 2026-08-30: both at 50,
+   * and the header wins on document order). A backdrop that does not cover
+   * everything is not a backdrop; it is a grey rectangle.
+   *
+   * `--z-modal`, the same stop the drawer itself takes: they are one layer, and
+   * inside it the order they are written decides, which is why the backdrop is
+   * rendered before the rail. */
   .app-layout-backdrop {
-    position: fixed; inset: 0; z-index: var(--z-sticky);
+    position: fixed; inset: 0; z-index: var(--z-modal);
     border: 0; padding: 0; background: var(--overlay); cursor: pointer;
   }
 }
