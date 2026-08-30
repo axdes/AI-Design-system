@@ -17,8 +17,19 @@ export function Example() {
     <ListPageTemplate
       title="Projects"
       actions={<Button variant="primary">New<Icon name="add" /></Button>}
-      toolbar={
+      /* SEARCH IS HOW A LIST PAGE IS USED, so it stands in the header beside the
+         title, not on a row of its own below it — `inline` is the slot
+         <PageHeader> keeps for exactly this, and `toolbar` is for the controls
+         that FILTER what search returns.
+         `expanded` because on this page the field is not one control among
+         several: it is the way the reader finds a row. Left to its default the
+         field collapses to a bare magnifier, and the page's main affordance is
+         then hidden behind a click nobody is told about (owner, read off the
+         gallery, 2026-08-30). Collapsed is right in a toolbar that already has
+         four other controls; it is wrong when search IS the toolbar. */
+      inline={
         <SearchInput
+          expanded
           placeholder="Search projects"
           value={query}
           onChange={(e) => setQuery(e.target.value)}

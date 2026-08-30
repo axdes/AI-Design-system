@@ -33,7 +33,7 @@ const PRESETS: Record<Archetype, { shape: Shape; width: Width; align?: Align }> 
   detail: { shape: 'single', width: 'default' },
   hub: { shape: 'single', width: 'default' },
   form: { shape: 'single', width: 'default' },
-  wizard: { shape: 'single', width: 'reading' },
+  wizard: { shape: 'single', width: 'default' },
   settings: { shape: 'single', width: 'reading' },
   auth: { shape: 'single', width: 'narrow', align: 'center' },
   system: { shape: 'single', width: 'narrow' },

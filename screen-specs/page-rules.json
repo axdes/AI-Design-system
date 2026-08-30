@@ -1,25 +1,38 @@
 {
   "$comment": "The GEOMETRY layer of the screen decision. selection-rules.json answers which representation a collection gets and card-rules.json answers which card; this file answers what SHAPE the page itself is: which regions it has, which it may not have, and what each may carry. It is the data behind <Page>, and it is the reason a new page type is an entry here rather than a new React file. check-screen-spec.mjs enforces it and checks it against the registry, so a preset built from a component the system does not have cannot sit here unnoticed. Sources and the measurements behind every choice: docs/RESEARCH-SCREENS.md (2026-08-23).",
-
   "regions": {
     "notices": {
       "means": "Page-level messages above everything: a degraded service, a pending action, a banner the whole screen is qualified by.",
-      "carries": ["Alert", "ErrorSummary"],
+      "carries": [
+        "Alert",
+        "ErrorSummary"
+      ],
       "notFor": "a message about one field or one row, which belongs beside it"
     },
     "header": {
       "means": "The page's identity and its page-level actions.",
-      "carries": ["PageHeader"],
+      "carries": [
+        "PageHeader"
+      ],
       "notFor": "filters and search, which narrow the content and belong in the toolbar"
     },
     "subnav": {
       "means": "Navigation WITHIN the page: sections of one record, views of one collection.",
-      "carries": ["Tabs", "SegmentedControl"],
+      "carries": [
+        "Tabs",
+        "SegmentedControl"
+      ],
       "notFor": "moving between pages, which is the shell's nav"
     },
     "toolbar": {
       "means": "What acts on the body as a whole: search, filters, batch actions, the view switcher.",
-      "carries": ["FilterBar", "SearchInput", "TableToolbar", "BatchActions", "SegmentedControl"],
+      "carries": [
+        "FilterBar",
+        "SearchInput",
+        "TableToolbar",
+        "BatchActions",
+        "SegmentedControl"
+      ],
       "notFor": "an action on one item, which belongs on that item"
     },
     "body": {
@@ -29,7 +42,9 @@
     "detail": {
       "means": "The second pane of a list-detail body: what the current selection is.",
       "carries": "anything",
-      "onlyWithShape": ["list-detail"]
+      "onlyWithShape": [
+        "list-detail"
+      ]
     },
     "aside": {
       "means": "A supporting pane beside the body: reference the reader glances at without leaving the main task.",
@@ -38,11 +53,14 @@
     },
     "footerBar": {
       "means": "A sticky bar at the bottom carrying the commitment: submit, next, apply.",
-      "carries": ["Button", "ButtonGroup", "SaveStatus"],
+      "carries": [
+        "Button",
+        "ButtonGroup",
+        "SaveStatus"
+      ],
       "notFor": "an action that does not commit the page, which belongs in the header"
     }
   },
-
   "shapes": {
     "single": {
       "means": "One column of sections. The default, and right whenever the page has one subject.",
@@ -75,7 +93,6 @@
       "source": "not in any canon; declared here so the escape from the system is still inside it"
     }
   },
-
   "widths": {
     "narrow": {
       "value": "38rem",
@@ -96,13 +113,19 @@
       "means": "Edge to edge, for a body that manages its own space (canvas, board)."
     }
   },
-
   "archetypes": {
     "overview": {
       "carriedBy": "OverviewPageTemplate",
       "shape": "single",
       "width": "default",
-      "regions": { "notices": "optional", "header": "required", "subnav": "forbidden", "toolbar": "forbidden", "aside": "optional", "footerBar": "forbidden" },
+      "regions": {
+        "notices": "optional",
+        "header": "required",
+        "subnav": "forbidden",
+        "toolbar": "forbidden",
+        "aside": "optional",
+        "footerBar": "forbidden"
+      },
       "why": "Read at a glance and acted on elsewhere. A toolbar would mean the reader has to narrow something first, which is the list archetype.",
       "whyNotFeed": "The page is not one grid: it is priority bands read top to bottom (context, then what is read first, then the board, then the widget grid), and only the last of those is a feed. `feed` describes a body that IS a grid of equivalent items, which is the hub. Corrected on 2026-08-23 against the shipped template."
     },
@@ -110,7 +133,14 @@
       "carriedBy": "ListPageTemplate",
       "shape": "single",
       "width": "default",
-      "regions": { "notices": "optional", "header": "required", "subnav": "optional", "toolbar": "optional", "aside": "optional", "footerBar": "forbidden" },
+      "regions": {
+        "notices": "optional",
+        "header": "required",
+        "subnav": "optional",
+        "toolbar": "optional",
+        "aside": "optional",
+        "footerBar": "forbidden"
+      },
       "empty": "required",
       "why": "Find and act. The toolbar is where the narrowing lives; the empty state is not optional because a list that can filter can always be filtered to nothing."
     },
@@ -118,23 +148,46 @@
       "carriedBy": "ListPageTemplate",
       "shape": "single",
       "width": "default",
-      "regions": { "notices": "optional", "header": "required", "subnav": "forbidden", "toolbar": "optional", "aside": "optional", "footerBar": "forbidden" },
+      "regions": {
+        "notices": "optional",
+        "header": "required",
+        "subnav": "forbidden",
+        "toolbar": "optional",
+        "aside": "optional",
+        "footerBar": "forbidden"
+      },
       "empty": "required",
-      "toolbarForbids": ["FilterBar"],
+      "toolbarForbids": [
+        "FilterBar"
+      ],
       "why": "The queue is given. A FilterBar means the user still has to find, which is the list archetype (Fiori: worklist = list report minus the filter bar)."
     },
     "analytical": {
       "carriedBy": "Page",
       "shape": "single",
       "width": "default",
-      "regions": { "notices": "optional", "header": "required", "subnav": "optional", "toolbar": "optional", "aside": "optional", "footerBar": "forbidden" },
+      "regions": {
+        "notices": "optional",
+        "header": "required",
+        "subnav": "optional",
+        "toolbar": "optional",
+        "aside": "optional",
+        "footerBar": "forbidden"
+      },
       "why": "One investigation loop: the aggregate on top, the rows it summarises under it, acted on where they are (Fiori analytical list page)."
     },
     "detail": {
       "carriedBy": "DetailPageTemplate",
       "shape": "single",
       "width": "default",
-      "regions": { "notices": "optional", "header": "required", "subnav": "optional", "toolbar": "forbidden", "aside": "optional", "footerBar": "optional" },
+      "regions": {
+        "notices": "optional",
+        "header": "required",
+        "subnav": "optional",
+        "toolbar": "forbidden",
+        "aside": "optional",
+        "footerBar": "optional"
+      },
       "why": "One record in full. The subnav is the tabs variant six screens hand-roll today; the aside is the supporting pane.",
       "whyItTookTwo": "The first attempt on 2026-08-23 was reverted and the second landed the same day. Two things blocked it and both were real. (1) The panelled variant's CSS was written against a THREE-element structure where the page wrapper IS the two-column row; <Page> has four, so `.detail-page[data-panels] > *` and its neighbours would have selected the wrong element. Each of those rules was paid for by a bug, so they were re-pointed at Page's regions one at a time rather than swept. (2) The COLLAPSED aside is a rail one control wide and Page's aside region is `flex: 1 1 20rem`, so the rail would have become the panel again without the panel. Fixed by giving <Page> an `asideWidth` of `default | rail`: the block keeps the state, the page keeps the geometry, and neither learns the other's job."
     },
@@ -142,7 +195,14 @@
       "carriedBy": "AdaptiveListPage",
       "shape": "single",
       "width": "default",
-      "regions": { "notices": "optional", "header": "required", "subnav": "forbidden", "toolbar": "optional", "aside": "forbidden", "footerBar": "forbidden" },
+      "regions": {
+        "notices": "optional",
+        "header": "required",
+        "subnav": "forbidden",
+        "toolbar": "optional",
+        "aside": "forbidden",
+        "footerBar": "forbidden"
+      },
       "empty": "required",
       "why": "The items are destinations, not records: one tile per place, saying what waits inside it.",
       "whyNotFeed": "The tiles are the CALLER's grid, handed in with the ref that measures whether they fit on one screen. The page lays out a column that holds a notice and then whatever the caller built; it does not own the track. Corrected on 2026-08-23 against the shipped template."
@@ -151,22 +211,44 @@
       "carriedBy": "FormPageTemplate",
       "shape": "single",
       "width": "default",
-      "regions": { "notices": "optional", "header": "optional", "subnav": "forbidden", "toolbar": "forbidden", "aside": "optional", "footerBar": "optional" },
+      "regions": {
+        "notices": "optional",
+        "header": "optional",
+        "subnav": "forbidden",
+        "toolbar": "forbidden",
+        "aside": "optional",
+        "footerBar": "optional"
+      },
       "why": "A capture, read line by line. Which KIND of form is the next decision down and form-rules.json computes it.",
       "whyNotReading": "The width that matters here is the COLUMN OF FIELDS, not the page: a page-sized form is a surface being filled in, and capping the surface at 52rem left a narrow white strip in the middle of an empty page. The reading cap sits on the fields inside the card. Corrected on 2026-08-23 against the shipped template, which had already learned this."
     },
     "wizard": {
       "carriedBy": "WizardTemplate",
       "shape": "single",
-      "width": "reading",
-      "regions": { "notices": "optional", "header": "optional", "subnav": "forbidden", "toolbar": "forbidden", "aside": "forbidden", "footerBar": "required" },
-      "why": "One step at a time with the stepper above and the commitment below. The footer bar is required: a wizard whose Next is somewhere else is not a wizard."
+      "width": "default",
+      "regions": {
+        "notices": "optional",
+        "header": "optional",
+        "subnav": "forbidden",
+        "toolbar": "forbidden",
+        "aside": "forbidden",
+        "footerBar": "required"
+      },
+      "why": "One step at a time with the stepper above and the commitment below. The footer bar is required: a wizard whose Next is somewhere else is not a wizard.",
+      "whyNotReading": "The same correction the `form` archetype took on 2026-08-23, and for the same reason: the width that matters is the COLUMN OF FIELDS, not the page. A wizard is a form cut into steps, so capping the SURFACE at 52rem left a narrow white strip in the middle of an empty page with the stepper squeezed into it. The reading cap sits on the step column inside the card. Corrected on 2026-08-30, after the owner read it off the gallery."
     },
     "settings": {
       "carriedBy": "SettingsPageTemplate",
       "shape": "single",
       "width": "reading",
-      "regions": { "notices": "optional", "header": "required", "subnav": "optional", "toolbar": "forbidden", "aside": "forbidden", "footerBar": "optional" },
+      "regions": {
+        "notices": "optional",
+        "header": "required",
+        "subnav": "optional",
+        "toolbar": "forbidden",
+        "aside": "forbidden",
+        "footerBar": "optional"
+      },
       "why": "Grouped sections of explained knobs, found by scanning labels rather than by searching. No toolbar, for that reason."
     },
     "auth": {
@@ -175,7 +257,14 @@
       "shape": "single",
       "width": "narrow",
       "align": "center",
-      "regions": { "notices": "forbidden", "header": "forbidden", "subnav": "forbidden", "toolbar": "forbidden", "aside": "forbidden", "footerBar": "forbidden" },
+      "regions": {
+        "notices": "forbidden",
+        "header": "forbidden",
+        "subnav": "forbidden",
+        "toolbar": "forbidden",
+        "aside": "forbidden",
+        "footerBar": "forbidden"
+      },
       "why": "Minimal distraction. An auth page that also announces or navigates is two screens.",
       "whyNotPage": "It is not a page INSIDE the shell, it is a root that replaces it: full viewport height, its own background, no app navigation. <Page> lays out a region of the shell, so expressing this through it would mean giving Page a way to not be in a shell, which is a second component wearing the first one's name. Found by the acceptance test on 2026-08-23."
     },
@@ -183,7 +272,14 @@
       "carriedBy": "SystemPageTemplate",
       "shape": "single",
       "width": "narrow",
-      "regions": { "notices": "forbidden", "header": "forbidden", "subnav": "forbidden", "toolbar": "forbidden", "aside": "forbidden", "footerBar": "forbidden" },
+      "regions": {
+        "notices": "forbidden",
+        "header": "forbidden",
+        "subnav": "forbidden",
+        "toolbar": "forbidden",
+        "aside": "forbidden",
+        "footerBar": "forbidden"
+      },
       "why": "Not found, unavailable, something broke. One short centred column with the way out. The name `system` names nothing and `status` would name the job (GOV.UK), but the rename belongs to the naming pass and has to happen everywhere at once; until then this key matches selection-rules.json, because two files with two names for one archetype is the rot the cross-checks exist to stop."
     }
   }
