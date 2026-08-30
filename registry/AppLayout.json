@@ -43,6 +43,12 @@
       "type": "() => void",
       "required": false,
       "description": "Mobile only: called when the backdrop is clicked."
+    },
+    {
+      "name": "onNavOpen",
+      "type": "() => void",
+      "required": false,
+      "description": "Mobile only, and REQUIRED when `navOpen` is passed: what the drawer button in the header calls. A controlled shell with no way to open is a phone with no navigation, which is the failure <NavDrawerButton> exists to prevent."
     }
   ],
   "sourcePath": "src/components/AppLayout/AppLayout.tsx",
@@ -67,5 +73,5 @@
     "Prose",
     "SideNav"
   ],
-  "example": "const [navOpen, setNavOpen] = useState(false)\nconst [active, setActive] = useState('/library')\nconst item = (href: string, label: string, icon: 'folder' | 'check_circle') => ({\n  id: href,\n  label,\n  icon,\n  href,\n  active: active === href,render: (inner: React.ReactNode, props: Record<string, unknown>) => (\n    <a {...props} href={href} onClick={(e) => { e.preventDefault(); setActive(href) }}>{inner}</a>\n  ),\n})\n\n<AppLayout\n  arrangement=\"rail\"\n  navOpen={navOpen}\n  onNavClose={() => setNavOpen(false)}\n  nav={\n    <SideNav\n      aria-label=\"Primary\"\n      collapsible\n      collapseControl=\"logo\"\n      logo={<><BrandMark>{BRAND}</BrandMark><strong>Acme</strong></>}\n      logoMark={<BrandMark direction=\"expand\">{BRAND}</BrandMark>}\n      groups={[\n        {\n          label: 'Workspace',\n          items: [item('/library', 'Library', 'folder'), item('/review', 'For review', 'check_circle')],\n        },\n      ]}\n    />\n  }\n>\n  \n  <PageHeader title=\"Content library\" />\n  <Stack gap={4}>\n    <Grid gap={4} min=\"md\">\n      <Card>\n        <CardTitle as=\"h2\">Drafts</CardTitle>\n        <Prose size=\"sm\">Twelve items, four of them edited this week.</Prose>\n      </Card>\n      <Card>\n        <Ca"
+  "example": "const [navOpen, setNavOpen] = useState(false)\nconst [active, setActive] = useState('/library')\nconst item = (href: string, label: string, icon: 'folder' | 'check_circle') => ({\n  id: href,\n  label,\n  icon,\n  href,\n  active: active === href,render: (inner: React.ReactNode, props: Record<string, unknown>) => (\n    <a {...props} href={href} onClick={(e) => { e.preventDefault(); setActive(href) }}>{inner}</a>\n  ),\n})\n\n<AppLayout\n  arrangement=\"rail\"navOpen={navOpen}\n  onNavOpen={() => setNavOpen(true)}\n  onNavClose={() => setNavOpen(false)}\n  nav={\n    <SideNav\n      aria-label=\"Primary\"\n      collapsible\n      collapseControl=\"logo\"\n      logo={<><BrandMark>{BRAND}</BrandMark><strong>Acme</strong></>}\n      logoMark={<BrandMark direction=\"expand\">{BRAND}</BrandMark>}\n      groups={[\n        {\n          label: 'Workspace',\n          items: [item('/library', 'Library', 'folder'), item('/review', 'For review', 'check_circle')],\n        },\n      ]}\n    />\n  }\n>\n  \n  <PageHeader title=\"Content library\" />\n  <Stack gap={4}>\n    <Grid gap={4} min=\"md\">\n      <Card>\n        <CardTitle as=\"h2\">Drafts</CardTitle>\n        <Prose size=\"sm\">Twelve items, four of them edited this week.</Prose>\n    "
 }

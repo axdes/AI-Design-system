@@ -61,7 +61,12 @@ export function Example() {
   return (
     <AppLayout
       arrangement="rail"
+      /* Driven from here, so BOTH halves are passed: a controlled shell with an
+         `onNavClose` and no `onNavOpen` is a drawer the header's button cannot
+         open. Leave all three off and the shell owns the state itself, which is
+         what most products want. */
       navOpen={navOpen}
+      onNavOpen={() => setNavOpen(true)}
       onNavClose={() => setNavOpen(false)}
       nav={
         <SideNav

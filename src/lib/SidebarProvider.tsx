@@ -13,7 +13,12 @@ type SidebarContextValue = {
   closeMobile: () => void
 }
 
-const SidebarContext = createContext<SidebarContextValue | null>(null)
+/* Exported so <AppLayout> can PROVIDE this value itself, bridged to its own
+   navOpen/onNavClose. Without that the shell and the button it ships were two
+   halves of one mechanism with nothing between them — see the note in
+   AppLayout.tsx. */
+export const SidebarContext = createContext<SidebarContextValue | null>(null)
+export type { SidebarContextValue }
 const STORAGE_KEY = 'sidebar.collapsed'
 
 function readPersisted(): boolean {
