@@ -2,6 +2,7 @@ import './Page.css'
 import type { ReactNode } from 'react'
 import { cn } from '../../lib/cn'
 import { PageHeader } from '../../components/PageHeader'
+import { useMediaQuery } from '../../lib/useMediaQuery'
 
 /** The page shapes. Three come from the Material 3 canonical layouts, two are ours. */
 type Shape = 'single' | 'list-detail' | 'feed' | 'board' | 'canvas'
@@ -81,6 +82,23 @@ type Props = {
   /** The trail up, for a page more than one level deep. Forwarded to
    *  `<PageHeader breadcrumb>`; an alternative to `onBack`, never both. */
   breadcrumb?: ReactNode
+  /**
+   * `list-detail` only, and only below the split: whether the reader is LOOKING
+   * AT the detail. Side by side both panes are always on screen and this is
+   * ignored; narrower, one pane shows at a time — the list, or the detail in
+   * its place — which is what the canonical list-detail layout does and what
+   * every platform's version of it does (Material 3 compact/medium, SAP Fiori,
+   * Apple's split view). Two panes stacked down a phone is neither, and it is
+   * what this page did until 2026-08-30.
+   *
+   * The page cannot work it out: "selected" is the caller's state, and an
+   * <EmptyState> in the detail slot is still a detail. So the caller says.
+   */
+  detailOpen?: boolean
+  /** Called when the reader goes back to the list from the detail, below the
+   *  split. It takes the header's leading slot for as long as the detail is the
+   *  pane on screen — the same arrow, doing the one job that is available. */
+  onDetailClose?: () => void
   /** A supporting pane beside the body. Wraps under it when the two stop fitting. */
   aside?: ReactNode
   /** How much room the aside takes: a column that shares the width, or a rail as wide as its content. */
@@ -121,6 +139,8 @@ export function Page({
   onBack,
   backLabel,
   breadcrumb,
+  detailOpen,
+  onDetailClose,
   inline,
   header,
   subnav,
@@ -143,6 +163,18 @@ export function Page({
   /* A second pane only exists in the shape that has one. Rendering it anywhere
    * else would put a nameless column beside content that never asked for it. */
   const secondPane = shape === 'list-detail' ? detail : undefined
+  /* ONE PANE AT A TIME BELOW THE SPLIT. `false` when nothing is known — no
+     window, first paint — because the single-pane arrangement is the one that
+     is correct without an answer. The query is the same 62rem the stylesheet
+     splits at; they are one decision said twice because CSS cannot tell React
+     which pane to put the back arrow on. */
+  const wide = useMediaQuery('(min-width: 62rem)')
+  const split = shape === 'list-detail' && !!secondPane
+  const onePane = split && !wide
+  /* Which one. With no `detailOpen` at all the page keeps the old behaviour of
+     showing both — a caller that has not been updated is not suddenly missing
+     half its screen. */
+  const pane = !onePane || detailOpen === undefined ? 'both' : detailOpen ? 'detail' : 'list'
 
   return (
     /* The header sits INSIDE the capped column, not above it. At the default
@@ -162,11 +194,24 @@ export function Page({
          against it, only exist when there IS a second pane. Unconditional, they
          squared off the trailing edge of a single column: a card cut flat
          against nothing. */
+      data-pane={pane === 'both' ? undefined : pane}
       data-has-aside={aside ? '' : undefined}
       data-aside-width={asideWidth}
     >
       {title !== undefined
-        ? <PageHeader title={title} actions={actions} onBack={onBack} backLabel={backLabel} breadcrumb={breadcrumb} inline={inline} />
+        ? (
+          <PageHeader
+            title={title}
+            actions={actions}
+            /* While the detail IS the screen, back means back to the list. That
+               is the canonical rule and the reason it is not the app's own back:
+               it depends on the window and on what is selected. */
+            onBack={pane === 'detail' ? onDetailClose : onBack}
+            backLabel={backLabel}
+            breadcrumb={breadcrumb}
+            inline={inline}
+          />
+        )
         : header}
       {/* The cap and the padding are separate elements on purpose: PageHeader
         * brings its own inline padding, so a shared wrapper would either double

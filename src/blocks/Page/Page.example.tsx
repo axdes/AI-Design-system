@@ -45,6 +45,15 @@ export function Example() {
       archetype="worklist"
       shape="list-detail"
       title="Approvals"
+      /* BELOW THE SPLIT ONE PANE SHOWS AT A TIME, and the page cannot work out
+         which: "selected" is this component's state, and the empty pane below is
+         still a detail. So it is said. On a phone the reader sees the queue,
+         picks a row, and the detail takes the screen with the header's arrow
+         going back to the queue — which is what the canonical list-detail
+         layout does everywhere. Side by side, both are always on screen and
+         these two props are ignored. */
+      detailOpen={selected !== null}
+      onDetailClose={() => setSelected(null)}
       detail={current
         ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>
         /* The pane says what it waits for rather than sitting blank. `as="h2"`

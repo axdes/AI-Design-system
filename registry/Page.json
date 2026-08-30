@@ -110,6 +110,18 @@
       "description": "The trail up, for a page more than one level deep. Forwarded to `<PageHeader breadcrumb>`; an alternative to `onBack`, never both."
     },
     {
+      "name": "detailOpen",
+      "type": "boolean",
+      "required": false,
+      "description": "`list-detail` only, and only below the split: whether the reader is LOOKING AT the detail. Side by side both panes are always on screen and this is ignored; narrower, one pane shows at a time — the list, or the detail in its place — which is what the canonical list-detail layout does and what every platform's version of it does (Material 3 compact/medium, SAP Fiori, Apple's split view). Two panes stacked down a phone is neither, and it is what this page did until 2026-08-30. The page cannot work it out: \"selected\" is the caller's state, and an <EmptyState> in the detail slot is still a detail. So the caller says."
+    },
+    {
+      "name": "onDetailClose",
+      "type": "() => void",
+      "required": false,
+      "description": "Called when the reader goes back to the list from the detail, below the split. It takes the header's leading slot for as long as the detail is the pane on screen — the same arrow, doing the one job that is available."
+    },
+    {
       "name": "aside",
       "type": "ReactNode",
       "required": false,
@@ -249,5 +261,5 @@
     "ListItem",
     "PageHeader"
   ],
-  "example": "const [selected, setSelected] = useState<string | null>('r-1')\nconst current = REQUESTS.find((r) => r.id === selected)\n\n<Page\n      archetype=\"worklist\"\n      shape=\"list-detail\"\n      title=\"Approvals\"\n      detail={current\n        ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>: <EmptyState as=\"h2\" surface=\"card\" icon=\"list_alt\" title=\"Nothing selected\" />}\n      footerBar={<Button variant=\"primary\" disabled={!current}>Approve</Button>}\n    >\n      \n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function ListExample() {\n  return (\n    <Page archetype=\"list\" title=\"Requests\">\n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function InnerPageExample() {\n  return (\n    <Page\n      archetype=\"detail\"\n      title=\"Quarterly access review\"\n      breadcrumb={\n        <Breadcrumb\n          items={[\n            { label: 'Library', href: '/library' },\n            { label: 'Reviews', href: '/library/reviews' },\n            {"
+  "example": "const [selected, setSelected] = useState<string | null>('r-1')\nconst current = REQUESTS.find((r) => r.id === selected)\n\n<Page\n      archetype=\"worklist\"\n      shape=\"list-detail\"\n      title=\"Approvals\"detailOpen={selected !== null}\n      onDetailClose={() => setSelected(null)}\n      detail={current\n        ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>: <EmptyState as=\"h2\" surface=\"card\" icon=\"list_alt\" title=\"Nothing selected\" />}\n      footerBar={<Button variant=\"primary\" disabled={!current}>Approve</Button>}\n    >\n      \n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function ListExample() {\n  return (\n    <Page archetype=\"list\" title=\"Requests\">\n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function InnerPageExample() {\n  return (\n    <Page\n      archetype=\"detail\"\n      title=\"Quarterly access review\"\n      breadcrumb={\n        <Breadcrumb\n          items={[\n            { label: 'Library', href: '/library' "
 }

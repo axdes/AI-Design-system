@@ -244,3 +244,15 @@
     border-inline-start: 1px solid var(--border);
   }
 }
+
+/* ONE PANE AT A TIME, BELOW THE SPLIT. `data-pane` is set by <Page> only when
+ * the caller has said which one (`detailOpen`), and only under the width where
+ * the two sit side by side. Above it the attribute is absent and both panes
+ * show, which is the same page it has always been.
+ *
+ * `display: none` rather than a visual hide: the pane that is not on screen is
+ * not on screen for anybody, and a screen reader walking a phone should not
+ * find a whole second column of content it cannot see (Material 3's canonical
+ * list-detail, and every platform's version of it — 2026-08-30). */
+.page[data-pane='list'] .page-detail { display: none; }
+.page[data-pane='detail'] .page-body { display: none; }
