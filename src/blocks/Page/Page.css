@@ -189,6 +189,19 @@
  * not restated: between a shell that clips and a page that has not capped
  * itself yet, everything below the fold would vanish. Desktop only, because a
  * full-height scroller on a phone puts the page under it out of reach. */
+/* A PANE IS A SURFACE AT EVERY WIDTH. The white card, the padding and the
+ * radius used to live inside the wide-screen block below, together with the
+ * SPLIT — so under 62rem the panes stopped being surfaces at all and the content
+ * lay straight on the page's muted ground (owner, read off the phone,
+ * 2026-08-30). Only the split is a wide-screen arrangement: two panes side by
+ * side joined by one seam. Being a surface is not; a list on a phone is still a
+ * list on something. */
+.page[data-shape='list-detail'][data-panels] .page-body,
+.page[data-shape='list-detail'][data-panels] .page-detail {
+  background: var(--card);
+  border-radius: var(--card-radius);
+}
+
 @media (min-width: 62rem) {
   .page[data-panels],
   .page[data-panels] > .page-inner {
@@ -219,11 +232,6 @@
    * carries the inline padding that lines the page up with its header —
    * painting it would push the surface past the title on both sides. */
   .page[data-shape='list-detail'][data-panels] .page-main { gap: 0; align-items: stretch; }
-  .page[data-shape='list-detail'][data-panels] .page-body,
-  .page[data-shape='list-detail'][data-panels] .page-detail {
-    background: var(--card);
-    border-radius: var(--card-radius);
-  }
   /* Flat where they meet, rounded where they do not. Logical, so the seam stays
    * on the inner edge when the text runs the other way. */
   .page[data-shape='list-detail'][data-panels] .page-body {

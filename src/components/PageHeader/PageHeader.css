@@ -136,3 +136,7 @@
   .page-title { font-size: var(--font-xl); }
 }
 
+
+/* The trail sits above the title row, aligned with it. It replaces the back
+   arrow rather than joining it, so nothing has to make room for both. */
+.page-header-trail { margin-block-end: var(--space-2); }

@@ -78,6 +78,9 @@ type Props = {
   children?: ReactNode
   /** The second pane of a `list-detail` body. Ignored by every other shape. */
   detail?: ReactNode
+  /** The trail up, for a page more than one level deep. Forwarded to
+   *  `<PageHeader breadcrumb>`; an alternative to `onBack`, never both. */
+  breadcrumb?: ReactNode
   /** A supporting pane beside the body. Wraps under it when the two stop fitting. */
   aside?: ReactNode
   /** How much room the aside takes: a column that shares the width, or a rail as wide as its content. */
@@ -117,6 +120,7 @@ export function Page({
   actions,
   onBack,
   backLabel,
+  breadcrumb,
   inline,
   header,
   subnav,
@@ -162,7 +166,7 @@ export function Page({
       data-aside-width={asideWidth}
     >
       {title !== undefined
-        ? <PageHeader title={title} actions={actions} onBack={onBack} backLabel={backLabel} inline={inline} />
+        ? <PageHeader title={title} actions={actions} onBack={onBack} backLabel={backLabel} breadcrumb={breadcrumb} inline={inline} />
         : header}
       {/* The cap and the padding are separate elements on purpose: PageHeader
         * brings its own inline padding, so a shared wrapper would either double

@@ -28,10 +28,15 @@
       "description": "Accessible label for the back button."
     },
     {
-      "name": "inline",
+      "name": "breadcrumb",
       "type": "ReactNode",
       "required": false,
       "description": "Inline tools next to the title (search, filters)."
+    },
+    {
+      "name": "inline",
+      "type": "ReactNode",
+      "required": false
     },
     {
       "name": "actions",

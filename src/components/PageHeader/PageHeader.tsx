@@ -13,6 +13,11 @@ type Props = {
   /** Accessible label for the back button. */
   backLabel?: string
   /** Inline tools next to the title (search, filters). */
+  /** The trail up, for a page more than one level deep — a `<Breadcrumb>`. It
+   *  sits ABOVE the title, and it is an ALTERNATIVE to `onBack`, never a
+   *  companion: one step up is an arrow, several is a trail, and a screen
+   *  showing both gives the reader two ways out of the same corner. */
+  breadcrumb?: ReactNode
   inline?: ReactNode
   /** Trailing actions pinned to the far end (create button, user menu). */
   actions?: ReactNode
@@ -29,10 +34,16 @@ type Props = {
  * not "Supplier detail". Nothing goes under it: an explanatory line there
  * is content and belongs in the body.
  */
-export function PageHeader({ title, onBack, backLabel, inline, actions }: Props) {
+export function PageHeader({ title, onBack, backLabel, breadcrumb, inline, actions }: Props) {
   const { t } = useTranslation()
   return (
     <header className="page-header">
+      {/* THE TRAIL GOES ABOVE THE TITLE, not beside it: it is where the reader
+        * IS, and the title is what they are looking at. `<Breadcrumb>` existed
+        * with nowhere to be rendered — no template put it anywhere and no page
+        * slot took it — so the system had a trail component and no page that
+        * could carry one (owner, 2026-08-30). */}
+      {breadcrumb && !onBack && <div className="page-header-trail">{breadcrumb}</div>}
       <div className="page-header-row">
         {/* ONE leading slot, and the two things that can occupy it are mutually
           * exclusive. This is the Material 3 top-app-bar rule and the Apple HIG

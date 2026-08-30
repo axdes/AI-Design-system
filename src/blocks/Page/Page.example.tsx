@@ -5,6 +5,7 @@ import { Page } from './Page'
 import { Button } from '../../components/Button'
 import { Card, CardTitle } from '../../components/Card'
 import { EmptyState } from '../../components/EmptyState'
+import { Breadcrumb } from '../../components/Breadcrumb'
 import { ListItem } from '../../components/ListItem'
 
 const REQUESTS = [
@@ -73,6 +74,38 @@ export function ListExample() {
           <ListItem key={r.id}>{r.title}</ListItem>
         ))}
       </Card>
+    </Page>
+  )
+}
+
+/* AN INNER PAGE SAYS WHERE IT IS, and there are two ways: an arrow for one step
+ * up, a trail for more. They are alternatives and never both — a screen with a
+ * back arrow AND a breadcrumb offers two ways out of the same corner, and the
+ * header's leading slot holds one thing.
+ *
+ * `<Breadcrumb>` had nowhere to be rendered until 2026-08-30: no template put it
+ * anywhere and no page slot took it, so the system carried a trail component and
+ * no page that could show one. It sits above the title, because it says where
+ * the reader IS and the title says what they are looking at.
+ *
+ * The last crumb is the current page and is not a link — the component enforces
+ * that, and it is why a trail never needs the page title repeated after it. */
+export function InnerPageExample() {
+  return (
+    <Page
+      archetype="detail"
+      title="Quarterly access review"
+      breadcrumb={
+        <Breadcrumb
+          items={[
+            { label: 'Library', href: '/library' },
+            { label: 'Reviews', href: '/library/reviews' },
+            { label: 'Quarterly access review' },
+          ]}
+        />
+      }
+    >
+      <Card><CardTitle>Ada Meridian</CardTitle><p>Opened two days ago.</p></Card>
     </Page>
   )
 }

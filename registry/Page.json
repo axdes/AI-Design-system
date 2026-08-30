@@ -4,13 +4,17 @@
   "description": "The PAGE mechanism: the regions a screen is made of and the shape its body takes. Every page archetype is a preset over this one component rather than a component of its own, so a shape the system has not met yet is composed from system parts instead of from divs. Copy: the title is the page's own name in the reader's words. Nothing renders under it — a line explaining the page is content, and content lives in the body (the rule that removed `subtitle` from this system, 2026-08-20).",
   "exports": [
     "Page",
-    "ListExample"
+    "ListExample",
+    "InnerPageExample"
   ],
   "main": "Page",
   "from": "@/blocks/Page",
   "slots": [
     {
       "name": "ListExample"
+    },
+    {
+      "name": "InnerPageExample"
     }
   ],
   "props": [
@@ -98,6 +102,12 @@
       "type": "ReactNode",
       "required": false,
       "description": "The second pane of a `list-detail` body. Ignored by every other shape."
+    },
+    {
+      "name": "breadcrumb",
+      "type": "ReactNode",
+      "required": false,
+      "description": "The trail up, for a page more than one level deep. Forwarded to `<PageHeader breadcrumb>`; an alternative to `onBack`, never both."
     },
     {
       "name": "aside",
@@ -232,11 +242,12 @@
     }
   },
   "uses": [
+    "Breadcrumb",
     "Button",
     "Card",
     "EmptyState",
     "ListItem",
     "PageHeader"
   ],
-  "example": "const [selected, setSelected] = useState<string | null>('r-1')\nconst current = REQUESTS.find((r) => r.id === selected)\n\n<Page\n      archetype=\"worklist\"\n      shape=\"list-detail\"\n      title=\"Approvals\"\n      detail={current\n        ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>: <EmptyState as=\"h2\" surface=\"card\" icon=\"list_alt\" title=\"Nothing selected\" />}\n      footerBar={<Button variant=\"primary\" disabled={!current}>Approve</Button>}\n    >\n      \n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function ListExample() {\n  return (\n    <Page archetype=\"list\" title=\"Requests\">\n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>"
+  "example": "const [selected, setSelected] = useState<string | null>('r-1')\nconst current = REQUESTS.find((r) => r.id === selected)\n\n<Page\n      archetype=\"worklist\"\n      shape=\"list-detail\"\n      title=\"Approvals\"\n      detail={current\n        ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>: <EmptyState as=\"h2\" surface=\"card\" icon=\"list_alt\" title=\"Nothing selected\" />}\n      footerBar={<Button variant=\"primary\" disabled={!current}>Approve</Button>}\n    >\n      \n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function ListExample() {\n  return (\n    <Page archetype=\"list\" title=\"Requests\">\n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function InnerPageExample() {\n  return (\n    <Page\n      archetype=\"detail\"\n      title=\"Quarterly access review\"\n      breadcrumb={\n        <Breadcrumb\n          items={[\n            { label: 'Library', href: '/library' },\n            { label: 'Reviews', href: '/library/reviews' },\n            {"
 }
