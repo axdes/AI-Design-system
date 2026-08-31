@@ -73,3 +73,49 @@ describe('Chip', () => {
     expect(screen.getByRole('button', { name: 'Filter' })).toHaveFocus()
   })
 })
+
+/* THE OTHER HALF OF THE SAME PILL. <Tag> was folded in on 2026-08-30, and the
+ * thing worth testing about a data token is everything it must NOT do: it is not
+ * a button, it cannot be pressed, and nothing about it invites a click. Only the
+ * X does anything. */
+describe('Chip, as data', () => {
+  it('is not a control: no button, no pressed state', () => {
+    render(<Chip interactive={false} selected>Internal</Chip>)
+    expect(screen.queryByRole('button')).toBeNull()
+    expect(screen.getByText('Internal').closest('.chip')).not.toHaveAttribute('aria-pressed')
+  })
+
+  it('becomes data as soon as it is removable — a button inside a button is invalid HTML', () => {
+    render(<Chip onRemove={() => undefined} removeLabel="Remove Sarah">Sarah</Chip>)
+    const buttons = screen.getAllByRole('button')
+    expect(buttons).toHaveLength(1)
+    expect(buttons[0]).toHaveAccessibleName('Remove Sarah')
+  })
+
+  it('removes the one token it names', async () => {
+    const onRemove = vi.fn()
+    const user = userEvent.setup()
+    render(<Chip onRemove={onRemove} removeLabel="Remove Ahmed">Ahmed</Chip>)
+
+    await user.click(screen.getByRole('button', { name: 'Remove Ahmed' }))
+    expect(onRemove).toHaveBeenCalledTimes(1)
+  })
+
+  it('carries what the caller puts on it, the same as the control does', () => {
+    /* Both branches spread the rest: an `aria-describedby` from elsewhere on the
+     * page, a `title`, a `data-*` hook. Dropping either spread silently strips
+     * every one of them. */
+    render(<Chip interactive={false} title="Internal only" data-testid="token">Internal</Chip>)
+    const token = screen.getByTestId('token')
+    expect(token).toHaveAttribute('title', 'Internal only')
+    expect(token.tagName).toBe('SPAN')
+  })
+
+  it('sizes itself for where it sits: a token is small, a control is not', () => {
+    const { rerender } = render(<Chip interactive={false} data-testid="pill">Internal</Chip>)
+    expect(screen.getByTestId('pill')).toHaveAttribute('data-size', 'sm')
+
+    rerender(<Chip data-testid="pill">Internal</Chip>)
+    expect(screen.getByTestId('pill')).toHaveAttribute('data-size', 'md')
+  })
+})

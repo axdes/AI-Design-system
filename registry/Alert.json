@@ -68,10 +68,11 @@
     }
   },
   "uses": [
+    "Button",
     "Icon",
     "IconButton",
     "Layout",
     "Tooltip"
   ],
-  "example": "const [showTip, setShowTip] = useState(true)\n\n<Stack gap={3}>\n  \n  <Alert tone=\"danger\" role=\"alert\">Couldn&apos;t save. Check your connection.</Alert>\n  \n  {showTip && <Alert tone=\"info\" onDismiss={() => setShowTip(false)}>Drafts save automatically.</Alert>}\n</Stack>"
+  "example": "const [showTip, setShowTip] = useState(true)\n\n<Stack gap={3}>\n  \n  <Alert tone=\"danger\" role=\"alert\">Couldn&apos;t save. Check your connection.</Alert>\n  \n  {showTip && <Alert tone=\"info\" onDismiss={() => setShowTip(false)}>Drafts save automatically.</Alert>}\n  \n  <Alert tone=\"warning\" action={<Button variant=\"secondary\" size=\"sm\">Reconnect</Button>}>\n    The editor lost the connection two minutes ago.\n  </Alert>\n</Stack>"
 }

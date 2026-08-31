@@ -81,8 +81,15 @@
   border-radius: var(--radius-full);
   transition: background var(--duration-fast);
 }
-.chat-item:hover { background: var(--nav-active); }
-.chat-item[data-active] { background: var(--nav-active); }
+/* Hover is the neutral step, the current thread is the brand-tinted one: the
+ * same pair the sidebar uses. Both used to be --nav-active, so a hovered row and
+ * the open thread were the same pill. */
+.chat-item:hover { background: var(--accent); }
+.chat-item[data-active] {
+  background: var(--nav-active);
+  color: var(--nav-active-foreground);
+  box-shadow: inset 0 0 0 1px var(--nav-active-border);
+}
 
 .chat-item-main {
   flex: 1;

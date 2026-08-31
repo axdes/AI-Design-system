@@ -1,7 +1,7 @@
 {
   "ref": "TagInput",
   "level": "molecule",
-  "description": "Free-text tags: type, press Enter or comma, get a removable <Tag>. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag. Copy: the placeholder says how to add one — \"Type and press Enter\" — because a field that accepts many values does not look like one that does.",
+  "description": "Free-text tags: type, press Enter or comma, get a removable <Chip> token. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag. Copy: the placeholder says how to add one — \"Type and press Enter\" — because a field that accepts many values does not look like one that does.",
   "exports": [
     "TagInput"
   ],
@@ -65,7 +65,7 @@
     }
   },
   "uses": [
-    "Tag"
+    "Chip"
   ],
   "example": "const [tags, setTags] = useState(['design', 'quarterly'])<TagInput\n  label=\"Report tags\"\n  value={tags}\n  onChange={setTags}\n  placeholder=\"Add a tag and press Enter\"\n/>"
 }

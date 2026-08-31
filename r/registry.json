@@ -52,12 +52,6 @@
       "description": "Status chip: a small standalone pill that labels state through `tone`. Not CountBadge, which pins a number to another element's corner. Copy: one word for a state the reader recognises — \"Active\", \"Overdue\". A badge that needs three words is a sentence, and belongs in the body."
     },
     {
-      "name": "bar-chart",
-      "type": "registry:ui",
-      "title": "BarChart",
-      "description": "A value per category, as bars: the analytical card's second form after <Sparkline> (a value over time). Carries its own scale, grid, legend and hover readout, and reads as a table to a screen reader. Reach for <Meter> when there is one value against one target, and for a <Table> when the numbers are compared exactly rather than at a glance. Copy: category labels are the categories' own names, shor"
-    },
-    {
       "name": "batch-actions",
       "type": "registry:ui",
       "title": "BatchActions",
@@ -124,6 +118,12 @@
       "description": "The remaining budget of a limited field, stated under it: instant on screen, announced only once typing stops."
     },
     {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "A measure across categories or over time, with the scale that says by how much: `type=\"bar\"` for a value per category, `type=\"line\"` for a value over time. Carries its own scale, grid, goal line, legend and hover readout, and reads as a TABLE to a screen reader. Reach for <Sparkline> when the shape sits beside a number and needs no axis, <DonutChart> for a whole split into named shares, <Meter> fo"
+    },
+    {
       "name": "chat-composer",
       "type": "registry:ui",
       "title": "ChatComposer",
@@ -151,7 +151,7 @@
       "name": "chip",
       "type": "registry:ui",
       "title": "Chip",
-      "description": "Rounded selectable label. A Button with a toggle state, always pill-shaped: quick actions, quick replies, pick-a-reason chips, filters, etc. Copy: names the filter it applies, not the act of filtering — \"Overdue\", not \"Filter by overdue\"."
+      "description": "The pill, in its two jobs. `interactive` (the default) is a control: a Button with a toggle state, always pill-shaped — quick actions, quick replies, pick-a-reason chips, filters. With `onRemove`, or with `interactive={false}`, it is DATA: a static label token, the value as the reader wrote or chose it, where only the trailing X does anything. One component because it was always one pill: <Tag> wa"
     },
     {
       "name": "code",
@@ -181,7 +181,7 @@
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Tag>s and the list stays open. Copy: the empty label says what was searched for and offers the way out — \"No supplier matches 'nortwind'. C"
+      "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Chip>s and the list stays open. Copy: the empty label says what was searched for and offers the way out — \"No supplier matches 'nortwind'. "
     },
     {
       "name": "command-palette",
@@ -397,7 +397,7 @@
       "name": "input",
       "type": "registry:ui",
       "title": "Input",
-      "description": "The single-line text field: label, invalid state and the shared control tokens. A screen never renders a bare input."
+      "description": "The single-line field: label, invalid state and the shared control tokens. Native types ride on `type` — `date` and `time` are styled here rather than wrapped in components of their own. A screen never renders a bare input."
     },
     {
       "name": "input-group",
@@ -422,12 +422,6 @@
       "type": "registry:ui",
       "title": "Grid",
       "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for a set of cards — auto-fitting equals by default, or `columns={12}` with `GridItem` spans when the set is deliberately unequal. `gap` is a token step, never a raw px."
-    },
-    {
-      "name": "line-chart",
-      "type": "registry:ui",
-      "title": "LineChart",
-      "description": "A value over time, as a line: the analytical card's first form when the question is \"which way is it going\". Carries its own scale, grid, legend and a crosshair readout, and reads as a table to a screen reader. Reach for <Sparkline> when the shape sits beside a number and needs no axis, and for <BarChart> when the x axis is categories rather than time. Copy: the accessible label says what the line"
     },
     {
       "name": "link",
@@ -712,12 +706,6 @@
       "description": "One panel at a time behind a labelled list, with full ARIA and arrow keys. SegmentedControl is the compact single choice with no panels. Copy: nouns, not verbs — a tab is a place, not an action. One or two words each, and parallel: \"Overview, Findings, People\", not \"Overview, Show findings, The team\"."
     },
     {
-      "name": "tag",
-      "type": "registry:ui",
-      "title": "Tag",
-      "description": "A static, non-interactive label token in a pill — the read-only counterpart to <Chip> (which is a button). Optionally removable: the label does nothing, only the trailing X drops the token, so the remove control can be its own button (a remove button nested inside a Chip button would be invalid HTML). Copy: the value as the reader wrote or chose it, unaltered. A tag is data; rewording it makes it "
-    },
-    {
       "name": "tag-group",
       "type": "registry:ui",
       "title": "TagGroup",
@@ -727,7 +715,7 @@
       "name": "tag-input",
       "type": "registry:ui",
       "title": "TagInput",
-      "description": "Free-text tags: type, press Enter or comma, get a removable <Tag>. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag. Copy: the placeholder says how to add one — \"Type and press Enter\" — becaus"
+      "description": "Free-text tags: type, press Enter or comma, get a removable <Chip> token. For choosing from a KNOWN option list use <Combobox multiple>; this one is for values the user invents (emails, labels, keywords). Duplicates are dropped case-insensitively, blur commits what was typed, and Backspace in the empty field removes the last tag. Copy: the placeholder says how to add one — \"Type and press Enter\" —"
     },
     {
       "name": "textarea",
@@ -746,12 +734,6 @@
       "type": "registry:ui",
       "title": "Time",
       "description": "A timestamp said the way a reader says it, with the exact one underneath. The relative label is never the only copy of the fact: `dateTime` carries the machine-readable instant and `title` the full local date, so \"2 hours ago\" is hoverable and parseable rather than the only thing on the page."
-    },
-    {
-      "name": "time-input",
-      "type": "registry:ui",
-      "title": "TimeInput",
-      "description": "A time-of-day field: the native <input type=\"time\"> in the system's Input clothes, so the picker, the validation and the keyboard stay the browser's. The value is always 24-hour \"HH:MM\"; the browser shows it in the user's own clock convention. Wrap it in <Field> for its label, like <Input>."
     },
     {
       "name": "timeline",

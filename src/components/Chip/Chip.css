@@ -1,6 +1,18 @@
-/* Chip = a Button with a selectable (toggle) state, always pill-shaped.
- * Sizing and colors are IDENTICAL to .btn so chips and buttons match 1:1;
- * only [data-selected] (pick-one / multi-select groups) is chip-specific. */
+/* THE PILL, IN ITS TWO JOBS — and the element is the difference.
+ *
+ * `.chip` was a Button with a toggle state; `.tag` was a copy of the same box
+ * that swapped <button> for <span> and its own header said so ("sizing/colours
+ * mirror .chip[secondary] so tokens and chips sit together 1:1"). They were
+ * folded into one component on 2026-08-30, and the split that survives is the
+ * one that was always real: a control answers hover, press and focus, a data
+ * token answers nothing. So the selectors are `button.chip` and `span.chip` —
+ * no flag to keep in step with the markup, and no way to give a label a
+ * pressed state, which is the objection the 2026-08-26 consolidation pass
+ * recorded against merging them.
+ *
+ * Sizing and colours are still identical to .btn, so chips, tokens and buttons
+ * sit together 1:1.
+ */
 .chip {
   /* Sizes to its label, never to its container. `display: inline-flex` is not
      enough: as a flex or grid child with the default `stretch`, the cross size
@@ -13,7 +25,12 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);   /* icon↔label */
-  height: var(--control-height);
+  /* min-block-size, not height: a fixed one is a promise the content keeps only
+   * while it is short. Hand-typed data does not oblige — one tools cell in a
+   * real spreadsheet is a whole comma-separated sentence, and as a fixed-height
+   * pill it painted its text straight over the tags next to it. The pill grows
+   * instead, and the text wraps inside it. */
+  min-block-size: var(--control-height);
   padding-inline: var(--control-padding-x);
   border-radius: var(--radius-full);   /* always pill */
   border: none;
@@ -27,35 +44,92 @@
    * follows: on grey go white, on white go grey. */
   background: var(--surface-contrast);
   color: var(--secondary-foreground);
+}
+
+/* ── A CONTROL: it answers the pointer and the keyboard ───── */
+button.chip {
   cursor: pointer;
   transition: background var(--duration-fast), color var(--duration-fast);
 }
-.chip:hover { background: var(--surface-contrast-hover); }
+button.chip:hover { background: var(--surface-contrast-hover); }
 /* Pressed — one stop past hover. */
-.chip:active { background: var(--surface-contrast-active); }
-.chip:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
-.chip:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+button.chip:active { background: var(--surface-contrast-active); }
+button.chip:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+button.chip:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+/* ── DATA: a value, and only the X is a target ───── */
+span.chip {
+  padding-block: var(--space-1);
+  /* A token is read as one thing, so it keeps its own words together rather
+   * than letting one long name break mid-word across the row. */
+  overflow-wrap: anywhere;
+  max-inline-size: 100%;
+}
+/* THE TIGHTER END BELONGS TO THE REMOVE BUTTON, NOT TO THE TOKEN. This padding
+ * was unconditional, so a token with nothing to remove — the common case in a
+ * read-only row of labels — sat with 8px after its last letter and 12 before
+ * its first, and read as text pushed against the right edge (owner,
+ * 2026-08-29). The button brings its own visual weight; without it the pill is
+ * symmetric. */
+span.chip:has(.chip-remove) { padding-inline-end: var(--space-2); }
+
+.chip-remove {
+  /* 24x24. It had no size at all and took the icon's 16px, which is under the
+   * SC 2.5.8 floor and sits hard against the label, so the spacing exception
+   * does not rescue it either. The glyph inside is unchanged. */
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* NO MARGIN OF ITS OWN: `.chip` already sets the gap between its parts, and
+   * adding 4px here made it 12 — half again the space between the dot and the
+   * label on every other chip in the system, so the cross read as detached from
+   * the word it removes (owner, 2026-08-29). */
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity var(--duration-fast), background var(--duration-fast);
+}
+.chip-remove:hover {
+  opacity: 1;
+  background: color-mix(in oklch, var(--secondary-foreground) 15%, transparent);
+}
+.chip-remove:active { opacity: 1; background: color-mix(in oklch, var(--secondary-foreground) 25%, transparent); }
+/* The ring. It used to trade the outline for that same tint, which is a hover
+ * by another name: keyboard focus and the pointer produced identical pixels,
+ * and the tint measures ~1.2:1 where SC 2.4.11 asks 3:1. */
+.chip-remove:focus-visible {
+  opacity: 1;
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+}
 
 /* ── Sizes — mirror .btn ───── */
-.chip[data-size="sm"] { height: var(--control-height-sm); padding-inline: var(--space-3); font-size: var(--font-sm); }
-.chip[data-size="lg"] { height: var(--control-height-lg); font-size: var(--control-font-size-lg); }
+.chip[data-size="sm"] { min-block-size: var(--control-height-sm); padding-inline: var(--space-3); font-size: var(--font-sm); }
+.chip[data-size="lg"] { min-block-size: var(--control-height-lg); font-size: var(--control-font-size-lg); }
 
 /* ── Variants — identical colors to .btn ───── */
-.chip[data-variant="primary"] { background: var(--primary); color: var(--primary-foreground); }
-.chip[data-variant="primary"]:hover { background: var(--primary-hover); }
-.chip[data-variant="primary"]:active { background: var(--primary-active); }
+button.chip[data-variant="primary"] { background: var(--primary); color: var(--primary-foreground); }
+button.chip[data-variant="primary"]:hover { background: var(--primary-hover); }
+button.chip[data-variant="primary"]:active { background: var(--primary-active); }
 
-.chip[data-variant="ghost"] { background: transparent; color: var(--foreground); }
-.chip[data-variant="ghost"]:hover { background: var(--accent-soft); }
-.chip[data-variant="ghost"]:active { background: var(--accent); }
+button.chip[data-variant="ghost"] { background: transparent; color: var(--foreground); }
+button.chip[data-variant="ghost"]:hover { background: var(--accent-soft); }
+button.chip[data-variant="ghost"]:active { background: var(--accent); }
 
-.chip[data-variant="destructive"] { background: var(--destructive); color: var(--destructive-foreground); }
+button.chip[data-variant="destructive"] { background: var(--destructive); color: var(--destructive-foreground); }
 
-.chip[data-variant="dark"] { background: var(--secondary-foreground); color: var(--background); }
-.chip[data-variant="dark"]:hover { background: var(--foreground); }
+button.chip[data-variant="dark"] { background: var(--secondary-foreground); color: var(--background); }
+button.chip[data-variant="dark"]:hover { background: var(--foreground); }
 
 /* ── Selected — primary fill, overrides the variant (pick-one / toggle groups).
  * Placed last so it wins over variant rules at equal specificity. ───── */
-.chip[data-selected] { background: var(--primary); color: var(--primary-foreground); }
-.chip[data-selected]:hover { background: var(--primary-hover); }
-.chip[data-selected]:active { background: var(--primary-active); }
+button.chip[data-selected] { background: var(--primary); color: var(--primary-foreground); }
+button.chip[data-selected]:hover { background: var(--primary-hover); }
+button.chip[data-selected]:active { background: var(--primary-active); }

@@ -58,7 +58,7 @@ scores 61% and writes six times more code. Numbers and history in
    "which representation for this data and task": rules with reasons and
    good/bad pairs, hard forbids, archetype taxonomy. The validator computes
    "table or cards" from the declared facts and fails the contradiction.
-4. **Components and blocks** (`src/`) — 131 components and 12 page templates,
+4. **Components and blocks** (`src/`) — 128 components and 12 page templates,
    token-driven, RTL-ready, with a golden example per component that the test
    suite compiles, renders and axe-checks, so the docs cannot drift from the
    code.

@@ -1,7 +1,7 @@
 {
   "ref": "Input",
   "level": "atom",
-  "description": "The single-line text field: label, invalid state and the shared control tokens. A screen never renders a bare input.",
+  "description": "The single-line field: label, invalid state and the shared control tokens. Native types ride on `type` — `date` and `time` are styled here rather than wrapped in components of their own. A screen never renders a bare input.",
   "exports": [
     "Input"
   ],
@@ -62,5 +62,5 @@
     "Layout",
     "Textarea"
   ],
-  "example": "<Stack gap={4}>\n  <Field label=\"Document title\" htmlFor=\"title\" hint=\"Shown in the list and in search.\">\n    <Input id=\"title\" defaultValue=\"Q3 onboarding guide\" />\n  </Field>\n  <Field label=\"Reply-to address\" htmlFor=\"mail\" error=\"That does not look like an address.\">\n    <Input id=\"mail\" invalid defaultValue=\"not-an-address\" />\n  </Field>\n  <Input aria-label=\"Search documents\" placeholder=\"Search documents\" surface=\"muted\" size=\"sm\" />\n</Stack>"
+  "example": "<Stack gap={4}>\n  <Field label=\"Document title\" htmlFor=\"title\" hint=\"Shown in the list and in search.\">\n    <Input id=\"title\" defaultValue=\"Q3 onboarding guide\" />\n  </Field>\n  <Field label=\"Reply-to address\" htmlFor=\"mail\" error=\"That does not look like an address.\">\n    <Input id=\"mail\" invalid defaultValue=\"not-an-address\" />\n  </Field>\n  <Input aria-label=\"Search documents\" placeholder=\"Search documents\" surface=\"muted\" size=\"sm\" />\n  \n  <Field label=\"Starts at\" htmlFor=\"starts\">\n    <Input id=\"starts\" type=\"time\" defaultValue=\"09:30\" />\n  </Field>\n</Stack>"
 }

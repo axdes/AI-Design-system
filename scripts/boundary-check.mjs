@@ -99,8 +99,6 @@ const CONTAINER_SURFACES = ['--background', '--card', '--popover', '--muted']
  * exemptions in contrast-check: an entry whose collision the CSS no longer
  * paints fails, so a stale excuse cannot sit here covering whatever lands next. */
 const EXEMPT = {
-  '--nav-active == --muted': 'the sidebar and the chat list paint themselves --accent, not --muted; the active row is the page colour ON that darker rail, which is the contrast, not a collision.',
-  '--nav-active == --background': 'same rail. In dark --muted and --background are one colour by design (the page has no second tier there).',
 }
 
 const UI = 3.0

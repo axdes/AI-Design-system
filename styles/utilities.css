@@ -147,14 +147,48 @@
  * eleven places to forget it — and a twelfth surface added tomorrow would have
  * had to know to copy it. Now it declares one attribute.
  *
- *   card     the surface is --card: a Card, an Alert, a SidePanel, a ChatShell
+ *   card     the surface is --card: a Card, a SidePanel, a ChatShell
  *   popover  the surface is --popover: a menu, a dialog, a toast — and a row
  *            inside it hovers against THAT surface, not against the page
+ *   tint     the surface is a TONE tint: an Alert. See below — it is the one
+ *            surface that cannot answer the question with a fill.
  */
 [data-raised] {
   --surface-contrast: var(--accent);
   --surface-contrast-hover: var(--accent-strong);
   --surface-contrast-active: var(--accent-active);
+}
+
+/* A TINT IS A THIRD SURFACE, and it was being answered as if it were the second.
+ *
+ * The rule above has two cases because it was written for two: the grey page,
+ * where a quiet control goes white, and the white card, where it goes grey. An
+ * Alert declared itself a card and is not one — its background is
+ * --primary-soft / --warning-soft / --success-soft / --destructive-soft, a pale
+ * tint, and --accent on a pale tint is not a contrast, it is a colour match.
+ * Measured on a warm-accent brand palette: 1.04:1 on the info tint, 1.01 on
+ * danger, 1.02 on success. That is the exact failure --surface-contrast was invented to fix,
+ * one surface further on (owner, 31.08, pointing at an alert's action: look at
+ * how this button looks). It also lands COOL on a warm tint, which is why it
+ * reads as disabled rather than merely as flat.
+ *
+ * A tint cannot be answered by a fill at all, and that is not a shortcoming of
+ * the token — a pale tint IS nearly white, so no light fill can be far from it:
+ * --card only reaches 1.06 to 1.13. So the tint is the one surface where a quiet
+ * control separates by ELEVATION. Not by a line: a boundary round a button was
+ * argued against twice (2026-08-22, 08-23) and nothing about that has changed.
+ * A shadow is a different claim — it says the control sits ON the tint rather
+ * than drawing an edge around it — and it costs nothing in dark, where the
+ * near-black fill already separates (1.32 to 2.18) and the shadow is invisible.
+ *
+ * The shadow travels as a TOKEN so the Button reads its own surface, rather than
+ * the Alert reaching into the Button. Every other surface leaves it unset, and
+ * the fallback in the `var()` is `none`. */
+[data-raised='tint'] {
+  --surface-contrast: var(--card);
+  --surface-contrast-hover: var(--accent);
+  --surface-contrast-active: var(--accent-strong);
+  --surface-contrast-shadow: var(--shadow-sm);
 }
 
 [data-raised='popover'] {

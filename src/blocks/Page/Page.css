@@ -29,8 +29,22 @@
   gap: var(--space-4);
   flex: 1;
   min-inline-size: 0;
-  /* Top gap comes from PageHeader's own padding-block-end; only bottom here. */
-  padding-block: 0 var(--space-4);
+  /* A STICKY OPAQUE HEADER OWES THE FIRST CONTROL BELOW IT ROOM FOR ITS RING.
+   *
+   * The gap above the content is PageHeader's own padding-block-end, and the
+   * header PAINTS that gap: `--muted` at `--z-sticky`, so content scrolls under
+   * it and not through it. The first thing in the column therefore sat flush
+   * against a surface drawn ON TOP of it — and a focus ring is drawn OUTSIDE
+   * the box it belongs to, so the top edge of the ring went under the header
+   * and the control read as focus-clipped (owner, read off the phone: the
+   * component picker on /components, 2026-08-30; the ring reaches 4px, the
+   * clearance was 0).
+   *
+   * The column starts one ring-reach lower instead — `--ring-offset +
+   * --ring-width`, the exact distance a ring extends past its control. Not a
+   * pixel of the header's cover is given up, so nothing peeks out from under
+   * it while the page scrolls. */
+  padding-block: calc(var(--ring-offset) + var(--ring-width)) var(--space-4);
   padding-inline: var(--space-8);
   container-type: inline-size;
   container-name: content;
@@ -121,7 +135,24 @@
  * that happens to land near one. */
 .page[data-shape='list-detail'] .page-body {
   flex: 1 1 20rem;
-  max-inline-size: 26rem;
+}
+/* AND THE CEILING ONLY EXISTS WHILE THE LIST IS A COLUMN BESIDE SOMETHING.
+ *
+ * The cap sat on the pane unconditionally, so below the width where the two
+ * stop fitting side by side — where the list is the full-width pane at the top
+ * of a stack — it was still a 26rem strip with the page's ground beside it: the
+ * component picker on /components measured 416px in a 675px window while the
+ * search above it spanned all of it, and read as a field that had failed to
+ * stretch (owner, 2026-08-30). A navigation column earns a ceiling because the
+ * detail beside it wants the rest; with nothing beside it there is nothing to
+ * leave the room to.
+ *
+ * The query is the wrap threshold itself, not a breakpoint near it: the two
+ * bases (20rem + 26rem) plus the gap between them, asked of `.page-inner`, the
+ * container this pane is measured in. Above it they are a row and the cap
+ * applies; below it they are a stack and it does not. */
+@container content (min-width: 47rem) {
+  .page[data-shape='list-detail'] .page-body { max-inline-size: 26rem; }
 }
 .page-detail {
   flex: 3 1 26rem;

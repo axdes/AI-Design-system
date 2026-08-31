@@ -29,7 +29,10 @@ is still wrong:
   of them can be chosen at a time.
 - `Tabs` when there are panels, `SegmentedControl` when there is only a choice.
 - `Badge` is a standalone status pill, `CountBadge` pins a number to another
-  element's corner, `Chip` is a pill you can select or press.
+  element's corner, `Chip` is the pill in its two jobs: a control you can press
+  or select, and — with `interactive={false}` or `onRemove` — a data token that
+  answers nothing. There is no `Tag`; it was the token half of `Chip`
+  (2026-08-30).
 - `Alert` stays on the page until resolved, a toast from `useToast()` does not.
 - `Divider` is the one hairline rule; `DropdownDivider` only exists inside a menu.
 - `Field` wraps a label and a control together; reach for `Label` alone only

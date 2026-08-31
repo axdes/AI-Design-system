@@ -99,18 +99,34 @@ button.side-nav-logo { cursor: pointer; }
 /* Pressed: one stop past hover, the third answer every control now gives. */
 .side-nav-item:active { background: var(--accent-strong); }
 .side-nav-item:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(-1 * var(--ring-offset)); }
-/* ONE ANSWER FOR "YOU ARE HERE", IN BOTH STATES.
+/* ONE ANSWER FOR "YOU ARE HERE", IN BOTH STATES — and it is not a grey.
  * Collapsed, the current item used to be a solid --primary disc. The brand mark
  * above it is a solid brand disc too in every product that caps its logo, so
  * the collapsed rail showed two identical circles and the top one read as a
  * second menu entry — the owner's finding on this site's own rail
- * (2026-08-24, and the two glyphs were near enough to settle it). The active
- * treatment is the one the expanded rail already uses: the accent fill with the
- * nav's active ink. The brand stays the only saturated thing on the rail. */
-/* Through the role, not the raw fill: the fill is meant to have white text
-   ON it, and using it AS text on the accent surface fails contrast in dark. */
-.side-nav-item.is-active { background: var(--accent); color: var(--nav-active-foreground); }
+ * (2026-08-24, and the two glyphs were near enough to settle it).
+ *
+ * What replaced it was --accent, the fill hover already uses, which made the
+ * current place indistinguishable from a hovered one; collapsed to a 40px disc
+ * on a card, one neutral step over the surface it sits on is not a signal at
+ * all (owner, 30.08: the active item does not register).
+ *
+ * THE ANSWER IS THE INK, AND ONLY THE INK. A tinted disc with a brand hairline
+ * was tried the same afternoon and read loudly — too loudly: it put a second
+ * coloured circle under a brand mark that is already one, and the rail became
+ * two competing discs (owner, same day: I would drop the shadow and make it just
+ * the active icon). What made the ink enough is that the ink is now correct: on
+ * this brand it had been resolving to the stop chosen for a WHITE page, 2.27:1
+ * on the dark rail, which is why nothing registered. At 5.8:1 a single glyph in
+ * the brand's colour, on a rail where every other glyph is grey, is the loudest
+ * thing there without a shape around it. Hover keeps the neutral fill, so the
+ * two states still differ: one is a ground, the other is a colour. */
+.side-nav-item.is-active {
+  color: var(--nav-active-foreground);
+  background: transparent;
+}
 .side-nav-item.is-active .side-nav-item-label { font-weight: var(--font-weight-semibold); }
+/* Hover still answers, and it answers the way every other row does. */
 .side-nav-item.is-active:hover { background: var(--accent); color: var(--nav-active-foreground); }
 
 .side-nav-toggle { border: 1px solid var(--border-strong); }
@@ -127,7 +143,10 @@ button.side-nav-logo { cursor: pointer; }
   inline-size: fit-content;
   margin-inline: auto;
   padding: var(--space-4) var(--space-2);
-  background: var(--card); border-radius: var(--radius-full); box-shadow: var(--card-shadow);
+  /* No lift. The pill is a QUIET ground the icons stand on, not a floating sheet:
+   * a shadow under a shape that never moves and never overlaps anything is
+   * decoration, and on a dark canvas it only muddies the edge (owner, 30.08). */
+  background: var(--card); border-radius: var(--radius-full);
 }
 /* Collapsed: the mark alone, in a box the size of a rail item, so it lines up
  * with the icons below it. The DS paints NO cap here — a brand mark that turns

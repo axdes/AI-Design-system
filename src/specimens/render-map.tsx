@@ -22,8 +22,7 @@ import { Slider } from '@/components/Slider'
 import { Switch } from '@/components/Switch'
 import { AvatarGroup } from '@/components/AvatarGroup'
 import { Badge } from '@/components/Badge'
-import { BarChart } from '@/components/BarChart'
-import { LineChart } from '@/components/LineChart'
+import { Chart } from '@/components/Chart'
 import { ColorSwatch } from '@/components/ColorSwatch'
 import { CountBadge } from '@/components/CountBadge'
 import { DatePicker } from '@/components/DatePicker'
@@ -32,7 +31,6 @@ import { Kbd } from '@/components/Kbd'
 import { Progress } from '@/components/Progress'
 import { RangeSlider } from '@/components/RangeSlider'
 import { TagInput } from '@/components/TagInput'
-import { TimeInput } from '@/components/TimeInput'
 import { Descriptions } from '@/components/Descriptions'
 import { Divider } from '@/components/Divider'
 import { FileUpload } from '@/components/FileUpload'
@@ -76,7 +74,6 @@ import { Table, TBody, Td, Th, THead, Tr } from '@/components/Table'
 import { TagGroup } from '@/components/TagGroup'
 import { Thumbnail } from '@/components/Thumbnail'
 import { Truncate } from '@/components/Truncate'
-import { Tag } from '@/components/Tag'
 import { SessionPill } from '@/components/SessionPill'
 import { ContentCard } from '@/components/ContentCard'
 import { MenuButton } from '@/components/MenuButton'
@@ -190,9 +187,8 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
      spread comes last so each variant case can flip what it is testing. */
   SelectableTile: (p) => <SelectableTile name="region" title="Europe" selected onSelect={() => {}} {...p} />,
   Skeleton: (p) => <Skeleton {...p} />,
-  BarChart: (p) => <BarChart data={[{ label: 'Apr', value: 34 }, { label: 'May', value: 41 }]} label="Findings closed" {...p} />,
-  LineChart: (p) => (
-    <LineChart labels={['Apr', 'May']} series={[{ label: 'Closed', values: [34, 41] }]} label="Findings closed" {...p} />
+  Chart: (p) => (
+    <Chart labels={['Apr', 'May']} series={[{ label: 'Closed', values: [34, 41] }]} label="Findings closed" {...p} />
   ),
   Sparkline: (p) => <Sparkline values={[3, 5, 4, 8, 6, 9]} {...p} />,
   Spinner: (p) => <Spinner label="Loading" {...p} />,
@@ -206,7 +202,6 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
   Progress: (p) => <Progress shape="ring" value={64} label="Documents processed" {...p} />,
   RangeSlider: (p) => <RangeSlider label="Range" value={[20, 60]} onChange={() => undefined} {...p} />,
   TagInput: (p) => <TagInput label="Tags" value={['design']} onChange={() => undefined} {...p} />,
-  TimeInput: (p) => <TimeInput aria-label="Time" {...p} />,
   NumberInput: (p) => <NumberInput label="Qty" value={1} onChange={() => undefined} {...p} />,
   CountBadge: (p) => <CountBadge count={3} {...p}><span>x</span></CountBadge>,
   AvatarGroup: (p) => <AvatarGroup items={[{ name: 'A B' }, { name: 'C D' }]} {...p} />,
@@ -266,7 +261,6 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
   PlanCard: (p) => (
     <PlanCard name="Team" price="$12" features={['Up to 20 seats']} action={<Button>Choose</Button>} {...p} />
   ),
-  Tag: (p) => <Tag {...p}>Sarah</Tag>,
   SessionPill: (p) => <SessionPill label="Recording" onClick={() => undefined} {...p} />,
   Identity: (p) => <Identity name="Ada Meridian" secondary="Product designer" {...p} />,
   Textarea: (p) => <Textarea aria-label="Notes" {...p} />,

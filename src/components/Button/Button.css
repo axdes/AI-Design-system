@@ -86,6 +86,9 @@
 .btn[data-variant="secondary"] {
   background: var(--surface-contrast);
   color: var(--secondary-foreground);
+  /* Unset on every surface but a tone tint, where a fill cannot separate at all.
+   * See --surface-contrast-shadow in styles/utilities.css. */
+  box-shadow: var(--surface-contrast-shadow, none);
 }
 .btn[data-variant="secondary"]:hover,
 .btn[data-variant="secondary"][data-open] { background: var(--surface-contrast-hover); }

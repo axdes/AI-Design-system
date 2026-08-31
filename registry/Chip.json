@@ -1,7 +1,7 @@
 {
   "ref": "Chip",
-  "level": "atom",
-  "description": "Rounded selectable label. A Button with a toggle state, always pill-shaped: quick actions, quick replies, pick-a-reason chips, filters, etc. Copy: names the filter it applies, not the act of filtering — \"Overdue\", not \"Filter by overdue\".",
+  "level": "molecule",
+  "description": "The pill, in its two jobs. `interactive` (the default) is a control: a Button with a toggle state, always pill-shaped — quick actions, quick replies, pick-a-reason chips, filters. With `onRemove`, or with `interactive={false}`, it is DATA: a static label token, the value as the reader wrote or chose it, where only the trailing X does anything. One component because it was always one pill: <Tag> was a copy of this box that swapped the element (2026-08-30). The element is the whole difference, and it stays visible in the DOM — button or span — rather than being a flag on a div. Copy: a control names the filter it applies, not the act of filtering — \"Overdue\", not \"Filter by overdue\". A token is the value itself, unaltered: rewording data makes it un-findable.",
   "exports": [
     "Chip"
   ],
@@ -10,10 +10,15 @@
   "slots": [],
   "props": [
     {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true
+    },
+    {
       "name": "ref",
-      "type": "Ref<HTMLButtonElement>",
+      "type": "Ref<HTMLElement>",
       "required": false,
-      "description": "Forwarded to the underlying <button>."
+      "description": "Forwarded to the element this renders — the <button>, or the <span> of a data token."
     },
     {
       "name": "variant",
@@ -32,7 +37,7 @@
       "name": "size",
       "type": "Size",
       "required": false,
-      "description": "Follows the row it sits in: `sm` inside a table cell or a dense toolbar, `md` on its own.",
+      "description": "Follows the row it sits in: `sm` inside a table cell or a dense toolbar, `md` on its own. Defaults to `md` as a control and `sm` as a data token, which is the size each was already shipping at.",
       "values": [
         "sm",
         "md",
@@ -43,17 +48,40 @@
       "name": "selected",
       "type": "boolean",
       "required": false,
-      "description": "Toggled/active state for pick-one or multi-select chip groups (primary fill)."
+      "description": "Toggled/active state for pick-one or multi-select chip groups (primary fill). A data token cannot be selected: there is nothing to press."
     },
     {
       "name": "icon",
       "type": "IconName",
       "required": false,
       "description": "Optional leading icon."
+    },
+    {
+      "name": "interactive",
+      "type": "boolean",
+      "required": false,
+      "description": "IS THIS A CONTROL OR IS IT DATA? A control renders a <button> that answers hover, press and focus and is announced as pressed when `selected`. Data renders a <span> that does none of it: a value the reader typed or chose, which must never look pressable. Defaults to a control, and to data as soon as `onRemove` is given, because the X is then the only target."
+    },
+    {
+      "name": "onRemove",
+      "type": "() => void",
+      "required": false,
+      "description": "Renders a trailing remove button that calls this on click. Data tokens only: a button inside a button is invalid HTML, so passing it makes the chip a token."
+    },
+    {
+      "name": "removeLabel",
+      "type": "string",
+      "required": false,
+      "description": "Accessible label + tooltip for the remove button (required when removable)."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "required": false
     }
   ],
   "sourcePath": "src/components/Chip/Chip.tsx",
-  "inherits": "ButtonHTMLAttributes<HTMLButtonElement>",
+  "inherits": "Omit<HTMLAttributes<HTMLElement>, 'children'>",
   "variants": {
     "variant": {
       "prop": "variant",
@@ -82,7 +110,8 @@
   },
   "uses": [
     "Icon",
-    "Layout"
+    "Layout",
+    "Tooltip"
   ],
-  "example": "const [on, setOn] = useState<string[]>(['In review'])\nconst toggle = (f: string) => setOn((s) => (s.includes(f) ? s.filter((x) => x !== f) : [...s, f]))\n\n<Row gap={2} align=\"center\">\n  {FILTERS.map((f) => (\n    <Chip key={f} selected={on.includes(f)} onClick={() => toggle(f)}>{f}</Chip>\n  ))}\n  <Chip variant=\"ghost\" icon=\"add\" onClick={() => undefined}>Add filter</Chip>\n</Row>"
+  "example": "const [on, setOn] = useState<string[]>(['In review'])\nconst [recipients, setRecipients] = useState(['Sarah', 'Ahmed'])\nconst toggle = (f: string) => setOn((s) => (s.includes(f) ? s.filter((x) => x !== f) : [...s, f]))\n\n<Stack gap={4}>\n  \n  <Row gap={2} align=\"center\">\n    {FILTERS.map((f) => (\n      <Chip key={f} selected={on.includes(f)} onClick={() => toggle(f)}>{f}</Chip>\n    ))}\n    <Chip variant=\"ghost\" icon=\"add\" onClick={() => undefined}>Add filter</Chip>\n  </Row>\n  \n  <Row gap={2}>\n    {recipients.map((name) => (\n      <Chip\n        key={name}\n        onRemove={() => setRecipients((r) => r.filter((x) => x !== name))}\n        removeLabel={`Remove ${name}`}\n      >\n        {name}\n      </Chip>\n    ))}\n    \n    <Chip interactive={false}>Internal</Chip>\n  </Row>\n</Stack>"
 }

@@ -100,7 +100,7 @@
       "means": "the comparison that makes the number mean something"
     },
     "trend": {
-      "component": "Sparkline | BarChart | DonutChart",
+      "component": "Sparkline | Chart | DonutChart",
       "means": "the shape of the number: over time, per category, or as shares of a whole"
     },
     "scale": {
@@ -298,7 +298,7 @@
         ],
         "oneOf": [
           "Sparkline",
-          "BarChart",
+          "Chart",
           "DonutChart"
         ],
         "optional": [
@@ -310,7 +310,7 @@
         ]
       },
       "notWhen": "One number with no shape — that is the kpi family and does not need a chart.",
-      "because": "A chart card without its period and its freshness is a picture, not a measurement (Fiori analytical card). Three forms cover what a card can hold: a value over time (Sparkline), a value per category (BarChart), a whole split into named shares (DonutChart).",
+      "because": "A chart card without its period and its freshness is a picture, not a measurement (Fiori analytical card). Three forms cover what a card can hold: a value over time beside a number (Sparkline), a measure across categories or over time with its scale (Chart), a whole split into named shares (DonutChart).",
       "source": "SAP Fiori analytical card",
       "status": "built"
     },

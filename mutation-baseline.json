@@ -1,8 +1,8 @@
 {
-  "score": 77,
-  "floor": 77,
+  "score": 78,
+  "floor": 76,
   "killed": 158,
-  "survived": 47,
+  "survived": 44,
   "components": {
     "Accordion": {
       "hash": "ad6112206c77",
@@ -23,7 +23,7 @@
       ]
     },
     "Alert": {
-      "hash": "276dce42f9bf",
+      "hash": "ad50d270702e",
       "killed": [
         "strip-aria",
         "drop-optional-render",
@@ -50,18 +50,6 @@
         "drop-spread"
       ],
       "survived": []
-    },
-    "BarChart": {
-      "hash": "0856c8b776dd",
-      "killed": [
-        "boolean-default",
-        "and-to-or",
-        "strip-aria",
-        "drop-optional-render"
-      ],
-      "survived": [
-        "invert-comparison"
-      ]
     },
     "Breadcrumb": {
       "hash": "90f5a3607ea1",
@@ -150,14 +138,15 @@
       ]
     },
     "Chip": {
-      "hash": "05af06b5cb98",
+      "hash": "6e3036821c09",
       "killed": [
         "and-to-or",
+        "strip-aria",
+        "negate-cond",
+        "drop-optional-render",
         "drop-spread"
       ],
-      "survived": [
-        "drop-optional-render"
-      ]
+      "survived": []
     },
     "CodeInput": {
       "hash": "ea1ca55bd9a6",
@@ -177,7 +166,7 @@
       "survived": []
     },
     "Combobox": {
-      "hash": "88994bf45908",
+      "hash": "a50268ee214c",
       "killed": [
         "boolean-default",
         "strip-aria",
@@ -318,7 +307,7 @@
       "survived": []
     },
     "FilterDropdown": {
-      "hash": "9e6ba93267da",
+      "hash": "b749686f9df9",
       "killed": [
         "boolean-default",
         "strip-aria"
@@ -370,24 +359,11 @@
       ]
     },
     "Input": {
-      "hash": "b938f3b35f4e",
+      "hash": "1cfb051f7e57",
       "killed": [
         "drop-spread"
       ],
       "survived": []
-    },
-    "LineChart": {
-      "hash": "1491a95b121b",
-      "killed": [
-        "drop-optional-render"
-      ],
-      "survived": [
-        "boolean-default",
-        "and-to-or",
-        "negate-cond",
-        "off-by-one",
-        "invert-comparison"
-      ]
     },
     "LinkTile": {
       "hash": "9a68cd732ad2",
@@ -606,7 +582,7 @@
       "survived": []
     },
     "TagInput": {
-      "hash": "84cd93898c58",
+      "hash": "14f37b987a28",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -618,13 +594,6 @@
       "hash": "41d58a51c634",
       "killed": [
         "and-to-or"
-      ],
-      "survived": []
-    },
-    "TimeInput": {
-      "hash": "bbfc7d35050f",
-      "killed": [
-        "drop-spread"
       ],
       "survived": []
     },
@@ -675,6 +644,20 @@
       "hash": "21a050c7007d",
       "killed": [],
       "survived": [
+        "invert-comparison"
+      ]
+    },
+    "Chart": {
+      "hash": "0f7d89c4ade4",
+      "killed": [
+        "boolean-default",
+        "strip-aria",
+        "drop-optional-render"
+      ],
+      "survived": [
+        "and-to-or",
+        "negate-cond",
+        "off-by-one",
         "invert-comparison"
       ]
     }

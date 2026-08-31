@@ -417,7 +417,7 @@
  * everywhere and that this is reusable). A component that lands in a card gets
  * the card's rhythm without knowing it is in a card. */
 .card > :is(.timeline, .table-scroll, .accordion, .descriptions, .field, .tabs,
-    .sparkline, .bar-chart, .donut-chart, .meter, .progressbar, .list-item,
+    .sparkline, .chart, .donut-chart, .meter, .progressbar, .list-item,
     .selectable-tile, .quote, .logo-wall, .grid, .empty-state,
     .content-card[data-layout='row']) {
   margin-block-start: var(--space-2);
@@ -425,7 +425,7 @@
 
 /* Unless it opens the card: then the card's padding is the distance. */
 .card > :is(.timeline, .table-scroll, .accordion, .descriptions, .field, .tabs,
-    .sparkline, .bar-chart, .donut-chart, .meter, .progressbar, .list-item,
+    .sparkline, .chart, .donut-chart, .meter, .progressbar, .list-item,
     .selectable-tile, .quote, .logo-wall, .grid, .empty-state,
     .content-card[data-layout='row']):first-child {
   margin-block-start: 0;

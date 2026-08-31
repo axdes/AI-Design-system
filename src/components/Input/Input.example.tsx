@@ -30,6 +30,14 @@ export function Example() {
         <Input id="mail" invalid defaultValue="not-an-address" />
       </Field>
       <Input aria-label="Search documents" placeholder="Search documents" surface="muted" size="sm" />
+      {/* A NATIVE TYPE IS A VALUE OF `type`, NOT A COMPONENT. `date` and `time`
+          are styled by Input.css (tabular digits, the native glyph tamed), so
+          the browser keeps the picker, the validation and the keyboard. There
+          was a separate <TimeInput> for this; it rendered the same element and
+          was folded back in (2026-08-30). */}
+      <Field label="Starts at" htmlFor="starts">
+        <Input id="starts" type="time" defaultValue="09:30" />
+      </Field>
     </Stack>
   )
 }

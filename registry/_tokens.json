@@ -485,6 +485,12 @@
     "layer": "primitive"
   },
   {
+    "name": "--danger-930",
+    "group": "color",
+    "value": "#8d3122",
+    "layer": "primitive"
+  },
+  {
     "name": "--danger-950",
     "group": "color",
     "value": "#3b1410",
@@ -795,7 +801,14 @@
   {
     "name": "--nav-active",
     "group": "color",
-    "value": "var(--muted)",
+    "value": "var(--primary-soft)",
+    "layer": "semantic",
+    "role": "state"
+  },
+  {
+    "name": "--nav-active-border",
+    "group": "color",
+    "value": "var(--primary-accent)",
     "layer": "semantic",
     "role": "state"
   },
@@ -869,25 +882,25 @@
   {
     "name": "--neutral-800",
     "group": "color",
-    "value": "#40444a",
+    "value": "#3b3f45",
     "layer": "primitive"
   },
   {
     "name": "--neutral-820",
     "group": "color",
-    "value": "#2d3137",
-    "layer": "primitive"
-  },
-  {
-    "name": "--neutral-850",
-    "group": "color",
-    "value": "#25292f",
+    "value": "#2c3036",
     "layer": "primitive"
   },
   {
     "name": "--neutral-900",
     "group": "color",
     "value": "#1f2328",
+    "layer": "primitive"
+  },
+  {
+    "name": "--neutral-950",
+    "group": "color",
+    "value": "#0e1217",
     "layer": "primitive"
   },
   {
@@ -1570,6 +1583,12 @@
     "name": "--warning-900",
     "group": "color",
     "value": "#f68930",
+    "layer": "primitive"
+  },
+  {
+    "name": "--warning-930",
+    "group": "color",
+    "value": "#6b4915",
     "layer": "primitive"
   },
   {

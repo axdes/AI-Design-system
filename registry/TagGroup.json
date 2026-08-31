@@ -29,7 +29,7 @@
   ],
   "sourcePath": "src/components/TagGroup/TagGroup.tsx",
   "uses": [
-    "Tag",
+    "Chip",
     "Tooltip"
   ],
   "example": "<TagGroup items={['Finance', 'Q3', 'Reviewed', 'Frankfurt']} />"

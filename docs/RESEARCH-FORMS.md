@@ -30,7 +30,7 @@ Controls (atoms and molecules) are close to complete:
 | Choice from a set | `Select`, `Combobox`, `Radio` + `RadioGroup`, `SegmentedControl`, `SelectableTile` |
 | Boolean | `Checkbox`, `Switch` |
 | Number, range | `NumberInput`, `Slider`, `RangeSlider`, `Rating` |
-| Date and time | `DatePicker`, `DateRangePicker`, `TimeInput`, `Calendar` |
+| Date and time | `DatePicker`, `DateRangePicker`, `Input type="time"`, `Calendar` |
 | Files, tags, search | `FileUpload`, `TagInput`, `SearchInput` |
 | Affixes | `InputGroup` (prefix / suffix) |
 | Field wiring | `Field` (label, required mark, hint or error, `aria-describedby`) |

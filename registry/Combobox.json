@@ -1,7 +1,7 @@
 {
   "ref": "Combobox",
   "level": "molecule",
-  "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Tag>s and the list stays open. Copy: the empty label says what was searched for and offers the way out — \"No supplier matches 'nortwind'. Check the spelling, or add a supplier.\" A bare \"No results\" leaves the reader stuck on their own typo.",
+  "description": "Searchable select — the ARIA combobox pattern (input + listbox), for when a plain <Select> has too many options to scan. Type to filter, Arrow keys to move, Enter to pick, Escape to close. `multiple` turns it into a token input where picks render as removable <Chip>s and the list stays open. Copy: the empty label says what was searched for and offers the way out — \"No supplier matches 'nortwind'. Check the spelling, or add a supplier.\" A bare \"No results\" leaves the reader stuck on their own typo.",
   "exports": [
     "Combobox"
   ],
@@ -109,10 +109,10 @@
   },
   "uses": [
     "Card",
+    "Chip",
     "Field",
     "Icon",
-    "Layout",
-    "Tag"
+    "Layout"
   ],
   "example": "const [country, setCountry] = useState<Country>()\nconst [tags, setTags] = useState<string[]>(['design'])\n\n<Stack gap={6}>\n  \n  <Field label=\"Country\" htmlFor=\"country\">\n    <Combobox<Country>\n      label=\"Country\"\n      surface=\"muted\"\n      placeholder=\"Type to search\"\n      options={COUNTRIES}\n      value={country}\n      onChange={setCountry}\n    />\n  </Field>\n  \n  <Card>\n    <Field label=\"Topics\" htmlFor=\"topics\">\n      <Combobox\n        label=\"Topics\"\n        multiple\n        placeholder=\"Add a topic\"\n        options={TAGS}\n        value={tags}\n        onChange={setTags}\n      />\n    </Field>\n  </Card>\n</Stack>"
 }

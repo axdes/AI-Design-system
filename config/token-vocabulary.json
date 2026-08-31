@@ -116,8 +116,12 @@
       "why": "pressing it is the next step on the same ladder."
     },
     "--nav-active": {
-      "follows": "--muted",
-      "why": "the current page is marked by a quiet ground, not by a colour of its own."
+      "follows": "--primary-soft",
+      "why": "the current place is marked by the brand's own pale wash, not by a grey. It followed --muted until 2026-08-30, and a quiet ground is exactly what hover already spends: the two states said the same thing, and on a collapsed icon rail the current item stopped reading at all."
+    },
+    "--nav-active-border": {
+      "follows": "--primary-accent",
+      "why": "the hairline around the current place is the same brand ink its label is written in. On a 40px disc the tint alone has no room to carry the message; the edge is what makes it unmistakable."
     },
     "--nav-active-foreground": {
       "follows": "--primary-accent",

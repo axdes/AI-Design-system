@@ -1,12 +1,12 @@
 {
  "truncated": 0,
  "elements": {
-  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(31, 35, 40)","color":"rgb(241, 246, 253)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
+  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(44, 48, 54)","color":"rgb(241, 246, 253)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
   "div@0": {"box":[0,0,1280,544],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "div.gallery-stage@0/0": {"box":[0,0,1280,544],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"flex-start","padding":"32px"},
-  "div.visual-case@0/0/0": {"box":[288,32,704,480],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"24px","border-radius":"16px","background-color":"rgb(31, 35, 40)"},
+  "div.visual-case@0/0/0": {"box":[288,32,704,480],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"24px","border-radius":"16px","background-color":"rgb(44, 48, 54)"},
   "div.row@0/0/0/0": {"box":[312,56,656,432],"display":"flex","flex-direction":"row","flex-wrap":"wrap","align-items":"flex-start","gap":"16px"},
-  "div.card@0/0/0/0/0": {"box":[312,56,348,208],"display":"flex","position":"relative","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","padding":"24px","border-radius":"16px","background-color":"rgb(37, 41, 47)"},
+  "div.card@0/0/0/0/0": {"box":[312,56,348,208],"display":"flex","position":"relative","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","padding":"24px","border-radius":"16px","background-color":"rgb(31, 35, 40)"},
   "div.stat@0/0/0/0/0/0": {"box":[336,80,300,160],"display":"flex","flex-direction":"column","flex-wrap":"nowrap","gap":"8px"},
   "div.stat-value@0/0/0/0/0/0/0": {"box":[336,80,300,30],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-size":"30px","font-weight":"600","line-height":"30px","letter-spacing":"-0.6px"},
   "span.stat-delta@0/0/0/0/0/0/0/0": {"box":[465,89,56,16],"display":"inline-flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","gap":"4px","margin":"0px 0px 0px 8px","color":"rgb(187, 191, 198)","font-size":"13px","font-weight":"500","line-height":"13px"},
@@ -19,11 +19,11 @@
   "svg@0/0/0/0/0/0/2/0/0": {"box":[336,160,300,80],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "path.sparkline-area@0/0/0/0/0/0/2/0/0/0": {"box":[336,165,300,75],"display":"inline","flex-direction":"row","flex-wrap":"nowrap","opacity":"0.12"},
   "path.sparkline-line@0/0/0/0/0/0/2/0/0/1": {"box":[336,165,300,70],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
-  "span.sparkline-point@0/0/0/0/0/0/2/0/1": {"box":[628,161,8,8],"display":"block","position":"absolute","flex-direction":"row","flex-wrap":"nowrap","margin":"-4px 0px 0px","border-radius":"9999px","background-color":"rgb(179, 217, 107)","box-shadow":"rgb(37, 41, 47) 0px 0px 0px 2px"},
-  "div.card@0/0/0/0/1": {"box":[312,280,348,208],"display":"flex","position":"relative","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","padding":"24px","border-radius":"16px","background-color":"rgb(37, 41, 47)"},
+  "span.sparkline-point@0/0/0/0/0/0/2/0/1": {"box":[628,161,8,8],"display":"block","position":"absolute","flex-direction":"row","flex-wrap":"nowrap","margin":"-4px 0px 0px","border-radius":"9999px","background-color":"rgb(179, 217, 107)","box-shadow":"rgb(31, 35, 40) 0px 0px 0px 2px"},
+  "div.card@0/0/0/0/1": {"box":[312,280,348,208],"display":"flex","position":"relative","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","padding":"24px","border-radius":"16px","background-color":"rgb(31, 35, 40)"},
   "div.stat@0/0/0/0/1/0": {"box":[336,304,300,160],"display":"flex","flex-direction":"column","flex-wrap":"nowrap","gap":"8px"},
   "div.stat-value@0/0/0/0/1/0/0": {"box":[336,304,300,30],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-size":"30px","font-weight":"600","line-height":"30px","letter-spacing":"-0.6px"},
-  "span.stat-delta@0/0/0/0/1/0/0/0": {"box":[383,313,45,16],"display":"inline-flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","gap":"4px","margin":"0px 0px 0px 8px","color":"rgb(226, 129, 122)","font-size":"13px","font-weight":"500","line-height":"13px"},
+  "span.stat-delta@0/0/0/0/1/0/0/0": {"box":[383,313,45,16],"display":"inline-flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","gap":"4px","margin":"0px 0px 0px 8px","color":"rgb(236, 163, 159)","font-size":"13px","font-weight":"500","line-height":"13px"},
   "svg.lucide@0/0/0/0/1/0/0/0/0": {"box":[383,313,16,16],"display":"block","flex-direction":"row","flex-wrap":"nowrap","overflow":"hidden"},
   "path@0/0/0/0/1/0/0/0/0/0": {"box":[387,316,9,5],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
   "path@0/0/0/0/1/0/0/0/0/1": {"box":[391,316,0,9],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
@@ -32,7 +32,7 @@
   "div.sparkline@0/0/0/0/1/0/2/0": {"box":[336,384,300,80],"display":"block","position":"relative","flex-direction":"row","flex-wrap":"nowrap"},
   "svg@0/0/0/0/1/0/2/0/0": {"box":[336,384,300,80],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "path.sparkline-line@0/0/0/0/1/0/2/0/0/0": {"box":[336,389,300,70],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
-  "span.sparkline-point@0/0/0/0/1/0/2/0/1": {"box":[628,385,8,8],"display":"block","position":"absolute","flex-direction":"row","flex-wrap":"nowrap","margin":"-4px 0px 0px","border-radius":"9999px","background-color":"rgb(254, 241, 127)","box-shadow":"rgb(37, 41, 47) 0px 0px 0px 2px"},
+  "span.sparkline-point@0/0/0/0/1/0/2/0/1": {"box":[628,385,8,8],"display":"block","position":"absolute","flex-direction":"row","flex-wrap":"nowrap","margin":"-4px 0px 0px","border-radius":"9999px","background-color":"rgb(254, 241, 127)","box-shadow":"rgb(31, 35, 40) 0px 0px 0px 2px"},
   "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
  }
 }

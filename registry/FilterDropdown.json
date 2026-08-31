@@ -104,10 +104,10 @@
     }
   },
   "uses": [
+    "Chip",
     "Dropdown",
     "Icon",
-    "SearchInput",
-    "Tag"
+    "SearchInput"
   ],
   "example": "const [status, setStatus] = useState<Status[]>([])<FilterDropdown<Status>\n  label=\"Status\"\n  allLabel=\"All statuses\"\n  multiple\n  options={[\n    { value: 'draft', label: 'Draft', count: 4 },\n    { value: 'review', label: 'In review', count: 2 },\n    { value: 'published', label: 'Published', count: 11 },\n  ]}\n  value={status}\n  onChange={setStatus}\n/>"
 }

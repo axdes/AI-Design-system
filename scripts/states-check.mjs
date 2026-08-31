@@ -35,7 +35,7 @@ const NOT_A_CONTROL = {
   Modal: 'a surface — the close button is an <IconButton> and answers there',
   CommandPalette: 'a surface; its rows are measured as .command-item, its field as .input',
   Field: 'a label and a message around someone else\'s control',
-  BarChart: 'a figure; the <button> is a bar with a tooltip, not an operable control',
+  Chart: 'a figure; the <button> is a bar carrying a readout, not an operable control',
   Table: 'a surface; the sort button is chrome and the row states are the Table\'s own',
   Carousel: 'a surface; its arrows are <IconButton>',
   Accordion: 'headers are measured, but hover/press on a disclosure header is the panel opening',

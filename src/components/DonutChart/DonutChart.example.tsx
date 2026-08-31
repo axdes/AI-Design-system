@@ -17,7 +17,7 @@ const FINDINGS = [
 /* A DONUT IS FOR PARTS OF ONE WHOLE, and it is honest at three or four
  * segments. Past that the slices stop being comparable by eye and the reader is
  * reading the legend, which is a table with a picture on it. Numbers that are
- * not shares of anything — five teams' headcounts — are a <BarChart>.
+ * not shares of anything — five teams' headcounts — are a <Chart> of bars.
  *
  * `center` is the WHOLE, so the ring has something to be a share of. Putting
  * the biggest segment there instead makes the other slices look like a

@@ -1,7 +1,7 @@
 import './TagGroup.css'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/cn'
-import { Tag } from '../Tag'
+import { Chip } from '../Chip'
 import { Tooltip } from '../Tooltip'
 
 type Props = {
@@ -27,7 +27,7 @@ export function TagGroup({ items, max = 2, className }: Props) {
 
   return (
     <span className={cn('tag-group', className)}>
-      {shown.map((label) => <Tag key={label}>{label}</Tag>)}
+      {shown.map((label) => <Chip key={label}>{label}</Chip>)}
       {rest.length > 0 && (
         /* The rest are named, not just counted: a "+3" nobody can resolve is a
          * number, and a number is not a label. The names are IN the element for

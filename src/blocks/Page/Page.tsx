@@ -53,7 +53,7 @@ type Props = {
    * WHAT THE PAGE IS CALLED. Give it and the page builds its own `<PageHeader>`;
    * that is the common case, and eight blocks were each writing the same four
    * lines to do it by hand (2026-08-26). A ReactNode, because a record title
-   * routinely carries a <Badge> or a <Tag> beside it.
+   * routinely carries a <Badge> or a <Chip> beside it.
    */
   title?: ReactNode
   /** What acts on the WHOLE page, in the header: edit, delete, a primary action. */

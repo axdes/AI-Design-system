@@ -1,7 +1,7 @@
 import './TagInput.css'
 import { useState, type KeyboardEvent } from 'react'
 import { cn } from '../../lib/cn'
-import { Tag } from '../Tag'
+import { Chip } from '../Chip'
 
 type Props = {
   /** The committed tags, in order. */
@@ -19,7 +19,7 @@ type Props = {
   className?: string
 }
 
-/* Free-text tags: type, press Enter or comma, get a removable <Tag>. For
+/* Free-text tags: type, press Enter or comma, get a removable <Chip> token. For
  * choosing from a KNOWN option list use <Combobox multiple>; this one is for
  * values the user invents (emails, labels, keywords). Duplicates are dropped
  * case-insensitively, blur commits what was typed, and Backspace in the empty
@@ -50,14 +50,14 @@ export function TagInput({ value, onChange, label, placeholder, invalid, disable
   return (
     <div className={cn('taginput', className)} data-invalid={invalid || undefined} data-disabled={disabled || undefined}>
       {value.map((tag) => (
-        <Tag
+        <Chip
           key={tag}
           size="sm"
           onRemove={disabled ? undefined : () => onChange(value.filter((t) => t !== tag))}
           removeLabel={`Remove ${tag}`}
         >
           {tag}
-        </Tag>
+        </Chip>
       ))}
       <input
         className="taginput-field"

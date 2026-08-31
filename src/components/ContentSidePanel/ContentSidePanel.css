@@ -22,14 +22,17 @@
   border-end-end-radius: var(--card-radius);
 }
 
-/* Active rail icon: light-grey circle (app-bg tone) + primary icon — matches
- * the left sidebar's active treatment (the default --accent reads too heavy). */
+/* The open panel's icon carries the system's "you are here": the soft brand
+ * surface, brand ink, a brand hairline — the same three the sidebar uses, so one
+ * rail does not disagree with another. Hover keeps the neutral step; both were
+ * --nav-active before, which made hovering a rail icon look like opening it. */
 .content-side-panel-rail .icon-button:hover {
-  background: var(--nav-active);
+  background: var(--accent);
 }
 .content-side-panel-rail .icon-button[data-open] {
   background: var(--nav-active);
   color: var(--nav-active-foreground);
+  box-shadow: inset 0 0 0 1px var(--nav-active-border);
 }
 
 /* Slide-out panel (chrome via <SidePanel>) sits between document and rail —

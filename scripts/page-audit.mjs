@@ -63,7 +63,7 @@ const DIST = `${ROOT}/dist`
 if (!existsSync(CONFIG)) { console.error(`No config/screens.config.json in ${ROOT}.`); process.exit(1) }
 if (!existsSync(`${DIST}/index.html`)) { console.error('No dist/index.html — run `npm run build` first.'); process.exit(1) }
 
-const { screens, seedLocalStorage = {}, widths: shotWidths, auditWidths = [], auditAllow = {}, apiMocks = {}, contentSelectors, localeStorageKey = 'i18n.lang', rtlLocale = 'ar' } = JSON.parse(readFileSync(CONFIG, 'utf8'))
+const { screens, seedLocalStorage = {}, widths: shotWidths, auditWidths = [], auditAllow = {}, axeRules = {}, apiMocks = {}, contentSelectors, localeStorageKey = 'i18n.lang', rtlLocale = 'ar' } = JSON.parse(readFileSync(CONFIG, 'utf8'))
 
 /* Which element IS the content column. The design system and the apps that
  * follow it use `.page-content`; the page-template blocks own their wrappers
@@ -720,7 +720,7 @@ async function auditScreen({ name, path, theme = 'light', anonymous = false, has
     const m = await page.evaluate(measure, { slack: SLACK, contentSelectors: CONTENT })
 
     await page.addScriptTag({ content: AXE_SOURCE })
-    const axeResult = await page.evaluate(async () =>
+    const axeResult = await page.evaluate(async ({ rules }) =>
       /* eslint-disable-next-line no-undef -- axe is the script injected above; this body runs in the browser. */
       await window.axe.run(document, {
         resultTypes: ['violations'],
@@ -728,8 +728,18 @@ async function auditScreen({ name, path, theme = 'light', anonymous = false, has
           /* Page-level landmark rule. A screen IS a page here, so it applies —
            * unlike the component gallery, where it fires on every component. */
           region: { enabled: true },
+          /* An app may turn a rule off, and only an app can: a rule fires on a
+           * PALETTE as often as on a screen, and `auditAllow` can only waive axe
+           * whole on a named screen - every other rule with it. The config carries
+           * the reason, and turning one off is a claim that something else measures
+           * it (contrast has its own gate step, resolved from the token files). */
+          ...rules,
         },
       }),
+      /* `_why` and friends are the config's own prose. axe validates the keys it is
+       * given and throws on one that is not a rule id, so the notes are dropped
+       * here rather than being kept out of the file where the reason belongs. */
+      { rules: Object.fromEntries(Object.entries(axeRules).filter(([k]) => !k.startsWith('_'))) },
     )
     await page.close()
 

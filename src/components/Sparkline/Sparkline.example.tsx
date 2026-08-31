@@ -12,7 +12,7 @@ const week = [42, 45, 41, 52, 49, 58, 63]
 /* A SPARKLINE IS A SHAPE, NOT A READING. It shows whether a number has been
  * climbing, falling or flat, beside the number itself — it has no axis, no
  * scale and no tooltip, and asking a reader to take a value off it is asking
- * them to guess. The moment the value matters, it is a <LineChart>.
+ * them to guess. The moment the value matters, it is a <Chart type="line">.
  *
  * `tone` is what the trend MEANS to this metric, and it does not follow the
  * direction: revenue climbing is `success`, a queue climbing is `warning`, and

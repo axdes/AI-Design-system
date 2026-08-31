@@ -2,10 +2,10 @@
  "truncated": 0,
  "elements": {
   "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(241, 246, 253)","color":"rgb(31, 35, 40)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
-  "div@0": {"box":[0,0,1280,162],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
-  "div.gallery-stage@0/0": {"box":[0,0,1280,162],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"flex-start","padding":"32px"},
-  "div.visual-case@0/0/0": {"box":[160,32,960,98],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
-  "div.stack@0/0/0/0": {"box":[160,32,960,98],"display":"flex","flex-direction":"column","flex-wrap":"nowrap","gap":"12px"},
+  "div@0": {"box":[0,0,1280,232],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.gallery-stage@0/0": {"box":[0,0,1280,232],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"flex-start","padding":"32px"},
+  "div.visual-case@0/0/0": {"box":[160,32,960,168],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.stack@0/0/0/0": {"box":[160,32,960,168],"display":"flex","flex-direction":"column","flex-wrap":"nowrap","gap":"12px"},
   "div.alert@0/0/0/0/0": {"box":[160,32,960,43],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"flex-start","gap":"8px","padding":"12px 16px","border-radius":"12px","background-color":"rgb(254, 237, 239)","border-style":"solid","border-width":"1px","border-color":"rgb(236, 163, 159)","font-size":"13px","line-height":"16.9px"},
   "svg.lucide@0/0/0/0/0/0": {"box":[177,46,16,16],"display":"block","flex-direction":"row","flex-wrap":"nowrap","margin":"1px 0px 0px","overflow":"hidden","color":"rgb(194, 70, 51)"},
   "circle@0/0/0/0/0/0/0": {"box":[178,47,13,13],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
@@ -22,6 +22,14 @@
   "svg.lucide@0/0/0/0/1/2/0": {"box":[1079,100,16,16],"display":"block","flex-direction":"row","flex-wrap":"nowrap","overflow":"hidden"},
   "path@0/0/0/0/1/2/0/0": {"box":[1083,104,8,8],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
   "path@0/0/0/0/1/2/0/1": {"box":[1083,104,8,8],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.alert@0/0/0/0/2": {"box":[160,142,960,58],"display":"flex","flex-direction":"row","flex-wrap":"wrap","align-items":"flex-start","gap":"8px 12px","padding":"12px 16px","border-radius":"12px","background-color":"rgb(255, 250, 200)","border-style":"solid","border-width":"1px","border-color":"rgb(255, 200, 70)","font-size":"13px","line-height":"16.9px"},
+  "svg.lucide@0/0/0/0/2/0": {"box":[177,156,16,16],"display":"block","flex-direction":"row","flex-wrap":"nowrap","margin":"1px 0px 0px","overflow":"hidden","color":"rgb(58, 42, 5)"},
+  "path@0/0/0/0/2/0/0": {"box":[178,158,13,12],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
+  "path@0/0/0/0/2/0/1": {"box":[185,162,0,3],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
+  "path@0/0/0/0/2/0/2": {"box":[185,167,0,0],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.alert-body@0/0/0/0/2/1": {"box":[205,155,291,17],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
+  "div.alert-action@0/0/0/0/2/2": {"box":[1012,155,91,32],"display":"block","flex-direction":"row","flex-wrap":"nowrap","margin":"0px 0px 0px 504.531px"},
+  "button.btn@0/0/0/0/2/2/0": {"box":[1012,155,91,32],"display":"inline-flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"1px 12px","border-radius":"9999px","background-color":"rgb(255, 255, 255)","box-shadow":"rgba(0, 0, 0, 0.08) 0px 1px 2px 0px","color":"rgb(95, 99, 105)","font-weight":"600","text-align":"center"},
   "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
  }
 }

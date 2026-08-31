@@ -1,15 +1,15 @@
 {
  "truncated": 0,
  "elements": {
-  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(31, 35, 40)","color":"rgb(241, 246, 253)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
+  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(44, 48, 54)","color":"rgb(241, 246, 253)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
   "div@0": {"box":[0,0,1280,331],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "div.gallery-stage@0/0": {"box":[0,0,1280,331],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"flex-start","padding":"32px"},
-  "div.visual-case@0/0/0": {"box":[288,32,704,267],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"24px","border-radius":"16px","background-color":"rgb(31, 35, 40)"},
+  "div.visual-case@0/0/0": {"box":[288,32,704,267],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"24px","border-radius":"16px","background-color":"rgb(44, 48, 54)"},
   "div@0/0/0/0": {"box":[312,68,656,199],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "b.rich-message-heading@0/0/0/0/0": {"box":[312,68,656,23],"display":"block","flex-direction":"row","flex-wrap":"nowrap","margin":"12px 0px 4px","font-weight":"600"},
   "p.rich-message-text@0/0/0/0/1": {"box":[312,95,656,23],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "strong@0/0/0/0/1/0": {"box":[342,96,60,20],"display":"inline","flex-direction":"row","flex-wrap":"nowrap","font-weight":"700"},
-  "code.rich-message-inline-code@0/0/0/0/1/1": {"box":[551,99,39,15],"display":"inline","flex-direction":"row","flex-wrap":"nowrap","padding":"0px 4px","border-radius":"4px","background-color":"rgb(31, 35, 40)","font-family":"ui-monospace, Menlo, monospace","font-size":"13px","line-height":"19.5px"},
+  "code.rich-message-inline-code@0/0/0/0/1/1": {"box":[551,99,39,15],"display":"inline","flex-direction":"row","flex-wrap":"nowrap","padding":"0px 4px","border-radius":"4px","background-color":"rgb(44, 48, 54)","font-family":"ui-monospace, Menlo, monospace","font-size":"13px","line-height":"19.5px"},
   "ul.rich-message-list@0/0/0/0/2": {"box":[312,125,656,45],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"0px 0px 0px 24px","margin":"8px 0px"},
   "li@0/0/0/0/2/0": {"box":[336,125,632,23],"display":"list-item","flex-direction":"row","flex-wrap":"nowrap"},
   "em@0/0/0/0/2/0/0": {"box":[384,126,25,20],"display":"inline","flex-direction":"row","flex-wrap":"nowrap"},
@@ -18,13 +18,13 @@
   "table.rich-message-table@0/0/0/0/3/0": {"box":[312,178,128,58],"display":"table","flex-direction":"row","flex-wrap":"nowrap","font-size":"13px","line-height":"19.5px"},
   "thead@0/0/0/0/3/0/0": {"box":[313,179,127,29],"display":"table-header-group","flex-direction":"row","flex-wrap":"nowrap"},
   "tr@0/0/0/0/3/0/0/0": {"box":[313,179,127,29],"display":"table-row","flex-direction":"row","flex-wrap":"nowrap"},
-  "th@0/0/0/0/3/0/0/0/0": {"box":[313,179,79,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","background-color":"rgb(31, 35, 40)","border-style":"solid","border-width":"1px","border-color":"rgb(45, 49, 55)","font-weight":"600"},
-  "th@0/0/0/0/3/0/0/0/1": {"box":[392,179,48,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","background-color":"rgb(31, 35, 40)","border-style":"solid","border-width":"1px","border-color":"rgb(45, 49, 55)","font-weight":"600"},
+  "th@0/0/0/0/3/0/0/0/0": {"box":[313,179,79,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","background-color":"rgb(44, 48, 54)","border-style":"solid","border-width":"1px","border-color":"rgb(59, 63, 69)","font-weight":"600"},
+  "th@0/0/0/0/3/0/0/0/1": {"box":[392,179,48,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","background-color":"rgb(44, 48, 54)","border-style":"solid","border-width":"1px","border-color":"rgb(59, 63, 69)","font-weight":"600"},
   "tbody@0/0/0/0/3/0/1": {"box":[313,207,127,29],"display":"table-row-group","flex-direction":"row","flex-wrap":"nowrap"},
   "tr@0/0/0/0/3/0/1/0": {"box":[313,207,127,29],"display":"table-row","flex-direction":"row","flex-wrap":"nowrap"},
-  "td@0/0/0/0/3/0/1/0/0": {"box":[313,207,79,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","border-style":"solid","border-width":"1px","border-color":"rgb(45, 49, 55)"},
-  "td@0/0/0/0/3/0/1/0/1": {"box":[392,207,48,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","border-style":"solid","border-width":"1px","border-color":"rgb(45, 49, 55)"},
-  "blockquote.rich-message-quote@0/0/0/0/4": {"box":[312,244,656,23],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"0px 0px 0px 12px","margin":"8px 0px","border-style":"none none none solid","border-width":"0px 0px 0px 2px","border-color":"rgb(187, 191, 198) rgb(187, 191, 198) rgb(187, 191, 198) rgb(45, 49, 55)","color":"rgb(187, 191, 198)"},
+  "td@0/0/0/0/3/0/1/0/0": {"box":[313,207,79,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","border-style":"solid","border-width":"1px","border-color":"rgb(59, 63, 69)"},
+  "td@0/0/0/0/3/0/1/0/1": {"box":[392,207,48,29],"display":"table-cell","flex-direction":"row","flex-wrap":"nowrap","padding":"4px 12px","border-style":"solid","border-width":"1px","border-color":"rgb(59, 63, 69)"},
+  "blockquote.rich-message-quote@0/0/0/0/4": {"box":[312,244,656,23],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"0px 0px 0px 12px","margin":"8px 0px","border-style":"none none none solid","border-width":"0px 0px 0px 2px","border-color":"rgb(187, 191, 198) rgb(187, 191, 198) rgb(187, 191, 198) rgb(59, 63, 69)","color":"rgb(187, 191, 198)"},
   "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
  }
 }

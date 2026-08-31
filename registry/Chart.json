@@ -1,0 +1,181 @@
+{
+  "ref": "Chart",
+  "level": "atom",
+  "description": "A measure across categories or over time, with the scale that says by how much: `type=\"bar\"` for a value per category, `type=\"line\"` for a value over time. Carries its own scale, grid, goal line, legend and hover readout, and reads as a TABLE to a screen reader. Reach for <Sparkline> when the shape sits beside a number and needs no axis, <DonutChart> for a whole split into named shares, <Meter> for one value against one target, and a <Table> when the numbers are compared exactly rather than at a glance. Copy: labels are the categories' or periods' own names, short enough to sit under a mark without turning. Series names are the things themselves, because a legend of \"Series 1\" is a legend of nothing. The accessible label says what is being counted and over what.",
+  "exports": [
+    "Chart"
+  ],
+  "main": "Chart",
+  "from": "@/components/Chart",
+  "slots": [],
+  "props": [
+    {
+      "name": "type",
+      "type": "'bar' | 'line'",
+      "required": false,
+      "description": "Which mark carries the data: `bar` for a value per category, `line` for a value over time. Everything else on this component is the same furniture.",
+      "values": [
+        "bar",
+        "line"
+      ]
+    },
+    {
+      "name": "labels",
+      "type": "string[]",
+      "required": true,
+      "description": "The categories, or the x axis oldest first: months, weeks, sites."
+    },
+    {
+      "name": "series",
+      "type": "ChartSeries[]",
+      "required": true,
+      "description": "One entry per measure. Two or more bring a legend with them."
+    },
+    {
+      "name": "stacked",
+      "type": "boolean",
+      "required": false,
+      "description": "`bar`: segments of one column instead of columns side by side, for parts of a whole per period. Ignored with one series."
+    },
+    {
+      "name": "orientation",
+      "type": "'vertical' | 'horizontal'",
+      "required": false,
+      "description": "`bar`: bars run across instead of up. The answer for long category names and for a ranking, where the eye compares lengths down a column.",
+      "values": [
+        "vertical",
+        "horizontal"
+      ]
+    },
+    {
+      "name": "area",
+      "type": "boolean",
+      "required": false,
+      "description": "`line`: fills under the line. For ONE series only — two filled areas overlapping is a chart nobody can read."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false,
+      "description": "Top of the scale. Defaults to the first nice number above the data; pass it when several charts must share one scale."
+    },
+    {
+      "name": "target",
+      "type": "number",
+      "required": false,
+      "description": "A goal drawn across the plot, so a value can be short OF something. Its own label is deliberately not a prop: a word printed inside the plot sits on the data (owner, 23.08). Name the goal in the card's meta line."
+    },
+    {
+      "name": "emphasis",
+      "type": "string",
+      "required": false,
+      "description": "`bar`: the one category that carries the accent — the current period, the site under discussion. Single-series only; the others stay quiet."
+    },
+    {
+      "name": "tone",
+      "type": "Tone",
+      "required": false,
+      "description": "What the whole measure MEANS, from the metric and not the numbers: findings closed rising is `success`, incidents rising is `danger`, and the same marks carry both.",
+      "values": [
+        "neutral",
+        "primary",
+        "success",
+        "warning",
+        "danger"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "Size",
+      "required": false,
+      "description": "How much of the page the chart is worth: `md` when it is the block, `sm` when it is one card in a grid of them.",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "axis",
+      "type": "boolean",
+      "required": false,
+      "description": "The scale down the side, and the grid lines with it. On by default: a mark with no scale is a shape, and the reader cannot say how big it is."
+    },
+    {
+      "name": "showValues",
+      "type": "boolean",
+      "required": false,
+      "description": "`bar`: values printed on every bar. Off by default — the readout under the pointer says it for the one being read, which is what a reader asks."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": "What the chart measures. Required in practice: it names the chart for a screen reader, which then reads the table this component renders for it."
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "required": false,
+      "description": "BCP-47 tag for the numbers. Omit to follow the browser."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "sourcePath": "src/components/Chart/Chart.tsx",
+  "variants": {
+    "type": {
+      "prop": "type",
+      "values": [
+        "bar",
+        "line"
+      ]
+    },
+    "size": {
+      "prop": "size",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "orientation": {
+      "prop": "orientation",
+      "values": [
+        "vertical",
+        "horizontal"
+      ]
+    },
+    "stacked": {
+      "prop": "stacked",
+      "values": [
+        "true"
+      ]
+    },
+    "axis": {
+      "prop": "axis",
+      "values": [
+        "true"
+      ]
+    },
+    "area": {
+      "prop": "area",
+      "values": [
+        "true"
+      ]
+    },
+    "emphasis": {
+      "prop": "emphasis",
+      "values": null
+    }
+  },
+  "uses": [
+    "Card",
+    "Layout",
+    "SectionLabel"
+  ],
+  "example": "<Grid columns={12} gap={4}>\n  <GridItem span={8}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Raised against closed</SectionLabel>\n        \n        <Chart\n          type=\"line\"\n          labels={MONTHS}\n          series={[\n            { label: 'Raised', values: [52, 61, 48, 67, 72] },\n            { label: 'Closed', values: [34, 41, 28, 47, 52] },\n          ]}\n          target={60}label=\"Findings raised and closed per month\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={4}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">By team</SectionLabel>\n        \n        <Chart\n          labels={TEAMS}\n          series={[{ label: 'Open findings', values: [62, 48, 31] }]}\n          orientation=\"horizontal\"\n          size=\"sm\"\n          tone=\"warning\"\n          label=\"Open findings by team\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={12}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Closed per month</SectionLabel>\n        \n        <Chart\n          labels={MONTHS}\n          series={[{ label: 'Closed', values: [34, 41, 28, 47, 52] }]}\n          target={40}\n          emphasis=\"Aug\"\n          tone=\""
+}

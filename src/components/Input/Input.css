@@ -40,21 +40,32 @@
 
 .input::placeholder { color: var(--muted-foreground); }
 
-/* Date fields: tame the native widget so it reads as one of ours. The value
- * is tabular so dd/mm/yyyy does not wobble while typing; the calendar glyph
- * sits quiet until hovered (it cannot be recoloured, only dimmed). */
-.input[type='date'] {
+/* Native date and time fields: tame the widget so it reads as one of ours. The
+ * value is tabular so dd/mm/yyyy and hh:mm do not wobble while typing; the
+ * calendar (or clock) glyph sits quiet until hovered — it cannot be recoloured,
+ * only dimmed.
+ *
+ * `time` joined `date` here when <TimeInput> was folded back into this
+ * component (2026-08-30): it was 21 lines of code that rendered the same
+ * `<input class="input">` this file already styles, and carried its own copy of
+ * these three rules with the type swapped. A native input type is a value of
+ * `type`, not a component. */
+.input[type='date'],
+.input[type='time'] {
   font-family: inherit;
   font-variant-numeric: tabular-nums;
 }
-.input[type='date']::-webkit-calendar-picker-indicator {
+.input[type='date']::-webkit-calendar-picker-indicator,
+.input[type='time']::-webkit-calendar-picker-indicator {
   /* color-scheme flips the native glyph light in dark mode; 0.45 left it too
    * faint there, so it rests a touch stronger and goes full on interaction. */
   opacity: 0.6;
   cursor: pointer;
 }
 .input[type='date']:hover::-webkit-calendar-picker-indicator,
-.input[type='date']:focus-visible::-webkit-calendar-picker-indicator {
+.input[type='date']:focus-visible::-webkit-calendar-picker-indicator,
+.input[type='time']:hover::-webkit-calendar-picker-indicator,
+.input[type='time']:focus-visible::-webkit-calendar-picker-indicator {
   opacity: 1;
 }
 

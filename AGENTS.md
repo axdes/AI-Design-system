@@ -36,7 +36,7 @@ Either way that file is the system: if a thing is not in it, it does not exist.
   per component, and that is what git carries; `component-registry.json` is the
   same thing combined, derived and gitignored, and it is what the linters read.
   Never edit either by hand and do not read the combined one whole (44k tokens for
-  131 components you will not use). `npm run gen-registry` writes all of it;
+  128 components you will not use). `npm run gen-registry` writes all of it;
   `gen-registry:check` fails on drift, undefined tokens, or a CSS variant missing
   from a prop union.
 - If no component (or composition of them, or a new data-variant on one) covers

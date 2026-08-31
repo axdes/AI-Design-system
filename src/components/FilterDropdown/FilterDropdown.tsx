@@ -5,7 +5,7 @@ import { type Option } from '../../lib/option'
 import { Icon, type IconName } from '../Icon'
 import { Dropdown, DropdownItem } from '../Dropdown'
 import { SearchInput } from '../SearchInput'
-import { Tag } from '../Tag'
+import { Chip } from '../Chip'
 import { useFilterBar } from '../../lib/filterBarContext'
 
 /** A filter choice: the shared <Option> plus what a filter menu also draws —
@@ -251,9 +251,9 @@ export function FilterDropdown<V extends string>({
     {showTags && selected.length > 0 && (
       <div className="filter-tags">
         {selected.map((o) => (
-          <Tag key={o.value} onRemove={() => toggle(o.value)} removeLabel={`Remove ${o.label}`}>
+          <Chip key={o.value} onRemove={() => toggle(o.value)} removeLabel={`Remove ${o.label}`}>
             {o.label}
-          </Tag>
+          </Chip>
         ))}
       </div>
     )}

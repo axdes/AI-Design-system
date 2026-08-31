@@ -24,6 +24,12 @@ export function checkContrast({
    * stale-entry check below can only be honest if the two travel together. */
   sources: SOURCES = [],
   exempt: EXEMPT = {},
+  /* Accepted debt on the FIXED pairs below, keyed `<theme>/<pair name>` and given
+   * as the ratio that must not be dropped below. It belongs to the caller for the
+   * same reason `exempt` does: the pairs are the system's, the palette is the
+   * product's, and only the product can say which of its own misses were decided
+   * rather than missed. Merged over the list this file keeps for itself. */
+  known: KNOWN_IN = {},
   label = '',
 }) {
 
@@ -200,7 +206,7 @@ export function checkContrast({
    * fixed by moving --muted-foreground from neutral-600 to neutral-700 rather than
    * carried as debt. Adding an entry here is a decision, not a shortcut: write
    * down why the token cannot move. */
-  const KNOWN = {}
+  const KNOWN = { ...KNOWN_IN }
 
   const THEMES = [['light', light], ['dark', dark], ['dark (no theme chosen)', darkAuto]]
 

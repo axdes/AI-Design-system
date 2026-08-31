@@ -1,7 +1,7 @@
 {
  "truncated": 0,
  "elements": {
-  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(31, 35, 40)","color":"rgb(241, 246, 253)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
+  "body@root": {"box":[0,0,1280,800],"display":"block","flex-direction":"row","flex-wrap":"nowrap","background-color":"rgb(44, 48, 54)","color":"rgb(241, 246, 253)","font-family":"Onest, ui-sans-serif, system-ui, sans-serif","font-size":"15px","font-weight":"400","line-height":"22.5px"},
   "div@0": {"box":[0,0,1280,231],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
   "div.gallery-stage@0/0": {"box":[0,0,1280,231],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"flex-start","padding":"32px"},
   "div.visual-case@0/0/0": {"box":[160,32,960,167],"display":"block","flex-direction":"row","flex-wrap":"nowrap"},
@@ -16,7 +16,7 @@
   "span.timeline-title@0/0/0/0/0/1/0/0": {"box":[196,33,92,23],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-weight":"500"},
   "span.timeline-time@0/0/0/0/0/1/0/1": {"box":[926,35,38,20],"display":"block","flex-direction":"row","flex-wrap":"nowrap","color":"rgb(187, 191, 198)","font-size":"13px","line-height":"19.5px"},
   "li.timeline-item@0/0/0/0/1": {"box":[160,72,960,63],"display":"flex","position":"relative","flex-direction":"row","flex-wrap":"nowrap","gap":"12px","padding":"0px 0px 16px"},
-  "span.timeline-marker@0/0/0/0/1/0": {"box":[160,72,24,24],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","border-radius":"9999px","background-color":"rgb(64, 68, 74)","color":"rgb(187, 191, 198)"},
+  "span.timeline-marker@0/0/0/0/1/0": {"box":[160,72,24,24],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","border-radius":"9999px","background-color":"rgb(59, 63, 69)","color":"rgb(187, 191, 198)"},
   "span.timeline-dot@0/0/0/0/1/0/0": {"box":[168,80,8,8],"display":"block","flex-direction":"row","flex-wrap":"nowrap","border-radius":"9999px","background-color":"rgb(187, 191, 198)"},
   "div.timeline-body@0/0/0/0/1/1": {"box":[196,72,924,47],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"0.75px 0px 0px"},
   "div.timeline-head@0/0/0/0/1/1/0": {"box":[196,73,768,23],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"space-between","align-items":"baseline","gap":"12px"},
@@ -31,7 +31,7 @@
   "span.timeline-title@0/0/0/0/2/1/0/0": {"box":[196,136,111,23],"display":"block","flex-direction":"row","flex-wrap":"nowrap","font-weight":"500"},
   "span.timeline-time@0/0/0/0/2/1/0/1": {"box":[926,138,38,20],"display":"block","flex-direction":"row","flex-wrap":"nowrap","color":"rgb(187, 191, 198)","font-size":"13px","line-height":"19.5px"},
   "li.timeline-item@0/0/0/0/3": {"box":[160,175,960,24],"display":"flex","position":"relative","flex-direction":"row","flex-wrap":"nowrap","gap":"12px"},
-  "span.timeline-marker@0/0/0/0/3/0": {"box":[160,175,24,24],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","border-radius":"9999px","background-color":"rgb(64, 68, 74)","color":"rgb(187, 191, 198)"},
+  "span.timeline-marker@0/0/0/0/3/0": {"box":[160,175,24,24],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","border-radius":"9999px","background-color":"rgb(59, 63, 69)","color":"rgb(187, 191, 198)"},
   "span.timeline-dot@0/0/0/0/3/0/0": {"box":[168,183,8,8],"display":"block","flex-direction":"row","flex-wrap":"nowrap","border-radius":"9999px","background-color":"rgb(187, 191, 198)"},
   "div.timeline-body@0/0/0/0/3/1": {"box":[196,175,924,24],"display":"block","flex-direction":"row","flex-wrap":"nowrap","padding":"0.75px 0px 0px"},
   "div.timeline-head@0/0/0/0/3/1/0": {"box":[196,176,768,23],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"space-between","align-items":"baseline","gap":"12px"},

@@ -7,7 +7,7 @@ import { Tooltip } from '../../components/Tooltip'
 
 type Props = {
   /** Detail title in the header. ReactNode, like PageHeader's own title: a
-   *  record title routinely carries a status <Badge> or a <Tag> beside it, and
+   *  record title routinely carries a status <Badge> or a <Chip> beside it, and
    *  typing this as string only forced callers to fake it elsewhere. */
   title: ReactNode
   /** Back handler for the header. */

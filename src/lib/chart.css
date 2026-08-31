@@ -6,8 +6,9 @@
  * the same on every chart, or two cards side by side read as two systems.
  *
  * It lives in lib/ next to chart.ts (the arithmetic those charts share) rather
- * than in a component, because it has no markup of its own: <BarChart> and
- * <LineChart> each render these classes around their own plot. The moment a
+ * than in a component, because it has no markup of its own: <Chart> renders
+ * these classes around either of its plots, and <Sparkline> and <DonutChart>
+ * around theirs. The moment a
  * THIRD chart needs the same frame, that frame becomes a component and both of
  * them become marks inside it — the condition written down in config/twins.json.
  *

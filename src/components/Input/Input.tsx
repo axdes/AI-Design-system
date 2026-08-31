@@ -21,8 +21,9 @@ type Props = Omit<ComponentPropsWithRef<'input'>, 'size'> & {
 }
 
 /**
- * The single-line text field: label, invalid state and the shared control
- * tokens. A screen never renders a bare input.
+ * The single-line field: label, invalid state and the shared control tokens.
+ * Native types ride on `type` — `date` and `time` are styled here rather than
+ * wrapped in components of their own. A screen never renders a bare input.
  */
 export function Input({ invalid, size, surface = 'base', className, ...rest }: Props) {
   return (

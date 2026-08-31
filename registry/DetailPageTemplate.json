@@ -13,7 +13,7 @@
       "name": "title",
       "type": "ReactNode",
       "required": true,
-      "description": "Detail title in the header. ReactNode, like PageHeader's own title: a record title routinely carries a status <Badge> or a <Tag> beside it, and typing this as string only forced callers to fake it elsewhere."
+      "description": "Detail title in the header. ReactNode, like PageHeader's own title: a record title routinely carries a status <Badge> or a <Chip> beside it, and typing this as string only forced callers to fake it elsewhere."
     },
     {
       "name": "onBack",

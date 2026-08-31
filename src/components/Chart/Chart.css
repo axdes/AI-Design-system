@@ -1,0 +1,356 @@
+/* THE CHART: one component, two marks.
+ *
+ * <BarChart> and <LineChart> were separate components and were folded into this
+ * one on 2026-08-30, when the owner pointed at how many components in here do
+ * the same job under different names. What made them one thing was never the mark: the scale, the
+ * grid, the goal line, the readout, the row of labels and the legend are the
+ * same furniture on every chart in this system, they live in src/lib/chart.css,
+ * and both components rendered exactly those classes around a plot of their
+ * own. What is left here is the two MARKS, and the root recipe they share.
+ *
+ * The root is written once. It was written twice, identically apart from the
+ * per-element custom properties each mark sets from the data — which is what a
+ * duplicate looks like when it is spread over two files nobody opens together.
+ */
+.chart {
+  /* The three heights a chart is read at, and the width the scale column
+   * reserves. */
+  --chart-height: calc(var(--space-16) * 1.75);
+  --chart-scale-width: 2.5rem;
+
+  /* Set per element from the data, and declared here so the stylesheet stands
+   * on its own: a mark with no value has no length, and that is not a crash. */
+  --tick-at: 0%;
+  --bar-size: 0%;
+  --bar-delay: 0ms;
+  --readout-at: 50%;
+  --dot-x: 0%;
+  --dot-y: 0%;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  min-inline-size: 0;
+}
+.chart[data-size="sm"] { --chart-height: var(--space-16); }
+.chart[data-size="lg"] { --chart-height: calc(var(--space-16) * 2.5); }
+/* The bar's own cap, and the column a horizontal chart gives its names. */
+.chart[data-type='bar'] { --chart-bar-width: 2.5rem; }
+
+/* ── The BAR mark ───────────────────────────────────────────────────────── */
+.chart-bar-plot {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  block-size: 100%;
+  min-inline-size: 0;
+}
+
+/* THE COLUMN IS THE HIT AREA, and it is a button so a keyboard reaches the
+ * same readout the pointer does. */
+.chart-bar-column {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: 0;
+  block-size: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  /* Reads, does not navigate: the data cursor, not the link one. */
+  cursor: crosshair;
+}
+.chart-bar-column:focus-visible {
+  outline: var(--ring-width) solid var(--ring);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+.chart-bar-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* 2px between adjacent fills, so two bars of the same colour still read as
+   * two bars. Same gap the stacked segments use. */
+  gap: var(--space-2xs);
+  inline-size: 100%;
+  block-size: 100%;
+}
+.chart[data-type='bar'][data-stacked] .chart-bar-bars { flex-direction: column-reverse; align-items: center; }
+
+.chart-bar-bar {
+  position: relative;
+  inline-size: min(100%, var(--chart-bar-width));
+  block-size: var(--bar-size);
+  min-block-size: var(--space-2xs);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--chart-1);
+  /* The bar grows out of the baseline it is measured from, one after another
+   * across the chart. `both` holds it at zero through its own delay. */
+  transform-origin: bottom;
+  animation: chart-bar-grow var(--duration-slow) var(--ease-out) var(--bar-delay) both;
+}
+.chart[data-type='bar'][data-stacked] .chart-bar-bar { border-radius: var(--radius-sm); }
+
+@keyframes chart-bar-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* THE SERIES SLOTS, in fixed order. A chart with one series paints slot 1, so a
+ * single-measure chart is the brand's own colour. */
+.chart-bar-bar[data-series="2"] { background: var(--chart-2); }
+.chart-bar-bar[data-series="3"] { background: var(--chart-3); }
+.chart-bar-bar[data-series="4"] { background: var(--chart-4); }
+.chart-bar-bar[data-series="5"] { background: var(--chart-5); }
+.chart-bar-bar[data-series="6"] { background: var(--chart-6); }
+/* A series that MEANS a status takes the status colour instead of its slot. */
+.chart-bar-bar[data-tone="success"] { background: var(--chart-success); }
+.chart-bar-bar[data-tone="warning"] { background: var(--chart-warning); }
+.chart-bar-bar[data-tone="danger"]  { background: var(--chart-danger); }
+
+/* The whole chart in one status tone, for a single-series chart that is about
+ * one thing being good or bad. */
+.chart[data-type='bar'][data-tone="neutral"] .chart-bar-bar[data-series="1"] { background: var(--foreground); }
+.chart[data-type='bar'][data-tone="success"] .chart-bar-bar[data-series="1"] { background: var(--chart-success); }
+.chart[data-type='bar'][data-tone="warning"] .chart-bar-bar[data-series="1"] { background: var(--chart-warning); }
+.chart[data-type='bar'][data-tone="danger"]  .chart-bar-bar[data-series="1"] { background: var(--chart-danger); }
+
+/* ONE COLUMN UNDER DISCUSSION: the rest step back rather than the accent
+ * shouting. Only when the caller actually named one — `:has` keeps that
+ * conditional in the stylesheet instead of an attribute on the figure. */
+.chart[data-type='bar']:has(.chart-bar-bar[data-emphasis]) .chart-bar-bar:not([data-emphasis]) { opacity: 0.4; }
+/* And the column under the pointer is the one being read. */
+.chart[data-type='bar']:has(.chart-bar-column[data-active]) .chart-bar-column:not([data-active]) .chart-bar-bar { opacity: 0.55; }
+/* It is never the dim one. The `:has` here is not decoration: the emphasis rule
+ * above scores (0,5,0) and a plain descendant version of this one scored
+ * (0,4,0), so with an emphasis set, hovering any OTHER column left the bar
+ * being read at 0.4 while its neighbours sat at 0.55 — the one bar the reader
+ * asked about was the palest thing on the chart. */
+.chart[data-type='bar']:has(.chart-bar-column[data-active]) .chart-bar-column[data-active] .chart-bar-bar { opacity: 1; }
+
+.chart-bar-value {
+  position: absolute;
+  inset-block-end: 100%;
+  inset-inline: 0;
+  padding-block-end: var(--space-1);
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--chart-axis);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── LYING DOWN ───────────────────────────────────────────────────────────────
+ * The same chart for a RANKING: long names read better beside their bar than
+ * rotated under it, and the eye compares lengths down a column. */
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-frame { display: block; block-size: auto; }
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-bar-plot {
+  flex-direction: column;
+  align-items: stretch;
+  block-size: auto;
+  gap: var(--space-3);
+}
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-bar-column {
+  block-size: auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+/* Name on the left of its own line, value on the right, bar underneath across
+ * the whole width. */
+.chart-bar-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--font-xs);
+  color: var(--chart-axis);
+}
+.chart-bar-head-value {
+  margin-inline-start: auto;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-bar-bars {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  block-size: auto;
+}
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-bar-bar {
+  inline-size: var(--bar-size);
+  block-size: var(--space-3);
+  min-inline-size: var(--space-2xs);
+  /* BOTH ENDS ROUNDED, lying down. Standing up, a bar's foot sits ON the zero
+   * line the grid draws, so a square foot reads as anchored; lying down there
+   * is no line at the start and a square end reads as a bar somebody cut off
+   * (owner, 23.08). */
+  border-radius: var(--radius-full);
+  transform-origin: inline-start;
+  animation-name: chart-bar-grow-inline;
+}
+@keyframes chart-bar-grow-inline {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.chart-bar-name {
+  min-inline-size: 0;
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* THE VALUE AXIS TURNED WITH THE BARS AND ITS LABELS DID NOT. `.chart-scale` is
+ * a vertical strip: every tick is placed by `--tick-at` DOWN its side, which is
+ * right standing up and puts all of them on one spot lying down — "80" printed
+ * over "40" over "20" over "0" in a 2.5rem column beside the first bar
+ * (2026-08-29). Lying down the scale is a strip ACROSS the top of the plot, and
+ * each tick is offset along it instead of down it. The grid lines below already
+ * turned; only the numbers naming them did not. */
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-scale {
+  inline-size: auto;
+  block-size: 1.25em;
+  margin-block-end: var(--space-1);
+}
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-tick {
+  inset-inline-end: auto;
+  inset-inline-start: var(--tick-at);
+  inset-block-end: 0;
+  transform: translateX(-50%);
+}
+.chart[data-type='bar'][data-orientation="horizontal"]:dir(rtl) .chart-tick { transform: translateX(50%); }
+
+.chart[data-type='bar'][data-orientation="horizontal"] .chart-grid {
+  inset-block: 0;
+  inset-inline: auto;
+  inset-inline-start: var(--tick-at);
+  border-block-start: 0;
+  border-inline-start: 1px solid var(--chart-grid);
+}
+
+/* In a card the chart takes the spare height. Cards in a row are the same
+ * height (owner's rule, 23.08), so a card whose subject is a chart gets extra
+ * room — and the honest place for it is the plot, not a band of white between
+ * the plot and the footer. Its own height stays the floor. Written once for
+ * both marks: it was the same four declarations in both stylesheets. */
+.card > .chart { flex: 1 1 auto; }
+.card > .chart .chart-frame {
+  block-size: auto;
+  min-block-size: var(--chart-height);
+  flex: 1 1 auto;
+}
+/* Lying down there is no plot height to grow into, so the spare room goes
+ * BETWEEN the rows: three bars stacked at the top of a card with 100px of
+ * white under them is the hole this rule closes. */
+.card > .chart[data-type='bar'][data-orientation="horizontal"] .chart-frame { min-block-size: 0; }
+.card > .chart[data-type='bar'][data-orientation="horizontal"] .chart-bar-plot {
+  block-size: 100%;
+  justify-content: space-evenly;
+}
+
+/* ── The LINE mark ──────────────────────────────────────────────────────── */
+.chart-line-plot {
+  position: relative;
+  flex: 1 1 auto;
+  block-size: 100%;
+  min-inline-size: 0;
+  /* The whole plot is the hit area for the crosshair: a reader should not have
+   * to find a 6px dot to be told what it says. */
+  touch-action: none;
+  cursor: crosshair;
+}
+.chart-line-plot > svg { display: block; inline-size: 100%; block-size: 100%; overflow: visible; }
+
+/* THE LINE. 2px, round joins, and the plot wipes itself in once: the shape
+ * arriving left to right is the same gesture the reader makes reading it.
+ *
+ * A WIPE, not a dash. The obvious way to draw a line on is a dash offset, and
+ * it does not survive this SVG: `preserveAspectRatio="none"` stretches the
+ * viewBox, `vector-effect: non-scaling-stroke` takes the stroke back out of
+ * that stretch, and the dash pattern ends up measured in one space and drawn in
+ * the other — the line came out in fragments with gaps between the months
+ * (measured 23.08, both with a percentage dash and with pathLength="1"). A clip
+ * on the plot is geometry the stretch does not touch. */
+.chart-line-plot > svg {
+  animation: chart-line-wipe var(--duration-slow) var(--ease-out) both;
+}
+@keyframes chart-line-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0); }
+}
+/* Right to left, the axis reads right to left, and so does the wipe. */
+[dir="rtl"] .chart-line-plot > svg {
+  transform: scaleX(-1);
+  animation-name: chart-line-wipe-rtl;
+}
+@keyframes chart-line-wipe-rtl {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0); }
+}
+
+.chart-line-line {
+  fill: none;
+  stroke: var(--chart-1);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.chart-line-area {
+  fill: var(--chart-1);
+  opacity: 0.12;
+}
+
+/* THE SERIES SLOTS, in fixed order — never cycled, so a filter that drops a
+ * line leaves the others the colour they were. */
+.chart-line-series[data-series="2"] .chart-line-line { stroke: var(--chart-2); }
+.chart-line-series[data-series="3"] .chart-line-line { stroke: var(--chart-3); }
+.chart-line-series[data-series="4"] .chart-line-line { stroke: var(--chart-4); }
+.chart-line-series[data-series="5"] .chart-line-line { stroke: var(--chart-5); }
+.chart-line-series[data-series="6"] .chart-line-line { stroke: var(--chart-6); }
+.chart-line-series[data-tone="success"] .chart-line-line { stroke: var(--chart-success); }
+.chart-line-series[data-tone="warning"] .chart-line-line { stroke: var(--chart-warning); }
+.chart-line-series[data-tone="danger"]  .chart-line-line { stroke: var(--chart-danger); }
+
+/* THE CROSSHAIR AND ITS DOTS. One vertical rule, one dot per series, so every
+ * line is read at the same x. */
+.chart-line-crosshair {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--dot-x);
+  inline-size: 1px;
+  background: var(--chart-grid);
+  pointer-events: none;
+}
+.chart-line-dot {
+  position: absolute;
+  inset-inline-start: var(--dot-x);
+  inset-block-start: var(--dot-y);
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  margin-inline-start: calc(var(--space-2) / -2);
+  margin-block-start: calc(var(--space-2) / -2);
+  border-radius: var(--radius-full);
+  background: var(--chart-1);
+  /* A ring in the surface colour, so a dot that lands on a grid line or on
+   * another series still reads as one mark. */
+  box-shadow: 0 0 0 var(--space-2xs) var(--card);
+  pointer-events: none;
+}
+.chart-line-dot[data-series="2"] { background: var(--chart-2); }
+.chart-line-dot[data-series="3"] { background: var(--chart-3); }
+.chart-line-dot[data-series="4"] { background: var(--chart-4); }
+.chart-line-dot[data-series="5"] { background: var(--chart-5); }
+.chart-line-dot[data-series="6"] { background: var(--chart-6); }
+.chart-line-dot[data-tone="success"] { background: var(--chart-success); }
+.chart-line-dot[data-tone="warning"] { background: var(--chart-warning); }
+.chart-line-dot[data-tone="danger"]  { background: var(--chart-danger); }
+
+/* The ends of a line are POINTS, not the middles of columns: the first and last
+ * labels sit under them rather than over a slot that is not there. */
+.chart[data-type='line'] .chart-labels > span:first-child { text-align: start; }
+.chart[data-type='line'] .chart-labels > span:last-child { text-align: end; }

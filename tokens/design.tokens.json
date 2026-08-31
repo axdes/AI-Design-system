@@ -891,7 +891,7 @@
         "org.css-design-system": {
           "var": "--background",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.900}"
+          "dark": "{color.neutral.820}"
         }
       }
     },
@@ -913,7 +913,7 @@
         "org.css-design-system": {
           "var": "--card",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.850}"
+          "dark": "{color.neutral.900}"
         }
       }
     },
@@ -933,7 +933,7 @@
         "org.css-design-system": {
           "var": "--popover",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.820}"
+          "dark": "{color.neutral.900}"
         }
       }
     },
@@ -954,7 +954,7 @@
         "org.css-design-system": {
           "var": "--muted",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.900}"
+          "dark": "{color.neutral.820}"
         }
       }
     },
@@ -1251,7 +1251,7 @@
         "org.css-design-system": {
           "var": "--secondary",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.850}"
+          "dark": "{color.neutral.950}"
         }
       }
     },
@@ -1372,8 +1372,8 @@
       }
     },
     "nav-active": {
-      "$value": "{semantic.muted}",
-      "$description": "Left as it was: ChatHistory is its consumer and paints hover/active with it. The sidebars keep their own --accent background — the two surfaces differ on purpose, and a contrast fix for dark mode is no reason to restyle either.",
+      "$value": "{semantic.primary-soft}",
+      "$description": "WHERE YOU ARE, one answer for every navigation in the system: the sidebar, the content side-panel rail and the chat history all paint the current place with these three and nothing else. It used to be a NEUTRAL step — --accent in the sidebars, --muted here — and that is the same step hover spends, so \"you are here\" and \"your pointer is here\" said the identical thing. On the collapsed icon rail, where the label is gone and only a disc is left, the current item stopped reading at all (owner, 30.08: the active item does not register). The fix is not a bigger grey: it is a DIFFERENT KIND of mark. The current place is the only tinted thing on the rail — the soft brand surface, brand ink, and a hairline of the brand around it — so it separates by hue and by edge, not by luminance alone, which is what a small shape on a dark surface needs. Not the solid --primary disc it was before that: every product caps its logo with one, so a saturated disc in the rail read as a second brand mark (owner, 2026-08-24). Tinted and ringed is unmistakable and still quiet. Aliases, so a rebranded product gets its own colour for free.",
       "$extensions": {
         "org.css-design-system": {
           "var": "--nav-active",
@@ -1388,6 +1388,15 @@
           "var": "--nav-active-foreground",
           "source": "styles/semantic.css",
           "dark": "{semantic.primary-accent}"
+        }
+      }
+    },
+    "nav-active-border": {
+      "$value": "{semantic.primary-accent}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--nav-active-border",
+          "source": "styles/semantic.css"
         }
       }
     },
@@ -1489,7 +1498,7 @@
         "org.css-design-system": {
           "var": "--warning-soft",
           "source": "styles/semantic.css",
-          "dark": "{color.warning.950}"
+          "dark": "{color.warning.930}"
         }
       }
     },
@@ -1521,7 +1530,7 @@
         "org.css-design-system": {
           "var": "--destructive-soft",
           "source": "styles/semantic.css",
-          "dark": "{color.danger.950}"
+          "dark": "{color.danger.930}"
         }
       }
     },
@@ -1531,7 +1540,7 @@
         "org.css-design-system": {
           "var": "--destructive-soft-foreground",
           "source": "styles/semantic.css",
-          "dark": "{color.danger.200}"
+          "dark": "{color.danger.100}"
         }
       }
     },
@@ -1542,7 +1551,7 @@
         "org.css-design-system": {
           "var": "--destructive-emphasis",
           "source": "styles/semantic.css",
-          "dark": "{color.danger.300}"
+          "dark": "{color.danger.200}"
         }
       }
     },
@@ -1593,7 +1602,7 @@
         "org.css-design-system": {
           "var": "--border",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.820}"
+          "dark": "{color.neutral.800}"
         }
       }
     },
@@ -1604,7 +1613,7 @@
         "org.css-design-system": {
           "var": "--border-strong",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.800}"
+          "dark": "{color.neutral.700}"
         }
       }
     },
@@ -1615,7 +1624,7 @@
         "org.css-design-system": {
           "var": "--input",
           "source": "styles/semantic.css",
-          "dark": "{color.neutral.820}"
+          "dark": "{color.neutral.800}"
         }
       }
     },
@@ -2496,15 +2505,15 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.251,
-            0.2667,
-            0.2902
+            0.2314,
+            0.2471,
+            0.2706
           ],
           "alpha": 1,
-          "hex": "#40444a"
+          "hex": "#3b3f45"
         },
         "$type": "color",
-        "$description": "Primary (body text)",
+        "$description": "dark-theme edge, popover and hover surface",
         "$extensions": {
           "org.css-design-system": {
             "var": "--neutral-800",
@@ -2516,38 +2525,18 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.1765,
-            0.1922,
-            0.2157
+            0.1725,
+            0.1882,
+            0.2118
           ],
           "alpha": 1,
-          "hex": "#2d3137"
+          "hex": "#2c3036"
         },
         "$type": "color",
-        "$description": "dark-theme subtle border (between card and accent)",
+        "$description": "dark-theme PAGE (background + its muted tint)",
         "$extensions": {
           "org.css-design-system": {
             "var": "--neutral-820",
-            "source": "styles/primitives.css"
-          }
-        }
-      },
-      "850": {
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.1451,
-            0.1608,
-            0.1843
-          ],
-          "alpha": 1,
-          "hex": "#25292f"
-        },
-        "$type": "color",
-        "$description": "dark-theme card elevation step (subtle above bg)",
-        "$extensions": {
-          "org.css-design-system": {
-            "var": "--neutral-850",
             "source": "styles/primitives.css"
           }
         }
@@ -2564,10 +2553,30 @@
           "hex": "#1f2328"
         },
         "$type": "color",
-        "$description": "dark-theme card elevation step (subtle above bg)",
+        "$description": "light-theme body ink, and the dark-theme CARD",
         "$extensions": {
           "org.css-design-system": {
             "var": "--neutral-900",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
+      "950": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0549,
+            0.0706,
+            0.0902
+          ],
+          "alpha": 1,
+          "hex": "#0e1217"
+        },
+        "$type": "color",
+        "$description": "dark-theme quiet control fill, a step under the card",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--neutral-950",
             "source": "styles/primitives.css"
           }
         }
@@ -2962,6 +2971,26 @@
           }
         }
       },
+      "930": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4196,
+            0.2863,
+            0.0824
+          ],
+          "alpha": 1,
+          "hex": "#6b4915"
+        },
+        "$type": "color",
+        "$description": "The dark theme's soft tint. The ramp falls from a bright amber at 900 straight to the ink stop at 950, so \"warning, quietly\" in dark landed at 1.05:1 on a card — the pill was gone and only its yellow text was left, floating (owner, 30.08). This sits at the same luminance as --success-900, which is the one tone that always read, so the four tones now tint by the same amount.",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--warning-930",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
       "950": {
         "$value": {
           "colorSpace": "srgb",
@@ -2974,7 +3003,6 @@
           "hex": "#3a2a05"
         },
         "$type": "color",
-        "$description": "Dark-theme tinted SURFACE. The yellow ramp never gets dark (900 is a saturated orange), so dark mode had no legible soft-warning background — this stop is that surface. Not part of the light ramp.",
         "$extensions": {
           "org.css-design-system": {
             "var": "--warning-950",
@@ -3177,6 +3205,26 @@
           }
         }
       },
+      "930": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5529,
+            0.1922,
+            0.1333
+          ],
+          "alpha": 1,
+          "hex": "#8d3122"
+        },
+        "$type": "color",
+        "$description": "dark-theme soft tint — see --warning-930",
+        "$extensions": {
+          "org.css-design-system": {
+            "var": "--danger-930",
+            "source": "styles/primitives.css"
+          }
+        }
+      },
       "950": {
         "$value": {
           "colorSpace": "srgb",
@@ -3189,7 +3237,7 @@
           "hex": "#3b1410"
         },
         "$type": "color",
-        "$description": "Dark-theme tinted SURFACE — same reason as --warning-950: the coral ramp stays light enough that danger-900 cannot host readable text in dark mode.",
+        "$description": "dark-theme soft tint — see --warning-930",
         "$extensions": {
           "org.css-design-system": {
             "var": "--danger-950",

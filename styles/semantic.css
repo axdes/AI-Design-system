@@ -158,13 +158,28 @@
    * equals the page colour looks like a hole, not a highlight). */
   --surface-hover:          var(--neutral-50);
 
-  /* Active nav item / icon (sidebar, content side-panel rail, chat history).
-   * Aliases resolve --muted/--primary lazily, so they stay theme-correct. */
-  /* Left as it was: ChatHistory is its consumer and paints hover/active with it.
-   * The sidebars keep their own --accent background — the two surfaces differ on
-   * purpose, and a contrast fix for dark mode is no reason to restyle either. */
-  --nav-active:          var(--muted);
+  /* WHERE YOU ARE, one answer for every navigation in the system: the sidebar,
+   * the content side-panel rail and the chat history all paint the current place
+   * with these three and nothing else.
+   *
+   * It used to be a NEUTRAL step — --accent in the sidebars, --muted here — and
+   * that is the same step hover spends, so "you are here" and "your pointer is
+   * here" said the identical thing. On the collapsed icon rail, where the label
+   * is gone and only a disc is left, the current item stopped reading at all
+   * (owner, 30.08: the active item does not register). The fix is not a bigger
+   * grey: it is a DIFFERENT KIND of mark. The current place is the only tinted
+   * thing on the rail — the soft brand surface, brand ink, and a hairline of the
+   * brand around it — so it separates by hue and by edge, not by luminance
+   * alone, which is what a small shape on a dark surface needs.
+   *
+   * Not the solid --primary disc it was before that: every product caps its logo
+   * with one, so a saturated disc in the rail read as a second brand mark
+   * (owner, 2026-08-24). Tinted and ringed is unmistakable and still quiet.
+   *
+   * Aliases, so a rebranded product gets its own colour for free. */
+  --nav-active:                     var(--primary-soft);
   --nav-active-foreground:          var(--primary-accent);
+  --nav-active-border:              var(--primary-accent);
 
 
   --destructive:            var(--danger-800);
@@ -234,25 +249,49 @@
   --overlay:                rgb(0 0 0 / 0.4);   /* modal/drawer backdrop */
 }
 
-/* Dark theme — elevation hierarchy:
- *   bg          neutral-900 (#1f2328) — deepest, page surface
- *   card        neutral-850 (#2a2e34) — slight elevation above bg
- *   accent      neutral-800 (#40444a) — interactive hover surface
- *   border/input neutral-700 (#5f6369) — visible separation lines
- * Pattern follows GitHub/Linear/Notion dark: card is ~10% lighter than bg, not a hard 2-stop jump. */
+/* Dark theme — surface hierarchy. THE CARD IS DARKER THAN THE PAGE, which is the
+ * reverse of the light theme, and both halves of that are deliberate.
+ *
+ *   page (bg + muted)  neutral-820 (#2c3036)  the lightest large area
+ *   card               neutral-900 (#1f2328)  content sits in a well
+ *   quiet fill         neutral-950 (#0e1217)  a control that must not dissolve
+ *   edge / lift        neutral-800 (#3b3f45)  borders, hover, popover rows
+ *
+ * It used to follow the light theme's order — page deepest, card ~10% lighter,
+ * "like GitHub/Linear/Notion" — and it did not work here: at 1.08:1 the step was
+ * the same RATIO the light theme uses, and a ratio is not what the eye reads at
+ * this end of the ramp. A whole page of cards came out as one grey wash (owner,
+ * 30.08: the cards blend into the page). Every step is ~1.2:1 now, and the order is
+ * inverted because two near-black surfaces separate far better when the darker
+ * one is the smaller shape — a well reads, a slightly-brighter slab does not.
+ *
+ * The separation is bought by DARKENING THE CARD, not by lightening the page:
+ * the first attempt raised the page to #363a3f and the theme stopped being dark
+ * (owner, 30.08, hours later — the background should not be that light). The
+ * page is back where it was and the well is dug under it.
+ *
+ * The stops themselves carry the numbers: styles/primitives.css. */
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --background:             var(--neutral-900);
+  --background:             var(--neutral-820);
   --foreground:             var(--neutral-100);
 
-  --card:                   var(--neutral-850);
+  --card:                   var(--neutral-900);
   --card-foreground:        var(--neutral-100);
 
-  --popover:                var(--neutral-820);    /* lighter than card → visible elevation */
+  /* The popover is a card that floats: the SAME surface as --card, exactly as in
+   * the light theme where both are white. What lifts it is --shadow-popover and
+   * its border, not a third grey — and it has to stay a step below the page, or
+   * an open menu reads as a hole in the page rather than a sheet above it. */
+  --popover:                var(--neutral-900);
   --popover-foreground:     var(--neutral-100);
 
-  --muted:                  var(--neutral-900);   /* page surface — same as bg in dark */
+  /* NOTE the direction: in dark the muted tint is LIGHTER than the card, where in
+   * light it is darker than it. The role does not change — the surface a chip, a
+   * track or a table head takes so it is not the card — but the value follows the
+   * surface order of its own theme. */
+  --muted:                  var(--neutral-820);   /* page surface — same as bg in dark */
   --muted-foreground:       var(--neutral-400);
 
   --primary:                var(--brand-400);     /* brand blue fill, same in both themes (white text on it) */
@@ -288,7 +327,10 @@
   --chart-warning: var(--warning-800);
   --chart-danger:  var(--danger-400);
 
-  --secondary:              var(--neutral-850);
+  /* neutral-950, not -850: at -850 this token WAS --card, so every secondary
+   * button standing on a card was 1.00:1 against it — the fill was not quiet, it
+   * was absent. A step BELOW the card reads on the card and on the page both. */
+  --secondary:              var(--neutral-950);
   --secondary-foreground:   var(--neutral-100);
 
   --accent:                 var(--neutral-800);
@@ -304,11 +346,13 @@
   --accent-soft:            var(--neutral-800);   /* subtle hover on dark cards */
   --accent-strong:          var(--neutral-700);   /* the hover step past --accent */
   --accent-active:         var(--neutral-600);   /* one further: the pressed step, named `active` to match the `:active` selector that reads it */
-  --surface-hover:          var(--neutral-820);   /* row hover on dark cards */
-  /* neutral-800, not --accent-soft: in this theme --accent-soft and --popover
-   * are the SAME neutral-820, so every menu highlight was painting itself the
-   * colour of the menu. Measured 1.00:1 — hover and the keyboard position were
-   * not dim, they were absent. */
+  /* Row hover on a card: the page colour, a step ABOVE the card. In this theme
+   * that is the highlight direction — the row rises towards the page rather than
+   * sinking away from it. */
+  --surface-hover:          var(--neutral-820);
+  /* One step above the popover, which now sits at the card's own colour. The rule
+   * this replaces is unchanged and is still what boundary-check enforces: a menu
+   * highlight may never resolve to the colour of the menu. */
   --popover-hover:          var(--neutral-800);
 
   --destructive:            var(--danger-800);    /* danger-800: brand red deep enough for AA on white text (4.98:1) */
@@ -322,21 +366,30 @@
   --success-emphasis:            var(--success-300);
   --warning:                     var(--warning-700);
   --warning-foreground:          var(--neutral-900);
-  --warning-soft:                var(--warning-950);
+  /* warning-930 and danger-930, not the -950 ink stops those two used to take.
+   * Measured against the card, an ink stop as a TINT came to 1.05:1 and 1.11:1 —
+   * the pill was not a pill, it was loose coloured text (owner, 30.08: the toned ones
+   * look plain strange). The two new stops sit at the luminance of
+   * --success-900, the one tone that always read, so all four tint by the same
+   * amount now. */
+  --warning-soft:                var(--warning-930);
   --warning-soft-foreground:     var(--warning-200);
   --warning-emphasis:            var(--warning-300);
-  --destructive-soft:            var(--danger-950);
-  --destructive-soft-foreground: var(--danger-200);
-  --destructive-emphasis:        var(--danger-300);
+  --destructive-soft:            var(--danger-930);
+  --destructive-soft-foreground: var(--danger-100);
+  /* danger-200, not -300: the page is a lighter grey in this theme now, and the
+   * red ink that cleared the old one measured 4.17:1 on it and 2.95:1 on its own
+   * tint. One stop lighter clears both. */
+  --destructive-emphasis:        var(--danger-200);
   /* Dark edges go LIGHTER than the deep tint, the mirror of the light theme. */
   --success-border:              var(--success-700);
   --warning-border:              var(--warning-900);
   --destructive-border:          var(--danger-800);
   --primary-border:              var(--brand-700);
 
-  --border:                 var(--neutral-820);   /* uniform subtle borders */
-  --border-strong:          var(--neutral-800);   /* sidebar rail, more visible on dark muted */
-  --input:                  var(--neutral-820);   /* same as --border for visual consistency */
+  --border:                 var(--neutral-800);   /* uniform subtle borders */
+  --border-strong:          var(--neutral-700);   /* sidebar rail, more visible on dark muted */
+  --input:                  var(--neutral-800);   /* same as --border for visual consistency */
   --ring:                   var(--brand-300);   /* lighter so the focus outline reads on dark */
 
   --control-edge:           var(--neutral-550);
@@ -396,13 +449,13 @@
   :root:not([data-theme]) {
     color-scheme: dark;
 
-    --background:             var(--neutral-900);
+    --background:             var(--neutral-820);
     --foreground:             var(--neutral-100);
-    --card:                   var(--neutral-850);
+    --card:                   var(--neutral-900);
     --card-foreground:        var(--neutral-100);
-    --popover:                var(--neutral-820);
+    --popover:                var(--neutral-900);
     --popover-foreground:     var(--neutral-100);
-    --muted:                  var(--neutral-900);
+    --muted:                  var(--neutral-820);
     --muted-foreground:       var(--neutral-400);
     --primary:                var(--brand-400);
     --primary-foreground:     var(--neutral-0);
@@ -429,7 +482,7 @@
   --chart-success: var(--success-500);
     --chart-warning: var(--warning-800);
     --chart-danger:  var(--danger-400);
-    --secondary:              var(--neutral-850);
+    --secondary:              var(--neutral-950);
     --secondary-foreground:   var(--neutral-100);
     --accent:                 var(--neutral-800);
     --accent-foreground:      var(--neutral-100);
@@ -447,19 +500,19 @@
     --success-emphasis:            var(--success-300);
     --warning:                     var(--warning-700);
     --warning-foreground:          var(--neutral-900);
-    --warning-soft:                var(--warning-950);
+    --warning-soft:                var(--warning-930);
     --warning-soft-foreground:     var(--warning-200);
     --warning-emphasis:            var(--warning-300);
-    --destructive-soft:            var(--danger-950);
-    --destructive-soft-foreground: var(--danger-200);
-    --destructive-emphasis:        var(--danger-300);
+    --destructive-soft:            var(--danger-930);
+    --destructive-soft-foreground: var(--danger-100);
+    --destructive-emphasis:        var(--danger-200);
     --success-border:              var(--success-700);
     --warning-border:              var(--warning-900);
     --destructive-border:          var(--danger-800);
     --primary-border:              var(--brand-700);
-    --border:                 var(--neutral-820);
-    --border-strong:          var(--neutral-800);
-    --input:                  var(--neutral-820);
+    --border:                 var(--neutral-800);
+    --border-strong:          var(--neutral-700);
+    --input:                  var(--neutral-800);
     --ring:                   var(--brand-300);
     --control-edge:           var(--neutral-550);
     --switch-track-off:       var(--neutral-800);

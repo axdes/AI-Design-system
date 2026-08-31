@@ -48,7 +48,10 @@ export function Alert({ tone = 'info', icon, compact, action, onDismiss, classNa
   const { t } = useTranslation()
   return (
     <div
-      className={cn('alert', className)} data-raised="card"
+      /* `tint`, not `card`: every alert is toned (the default is `info`), so its
+       * background is never --card, and a quiet control on it must not fill with
+       * the grey that answers a card. */
+      className={cn('alert', className)} data-raised="tint"
       data-tone={tone}
       data-compact={compact || undefined}
       role={role}
