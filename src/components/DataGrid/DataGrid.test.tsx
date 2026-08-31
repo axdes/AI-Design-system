@@ -340,4 +340,26 @@ describe('which way the column is sorted', () => {
     expect(desc).toHaveAttribute('aria-sort', 'descending')
     expect(glyph(desc)).toContain('lucide-arrow-down')
   })
+  /* A width that already says its own floor is left alone. Wrapping it produced
+   * `minmax(8rem, minmax(11rem, 1fr))`, which is not a track: the browser drops the whole
+   * declaration, the grid collapses to one column and every header stacks. */
+  it('does not nest minmax inside minmax when a column declares its own', () => {
+    render(
+      <DataGrid<Row>
+        label="Rows"
+        rows={ROWS.slice(0, 3)}
+        rowKey={(r) => r.id}
+        columns={[
+          { key: 'name', header: 'Name', cell: (r) => r.name, width: 'minmax(11rem, 1fr)' },
+          { key: 'id', header: 'Id', cell: (r) => r.id, width: '2fr' },
+          { key: 'fixed', header: 'Fixed', cell: () => '', width: '8rem' },
+        ]}
+      />
+    )
+    const header = document.querySelector('.datagrid-header') as HTMLElement
+    expect(header.style.gridTemplateColumns).toBe('minmax(11rem, 1fr) minmax(8rem, 2fr) 8rem')
+    /* And the sheet's floor counts that column's own lower bound, not the default. */
+    const frame = screen.getByRole('grid', { name: 'Rows' })
+    expect(frame.style.getPropertyValue('--dg-min-width')).toBe('calc(11rem + 8rem + 8rem)')
+  })
 })

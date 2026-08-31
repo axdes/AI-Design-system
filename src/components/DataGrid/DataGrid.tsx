@@ -46,6 +46,26 @@ export type DataGridSort = { key: string; sortDirection: 'asc' | 'desc' }
 /** Long enough to be read, short enough that the grid is not a field of ticks a minute later. */
 const SAVED_FOR_MS = 2500
 
+/** Is this width already a `minmax()` track, carrying its own floor? */
+const isMinmax = (w?: string) => !!w && /^minmax\(/i.test(w.trim())
+
+/* The lower bound of a `minmax(a, b)`: `a`, however many brackets it contains.
+   Split at the first comma at depth zero rather than the first comma, because
+   `minmax(calc(8rem + 2ch), 1fr)` is a legal width and cutting it at the wrong
+   comma yields a length that is not one. */
+function lowerBound(width: string) {
+  const w = width.trim()
+  const inner = w.slice(w.indexOf('(') + 1, w.lastIndexOf(')'))
+  let depth = 0
+  for (let i = 0; i < inner.length; i++) {
+    const ch = inner[i]
+    if (ch === '(') depth++
+    else if (ch === ')') depth--
+    else if (ch === ',' && depth === 0) return inner.slice(0, i).trim()
+  }
+  return inner.trim()
+}
+
 /* WHAT IS STORED, WHEN IT IS NOT ONE OF THE OFFERED ANSWERS. A choice control
    handed a value it has no option for shows nothing, so the cell would quietly
    report a value the row does not hold. It is carried at the head of the list,
@@ -176,9 +196,24 @@ export function DataGrid<Row>({
      which with `1.5fr` in it is not a length, so the whole declaration was
      dropped and the floor never arrived. A track declared in fractions gets the
      same floor as one declared with nothing. */
-  const share = (w?: string) => !w || w.includes('fr')
+  /* A COLUMN THAT ALREADY DECLARES ITS OWN `minmax()` IS LEFT ALONE. It contains
+     `fr`, so the test above claims it — and wrapping it gives
+     `minmax(8rem, minmax(11rem, 1fr))`, which is not a track: nested `minmax()`
+     is invalid, so the browser drops the WHOLE `grid-template-columns`
+     declaration and the grid falls back to one column. Every header stacks and
+     the rows land on top of each other, which is what a coordinator saw on a
+     six-column sheet whose SOLUTION column was declared that way (owner,
+     2026-08-31). A width that says its own floor needs nothing from us. */
+  const share = (w?: string) => !w || (w.includes('fr') && !isMinmax(w))
   const template = columns.map((c) => (share(c.width) ? `minmax(${AUTO_MIN}, ${c.width ?? '1fr'})` : c.width)).join(' ')
-  const minWidth = `calc(${columns.map((c) => (share(c.width) ? AUTO_MIN : c.width)).join(' + ')})`
+  /* The floor of each track, added up: AUTO_MIN for a share of what is left, the
+     lower bound of a `minmax()` that states one, and the width itself when it is
+     a plain length. */
+  const floorOf = (w?: string) => {
+    if (share(w)) return AUTO_MIN
+    return isMinmax(w) ? lowerBound(w as string) : (w as string)
+  }
+  const minWidth = `calc(${columns.map((c) => floorOf(c.width)).join(' + ')})`
   /* Whether this grid edits at all: it decides whether a read-only cell is
    * worth saying so about. */
   const editable = columns.some((c) => c.editable)
