@@ -20,7 +20,7 @@ export function Screen() {
       title="Relay setup"
       steps={STEPS}
       current={current}
-      onStep={setCurrent}
+      onSelect={setCurrent}
       submitLabel="Finish setup"
       onSubmit={() => undefined}
     >

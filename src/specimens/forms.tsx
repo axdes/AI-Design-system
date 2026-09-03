@@ -222,7 +222,7 @@ export const FORM_SPECIMENS: Record<string, () => ReactElement> = {
       hint="PDF or PNG, up to 10 MB each."
       accept=".pdf,.png"
       multiple
-      onFiles={noop}
+      onChange={noop}
     />
   ),
 

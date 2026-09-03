@@ -80,7 +80,7 @@
       ]
     },
     "CardStack": {
-      "hash": "bb7a50a9ada0",
+      "hash": "8ce0863a287b",
       "killed": [
         "strip-aria",
         "drop-optional-render"
@@ -177,14 +177,14 @@
       "survived": []
     },
     "CommandPalette": {
-      "hash": "da07ef7d4603",
+      "hash": "b3a44f222cab",
       "killed": [
         "and-to-or"
       ],
       "survived": []
     },
     "ContentCard": {
-      "hash": "6ad66a6e8f16",
+      "hash": "d6ea93f8a5b3",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -254,7 +254,7 @@
       "survived": []
     },
     "Dropdown": {
-      "hash": "d633f1ee0b19",
+      "hash": "07c519a622c6",
       "killed": [
         "boolean-default",
         "and-to-or",
@@ -283,7 +283,7 @@
       "survived": []
     },
     "FileUpload": {
-      "hash": "8777f8f61bc0",
+      "hash": "0735146fb2aa",
       "killed": [
         "strip-aria",
         "drop-optional-render",
@@ -362,7 +362,7 @@
       "survived": []
     },
     "LinkTile": {
-      "hash": "9a68cd732ad2",
+      "hash": "fea6109e031f",
       "killed": [
         "strip-aria"
       ],
@@ -537,7 +537,7 @@
       "survived": []
     },
     "Stepper": {
-      "hash": "60e96714efeb",
+      "hash": "6b1c53a4eb2b",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -686,7 +686,7 @@
       ]
     },
     "Card": {
-      "hash": "5c092826c99c",
+      "hash": "e2bc7b9358e7",
       "killed": [
         "drop-spread"
       ],

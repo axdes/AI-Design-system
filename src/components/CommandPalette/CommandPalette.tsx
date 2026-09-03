@@ -6,6 +6,7 @@ import { Highlight } from '../Highlight'
 import { Icon, type IconName } from '../Icon'
 import { Kbd } from '../Kbd'
 import { useListNavigation } from '../../lib/useListNavigation'
+import { useFocusInside } from '../../lib/useFocusInside'
 
 export type Command = {
   id: string
@@ -57,11 +58,15 @@ export function CommandPalette({ open, onClose, commands, placeholder = 'Type a 
     onEnter: (i) => { const cmd = results[i]; if (cmd) run(cmd) },
   })
 
+  /* Focus into the field on open and back to whoever opened it on close — the
+   * second half is src/lib/useFocusInside.ts's, and this component did not have
+   * it: closing with Escape left focus on the body. */
+  useFocusInside({ open, target: () => inputRef.current })
+
   useEffect(() => {
     if (open) {
       setQuery('')
       setActive(0)
-      inputRef.current?.focus()
     }
   }, [open, setActive])
 

@@ -379,11 +379,15 @@ describe('lint-mechanism', () => {
   }, 30_000)
 
   it('catches a recorded pair carried without a reason', () => {
+    /* The ledger is empty as of 2026-09-03, so the break plants a pair rather
+     * than blanking one: the rule under test is that a RECORDED pair with no
+     * reason fails, and it has to keep biting after the last real pair closes.
+     * The planted pair is a real one — the two parts do portal, take focus and
+     * answer Escape — so the check finds it in the code as well as in the file. */
     const path = join(COPY, 'config/mechanism-debt.json')
     const original = readFileSync(path, 'utf8')
     const debt = JSON.parse(original)
-    const first = Object.keys(debt.pairs)[0]
-    debt.pairs[first] = ''
+    debt.pairs = { ...debt.pairs, 'CommandPalette ~ Dropdown': '' }
     writeFileSync(path, JSON.stringify(debt, null, 2))
     const { code, out } = runLinter('lint-mechanism.mjs')
     writeFileSync(path, original)

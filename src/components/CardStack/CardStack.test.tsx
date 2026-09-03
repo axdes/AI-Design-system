@@ -9,27 +9,27 @@ describe('CardStack', () => {
    * itself — named for a screen reader by `label`, since the layering is silent. */
   it('opens from the card when it has no controls', async () => {
     const user = userEvent.setup()
-    const onOpen = vi.fn()
+    const onSelect = vi.fn()
     render(
-      <CardStack count={12} label="12 audits waiting on you" onOpen={onOpen}>
+      <CardStack count={12} label="12 audits waiting on you" onSelect={onSelect}>
         <CardTitle>Site 14, working at height</CardTitle>
       </CardStack>,
     )
     await user.click(screen.getByLabelText('12 audits waiting on you'))
-    expect(onOpen).toHaveBeenCalledTimes(1)
+    expect(onSelect).toHaveBeenCalledTimes(1)
   })
 
   /* With them the pile is a queue: two named buttons, and the card itself stops
    * being a target so a click on "Skip" cannot also open what it skipped. */
   it('works through the pile with two named controls', async () => {
     const user = userEvent.setup()
-    const onOpen = vi.fn()
+    const onSelect = vi.fn()
     const onNext = vi.fn()
     render(
       <CardStack
         count={12}
         label="12 audits waiting on you"
-        onOpen={onOpen}
+        onSelect={onSelect}
         onNext={onNext}
         nextLabel="Skip"
         openLabel="Open"
@@ -39,10 +39,10 @@ describe('CardStack', () => {
     )
     await user.click(screen.getByRole('button', { name: 'Skip' }))
     expect(onNext).toHaveBeenCalledTimes(1)
-    expect(onOpen).not.toHaveBeenCalled()
+    expect(onSelect).not.toHaveBeenCalled()
 
     await user.click(screen.getByRole('button', { name: 'Open' }))
-    expect(onOpen).toHaveBeenCalledTimes(1)
+    expect(onSelect).toHaveBeenCalledTimes(1)
     expect(onNext).toHaveBeenCalledTimes(1)
   })
 
@@ -57,7 +57,7 @@ describe('CardStack', () => {
        select. In the other arrangement the name belongs to the card itself,
        asserted just below. */
     render(
-      <CardStack count={3} label="3 drafts" onOpen={() => {}} onNext={() => {}} nextLabel="Next draft" openLabel="Open draft">
+      <CardStack count={3} label="3 drafts" onSelect={() => {}} onNext={() => {}} nextLabel="Next draft" openLabel="Open draft">
         <CardTitle>Draft</CardTitle>
       </CardStack>,
     )
@@ -66,7 +66,7 @@ describe('CardStack', () => {
 
   it('names the card itself when the stack is one target', () => {
     render(
-      <CardStack count={3} label="3 drafts" onOpen={() => {}}>
+      <CardStack count={3} label="3 drafts" onSelect={() => {}}>
         <CardTitle>Draft</CardTitle>
       </CardStack>,
     )

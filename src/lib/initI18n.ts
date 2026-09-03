@@ -1,3 +1,9 @@
+/* Starts the translation layer with the words a product ships.
+ *
+ * @internal Plumbing rather than a choice: an app calls it once at boot and
+ * nobody reaches for it while building a screen, so it stays out of the index
+ * an agent reads on every task. (2026-09-03)
+ */
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 

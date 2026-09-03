@@ -22,11 +22,11 @@ type Props = {
   excerpt?: ReactNode;
   /** Provenance: author, date, counts. Pinned to the foot. */
   meta?: ReactNode;
-  /** What can be done, named. One primary at most — if `onOpen` is given, the
+  /** What can be done, named. One primary at most — if `onSelect` is given, the
    *  whole entry is already the way in. */
   actions?: ReactNode;
   /** Makes the whole entry one target. */
-  onOpen?: () => void;
+  onSelect?: () => void;
   /** Where the media sits and which way the entry reads. `auto` (the default)
    *  lets it answer its OWN width: a row with a thumbnail under 360px, a
    *  tile up to 560, media beside the words above it. Name a layout to fix it,
@@ -78,7 +78,7 @@ export function ContentCard({
   excerpt,
   meta,
   actions,
-  onOpen,
+  onSelect,
   layout = "auto",
   density = "comfortable",
   fill,
@@ -107,11 +107,11 @@ export function ContentCard({
               the meta a line below everything. One box, one flex rule. */}
           <div className="content-card-head">
             {eyebrow && <div className="content-card-eyebrow">{eyebrow}</div>}
-            {onOpen ? (
+            {onSelect ? (
               <button
                 type="button"
                 className="content-card-title content-card-open"
-                onClick={onOpen}
+                onClick={onSelect}
               >
                 {title}
               </button>
@@ -138,13 +138,13 @@ export function ContentCard({
           not reachable by keyboard, and the stretched `.card-link` gives the
           card one accessible name and one focus stop (owner's rule, 23.08:
           titles in cards are always links). */}
-      <Card fill={fill} interactive={onOpen ? true : undefined}>
+      <Card fill={fill} interactive={onSelect ? true : undefined}>
         {media && placement && <CardMedia placement={placement}>{media}</CardMedia>}
         {/* Eyebrow and title travel together: they are one level of the reading
             order, and on a row of cards they share one subgrid track. */}
         <div className="content-card-head">
           {eyebrow && <div className="content-card-eyebrow">{eyebrow}</div>}
-          <CardTitle onOpen={onOpen}>{title}</CardTitle>
+          <CardTitle onSelect={onSelect}>{title}</CardTitle>
         </div>
         {excerpt && <p className="content-card-excerpt">{excerpt}</p>}
         {(meta || actions) && (

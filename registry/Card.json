@@ -31,7 +31,7 @@
           ]
         },
         {
-          "name": "onOpen",
+          "name": "onSelect",
           "type": "() => void",
           "required": false,
           "description": "Where the card goes. A card's title IS its link (owner's rule, 23.08), so this renders the title as the control that opens it and stretches that control's hit area over the whole card: ONE accessible name, ONE focus stop, and a keyboard can reach it — which a click handler on the card's div never could."

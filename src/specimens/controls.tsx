@@ -216,7 +216,7 @@ export const CONTROL_SPECIMENS: Record<string, () => ReactElement> = {
 
   /* What is accepted and how large, said before the reader picks. */
   file: () => (
-    <FileUpload label="Evidence" hint="PDF or PNG, up to 5 MB." accept=".pdf,.png" onFiles={noop} />
+    <FileUpload label="Evidence" hint="PDF or PNG, up to 5 MB." accept=".pdf,.png" onChange={noop} />
   ),
 
   /* Never a plain field, and always revealable. */

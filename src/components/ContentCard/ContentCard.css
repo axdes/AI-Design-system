@@ -145,7 +145,7 @@
  * reasoning below is that component's, kept because it is all owner rulings
  * measured on real screens, not preference.
  *
- * The row is position: relative so an `onOpen` title can stretch its hit area
+ * The row is position: relative so an `onSelect` title can stretch its hit area
  * over the whole row (the .card-link idea); actions sit above that layer and
  * stay clickable. */
 .content-card[data-layout='row'] {

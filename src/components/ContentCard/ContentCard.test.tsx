@@ -32,16 +32,16 @@ describe('ContentCard', () => {
    * focus stop, reachable by keyboard. A click handler on the card's div was
    * none of those things. */
   it('opens through its title, which is the link', async () => {
-    const onOpen = vi.fn()
+    const onSelect = vi.fn()
     const user = userEvent.setup()
-    render(<ContentCard title="The quarter in numbers" onOpen={onOpen} />)
+    render(<ContentCard title="The quarter in numbers" onSelect={onSelect} />)
 
     const link = screen.getByRole('button', { name: 'The quarter in numbers' })
     expect(screen.getByRole('heading')).toContainElement(link)
 
     link.focus()
     await user.keyboard('{Enter}')
-    expect(onOpen).toHaveBeenCalledTimes(1)
+    expect(onSelect).toHaveBeenCalledTimes(1)
   })
 
   it('drops nothing but the parts it was not given', () => {
@@ -72,7 +72,7 @@ describe('ContentCard', () => {
   })
 
   it('gives the list form one accessible name and one focus stop', () => {
-    render(<ContentCard title="Quarterly review" layout="row" onOpen={() => undefined} />)
+    render(<ContentCard title="Quarterly review" layout="row" onSelect={() => undefined} />)
     expect(screen.getByRole('button', { name: 'Quarterly review' })).toBeInTheDocument()
   })
 

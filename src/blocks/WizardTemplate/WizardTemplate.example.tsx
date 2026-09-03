@@ -22,7 +22,7 @@ import { WizardTemplate, WizardReview, WizardReviewRow } from './WizardTemplate'
  * "Finish". The last press of a wizard is the one that changes something in
  * the world, and the reader has a right to know what before they make it.
  *
- * `onStep` is where validation belongs if there is any: refuse the move and
+ * `onSelect` is where validation belongs if there is any: refuse the move and
  * say why, rather than letting the reader reach the review and find a step
  * they cannot fix from there.
  */
@@ -41,7 +41,7 @@ export function Example() {
       title="New export schedule"
       steps={STEPS}
       current={step}
-      onStep={setStep}
+      onSelect={setStep}
       submitLabel="Create schedule"
       onSubmit={() => setStep('details')}
     >

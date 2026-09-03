@@ -1124,6 +1124,11 @@ async function collectMechanisms() {
       ? doc[1].split("\n").map((l) => l.replace(/^\s*\*\s?/, "").trim()).filter(Boolean).join(" ")
       : "";
     const first = text.split(/(?<=\.)\s/)[0]?.trim() ?? "";
+    /* @internal is the same word a part uses for the same idea: plumbing that is
+       called by whatever needs it and never picked on purpose. It stays in the
+       registry — `npm run registry -- <name>` still answers — and out of the
+       index every agent reads on every task. */
+    if (/@internal\b/.test(text)) continue;
     out[name] = {
       ref: name,
       kind: "mechanism",

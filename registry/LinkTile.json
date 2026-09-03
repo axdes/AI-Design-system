@@ -27,7 +27,7 @@
       "description": "Dropdown items (DropdownItem elements)."
     },
     {
-      "name": "onOpen",
+      "name": "onSelect",
       "type": "() => void",
       "required": true
     },
@@ -46,5 +46,5 @@
     "IconButton",
     "MetaItem"
   ],
-  "example": "const workshop = { id: 'w1', name: 'Discovery workshop', updated: '2 days ago' }<LinkTile\n  title={workshop.name}\n  menuLabel={`Actions for ${workshop.name}`}\n  onOpen={() => undefined}\n  menu={\n    <>\n      <DropdownItem icon=\"edit\" onClick={() => undefined}>Rename</DropdownItem>\n      <DropdownItem icon=\"delete\" onClick={() => undefined}>Delete</DropdownItem>\n    </>\n  }\n>\n  <MetaItem icon=\"schedule\">Updated {workshop.updated}</MetaItem>\n</LinkTile>"
+  "example": "const workshop = { id: 'w1', name: 'Discovery workshop', updated: '2 days ago' }<LinkTile\n  title={workshop.name}\n  menuLabel={`Actions for ${workshop.name}`}\n  onSelect={() => undefined}\n  menu={\n    <>\n      <DropdownItem icon=\"edit\" onClick={() => undefined}>Rename</DropdownItem>\n      <DropdownItem icon=\"delete\" onClick={() => undefined}>Delete</DropdownItem>\n    </>\n  }\n>\n  <MetaItem icon=\"schedule\">Updated {workshop.updated}</MetaItem>\n</LinkTile>"
 }

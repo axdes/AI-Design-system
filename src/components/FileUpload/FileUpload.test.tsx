@@ -12,7 +12,7 @@ function Host() {
     <FileUpload
       multiple
       files={files}
-      onFiles={(picked) => setFiles((cur) => [...cur, ...picked])}
+      onChange={(picked) => setFiles((cur) => [...cur, ...picked])}
       onRemove={(i) => setFiles((cur) => cur.filter((_, x) => x !== i))}
     />
   )
@@ -43,7 +43,7 @@ describe('FileUpload', () => {
      announces a list with no items on a control nobody has used yet. A mutation
      run widened it and nothing failed (2026-08-29). */
   it('renders no attachment list until something is attached', () => {
-    const { container } = render(<FileUpload label="Attach" onFiles={() => undefined} />)
+    const { container } = render(<FileUpload label="Attach" onChange={() => undefined} />)
     expect(container.querySelector('.file-upload-list')).toBeNull()
     expect(screen.queryByRole('list')).toBeNull()
   })

@@ -7,7 +7,7 @@ import { Tooltip } from '../Tooltip'
 
 type Props = {
   /** Called with the picked/dropped files (appended, not replaced). */
-  onFiles: (files: File[]) => void
+  onChange: (files: File[]) => void
   /** Currently attached files, rendered as a removable list. */
   files?: File[]
   onRemove?: (index: number) => void
@@ -40,7 +40,7 @@ type Props = {
    * size, how many. A rule discovered by failing is a rule stated too late.
    */
 export function FileUpload({
-  onFiles, files = [], onRemove, accept, multiple, disabled, invalid,
+  onChange, files = [], onRemove, accept, multiple, disabled, invalid,
   label = 'Drag files here or browse', hint, className,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -49,7 +49,7 @@ export function FileUpload({
 
   const handle = (list: FileList | null) => {
     if (!list || !list.length) return
-    onFiles(Array.from(list))
+    onChange(Array.from(list))
   }
   const onDrop = (e: DragEvent) => {
     e.preventDefault()

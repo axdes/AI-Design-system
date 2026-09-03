@@ -20,7 +20,7 @@ type Props = {
   /** Current step id — the parent owns it, usually mirrored into the URL. */
   current: string
   /** Back, Next and clicks on visited steps all arrive here. */
-  onStep: (id: string) => void
+  onSelect: (id: string) => void
   /** The current step's content. */
   children?: ReactNode
   backLabel?: string
@@ -50,7 +50,7 @@ export function WizardTemplate({
   title,
   steps,
   current,
-  onStep,
+  onSelect,
   children,
   backLabel = 'Back',
   nextLabel = 'Next',
@@ -70,7 +70,7 @@ export function WizardTemplate({
         <Stepper
           steps={steps.map(({ label, description }) => ({ label, description }))}
           current={index}
-          onStepClick={(i) => onStep(steps[i].id)}
+          onSelect={(i) => onSelect(steps[i].id)}
         />
         <div className="wizard-step">{children}</div>
         {/* No Cancel here on purpose: leaving a wizard belongs to the screen's
@@ -78,7 +78,7 @@ export function WizardTemplate({
           * (a product's wrap-up) never had one and nobody missed it. */}
         <div className="wizard-actions">
           {index > 0 && (
-            <Button variant="secondary" onClick={() => onStep(steps[index - 1].id)} disabled={busy}>
+            <Button variant="secondary" onClick={() => onSelect(steps[index - 1].id)} disabled={busy}>
               {backLabel}
             </Button>
           )}
@@ -87,7 +87,7 @@ export function WizardTemplate({
               {submitLabel}
             </Button>
           ) : (
-            <Button variant="primary" onClick={() => onStep(steps[index + 1].id)} disabled={busy}>
+            <Button variant="primary" onClick={() => onSelect(steps[index + 1].id)} disabled={busy}>
               {nextLabel}
             </Button>
           )}

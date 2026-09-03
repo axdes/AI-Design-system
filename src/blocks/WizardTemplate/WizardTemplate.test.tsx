@@ -49,10 +49,10 @@ describe('WizardTemplate', () => {
   })
 
   it('moves when the step control is used', async () => {
-    const onStep = vi.fn()
-    wizard({ current: 'what', onStep })
+    const onSelect = vi.fn()
+    wizard({ current: 'what', onSelect })
     await userEvent.click(screen.getByRole('button', { name: 'Back' }))
-    expect(onStep).toHaveBeenCalledWith('who')
+    expect(onSelect).toHaveBeenCalledWith('who')
   })
 
   it('carries the step body it was given', () => {

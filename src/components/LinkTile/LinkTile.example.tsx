@@ -8,12 +8,12 @@ export function Example() {
   const workshop = { id: 'w1', name: 'Discovery workshop', updated: '2 days ago' }
 
   /* One tile = one navigable record plus its overflow menu. The menu swallows
-   * its own clicks, so the tile's onOpen does not fire behind it. */
+   * its own clicks, so the tile's onSelect does not fire behind it. */
   return (
     <LinkTile
       title={workshop.name}
       menuLabel={`Actions for ${workshop.name}`}
-      onOpen={() => undefined}
+      onSelect={() => undefined}
       menu={
         <>
           <DropdownItem icon="edit" onClick={() => undefined}>Rename</DropdownItem>

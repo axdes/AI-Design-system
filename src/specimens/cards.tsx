@@ -84,7 +84,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
   object: () => (
     <Card interactive>
       <Row gap={2} align="center">
-        <CardTitle onOpen={() => undefined}>Northwind Paper</CardTitle>
+        <CardTitle onSelect={() => undefined}>Northwind Paper</CardTitle>
         <Badge tone="success" fill="soft">Active</Badge>
       </Row>
       <Descriptions
@@ -192,7 +192,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
 
   /* Many cards of one kind shown as one: the top card, the count, the way in. */
   stack: () => (
-    <CardStack count={9} label="Open findings" onOpen={() => undefined} openLabel="Open all 9">
+    <CardStack count={9} label="Open findings" onSelect={() => undefined} openLabel="Open all 9">
       <Card>
         <CardTitle as="h3">Access route blocked at gate 3</CardTitle>
         <CardMeta><MetaItem icon="schedule">Raised 2 days ago</MetaItem></CardMeta>
@@ -326,7 +326,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
       <Row gap={3} align="start">
         <Icon name="article" />
         <Stack gap={1}>
-          <CardTitle onOpen={() => undefined}>Site access is changing in October</CardTitle>
+          <CardTitle onSelect={() => undefined}>Site access is changing in October</CardTitle>
           <Prose size="sm">Contractors will badge in at gate 1 only.</Prose>
           <MetaItem icon="folder">Operations handbook</MetaItem>
         </Stack>
@@ -344,7 +344,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
       excerpt="Two sites closed their findings early, and the reason turned out to be the same in both."
       media={<img src={PHOTO} alt="" width={640} height={360} />}
       meta={<MetaItem icon="schedule">19 February</MetaItem>}
-      onOpen={() => undefined}
+      onSelect={() => undefined}
     />
   ),
 

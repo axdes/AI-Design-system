@@ -24,18 +24,18 @@ describe('Stepper', () => {
 
   it('lets you click back to a completed step only', async () => {
     const user = userEvent.setup()
-    const onStepClick = vi.fn()
-    render(<Stepper steps={STEPS} current={2} onStepClick={onStepClick} />)
+    const onSelect = vi.fn()
+    render(<Stepper steps={STEPS} current={2} onSelect={onSelect} />)
 
     /* Completed steps render as buttons; current and upcoming ones do not. */
     await user.click(screen.getByRole('button', { name: /Account/ }))
-    expect(onStepClick).toHaveBeenCalledWith(0)
+    expect(onSelect).toHaveBeenCalledWith(0)
 
     expect(screen.queryByRole('button', { name: /Review/ })).toBeNull()
     expect(screen.queryByRole('button', { name: /Payment/ })).toBeNull()
   })
 
-  it('is inert without onStepClick', () => {
+  it('is inert without onSelect', () => {
     render(<Stepper steps={STEPS} current={2} />)
     expect(screen.queryAllByRole('button')).toHaveLength(0)
   })

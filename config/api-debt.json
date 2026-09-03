@@ -24,11 +24,11 @@
     "min": 3,
     "name": 3,
     "nodes": 2,
-    "onChange": 15,
+    "onChange": 16,
     "onDismiss": 2,
     "onRemove": 2,
     "onSave": 2,
-    "onSelect": 3,
+    "onSelect": 5,
     "onSubmit": 3,
     "options": 4,
     "role": 2,
@@ -125,9 +125,6 @@
     "onExpandedChange": [
       "Tree"
     ],
-    "onFiles": [
-      "FileUpload"
-    ],
     "onLoad": [
       "LoadMore"
     ],
@@ -146,11 +143,6 @@
     "onNext": [
       "CardStack"
     ],
-    "onOpen": [
-      "CardStack",
-      "ContentCard",
-      "LinkTile"
-    ],
     "onRemove": [
       "Chip",
       "FileUpload"
@@ -168,15 +160,11 @@
     "onSortChange": [
       "DataGrid"
     ],
-    "onStep": [
-      "WizardTemplate"
-    ],
-    "onStepClick": [
-      "Stepper"
-    ],
     "onStop": [
       "ChatComposer"
     ]
   },
-  "untested": []
+  "untested": [],
+  "_callbacks": "The callback count is 0 on 2026-09-03, and that is a decision rather than a rename spree. config/callback-vocabulary.json now has three sections: the canonical six, a `kept` list where each name carries the thing the six cannot say, and the exceptions that are still wrong. Four names moved — onStepClick and onStep became onSelect, onFiles became onChange, onOpen on the four card parts became onSelect — and the rest were decided to stay, with the reason on each. Applying the original table mechanically would have made several APIs worse: onBack is not one action among many, onExpandedChange says which value moved, onClear does not fire when the value changes.",
+  "_shapesRose": "onChange and onSelect each gained a signature on 2026-09-03, which is the price of the renames: fewer NAMES means more signatures under one name, and that trade is the one the vocabulary makes on purpose. A reader now learns one word and reads its type per part, rather than learning four words."
 }

@@ -21,7 +21,7 @@
       "description": "0-based index of the step in progress. Earlier steps read as complete."
     },
     {
-      "name": "onStepClick",
+      "name": "onSelect",
       "type": "(index: number) => void",
       "required": false,
       "description": "Lets the user jump back to a completed step. Only completed steps are interactive; the current and future ones are not."
@@ -43,5 +43,5 @@
   "uses": [
     "Icon"
   ],
-  "example": "const [step, setStep] = useState(1)<Stepper\n  current={step}\n  onStepClick={setStep}\n  steps={[\n    { label: 'Account', description: 'Your details' },\n    { label: 'Shipping', description: 'Where to send it' },\n    { label: 'Payment', description: 'How to pay' },\n    { label: 'Review', description: 'Confirm and place' },\n  ]}\n/>"
+  "example": "const [step, setStep] = useState(1)<Stepper\n  current={step}\n  onSelect={setStep}\n  steps={[\n    { label: 'Account', description: 'Your details' },\n    { label: 'Shipping', description: 'Where to send it' },\n    { label: 'Payment', description: 'How to pay' },\n    { label: 'Review', description: 'Confirm and place' },\n  ]}\n/>"
 }

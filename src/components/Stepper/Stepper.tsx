@@ -14,7 +14,7 @@ type Props = {
   current: number
   /** Lets the user jump back to a completed step. Only completed steps are
    *  interactive; the current and future ones are not. */
-  onStepClick?: (index: number) => void
+  onSelect?: (index: number) => void
   /** Accessible name for the ordered list. Default "Progress". */
   label?: string
   className?: string
@@ -28,12 +28,12 @@ type Props = {
    * Copy: step names are nouns, short and parallel, and they stay the same word in
    * the step and in its page title.
    */
-export function Stepper({ steps, current, onStepClick, label = 'Progress', className }: Props) {
+export function Stepper({ steps, current, onSelect, label = 'Progress', className }: Props) {
   return (
     <ol className={cn('stepper', className)} aria-label={label}>
       {steps.map((step, i) => {
         const state = i < current ? 'complete' : i === current ? 'current' : 'upcoming'
-        const clickable = state === 'complete' && onStepClick
+        const clickable = state === 'complete' && onSelect
         const marker = (
           <span className="stepper-marker" aria-hidden="true">
             {state === 'complete' ? <Icon name="check" /> : i + 1}
@@ -48,7 +48,7 @@ export function Stepper({ steps, current, onStepClick, label = 'Progress', class
         return (
           <li key={step.label} className="stepper-step" data-state={state} aria-current={state === 'current' ? 'step' : undefined}>
             {clickable ? (
-              <button type="button" className="stepper-button" onClick={() => onStepClick(i)}>
+              <button type="button" className="stepper-button" onClick={() => onSelect(i)}>
                 {marker}
                 {body}
               </button>

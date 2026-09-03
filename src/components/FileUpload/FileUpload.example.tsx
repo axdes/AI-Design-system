@@ -13,7 +13,7 @@ export function Example() {
       multiple
       hint="PDF or PNG, up to 10 MB"
       files={files}
-      onFiles={(picked) => setFiles((cur) => [...cur, ...picked])}
+      onChange={(picked) => setFiles((cur) => [...cur, ...picked])}
       onRemove={(i) => setFiles((cur) => cur.filter((_, x) => x !== i))}
     />
   )

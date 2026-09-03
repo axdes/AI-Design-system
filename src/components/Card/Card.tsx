@@ -54,14 +54,14 @@ type CardTitleProps = HTMLAttributes<HTMLHeadingElement> & {
    * stop, and a keyboard can reach it — which a click handler on the card's
    * div never could.
    */
-  onOpen?: () => void
+  onSelect?: () => void
 }
 
-export function CardTitle({ as: Tag = 'h2', onOpen, children, className, ...rest }: CardTitleProps) {
+export function CardTitle({ as: Tag = 'h2', onSelect, children, className, ...rest }: CardTitleProps) {
   return (
     <Tag className={cn('card-title', className)} {...rest}>
-      {onOpen ? (
-        <Button variant="link" className="card-link" onClick={onOpen}>
+      {onSelect ? (
+        <Button variant="link" className="card-link" onClick={onSelect}>
           {children}
         </Button>
       ) : (

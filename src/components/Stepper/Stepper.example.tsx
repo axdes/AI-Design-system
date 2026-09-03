@@ -11,7 +11,7 @@ export function Example() {
   return (
     <Stepper
       current={step}
-      onStepClick={setStep}
+      onSelect={setStep}
       steps={[
         { label: 'Account', description: 'Your details' },
         { label: 'Shipping', description: 'Where to send it' },

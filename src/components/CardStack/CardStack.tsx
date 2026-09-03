@@ -9,7 +9,7 @@ type Props = {
   count: number;
   /** Opening the pile. With `onNext` this is a named button; without it the
    *  whole card is the target, named for a screen reader by `label`. */
-  onOpen: () => void;
+  onSelect: () => void;
   /** What the pile IS: "12 audits waiting on you". Read instead of the visual
    *  layering, which says nothing out loud. */
   label: string;
@@ -36,7 +36,7 @@ type Props = {
  * Copy: the label names the pile and the open control counts it — "Open all 9
  * findings". A count with no noun is a number nobody can act on.
  */
-export function CardStack({ count, onOpen, label, children, onNext, nextLabel, openLabel, className }: Props) {
+export function CardStack({ count, onSelect, label, children, onNext, nextLabel, openLabel, className }: Props) {
   const worked = Boolean(onNext && nextLabel && openLabel);
   /* The name of the pile goes wherever the pile's target is: on the card while
    * the card IS the target, on the group once two buttons are. Both at once is
@@ -50,7 +50,7 @@ export function CardStack({ count, onOpen, label, children, onNext, nextLabel, o
     >
       {/* Two named controls or one big target, never both: a card that is itself
           a button swallows the click meant for the button inside it. */}
-      <Card interactive={!worked} onClick={worked ? undefined : onOpen} aria-label={worked ? undefined : label}>
+      <Card interactive={!worked} onClick={worked ? undefined : onSelect} aria-label={worked ? undefined : label}>
         {children}
         <span className="card-stack-count" aria-hidden="true">
           {count}
@@ -60,7 +60,7 @@ export function CardStack({ count, onOpen, label, children, onNext, nextLabel, o
             <Button variant="secondary" size="sm" onClick={onNext}>
               {nextLabel}
             </Button>
-            <Button size="sm" onClick={onOpen}>
+            <Button size="sm" onClick={onSelect}>
               {openLabel}
             </Button>
           </CardMeta>

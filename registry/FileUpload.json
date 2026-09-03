@@ -10,7 +10,7 @@
   "slots": [],
   "props": [
     {
-      "name": "onFiles",
+      "name": "onChange",
       "type": "(files: File[]) => void",
       "required": true,
       "description": "Called with the picked/dropped files (appended, not replaced)."
@@ -86,5 +86,5 @@
     "IconButton",
     "Tooltip"
   ],
-  "example": "const [files, setFiles] = useState<File[]>([])<FileUpload\n  multiple\n  hint=\"PDF or PNG, up to 10 MB\"\n  files={files}\n  onFiles={(picked) => setFiles((cur) => [...cur, ...picked])}\n  onRemove={(i) => setFiles((cur) => cur.filter((_, x) => x !== i))}\n/>"
+  "example": "const [files, setFiles] = useState<File[]>([])<FileUpload\n  multiple\n  hint=\"PDF or PNG, up to 10 MB\"\n  files={files}\n  onChange={(picked) => setFiles((cur) => [...cur, ...picked])}\n  onRemove={(i) => setFiles((cur) => cur.filter((_, x) => x !== i))}\n/>"
 }

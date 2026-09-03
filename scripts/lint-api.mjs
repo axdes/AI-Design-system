@@ -169,7 +169,15 @@ const wide = parts
 
 /* ── A3 ─────────────────────────────────────────────────────────────────── */
 const canonical = new Set(Object.keys(vocab.canonical))
-const exceptions = vocab.exceptions ?? {}
+/* A KEPT NAME IS PART OF THE VOCABULARY, not debt inside it. Each one carries
+ * the thing it says that the canonical name cannot, and that reason IS the
+ * decision — `onBack` is the way out of a screen rather than one action among
+ * many, `onClear` does not fire when the value changes. Deferring them as
+ * exceptions was the first version of this file and it was wrong: applying that
+ * table would have made several APIs worse. What stays debt is only what is
+ * still wrong. (2026-09-03) */
+const kept = new Set(Object.keys(vocab.kept ?? {}).filter((k) => k !== '_why'))
+const exceptions = Object.fromEntries(Object.entries(vocab.exceptions ?? {}).filter(([k]) => k !== '_why'))
 const callbacks = new Map()
 for (const part of parts) {
   for (const prop of part.props ?? []) {
@@ -246,12 +254,12 @@ for (const p of wide) {
 }
 
 for (const [name, users] of callbacks) {
-  if (canonical.has(name)) continue
+  if (canonical.has(name) || kept.has(name)) continue
   const held = debt.callbacks?.[name]
   if (held === undefined) {
     const suggestion = exceptions[name]?.use
     say('A3', name, 'is not in the callback vocabulary',
-      `the system says: ${[...canonical].join(', ')}.${suggestion ? ` This one reads as ${suggestion}.` : ''} A new callback name is a change to the vocabulary and is argued for in config/callback-vocabulary.json, not invented at the call site — 32 names covered about eight ideas on the day this check landed.`)
+      `the system says: ${[...canonical].join(', ')} — or a name in \`kept\`, each of which carries the thing the six cannot say.${suggestion ? ` This one reads as ${suggestion}.` : ''} A new callback name is a change to the vocabulary and is argued for in config/callback-vocabulary.json, not invented at the call site.`)
     continue
   }
   if (!exceptions[name]) {
@@ -279,7 +287,7 @@ const nTypes = drift.reduce((n, d) => n + d.types.size, 0)
 const narrowed = narrowings.reduce((n, x) => n + x.notes.length, 0)
 console.log(
   `${BOLD}API${RESET} ${DIM}${parts.length} parts, ${shapes.size} prop names — ${nShapes} carry more than one type (${nTypes} shapes), ` +
-    `${wide.length} past seven props, ${callbacks.size - [...callbacks.keys()].filter((c) => canonical.has(c)).length} callbacks outside the vocabulary, ${untested.length} without a test${RESET}`,
+    `${wide.length} past seven props, ${[...callbacks.keys()].filter((c) => !canonical.has(c) && !kept.has(c)).length} callbacks outside the vocabulary, ${untested.length} without a test${RESET}`,
 )
 if (narrowed) {
   console.log(`  ${DIM}${narrowed} narrower union(s) folded into the wider vocabulary they belong to — a part offering fewer steps is not a second answer${RESET}`)

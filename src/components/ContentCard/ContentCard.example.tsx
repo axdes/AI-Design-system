@@ -33,7 +33,7 @@ export function Example() {
         media={<img src={PHOTO} alt="" width={640} height={360} />}
         meta={<MetaItem icon="schedule">19 February</MetaItem>}
         actions={<Button variant="link" size="sm">Read</Button>}
-        onOpen={() => undefined}
+        onSelect={() => undefined}
       />
       <Card flush>
         {ENTRIES.map((e) => (
@@ -43,7 +43,7 @@ export function Example() {
             density="compact"
             title={e.title}
             meta={<MetaItem icon="schedule">{e.meta}</MetaItem>}
-            onOpen={() => undefined}
+            onSelect={() => undefined}
           />
         ))}
       </Card>

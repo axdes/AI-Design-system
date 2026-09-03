@@ -23,7 +23,7 @@ export function Example() {
     <CardStack
       count={12}
       label="12 audits waiting on you"
-      onOpen={() => undefined}
+      onSelect={() => undefined}
       onNext={() => setAt((i) => i + 1)}
       nextLabel="Skip"
       openLabel="Open"

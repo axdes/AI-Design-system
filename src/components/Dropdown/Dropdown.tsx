@@ -2,10 +2,8 @@ import './Dropdown.css'
 import { readAnchor, computePlacement, type Placement } from '../../lib/placement'
 import {
   useCallback,
-  useEffect,
   useId,
   useMemo,
-  useRef,
   useState,
   type ButtonHTMLAttributes,
   type KeyboardEvent,
@@ -16,6 +14,7 @@ import {
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
 import { useListKeys } from '../../lib/useListKeys'
+import { useFocusInside } from '../../lib/useFocusInside'
 import { useAnchoredLayer } from '../../lib/useAnchoredLayer'
 import { Icon, type IconName } from '../Icon'
 import { Kbd } from '../Kbd'
@@ -75,7 +74,6 @@ export function Dropdown({
   matchTriggerWidth = false, triggerId: triggerIdProp,
 }: DropdownProps) {
   const [open, setOpen] = useState(false)
-  const itemsRef = useRef<HTMLElement[]>([])
   const menuId = useId()
   /* The trigger's id is generated UNLESS the caller names it. It has to be one
    * id and not two: the menu points `aria-labelledby` at it, and a field wants
@@ -114,17 +112,20 @@ export function Dropdown({
   const { triggerRef, layerRef: menuRef, setLayer: menuRefCallback, position, mounted: menuMounted } =
     useAnchoredLayer<Position>({ open, onClose: close, measure: computePosition })
 
-  /* Cache menuitems on open; focus first */
-  useEffect(() => {
-    if (!open || !menuMounted) return
-    const raf = requestAnimationFrame(() => {
-      itemsRef.current = Array.from(
-        menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [],
-      )
-      itemsRef.current[0]?.focus()
-    })
-    return () => cancelAnimationFrame(raf)
-  }, [open, menuMounted])
+  /* NO CACHED ITEM LIST. It used to be collected into a ref on the frame the
+   * menu mounted, in the same frame that focused the first item — one order, two
+   * jobs. Moving the focus into the shared mechanism separated them and they
+   * raced: focus landed synchronously, a key arrived before the frame, and the
+   * arrows moved nothing because the cache was still empty (2026-09-03).
+   *
+   * The menu is asked for its items when a key arrives instead, which is also
+   * the truthful answer: a menu whose items change while it is open had a stale
+   * list until now. */
+  useFocusInside({
+    open,
+    ready: menuMounted,
+    target: () => menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]') ?? null,
+  })
 
   const handleTrigger = useCallback((e: MouseEvent) => {
     e.stopPropagation()
@@ -134,10 +135,11 @@ export function Dropdown({
   /* The list and the current row are read WHEN THE KEY ARRIVES: this menu moves
    * real DOM focus between real buttons, so `document.activeElement` is the
    * truth and mirroring it into state would be the bug. */
+  const menuItems = () => Array.from(menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [])
   const listKeys = useListKeys({
-    count: () => itemsRef.current.length,
-    index: () => itemsRef.current.findIndex((el) => el === document.activeElement),
-    move: (i) => itemsRef.current[i]?.focus(),
+    count: () => menuItems().length,
+    index: () => menuItems().findIndex((el) => el === document.activeElement),
+    move: (i) => menuItems()[i]?.focus(),
   })
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

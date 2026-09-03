@@ -19,7 +19,7 @@ export function LinkTile({
   title,
   menuLabel,
   menu,
-  onOpen,
+  onSelect,
   children,
 }: {
   title: ReactNode
@@ -27,7 +27,7 @@ export function LinkTile({
   menuLabel: string
   /** Dropdown items (DropdownItem elements). */
   menu: ReactNode
-  onOpen: () => void
+  onSelect: () => void
   /** Tile body below the head — meta, snippet, badges. */
   children?: ReactNode
 }) {
@@ -37,11 +37,11 @@ export function LinkTile({
       role="link"
       tabIndex={0}
       className="ws-tile"
-      onClick={onOpen}
+      onClick={onSelect}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
-          onOpen()
+          onSelect()
         }
       }}
     >

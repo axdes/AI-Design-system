@@ -213,7 +213,7 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
   Rating: (p) => <Rating label="Score" value={3} {...p} />,
   Descriptions: (p) => <Descriptions items={[{ term: 'K', value: 'V' }]} {...p} />,
   Prose: (p) => <Prose {...p}>A sentence, at a measure.</Prose>,
-  FileUpload: (p) => <FileUpload onFiles={() => undefined} {...p} />,
+  FileUpload: (p) => <FileUpload onChange={() => undefined} {...p} />,
   ListPageTemplate: (p) => (
     <ListPageTemplate title="Projects" {...p}>
       <Card>Row</Card>

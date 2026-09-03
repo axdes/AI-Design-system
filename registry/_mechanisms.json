@@ -52,15 +52,6 @@
       "areaPath"
     ]
   },
-  "cn": {
-    "ref": "cn",
-    "kind": "mechanism",
-    "description": "Joins class names and drops the falsy ones — the one utility every component in this package calls, 111 of them.",
-    "from": "@/lib/cn",
-    "exports": [
-      "cn"
-    ]
-  },
   "composeRefs": {
     "ref": "composeRefs",
     "kind": "mechanism",
@@ -68,16 +59,6 @@
     "from": "@/lib/composeRefs",
     "exports": [
       "composeRefs"
-    ]
-  },
-  "filterBarContext": {
-    "ref": "filterBarContext",
-    "kind": "mechanism",
-    "description": "Shared between FilterBar (organism) and FilterDropdown (molecule) without an upward atomic import — both depend on this neutral lib module instead.",
-    "from": "@/lib/filterBarContext",
-    "exports": [
-      "FilterBarContext",
-      "useFilterBar"
     ]
   },
   "formatDate": {
@@ -98,15 +79,6 @@
       "money",
       "percent",
       "count"
-    ]
-  },
-  "initI18n": {
-    "ref": "initI18n",
-    "kind": "mechanism",
-    "description": "Start language.",
-    "from": "@/lib/initI18n",
-    "exports": [
-      "initI18n"
     ]
   },
   "isRouteActive": {
@@ -186,6 +158,15 @@
     "from": "@/lib/useDismiss",
     "exports": [
       "useDismiss"
+    ]
+  },
+  "useFocusInside": {
+    "ref": "useFocusInside",
+    "kind": "mechanism",
+    "description": "FOCUS GOES INTO A LAYER WHEN IT OPENS, AND COMES BACK WHEN IT CLOSES.",
+    "from": "@/lib/useFocusInside",
+    "exports": [
+      "useFocusInside"
     ]
   },
   "useLatest": {

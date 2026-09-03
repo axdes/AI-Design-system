@@ -43,10 +43,10 @@
       "name": "actions",
       "type": "ReactNode",
       "required": false,
-      "description": "What can be done, named. One primary at most — if `onOpen` is given, the whole entry is already the way in."
+      "description": "What can be done, named. One primary at most — if `onSelect` is given, the whole entry is already the way in."
     },
     {
-      "name": "onOpen",
+      "name": "onSelect",
       "type": "() => void",
       "required": false,
       "description": "Makes the whole entry one target."
@@ -121,5 +121,5 @@
     "Layout",
     "MetaItem"
   ],
-  "example": "<Stack gap={6}>\n  <ContentCard\n    eyebrow=\"Report\"\n    title=\"The quarter in numbers, and what moved them\"\n    excerpt=\"Two sites closed their findings early, one audit slipped, and the reason turned out to be the same in both.\"\n    media={<img src={PHOTO} alt=\"\" width={640} height={360} />}\n    meta={<MetaItem icon=\"schedule\">19 February</MetaItem>}\n    actions={<Button variant=\"link\" size=\"sm\">Read</Button>}\n    onOpen={() => undefined}\n  />\n  <Card flush>\n    {ENTRIES.map((e) => (\n      <ContentCard\n        key={e.title}\n        layout=\"row\"\n        density=\"compact\"\n        title={e.title}\n        meta={<MetaItem icon=\"schedule\">{e.meta}</MetaItem>}\n        onOpen={() => undefined}\n      />\n    ))}\n  </Card>\n</Stack>"
+  "example": "<Stack gap={6}>\n  <ContentCard\n    eyebrow=\"Report\"\n    title=\"The quarter in numbers, and what moved them\"\n    excerpt=\"Two sites closed their findings early, one audit slipped, and the reason turned out to be the same in both.\"\n    media={<img src={PHOTO} alt=\"\" width={640} height={360} />}\n    meta={<MetaItem icon=\"schedule\">19 February</MetaItem>}\n    actions={<Button variant=\"link\" size=\"sm\">Read</Button>}\n    onSelect={() => undefined}\n  />\n  <Card flush>\n    {ENTRIES.map((e) => (\n      <ContentCard\n        key={e.title}\n        layout=\"row\"\n        density=\"compact\"\n        title={e.title}\n        meta={<MetaItem icon=\"schedule\">{e.meta}</MetaItem>}\n        onSelect={() => undefined}\n      />\n    ))}\n  </Card>\n</Stack>"
 }

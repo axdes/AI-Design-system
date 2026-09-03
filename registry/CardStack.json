@@ -16,7 +16,7 @@
       "description": "How many there are in total, including the one on top."
     },
     {
-      "name": "onOpen",
+      "name": "onSelect",
       "type": "() => void",
       "required": true,
       "description": "Opening the pile. With `onNext` this is a named button; without it the whole card is the target, named for a screen reader by `label`."
@@ -68,5 +68,5 @@
     "Card",
     "MetaItem"
   ],
-  "example": "const [at, setAt] = useState(0)\nconst top = QUEUE[at % QUEUE.length]\n\n<CardStack\n  count={12}\n  label=\"12 audits waiting on you\"\n  onOpen={() => undefined}\n  onNext={() => setAt((i) => i + 1)}\n  nextLabel=\"Skip\"\n  openLabel=\"Open\"\n>\n  <CardTitle>{top.title}</CardTitle>\n  <CardMeta>\n    <MetaItem icon=\"schedule\">{top.waiting}</MetaItem>\n  </CardMeta>\n</CardStack>"
+  "example": "const [at, setAt] = useState(0)\nconst top = QUEUE[at % QUEUE.length]\n\n<CardStack\n  count={12}\n  label=\"12 audits waiting on you\"\n  onSelect={() => undefined}\n  onNext={() => setAt((i) => i + 1)}\n  nextLabel=\"Skip\"\n  openLabel=\"Open\"\n>\n  <CardTitle>{top.title}</CardTitle>\n  <CardMeta>\n    <MetaItem icon=\"schedule\">{top.waiting}</MetaItem>\n  </CardMeta>\n</CardStack>"
 }

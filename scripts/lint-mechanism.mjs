@@ -165,12 +165,21 @@ if (import.meta.url !== `file://${process.argv[1]}`) {
   }
 
   const problems = []
+  /* EVERY RECORDED PAIR IS HELD TO ITS REASON, detected or not. The first
+   * version validated only the pairs the check still finds, so a pair recorded
+   * with a blank reason and then fixed sat in the file for ever unexplained —
+   * and the negative test that plants one stopped biting the day the ledger
+   * emptied. The file is data: an entry with nothing written against it is the
+   * silence this check exists to end, whatever the code does now. (2026-09-03) */
+  for (const [pair, why] of Object.entries(debt.pairs ?? {})) {
+    if (!String(why).trim()) {
+      problems.push(`${RED}${pair}${RESET}  recorded with no reason\n      A pair carried without a reason is the silence this check exists to end. Say why it still stands and what would close it, or take the line out.`)
+    }
+  }
   for (const h of hits) {
     const why = debt.pairs?.[h.pair]
     if (why === undefined) {
       problems.push(`${RED}${h.pair}${RESET} ${DIM}${h.score}${RESET}  one mechanism written twice, and not on the ceiling\n      ${h.shared.join(' · ')}\n      ${h.files.join('  ')}\n      Call the mechanism one of them already has, take the shared half into src/lib, or record the pair in config/mechanism-debt.json with the reason this one is different.`)
-    } else if (!String(why).trim()) {
-      problems.push(`${RED}${h.pair}${RESET}  recorded with no reason\n      A pair carried without a reason is the silence this check exists to end. Say why it still stands and what would close it.`)
     }
   }
   const gone = Object.keys(debt.pairs ?? {}).filter((p) => !hits.some((h) => h.pair === p))
