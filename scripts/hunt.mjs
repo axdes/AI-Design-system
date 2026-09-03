@@ -36,7 +36,12 @@ const api = read('config/api-debt.json')
 const apiOut = run('lint:api')
 if (api) {
   row('prop names with more than one type', Object.keys(api.shapes).length, num(apiOut, /— (\d+) carry more than one type/), 'lint:api A1')
-  row('parts past seven props', Object.keys(api.props).length, num(apiOut, /(\d+) past seven props/), 'lint:api A2')
+  /* Two numbers, because A2 has two: how many parts are past seven at all — the
+   * ceiling holds each of their counts — and how many of those have not said why.
+   * Reading the second against the first said "-42 paid down" on the day the
+   * reasons were written, which is not what happened. */
+  row('parts past seven props', Object.keys(api.props).length, num(apiOut, /(\d+) argued/) + num(apiOut, /(\d+) past seven props with no reason/), 'lint:api A2')
+  row('  of those, with no reason written', 0, num(apiOut, /(\d+) past seven props with no reason/), 'lint:api A2')
   row('callbacks outside the vocabulary', Object.keys(api.callbacks).length, num(apiOut, /(\d+) callbacks outside/), 'lint:api A3')
   row('parts with no test', api.untested.length, num(apiOut, /(\d+) without a test/), 'lint:api A4')
   row('props nothing here passes', Object.values(api.cold ?? {}).reduce((n, ps) => n + ps.length, 0), num(apiOut, /(\d+) props nothing here passes/), 'lint:api A5')
