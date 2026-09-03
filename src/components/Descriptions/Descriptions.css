@@ -6,8 +6,8 @@
      by the gap between them, which is what space-3 buys. */
   gap: var(--space-3) var(--space-6);
 }
-.descriptions[data-layout='stacked'][data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.descriptions[data-layout='stacked'][data-columns='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.descriptions[data-layout='stacked'][data-column-count='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.descriptions[data-layout='stacked'][data-column-count='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 .descriptions-row { min-inline-size: 0; }
 .descriptions[data-layout='stacked'] .descriptions-row { display: flex; flex-direction: column; gap: var(--space-1); }

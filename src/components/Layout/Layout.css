@@ -25,7 +25,7 @@
 /* The unequal set: twelve tracks, each item declaring how many it takes. The
  * auto-fit default above answers "a set of equals"; this answers "a wide one
  * beside two narrow ones", which no minmax can express. */
-.grid[data-columns="12"] { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.grid[data-column-count="12"] { grid-template-columns: repeat(12, minmax(0, 1fr)); }
 .grid-item[data-span="3"]  { grid-column: span 3; }
 .grid-item[data-span="4"]  { grid-column: span 4; }
 .grid-item[data-span="6"]  { grid-column: span 6; }
@@ -55,7 +55,7 @@
  * own `grid-template-columns` — measured the hard way, with six tracks left at
  * twelve and the items collapsed to one, which is how a person card ended up
  * 65px wide. The items are descendants; they can be told. */
-.grid[data-columns="12"] { container-type: inline-size; }
+.grid[data-column-count="12"] { container-type: inline-size; }
 
 /* Under 48rem of GRID: a quarter or a third becomes a half, a half or more
  * becomes the whole row. */

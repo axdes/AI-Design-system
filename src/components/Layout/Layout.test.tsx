@@ -39,7 +39,7 @@ describe('Layout', () => {
    * is the readable one, and a card that quietly took a quarter of the width
    * would be unreadable on a phone. */
   it('spans the whole row by default', () => {
-    const { container } = render(<Grid columns={12}><GridItem>a</GridItem></Grid>)
+    const { container } = render(<Grid columnCount={12}><GridItem>a</GridItem></Grid>)
     expect(container.querySelector('.grid-item')).toHaveAttribute('data-span', '12')
   })
 

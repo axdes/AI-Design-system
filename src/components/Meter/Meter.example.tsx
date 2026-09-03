@@ -33,7 +33,7 @@ import { Stack } from '../Layout'
  */
 export function Example() {
   return (
-    <Grid columns={12}>
+    <Grid columnCount={12}>
       <GridItem span={6}>
         <Card>
           <Stack gap={6}>

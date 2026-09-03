@@ -11,7 +11,7 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   /** No border, no shadow — flat surface. For non-clickable info cards. */
   flat?: boolean
   /** Stretches to fill its grid/flex cell vertically. */
-  fill?: boolean
+  stretch?: boolean
   /** Tight internal gap (6px) instead of default 18px. */
   tight?: boolean
   /** No padding at all - for full-bleed content (tables) where rows manage
@@ -22,15 +22,15 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 /**
  * The surface a block of content sits on. Header, title, meta and footer
  * arrive as slots; `interactive` makes the whole card one target, `tight` and
- * `fill` tune its padding.
+ * `stretch` tune its padding.
  */
-export function Card({ interactive, flat, fill, tight, flush, className, ...rest }: Props) {
+export function Card({ interactive, flat, stretch, tight, flush, className, ...rest }: Props) {
   return (
     <div
       className={cn('card', className)} data-raised="card"
       data-interactive={interactive || undefined}
       data-flat={flat || undefined}
-      data-fill={fill || undefined}
+      data-stretch={stretch || undefined}
       data-tight={tight || undefined}
       data-flush={flush || undefined}
       {...rest}

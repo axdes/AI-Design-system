@@ -62,5 +62,5 @@
     "Field",
     "Layout"
   ],
-  "example": "<Stack gap={4}>\n  <Field label=\"Why is this on hold?\" htmlFor=\"why\" hint=\"One or two sentences the next reviewer can act on.\">\n    <Textarea id=\"why\" rows={3} placeholder=\"Waiting on the client to confirm the scope\" />\n  </Field>\n  <Field label=\"Internal note\" htmlFor=\"note\" count={<CharacterCount value=\"\" max={280} />}>\n    <Textarea id=\"note\" rows={2} size=\"sm\" surface=\"muted\" />\n  </Field>\n</Stack>"
+  "example": "<Stack gap={4}>\n  <Field label=\"Why is this on hold?\" htmlFor=\"why\" hint=\"One or two sentences the next reviewer can act on.\">\n    <Textarea id=\"why\" rows={3} placeholder=\"Waiting on the client to confirm the scope\" />\n  </Field>\n  <Field label=\"Internal note\" htmlFor=\"note\" counter={<CharacterCount value=\"\" max={280} />}>\n    <Textarea id=\"note\" rows={2} size=\"sm\" surface=\"muted\" />\n  </Field>\n</Stack>"
 }

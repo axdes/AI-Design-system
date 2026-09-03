@@ -11,7 +11,9 @@ export type Step = {
 type Props = {
   steps: Step[]
   /** 0-based index of the step in progress. Earlier steps read as complete. */
-  current: number
+  /* `currentIndex`, not `current`: <WizardTemplate> says `currentId` and carries
+   * a step id. One word cannot mean both a position and a name. (2026-09-03) */
+  currentIndex: number
   /** Lets the user jump back to a completed step. Only completed steps are
    *  interactive; the current and future ones are not. */
   onSelect?: (index: number) => void
@@ -28,11 +30,11 @@ type Props = {
    * Copy: step names are nouns, short and parallel, and they stay the same word in
    * the step and in its page title.
    */
-export function Stepper({ steps, current, onSelect, label = 'Progress', className }: Props) {
+export function Stepper({ steps, currentIndex, onSelect, label = 'Progress', className }: Props) {
   return (
     <ol className={cn('stepper', className)} aria-label={label}>
       {steps.map((step, i) => {
-        const state = i < current ? 'complete' : i === current ? 'current' : 'upcoming'
+        const state = i < currentIndex ? 'complete' : i === currentIndex ? 'current' : 'upcoming'
         const clickable = state === 'complete' && onSelect
         const marker = (
           <span className="stepper-marker" aria-hidden="true">

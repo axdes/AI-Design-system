@@ -7,7 +7,7 @@
   inline-size: 100%;
   min-inline-size: 0;
 }
-.content-card[data-fill] { block-size: 100%; }
+.content-card[data-stretch] { block-size: 100%; }
 
 .content-card-head { display: flex; flex-direction: column; gap: var(--space-1); min-inline-size: 0; }
 

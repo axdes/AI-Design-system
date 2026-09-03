@@ -93,7 +93,7 @@ export const FORM_SPECIMENS: Record<string, () => ReactElement> = {
   /* One task, revealed a step at a time, with the map always visible. */
   wizard: () => (
     <Stack gap={6}>
-      <Stepper steps={[{ label: 'Details' }, { label: 'Terms' }, { label: 'Check' }]} current={1} label="Onboarding" />
+      <Stepper steps={[{ label: 'Details' }, { label: 'Terms' }, { label: 'Check' }]} currentIndex={1} label="Onboarding" />
       <FormStack>
         <Field label="Payment terms" htmlFor="f-wiz-terms">
           <Select label="Payment terms" id="f-wiz-terms" value="30" onChange={noop} options={[{ value: '30', label: 'Net 30' }]} />

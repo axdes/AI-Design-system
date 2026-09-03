@@ -30,7 +30,7 @@ export function Example() {
       {(gridRef) => (
         <div className="list-cluster-grid" ref={gridRef}>
           {ITEMS.map((i) => (
-            <Card key={i.id} interactive fill tight>
+            <Card key={i.id} interactive stretch tight>
               <CardTitle as="h2">{i.name}</CardTitle>
             </Card>
           ))}

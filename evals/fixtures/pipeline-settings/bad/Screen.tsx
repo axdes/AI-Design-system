@@ -19,7 +19,7 @@ export function Screen() {
     <WizardTemplate
       title="Relay setup"
       steps={STEPS}
-      current={current}
+      currentId={current}
       onSelect={setCurrent}
       submitLabel="Finish setup"
       onSubmit={() => undefined}

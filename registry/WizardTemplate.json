@@ -43,7 +43,7 @@
       "description": "The ordered steps: 3-5. A 2-step wizard is a form with extra clicks."
     },
     {
-      "name": "current",
+      "name": "currentId",
       "type": "string",
       "required": true,
       "description": "Current step id — the parent owns it, usually mirrored into the URL."
@@ -102,5 +102,5 @@
     "Select",
     "Stepper"
   ],
-  "example": "const [step, setStep] = useState('details')\nconst [name, setName] = useState('Weekly export')\nconst [scope, setScope] = useState('all')\n\n<WizardTemplate\n  title=\"New export schedule\"\n  steps={STEPS}\n  current={step}\n  onSelect={setStep}\n  submitLabel=\"Create schedule\"\n  onSubmit={() => setStep('details')}\n>\n  {step === 'details' && (\n    <Field label=\"Schedule name\" htmlFor=\"wiz-name\">\n      <Input id=\"wiz-name\" value={name} onChange={(e) => setName(e.target.value)} />\n    </Field>\n  )}\n  {step === 'scope' && (\n    <Select\n      label=\"Scope\"\n      value={scope}\n      onChange={setScope}\n      options={[\n        { value: 'all', label: 'Whole workspace' },\n        { value: 'mine', label: 'My documents' },\n      ]}\n    />\n  )}\n  {step === 'review' && (\n    <WizardReview>\n      <WizardReviewRow label=\"Schedule name\" onEdit={() => setStep('details')}>\n        {name}\n      </WizardReviewRow>\n      <WizardReviewRow label=\"Scope\" onEdit={() => setStep('scope')}>\n        {scope === 'all' ? 'Whole workspace' : 'My documents'}\n      </WizardReviewRow>\n    </WizardReview>\n  )}\n</WizardTemplate>"
+  "example": "const [step, setStep] = useState('details')\nconst [name, setName] = useState('Weekly export')\nconst [scope, setScope] = useState('all')\n\n<WizardTemplate\n  title=\"New export schedule\"\n  steps={STEPS}\n  currentId={step}\n  onSelect={setStep}\n  submitLabel=\"Create schedule\"\n  onSubmit={() => setStep('details')}\n>\n  {step === 'details' && (\n    <Field label=\"Schedule name\" htmlFor=\"wiz-name\">\n      <Input id=\"wiz-name\" value={name} onChange={(e) => setName(e.target.value)} />\n    </Field>\n  )}\n  {step === 'scope' && (\n    <Select\n      label=\"Scope\"\n      value={scope}\n      onChange={setScope}\n      options={[\n        { value: 'all', label: 'Whole workspace' },\n        { value: 'mine', label: 'My documents' },\n      ]}\n    />\n  )}\n  {step === 'review' && (\n    <WizardReview>\n      <WizardReviewRow label=\"Schedule name\" onEdit={() => setStep('details')}>\n        {name}\n      </WizardReviewRow>\n      <WizardReviewRow label=\"Scope\" onEdit={() => setStep('scope')}>\n        {scope === 'all' ? 'Whole workspace' : 'My documents'}\n      </WizardReviewRow>\n    </WizardReview>\n  )}\n</WizardTemplate>"
 }

@@ -42,6 +42,10 @@ import { fileURLToPath } from 'node:url'
 const ROOT = process.env.DS_LINT_ROOT ?? fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const RESET = '\x1b[0m', RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m'
 const record = process.argv.includes('--record')
+/* What the ceiling is holding, listed. The count alone says whether the number
+ * moved; paying it down needs the names, and reading them out of a red run means
+ * breaking something first. (2026-09-03) */
+const show = process.argv.includes('--show')
 
 const registry = JSON.parse(readFileSync(`${ROOT}/component-registry.json`, 'utf8'))
 const vocab = JSON.parse(readFileSync(`${ROOT}/config/callback-vocabulary.json`, 'utf8'))
@@ -123,6 +127,17 @@ const wordsOf = (type) => {
 }
 const subsumes = (wide, narrow) => [...narrow].every((w) => wide.has(w))
 
+/* A UNION OF NUMBERS IS A NUMBER. `lines?: 1 | 2` and `lines?: number` are the
+ * same question — how many lines — answered once with a limit and once without,
+ * and the limit belongs to the part rather than to the word. Two different
+ * limits are the same: `columnCount?: 1 | 2 | 3` and `columnCount?: 12` are one
+ * question a caller answers with a number, and which numbers each part accepts
+ * is that part's business. Folded the same way a narrower union of words folds
+ * into the wider one — and unlike words, a number carries no meaning to hold to
+ * a vocabulary, so there is nothing lint:vocab would be saying twice.
+ * (2026-09-03) */
+const isNumberUnion = (type) => /^-?\d+(?:\.\d+)?(\s*\|\s*-?\d+(?:\.\d+)?)*$/.test(String(type).trim())
+
 /* A NULLABLE IS THE SAME IDEA WITH ONE MORE STATE. `count: number` and
  * `count: number | null` are one contract — the second says "not counted yet",
  * which is a fact about the data rather than a second question. */
@@ -144,7 +159,9 @@ const isPolymorphic = (types) => types.length > 1 && types.every((t) => NAMED_SH
 /** Fold each union into the widest union of the same vocabulary. */
 function foldNarrowings(name, byType) {
   const unions = [...byType.keys()].map((t) => [t, wordsOf(t)]).filter(([, w]) => w)
-  if (unions.length < 2) return { byType, folded: [] }
+  const numbers = [...byType.keys()].filter((t) => t.trim() === 'number' || isNumberUnion(t))
+  const numeric = numbers.length > 1
+  if (unions.length < 2 && !numeric) return { byType, folded: [] }
 
   /* A GOVERNED PROP IS ONE TYPE WHEN EVERY PART SPEAKS THE DECLARED WORDS.
    * Which of them a part offers is lint:vocab's question and it asks it
@@ -159,6 +176,11 @@ function foldNarrowings(name, byType) {
   const out = new Map()
   const folded = []
   for (const [type, parts] of byType) {
+    if (numeric && isNumberUnion(type)) {
+      folded.push({ narrow: type, wide: 'number', parts })
+      out.set('number', [...(out.get('number') ?? []), ...parts])
+      continue
+    }
     const words = wordsOf(type)
     const wider = words && unions.find(([other, otherWords]) => other !== type && otherWords.size > words.size && subsumes(otherWords, words))
     if (wider) {
@@ -352,6 +374,16 @@ if (narrowed) {
   console.log(`  ${DIM}${narrowed} narrower union(s) folded into the wider vocabulary they belong to — a part offering fewer steps is not a second answer${RESET}`)
 }
 console.log()
+
+if (show) {
+  for (const d of [...drift].sort((a, b) => b.types.size - a.types.size)) {
+    console.log(`  ${BOLD}${d.name}${RESET} ${DIM}${d.types.size} shapes${RESET}`)
+    for (const [type, parts] of d.types) console.log(`    ${type || '(none)'} ${DIM}${parts.join(', ')}${RESET}`)
+  }
+  console.log()
+  for (const w of wide) console.log(`  ${BOLD}${w.name}${RESET} ${DIM}${w.count} props${RESET}`)
+  console.log()
+}
 
 if (paid.length) {
   console.log(`${GREEN}${paid.length} below the ceiling${RESET} ${DIM}run npm run lint:api -- --record to write the lower number in${RESET}`)

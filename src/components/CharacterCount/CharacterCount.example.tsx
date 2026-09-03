@@ -18,7 +18,7 @@ export function Example() {
       label="Summary"
       htmlFor="summary"
       hint="Shown in the team list."
-      count={<CharacterCount value={summary} max={MAX} />}
+      counter={<CharacterCount value={summary} max={MAX} />}
     >
       <Textarea
         id="summary"

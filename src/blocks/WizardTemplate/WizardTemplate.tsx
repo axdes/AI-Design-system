@@ -18,7 +18,9 @@ type Props = {
   /** The ordered steps: 3-5. A 2-step wizard is a form with extra clicks. */
   steps: WizardStep[]
   /** Current step id — the parent owns it, usually mirrored into the URL. */
-  current: string
+  /* `currentId`, not `current`: <Stepper> says `currentIndex` and carries a
+   * position. One word cannot mean both. (2026-09-03) */
+  currentId: string
   /** Back, Next and clicks on visited steps all arrive here. */
   onSelect: (id: string) => void
   /** The current step's content. */
@@ -49,7 +51,7 @@ type Props = {
 export function WizardTemplate({
   title,
   steps,
-  current,
+  currentId,
   onSelect,
   children,
   backLabel = 'Back',
@@ -59,7 +61,7 @@ export function WizardTemplate({
   busy,
   className,
 }: Props) {
-  const index = Math.max(0, steps.findIndex((s) => s.id === current))
+  const index = Math.max(0, steps.findIndex((s) => s.id === currentId))
   const last = index === steps.length - 1
   return (
     /* The header inside the capped column is now the `wizard` archetype's
@@ -69,7 +71,7 @@ export function WizardTemplate({
       <div className="wizard-page">
         <Stepper
           steps={steps.map(({ label, description }) => ({ label, description }))}
-          current={index}
+          currentIndex={index}
           onSelect={(i) => onSelect(steps[i].id)}
         />
         <div className="wizard-step">{children}</div>

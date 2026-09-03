@@ -40,7 +40,7 @@ export function Example() {
     <WizardTemplate
       title="New export schedule"
       steps={STEPS}
-      current={step}
+      currentId={step}
       onSelect={setStep}
       submitLabel="Create schedule"
       onSubmit={() => setStep('details')}

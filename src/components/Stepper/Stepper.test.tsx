@@ -12,7 +12,7 @@ const STEPS = [
 
 describe('Stepper', () => {
   it('marks the current step and derives complete/upcoming from it', () => {
-    render(<Stepper steps={STEPS} current={2} label="Checkout" />)
+    render(<Stepper steps={STEPS} currentIndex={2} label="Checkout" />)
     const items = screen.getByRole('list', { name: 'Checkout' }).querySelectorAll('li')
 
     expect(items[0]).toHaveAttribute('data-state', 'complete')
@@ -25,7 +25,7 @@ describe('Stepper', () => {
   it('lets you click back to a completed step only', async () => {
     const user = userEvent.setup()
     const onSelect = vi.fn()
-    render(<Stepper steps={STEPS} current={2} onSelect={onSelect} />)
+    render(<Stepper steps={STEPS} currentIndex={2} onSelect={onSelect} />)
 
     /* Completed steps render as buttons; current and upcoming ones do not. */
     await user.click(screen.getByRole('button', { name: /Account/ }))
@@ -36,7 +36,7 @@ describe('Stepper', () => {
   })
 
   it('is inert without onSelect', () => {
-    render(<Stepper steps={STEPS} current={2} />)
+    render(<Stepper steps={STEPS} currentIndex={2} />)
     expect(screen.queryAllByRole('button')).toHaveLength(0)
   })
 })

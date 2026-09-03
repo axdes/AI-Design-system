@@ -15,7 +15,7 @@
       "required": true
     },
     {
-      "name": "current",
+      "name": "currentIndex",
       "type": "number",
       "required": true,
       "description": "0-based index of the step in progress. Earlier steps read as complete."
@@ -43,5 +43,5 @@
   "uses": [
     "Icon"
   ],
-  "example": "const [step, setStep] = useState(1)<Stepper\n  current={step}\n  onSelect={setStep}\n  steps={[\n    { label: 'Account', description: 'Your details' },\n    { label: 'Shipping', description: 'Where to send it' },\n    { label: 'Payment', description: 'How to pay' },\n    { label: 'Review', description: 'Confirm and place' },\n  ]}\n/>"
+  "example": "const [step, setStep] = useState(1)<Stepper\n  currentIndex={step}\n  onSelect={setStep}\n  steps={[\n    { label: 'Account', description: 'Your details' },\n    { label: 'Shipping', description: 'Where to send it' },\n    { label: 'Payment', description: 'How to pay' },\n    { label: 'Review', description: 'Confirm and place' },\n  ]}\n/>"
 }

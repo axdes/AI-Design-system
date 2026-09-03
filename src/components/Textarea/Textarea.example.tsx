@@ -16,7 +16,7 @@ import { Stack } from '../Layout'
  * for the same reason the inputs around it do.
  *
  * A limit belongs UNDER the control as a running total, never as an instruction
- * above it: the reader needs it while they type, not before. `<Field count>` is
+ * above it: the reader needs it while they type, not before. `<Field counter>` is
  * the one place that goes.
  */
 export function Example() {
@@ -25,7 +25,7 @@ export function Example() {
       <Field label="Why is this on hold?" htmlFor="why" hint="One or two sentences the next reviewer can act on.">
         <Textarea id="why" rows={3} placeholder="Waiting on the client to confirm the scope" />
       </Field>
-      <Field label="Internal note" htmlFor="note" count={<CharacterCount value="" max={280} />}>
+      <Field label="Internal note" htmlFor="note" counter={<CharacterCount value="" max={280} />}>
         <Textarea id="note" rows={2} size="sm" surface="muted" />
       </Field>
     </Stack>

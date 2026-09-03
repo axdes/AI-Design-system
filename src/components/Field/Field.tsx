@@ -25,7 +25,9 @@ type Props = {
   hint?: ReactNode
   /** The one thing that belongs UNDER the control: a `<CharacterCount>`, which
    *  is a running total of what was typed rather than an instruction. */
-  count?: ReactNode
+  /* `counter`, not `count`: everywhere else in the system a `count` is the
+   * NUMBER of something, and this is the part that displays one. (2026-09-03) */
+  counter?: ReactNode
   children: ReactNode
   className?: string
 }
@@ -56,7 +58,7 @@ type Props = {
  * email". The hint is a rule that applies before typing; the error is what
  * happened and what to do — "Add a country code", never "Invalid".
  */
-export function Field({ label, htmlFor, required, optional, error, hint, count, children, className }: Props) {
+export function Field({ label, htmlFor, required, optional, error, hint, counter, children, className }: Props) {
   const { t } = useTranslation()
   const messageId = useId()
   const message = error ?? hint
@@ -95,7 +97,7 @@ export function Field({ label, htmlFor, required, optional, error, hint, count, 
         </p>
       )}
       {control}
-      {count}
+      {counter}
     </div>
   )
 }

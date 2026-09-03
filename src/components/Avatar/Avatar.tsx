@@ -9,10 +9,10 @@ type Status = 'online' | 'away' | 'busy' | 'offline'
 type Props = HTMLAttributes<HTMLSpanElement> & {
   /** Full name — first letter is used as the initial; whole name as aria-label. */
   name: string
-  /** Discrete sizes. Omit + use `fill` to size from parent. */
+  /** Discrete sizes. Omit + use `stretch` to size from parent. */
   size?: Size
   /** Fill the parent (width/height 100%). For nesting inside icon buttons. */
-  fill?: boolean
+  stretch?: boolean
   /** Optional image url. If it fails to load, the initial is shown instead. */
   src?: string
   /** Circle by default. `square` is the rounded-rect form, for a team or an
@@ -37,21 +37,21 @@ type Props = HTMLAttributes<HTMLSpanElement> & {
  * the accessible name both come from it. `statusLabel` says what the dot
  * means; a colour on its own says nothing.
  */
-export function Avatar({ name, size, fill, src, shape, presence, statusLabel, className, ...rest }: Props) {
+export function Avatar({ name, size, stretch, src, shape, presence, statusLabel, className, ...rest }: Props) {
   /* Remember WHICH src broke rather than a boolean: a new url then renders on
    * its own, with no effect needed to clear the flag. */
   const [brokenSrc, setBrokenSrc] = useState<string | null>(null)
   /* Spread-iterate to handle surrogate pairs / combining marks correctly. */
   const initial = [...name][0]?.toUpperCase() ?? ''
   /* Default to `md` so an Avatar always has an explicit size (a circle) instead
-   * of collapsing to the parent's width. `fill` opts out — it sizes from parent. */
-  const resolvedSize = fill ? undefined : size ?? 'md'
+   * of collapsing to the parent's width. `stretch` opts out — it sizes from parent. */
+  const resolvedSize = stretch ? undefined : size ?? 'md'
   const showImage = Boolean(src) && src !== brokenSrc
   return (
     <span
       className={cn('avatar', className)}
       data-size={resolvedSize}
-      data-fill={fill || undefined}
+      data-stretch={stretch || undefined}
       data-shape={shape}
       aria-label={presence ? `${name}, ${statusLabel ?? presence}` : name}
       role="img"

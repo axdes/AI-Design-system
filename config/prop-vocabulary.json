@@ -61,8 +61,8 @@
       "nav": "a set of links to elsewhere"
     }
   },
-  "columns": {
-    "axis": "how many columns this thing divides itself into",
+  "columnCount": {
+    "axis": "how many columns this thing divides itself into — the NUMBER of them; `columns` is the list of column definitions and belongs to the tables",
     "values": {
       "1": "one column: the list reads straight down",
       "2": "two columns of pairs",

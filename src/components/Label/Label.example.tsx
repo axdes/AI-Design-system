@@ -24,7 +24,7 @@ import { Grid, GridItem } from '../Layout'
  */
 export function Example() {
   return (
-    <Grid columns={12} gap={4} align="center">
+    <Grid columnCount={12} gap={4} align="center">
       <GridItem span={3}>
         <Label htmlFor="tz">Time zone</Label>
       </GridItem>

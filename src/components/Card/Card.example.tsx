@@ -14,7 +14,7 @@ export function Example() {
    *   3. facts    what you opened the card to read
    *   4. meta     provenance and counts, pinned to the bottom */
   return (
-    <Card interactive fill tight>
+    <Card interactive stretch tight>
       {/* Every card may carry its menu here, over the title's stretched hit area.
         * Icon-only, so it takes a Tooltip and an aria-label; wire it to a <Dropdown>. */}
       <CardCorner>

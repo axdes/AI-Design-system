@@ -574,10 +574,12 @@ function parsePropFields(body, source = '') {
  * same three words, and lint:api counted them as two different types — which
  * they are, to anybody holding only the registry. (2026-09-03)
  *
- * Only aliases of string-literal unions are resolved, and only when they are
- * declared in the same file. An alias standing for an object or an imported
- * shape stays a name, because expanding it inline would publish a paragraph
- * where a word belongs. */
+ * Only aliases of literal unions are resolved — words or numbers — and only
+ * when they are declared in the same file. `Lines` stood for `1 | 2` and read
+ * as a shape of its own next to the plain `number` five other parts publish
+ * (2026-09-03). An alias standing for an object or an imported shape stays a
+ * name, because expanding it inline would publish a paragraph where a word
+ * belongs. */
 /* One quote for a string literal, whichever the file used. Half the source here
  * is single-quoted and half double-quoted, and the registry published both — so
  * `"sm" | "md"` and `'sm' | 'md'` read as two different types to anything
@@ -590,7 +592,8 @@ function resolveLocalAliases(source, type) {
   const aliases = new Map();
   for (const m of source.matchAll(/^type\s+([A-Z][A-Za-z0-9]*)\s*=\s*([^;\n]*(?:\n\s*\|[^;\n]*)*);?/gm)) {
     const body = m[2].replace(/\s+/g, " ").trim();
-    if (/^(['"][^'"]*['"])(\s*\|\s*['"][^'"]*['"])*$/.test(body)) aliases.set(m[1], body);
+    const literal = /^(['"][^'"]*['"]|-?\d+(?:\.\d+)?)(\s*\|\s*(['"][^'"]*['"]|-?\d+(?:\.\d+)?))*$/
+    if (literal.test(body)) aliases.set(m[1], body);
   }
   if (!aliases.size) return type;
   return type.replace(/\b[A-Z][A-Za-z0-9]*\b/g, (name) => aliases.get(name) ?? name);

@@ -21,7 +21,7 @@
 /* Unified card surface. Variants via data-attributes:
  *   data-interactive  — clickable card (hover shadow)
  *   data-flat         — non-clickable display card
- *   data-fill         — stretches to grid/flex cell height
+ *   data-stretch      — stretches to grid/flex cell height
  *   data-tight        — minimal gap (6px) between children
  *   data-flush        — zero padding for full-bleed content (tables); the
  *                       content carries its own edge spacing
@@ -154,7 +154,7 @@
   padding-block: var(--card-padding);
 }
 
-.card[data-fill]            { height: 100%; }
+.card[data-stretch]         { height: 100%; }
 
 /* THE hover, and there is one of it.
  *

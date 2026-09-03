@@ -212,7 +212,7 @@
         "list"
       ],
       "because": "Browsing has no single target: each item is read and judged on its own content, so it gets a self-contained surface. The moment the job becomes comparing fields across items, the task is compare and R1 applies (NN/g cards: browsing, not searching).",
-      "good": "<Card fill> per team: name, score Badge, the reasons as sentences",
+      "good": "<Card stretch> per team: name, score Badge, the reasons as sentences",
       "bad": "a Table whose cells hold sentences — comparison across rows of prose compares nothing"
     },
     {
@@ -258,7 +258,7 @@
         "list"
       ],
       "because": "A collection of text-heavy items (questions, messages, findings) is read item by item; a table of paragraphs has columns that align nothing (NN/g data tables: tables are for discrete comparable values).",
-      "good": "<Card fill> per question: who asked, the text, the answer, the actions",
+      "good": "<Card stretch> per question: who asked, the text, the answer, the actions",
       "bad": "<Table> with a 'Question' column four lines tall"
     },
     {

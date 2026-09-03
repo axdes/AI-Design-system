@@ -16,9 +16,9 @@
     },
     {
       "name": "secondary",
-      "type": "string",
+      "type": "ReactNode",
       "required": false,
-      "description": "Secondary line under the name (e.g. secondary)."
+      "description": "The line under the name: a job title, a tenant, whatever identifies this account here."
     },
     {
       "name": "avatarSrc",

@@ -148,7 +148,7 @@
         },
         {
           "name": "heat",
-          "type": "Heat",
+          "type": "0 | 1 | 2 | 3 | 4",
           "required": false,
           "description": "Paints the cell on the heatmap ramp (0 to 4), for a table read as a pattern. `tone` is the semantic fill and says good or bad.",
           "values": [

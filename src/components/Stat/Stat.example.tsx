@@ -31,7 +31,7 @@ export function Example() {
        than their content suggests, and in a flex line the third one simply ran
        off the end of the page. Twelve tracks give each tile a third of the
        width and the row holds at any size. */
-    <Grid columns={12} gap={4}>
+    <Grid columnCount={12} gap={4}>
       <GridItem span={4}>
         <Card>
           <Stat

@@ -19,7 +19,7 @@
       "name": "size",
       "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
       "required": false,
-      "description": "Discrete sizes. Omit + use `fill` to size from parent.",
+      "description": "Discrete sizes. Omit + use `stretch` to size from parent.",
       "values": [
         "sm",
         "md",
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "name": "fill",
+      "name": "stretch",
       "type": "boolean",
       "required": false,
       "description": "Fill the parent (width/height 100%). For nesting inside icon buttons."
@@ -82,8 +82,8 @@
         "2xl"
       ]
     },
-    "fill": {
-      "prop": "fill",
+    "stretch": {
+      "prop": "stretch",
       "values": [
         "true"
       ]

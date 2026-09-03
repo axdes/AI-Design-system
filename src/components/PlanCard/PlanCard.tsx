@@ -36,7 +36,7 @@ export function PlanCard({
   name, price, period, description, features, action, recommended, recommendedLabel = 'Recommended', className,
 }: Props) {
   return (
-    <Card fill className={cn('plan-card', className)} data-recommended={recommended || undefined}>
+    <Card stretch className={cn('plan-card', className)} data-recommended={recommended || undefined}>
       <div className="plan-card-head">
         <CardTitle as="h3">{name}</CardTitle>
         {recommended && <Badge tone="primary" fill="soft">{recommendedLabel}</Badge>}

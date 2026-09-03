@@ -25,7 +25,7 @@
       ]
     },
     {
-      "name": "columns",
+      "name": "columnCount",
       "type": "1 | 2 | 3",
       "required": false,
       "description": "Columns on wide screens (stacked layout only). Default 1.",
@@ -50,8 +50,8 @@
         "inline"
       ]
     },
-    "columns": {
-      "prop": "columns",
+    "column-count": {
+      "prop": "columnCount",
       "values": [
         1,
         2,
@@ -63,5 +63,5 @@
     "Badge",
     "Layout"
   ],
-  "example": "<Stack gap={6}>\n  <Descriptions columns={2} items={RECORD} />\n  <Descriptions layout=\"inline\" items={RECORD.slice(0, 3)} />\n</Stack>"
+  "example": "<Stack gap={6}>\n  <Descriptions columnCount={2} items={RECORD} />\n  <Descriptions layout=\"inline\" items={RECORD.slice(0, 3)} />\n</Stack>"
 }

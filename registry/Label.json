@@ -35,5 +35,5 @@
     "Input",
     "Layout"
   ],
-  "example": "<Grid columns={12} gap={4} align=\"center\">\n  <GridItem span={3}>\n    <Label htmlFor=\"tz\">Time zone</Label>\n  </GridItem>\n  <GridItem span={9}>\n    <Input id=\"tz\" defaultValue=\"Central European Time\" />\n  </GridItem>\n  <GridItem span={3}>\n    <Label htmlFor=\"rows\" size=\"sm\">Rows per page</Label>\n  </GridItem>\n  <GridItem span={9}>\n    <Input id=\"rows\" size=\"sm\" defaultValue=\"25\" />\n  </GridItem>\n</Grid>"
+  "example": "<Grid columnCount={12} gap={4} align=\"center\">\n  <GridItem span={3}>\n    <Label htmlFor=\"tz\">Time zone</Label>\n  </GridItem>\n  <GridItem span={9}>\n    <Input id=\"tz\" defaultValue=\"Central European Time\" />\n  </GridItem>\n  <GridItem span={3}>\n    <Label htmlFor=\"rows\" size=\"sm\">Rows per page</Label>\n  </GridItem>\n  <GridItem span={9}>\n    <Input id=\"rows\" size=\"sm\" defaultValue=\"25\" />\n  </GridItem>\n</Grid>"
 }

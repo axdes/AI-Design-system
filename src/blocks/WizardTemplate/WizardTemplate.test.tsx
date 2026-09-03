@@ -21,7 +21,7 @@ const wizard = (props: Partial<WizardProps> = {}) =>
   render(
     <MemoryRouter>
       <WizardTemplate
-        {...({ title: 'New project', steps, current: 'who', submitLabel: 'Create', ...props } as WizardProps)}
+        {...({ title: 'New project', steps, currentId: 'who', submitLabel: 'Create', ...props } as WizardProps)}
       >
         <p>step body</p>
       </WizardTemplate>
@@ -36,7 +36,7 @@ describe('WizardTemplate', () => {
   })
 
   it('offers the commit on the last step, and not before', () => {
-    wizard({ current: 'confirm' })
+    wizard({ currentId: 'confirm' })
     expect(screen.getByRole('button', { name: 'Create' })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Next' })).not.toBeInTheDocument()
   })
@@ -44,13 +44,13 @@ describe('WizardTemplate', () => {
   /* A step id nobody recognises must not leave the wizard between steps: it
    * lands on the first, which is the only state a person can act from. */
   it('falls back to the first step rather than to none', () => {
-    wizard({ current: 'nonesuch' })
+    wizard({ currentId: 'nonesuch' })
     expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument()
   })
 
   it('moves when the step control is used', async () => {
     const onSelect = vi.fn()
-    wizard({ current: 'what', onSelect })
+    wizard({ currentId: 'what', onSelect })
     await userEvent.click(screen.getByRole('button', { name: 'Back' }))
     expect(onSelect).toHaveBeenCalledWith('who')
   })

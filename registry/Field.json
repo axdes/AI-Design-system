@@ -46,7 +46,7 @@
       "description": "Quiet hint above the control, replaced by `error` when there is one."
     },
     {
-      "name": "count",
+      "name": "counter",
       "type": "ReactNode",
       "required": false,
       "description": "The one thing that belongs UNDER the control: a `<CharacterCount>`, which is a running total of what was typed rather than an instruction."

@@ -52,7 +52,7 @@ type SectionProps = {
  */
 export function SettingsSection({ title, description, children, className }: SectionProps) {
   return (
-    <Card fill className={cn('settings-section', className)}>
+    <Card stretch className={cn('settings-section', className)}>
       {/* A div, not <header>: outside sectioning content a <header> is a banner
         * landmark, and one per section trips axe's landmark-unique. */}
       <div className="settings-section-head">

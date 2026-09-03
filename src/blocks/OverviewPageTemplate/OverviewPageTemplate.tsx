@@ -135,7 +135,7 @@ type WidgetProps = {
  */
 export function OverviewWidget({ title, action, footer, wide, children, className }: WidgetProps) {
   return (
-    <Card fill className={cn('overview-widget', className)} data-wide={wide || undefined}>
+    <Card stretch className={cn('overview-widget', className)} data-wide={wide || undefined}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         {action}

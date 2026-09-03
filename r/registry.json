@@ -91,7 +91,7 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "The surface a block of content sits on. Header, title, meta and footer arrive as slots; `interactive` makes the whole card one target, `tight` and `fill` tune its padding."
+      "description": "The surface a block of content sits on. Header, title, meta and footer arrive as slots; `interactive` makes the whole card one target, `tight` and `stretch` tune its padding."
     },
     {
       "name": "card-stack",
@@ -421,7 +421,7 @@
       "name": "layout",
       "type": "registry:ui",
       "title": "Grid",
-      "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for a set of cards — auto-fitting equals by default, or `columns={12}` with `GridItem` spans when the set is deliberately unequal. `gap` is a token step, never a raw px."
+      "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for a set of cards — auto-fitting equals by default, or `columnCount={12}` with `GridItem` spans when the set is deliberately unequal. `gap` is a token step, never a raw px."
     },
     {
       "name": "link",

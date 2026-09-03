@@ -89,7 +89,7 @@ When task = browse → **cards or list**
 
 Browsing has no single target: each item is read and judged on its own content, so it gets a self-contained surface. The moment the job becomes comparing fields across items, the task is compare and R1 applies (NN/g cards: browsing, not searching).
 
-- right: `<Card fill> per team: name, score Badge, the reasons as sentences`
+- right: `<Card stretch> per team: name, score Badge, the reasons as sentences`
 - wrong: a Table whose cells hold sentences — comparison across rows of prose compares nothing
 
 ### R5. Monitoring wants preattentive values
@@ -116,7 +116,7 @@ When item = prose → **cards or list**
 
 A collection of text-heavy items (questions, messages, findings) is read item by item; a table of paragraphs has columns that align nothing (NN/g data tables: tables are for discrete comparable values).
 
-- right: `<Card fill> per question: who asked, the text, the answer, the actions`
+- right: `<Card stretch> per question: who asked, the text, the answer, the actions`
 - wrong: <Table> with a 'Question' column four lines tall
 
 ### R8. A queue is a worklist

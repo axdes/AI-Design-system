@@ -76,7 +76,7 @@
       ]
     },
     {
-      "name": "fill",
+      "name": "stretch",
       "type": "boolean",
       "required": false,
       "description": "Stretches to fill its grid cell. Only when stretching buys the reader something — on a plain card it buys a hole above the meta."
@@ -108,8 +108,8 @@
         "row"
       ]
     },
-    "fill": {
-      "prop": "fill",
+    "stretch": {
+      "prop": "stretch",
       "values": [
         "true"
       ]

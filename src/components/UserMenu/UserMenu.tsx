@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import "./UserMenu.css";
 import { Avatar } from "../Avatar";
 import { Dropdown, DropdownItem } from "../Dropdown";
@@ -7,11 +8,13 @@ export type UserMenuAction = { id: string; label: string; icon?: IconName; onSel
 
 type Props = {
   name: string;
-  /** Secondary line under the name (e.g. secondary). */
-  /* `secondary`, the same word <Identity> uses for the line under a name.
-   * `role` elsewhere is the domain word for a chat turn — user or assistant —
-   * and a person's job title is not that. (2026-09-03) */
-  secondary?: string;
+  /** The line under the name: a job title, a tenant, whatever identifies this
+   *  account here. */
+  /* `secondary`, the same word and now the same TYPE <Identity> and <CellStack>
+   * use for the line under a name. `role` elsewhere is the domain word for a
+   * chat turn — user or assistant — and a person's job title is not that.
+   * (2026-09-03) */
+  secondary?: ReactNode;
   avatarSrc?: string;
   /** Menu entries shown in the dropdown. */
   actions: UserMenuAction[];

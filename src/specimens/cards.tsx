@@ -437,7 +437,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
     <Card>
       <CardTitle as="h3">Before and after</CardTitle>
       <Descriptions
-        columns={2}
+        columnCount={2}
         items={[
           { term: 'Days to close', value: '21 → 6' },
           { term: 'Chasing emails', value: '14 → 0' },

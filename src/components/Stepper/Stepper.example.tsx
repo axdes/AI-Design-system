@@ -10,7 +10,7 @@ export function Example() {
    * go back (upcoming ones are not); the wizard body lives next to this. */
   return (
     <Stepper
-      current={step}
+      currentIndex={step}
       onSelect={setStep}
       steps={[
         { label: 'Account', description: 'Your details' },

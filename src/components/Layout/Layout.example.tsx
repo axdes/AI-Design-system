@@ -19,12 +19,12 @@ export function Example() {
       </Grid>
       {/* A set that is deliberately UNEQUAL: twelve tracks, each item saying how
           many it takes. 3 is a quarter, 6 a half, 9 three quarters, 12 the row. */}
-      <Grid gap={4} columns={12}>
+      <Grid gap={4} columnCount={12}>
         <GridItem span={9}>
-          <Card fill><CardTitle>This quarter</CardTitle></Card>
+          <Card stretch><CardTitle>This quarter</CardTitle></Card>
         </GridItem>
         <GridItem span={3}>
-          <Card fill><CardTitle>Open items</CardTitle></Card>
+          <Card stretch><CardTitle>Open items</CardTitle></Card>
         </GridItem>
       </Grid>
       <Row gap={2}>

@@ -17,7 +17,7 @@
     },
     {
       "name": "lines",
-      "type": "Lines",
+      "type": "1 | 2",
       "required": false,
       "description": "One line (the default) or two. Two is for the one description column a table is allowed; three is a paragraph, and a paragraph is not a cell.",
       "values": [

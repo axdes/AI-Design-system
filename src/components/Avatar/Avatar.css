@@ -28,7 +28,7 @@
 .avatar[data-size="2xl"] { width: var(--avatar-2xl); height: var(--avatar-2xl); font-size: var(--font-3xl); }
 
 /* Fill parent (e.g. when nested in an icon button) */
-.avatar[data-fill] { width: 100%; height: 100%; font-size: var(--font-base); }
+.avatar[data-stretch] { width: 100%; height: 100%; font-size: var(--font-base); }
 
 /* Rounded rect — a team or an organisation, not a person. */
 .avatar[data-shape="square"] { border-radius: var(--radius-md); }

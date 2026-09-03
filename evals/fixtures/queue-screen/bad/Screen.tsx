@@ -23,7 +23,7 @@ export function Screen() {
   return (
     <Grid gap={4}>
       {QUEUE.map((r) => (
-        <Card key={r.id} fill>
+        <Card key={r.id} stretch>
           <CardHeader>
             <CardTitle>{r.id}</CardTitle>
             <Badge tone={approved.includes(r.id) ? 'success' : 'warning'} fill="soft">

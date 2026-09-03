@@ -45,7 +45,7 @@ export function SetupGuide({ title, steps, onDismiss, dismissLabel = 'Dismiss th
   const done = steps.filter((s) => s.done).length
   const all = done === steps.length
   return (
-    <Card fill className={cn('setup-guide', className)}>
+    <Card stretch className={cn('setup-guide', className)}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <span className="setup-guide-count">

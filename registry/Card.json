@@ -1,7 +1,7 @@
 {
   "ref": "Card",
   "level": "organism",
-  "description": "The surface a block of content sits on. Header, title, meta and footer arrive as slots; `interactive` makes the whole card one target, `tight` and `fill` tune its padding.",
+  "description": "The surface a block of content sits on. Header, title, meta and footer arrive as slots; `interactive` makes the whole card one target, `tight` and `stretch` tune its padding.",
   "exports": [
     "Card",
     "CardHeader",
@@ -108,7 +108,7 @@
       "description": "No border, no shadow — flat surface. For non-clickable info cards."
     },
     {
-      "name": "fill",
+      "name": "stretch",
       "type": "boolean",
       "required": false,
       "description": "Stretches to fill its grid/flex cell vertically."
@@ -142,8 +142,8 @@
         "true"
       ]
     },
-    "fill": {
-      "prop": "fill",
+    "stretch": {
+      "prop": "stretch",
       "values": [
         "true"
       ]
@@ -172,5 +172,5 @@
     "MetaItem",
     "Tooltip"
   ],
-  "example": "<Card interactive fill tight>\n  \n  <CardCorner>\n    <Tooltip content=\"More\">\n      <IconButton icon=\"more_vert\" aria-label=\"More\" size=\"sm\" onClick={() => undefined} />\n    </Tooltip>\n  </CardCorner>\n  <CardHeader>\n    <MetaItem icon=\"description\" appearance=\"eyebrow\">Design sprint</MetaItem>\n    <Badge tone=\"warning\" fill=\"soft\">In review</Badge>\n  </CardHeader>\n  \n  <CardTitle>\n    <Button variant=\"link\" className=\"card-link\" onClick={() => undefined}>Q3 onboarding guide</Button>\n  </CardTitle>\n  <p>Four sections drafted, the pricing one still open.</p>\n  <CardMeta>\n    <MetaItem icon=\"schedule\">Updated 2 days ago</MetaItem>\n    <MetaItem icon=\"group\">3 editors</MetaItem>\n  </CardMeta>\n  \n  <div className=\"card-above\">\n    <Button variant=\"secondary\" size=\"sm\" onClick={() => undefined}>Duplicate</Button>\n  </div>\n</Card>"
+  "example": "<Card interactive stretch tight>\n  \n  <CardCorner>\n    <Tooltip content=\"More\">\n      <IconButton icon=\"more_vert\" aria-label=\"More\" size=\"sm\" onClick={() => undefined} />\n    </Tooltip>\n  </CardCorner>\n  <CardHeader>\n    <MetaItem icon=\"description\" appearance=\"eyebrow\">Design sprint</MetaItem>\n    <Badge tone=\"warning\" fill=\"soft\">In review</Badge>\n  </CardHeader>\n  \n  <CardTitle>\n    <Button variant=\"link\" className=\"card-link\" onClick={() => undefined}>Q3 onboarding guide</Button>\n  </CardTitle>\n  <p>Four sections drafted, the pricing one still open.</p>\n  <CardMeta>\n    <MetaItem icon=\"schedule\">Updated 2 days ago</MetaItem>\n    <MetaItem icon=\"group\">3 editors</MetaItem>\n  </CardMeta>\n  \n  <div className=\"card-above\">\n    <Button variant=\"secondary\" size=\"sm\" onClick={() => undefined}>Duplicate</Button>\n  </div>\n</Card>"
 }

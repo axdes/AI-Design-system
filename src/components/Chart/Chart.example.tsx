@@ -44,7 +44,7 @@ const TEAMS = ['Payments', 'Identity and access', 'Platform']
  */
 export function Example() {
   return (
-    <Grid columns={12} gap={4}>
+    <Grid columnCount={12} gap={4}>
       <GridItem span={8}>
         <Card>
           <Stack gap={3}>

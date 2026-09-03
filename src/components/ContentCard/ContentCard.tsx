@@ -38,7 +38,7 @@ type Props = {
   density?: Density;
   /** Stretches to fill its grid cell. Only when stretching buys the reader
    *  something — on a plain card it buys a hole above the meta. */
-  fill?: boolean;
+  stretch?: boolean;
   className?: string;
 };
 
@@ -81,7 +81,7 @@ export function ContentCard({
   onSelect,
   layout = "auto",
   density = "comfortable",
-  fill,
+  stretch,
   className,
 }: Props) {
   const placement = PLACEMENT[layout];
@@ -132,13 +132,13 @@ export function ContentCard({
       className={cn("content-card", className)}
       data-layout={layout}
       data-density={density}
-      data-fill={fill || undefined}
+      data-stretch={stretch || undefined}
     >
       {/* The TITLE is the link, not the card's div: a click handler on a div is
           not reachable by keyboard, and the stretched `.card-link` gives the
           card one accessible name and one focus stop (owner's rule, 23.08:
           titles in cards are always links). */}
-      <Card fill={fill} interactive={onSelect ? true : undefined}>
+      <Card stretch={stretch} interactive={onSelect ? true : undefined}>
         {media && placement && <CardMedia placement={placement}>{media}</CardMedia>}
         {/* Eyebrow and title travel together: they are one level of the reading
             order, and on a row of cards they share one subgrid track. */}

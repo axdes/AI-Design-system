@@ -11,7 +11,7 @@ export function Screen() {
   return (
     <Stack gap={6}>
       <Stepper
-        current={step}
+        currentIndex={step}
         onSelect={setStep}
         steps={[
           { label: 'Account', description: 'Your details' },

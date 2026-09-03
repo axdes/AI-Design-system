@@ -16,7 +16,9 @@ type Props = HTMLAttributes<HTMLDivElement> & {
    * child wrapped in `GridItem` with its `span`. Omit it and every child gets
    * the same width, which is the right answer for a set of equals.
    */
-  columns?: 12
+  /* `columnCount`, not `columns`: the word means the column DEFINITIONS on the
+   * four parts that publish a list of them. (2026-09-03) */
+  columnCount?: 12
   /**
    * The narrowest a card in this grid may get before the grid drops a column.
    * `sm` (16rem) is the default and right for tiles that carry a word or two;
@@ -50,16 +52,16 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 
 /**
  * Layout primitives: Stack and Row for gaps in one direction, Grid for a set of
- * cards — auto-fitting equals by default, or `columns={12}` with `GridItem`
+ * cards — auto-fitting equals by default, or `columnCount={12}` with `GridItem`
  * spans when the set is deliberately unequal. `gap` is a token step, never a
  * raw px.
  */
-export function Grid({ gap = 4, columns, minColumn, align, alignRows, className, ...rest }: Props) {
+export function Grid({ gap = 4, columnCount, minColumn, align, alignRows, className, ...rest }: Props) {
   return (
     <div
       className={cn('grid', className)}
       data-gap={gap}
-      data-columns={columns}
+      data-column-count={columnCount}
       data-min-column={minColumn}
       data-align={align}
       data-align-rows={alignRows || undefined}
@@ -74,7 +76,7 @@ type ItemProps = HTMLAttributes<HTMLDivElement> & {
 }
 
 /**
- * One cell of a `columns={12}` Grid. Below the tablet breakpoint the twelve
+ * One cell of a `columnCount={12}` Grid. Below the tablet breakpoint the twelve
  * tracks become six and every span rounds to a half or the full row; below the
  * phone breakpoint there is one column and spans stop meaning anything — a
  * quarter-width card is unreadable at 390px, and no span is worth that.

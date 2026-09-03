@@ -28,7 +28,7 @@ const RECORD = [
 export function Example() {
   return (
     <Stack gap={6}>
-      <Descriptions columns={2} items={RECORD} />
+      <Descriptions columnCount={2} items={RECORD} />
       <Descriptions layout="inline" items={RECORD.slice(0, 3)} />
     </Stack>
   )

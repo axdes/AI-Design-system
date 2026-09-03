@@ -1,7 +1,7 @@
 {
   "ref": "Layout",
   "level": "atom",
-  "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for a set of cards — auto-fitting equals by default, or `columns={12}` with `GridItem` spans when the set is deliberately unequal. `gap` is a token step, never a raw px.",
+  "description": "Layout primitives: Stack and Row for gaps in one direction, Grid for a set of cards — auto-fitting equals by default, or `columnCount={12}` with `GridItem` spans when the set is deliberately unequal. `gap` is a token step, never a raw px.",
   "exports": [
     "Grid",
     "GridItem",
@@ -24,7 +24,7 @@
   "props": [
     {
       "name": "gap",
-      "type": "Gap",
+      "type": "1 | 2 | 3 | 4 | 6 | 8 | 12 | 16",
       "required": false,
       "description": "Space between the tracks, as a step of the 4pt scale — spacing lives on the container, never as margins on the children. The scale is the whole point: a number that is not a step is a decision nobody made.",
       "values": [
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "name": "columns",
+      "name": "columnCount",
       "type": "12",
       "required": false,
       "description": "Twelve equal tracks instead of the auto-fitting default: the layout where items are DIFFERENT sizes (a wide feature beside two narrow tiles), each child wrapped in `GridItem` with its `span`. Omit it and every child gets the same width, which is the right answer for a set of equals.",
@@ -92,8 +92,8 @@
         16
       ]
     },
-    "columns": {
-      "prop": "columns",
+    "column-count": {
+      "prop": "columnCount",
       "values": [
         12
       ]
@@ -125,5 +125,5 @@
     "Button",
     "Card"
   ],
-  "example": "const cards = ['Drafts', 'In review', 'Published']<Stack gap={6}>\n  \n  <Grid gap={4}>\n    {cards.map((c) => (\n      <Card key={c}><CardTitle>{c}</CardTitle></Card>\n    ))}\n  </Grid>\n  \n  <Grid gap={4} columns={12}>\n    <GridItem span={9}>\n      <Card fill><CardTitle>This quarter</CardTitle></Card>\n    </GridItem>\n    <GridItem span={3}>\n      <Card fill><CardTitle>Open items</CardTitle></Card>\n    </GridItem>\n  </Grid>\n  <Row gap={2}>\n    <Button variant=\"secondary\">Cancel</Button>\n    <Button variant=\"primary\">Save</Button>\n  </Row>\n</Stack>"
+  "example": "const cards = ['Drafts', 'In review', 'Published']<Stack gap={6}>\n  \n  <Grid gap={4}>\n    {cards.map((c) => (\n      <Card key={c}><CardTitle>{c}</CardTitle></Card>\n    ))}\n  </Grid>\n  \n  <Grid gap={4} columnCount={12}>\n    <GridItem span={9}>\n      <Card stretch><CardTitle>This quarter</CardTitle></Card>\n    </GridItem>\n    <GridItem span={3}>\n      <Card stretch><CardTitle>Open items</CardTitle></Card>\n    </GridItem>\n  </Grid>\n  <Row gap={2}>\n    <Button variant=\"secondary\">Cancel</Button>\n    <Button variant=\"primary\">Save</Button>\n  </Row>\n</Stack>"
 }
