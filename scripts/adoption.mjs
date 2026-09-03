@@ -139,6 +139,22 @@ function measure(app) {
     const raw = readFileSync(file, 'utf8')
     const imported = systemImports(raw)
     const src = strip(raw)
+    /* Counted from the RAW file: strip() empties string literals, so the class
+     * that says "hidden" is gone by the time the tags are walked. */
+    const hiddenPickerCount = [...raw.matchAll(/<input\b[^>]*>/g)]
+      .filter((el) => {
+        if (!/type=["']file["']/.test(el[0])) return false
+        /* Hidden by a class, or wrapped in the <label> that IS the control the
+         * reader clicks — the same idea said two ways, and both leave the input
+         * as a mechanism nobody sees. */
+        if (/visually-hidden|sr-only/.test(el[0])) return true
+        return /<label\b[^>]*>\s*(?:<[^>]+>\s*)*$/.test(raw.slice(Math.max(0, el.index - 300), el.index))
+      }).length
+    let hiddenPickers = hiddenPickerCount
+    /* A COLOUR INPUT IS THE PLATFORM'S COLOUR DIALOG, like the file picker above:
+     * there is no such thing as choosing the system's Input instead, and the
+     * system does not publish a colour picker because the OS one is the answer. */
+    let platformDialogs = [...raw.matchAll(/<input\b[^>]*>/g)].filter((el) => /type=["']color["']/.test(el[0])).length
     /* A screen is a file the app itself files under layouts/ or pages/. Both
      * names are in use across the products and neither is this package's to
      * rename. */
@@ -150,6 +166,16 @@ function measure(app) {
     for (const m of src.matchAll(/<([A-Za-z][A-Za-z0-9.]*)[\s/>]/g)) {
       const tag = m[1]
       const root = tag.split('.')[0]
+      /* A HIDDEN FILE PICKER IS NOT A CONTROL SOMEBODY DECLINED TO USE.
+       *
+       * `<input type="file" class="visually-hidden">` driven by a button is the
+       * platform's file dialog and nothing else: there is no such thing as
+       * choosing the system's Input instead, and the system's own FileUpload
+       * wraps the very same element. Counting it as a leak asked three products
+       * to replace a mechanism with a component that does not do this
+       * (2026-09-03). */
+      if (tag === 'input' && hiddenPickers > 0) { hiddenPickers--; continue }
+      if (tag === 'input' && platformDialogs > 0) { platformDialogs--; continue }
       if (/^[a-z]/.test(tag)) {
         if (COVERED[tag]) {
           covered++
