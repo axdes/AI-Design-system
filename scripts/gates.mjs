@@ -129,7 +129,7 @@ export const GATES = [
   },
   { run: 'lint:mechanisms',
     why: 'behaviour is a part: every mechanism in src/lib says what it is for, and has a caller or says why it is published without one',
-    population: 'derived — every module in src/lib that exports behaviour, and every import of it in src/, visual/ and the showcase',
+    population: 'derived — every module in src/lib that exports behaviour, and every import of it in this package (src/ and visual/). Deliberately not the products, nor the showcase next door: a directory that exists in the monorepo and not in the published copy gave the same code two verdicts, and only check:clone could see it.',
     startedAs: 'the catalogue has had discovery-first from the beginning and behaviour had none of it: no index row, no rule, no caller check. Four of six floating layers were written by hand beside a hook that already did the whole job, because there was nothing to discover.',
     lane: 'main' },
   { run: 'lint:token-layer',

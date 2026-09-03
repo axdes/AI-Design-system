@@ -3,7 +3,14 @@
  * when a component throws — the one failure a product cannot recover from on its
  * own, because after it there is nothing left to render the message with. Reach
  * for it at a route boundary, not around a control: a boundary that catches too
- * much hides where the throw came from. */
+ * much hides where the throw came from.
+ *
+ * Published because five products mount it at their route boundary — the
+ * showcase among them — and nothing inside this package can: the package is a
+ * library, and a library has no route to put a boundary on. The one caller a
+ * check could see was the showcase, which lives next door in the monorepo and
+ * nowhere in the published copy, so the rule was answering two ways for the same
+ * code until 2026-09-03. */
 import './ErrorBoundary.css'
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { Button } from '../components/Button'

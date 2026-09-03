@@ -49,7 +49,15 @@ const mechanisms = readdirSync(LIB)
   .map((f) => ({ name: f.replace(/\.tsx?$/, ''), file: join(LIB, f) }))
   .filter((m) => /export\s+(async\s+)?(function|const|class)/.test(read(m.file)))
 
-const consumers = [...walk(join(ROOT, 'src')), ...walk(join(ROOT, 'visual')), ...walk(join(ROOT, '../../apps/showcase/src'))]
+/* THE PACKAGE ALONE, AND THAT IS THE WHOLE POINT OF THE RULE.
+ *
+ * This used to count apps/showcase as a caller, which is a directory that exists
+ * in the monorepo and not in the published copy — so the same code got two
+ * different verdicts and only `check:clone` could see it (2026-09-03:
+ * ErrorBoundary passed here and failed there). A mechanism whose only caller is
+ * a PRODUCT is exactly the case `published because …` is written for, and now it
+ * has to say so. */
+const consumers = [...walk(join(ROOT, 'src')), ...walk(join(ROOT, 'visual'))]
 const callersOf = new Map(mechanisms.map((m) => [m.name, new Set()]))
 for (const f of consumers) {
   if (f.startsWith(LIB) || /\.test\./.test(f)) continue
@@ -76,7 +84,7 @@ for (const m of mechanisms) {
   }
   const callers = callersOf.get(m.name)
   if (!callers.size && !/published because|no caller here because/i.test(src)) {
-    say('M2', `src/lib/${basename(m.file)}`, 'has no caller in the system or its showcase',
+    say('M2', `src/lib/${basename(m.file)}`, 'has no caller in the package',
       'nothing is built ahead of a caller, and behaviour is not the exception. Delete it, or write "published because …" in the file and say which product takes it and why that is the right home for it.')
   }
 }

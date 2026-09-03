@@ -1,7 +1,7 @@
 {
   "_why": "Real defects this system shipped, each with the check that finds it now or a written statement that it cannot be checked. It exists to answer one question the gate cannot answer about itself: of the things that actually went wrong, how many would a person still have to notice by eye. ds-factory built the same ledger from this system's fix commits and measured 34 of 46 found by eye against 7 by the gate; this is the same instrument, kept here where the fixes land.",
   "_seeded": "SEEDED, NOT COMPLETE. docs/CHANGELOG-REVIEW.md carries 614 entries and only the ones below have been read and classified — every one states what was wrong in the words of the entry it came from, and nothing here is inferred from a heading. `unclassified` is the rest, and it is a number that falls as entries are read. A corpus that pretended to be complete would be the same lie as a check with the wrong population.",
-  "unclassified": 582,
+  "unclassified": 575,
   "defects": [
     {
       "id": "ring-declared-56-times",
@@ -371,6 +371,78 @@
       "check": "gate-redteam · contrast: ink that is legal in the tokens and unreadable on the screen",
       "status": "proven",
       "evidence": "the break was written, the gate went red, and the step that should have caught it said nothing. The page now converts every colour through a 1x1 canvas, which is the browser answering in sRGB whatever the notation"
+    },
+    {
+      "id": "an-invented-component-passed-if-the-agent-imported-it",
+      "date": "2026-08-26",
+      "was": "the static scorer excused a component the agent had imported — \"imported from their own app, so it is theirs\" — without looking at WHERE from. `@ds/DataTable` is the system's own namespace, and an unknown name there is exactly an invented one. The first class of failure the whole harness exists to catch, reached by the most natural thing an agent does",
+      "foundBy": "eye",
+      "check": "mcp/server.test.mjs · the exception depends on the source",
+      "status": "proven",
+      "evidence": "found by a hard audit whose method was to break the repository once per category and see who noticed, rather than to read the checks. The guard is a test rather than a red-team mutation on purpose: the hole was in the wrapper, and a mutation there would have depicted coverage that did not exist"
+    },
+    {
+      "id": "an-invented-prop-name-was-missed-on-the-27-busiest-parts",
+      "date": "2026-08-26",
+      "was": "a made-up prop name went uncaught on 27 of 143 registry entries — Button, Card, Badge, Alert, Avatar, Checkbox, the ones every screen uses. Parts marked `inherits` skipped the check entirely, on the grounds that a component spreading `...rest` accepts DOM attributes. It does — but `padding=\"huge\"` is not a DOM attribute, and React itself complains about it",
+      "foundBy": "eye",
+      "check": "evals/scorers.mjs · checked against the list of real attributes",
+      "status": "proven",
+      "evidence": "the same audit. The list of real attributes grows from a loud report rather than from silently skipping a whole component, which is the shape the original exemption had"
+    },
+    {
+      "id": "a-missing-card-specimen-printed-30-of-31-in-grey",
+      "date": "2026-08-26",
+      "was": "a card family losing its specimen was a WARNING: the gate printed \"30/31\" in grey and exited 0. That was right while the specimens were being written and stopped being right the moment the 31st landed",
+      "foundBy": "eye",
+      "check": "check:spec · a family without a specimen fails",
+      "status": "proven",
+      "evidence": "coverage that only counts is not a check. It is the line that opens gate-redteam, because it is the cheapest way for a check to be green and mean nothing"
+    },
+    {
+      "id": "sectionlabel-published-no-props-at-all",
+      "date": "2026-08-26",
+      "was": "SectionLabel published an EMPTY prop list while owning the `as` that decides whether it is a heading or a div. Its type was written as an intersection in the signature, and both fallback readers in the registry generator were blind to that shape — so the one prop that decides the heading outline was invisible to every agent reading the registry",
+      "foundBy": "check",
+      "check": "gen-registry:check · a main export that parses its parameters and publishes zero props is an error",
+      "status": "proven",
+      "evidence": "found by a live agent run losing 12 points on heading-order, which is the eval harness catching a registry defect through a screen rather than through the registry"
+    },
+    {
+      "id": "a-git-checkout-erased-an-unsaved-file",
+      "date": "2026-08-26",
+      "was": "a wrong finding was being reverted with `git checkout`, and the file it restored had unsaved work in it: Table.tsx went from 310 lines to 99. Restored from the vendored copy taken the same day and compared byte for byte against the registry generated before the loss",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "nothing can check an editor's unsaved buffer. What it argues for is the vendored copies, which exist for a different reason and were the thing that made this recoverable — and for reverting by writing the previous content rather than by discarding the working tree"
+    },
+    {
+      "id": "a-dead-prop-was-taught-in-59-places",
+      "date": "2026-08-27",
+      "was": "`iconEnd` was read by no line of CSS, and the golden example of Button demonstrated it — and after it EmptyState, PageHeader, Table, ListPageTemplate and 24 more files. A prop that does nothing, taught in 59 places by the examples an agent copies from",
+      "foundBy": "eye",
+      "check": "lint:api A5 · every published prop is passed somewhere in this package",
+      "status": "proven",
+      "evidence": "stripped from the 28 files that autumn and finally deleted from the API on 2026-09-03, when A5 counted it among the 78 props nothing in the package passes. The check that would have caught it on the day it went inert did not exist for another seven days"
+    },
+    {
+      "id": "every-part-had-an-example-and-none-had-to-show-a-decision",
+      "date": "2026-08-27",
+      "was": "the rule \"does this part have a golden example\" answered yes for all 131 and asked nothing further. `<Button>Save</Button>` is not an example of Button, it is a photograph of one: the reader learns the component exists and nothing about the decision it carries. 76 of 131 examples were that",
+      "foundBy": "eye",
+      "check": "lint:rules · an example shows two values of a union prop the registry publishes",
+      "status": "proven",
+      "evidence": "the axis is derived from the contract rather than from a list: a part with no union — Spinner, Divider — is exempt by construction. The 76 are recorded as WORK, and the list only shrinks: a name comes off by rewriting the example, never by being added back"
+    },
+    {
+      "id": "a-check-that-counted-a-neighbour-directory",
+      "date": "2026-09-03",
+      "was": "lint:mechanisms counted apps/showcase as a place a mechanism could have its caller. The showcase exists in the monorepo and not in the published package, so the same code passed here and failed in a clone — ErrorBoundary, which five products mount at their route boundary and nothing inside a library can",
+      "foundBy": "check",
+      "check": "check:clone · a fresh clone installs from its lockfile and passes the CI gate",
+      "status": "proven",
+      "evidence": "the second defect of this exact shape that check:clone has found (the first was a script resolving the repository root three levels above its own file). The population is now the package alone, which is the thing the published copy IS, and a mechanism whose only caller is a product writes `published because …` — which is what that escape hatch was for"
     }
   ],
   "_unclassifiedMeans": "Entries in docs/CHANGELOG-REVIEW.md that nobody has read into this corpus yet. 609 entries, five read. It falls by reading, never by rounding.",
