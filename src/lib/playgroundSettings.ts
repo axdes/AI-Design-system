@@ -2,6 +2,9 @@
  * app recalculates from the CSS-variable cascade. Mirrors the source knobs in
  * styles/settings.css. Persisted to localStorage and applied at app bootstrap
  * (see main.tsx) so overrides survive reloads on any route. */
+/* Published because: two products take it to drive their token playground, which
+ * is a product feature built on this system's settings layer rather than
+ * anything this package renders itself. (2026-09-02) */
 
 export const SETTINGS_KEY = 'pg-settings'
 

@@ -57,7 +57,7 @@ button.side-nav-logo { cursor: pointer; }
   display: inline-flex; align-items: center; gap: var(--space-2);
   color: inherit; text-decoration: none;
 }
-.side-nav-logo:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * 2); }
+.side-nav-logo:focus-visible { outline: var(--focus-ring); outline-offset: calc(var(--ring-offset) * 2); }
 
 /* The rail (menu + anything under it) sits in the MIDDLE of the row between the
  * logo and the footer, open and collapsed alike. Content-sized, so it does not
@@ -98,7 +98,7 @@ button.side-nav-logo { cursor: pointer; }
 .side-nav-item:hover { background: var(--accent); color: var(--foreground); }
 /* Pressed: one stop past hover, the third answer every control now gives. */
 .side-nav-item:active { background: var(--accent-strong); }
-.side-nav-item:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(-1 * var(--ring-offset)); }
+.side-nav-item:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-ring-inset); }
 /* ONE ANSWER FOR "YOU ARE HERE", IN BOTH STATES — and it is not a grey.
  * Collapsed, the current item used to be a solid --primary disc. The brand mark
  * above it is a solid brand disc too in every product that caps its logo, so

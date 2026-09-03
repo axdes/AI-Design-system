@@ -131,10 +131,26 @@
  *
  * What it should say instead: the list is a NAVIGATION column. It earns room
  * until its rows are comfortable and then stops, because the detail is what the
- * reader came for. 3:1 while both grow, and a stated ceiling — not an accident
- * that happens to land near one. */
+ * reader came for.
+ *
+ * AND "COMFORTABLE" IS A QUESTION ABOUT THE ROWS, so the rows answer it. This
+ * grew 3:1 to a 26rem ceiling regardless of what was in it, and always reached
+ * the ceiling: the components catalogue, whose longest row is the single word
+ * `ConditionalReveal`, was a 416px column with about 175px of content in it,
+ * which the owner read as a panel that is simply too wide (2026-08-31).
+ *
+ * `flex: 0 1 auto` sizes the pane to its content between two stops. The floor
+ * keeps a list of short words from becoming a strip; the ceiling keeps a list
+ * of sentences from taking the room the detail came for. Between them the pane
+ * is as wide as the longest thing in it and no wider, which is what "until its
+ * rows are comfortable" meant all along. */
 .page[data-shape='list-detail'] .page-body {
-  flex: 1 1 20rem;
+  /* Stacked, it is the full-width pane at the top of a column and takes the
+     line. Content sizing is a decision about a COLUMN BESIDE SOMETHING, so it
+     lives in the query below with the ceiling, for the same reason: with
+     nothing beside it there is nothing to leave the room to, and a 256px strip
+     with the page's ground next to it is the defect that ceiling already had. */
+  flex: 1 1 auto;
 }
 /* AND THE CEILING ONLY EXISTS WHILE THE LIST IS A COLUMN BESIDE SOMETHING.
  *
@@ -147,12 +163,20 @@
  * detail beside it wants the rest; with nothing beside it there is nothing to
  * leave the room to.
  *
- * The query is the wrap threshold itself, not a breakpoint near it: the two
- * bases (20rem + 26rem) plus the gap between them, asked of `.page-inner`, the
- * container this pane is measured in. Above it they are a row and the cap
- * applies; below it they are a stack and it does not. */
+ * The query is the wrap threshold, asked of `.page-inner`, the container this
+ * pane is measured in: the list's floor and the detail's base (16rem + 26rem)
+ * plus the gap between them, rounded to the 47rem this has always been. Above
+ * it they are a row and the cap applies; below it they are a stack and it does
+ * not. It is a threshold rather than an exact point now that the pane is
+ * content-sized: a list narrower than its floor wraps a little later than the
+ * query says, and wrapping late costs nothing, while a cap applied to a
+ * full-width pane is the defect above. */
 @container content (min-width: 47rem) {
-  .page[data-shape='list-detail'] .page-body { max-inline-size: 26rem; }
+  .page[data-shape='list-detail'] .page-body {
+    flex: 0 1 auto;
+    min-inline-size: 16rem;
+    max-inline-size: 26rem;
+  }
 }
 .page-detail {
   flex: 3 1 26rem;
@@ -163,8 +187,8 @@
    its neighbour's edge and an outset ring would be clipped by the seam. */
 .page-body:focus-visible,
 .page-detail:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(-1 * var(--ring-offset));
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
 }
 
 /* A grid of equivalent items, browsed. `auto-fill` rather than a column count:
@@ -210,7 +234,7 @@
      band across a `--muted` page. The shell paints the page with `--muted`
      (AppLayout.css), and a bar that belongs to the page has to say so. */
   background: var(--muted);
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
 }
 
 /* ── Panelled variant ───────────────────────────────────────────────────────
@@ -232,6 +256,29 @@
   background: var(--card);
   border-radius: var(--card-radius);
 }
+/* AND A SURFACE OWNS THE ROOM INSIDE IT.
+ *
+ * The block comment above has said "the white card, the padding and the radius"
+ * since it was written, and the padding was never here: the rule set a
+ * background and a rounded corner and left every consumer to inset its own
+ * content. All three pages of the system's own site then wrote the same two
+ * lines — a small block padding on the list, `--card-padding` on the detail —
+ * and the one they did NOT write was the inline padding on the list, so the
+ * selected row ran flush into both edges of its pane and touched the seam
+ * (owner, 2026-08-31, with the two edges marked on the screenshot).
+ *
+ * The two panes take different insets because they hold different things. The
+ * list is a navigation column: its rows are full-bleed pills that carry their
+ * own inset, so the pane only owes them enough room not to touch its edges,
+ * which is the same arrangement `<SideNav>` has. The detail is a card holding
+ * page content and takes the card's own padding. */
+/* THE TWO PANES START ON THE SAME LINE. They are two halves of one surface, so
+   the block padding is the card's on both and only the INLINE padding differs:
+   the list took its 8px on all four sides and its first heading sat 16px above
+   the detail's first line, which reads as one surface printed twice rather than
+   split once (owner, 2026-08-31, with the two marked on the screenshot). */
+.page[data-shape='list-detail'][data-panels] .page-body { padding: var(--card-padding) var(--space-2); }
+.page[data-shape='list-detail'][data-panels] .page-detail { padding: var(--card-padding); }
 
 @media (min-width: 62rem) {
   .page[data-panels],
@@ -272,7 +319,7 @@
   .page[data-shape='list-detail'][data-panels] .page-detail {
     border-start-start-radius: 0;
     border-end-start-radius: 0;
-    border-inline-start: 1px solid var(--border);
+    border-inline-start: var(--surface-edge);
   }
 }
 

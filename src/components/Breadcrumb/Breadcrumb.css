@@ -37,10 +37,6 @@
   color: var(--foreground);
   background: var(--accent-soft);
 }
-.breadcrumb-link:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 
 .breadcrumb-current {
   padding: var(--space-1) var(--space-2);

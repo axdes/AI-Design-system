@@ -31,6 +31,11 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', Y
    of this file stays English. */
 const WORKING_LANGUAGE = String.fromCharCode(0x44d,0x442,0x43e,0x20,0x43a,0x43e,0x43c,0x43c,0x435,0x43d,0x442,0x430,0x440,0x438,0x439)
 
+/* One client product's name, for the break that proves check:publishable bites.
+   Same construction and the same reason: the payload may not be spelled in a
+   file that ships. */
+const CLIENT_NAME = String.fromCharCode(115,97,108,105,109)
+
 /** Each break is a way this repository has actually been wrong, or could be. */
 const BREAKS = [
   { name: 'a11y: an icon button loses its label', step: 'lint:rules',
@@ -62,6 +67,59 @@ const BREAKS = [
     file: 'llms.txt', edit: (s) => s.replace(/^- /m, '- Mutated ') },
   { name: 'contract: a component publishes no props', step: 'gen-registry:check',
     file: 'src/components/SectionLabel/SectionLabel.tsx', edit: (s) => s.replace('as?: Heading', 'as2?: Heading') },
+  /* The break goes into the registry rather than into a component, because the
+     registry is what lint:api reads: it is the published API, and a prop that
+     changes shape reaches an agent through this file. `label` is on the ceiling
+     at two types, so a third is a RISE — which is the thing being proved, not
+     the drift the ceiling already carries. */
+  { name: 'API: a prop name gains a third type', step: 'lint:api',
+    file: 'component-registry.json',
+    edit: (s) => s.replace(/"name": "label",(\s*)"type": "string"/, '"name": "label",$1"type": "{ text: string }"') },
+  /* A mechanism that stops saying what it is for. Nothing else in the gate reads
+     a comment, which is the point: this is the half of discovery-first that is
+     about being FINDABLE, and it is invisible to every other check. */
+  { name: 'mechanisms: a hook loses the sentence that makes it findable', step: 'lint:mechanisms',
+    /* The doc block sits ABOVE THE EXPORT, not at the top of the file: the
+       imports come first in TypeScript. This edit read the top of the file until
+       2026-09-03, when the hook grew an import and the break began skipping
+       itself — a skipped break proves nothing, and it says so in green. */
+    file: 'src/lib/useListNavigation.ts', edit: (s) => s.replace(/\/\*\*[\s\S]*?\*\/\n(?=export function)/, '') },
+  /* An engine that lets whichever fact it sees first win. It passes every other
+     check in the gate, because every other check asks whether the answer is
+     allowed and none of them asks whether it is the same answer twice. */
+  { name: 'rules: a decision that depends on the order of the facts', step: 'check:determinism',
+    file: 'scripts/lib/spec-rules.mjs',
+    edit: (s) => s.replace('return rulesDoc.precedence.find((rep) => present.has(rep)) ?? null', 'return [...present][0] ?? null') },
+  /* A spacing question gains an answer nobody decided: not a raw px, not an
+     undefined token, nothing any other check reads — just one more distance in
+     a system that already has sixteen. */
+  { name: 'tokens: one more answer to a question that had enough', step: 'lint:token-layer',
+    file: 'src/components/Badge/Badge.css', edit: (s) => s.replace('.badge {', '.badge {\n  gap: var(--space-10);') },
+  /* A client's name in a file that ships. The break is a comment, which is what
+     makes it the right one: nothing else in the gate reads a comment, and a
+     comment is exactly where the three real ones were found on 2026-09-02.
+     Assembled from code points for the same reason the working-language break
+     above is — this file ships too, and check:publishable caught it spelled out
+     the first time, which is the check proving itself on the way in. */
+  { name: 'publishing: a client product named in a file that ships', step: 'check:publishable',
+    file: 'src/lib/isRouteActive.ts',
+    edit: (s) => s.replace('three products take it', `three products take it (${CLIENT_NAME} among them)`) },
+  /* The manifest is data, and data is edited without anything running it. The
+     break is the exact shape the population field exists to stop: a step that
+     names its own list instead of walking the code, with no argument for it. */
+  { name: 'gate: a step names its own population and does not argue for it', step: 'check:gates',
+    file: 'scripts/gates.mjs',
+    edit: (s) => s.replace(/population: 'derived — every file git carries'/, "population: 'the usual files'") },
+  /* The fourth tier is only a tier while something stops a part rebuilding it:
+     the ingredients stay legal in the token layer, so nothing about the CSS
+     itself is wrong. (2026-09-02) */
+  { name: 'tokens: a component rebuilds a recipe out of its parts', step: 'lint:rules',
+    file: 'src/components/Badge/Badge.css', edit: (s) => s.replace('.badge {', '.badge {\n  border: 1px solid var(--border);') },
+  /* Written longhand, sharing no line with any existing part, which is the
+     point: jscpd cannot see it and lint:mechanism can. */
+  { name: 'mechanism: an anchored layer written a sixth time', step: 'lint:mechanism',
+    file: 'src/components/Badge/Badge.tsx',
+    edit: (s) => `${s}\nexport function probeLayer(anchor: HTMLElement | null) {\n  const box = anchor?.getBoundingClientRect()\n  const room = window.innerHeight - (box?.bottom ?? 0)\n  anchor?.focus()\n  return createPortal(<div data-room={room} />, document.body)\n}\n` },
 ]
 
 if (process.argv.includes('--list')) {

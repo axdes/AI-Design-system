@@ -3,10 +3,10 @@
   position: fixed;
   z-index: var(--z-dropdown);
   min-inline-size: 12rem;
-  padding: var(--space-1);
+  padding: var(--popover-frame-padding);
   background: var(--popover);
 
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   outline: none;
@@ -18,14 +18,11 @@
   inline-size: 100%;
   min-block-size: var(--control-height);
   padding-inline: var(--space-3);
-  border: none;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--popover-foreground);
-  font-family: inherit;
   font-size: var(--font-base);
   text-align: start;
-  cursor: pointer;
 }
 /* Stated twice on purpose: `data-active` is the keyboard position and is also
  * set on mouseenter, but a stylesheet that only names data-active reads as a

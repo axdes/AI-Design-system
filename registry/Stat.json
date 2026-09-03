@@ -23,7 +23,7 @@
     },
     {
       "name": "tone",
-      "type": "Tone",
+      "type": "'neutral' | 'primary' | 'success' | 'warning' | 'ai'",
       "required": false,
       "description": "Semantic emphasis for the value.",
       "values": [
@@ -48,7 +48,7 @@
     },
     {
       "name": "deltaDirection",
-      "type": "DeltaDirection",
+      "type": "'up' | 'down' | 'flat'",
       "required": false,
       "description": "Which way it moved. Separate from `deltaTone` on purpose — up is good for revenue and bad for latency, so the arrow and the colour answer different questions. Named for the delta it describes, because `direction` alone was three different questions across the system (2026-08-26).",
       "values": [
@@ -59,7 +59,7 @@
     },
     {
       "name": "deltaTone",
-      "type": "DeltaTone",
+      "type": "'success' | 'danger' | 'neutral'",
       "required": false,
       "description": "Whether that move is good news. Defaults to neutral, which colours nothing.",
       "values": [
@@ -76,7 +76,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'md' | 'lg'",
       "required": false,
       "description": "`md` in a row of tiles, `lg` for the one figure a screen is built around. A row where every tile is lg has no hierarchy.",
       "values": [

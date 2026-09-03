@@ -1,0 +1,252 @@
+{
+  "_why": "Real defects this system shipped, each with the check that finds it now or a written statement that it cannot be checked. It exists to answer one question the gate cannot answer about itself: of the things that actually went wrong, how many would a person still have to notice by eye. ds-factory built the same ledger from this system's fix commits and measured 34 of 46 found by eye against 7 by the gate; this is the same instrument, kept here where the fixes land.",
+  "_seeded": "SEEDED, NOT COMPLETE. docs/CHANGELOG-REVIEW.md carries 609 entries and only the ones below have been read and classified — every one states what was wrong in the words of the entry it came from, and nothing here is inferred from a heading. `unclassified` is the rest, and it is a number that falls as entries are read. A corpus that pretended to be complete would be the same lie as a check with the wrong population.",
+  "unclassified": 591,
+  "defects": [
+    {
+      "id": "ring-declared-56-times",
+      "date": "2026-08-31",
+      "was": "the focus ring declared 56 times in 48 files, and ExpandButton — the one control in the button family that drew its own pill instead of composing Button — shipped with no :focus-visible rule at all, so the most visible floating action was invisible to a keyboard",
+      "foundBy": "eye",
+      "check": "lint:rules · the focus ring is declared once",
+      "status": "proven",
+      "evidence": "gate-redteam breaks it and the step catches it; the recipes tier (2026-09-02) turned the ring into one value so a re-derivation is now also caught by lint:rules · a recipe is named, not rebuilt"
+    },
+    {
+      "id": "nested-minmax-collapsed-the-grid",
+      "date": "2026-08-31",
+      "was": "a fix from the day before wrapped everything containing `fr` in minmax(), so a column already declared minmax(11rem, 1fr) became minmax(8rem, minmax(11rem, 1fr)); a nested minmax is not a track, so the browser threw away the whole grid-template-columns and the catalogue collapsed into one column",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "no static check reads a computed grid template: the value is legal CSS text and only the browser rejects it. The DOM-structure baselines (audit:pages) would catch the collapse on a screen that has such a grid, which is why the DataGrid example is in the gallery — but that is a baseline, not a rule, and it only holds the screens somebody shot."
+    },
+    {
+      "id": "four-floating-layers",
+      "date": "2026-08-31",
+      "was": "useAnchoredLayer existed and carried the listeners, the throttled reflow, the mount timing and both dismissals, while Tooltip, HoverCard, ContextMenu and CommandPalette each wrote their own; the tooltip measured once and did not follow a scroll, and the hover card had no Escape at all, which SC 1.4.13 requires",
+      "foundBy": "eye",
+      "check": "lint:mechanism",
+      "status": "proven",
+      "evidence": "the check reported the pairs on its first run 2026-09-02, after jscpd had passed under its threshold on the same code"
+    },
+    {
+      "id": "three-list-navigations",
+      "date": "2026-08-31",
+      "was": "Combobox, CommandPalette and ContextMenu each carried their own chain of key comparisons with the same clamp, and all three had drifted the same way: none answered Home or End, which both the listbox and the menu pattern name",
+      "foundBy": "eye",
+      "check": "lint:mechanism",
+      "status": "proven",
+      "evidence": "the pair Dropdown ~ useListNavigation was on the recorded ceiling until 2026-09-02, when useListKeys took the four keys for all three callers"
+    },
+    {
+      "id": "prop-shape-drift",
+      "date": "2026-09-02",
+      "was": "53 prop names resolved to more than one type across the published API — `label` on 50 parts as both string and ReactNode, `size` on 43 with four unions, `onChange` on 18 with four signatures, `surface` on 12 answering two unrelated questions — with every gate green, because lint:vocab checked union VALUES and never the shape",
+      "foundBy": "check",
+      "check": "lint:api · A1",
+      "status": "proven",
+      "evidence": "found by running the ported check against the live registry; recorded as a ceiling the same day"
+    },
+    {
+      "id": "behaviour-written-twice",
+      "date": "2026-09-02",
+      "was": "ten pairs of parts implementing one behaviour independently — an anchored layer in five, a list keyboard in three — while jscpd reported under its threshold and passed, because no two lines matched",
+      "foundBy": "check",
+      "check": "lint:mechanism",
+      "status": "proven",
+      "evidence": "ten pairs on the first run; three paid off the same day and the ceiling is seven"
+    },
+    {
+      "id": "recipes-re-derived",
+      "date": "2026-09-02",
+      "was": "the ring assembled 38 times in 34 stylesheets, the surface edge 24 times, the dead-control opacity 20 — each an occasion to answer slightly differently, and the edge width had no token at all, so a brand that wanted a hairline had 24 files to visit and no way to know it had found them",
+      "foundBy": "check",
+      "check": "lint:rules · a recipe is named, not rebuilt",
+      "status": "proven",
+      "evidence": "gate-redteam break: an ingredient written out again, caught by lint:rules"
+    },
+    {
+      "id": "dead-token-check-wrong-population",
+      "date": "2026-09-02",
+      "was": "a dead-token check ported from the second system was about to call 27 tokens dead by asking only this package: 18 were ladder steps of a palette or a scale, five were unreadable by construction (@media cannot read a custom property), and the rest were painted by products three repositories away. Deleting on that answer would have broken three products and put holes in two ramps",
+      "foundBy": "eye",
+      "check": "lint:token-layer · L1, and the `population` field on every gate step",
+      "status": "proven",
+      "evidence": "the owner stopped it before it ran: a ladder is complete on purpose. The rule that came out of it is written into the check and into gates.mjs, where every step now says where its subjects come from."
+    },
+    {
+      "id": "check-skills-walked-above-the-clone",
+      "date": "2026-09-02",
+      "was": "check-skills resolved the repository root as three levels above its own file, which is the monorepo here and somebody else's directory in the published copy; in a scratch clone it walked the system temp directory looking for markdown and died on a macOS file it may not stat",
+      "foundBy": "check",
+      "check": "check:clone",
+      "status": "proven",
+      "evidence": "found on the first run of check:clone, 2026-09-02, in a check that had been green for months on this laptop"
+    },
+    {
+      "id": "axe-race-in-the-suite",
+      "date": "2026-09-02",
+      "was": "axe keeps one global lock and the harness did not queue its runs; the suite passed here for months and failed in a scratch clone with a different core count, in a file nobody had changed. A test that passes because of how many cores you have is not a passing test",
+      "foundBy": "check",
+      "check": "check:clone",
+      "status": "proven",
+      "evidence": "found on the same first run; the canonical harness now queues axe and every app copy carries the fix (check:harness holds them byte-identical)"
+    },
+    {
+      "id": "tree-lost-home-and-end",
+      "date": "2026-09-02",
+      "was": "Tree and TreeTable each wrote the ARIA tree keyboard by hand, and the copy in Tree answered neither Home nor End — the same drift the three list navigations had, in the pattern that names both keys",
+      "foundBy": "check",
+      "check": "lint:mechanism",
+      "status": "proven",
+      "evidence": "the pair was on the recorded ceiling; extracting useTreeKeys closed it and Tree gained the two keys by arriving"
+    },
+    {
+      "id": "checks-read-the-spelling-not-the-state",
+      "date": "2026-09-02",
+      "was": "two checks matched the ring by its ingredients, so the hour the recipe landed states-check called 32 of 34 controls ringless and lint:rules' restated-ring rule would have gone silent — a check that stops matching is worse than one that never existed, because it reads green over the hole",
+      "foundBy": "check",
+      "check": "states, lint:rules",
+      "status": "proven",
+      "evidence": "states went red on the migration and named all 32; both checks now match the recipe and the ingredients"
+    },
+    {
+      "id": "gate-step-lost-to-a-checkout",
+      "date": "2026-09-02",
+      "was": "a `git checkout --` of scripts/gates.mjs discarded an uncommitted step from an earlier session (gen:skill:check) along with the intended reset, and the gate went from 43 steps to 42 with nothing failing",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "nothing can check that an uncommitted change was meant to survive. What made it recoverable was that the step list had been PRINTED earlier in the session, so the loss was visible by comparison; check:gates now fails a manifest that is internally inconsistent, but a step deleted cleanly leaves nothing to be inconsistent with."
+    },
+    {
+      "id": "a-budget-that-measured-somebodys-typing",
+      "date": "2026-08-27",
+      "was": "a product's bundle budget moved 242 to 248 in one afternoon with no code change, and read 243 an hour later, because its content directory was eager-globbed into the JavaScript every user downloads; the tripwire was measuring somebody's typing rather than our code",
+      "foundBy": "eye",
+      "check": "size (in the product)",
+      "status": "proven",
+      "evidence": "Paid 2026-09-02, the same day it was written down. The content came out of the bundle the way that product's journal had in August: one endpoint serves it, a small store holds it, five screens read a hook instead of a field. Main chunk 249.3 -> 223.5 KB gzipped, and the budget was lowered 250 -> 224 rather than raised, so it measures our code again."
+    },
+    {
+      "id": "example-stand-decided-the-width",
+      "date": "2026-08-31",
+      "was": "the example stand was a grid whose track blockified whatever it held, so an inline-flex chip and a flex accordion arrived as identical boxes and the stand guessed the width for the component; an Accordion sat 328px wide inside a 711px panel",
+      "foundBy": "eye",
+      "check": "audit:pages · width-used",
+      "status": "proven",
+      "evidence": "the owner sent the measurement rather than the impression — 328 in 711 — and the page audit now fails a component that leaves its column unused. Measuring the rendered frame is what made it arguable at all."
+    },
+    {
+      "id": "atom-example-shrank-to-content",
+      "date": "2026-08-31",
+      "was": "the same stand, from the other side: an atom example shrinks to max-content because a 40px button stretched across a panel is a control lost in a room, and a textarea asked the same question answered with one wrapped line and an empty half-panel",
+      "foundBy": "eye",
+      "check": "audit:pages · width-used",
+      "status": "proven",
+      "evidence": "a rule that is right for a button and wrong for a field: the fix was per-part rather than per-rule, and the audit holds the result"
+    },
+    {
+      "id": "nav-panel-wider-than-its-content",
+      "date": "2026-08-31",
+      "was": "the list-detail panel grew 3:1 to a 26rem ceiling whatever was in it, and its group headings shared the size, weight and colour of the rows beneath them, so a label read as another row",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "a heading that READS as a row is a judgement about type, not a fact about the DOM: the same markup with a heavier, tracked, smaller label is correct and nothing in the tree changed. What came out of it is a part (ListCluster's labelled run) so the treatment is decided once rather than judged again."
+    },
+    {
+      "id": "tinted-surface-was-a-third-one",
+      "date": "2026-08-31",
+      "was": "a button inside an Alert looked disabled: --surface-contrast answered 'what does a quiet element fill itself with' for two cases — grey page means white, white card means grey — and an Alert declaring itself a card was a third surface neither case knew about",
+      "foundBy": "eye",
+      "check": "boundary",
+      "status": "proven",
+      "evidence": "boundary walks every surface a control can land on rather than a list of two, which is the population lesson one check earlier than the token one"
+    },
+    {
+      "id": "four-things-read-off-the-gallery",
+      "date": "2026-08-29",
+      "was": "the owner opened the gallery and named four cards in a row — a chat bubble filled --muted on a --muted stand, an overview example with nothing in its prime zone, inline code that was a styled span, an agents page claiming a count nobody had counted — and not one of the four was caught by the gate, because each was green by its own rule and wrong on the screen",
+      "foundBy": "eye",
+      "check": "audit:pages, check:claims",
+      "status": "proven",
+      "evidence": "the entry is the ratio in miniature and is why the structure baselines and the claims check exist; two of the four are now rules (a surface on the same surface, a countable claim), and the other two were content"
+    },
+    {
+      "id": "focus-ring-under-the-sticky-header",
+      "date": "2026-08-30",
+      "was": "the page header is sticky and opaque so content scrolls under it, which is right, and its bottom edge sat exactly on the top of the first field: the focus ring is drawn OUTSIDE the box, so the top of it was painted over by the header",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "nothing static can see it: the markup is correct, the ring is correct, and the overlap exists only after the cascade, at one scroll position, at one width. The structure baselines would catch the geometry changing, not the geometry being wrong the first time."
+    },
+    {
+      "id": "datagrid-squeezed-instead-of-scrolling",
+      "date": "2026-08-30",
+      "was": "five columns forced into 390px turned NAME into NAM and SAR 3,663 into 63, while the Table beside it had always done the right thing through TableScroll: a sheet the reader swipes is readable, a sheet squeezed to fit is not, whatever it fits into",
+      "foundBy": "eye",
+      "check": "audit:pages · no-overflow",
+      "status": "proven",
+      "evidence": "and the first fix failed, which is recorded with it: a width floor plus scrolling on the body fixed the reading and broke the header alignment"
+    },
+    {
+      "id": "drawer-could-not-be-opened-on-a-phone",
+      "date": "2026-08-30",
+      "was": "two halves of one mechanism with nothing between them: NavDrawerButton asks a SidebarProvider to open the drawer and renders nothing at all without one, while AppLayout moved its rail from its own navOpen prop. An app that mounted the shell without thinking about the provider got a phone with no way into the navigation",
+      "foundBy": "eye",
+      "check": "audit:pages · nav-reachable",
+      "status": "proven",
+      "evidence": "the page audit has a nav-reachable rule per width since, and the mechanism is one thing rather than two halves"
+    },
+    {
+      "id": "the-sign-in-page-autofilled-a-real-address",
+      "date": "2026-08-30",
+      "was": "the sign-in example declared autoComplete='email', so the browser filled the owner's real address into a screenshot fixture — and the same screen had no brand mark, a product name set in the body face on the one screen a reader reaches before they are sure they are in the right place",
+      "foundBy": "eye",
+      "check": "scan:secrets",
+      "status": "proven",
+      "evidence": "the secret scan reads what git carries, which is where a filled-in address would have landed; the autocomplete itself is now off in the fixtures"
+    },
+    {
+      "id": "the-published-clone-was-red",
+      "date": "2026-08-28",
+      "was": "AGENTS.md promises that a fresh clone of the published repository installs and passes every step of its gate by itself; checked after a publish, the proof was red — gen:data:check failed on facts.json and specs.json because the clone counted zero specs where the published data said seventeen, since the specs of real products are on the drop list and the count was not",
+      "foundBy": "eye",
+      "check": "check:clone",
+      "status": "proven",
+      "evidence": "the check that performs that proof exists now and runs the CI gate inside the clone, rather than a person remembering to try it after a publish"
+    },
+    {
+      "id": "one-store-two-shapes-crashed-a-tab",
+      "date": "2026-08-13",
+      "was": "a tab crashed with Cannot read properties of undefined because one store held two shapes: meetings booked from the cockpit carry a slot, meetings linked by pasting somebody elses invitation do not, and the type declared start and end as required — so TypeScript called the read safe. It crashed on one team only, the one with two linked meetings, and it crashed with the modal CLOSED, because JSX children are evaluated before the dialog decides to render nothing",
+      "foundBy": "eye",
+      "check": "typecheck",
+      "status": "proven",
+      "evidence": "the type describes what is actually in the file now, with the optional fields optional and a flag for the linked kind, so the next such read does not compile. The check existed and was lied to; what changed is the truth it reads."
+    },
+    {
+      "id": "a-block-with-no-surface-entry-lied-to-the-registry",
+      "date": "2026-08-12",
+      "was": "a full-page template stood on a white card in the gallery with a grey strip above it, because it was missing from surfaces.json and both the generator and the gallery silently default to card. The cosmetic half was the small half: the wrong context went into the REGISTRY, so an agent reading it learned that a full-page template lives inside a card",
+      "foundBy": "eye",
+      "check": "lint:rules · every component and block has a surface context",
+      "status": "proven",
+      "evidence": "the rule walked src/components only and blocks had never been in it — three of seven had no context. It walks both now, and catches the reverse case too, an entry with no folder."
+    },
+    {
+      "id": "the-whole-suite-stopped-running",
+      "date": "2026-08-11",
+      "was": "sixty test files, zero tests executed: jsdom 30 moved localStorage and sessionStorage from own properties of window onto Window.prototype, and vitest builds its global from a fixed list plus getOwnPropertyNames — neither name is in the list and it does not walk the prototype, so both arrived undefined. The error named neither jsdom nor vitest and read like a broken provider",
+      "foundBy": "check",
+      "check": "test:cov",
+      "status": "proven",
+      "evidence": "the suite itself was the check that caught it, loudly and unhelpfully. The shim is a module rather than lines in the setup because setup.ts imports i18n first and imports run before the body of the file — the fix was one import too late until the order was made visible."
+    }
+  ],
+  "_unclassifiedMeans": "Entries in docs/CHANGELOG-REVIEW.md that nobody has read into this corpus yet. 609 entries, five read. It falls by reading, never by rounding.",
+  "_sample": "The entries read so far are not a random sample and the ratio should be read knowing it: they cluster in the weeks when the gate was already mature, which flatters it. The three from 11-13 August are a deliberate step back into a thinner period, and two of the three were still found by a person opening a screen."
+}

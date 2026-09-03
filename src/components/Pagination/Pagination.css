@@ -13,42 +13,27 @@
   list-style: none;
 }
 
+/* A <Button size="sm">, so the pill, the radius, the hover and pressed steps, the
+ * focus ring and the disabled state all come from Button.css. Three things are
+ * this component's own, and they are the only three left here.
+ *
+ * The radius is one of the ones NOT repeated, and it used to be --radius-md,
+ * which in a system whose --control-radius is --radius-full made the current
+ * page the one rounded-rectangle among pills; on a 32px square that reads as a
+ * different component. Taking the value from the button is what makes that
+ * impossible to get wrong again. */
 .pagination-page {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  /* A square at one digit, and it grows with the number rather than the pill
+     padding a button carries for words. */
   min-inline-size: var(--control-height-sm);
-  block-size: var(--control-height-sm);
   padding-inline: var(--space-2);
-  border: none;
-  /* The same radius as every other control. It used to be --radius-md, which in a system whose
-   * --control-radius is --radius-full made the current page the one rounded-rectangle among
-   * pills; on a 32px square the difference reads as a different component. */
-  border-radius: var(--control-radius);
-  background: transparent;
-  color: var(--foreground);
-  font-family: inherit;
-  font-size: var(--font-sm);
+  /* Digits of one width, so the row does not shuffle as the page number grows. */
   font-variant-numeric: tabular-nums;
-  cursor: pointer;
-  transition: background var(--duration-fast);
 }
-/* Pressed: one stop past hover, the third answer every control now gives. */
-.pagination-page:active:not(:disabled) { background: var(--accent); }
-.pagination-page:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.pagination-page:hover {
-  background: var(--accent-soft);
-}
-.pagination-page:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
+/* The page you are on is not somewhere to go. It is filled (variant="primary"),
+   and it answers neither the pointer nor the press. */
 .pagination-page[data-current] {
   background: var(--primary);
-  color: var(--primary-foreground);
   cursor: default;
 }
 

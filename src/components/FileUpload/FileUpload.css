@@ -21,9 +21,9 @@
 .file-upload-drop[data-over] { border-color: var(--primary); background: var(--accent-soft); }
 .file-upload-drop[data-invalid] { border-color: var(--destructive); }
 .file-upload-drop[data-invalid]:focus-within { outline-color: var(--destructive); }
-.file-upload-drop[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.file-upload-drop[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 .file-upload-drop:focus-within {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 .file-upload-icon { color: var(--muted-foreground); }
@@ -43,7 +43,7 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--radius-md);
   background: var(--card);
 }

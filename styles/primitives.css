@@ -22,7 +22,6 @@
   --space-16: calc(var(--grid-unit) * 16);
 
   /* Fluid spacing for section gaps (grows with viewport width) */
-  --space-section: clamp(var(--space-8), 5vw, var(--space-16));
 
   /* Font sizes are now an explicit scale in settings.css (no computed steps). */
 
@@ -219,7 +218,6 @@
   --radius-full: 9999px;
 
   /* Gradient — brand sweep (login screen). */
-  --gradient-brand: linear-gradient(-135deg, var(--brand-400) 0%, var(--brand-500) 50%, var(--brand-700) 100%);
 
   /* Z-index — sticky lowest, then modals, then dropdowns (so Selects inside
    * a Modal render above it), then toasts, then tooltips on top. */

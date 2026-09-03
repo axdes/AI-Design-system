@@ -35,11 +35,19 @@ function geometry(values: number[]) {
   const n = values.length;
   const min = Math.min(...values);
   const max = Math.max(...values);
+  /* A SERIES THAT DID NOT MOVE IS DRAWN DOWN THE MIDDLE, not along the floor.
+   *
+   * With no span there is nothing to divide by, and the old `|| 1` put every
+   * point at the bottom of the box — which reads as a value pinned at zero, the
+   * one thing a flat series does not say. Found by its first test, 2026-09-03.
+   * `flat` is carried rather than faked because the caller's numbers are fine;
+   * it is the drawing space that has no opinion. */
+  const flat = max === min;
   const span = max - min || 1;
   const step = n > 1 ? W / (n - 1) : 0;
   const points = values.map((v, i) => {
     const x = n > 1 ? i * step : W / 2;
-    const y = PAD + (1 - (v - min) / span) * (H - PAD * 2);
+    const y = flat ? H / 2 : PAD + (1 - (v - min) / span) * (H - PAD * 2);
     return [x, y] as const;
   });
   const line = points.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(2)} ${y.toFixed(2)}`).join(" ");

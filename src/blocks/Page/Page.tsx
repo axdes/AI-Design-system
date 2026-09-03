@@ -1,3 +1,19 @@
+/* MONOLITHIC BECAUSE THE ZONES ARE SLOTS, AND A SLOT IS A PROP.
+ *
+ * Sixteen of these twenty-two props name a place on the page — notices, title,
+ * actions, header, subnav, toolbar, breadcrumb, detail, aside, footerBar — and
+ * that is what makes them a contract rather than a set of flags: the page
+ * decides where each one goes and in what order, at every width. Taking it apart
+ * into `<Page.Toolbar>` and friends would move that decision to the caller, who
+ * could then put the toolbar under the footer, and the whole reason a template
+ * exists is that they cannot.
+ *
+ * What the split would cost, precisely: every screen in every product rewritten
+ * from a props object to an ordered child list, the page-composition rules
+ * (audit:pages) losing the guarantee they currently check, and the one thing a
+ * page template promises — that two screens built by two people look like one
+ * product — becoming a convention again. (2026-09-03)
+ */
 import './Page.css'
 import type { ReactNode } from 'react'
 import { cn } from '../../lib/cn'

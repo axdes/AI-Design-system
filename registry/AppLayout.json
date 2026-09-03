@@ -22,7 +22,7 @@
     },
     {
       "name": "arrangement",
-      "type": "Arrangement",
+      "type": "'rail' | 'float' | 'top' | 'none'",
       "required": false,
       "description": "How the shell is arranged: where the navigation sits, and whether it is attached to the content or detached from it.",
       "values": [

@@ -9,7 +9,7 @@
   align-items: stretch;
   border-radius: var(--radius-full);
   background: var(--card);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   box-shadow: var(--card-shadow);
   overflow: hidden;
 }
@@ -20,11 +20,8 @@
   gap: var(--space-3);
   padding-block: var(--space-2);
   padding-inline: var(--space-4);
-  border: 0;
   background: none;
   color: var(--foreground);
-  font: inherit;
-  cursor: pointer;
 }
 
 .session-pill-dot {
@@ -61,11 +58,9 @@
   display: inline-flex;
   align-items: center;
   padding-inline: var(--space-3);
-  border: 0;
-  border-inline-start: 1px solid var(--border);
+  border-inline-start: var(--surface-edge);
   background: none;
   color: var(--muted-foreground);
-  cursor: pointer;
 }
 
 .session-pill-dismiss:hover {

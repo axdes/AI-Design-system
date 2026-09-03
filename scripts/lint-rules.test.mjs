@@ -28,6 +28,8 @@ import {
   rInlineStyle,
   rFileSize,
   rBreakpointScale,
+  rRestatedFocusRing,
+  rRestatedButtonReset,
 } from './lint-rules/rules.mjs'
 
 let root
@@ -183,5 +185,43 @@ describe('size', () => {
       'src/layouts/ProbePage.tsx': `export function ProbePage() { return <div /> }\n${'// filler\n'.repeat(700)}`,
     })
     expect(rFileSize({ ...c, fileSizeMax: 600 }).length).toBeGreaterThan(0)
+  })
+})
+
+describe('the system says a thing once', () => {
+  it('reports a block that restates the focus ring, and leaves the ones that change it alone', () => {
+    const c = pkg({
+      'src/components/Probe/Probe.css':
+        '.probe:focus-visible {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n' +
+        '.probe[data-invalid]:focus-visible { outline-color: var(--destructive); }\n' +
+        '.probe-frame:focus-within {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n' +
+        '.probe-input:focus-visible + .probe-box {\n  outline: var(--ring-width) solid var(--ring);\n  outline-offset: var(--ring-offset);\n}\n',
+      'src/components/Probe/Probe.tsx':
+        'export function Probe() { return <button type="button" className="probe" /> }\n',
+    })
+    const out = rRestatedFocusRing(c)
+    expect(out).toHaveLength(1)
+    expect(out[0]).toContain('.probe:focus-visible')
+    /* The neighbour reads the same file and must stay quiet: nothing here undoes
+       a browser default. */
+    expect(rRestatedButtonReset(c)).toHaveLength(0)
+  })
+
+  it('reports a button undoing the browser twice, and not the same class on a div', () => {
+    const c = pkg({
+      'src/components/Probe/Probe.css':
+        '.probe {\n  border: none;\n  cursor: pointer;\n  background: var(--primary);\n}\n' +
+        '.probe-panel {\n  border: none;\n  cursor: pointer;\n}\n',
+      'src/components/Probe/Probe.tsx':
+        'export function Probe() {\n' +
+        '  return <div className="probe-panel"><button type="button" className="probe" /></div>\n' +
+        '}\n',
+    })
+    const out = rRestatedButtonReset(c)
+    expect(out).toHaveLength(2)
+    expect(out.every((x) => x.includes('.probe {'))).toBe(true)
+    expect(out.some((x) => x.includes('border: none'))).toBe(true)
+    expect(out.some((x) => x.includes('cursor: pointer'))).toBe(true)
+    expect(rRestatedFocusRing(c)).toHaveLength(0)
   })
 })

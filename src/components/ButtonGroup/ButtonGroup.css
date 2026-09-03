@@ -13,7 +13,7 @@
  * every split button does — so the divider is a darker step of that fill. The
  * grey control edge belongs between quiet controls; drawn across a brand pill
  * it reads as a scratch. */
-.button-group[data-tone="primary"] { --button-group-seam: var(--primary-active); }
+.button-group[data-variant="primary"] { --button-group-seam: var(--primary-active); }
 
 /* A HALF THAT ARRIVES WRAPPED IS STILL A HALF.
  *

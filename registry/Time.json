@@ -17,7 +17,7 @@
     },
     {
       "name": "mode",
-      "type": "Mode",
+      "type": "'auto' | 'relative' | 'absolute'",
       "required": false,
       "description": "`auto` (default) reads relative under a week and absolute after, which is what a notification list, a feed and a comment thread all want.",
       "values": [

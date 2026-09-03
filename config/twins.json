@@ -10,13 +10,13 @@
     "excuse nobody needs any more would silently waive a real duplicate later."
   ],
   "pairs": {
+    "ButtonGroup ~ MenuIconButton": {
+      "separated": "words versus no words, and the split is the one the system already makes between Button and IconButton. MenuIconButton's `label` is REQUIRED and becomes both the accessible name AND the tooltip, because a lone glyph names nothing; ButtonGroup names a control that already carries words, so it needs neither. Folding them would make that name optional, which is the single thing the separate component exists to prevent. They share label/variant/size/align because both are a button with a menu on it, and the mechanism under both is one Dropdown. This entry read MenuButton ~ MenuIconButton until 2026-08-31, when MenuButton folded into ButtonGroup: the pair and the reason are unchanged, only the name on one side.",
+      "reopenIf": "the registry learns to require a prop conditionally on another prop's absence - a ButtonGroup whose `label` is optional but whose `menuLabel` becomes mandatory when it is missing would then be expressible, and one component is the smaller thing."
+    },
     "DatePicker ~ DateRangePicker": {
       "separated": "one date versus an inclusive span: DatePicker's value is a single Date and one pick closes the calendar; DateRangePicker's value is {start, end}, it needs two picks, orders a backwards pair, and its calendar paints the band between the edges. The trigger deliberately wears the same field styling, which is why the markup matches.",
       "reopenIf": "DatePicker learns to accept a span, or DateRangePicker collapses to one pick - a single field doing both jobs is then the smaller thing."
-    },
-    "MenuButton ~ MenuIconButton": {
-      "separated": "words versus no words, and the split is the one the system already makes between Button and IconButton. MenuIconButton's `label` is REQUIRED and becomes both the accessible name and the tooltip, because a lone glyph names nothing; MenuButton's label is the visible text and needs neither. Folding them would make that name optional, which is the single thing the separate component exists to prevent. The markup resembles because both hang a Dropdown on a trigger - that mechanism is shared in lib/useAnchoredLayer, which is where sharing belongs here.",
-      "reopenIf": "the registry learns to require a prop conditionally on another prop's absence - a MenuButton whose `label` is optional but whose `menuLabel` becomes mandatory when it is missing would then be expressible, and one component is the smaller thing."
     },
     "RangeSlider ~ Slider": {
       "separated": "one thumb versus two on one track: Slider's value is a number, RangeSlider's is an ordered [start, end] tuple and each native input clamps against the other. Folding them would make value's type conditional on a prop, and a discriminated props union is exactly what the registry parser cannot express (the Combobox lesson).",

@@ -23,9 +23,17 @@ import { useSidebarOptional } from '../../lib/SidebarProvider'
  * Renders nothing without a SidebarProvider (gallery, golden examples): there is
  * no drawer to open. */
 
-/** Opens the navigation drawer, in the leading slot of the screen's top bar and
- *  only below the drawer breakpoint. `<PageHeader>` renders it when the screen
- *  has no `onBack`; a screen with its own bar renders it there instead. */
+/**
+ * @internal
+ *
+ * Opens the navigation drawer, in the leading slot of the screen's top bar and
+ * only below the drawer breakpoint. `<PageHeader>` renders it when the screen
+ * has no `onBack`, and `<ChatShell>` does the same for a screen with its own
+ * bar — which is why nothing outside this package has ever imported it and
+ * nothing should. It is `@internal` for that reason and not because it is
+ * unfinished: shared, maintained and tested like anything else, and simply not
+ * a name to choose between.
+ */
 export function NavDrawerButton() {
   const { t } = useTranslation()
   const sidebar = useSidebarOptional()

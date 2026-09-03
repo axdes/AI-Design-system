@@ -26,7 +26,12 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', R = '\x1b[0m'
 
 /* Written in the working language on purpose, and never published as itself. */
-const EXEMPT = new Set(['docs/CHANGELOG-REVIEW.md'])
+/* Two internal documents, and both are exempt on the same terms: they are in the
+ * working language on purpose, and the publisher does not ship them — the log is
+ * swapped for a stub and the draft is dropped outright (config/publishable.json
+ * → neverShips, which check:publishable holds the publisher to). An exemption
+ * here without that pair would just be a way to publish untranslated text. */
+const EXEMPT = new Set(['docs/CHANGELOG-REVIEW.md', 'docs/skill-package-draft.md'])
 /* WebP joined the list the day six demo photographs were converted to it: a
    compressed image is bytes that occasionally look like Cyrillic, and the check
    reported six "published files carrying the working language" that were

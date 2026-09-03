@@ -1,0 +1,42 @@
+{
+  "_comment": [
+    "Example .claude/settings.json. Paths here assume this package IS the repository root.",
+    "In a monorepo, prefix them with the package directory and keep the file at the monorepo root —",
+    "which is why these two hooks are not visible in this published snapshot: they live one level",
+    "above what gets published.",
+    "exit 2 is the mechanism: stderr goes back to the agent as a message, in the same turn."
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "d=\"${CLAUDE_PROJECT_DIR:-$PWD}\"; f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in \"$d\"/src/*.ts|\"$d\"/src/*.tsx|\"$d\"/src/*.css|\"$d\"/styles/*.css) . \"$d\"/scripts/node-path.sh; out=$(cd \"$d\" && npm run -s lint 2>&1 && npm run -s lint:css 2>&1 && npm run -s lint:rules 2>&1) || { printf '%s\\n' \"$out\" >&2; exit 2; } ;; esac",
+            "timeout": 120,
+            "statusMessage": "Linting (eslint + stylelint + lint-rules)"
+          },
+          {
+            "type": "command",
+            "command": "d=\"${CLAUDE_PROJECT_DIR:-$PWD}\"; f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *__eval__*|*.test.tsx|*.example.tsx) exit 0 ;; esac; case \"$f\" in \"$d\"/src/*.tsx) . \"$d\"/scripts/node-path.sh; out=$(cd \"$d\" && npm run -s verify -- \"$f\" 2>&1) || { printf '%s\\n' \"$out\" >&2; exit 2; } ;; esac",
+            "timeout": 60,
+            "statusMessage": "Verifying against the registry (components, props, inline styles)"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "d=\"${CLAUDE_PROJECT_DIR:-$PWD}\"; . \"$d\"/scripts/node-path.sh; node \"$d\"/scripts/claude-stop-gate.mjs",
+            "timeout": 180,
+            "statusMessage": "Stop gate: eslint + stylelint + lint-rules"
+          }
+        ]
+      }
+    ]
+  }
+}

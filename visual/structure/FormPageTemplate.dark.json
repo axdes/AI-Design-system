@@ -41,8 +41,8 @@
   "div.form-page-actions@0/0/0/0/1/0/0/0/1": {"box":[32,537,1216,73],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"space-between","align-items":"center","gap":"16px","padding":"16px 24px","border-style":"solid none none","border-width":"1px 0px 0px","border-color":"rgb(59, 63, 69) rgb(241, 246, 253) rgb(241, 246, 253)"},
   "div.form-page-actions-inner@0/0/0/0/1/0/0/0/1/0": {"box":[224,554,832,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","gap":"16px","margin":"0px 168px"},
   "div.form-page-buttons@0/0/0/0/1/0/0/0/1/0/0": {"box":[769,554,287,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","align-items":"center","gap":"12px","margin":"0px 0px 0px 544.719px"},
-  "button.btn@0/0/0/0/1/0/0/0/1/0/0/0": {"box":[769,554,97,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"1px 24px","border-radius":"9999px","font-weight":"600","text-align":"center"},
-  "button.btn@0/0/0/0/1/0/0/0/1/0/0/1": {"box":[877,554,179,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"1px 24px","border-radius":"9999px","background-color":"rgb(70, 56, 211)","color":"rgb(255, 255, 255)","font-weight":"600","text-align":"center"},
+  "button.btn@0/0/0/0/1/0/0/0/1/0/0/0": {"box":[769,554,97,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"0px 24px","border-radius":"9999px","font-weight":"600","text-align":"center"},
+  "button.btn@0/0/0/0/1/0/0/0/1/0/0/1": {"box":[877,554,179,40],"display":"flex","flex-direction":"row","flex-wrap":"nowrap","justify-content":"center","align-items":"center","gap":"8px","padding":"0px 24px","border-radius":"9999px","background-color":"rgb(70, 56, 211)","color":"rgb(255, 255, 255)","font-weight":"600","text-align":"center"},
   "div.toast-region@1": {"box":[880,784,384,0],"display":"flex","position":"fixed","flex-direction":"column","flex-wrap":"nowrap","gap":"8px","z-index":"300"}
  }
 }

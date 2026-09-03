@@ -18,10 +18,8 @@
   color: var(--foreground);
   border: 1px solid var(--input);
   border-radius: var(--control-radius);
-  font-family: inherit;
   font-size: var(--control-font-size);
   font-weight: var(--font-weight-regular);   /* value text reads like an input, not a button */
-  cursor: pointer;
   white-space: nowrap;
   transition: border-color var(--duration-fast);
 }
@@ -30,10 +28,6 @@
 .select-trigger[data-size="lg"] { height: var(--control-height-lg); font-size: var(--control-font-size-lg); }
 
 .select-trigger:hover { border-color: var(--ring); }
-.select-trigger:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 /* Pressed: one stop past hover, the third answer every control now gives. */
 .select-trigger:active:not(:disabled) { border-color: var(--primary-active); }
 .select-trigger[data-open] { border-color: var(--ring); }
@@ -46,7 +40,7 @@
 .select-trigger[data-surface="muted"]:not([data-invalid])[data-open] { border-color: transparent; }
 .select-trigger[data-invalid]:focus-visible { outline-color: var(--destructive); }
 .select-trigger:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
   pointer-events: none;
 }

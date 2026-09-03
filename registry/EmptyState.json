@@ -16,12 +16,12 @@
     },
     {
       "name": "title",
-      "type": "string",
+      "type": "ReactNode",
       "required": true
     },
     {
       "name": "description",
-      "type": "string",
+      "type": "ReactNode",
       "required": false
     },
     {
@@ -31,7 +31,7 @@
     },
     {
       "name": "as",
-      "type": "Heading",
+      "type": "'h1' | 'h2' | 'h3' | 'h4'",
       "required": false,
       "description": "Heading level for the title. Pick to fit the page hierarchy. Default `h2`.",
       "values": [

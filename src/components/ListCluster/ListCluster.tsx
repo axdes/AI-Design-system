@@ -27,7 +27,10 @@ export function ListCluster({
   title: ReactNode
   /** Optional. A title that already says it needs no line under it, and forcing one produced
    *  screens explaining their own heading back to the reader. */
-  subtitle?: string
+  /* ReactNode, like the title above it: the same word means the same shape
+   * everywhere in this system, and a welcome line routinely carries a link or
+   * a name in the brand colour. Widened 2026-09-03. */
+  subtitle?: ReactNode
   cta: ReactNode
   clusterRef?: Ref<HTMLDivElement>
   children: ReactNode

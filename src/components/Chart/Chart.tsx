@@ -1,3 +1,16 @@
+/* MONOLITHIC BECAUSE THESE ARE A DATA SPECIFICATION, NOT OPTIONS.
+ *
+ * `series`, `labels`, `type`, `stacked`, `orientation`, `max`, `target`,
+ * `emphasis` and `axis` describe one thing: what is being plotted and against
+ * what. They arrive together from the caller's data and are meaningless apart —
+ * a `stacked` with no `series` says nothing, an `axis` without a `max` cannot be
+ * drawn. A compound would ask the caller to spread one object across five
+ * elements and then keep them in step by hand.
+ *
+ * What the split would cost: the chart would have to reconcile children that can
+ * contradict each other, which is a whole class of error it does not have today.
+ * (2026-09-03)
+ */
 import '../../lib/chart.css'
 import './Chart.css'
 import { type CSSProperties, type PointerEvent, useRef, useState } from 'react'
@@ -31,7 +44,7 @@ type Props = {
   stacked?: boolean
   /** `bar`: bars run across instead of up. The answer for long category names
    *  and for a ranking, where the eye compares lengths down a column. */
-  orientation?: 'vertical' | 'horizontal'
+  orientation?: 'horizontal' | 'vertical'
   /** `line`: fills under the line. For ONE series only — two filled areas
    *  overlapping is a chart nobody can read. */
   area?: boolean

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type 
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
 import { useDismiss } from '../../lib/useDismiss'
+import { useListNavigation } from '../../lib/useListNavigation'
 import { Icon, type IconName } from '../Icon'
 
 export type ContextMenuItem = {
@@ -30,8 +31,16 @@ const EDGE = 8
 export function ContextMenu({ children, items, className }: Props) {
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
-  const [active, setActive] = useState(0)
+
   const menuId = useId()
+  /* ONE ANSWER TO "RUN THE ACTIVE ITEM", because Enter, Space and a click all
+     mean it. It was three copies of the same guard, and a mutation could widen
+     any one of them while the other two's tests still passed (2026-08-31). */
+  const selectActive = (i: number) => {
+    const item = items[i]
+    if (item && !item.disabled) { item.onSelect(); setPos(null) }
+  }
+  const { active, setActive, handleKey } = useListNavigation({ count: items.length, onEnter: selectActive })
 
   const open = (e: MouseEvent) => {
     e.preventDefault()
@@ -56,17 +65,15 @@ export function ContextMenu({ children, items, className }: Props) {
     if (pos) menuRef.current?.focus()
   }, [pos])
 
+  /* Arrow keys, Home and End are `useListNavigation`'s — the second mechanism
+     this system had in three copies. This one's copy answered neither Home nor
+     End, which the ARIA menu pattern asks for; it does now, and so do the other
+     two, because the keys live in one place. What stays here is the key this
+     menu owns: Space selects, the way a menu does and a listbox does not. */
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'ArrowDown') { e.preventDefault(); setActive((i) => Math.min(i + 1, items.length - 1)) }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive((i) => Math.max(i - 1, 0)) }
-    else if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      const item = items[active]
-      if (item && !item.disabled) { item.onSelect(); close() }
-    }
+    if (handleKey(e)) return
+    if (e.key === ' ') { e.preventDefault(); selectActive(active) }
   }
-
-  const select = (item: ContextMenuItem) => { if (!item.disabled) { item.onSelect(); close() } }
 
   return (
     <>
@@ -100,7 +107,7 @@ export function ContextMenu({ children, items, className }: Props) {
               data-active={i === active || undefined}
               disabled={item.disabled}
               onMouseEnter={() => setActive(i)}
-              onClick={() => select(item)}
+              onClick={() => selectActive(i)}
             >
               {item.icon && <Icon name={item.icon} size="sm" className="context-item-icon" />}
               {item.label}

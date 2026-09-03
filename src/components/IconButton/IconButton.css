@@ -2,8 +2,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  border: none;
   border-radius: var(--control-radius);
   background: transparent;
   /* Full-strength ink. `quiet` is the one that sits in secondary ink, and that
@@ -11,8 +9,6 @@
    * `ghost` and `quiet` drew the identical button and diverged only once the
    * pointer arrived, which is two names for one picture. */
   color: var(--foreground);
-  font-family: inherit;
-  cursor: pointer;
   transition: opacity var(--duration-fast), background var(--duration-fast), color var(--duration-fast);
 }
 /* Icon buttons are square buttons — heights match the regular control heights. */
@@ -25,12 +21,8 @@
   background: var(--accent-soft);
   color: var(--accent-foreground);
 }
-.icon-button:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 .icon-button:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
   pointer-events: none;
 }

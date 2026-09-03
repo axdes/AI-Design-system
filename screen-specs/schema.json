@@ -301,7 +301,6 @@
               "case",
               "proof",
               "testimonial",
-              "logos",
               "offer",
               "event",
               "course",
@@ -432,6 +431,77 @@
                 "stacked": {
                   "type": "boolean",
                   "description": "This column puts a value over its secondary line (CellStack). One column per table."
+                }
+              }
+            }
+          },
+          "controls": {
+            "type": "array",
+            "description": "The CONTROLS of this zone's form, in the order they are filled. Optional, and the moment it is given the control rules apply: each control names what it TAKES and screen-specs/control-rules.json decides which component it is and what it owes. `data.fields` stays the COUNT, which is what the form rules read to choose dialog against page against wizard; this is what each one is. text: One line of free text: a name, a reference, a title. long-text: Several sentences: a note, a description, a reason. number: A quantity typed exactly: how many, how long, how far. amount: A number that is nothing without its unit: a price, a weight, a rate. bounded: A position on a known scale, where the digits are not the point. span: A pair on one scale: from and to. choice: One of a few named options, all worth showing at once. choice-view: One of a few options that are VIEWS of the same thing. choice-long: One of many named options. choice-searched: One of many, found by typing. choice-visual: An option recognised by how it looks rather than by its name. choices: Several values from a set the screen knows. tags: Several values the reader invents as they go. toggle: On or off, and it takes effect the moment it is flipped. agreement: A box the reader ticks, whose value is submitted with the form. date: One day. date-span: A start and an end. time: A time of day. file: One or more files from the reader's machine. secret: A password or a token. code: A short verification code, one box per character. score: A rating out of a fixed number. query: Free text that narrows what is already on screen. message: A message the reader sends. dependent: A field that exists only while another control has a particular value.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "takes"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The label, in the words the screen uses."
+                },
+                "takes": {
+                  "type": "string",
+                  "enum": [
+                    "text",
+                    "long-text",
+                    "number",
+                    "amount",
+                    "bounded",
+                    "span",
+                    "choice",
+                    "choice-view",
+                    "choice-long",
+                    "choice-searched",
+                    "choice-visual",
+                    "choices",
+                    "tags",
+                    "toggle",
+                    "agreement",
+                    "date",
+                    "date-span",
+                    "time",
+                    "file",
+                    "secret",
+                    "code",
+                    "score",
+                    "query",
+                    "message",
+                    "dependent"
+                  ],
+                  "description": "What the value IS. The kind decides the component."
+                },
+                "options": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "How many options the reader chooses from. Required on a choice kind: the count does not pick the kind, it bounds it — laid out (choice) carries up to 5, a menu (choice-long) up to 15, and past that it is typed (choice-searched). Between two and five the screen decides, because the question is whether comparing the options is part of choosing."
+                },
+                "applies": {
+                  "type": "string",
+                  "enum": [
+                    "at-once",
+                    "on-submit"
+                  ],
+                  "description": "When an on/off control takes effect. Required on toggle and agreement: at-once is a Switch, on-submit is a Checkbox."
+                },
+                "cap": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "A character limit on typed text. Given it, the zone owes a <CharacterCount>."
+                },
+                "required": {
+                  "type": "boolean",
+                  "description": "The form refuses to submit without it."
                 }
               }
             }

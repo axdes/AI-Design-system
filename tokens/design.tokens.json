@@ -172,17 +172,6 @@
           "source": "styles/settings.css"
         }
       }
-    },
-    "section": {
-      "$value": "clamp(var(--space-8), 5vw, var(--space-16))",
-      "$description": "Fluid spacing for section gaps (grows with viewport width)",
-      "$extensions": {
-        "org.css-design-system": {
-          "var": "--space-section",
-          "source": "styles/primitives.css",
-          "cssExpression": true
-        }
-      }
     }
   },
   "font": {
@@ -1244,17 +1233,6 @@
         }
       }
     },
-    "secondary": {
-      "$value": "{color.neutral.100}",
-      "$description": "plain light grey on white surfaces; page-level contexts override to white",
-      "$extensions": {
-        "org.css-design-system": {
-          "var": "--secondary",
-          "source": "styles/semantic.css",
-          "dark": "{color.neutral.950}"
-        }
-      }
-    },
     "secondary-foreground": {
       "$value": "{color.neutral.700}",
       "$description": "text-secondary",
@@ -1787,6 +1765,25 @@
           "source": "styles/settings.css"
         }
       }
+    },
+    "padding": {
+      "$value": "{space.4}",
+      "$description": "THE TWO ROOMS A FLOATING SURFACE GIVES, and they are two questions rather than one taste. A surface carrying CONTENT — a popover, a hover card, the palette's field — pads it like a small card. A surface that is a FRAME around rows — a menu, a listbox — pads only enough to keep the first row off the edge, because the rows carry their own padding and doubling it makes a menu look like a card with a list in it. They were five separate numbers in five stylesheets until 2026-09-03, which is one family answering one question five ways: a brand retuning its popover density had five files to find and no way to know it had found them.",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--popover-padding",
+          "source": "styles/settings.css"
+        }
+      }
+    },
+    "frame-padding": {
+      "$value": "{space.1}",
+      "$extensions": {
+        "org.css-design-system": {
+          "var": "--popover-frame-padding",
+          "source": "styles/settings.css"
+        }
+      }
     }
   },
   "icon": {
@@ -1947,31 +1944,6 @@
         }
       }
     },
-    "width-collapsed": {
-      "$value": {
-        "value": 5.625,
-        "unit": "rem"
-      },
-      "$type": "dimension",
-      "$description": "icon pill rail",
-      "$extensions": {
-        "org.css-design-system": {
-          "var": "--sidebar-width-collapsed",
-          "source": "styles/settings.css"
-        }
-      }
-    },
-    "drawer-width": {
-      "$value": "min(20rem, 85vw)",
-      "$description": "mobile drawer",
-      "$extensions": {
-        "org.css-design-system": {
-          "var": "--sidebar-drawer-width",
-          "source": "styles/settings.css",
-          "cssExpression": true
-        }
-      }
-    },
     "rail-item-size": {
       "$value": {
         "value": 2.5,
@@ -2090,22 +2062,6 @@
       "$extensions": {
         "org.css-design-system": {
           "var": "--chat-message-max-width",
-          "source": "styles/settings.css"
-        }
-      }
-    }
-  },
-  "logo": {
-    "height": {
-      "$value": {
-        "value": 2,
-        "unit": "rem"
-      },
-      "$type": "dimension",
-      "$description": "full wordmark",
-      "$extensions": {
-        "org.css-design-system": {
-          "var": "--logo-height",
           "source": "styles/settings.css"
         }
       }
@@ -3679,19 +3635,6 @@
         "org.css-design-system": {
           "var": "--series-6-dark",
           "source": "styles/primitives.css"
-        }
-      }
-    }
-  },
-  "gradient": {
-    "brand": {
-      "$value": "linear-gradient(-135deg, var(--brand-400) 0%, var(--brand-500) 50%, var(--brand-700) 100%)",
-      "$description": "Gradient — brand sweep (login screen).",
-      "$extensions": {
-        "org.css-design-system": {
-          "var": "--gradient-brand",
-          "source": "styles/primitives.css",
-          "cssExpression": true
         }
       }
     }

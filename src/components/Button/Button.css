@@ -6,12 +6,10 @@
   height: var(--control-height);
   padding-inline: var(--control-padding-x);
   border-radius: var(--control-radius);
-  border: none;
   font-weight: var(--control-font-weight);
   font-size: var(--control-font-size);
   background: var(--primary);
   color: var(--primary-foreground);
-  cursor: pointer;
   transition: background var(--duration-fast);
   /* A label wraps onto two lines only when someone asks for it. A button that folds "Run again"
    * into a two-line pill reads as broken, and it happens whenever a flex parent squeezes it. */
@@ -30,12 +28,8 @@
  * gave no answer at all, which is why people press twice. One more stop in the
  * same direction the hover already moved. */
 .btn:active { background: var(--primary-active); }
-.btn:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 .btn:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
   pointer-events: none;
 }

@@ -23,7 +23,7 @@
     },
     {
       "name": "subtitle",
-      "type": "string",
+      "type": "ReactNode",
       "required": false,
       "description": "Optional. A title that already says it needs no line under it, and forcing one produced screens explaining their own heading back to the reader."
     },

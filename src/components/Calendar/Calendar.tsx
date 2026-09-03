@@ -1,3 +1,13 @@
+/* MONOLITHIC BECAUSE THIS IS THE DATE DOMAIN, WRITTEN OUT.
+ *
+ * `min`, `max`, `rangeStart`, `rangeEnd`, `weekStartsOn`, `locale` and `month`
+ * are not features of a calendar, they are the facts a calendar needs before it
+ * can draw a single cell: which dates exist, which are chosen, where the week
+ * begins and in whose language. Every one of them is read on every render.
+ *
+ * What the split would cost: a compound would put those facts in children and
+ * make the grid read its own subtree to lay out a month. (2026-09-03)
+ */
 import './Calendar.css'
 import { useState, type KeyboardEvent } from 'react'
 import { cn } from '../../lib/cn'

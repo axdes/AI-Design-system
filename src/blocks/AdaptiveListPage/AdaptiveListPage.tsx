@@ -36,7 +36,10 @@ type Props = {
   /** Under the hero title, and only in the welcome layout. Optional: a heading that needs a
    *  sentence under it is usually the wrong heading, and requiring one produced screens that
    *  explained their own title back to the reader. */
-  subtitle?: string
+  /* ReactNode: the same word means the same shape everywhere in this system,
+   * and its neighbours already took one. Widened 2026-09-03; it is rendered
+   * as content here, never put in an attribute. */
+  subtitle?: ReactNode
   /** Header action in the standard layout. */
   actions?: ReactNode
   /** Beside the title in the header row: the list's search. */

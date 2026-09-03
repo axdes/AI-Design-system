@@ -12,7 +12,10 @@ type Props = {
   price: string
   /** What the price is per, e.g. "per month". */
   period?: string
-  description?: string
+  /* ReactNode: the same word means the same shape everywhere in this system,
+   * and its neighbours already took one. Widened 2026-09-03; it is rendered
+   * as content here, never put in an attribute. */
+  description?: ReactNode
   features: string[]
   /** The one thing to do with this plan. A `<Button>`, usually. */
   action: ReactNode

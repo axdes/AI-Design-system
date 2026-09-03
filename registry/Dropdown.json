@@ -1,7 +1,7 @@
 {
   "ref": "Dropdown",
   "level": "molecule",
-  "description": "Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are built in, so spread `triggerProps` onto your own button. Items, sections and dividers are the parts. When the trigger is an ordinary labelled button, `<MenuButton>` is that already assembled — including the split form where a default action sits on its own half. Come here when the trigger is something else: an avatar, a table row, a field.",
+  "description": "Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are built in, so spread `triggerProps` onto your own button. Items, sections and dividers are the parts. When the trigger is an ordinary labelled button, `<ButtonGroup menu>` is that already assembled — including the split form where a default action sits on its own half. Come here when the trigger is something else: an avatar, a table row, a field.",
   "exports": [
     "Dropdown",
     "DropdownItem",
@@ -46,7 +46,7 @@
     },
     {
       "name": "align",
-      "type": "Align",
+      "type": "'start' | 'end'",
       "required": false,
       "description": "Which edge the menu lines up with, and it follows where the trigger SITS: the default `end` for a control at the right, `start` on the left, so the menu opens into the page and not off its edge.",
       "values": [
@@ -89,6 +89,7 @@
   "uses": [
     "Button",
     "Icon",
+    "Kbd",
     "Tooltip"
   ],
   "example": "<Dropdown\n  align=\"end\"\n  trigger={({ isOpen, ...triggerProps }) => (\n    <Button data-open={isOpen || undefined} {...triggerProps}>\n      Actions\n      <Icon name=\"arrow_drop_down\" />\n    </Button>\n  )}\n>\n  \n  <DropdownSection label=\"Edit\">\n    <DropdownItem icon=\"edit\" shortcut=\"⌘E\" onClick={() => undefined}>Rename</DropdownItem>\n    \n    <Tooltip content=\"Only the owner can move this\">\n      <DropdownItem icon=\"folder\" disabled>Move to folder</DropdownItem>\n    </Tooltip>\n  </DropdownSection>\n  \n  <DropdownDivider />\n  <DropdownItem icon=\"delete\" tone=\"danger\" onClick={() => undefined}>Delete</DropdownItem>\n</Dropdown>"

@@ -39,12 +39,12 @@
     },
     {
       "name": "orientation",
-      "type": "'vertical' | 'horizontal'",
+      "type": "'horizontal' | 'vertical'",
       "required": false,
       "description": "`bar`: bars run across instead of up. The answer for long category names and for a ranking, where the eye compares lengths down a column.",
       "values": [
-        "vertical",
-        "horizontal"
+        "horizontal",
+        "vertical"
       ]
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "name": "tone",
-      "type": "Tone",
+      "type": "'neutral' | 'primary' | 'success' | 'warning' | 'danger'",
       "required": false,
       "description": "What the whole measure MEANS, from the metric and not the numbers: findings closed rising is `success`, incidents rising is `danger`, and the same marks carry both.",
       "values": [
@@ -86,7 +86,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "How much of the page the chart is worth: `md` when it is the block, `sm` when it is one card in a grid of them.",
       "values": [
@@ -145,8 +145,8 @@
     "orientation": {
       "prop": "orientation",
       "values": [
-        "vertical",
-        "horizontal"
+        "horizontal",
+        "vertical"
       ]
     },
     "stacked": {

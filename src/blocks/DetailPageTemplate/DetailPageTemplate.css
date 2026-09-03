@@ -82,7 +82,7 @@
  * border-box, so the outline costs the content nothing. */
 .detail-page[data-panels] .page-body .card,
 .detail-page[data-panels] .detail-page-aside .card {
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
 }
 
 /* <Page> wraps the aside in a region of its own, so the panel (or the rail)
@@ -137,7 +137,7 @@
   .detail-page[data-panels] .detail-page-aside-rail {
     border-start-start-radius: 0;
     border-end-start-radius: 0;
-    border-inline-start: 1px solid var(--border);
+    border-inline-start: var(--surface-edge);
   }
   .detail-page[data-panels] .detail-page-aside {
     min-block-size: 0;
@@ -145,6 +145,6 @@
     border-end-start-radius: 0;
     /* The seam. Logical, so it stays on the inner edge in RTL. 1px like every other hairline in
      * the system (SidePanel's own footer rule is the same literal). */
-    border-inline-start: 1px solid var(--border);
+    border-inline-start: var(--surface-edge);
   }
 }

@@ -9,7 +9,7 @@
  * same surface rule as everywhere else here — what separates blocks is space,
  * and a line is only for the seam between two of them. */
 .accordion-item + .accordion-item {
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
 }
 
 .accordion-heading {
@@ -24,26 +24,23 @@
   gap: var(--space-3);
   inline-size: 100%;
   padding: var(--space-3) var(--space-1);
-  border: none;
   background: transparent;
   color: var(--foreground);
-  font-family: inherit;
   font-size: var(--font-base);
   font-weight: var(--font-weight-medium);
   text-align: start;
-  cursor: pointer;
   transition: color var(--duration-fast);
 }
 .accordion-header:hover {
   color: var(--primary-accent);
 }
 .accordion-header:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(var(--ring-offset) * -1);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
   border-radius: var(--radius-sm);
 }
 .accordion-header:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
 

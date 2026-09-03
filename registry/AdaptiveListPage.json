@@ -23,7 +23,7 @@
     },
     {
       "name": "subtitle",
-      "type": "string",
+      "type": "ReactNode",
       "required": false,
       "description": "Under the hero title, and only in the welcome layout. Optional: a heading that needs a sentence under it is usually the wrong heading, and requiring one produced screens that explained their own title back to the reader."
     },

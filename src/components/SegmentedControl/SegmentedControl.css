@@ -1,6 +1,29 @@
 .segmented {
   display: inline-flex;
   padding: var(--space-2xs);
+  /* A CONTROL NEVER MAKES THE PAGE SCROLL SIDEWAYS.
+   *
+   * Five segments at the control font fit a laptop and not a 390px phone: the
+   * teams-digest chat screen pushed its document 13px sideways, and the widest
+   * offender was one of these buttons (audit:pages, 2026-09-02). It had been
+   * doing it for as long as that screen has had five periods; nobody saw it
+   * because the screen behind it was shooting a 404 card.
+   *
+   * The answer is the one the system already gives a table: the thing that is
+   * too wide scrolls INSIDE its own box, and the page does not move. `max-width`
+   * keeps the track from claiming more than it is given, and the scroll is
+   * hidden until it is needed. */
+  max-inline-size: 100%;
+  /* A flex item refuses to go below its content width until it is told it may.
+     Without this the max above is inert inside any row — which is where a
+     segmented control usually stands, and why the first attempt at this fix
+     changed nothing (2026-09-02). */
+  min-inline-size: 0;
+  overflow-x: auto;
+  /* The pill is drawn by the track's own background, so a scrolled track must
+   * not clip its focus ring: the ring is outside the box and this is the one
+   * place that matters. */
+  scrollbar-width: thin;
   /* THE TRACK IS ONE STEP FROM THE SURFACE, AND THE PILL IS ONE STEP BACK.
    *
    * This read `--surface-contrast`, on the belief that it was "the grey a quiet
@@ -19,15 +42,16 @@
 }
 .segmented-option {
   appearance: none;
+  /* No shrinking: a segment that squeezes to fit is how a five-period switch
+     becomes five unreadable stubs. It keeps its width and the track scrolls. */
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   min-block-size: calc(var(--control-height) - var(--space-2xs) * 2);
-  border: none;
   background: transparent;
   color: var(--muted-foreground);
-  font-family: inherit;
   /* Same type as the rest of the control family (Button/Select) so a segmented
    * toggle next to them reads as one system, not a smaller sibling. */
   font-size: var(--control-font-size);
@@ -40,7 +64,6 @@
   padding-block: 0;
   padding-inline: var(--space-4);
   border-radius: calc(var(--control-radius) - var(--space-2xs));
-  cursor: pointer;
   white-space: nowrap;
   transition: color var(--duration-fast), background var(--duration-fast);
 }
@@ -51,8 +74,8 @@
  * is legible on a control whose resting state is bare text. */
 .segmented-option:active { background: var(--surface-contrast-active); color: var(--foreground); }
 .segmented-option:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(var(--ring-offset) * -1);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
 }
 /* Selected = a lifted pill AND brand-coloured text.
  *

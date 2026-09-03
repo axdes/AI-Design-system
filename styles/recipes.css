@@ -1,0 +1,61 @@
+/* TIER 3 — RECIPES. The answers a part would otherwise work out again.
+ *
+ * The tiers below this one hand out ingredients: `primitives.css` a ramp of
+ * values, `semantic.css` the roles those values play, `settings.css` the knobs a
+ * brand turns. None of them answers a question a component actually asks. "How
+ * do I draw the focus ring on this element" was answered 38 times in 34
+ * stylesheets; "what does a dead control look like" 20 times; "what is the edge
+ * of a surface" 24 times. Every one of those was a chance to get it slightly
+ * different, and several did — which is how ExpandButton once shipped with no
+ * ring at all (see styles/reset.css) and nothing could catch it.
+ *
+ * A recipe is a COMPLETE answer, not an ingredient. `--focus-ring` is the whole
+ * outline shorthand, not a colour a part assembles an outline from: if a part
+ * has to assemble it, thirty-four parts assemble it thirty-four ways.
+ *
+ * Nothing here is written ahead of a caller. Each of the four below replaced
+ * declarations that already existed, in the same commit that added it
+ * (2026-09-02); a recipe with no caller is a dead token, and the rule against
+ * those is the same one that keeps a step out of a scale nobody takes.
+ *
+ * A component reaches THIS tier and never past it. Reaching a primitive from a
+ * component was already forbidden; reaching a semantic role still is not, and
+ * should not be — a recipe answers a shape, a role answers a colour, and a part
+ * that needs `--muted-foreground` needs a role.
+ */
+:root {
+  /* THE RING, AS ONE VALUE.
+   *
+   * reset.css draws it for everything that can take focus by itself. The 34
+   * parts that also write it are the ones ringing something ELSE: a sibling the
+   * real input sits behind (Radio, Checkbox), a row the item owns (SideNav,
+   * Tree), a cell inside a grid. They cannot inherit the universal rule, so
+   * they name the answer instead of rebuilding it. */
+  --focus-ring: var(--ring-width) solid var(--ring);
+
+  /* THE RING, DRAWN INSIDE.
+   *
+   * Anything whose edge is flush with what contains it — a menu item, a table
+   * cell, a nav row, a scroll region — has no room outside for a ring, so the
+   * offset goes negative. That negation was written fifteen times in two
+   * different spellings, `calc(-1 * ...)` and `calc(... * -1)`, which is two
+   * ways to write one decision and a warning sign in itself. */
+  --focus-ring-inset: calc(-1 * var(--ring-offset));
+
+  /* A DEAD CONTROL.
+   *
+   * One number, dimmed enough to read as unavailable and legible enough to read
+   * at all. reset.css applies it to the form controls; a part that dims
+   * something else says this rather than picking a number. The two deliberate
+   * deviations (Calendar at 0.3, the menu item at 0.45) keep their own value and
+   * are now visible AS deviations, which they were not while every part carried
+   * its own 0.5. */
+  --disabled-opacity: 0.5;
+
+  /* THE EDGE OF A SURFACE.
+   *
+   * A width, a style and a role, written together twenty-four times. The width
+   * had no token at all, so a brand that wants a hairline edge had twenty-four
+   * files to visit and no way to know it had found them all. */
+  --surface-edge: 1px solid var(--border);
+}

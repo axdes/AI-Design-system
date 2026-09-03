@@ -21,7 +21,15 @@ const OUT = `${ROOT}/llms.txt`
 const registry = JSON.parse(readFileSync(`${ROOT}/component-registry.json`, 'utf8'))
 const rules = JSON.parse(readFileSync(`${ROOT}/screen-specs/selection-rules.json`, 'utf8'))
 
-const components = Object.values(registry.components ?? {})
+/* The same rule the index follows: an `@internal` part is rendered for you by
+   something else, so it is not on the list you choose from. It is still in the
+   registry, and `npm run registry -- <Name>` still answers. */
+const allComponents = Object.values(registry.components ?? {})
+/* The list is what may be PICKED; the count is what the system HAS. An
+   `@internal` part is rendered for you by whatever owns it, so it is not on the
+   list — and it is still one of the components this package ships, which is the
+   number every other document states and `check:claims` holds them all to. */
+const components = allComponents.filter((c) => c.status !== 'internal')
 const blocks = Object.values(registry.blocks ?? {})
 const row = (e) => `- ${renderRow(indexRow(e))}`
 
@@ -33,7 +41,7 @@ const ruleLine = (r) => {
 const text = `# The design system
 
 > A math-driven CSS + React component library built for LLM-assisted development:
-> ${components.length} components, ${blocks.length} page blocks, 3-tier tokens, and a check gate that
+> ${allComponents.length} components, ${blocks.length} page blocks, 3-tier tokens, and a check gate that
 > rejects invented components, invented props, raw px/hex and wrong
 > representations. This file is generated from the same registry the gate
 > verifies — if a thing is not listed here, it does not exist.

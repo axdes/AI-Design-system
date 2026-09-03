@@ -19,7 +19,7 @@
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-3);
   padding-block: var(--space-2);
-  border-block-end: 1px solid var(--border);
+  border-block-end: var(--surface-edge);
 }
 .descriptions[data-layout='inline'] .descriptions-row:last-child { border-block-end: none; }
 

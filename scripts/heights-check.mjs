@@ -45,7 +45,7 @@ const CONTROLS = [
   ['TimeInput', '.time-input'], ['SegmentedControl', '.segmented'],
   ['TagInput', '.taginput'], ['InputGroup', '.input-group'],
   ['ButtonGroup', '.button-group'], ['Chip', '.chip'], ['Tag', '.tag'],
-  ['CopyButton', '.btn'], ['MenuButton', '.btn'],
+  ['CopyButton', '.btn'],
   /* A face in a row stands beside controls, so it is measured with them. */
   ['Avatar', '.avatar'], ['Identity', '.avatar'], ['UserMenu', '.avatar'],
 ]

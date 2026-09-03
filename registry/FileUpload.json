@@ -57,7 +57,7 @@
     },
     {
       "name": "hint",
-      "type": "string",
+      "type": "ReactNode",
       "required": false
     },
     {

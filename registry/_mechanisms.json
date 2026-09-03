@@ -1,0 +1,272 @@
+{
+  "ErrorBoundary": {
+    "ref": "ErrorBoundary",
+    "kind": "mechanism",
+    "description": "The last thing between a thrown render and a blank page.",
+    "from": "@/lib/ErrorBoundary",
+    "exports": [
+      "ErrorBoundary"
+    ]
+  },
+  "SidebarProvider": {
+    "ref": "SidebarProvider",
+    "kind": "mechanism",
+    "description": "Sidebar has TWO independent dimensions of state: - collapsed (desktop): icon-only rail vs.",
+    "from": "@/lib/SidebarProvider",
+    "exports": [
+      "SidebarContext",
+      "SidebarProvider",
+      "useSidebar",
+      "useSidebarOptional"
+    ]
+  },
+  "ThemeProvider": {
+    "ref": "ThemeProvider",
+    "kind": "mechanism",
+    "description": "Owns which theme the tree renders in — light, dark, or the reader's system setting — and writes it where CSS can read it (`data-theme` on the root).",
+    "from": "@/lib/ThemeProvider",
+    "exports": [
+      "ThemeProvider",
+      "useTheme"
+    ]
+  },
+  "ToastProvider": {
+    "ref": "ToastProvider",
+    "kind": "mechanism",
+    "description": "Owns the queue of transient messages and renders them in one place.",
+    "from": "@/lib/ToastProvider",
+    "exports": [
+      "ToastProvider",
+      "useToast"
+    ]
+  },
+  "chart": {
+    "ref": "chart",
+    "kind": "mechanism",
+    "description": "The arithmetic every chart in this system shares.",
+    "from": "@/lib/chart",
+    "exports": [
+      "scaleFor",
+      "formatValue",
+      "linePath",
+      "areaPath"
+    ]
+  },
+  "cn": {
+    "ref": "cn",
+    "kind": "mechanism",
+    "description": "Joins class names and drops the falsy ones — the one utility every component in this package calls, 111 of them.",
+    "from": "@/lib/cn",
+    "exports": [
+      "cn"
+    ]
+  },
+  "composeRefs": {
+    "ref": "composeRefs",
+    "kind": "mechanism",
+    "description": "Fill our own ref AND whatever ref the caller already put on the element.",
+    "from": "@/lib/composeRefs",
+    "exports": [
+      "composeRefs"
+    ]
+  },
+  "filterBarContext": {
+    "ref": "filterBarContext",
+    "kind": "mechanism",
+    "description": "Shared between FilterBar (organism) and FilterDropdown (molecule) without an upward atomic import — both depend on this neutral lib module instead.",
+    "from": "@/lib/filterBarContext",
+    "exports": [
+      "FilterBarContext",
+      "useFilterBar"
+    ]
+  },
+  "formatDate": {
+    "ref": "formatDate",
+    "kind": "mechanism",
+    "description": "Short localized date — \"May 15, 2026\" / Arabic equivalent.",
+    "from": "@/lib/formatDate",
+    "exports": [
+      "formatDate"
+    ]
+  },
+  "formatNumber": {
+    "ref": "formatNumber",
+    "kind": "mechanism",
+    "description": "One writing of a number per system.",
+    "from": "@/lib/formatNumber",
+    "exports": [
+      "money",
+      "percent",
+      "count"
+    ]
+  },
+  "initI18n": {
+    "ref": "initI18n",
+    "kind": "mechanism",
+    "description": "Start language.",
+    "from": "@/lib/initI18n",
+    "exports": [
+      "initI18n"
+    ]
+  },
+  "isRouteActive": {
+    "ref": "isRouteActive",
+    "kind": "mechanism",
+    "description": "Is this nav route the one the user is currently inside? Every app was answering this with `pathname === route`, which is right on the list screen and wrong the moment you open something: standing on `/discovery/dg` the \"Discovery\" item went dark, so the sidebar claimed you were nowhere.",
+    "from": "@/lib/isRouteActive",
+    "exports": [
+      "isRouteActive"
+    ]
+  },
+  "placement": {
+    "ref": "placement",
+    "kind": "mechanism",
+    "description": "Where the menu goes.",
+    "from": "@/lib/placement",
+    "exports": [
+      "isRtl",
+      "MENU_MARGIN",
+      "EDGE_PAD",
+      "placeAbove",
+      "pinsRight",
+      "computePlacement",
+      "readAnchor"
+    ]
+  },
+  "playgroundSettings": {
+    "ref": "playgroundSettings",
+    "kind": "mechanism",
+    "description": "Live design-system knobs — written straight to documentElement so the whole app recalculates from the CSS-variable cascade.",
+    "from": "@/lib/playgroundSettings",
+    "exports": [
+      "SETTINGS_KEY",
+      "defaultSettings",
+      "loadSettings",
+      "applySettings",
+      "clearSettings",
+      "initSettings"
+    ]
+  },
+  "relativeTime": {
+    "ref": "relativeTime",
+    "kind": "mechanism",
+    "description": "Dates, said the way a person reading a chat would say them.",
+    "from": "@/lib/relativeTime",
+    "exports": [
+      "ago",
+      "timeOfDay",
+      "dayLabel",
+      "plural",
+      "byDay",
+      "relativeLabel"
+    ]
+  },
+  "useAnchoredLayer": {
+    "ref": "useAnchoredLayer",
+    "kind": "mechanism",
+    "description": "THE FLOATING-LAYER MECHANISM: a layer anchored to a trigger, kept in place while the page moves, and dismissed the two ways every such layer is.",
+    "from": "@/lib/useAnchoredLayer",
+    "exports": [
+      "useAnchoredLayer"
+    ]
+  },
+  "useAutosave": {
+    "ref": "useAutosave",
+    "kind": "mechanism",
+    "description": "Quiet period after the last change before a save is attempted.",
+    "from": "@/lib/useAutosave",
+    "exports": [
+      "useAutosave"
+    ]
+  },
+  "useDismiss": {
+    "ref": "useDismiss",
+    "kind": "mechanism",
+    "description": "THE TWO DISMISSALS every transient layer answers to: a press outside it, and Escape.",
+    "from": "@/lib/useDismiss",
+    "exports": [
+      "useDismiss"
+    ]
+  },
+  "useLatest": {
+    "ref": "useLatest",
+    "kind": "mechanism",
+    "description": "A ref that always holds the most recent value, for reading from a callback that outlives the render which created it.",
+    "from": "@/lib/useLatest",
+    "exports": [
+      "useLatest"
+    ]
+  },
+  "useListKeys": {
+    "ref": "useListKeys",
+    "kind": "mechanism",
+    "description": "DOWN, UP, HOME, END OVER A BOUNDED LIST — the smallest mechanism here, and the one three others were each rebuilding.",
+    "from": "@/lib/useListKeys",
+    "exports": [
+      "useListKeys"
+    ]
+  },
+  "useListNavigation": {
+    "ref": "useListNavigation",
+    "kind": "mechanism",
+    "description": "AN ACTIVE ROW IN A LIST, MOVED BY THE KEYBOARD — the second mechanism this system had written more than once.",
+    "from": "@/lib/useListNavigation",
+    "exports": [
+      "useListNavigation"
+    ]
+  },
+  "useMediaQuery": {
+    "ref": "useMediaQuery",
+    "kind": "mechanism",
+    "description": "Subscribe to a CSS media query.",
+    "from": "@/lib/useMediaQuery",
+    "exports": [
+      "useMediaQuery"
+    ]
+  },
+  "useRowSelection": {
+    "ref": "useRowSelection",
+    "kind": "mechanism",
+    "description": "The selection model a selectable table needs, in one place: which rows are picked, the tri-state of the header checkbox, and what \"select all\" means.",
+    "from": "@/lib/useRowSelection",
+    "exports": [
+      "useRowSelection"
+    ]
+  },
+  "useSimpleFit": {
+    "ref": "useSimpleFit",
+    "kind": "mechanism",
+    "description": "Does the whole \"simple\" list layout still fit on one screen? The rule it serves: a list page shows a centred welcome (hero title, the cards, one big CTA, no toolbar) while everything fits the viewport, and flips to the standard header layout the moment it outgrows it.",
+    "from": "@/lib/useSimpleFit",
+    "exports": [
+      "useSimpleFit"
+    ]
+  },
+  "useTimer": {
+    "ref": "useTimer",
+    "kind": "mechanism",
+    "description": "ONE PENDING TIMEOUT, cleared before the next one and on unmount.",
+    "from": "@/lib/useTimer",
+    "exports": [
+      "useTimer"
+    ]
+  },
+  "useTreeKeys": {
+    "ref": "useTreeKeys",
+    "kind": "mechanism",
+    "description": "THE KEYBOARD OF A TREE — the third mechanism this system had written twice.",
+    "from": "@/lib/useTreeKeys",
+    "exports": [
+      "useTreeKeys"
+    ]
+  },
+  "useUnsavedChanges": {
+    "ref": "useUnsavedChanges",
+    "kind": "mechanism",
+    "description": "The guard an explicit-save form owes: while it is dirty, closing the tab or reloading asks first.",
+    "from": "@/lib/useUnsavedChanges",
+    "exports": [
+      "useUnsavedChanges"
+    ]
+  }
+}

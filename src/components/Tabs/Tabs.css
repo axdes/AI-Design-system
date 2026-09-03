@@ -25,13 +25,10 @@
 .tab {
   position: relative;
   padding: var(--space-2) 0;
-  border: none;
   background: transparent;
   color: var(--muted-foreground);
-  font-family: inherit;
   font-size: var(--font-base);
   font-weight: var(--font-weight-regular);
-  cursor: pointer;
   white-space: nowrap;
   transition: color var(--duration-fast);
 }
@@ -51,7 +48,7 @@
   border-radius: var(--radius-full);
 }
 .tab:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
   border-radius: var(--radius-sm);
 }

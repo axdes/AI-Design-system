@@ -27,6 +27,67 @@ button, input, textarea, select {
   color: inherit;
 }
 
+/* THE PRESSABLE, WRITTEN ONCE.
+ *
+ * A browser button arrives with a grey fill, a bevel and 1px 6px of padding,
+ * and every component in this system spends four lines taking them off again:
+ * `border: none; background: transparent; padding: 0; cursor: pointer` was
+ * copied into twenty component stylesheets, plus `font-family: inherit` into
+ * twenty one, which the rule above had already covered since the day it was
+ * written. Undoing the same four defaults twenty times is not a decision the
+ * system makes twenty times, it is one decision typed out again, and a control
+ * that forgets a line ships with the browser's chrome around it. That is the
+ * bug this rule closes (lint-rules rRawButtons, 2026-08-21).
+ *
+ * `:where()` puts the whole thing at ZERO specificity, so it can never win an
+ * argument: a single class, an element selector, even the rule above, all beat
+ * it. It only speaks where nothing else does. That is why it is safe to make it
+ * universal, and why a component that genuinely wants a border still just
+ * writes one. */
+:where(button) {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* THE FOCUS RING, WRITTEN ONCE.
+ *
+ * Two tokens, one shape, and it was declared in 56 places. The cost of that is
+ * not the repetition, it is the omission: <ExpandButton> is the one control in
+ * the button family that draws its own pill instead of composing <Button>, and
+ * it shipped with no :focus-visible rule at all, so the system's most visible
+ * floating action was unreachable to see from a keyboard. Nothing could have
+ * caught it, because there was no single place the ring came from.
+ *
+ * Now there is. Scoped to what can actually take focus (elements with a
+ * tabindex included, which is how a scroll region or a grid cell joins in), and
+ * at zero specificity through the double :where(), so every existing rule keeps
+ * winning: the deliberate variants (Select's destructive ring), the deliberate
+ * refusals (`outline: none` where a wrapper draws the focus instead) and the
+ * :focus-within frames are all untouched. */
+:where(a, button, input, select, textarea, summary, [tabindex]):where(:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: var(--ring-offset);
+}
+
+/* DEAD CONTROL, WRITTEN ONCE.
+ *
+ * Half opacity and the not-allowed cursor, which is what nine components had
+ * each decided separately and identically. The two that differ (Calendar at
+ * 0.3, the menu item at 0.45) keep their own rule and go on winning it.
+ *
+ * Scoped to the form controls rather than everything :disabled, because opacity
+ * compounds: a disabled fieldset holding disabled inputs would fade twice and
+ * land at a quarter. Controls do not nest inside controls, so this cannot.
+ * `pointer-events` is deliberately NOT here, it is a behaviour rather than a
+ * look, and the components that want a tooltip on a dead control need the
+ * pointer to still arrive. */
+:where(button, input, select, textarea):where(:disabled) {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
 code { font-family: var(--font-family-mono); }
 
 /* Visually-hidden but available to screen readers (a11y headings, skip-links). */

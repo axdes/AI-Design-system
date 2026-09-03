@@ -17,6 +17,6 @@
 /* The rows are the widget's stops, so the focused row has to be visible as a
  * row rather than as a cell outline. */
 .tree-table tr:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(var(--ring-offset) * -1);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
 }

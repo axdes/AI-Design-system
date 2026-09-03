@@ -25,7 +25,7 @@
  * four-times-fainter answer depending on which field you were in. */
 .number-input:focus-within {
   border-color: var(--ring);
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 .number-input[data-invalid]:focus-within { outline-color: var(--destructive); }
@@ -33,7 +33,7 @@
 /* --muted surface: drop the resting border; keep it on focus-within (the field's
  * only focus indicator) and on invalid. */
 .number-input[data-surface="muted"]:not([data-invalid]):not(:focus-within) { border-color: transparent; }
-.number-input[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.number-input[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
 .number-input-field {
   inline-size: 3.5rem;

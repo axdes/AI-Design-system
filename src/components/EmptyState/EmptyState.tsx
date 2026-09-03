@@ -10,8 +10,16 @@ type Heading = 'h1' | 'h2' | 'h3' | 'h4'
 
 type Props = {
   icon?: IconName
-  title: string
-  description?: string
+  /* ReactNode, like every other title in this system: a heading routinely
+   * carries a status beside the words or a product name in the brand colour,
+   * and typing it as a string is what sends a screen off to hand-roll its own
+   * header. Widened 2026-09-03; nothing here puts it in an attribute — the
+   * dialog labels itself by id, not by the text. */
+  title: ReactNode
+  /* ReactNode: the same word means the same shape everywhere in this system,
+   * and its neighbours already took one. Widened 2026-09-03; it is rendered
+   * as content here, never put in an attribute. */
+  description?: ReactNode
   action?: ReactNode
   /** Heading level for the title. Pick to fit the page hierarchy. Default `h2`. */
   as?: Heading

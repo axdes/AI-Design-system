@@ -26,7 +26,10 @@ type Props = {
   backLabel?: string
   nextLabel?: string
   /** Names the real event ("Create schedule"), never "Submit". */
-  submitLabel: string
+  /* ReactNode: the same word means the same shape everywhere in this system,
+   * and its neighbours already took one. Widened 2026-09-03; it is rendered
+   * as content here, never put in an attribute. */
+  submitLabel: ReactNode
   onSubmit: () => void
   /** Submitting: the submit carries the spinner, the rest disables. */
   busy?: boolean

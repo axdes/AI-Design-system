@@ -164,7 +164,18 @@ const sweep = () => {
 }
 if (sweep()) console.error('')
 
-const results = { ...prior.components }
+/* CARRY FORWARD WHAT IS STILL THERE, AND ONLY THAT.
+ *
+ * This spread every prior row unconditionally, so a component that was deleted
+ * kept its mutants in the baseline for ever: `MenuButton` folded into
+ * `ButtonGroup` on 2026-08-31 and went on contributing one killed and one
+ * survivor to a score about source that no longer exists. A number nobody can
+ * trace back to a file is not a measurement. Pruning here rather than in the
+ * file means it cannot happen again, and it cannot hide a regression either:
+ * a row only disappears when its component does. */
+const results = Object.fromEntries(
+  Object.entries(prior.components).filter(([name]) => existsSync(`${ROOT}/src/components/${name}/${name}.tsx`)),
+)
 const regressions = []
 for (const name of todo) {
   const file = `${ROOT}/src/components/${name}/${name}.tsx`

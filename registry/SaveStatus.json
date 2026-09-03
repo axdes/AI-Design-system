@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "state",
-      "type": "State",
+      "type": "'idle' | 'saving' | 'saved' | 'error'",
       "required": true,
       "description": "Where the save actually IS, and it must come from the request rather than from the keystroke: `saving` while it is in flight, `saved` only once the server said so, `error` when it did not, `idle` when there is nothing to report.",
       "values": [

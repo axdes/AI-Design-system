@@ -2,6 +2,7 @@
  * renders it, and the registry publishes the usage below to agents. */
 import { HoverCard } from './HoverCard'
 import { Avatar } from '../Avatar'
+import { Button } from '../Button'
 import { Row, Stack } from '../Layout'
 
 export function Example() {
@@ -19,7 +20,11 @@ export function Example() {
         </Row>
       }
     >
-      <button type="button">@sarah</button>
+      {/* The trigger is a real control, not a bare <button>: a mention that opens
+         a card is an action that looks like a link, which is what this variant is
+         for. A raw <button> here would publish the browser's own grey chrome as
+         the usage every agent copies. */}
+      <Button variant="link">@sarah</Button>
     </HoverCard>
   )
 }

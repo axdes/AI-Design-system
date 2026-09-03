@@ -43,7 +43,7 @@ const NOT_A_CONTROL = {
 const DELEGATES = {
   CopyButton: 'renders <Button> / <IconButton>', LoadMore: 'renders <Button>',
   PasswordInput: 'renders <Input> + <IconButton>', CodeInput: 'renders <Input>',
-  DateRangePicker: 'wears DatePicker\'s field styling', ExpandButton: 'renders <IconButton>',
+  DateRangePicker: 'wears DatePicker\'s field styling', ExpandButton: 'renders <Button>',
   NavDrawerButton: 'renders <IconButton>', FeedbackModal: 'renders <Modal> + <Button>',
   UserMenu: 'renders <Dropdown>', FilterDropdown: 'renders <Dropdown>',
   SessionPill: 'renders <Chip>', Rating: 'stars are <button>, styled here',
@@ -59,6 +59,13 @@ const VALUE_BEARING = new Set([
   'Input', 'Textarea', 'Select', 'NumberInput', 'TimeInput', 'DatePicker',
   'Combobox', 'TagInput', 'Checkbox', 'Radio', 'Switch', 'FileUpload', 'CodeInput',
 ])
+
+/* The foundation layer every component renders on top of. It carries the focus
+ * ring and the disabled treatment for the whole system, so it is read into every
+ * control's CSS below. */
+const RESET_CSS = existsSync(`${ROOT}/styles/reset.css`)
+  ? readFileSync(`${ROOT}/styles/reset.css`, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+  : ''
 
 const dirs = readdirSync(`${ROOT}/src/components`).filter((d) =>
   existsSync(`${ROOT}/src/components/${d}/${d}.tsx`))
@@ -80,6 +87,16 @@ for (const name of dirs) {
   if (!IS_CONTROL.test(tsx)) continue
   const cssPath = `${ROOT}/src/components/${name}/${name}.css`
   let css = existsSync(cssPath) ? readFileSync(cssPath, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') : ''
+  /* THE GLOBAL LAYER IS PART OF EVERY CONTROL'S ANSWER, and reading the
+   * component file alone stopped being the truth on 2026-08-31. The focus ring
+   * and the disabled treatment moved into styles/reset.css, at zero specificity,
+   * on everything that can take focus — so a component that no longer declares
+   * them is not a control that lost its ring, it is one that stopped saying the
+   * same sentence a second time. Without this the check reported `none` for
+   * IconButton, ColorSwatch and ErrorSummary, all three of which draw the ring
+   * on screen. Same reasoning as the WEARS rule below: read what actually
+   * applies to the element, not what happens to be in one file. */
+  css += '\n' + RESET_CSS
   /* A component that WEARS another's class inherits its answers — Textarea and
    * Combobox both render className="input …", and reading their own file alone
    * reports a field with no hover and no focus ring, which is not true and is
@@ -94,8 +111,12 @@ for (const name of dirs) {
   }
 
   const ringRules = [...css.matchAll(/:focus(?:-visible|-within)[^{]*\{([^}]*)\}/g)].map((m) => m[1])
-  const anyRing = ringRules.some((b) => /outline:\s*var\(--ring-width\)\s+solid\s+var\(--ring\)/.test(b))
-  const ringOffset = ringRules.some((b) => /outline-offset:[^;]*--ring-offset/.test(b))
+  /* Two spellings, one answer: the recipe `--focus-ring` (styles/recipes.css,
+   * 2026-09-02) and the two ingredients every control assembled before it. Read
+   * only as the ingredients, this check called 32 of 34 controls ringless the
+   * hour the recipe landed — it was reading the spelling, not the state. */
+  const anyRing = ringRules.some((b) => /outline:\s*(?:var\(--focus-ring\)|var\(--ring-width\)\s+solid\s+var\(--ring\))/.test(b))
+  const ringOffset = ringRules.some((b) => /outline-offset:[^;]*(?:--ring-offset|--focus-ring-inset)/.test(b))
   /* aria-activedescendant: focus stays on the container and the ACTIVE ROW is
    * what the eye follows, so the mark on that row is the focus indicator. A
    * ring on the row would be wrong — the row is not focused. */

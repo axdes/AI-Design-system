@@ -7,10 +7,6 @@
   border-radius: var(--radius-md);
   background: var(--background);
 }
-.error-summary:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 
 .error-summary-title {
   margin: 0;
@@ -50,7 +46,3 @@
 }
 .error-summary-list a:hover { text-decoration-thickness: 2px; }
 .error-summary-list a:active { color: var(--destructive-emphasis); }
-.error-summary-list a:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}

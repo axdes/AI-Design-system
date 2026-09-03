@@ -39,6 +39,16 @@ describe('HoverCard', () => {
     await user.tab()
     const card = await screen.findByRole('tooltip')
     expect(trigger.getAttribute('aria-describedby')).toBe(card.id)
+
+    /* AND IT GOES WHEN THE CARD GOES. The attribute is written on
+       `open && position`, and the position is not cleared on close — the layer
+       hook keeps the last one, because it has nothing to reset it to. So a
+       widened guard leaves the trigger pointing at an element that is no longer
+       in the document, which a screen reader reads as a description that is not
+       there. Caught by a mutation run, 2026-08-31. */
+    await user.tab()
+    await waitFor(() => expect(screen.queryByRole('tooltip')).toBeNull())
+    expect(trigger).not.toHaveAttribute('aria-describedby')
   })
 
   it('closes when focus leaves', async () => {

@@ -44,7 +44,18 @@ beforeAll(() => {
   /* Only what the linters read. styles/ comes too: the rules module resolves
    * tokens against it. */
   for (const dir of ['src', 'styles']) cpSync(join(PKG, dir), join(COPY, dir), { recursive: true })
-  for (const file of ['component-registry.json', 'config/prop-vocabulary.json', 'config/twins.json']) {
+  for (const file of [
+    'component-registry.json',
+    'config/prop-vocabulary.json',
+    'config/twins.json',
+    /* lint-api reads the vocabulary and its ceiling; lint-mechanism reads its
+     * recorded pairs. A ceiling that does not travel with the copy would make
+     * both linters fail on an unbroken tree, which proves nothing. */
+    'config/callback-vocabulary.json',
+    'config/api-debt.json',
+    'config/mechanism-debt.json',
+  ]) {
+    mkdirSync(join(COPY, file.includes('/') ? file.slice(0, file.lastIndexOf('/')) : '.'), { recursive: true })
     cpSync(join(PKG, file), join(COPY, file))
   }
 }, 60_000)
@@ -55,7 +66,7 @@ afterAll(() => {
 
 describe('the copy is clean before anything is broken', () => {
   it('passes every linter that is pointed at it', () => {
-    for (const script of ['lint-vocab.mjs', 'lint-twins.mjs', 'lint-behaviour.mjs', 'contrast-check.mjs', 'lint-graph.mjs']) {
+    for (const script of ['lint-vocab.mjs', 'lint-twins.mjs', 'lint-behaviour.mjs', 'contrast-check.mjs', 'lint-graph.mjs', 'lint-api.mjs', 'lint-mechanism.mjs']) {
       const { code, out } = runLinter(script)
       expect(code, `${script} should pass on an unbroken copy:\n${out}`).toBe(0)
     }
@@ -254,4 +265,129 @@ describe('lint-graph', () => {
     expect(code, out).not.toBe(0)
     expect(out).toContain('cycle:')
   }, 60_000)
+})
+
+describe('lint-api', () => {
+  /* All four rules run against a recorded ceiling, so each break has to be
+   * something the ceiling does NOT already carry: a name that gains a type, a
+   * part that arrives too wide, a callback nobody argued for, a part with no
+   * test. Breaking one that is already on the ceiling would prove nothing. */
+  const withRegistry = (mutate, script = 'lint-api.mjs') => {
+    const path = join(COPY, 'component-registry.json')
+    const original = readFileSync(path, 'utf8')
+    const registry = JSON.parse(original)
+    mutate(registry)
+    writeFileSync(path, JSON.stringify(registry, null, 2))
+    const result = runLinter(script)
+    writeFileSync(path, original)
+    return result
+  }
+
+  it('A1 catches one prop name resolving to two types', () => {
+    const { code, out } = withRegistry((registry) => {
+      for (const [name, type] of [['ProbeShapeA', 'string'], ['ProbeShapeB', 'number']]) {
+        registry.components[name] = { ref: name, main: name, props: [{ name: 'cadence', type, required: false }] }
+      }
+    })
+    expect(code, out).toBe(1)
+    expect(out).toContain('cadence')
+  }, 30_000)
+
+  it('A2 catches a part arriving with more than seven props', () => {
+    const { code, out } = withRegistry((registry) => {
+      registry.components.ProbeWide = {
+        ref: 'ProbeWide',
+        main: 'ProbeWide',
+        /* Types nothing else publishes, so the width is what fails and not A1. */
+        props: Array.from({ length: 9 }, (_, i) => ({ name: `probeProp${i}`, type: `'p${i}'`, required: false })),
+      }
+    })
+    expect(code, out).toBe(1)
+    expect(out).toContain('ProbeWide')
+    expect(out).toContain('9 props')
+  }, 30_000)
+
+  it('A3 catches a callback name nobody argued for', () => {
+    const { code, out } = withRegistry((registry) => {
+      registry.components.ProbeCallback = {
+        ref: 'ProbeCallback',
+        main: 'ProbeCallback',
+        props: [{ name: 'onZest', type: '(zest: string) => void', required: false }],
+      }
+    })
+    expect(code, out).toBe(1)
+    expect(out).toContain('onZest')
+  }, 30_000)
+
+  it('A4 catches a part admitted without a test', () => {
+    const dir = join(COPY, 'src/components/ProbeUntested')
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(join(dir, 'ProbeUntested.tsx'), `export function ProbeUntested() { return null }\n`)
+    const { code, out } = withRegistry((registry) => {
+      registry.components.ProbeUntested = {
+        ref: 'ProbeUntested',
+        main: 'ProbeUntested',
+        sourcePath: 'src/components/ProbeUntested/ProbeUntested.tsx',
+        props: [],
+      }
+    })
+    rmSync(dir, { recursive: true, force: true })
+    expect(code, out).toBe(1)
+    expect(out).toContain('ProbeUntested')
+    expect(out).toContain('no test')
+  }, 30_000)
+
+  it('holds the ceiling: a name on it may not gain a type', () => {
+    const { code, out } = withRegistry((registry) => {
+      /* `label` is on the ceiling at two types. A third is a rise, and a rise
+       * fails even though the name itself is already carried as debt. */
+      registry.components.ProbeLabel = {
+        ref: 'ProbeLabel',
+        main: 'ProbeLabel',
+        props: [{ name: 'label', type: '{ text: string }', required: false }],
+      }
+    })
+    expect(code, out).toBe(1)
+    expect(out).toContain('label')
+    expect(out).toContain('up from')
+  }, 30_000)
+})
+
+describe('lint-mechanism', () => {
+  it('catches a behaviour written twice that no copy-paste check can see', () => {
+    /* Written out longhand rather than copied from Popover, which is the whole
+     * point: not one line matches an existing part, and jscpd is blind to it. */
+    const dir = join(COPY, 'src/components/ProbeLayer')
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(
+      join(dir, 'ProbeLayer.tsx'),
+      [
+        `import { createPortal } from 'react-dom'`,
+        `export function ProbeLayer({ anchor }: { anchor: HTMLElement | null }) {`,
+        `  const box = anchor?.getBoundingClientRect()`,
+        `  const room = window.innerHeight - (box?.bottom ?? 0)`,
+        `  anchor?.focus()`,
+        `  return createPortal(<div data-room={room} />, document.body)`,
+        `}`,
+        ``,
+      ].join('\n'),
+    )
+    const { code, out } = runLinter('lint-mechanism.mjs')
+    rmSync(dir, { recursive: true, force: true })
+    expect(code, out).toBe(1)
+    expect(out).toContain('ProbeLayer')
+  }, 30_000)
+
+  it('catches a recorded pair carried without a reason', () => {
+    const path = join(COPY, 'config/mechanism-debt.json')
+    const original = readFileSync(path, 'utf8')
+    const debt = JSON.parse(original)
+    const first = Object.keys(debt.pairs)[0]
+    debt.pairs[first] = ''
+    writeFileSync(path, JSON.stringify(debt, null, 2))
+    const { code, out } = runLinter('lint-mechanism.mjs')
+    writeFileSync(path, original)
+    expect(code, out).toBe(1)
+    expect(out).toContain('no reason')
+  }, 30_000)
 })

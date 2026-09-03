@@ -54,8 +54,7 @@ button.chip {
 button.chip:hover { background: var(--surface-contrast-hover); }
 /* Pressed — one stop past hover. */
 button.chip:active { background: var(--surface-contrast-active); }
-button.chip:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
-button.chip:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+button.chip:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; pointer-events: none; }
 
 /* ── DATA: a value, and only the X is a target ───── */
 span.chip {
@@ -87,13 +86,10 @@ span.chip:has(.chip-remove) { padding-inline-end: var(--space-2); }
    * adding 4px here made it 12 — half again the space between the dot and the
    * label on every other chip in the system, so the cross read as detached from
    * the word it removes (owner, 2026-08-29). */
-  padding: 0;
-  border: none;
   border-radius: var(--radius-full);
   background: transparent;
   color: inherit;
   opacity: 0.7;
-  cursor: pointer;
   transition: opacity var(--duration-fast), background var(--duration-fast);
 }
 .chip-remove:hover {
@@ -106,7 +102,7 @@ span.chip:has(.chip-remove) { padding-inline-end: var(--space-2); }
  * and the tint measures ~1.2:1 where SC 2.4.11 asks 3:1. */
 .chip-remove:focus-visible {
   opacity: 1;
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 

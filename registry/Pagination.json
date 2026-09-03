@@ -56,6 +56,7 @@
   ],
   "sourcePath": "src/components/Pagination/Pagination.tsx",
   "uses": [
+    "Button",
     "IconButton",
     "Tooltip"
   ],

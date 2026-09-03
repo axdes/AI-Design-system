@@ -1,11 +1,14 @@
-/* Pill button that's icon-only by default and expands to icon+label on hover
- * (and while `data-expanded` is set — useful when a dropdown is open). */
+/* Built on `.btn`, so everything a button already decides (the brand fill and
+ * its hover and pressed steps, the radius, the focus ring, the disabled state)
+ * arrives from Button.css and is NOT repeated here. What is left is the one
+ * behaviour that belongs to this component: a circle at rest that grows its
+ * label when the pointer arrives, or while `data-expanded` holds it open.
+ *
+ * These rules override `.btn` at the same specificity and win on order:
+ * Button.css is a dependency of this module, so the bundler emits it first.
+ * That is the same bet `.nav-drawer-button` makes on `.icon-button`. */
 .expand-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 0;
-  height: var(--control-height);
   min-width: var(--control-height);
   /* AS WIDE AS ITS CONTENT AND NEVER WIDER. `inline-flex` says that in a block
    * parent and stops saying it the moment the button is a flex or grid item:
@@ -15,25 +18,34 @@
    * The hover state still grows, because max-content follows the label as it is
    * revealed. */
   inline-size: max-content;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-full);
-  background: var(--primary);
-  color: var(--primary-foreground);
+  padding-inline: 0;
+  /* Its own type, kept as it shipped: a label that is only there on hover reads
+   * smaller and lighter than the one on a pill that always carries words. */
   font-size: var(--font-sm);
   font-weight: var(--font-weight-regular);
-  font-family: inherit;
-  cursor: pointer;
   transition: background var(--duration-fast), gap var(--duration-fast), padding var(--duration-fast), min-width var(--duration-fast);
   overflow: hidden;
 }
+/* THE GLYPH LEADS HERE, and this is the one place in the system where it does.
+ * `.btn > .icon` carries `order: 1` so every mark in a button trails its label;
+ * that rule is for a button whose label is the control. This one has no label
+ * at rest, so the glyph IS the control and the words grow to the right of it.
+ * Written with `.btn` in the selector to beat that rule on specificity rather
+ * than on file order, because getting it wrong puts the plus after the words
+ * and nothing else would say so. */
+.btn.expand-button > .icon { order: 0; }
+
 .expand-button:hover,
 .expand-button[data-expanded] {
-  background: var(--primary-hover);
   padding: 0 var(--space-3);
   min-width: 0;
   gap: var(--space-1);
 }
+/* Held open answers like hovered, which is what `.btn[data-open]` already says
+ * for every other trigger in the family. This component's open state has its own
+ * attribute name (`expanded`, its public prop), so it asks for the same fill by
+ * name rather than inheriting it. */
+.expand-button[data-expanded] { background: var(--primary-hover); }
 
 .expand-button-label,
 .expand-button-chevron {

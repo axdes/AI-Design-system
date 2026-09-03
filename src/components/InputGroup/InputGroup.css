@@ -20,14 +20,14 @@
 
 .input-group:hover:not([data-disabled]) { border-color: var(--ring); }
 .input-group:focus-within {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 .input-group[data-invalid] { border-color: var(--destructive); }
 .input-group[data-invalid]:focus-within { outline-color: var(--destructive); }
 .input-group[data-surface="muted"]:not([data-invalid]),
 .input-group[data-surface="muted"]:not([data-invalid]):hover { border-color: transparent; }
-.input-group[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.input-group[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
 /* The field goes frameless and gives up its own ring: the group draws both, so
  * a focused group shows ONE outline rather than two nested ones. */

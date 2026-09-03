@@ -6,7 +6,7 @@
   align-items: flex-start;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--radius-lg);
   background: var(--card);
 

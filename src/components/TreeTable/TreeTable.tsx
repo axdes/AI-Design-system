@@ -1,6 +1,7 @@
 import './TreeTable.css'
 import { useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { cn } from '../../lib/cn'
+import { useTreeKeys } from '../../lib/useTreeKeys'
 import { Icon } from '../Icon'
 import { Table, TableScroll, THead, TBody, Tr, Th, Td } from '../Table'
 
@@ -75,31 +76,32 @@ export function TreeTable({ label, columns, nodes, defaultExpandedIds = [], clas
     bodyRef.current?.querySelectorAll<HTMLElement>('tr')[i]?.focus()
   }
 
+  /* The six keys that move around a tree are one mechanism, shared with <Tree>
+   * (src/lib/useTreeKeys.ts). Both files answered them separately until
+   * 2026-09-02, and the copy over there had lost Home and End. */
+  const treeKeys = useTreeKeys({
+    count: rows.length,
+    index: active,
+    isBranch: (i) => Boolean(rows[i]?.node.children?.length),
+    isOpen: (i) => open.has(rows[i]!.node.id),
+    parentIndex: (i) => {
+      const parent = rows[i]?.parent
+      return parent ? rows.findIndex((r) => r.node.id === parent) : -1
+    },
+    move: focusRow,
+    toggle: (i) => toggle(rows[i]!.node.id),
+  })
+
+  /* Enter stays here: opening a branch on Enter is this table's own answer, and
+   * <Tree> selects on the same key. Two commit semantics, one keyboard. */
   const onKeyDown = (e: KeyboardEvent<HTMLTableSectionElement>) => {
     const row = rows[active]
     if (!row) return
-    const branch = Boolean(row.node.children?.length)
-    const isOpen = open.has(row.node.id)
-
-    switch (e.key) {
-      case 'ArrowDown': focusRow(active + 1); break
-      case 'ArrowUp': focusRow(active - 1); break
-      case 'Home': focusRow(0); break
-      case 'End': focusRow(rows.length - 1); break
-      case 'ArrowRight':
-        if (branch && !isOpen) toggle(row.node.id)
-        else if (branch) focusRow(active + 1)
-        break
-      case 'ArrowLeft':
-        if (branch && isOpen) toggle(row.node.id)
-        else if (row.parent) focusRow(rows.findIndex((r) => r.node.id === row.parent))
-        break
-      case 'Enter':
-        if (branch) toggle(row.node.id)
-        break
-      default: return
+    if (treeKeys(e)) return
+    if (e.key === 'Enter' && row.node.children?.length) {
+      e.preventDefault()
+      toggle(row.node.id)
     }
-    e.preventDefault()
   }
 
   return (

@@ -8,6 +8,7 @@
           "styles/settings.css",
           "styles/primitives.css",
           "styles/semantic.css",
+          "styles/recipes.css",
           "styles/fonts.css"
         ]
       }
@@ -43,6 +44,7 @@
               "styles/settings.css",
               "styles/primitives.css",
               "styles/semantic.css",
+              "styles/recipes.css",
               "styles/fonts.css",
               "src/components/Card/Card.css"
             ]

@@ -17,23 +17,14 @@ const ROOT = fileURLToPath(new URL('../../..', import.meta.url)).replace(/\/$/, 
 /* Each entry: why it does not reach this code, and what would change that.
  * Reviewed 2026-07-28. */
 const ACCEPTED = {
-  'react-router': {
-    advisory: 'RSC Mode CSRF Bypass Allows Action Execution Before 400 Response',
-    why:
-      'The vector is React Router in RSC mode: a server action executing before the ' +
-      'request is rejected. Every app here is a client-only SPA on <BrowserRouter> / ' +
-      '<HashRouter> with <Routes>. No createBrowserRouter, no RouterProvider, no ' +
-      'loaders or actions, and none of @react-router/{node,serve,dev} is installed, ' +
-      'so there is no server to execute an action on.',
-    fixIsADowngrade: 'npm offers 7.11.0; we are on 7.18.2. The forward fix is >=8.3.0, which is not published (latest is 7.18.2).',
-    recheck: 'When react-router 8.3+ ships, upgrade and delete this entry.',
-  },
-  'react-router-dom': { sameAs: 'react-router' },
-  /* The eslint -> minimatch -> brace-expansion chain and fast-uri (via ajv, in
-   * @stryker-mutator/core and stylelint -> table) were both accepted here and are
-   * both gone as of 2026-08-04: `npm audit fix` lifted brace-expansion to 5.0.9 and
-   * fast-uri to 3.1.5 without touching a major, so the exceptions were deleted
-   * rather than re-dated. A stale exception hides the next real one. */
+  /* EMPTY, and that is the state to keep it in. Two entries lived here for the
+   * react-router RSC advisory and left on 2026-09-02: npm stopped reporting them,
+   * and an exception nobody can still see the finding for hides the next real one.
+   * fast-uri went the same day and the same way as in August — `npm audit fix`
+   * lifted it 3.1.5 -> 3.1.7 (four advisories, all in URI parsing reached through
+   * ajv in stryker and stylelint) without touching a major, so it is fixed rather
+   * than excused. An entry here is a decision with a reason and a recheck
+   * condition, never a way to get a commit through. */
 }
 
 let report

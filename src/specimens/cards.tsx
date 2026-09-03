@@ -28,7 +28,6 @@ import { Field } from '../components/Field'
 import { Icon } from '../components/Icon'
 import { Input } from '../components/Input'
 import { ListItem } from '../components/ListItem'
-import { LogoWall } from '../components/LogoWall'
 import { PlanCard } from '../components/PlanCard'
 import { Progress } from '../components/Progress'
 import { Quote } from '../components/Quote'
@@ -45,13 +44,6 @@ import { Prose } from '../components/Prose'
 import { Sparkline } from '../components/Sparkline'
 import { Stat } from '../components/Stat'
 import { Row, Stack } from '../components/Layout'
-
-/* Inline marks, the same device <LogoWall>'s own example uses: the family is
-   about getting unlike marks to one optical weight, and that needs no asset. */
-const mark = (text: string) =>
-  `data:image/svg+xml;utf8,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="32"><text x="0" y="24" font-family="sans-serif" font-size="22" font-weight="700">${text}</text></svg>`,
-  )}`
 
 const PHOTO = `${import.meta.env.BASE_URL}demo/coast.webp`
 const FACE = `${import.meta.env.BASE_URL}demo/avatar-cleo.jpg`
@@ -397,18 +389,6 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
     </Card>
   ),
 
-  /* Customer logos in one optical weight — which is the hard part, and why this
-     is a component rather than a row of images. */
-  logos: () => (
-    <LogoWall
-      label="Trusted by"
-      logos={[
-        { src: mark('Northwind'), alt: 'Northwind Paper' },
-        { src: mark('Bergen'), alt: 'Bergen Logistics' },
-        { src: mark('Kestrel'), alt: 'Kestrel Studios' },
-      ]}
-    />
-  ),
 
   /* One plan in a pricing row. */
   plan: () => (

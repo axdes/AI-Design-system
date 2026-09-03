@@ -15,7 +15,7 @@
  * lights up under the pointer reads as something being chosen (owner,
  * 2026-08-29). Open still shows, because that IS a state. */
 .user-menu-trigger[data-open] { background: var(--accent); }
-.user-menu-trigger:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+.user-menu-trigger:focus-visible { outline: var(--focus-ring); outline-offset: var(--ring-offset); }
 
 /* THE AVATAR IS THE PERSON, AND IT SHOWS IN BOTH STATES. It used to be
  * `display: none` unless the rail was collapsed, so the expanded footer — the

@@ -29,7 +29,7 @@
     },
     {
       "name": "view",
-      "type": "View",
+      "type": "'inline' | 'card'",
       "required": false,
       "description": "How much context the sentence owes: `inline` reads as a link inside running text, `card` gives the entity its own surface with the meta under it. The AUTHOR picks the view; the entity is the same either way.",
       "values": [

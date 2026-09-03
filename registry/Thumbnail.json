@@ -29,7 +29,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md'",
       "required": false,
       "description": "sm (24px, a dense table) / md (40px, the default).",
       "values": [

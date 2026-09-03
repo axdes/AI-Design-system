@@ -32,7 +32,7 @@
 
 .inline-text:focus {
   background: var(--background);
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: 0;
 }
 

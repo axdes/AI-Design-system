@@ -45,6 +45,10 @@ if (!existsSync(registryPath)) {
 }
 const registry = JSON.parse(readFileSync(registryPath, 'utf8'))
 const all = { ...registry.components, ...registry.blocks }
+/* Behaviour answers the same question as a part and is asked for the same way.
+ * A search that knew only components is how somebody looks for "the hook that
+ * anchors a layer", finds nothing, and writes a fourth one. (2026-09-03) */
+const mechanisms = registry.mechanisms ?? {}
 /* The rows are BUILT here rather than parsed out of component-index.md: that
  * file is a rendering for an agent to read, and a tool that parses a rendering
  * is a tool that breaks when the rendering improves. One builder, same rows. */
@@ -139,12 +143,23 @@ if (flag('tokens')) {
 
 if (flag('search')) {
   const q = (valueOf('search') ?? '').toLowerCase()
-  const hits = rows.filter((r) => r.ref.toLowerCase().includes(q) || r.use.toLowerCase().includes(q))
-  if (!hits.length) {
+  /* Search is discovery, so it answers with what may be PICKED: an `@internal`
+     part is rendered by whatever owns it and is reachable by its exact name
+     (below) rather than by browsing. */
+  const hits = rows
+    .filter((r) => r.status !== 'internal')
+    .filter((r) => r.ref.toLowerCase().includes(q) || r.use.toLowerCase().includes(q))
+  const behaviour = Object.values(mechanisms)
+    .filter((m) => m.ref.toLowerCase().includes(q) || (m.description ?? '').toLowerCase().includes(q))
+  if (!hits.length && !behaviour.length) {
     console.log(`  ${D}nothing matches "${q}". The whole list is \`npm run registry\`.${R}`)
     process.exit(0)
   }
-  printIndex(hits)
+  if (hits.length) printIndex(hits)
+  if (behaviour.length) {
+    console.log(`\n${B}Behaviour${R} ${D}import from @/lib/<name> here, @lib/<name> from an app${R}`)
+    for (const m of behaviour) console.log(`  ${m.ref} ${D}· ${m.description}${R}`)
+  }
   process.exit(0)
 }
 

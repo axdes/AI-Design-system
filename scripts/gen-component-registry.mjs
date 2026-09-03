@@ -154,7 +154,7 @@ async function parseComponent(
      * <Td stickyHeader> was a real thing. (Owner, 23.08, while the table layer
      * was being built.) */
     const match = extractPropsTypeFor(src, e.name, { own: true });
-    const slotProps = match ? parsePropFields(match.body) : [];
+    const slotProps = match ? parsePropFields(match.body, source) : [];
     const slotAliases = collectLiteralUnionAliases(src);
     for (const p of slotProps) {
       const values = resolveUnionValues(p.type, slotAliases);
@@ -183,7 +183,7 @@ async function parseComponent(
 
   const aliases = collectLiteralUnionAliases(source);
   const propsMatch = extractPropsTypeFor(source, main.name);
-  let props = propsMatch ? parsePropFields(propsMatch.body) : [];
+  let props = propsMatch ? parsePropFields(propsMatch.body, source) : [];
   let inherits = propsMatch ? extractInherits(propsMatch.prefix) : "";
 
   // Fallbacks for components without a named Props type: inline object
@@ -199,12 +199,12 @@ async function parseComponent(
        failed axe's heading-order on exactly that (2026-08-26). */
     const own = extractSignatureProps(source, main.name);
     if (own?.body) {
-      props = parsePropFields(own.body);
+      props = parsePropFields(own.body, source);
       inherits = extractInherits(own.prefix ?? "");
     }
     if (!props.length) {
       const inline = extractInlineParamType(source);
-      if (inline.body) props = parsePropFields(inline.body);
+      if (inline.body) props = parsePropFields(inline.body, source);
       if (inline.name) inherits = inline.name;
     }
   }
@@ -243,12 +243,28 @@ async function parseComponent(
   }
 
   // Status comes from JSDoc tags on the main export: @experimental /
-  // @deprecated; untagged components are canonical (CONSTITUTION §12).
+  // @deprecated / @internal; untagged components are canonical (CONSTITUTION §12).
+  //
+  // @internal is the answer to a question the system could not previously
+  // express: a part that is SHARED but never PICKED. Every folder in
+  // src/components/ was published into the index an agent reads to choose, so a
+  // piece of wiring two components render for you — the drawer trigger inside
+  // PageHeader and ChatShell — was a name on that list, costing a row of context
+  // on every task and available to be reached for by mistake. Moving it out of
+  // src/components/ is not the fix: `shell` sits ABOVE components on the atomic
+  // ladder, so its consumers could not import it, and both the rule linter and
+  // the resolved import graph said so (2026-08-31). The ladder is right; what
+  // was missing was a way to stay where the ladder requires and leave the menu.
+  //
+  // So the tag changes ONE thing: the index and llms.txt skip it. The registry
+  // entry, the golden example, the visual baseline, the contract test and every
+  // linter are untouched, and `npm run registry -- <Name>` still answers — a
+  // part nobody picks is still a part somebody maintains.
   const rawDoc = extractJsDocBefore(source, main.line);
-  const statusTag = rawDoc.match(/@(experimental|deprecated)\b/);
+  const statusTag = rawDoc.match(/@(experimental|deprecated|internal)\b/);
   const status = statusTag ? statusTag[1] : "canonical";
   const description = rawDoc
-    .replace(/@(experimental|deprecated)\b/g, "")
+    .replace(/@(experimental|deprecated|internal)\b/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
@@ -508,7 +524,7 @@ function matchClosingBrace(source, openIdx) {
   return -1;
 }
 
-function parsePropFields(body) {
+function parsePropFields(body, source = '') {
   // Splits on top-level semicolons/newlines, skipping nested braces.
   const props = [];
   const fields = splitTopLevel(body);
@@ -541,13 +557,43 @@ function parsePropFields(body) {
     // "description": "" line, saving context budget with zero information loss.
     const prop = {
       name,
-      type: typeRaw.replace(/\s+/g, " ").trim(),
+      type: normaliseQuotes(resolveLocalAliases(source, typeRaw.replace(/\s+/g, " ").trim())),
       required: !optional,
     };
     if (description) prop.description = description;
     props.push(prop);
   }
   return props;
+}
+
+/* A LOCAL ALIAS IS NOT A TYPE AN AGENT CAN READ.
+ *
+ * `size?: Size` tells a reader nothing: the union lives three lines up in a file
+ * they do not have. The registry IS the interface, so it publishes the union.
+ * Before this, 24 parts said `Size` and 14 said `'sm' | 'md' | 'lg'` for the
+ * same three words, and lint:api counted them as two different types — which
+ * they are, to anybody holding only the registry. (2026-09-03)
+ *
+ * Only aliases of string-literal unions are resolved, and only when they are
+ * declared in the same file. An alias standing for an object or an imported
+ * shape stays a name, because expanding it inline would publish a paragraph
+ * where a word belongs. */
+/* One quote for a string literal, whichever the file used. Half the source here
+ * is single-quoted and half double-quoted, and the registry published both — so
+ * `"sm" | "md"` and `'sm' | 'md'` read as two different types to anything
+ * holding only the registry, which is the whole audience. (2026-09-03) */
+function normaliseQuotes(type) {
+  return type.replace(/"([^"\\]*)"/g, "'$1'");
+}
+
+function resolveLocalAliases(source, type) {
+  const aliases = new Map();
+  for (const m of source.matchAll(/^type\s+([A-Z][A-Za-z0-9]*)\s*=\s*([^;\n]*(?:\n\s*\|[^;\n]*)*);?/gm)) {
+    const body = m[2].replace(/\s+/g, " ").trim();
+    if (/^(['"][^'"]*['"])(\s*\|\s*['"][^'"]*['"])*$/.test(body)) aliases.set(m[1], body);
+  }
+  if (!aliases.size) return type;
+  return type.replace(/\b[A-Z][A-Za-z0-9]*\b/g, (name) => aliases.get(name) ?? name);
 }
 
 function splitTopLevel(body) {
@@ -603,7 +649,7 @@ function resolveObjectFields(type, source, aliases) {
   if (aliases[t]) return null; // a literal union, already published as `values`
   const match = matchTypeOrInterface(source, t);
   if (!match?.body) return null;
-  const fields = parsePropFields(match.body);
+  const fields = parsePropFields(match.body, source);
   if (!fields.length) return null;
   for (const f of fields) {
     const values = resolveUnionValues(f.type, aliases);
@@ -997,7 +1043,10 @@ async function parseTokenCatalog() {
   const out = [];
   const seen = new Set();
   const re = /^\s*(--[a-z][a-z0-9-]*)\s*:\s*([^;]+);/gm;
-  for (const file of ["primitives.css", "semantic.css", "settings.css"]) {
+  /* recipes.css is the third tier and belongs in the published catalogue: an
+     agent asking the registry how this system draws a focus ring must be told
+     `--focus-ring`, not the two ingredients it is made of (2026-09-02). */
+  for (const file of ["primitives.css", "semantic.css", "settings.css", "recipes.css"]) {
     const cssPath = join(root, "styles", file);
     if (!existsSync(cssPath)) continue;
     const css = await readFile(cssPath, "utf8");
@@ -1009,7 +1058,7 @@ async function parseTokenCatalog() {
       const token = {
         name,
         value: m[2].trim().replace(/\s+/g, " "),
-        layer: file === "primitives.css" ? "primitive" : "semantic",
+        layer: file === "primitives.css" ? "primitive" : file === "recipes.css" ? "recipe" : "semantic",
       };
       if (notes[name]) token.description = String(notes[name]);
       out.push(token);
@@ -1032,6 +1081,58 @@ async function parseTokenCatalog() {
       ...(description ? { description } : {}),
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+
+/* THE MECHANISMS, PUBLISHED LIKE THE PARTS.
+ *
+ * `src/lib` is where behaviour lives, and until now it lived outside the
+ * registry: no index row, no search, nothing to discover. The cost was measured
+ * — four floating layers written by hand beside a hook that already did the job,
+ * three list navigations beside another — and lint:mechanisms made every one of
+ * them say what it is for. This is the other half: saying it somewhere an agent
+ * can find it without knowing the name first. (2026-09-03)
+ *
+ * The first sentence of the doc comment IS the row, the same rule a component
+ * lives under. A module with no exported behaviour is not a mechanism; a test,
+ * a type file and the CSS beside them are not either. */
+async function collectMechanisms() {
+  const dir = join(root, "src/lib");
+  if (!existsSync(dir)) return {};
+  const out = {};
+  for (const file of (await readdir(dir)).sort()) {
+    if (!/\.tsx?$/.test(file) || /\.test\./.test(file)) continue;
+    const source = await readFile(join(dir, file), "utf8");
+    if (!/export\s+(async\s+)?(function|const|class)/.test(source)) continue;
+    const name = file.replace(/\.tsx?$/, "");
+    /* The comment that OPENS THE FILE, whichever form it is written in. Not the
+       first JSDoc: in lib/placement.ts the first `/**` belongs to a type field
+       three screens down, and publishing it described the module as "the
+       trigger, in viewport coordinates". The three mechanisms that carry a
+       "published because ..." note keep it BELOW their description for the same
+       reason — the file's first words are what the index says. (2026-09-03) */
+    /* Two places a mechanism says what it is for, and both are normal: at the
+       top of the file, or directly above the export once the imports have had
+       their turn. What is NOT read is the first JSDoc anywhere — in
+       lib/placement.ts that belongs to a type field three screens down, and
+       publishing it described the module as "the trigger, in viewport
+       coordinates". (2026-09-03) */
+    const doc =
+      /^\s*\/\*\*?([\s\S]*?)\*\//.exec(source) ??
+      /\/\*\*?([\s\S]*?)\*\/\s*export\s+(?:async\s+)?(?:function|const|class)/.exec(source);
+    const text = doc
+      ? doc[1].split("\n").map((l) => l.replace(/^\s*\*\s?/, "").trim()).filter(Boolean).join(" ")
+      : "";
+    const first = text.split(/(?<=\.)\s/)[0]?.trim() ?? "";
+    out[name] = {
+      ref: name,
+      kind: "mechanism",
+      description: first,
+      from: `@/lib/${name}`,
+      exports: [...source.matchAll(/export\s+(?:async\s+)?(?:function|const|class)\s+([A-Za-z0-9_]+)/g)].map((m) => m[1]),
+    };
+  }
+  return out;
 }
 
 // Parse + verify + example one layer (components or blocks) into a { ref -> entry }
@@ -1135,7 +1236,7 @@ function serialize(out) {
  * The token catalogue is not a component, so it lands under `_tokens.json`. */
 const entryPath = (ref) => join(root, "registry", `${ref}.json`);
 
-async function writeEntries(components, blocks, tokens) {
+async function writeEntries(components, blocks, tokens, mechanisms) {
   await mkdir(join(root, "registry"), { recursive: true });
   const written = new Set();
   for (const entry of [...Object.values(components), ...Object.values(blocks)]) {
@@ -1144,6 +1245,8 @@ async function writeEntries(components, blocks, tokens) {
   }
   await writeFile(join(root, "registry", "_tokens.json"), serialize(tokens));
   written.add("_tokens.json");
+  await writeFile(join(root, "registry", "_mechanisms.json"), serialize(mechanisms));
+  written.add("_mechanisms.json");
   /* A component that was deleted or renamed leaves its file behind, and a stale
    * entry is a component an agent can still find. */
   for (const name of await readdir(join(root, "registry"))) {
@@ -1151,7 +1254,7 @@ async function writeEntries(components, blocks, tokens) {
   }
 }
 
-async function entriesDrift(components, blocks, tokens) {
+async function entriesDrift(components, blocks, tokens, mechanisms) {
   const dir = join(root, "registry");
   if (!existsSync(dir)) return ["registry/ does not exist"];
   const out = [];
@@ -1160,6 +1263,7 @@ async function entriesDrift(components, blocks, tokens) {
     expected.set(`${entry.ref}.json`, serialize(entry));
   }
   expected.set("_tokens.json", serialize(tokens));
+  expected.set("_mechanisms.json", serialize(mechanisms));
   const present = new Set((await readdir(dir)).filter((n) => n.endsWith(".json")));
   for (const [name, body] of expected) {
     if (!present.has(name)) { out.push(`registry/${name} is missing`); continue; }
@@ -1197,11 +1301,13 @@ async function main() {
     if (!entry.uses.length) delete entry.uses;
   }
   const tokens = await parseTokenCatalog();
+  const mechanisms = await collectMechanisms();
   const out = {
     $schema: "./component-registry.schema.json",
     schemaVersion: 2,
     components,
     blocks,
+    mechanisms,
     tokens,
   };
   const json = serialize(out);
@@ -1209,6 +1315,11 @@ async function main() {
   const indexText = renderIndex(
     [...Object.values(components), ...Object.values(blocks)].map(indexRow),
     {
+      mechanisms: Object.values(mechanisms),
+      /* The TOTAL, not the listed count. Every document in this package means
+         the same thing by "components" and `check:claims` holds them to one
+         number; the header saying 126 over a list of 125 is explained by the
+         footer, and two different numbers for one word would not be. */
       components: Object.keys(components).length,
       blocks: Object.keys(blocks).length,
       tokens: Array.isArray(tokens) ? tokens.length : Object.keys(tokens).length,
@@ -1231,7 +1342,7 @@ async function main() {
       console.error(`✗ fix the ${errors.length} problem(s) above first — \`npm run gen-registry\` refuses on them too.`);
       process.exit(1);
     }
-    const drift = await entriesDrift(components, blocks, tokens);
+    const drift = await entriesDrift(components, blocks, tokens, mechanisms);
     if (drift.length) {
       console.error(`✗ registry/ is out of date. Run \`npm run gen-registry\`.`);
       for (const d of drift.slice(0, 10)) console.error(`  - ${d}`);
@@ -1255,7 +1366,7 @@ async function main() {
     return;
   }
 
-  await writeEntries(components, blocks, tokens);
+  await writeEntries(components, blocks, tokens, mechanisms);
   await writeFile(outPath, json);
   await writeFile(indexPath, indexText);
   console.log(

@@ -796,14 +796,152 @@ export function rShadowedDomProp(c) {
   return out
 }
 
+
+/**
+ * THE FOCUS RING IS DECLARED ONCE, in styles/reset.css.
+ *
+ * It was declared 56 times before 2026-08-31, and the cost of that was never
+ * the repetition. It was the omission: <ExpandButton> is the one control in the
+ * button family that drew its own pill instead of composing <Button>, and it
+ * shipped with no `:focus-visible` rule at all, so a floating action sitting on
+ * a dozen screens was invisible to anyone arriving by keyboard. Nothing could
+ * have caught it, because there was no single place the ring came from and
+ * therefore no place where it could be seen to be missing.
+ *
+ * Now there is one, at zero specificity, covering everything that can take
+ * focus. So a component that writes the ring out again is either restating what
+ * it already has, or about to disagree with the rest of the system by accident.
+ *
+ * NARROW ON PURPOSE. Only a block whose selectors ALL end in `:focus-visible`
+ * and whose body is EXACTLY the two ring declarations. A ring on a
+ * `:focus-within` wrapper is a different thing (the frame is not what takes the
+ * focus), a ring drawn on a sibling or a descendant is too, and a rule that
+ * changes the ring rather than restating it (`outline-color` on an invalid
+ * field) is the system working. None of those are touched.
+ */
+export function rRestatedFocusRing(c) {
+  /* Both spellings: the recipe, and the two ingredients it replaced on
+     2026-09-02. Written only as the recipe, this rule would have gone quietly
+     silent the moment the call sites were migrated — a check that stops
+     matching is worse than one that never existed. */
+  const RING = /^outline:\s*(?:var\(--focus-ring\)|var\(--ring-width\)\s+solid\s+var\(--ring\))$/
+  const OFFSET = /^outline-offset:\s*var\(--ring-offset\)$/
+  const out = []
+  for (const f of c.srcCss) {
+    const src = c.stripComments(c.read(f))
+    for (const m of src.matchAll(/(?:^|\})([^{}]+)\{([^{}]*)\}/g)) {
+      const sel = m[1].trim()
+      if (!sel || sel.startsWith('@')) continue
+      const parts = sel.split(',').map((x) => x.trim())
+      if (!parts.every((x) => x.endsWith(':focus-visible') && !/[>+~ ]|:has\(/.test(x))) continue
+      const decls = m[2].split(';').map((x) => x.trim()).filter(Boolean)
+      if (decls.length !== 2) continue
+      if (!decls.some((d) => RING.test(d)) || !decls.some((d) => OFFSET.test(d))) continue
+      const n = src.slice(0, m.index + m[0].indexOf(sel)).split('\n').length
+      out.push(`${c.rel(f)}:${n}  ${sel} restates the focus ring — styles/reset.css draws it on everything focusable (delete this block)`)
+    }
+  }
+  return out
+}
+
+/**
+ * A BUTTON DOES NOT UNDO THE BROWSER TWICE.
+ *
+ * A browser button arrives with a grey fill, an outset border and 1px 6px of
+ * padding, and `:where(button)` in styles/reset.css takes all of it off. Twenty
+ * component stylesheets took it off again by hand, plus twenty one that wrote
+ * `font-family: inherit` under a rule that had said `font: inherit` for years.
+ * Undoing the same defaults twenty times is not twenty decisions, it is one
+ * decision retyped, and it is how a control ends up with three of the four
+ * lines and the browser's border still on it.
+ *
+ * The element is what makes this decidable, and CSS does not carry it, so the
+ * rule reads the JSX: a class is only checked when every element that renders
+ * it in this package is a <button>. A class that lands on a div, a label or an
+ * anchor as well is left alone, because there the declaration is doing work.
+ */
+export function rRestatedButtonReset(c) {
+  const REDUNDANT = /^(cursor:\s*pointer|font-family:\s*inherit|font:\s*inherit|border:\s*(none|0)|padding:\s*0)$/
+  const tags = new Map()
+  for (const f of c.codeFiles) {
+    if (c.testFile(f)) continue
+    for (const m of c.read(f).matchAll(/<([a-z][a-zA-Z0-9]*)\b((?:[^<>]|\{[^{}]*\})*?)>/g)) {
+      for (const cm of m[2].matchAll(/className=(?:\{cn\(|\{)?[^}\n]*?['"]([a-z][a-z0-9- ]*)['"]/g)) {
+        for (const cls of cm[1].split(' ').filter(Boolean)) {
+          if (!tags.has(cls)) tags.set(cls, new Set())
+          tags.get(cls).add(m[1])
+        }
+      }
+    }
+  }
+  const onlyButton = (cls) => { const t = tags.get(cls); return t && t.size === 1 && t.has('button') }
+  const out = []
+  for (const f of c.srcCss) {
+    const src = c.stripComments(c.read(f))
+    for (const m of src.matchAll(/(?:^|\})([^{}]+)\{([^{}]*)\}/g)) {
+      const sel = m[1].trim()
+      if (!sel || sel.startsWith('@')) continue
+      const simple = sel.match(/^(?:button)?\.([a-z0-9-]+)$/)
+      if (!simple || !onlyButton(simple[1])) continue
+      for (const d of m[2].split(';').map((x) => x.trim()).filter(Boolean)) {
+        if (!REDUNDANT.test(d)) continue
+        const n = src.slice(0, m.index + m[0].indexOf(sel)).split('\n').length
+        out.push(`${c.rel(f)}:${n}  ${sel} { ${d} } undoes the browser a second time — :where(button) in styles/reset.css already did`)
+      }
+    }
+  }
+  return out
+}
+
+/**
+ * A RECIPE EXISTS, SO NAME IT.
+ *
+ * styles/recipes.css is the third tier: the complete answers to the questions a
+ * part asks. Before it existed the ring was assembled 38 times in 34
+ * stylesheets, the surface edge 24 times and the dead-control opacity 20, and
+ * every one of those was an occasion to answer slightly differently. This rule
+ * is what keeps them from coming back: the ingredients are still there, still
+ * legal in the token layer, and a component that reaches past the recipe to
+ * rebuild one is doing the thing the tier was created to stop. (2026-09-02)
+ */
+export function rReDerivedRecipe(c) {
+  const INGREDIENTS = [
+    [/var\(--ring-width\)\s+solid\s+var\(--ring\)/, '--focus-ring', 'the ring is one value now'],
+    [/calc\(\s*-1\s*\*\s*var\(--ring-offset\)\s*\)|calc\(\s*var\(--ring-offset\)\s*\*\s*-1\s*\)/, '--focus-ring-inset', 'the ring drawn inside is one value now, and it had two spellings'],
+    [/border(?:-block|-inline)?(?:-start|-end)?:\s*1px\s+solid\s+var\(--border\)/, '--surface-edge', 'the edge of a surface is one value now, width included'],
+  ]
+  const out = []
+  for (const f of c.srcCss) {
+    const src = c.stripComments(c.read(f))
+    src.split('\n').forEach((line, i) => {
+      for (const [re, recipe, why] of INGREDIENTS) {
+        if (re.test(line)) out.push(`${c.rel(f)}:${i + 1}  re-derives ${recipe} — ${why} (styles/recipes.css)`)
+      }
+    })
+    /* The dead control is decided by its SELECTOR: 0.5 is a perfectly good
+       number for a half-filled star, and only a disabled thing is dimmed. */
+    for (const m of src.matchAll(/(?:^|\})([^{}]+)\{([^{}]*)\}/g)) {
+      const sel = m[1].trim()
+      if (!sel || sel.startsWith('@') || !/disabled/.test(sel)) continue
+      if (!/opacity:\s*0\.5\s*(?:;|$)/.test(m[2])) continue
+      const n = src.slice(0, m.index + m[0].indexOf(sel)).split('\n').length
+      out.push(`${c.rel(f)}:${n}  ${sel} re-derives --disabled-opacity — one number for a dead control, in styles/recipes.css`)
+    }
+  }
+  return out
+}
+
 export const SHARED_RULES = {
   'spacing/radius via tokens (no raw px)': rSpacingPx,
+  'a recipe is named, not rebuilt': rReDerivedRecipe,
   'components use semantic status roles (no tonal primitives)': rSemanticOnly,
   'a status fill is not a status ink': rStatusInk,
   'logical properties for RTL (no left/right)': rLogicalProps,
   'no raw form controls outside primitives': rRawControls,
   'known-purpose fields carry autocomplete': rAutocompletePurpose,
   'no raw <button> in a screen': rRawButtons,
+  'the focus ring is declared once': rRestatedFocusRing,
+  'a button does not undo the browser twice': rRestatedButtonReset,
   'the page wrapper comes from a page block': rHandRolledPage,
   'stacks, rows and grids come from the system': rHandRolledLayout,
   'icon-only buttons have aria-label': rIconButtonA11y,

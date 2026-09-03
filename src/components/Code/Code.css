@@ -21,12 +21,8 @@
   overflow-x: auto;
   padding: var(--space-4);
   background: var(--muted);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--radius-md);
-}
-.code:not([data-inline]):focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
 }
 
 /* Inline: a fragment in a line of text, so it takes a tint to separate it from

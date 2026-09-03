@@ -4,5 +4,8 @@
 @import "./settings.css";
 @import "./primitives.css";
 @import "./semantic.css";
+/* Recipes sit ABOVE the roles and BELOW the reset: they are written in terms of
+ * roles and knobs, and the reset is their first caller. */
+@import "./recipes.css";
 @import "./reset.css";
 @import "./utilities.css";

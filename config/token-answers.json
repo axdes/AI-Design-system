@@ -1,0 +1,10 @@
+{
+  "_why": "How many different DISTANCES answer one spacing question, recorded by npm run lint:token-layer -- --record. A ceiling that only falls: the right number is not 1 — a dense table and a hero are different questions wearing one property — but a question that gains an answer has gained drift somebody can see and nobody decided.",
+  "recorded": "2026-09-03",
+  "answers": {
+    "how far apart are two things": 16,
+    "how far is a section from what is above it": 15,
+    "how much room does a painted surface give its content": 13
+  },
+  "_remeasured": "2026-09-03, twice, and both times because the number was measuring the wrong thing. It counted the value AS WRITTEN, so naming a family knob made it go UP: var(--space-4) and var(--popover-padding) are one distance and were two answers. Values are resolved through the token layer now. And the surface question counted every padding in the package, 57 of them, which is a chip s inline padding and a card s room filed under one property; it asks rules that PAINT a surface and give their content room, derived from the CSS rather than from a list of selector words. 60 became 13, and the 13 are readable: five surfaces at one step, five at another, four control paddings, two cards."
+}

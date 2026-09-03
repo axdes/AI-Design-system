@@ -1,6 +1,7 @@
 import './Tree.css'
 import { useRef, useState, type KeyboardEvent } from 'react'
 import { cn } from '../../lib/cn'
+import { useTreeKeys } from '../../lib/useTreeKeys'
 import { Icon, type IconName } from '../Icon'
 
 export type TreeNode = {
@@ -64,34 +65,35 @@ export function Tree({
     rootRef.current?.querySelector<HTMLElement>(`[data-id="${CSS.escape(id)}"]`)?.focus()
   }
 
+  /* The six keys that move around a tree come from the shared mechanism — Down,
+   * Up, Home, End, Right and Left, written once for this and <TreeTable>
+   * (src/lib/useTreeKeys.ts). This file used to answer four of them and had
+   * never answered Home or End, which is what a second copy costs. */
+  const treeKeys = useTreeKeys({
+    count: visible.length,
+    index: focusIndex,
+    isBranch: (i) => !!visible[i]?.node.children?.length,
+    isOpen: (i) => isOpen(visible[i]!.node.id),
+    parentIndex: (i) => {
+      const parent = findParent(nodes, visible[i]!.node.id)
+      return parent ? visible.findIndex((v) => v.node.id === parent.id) : -1
+    },
+    move: (i) => moveFocus(visible[i]?.node.id ?? focusId),
+    toggle: (i) => toggle(visible[i]!.node.id),
+  })
+
   /* One handler on the root: nested treeitems bubble their keydown up here, and
    * we act on the CURRENTLY focused node (focusId), not the bubbling target, so
-   * a child's key event never re-triggers an ancestor row. */
+   * a child's key event never re-triggers an ancestor row. Enter and Space stay
+   * here: selecting is this component's own answer, and the mechanism
+   * deliberately does not have one. */
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const node = visible[focusIndex]?.node
     if (!node) return
-    const hasChildren = !!node.children?.length
-    if (e.key === 'ArrowDown') {
+    if (treeKeys(e)) return
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      moveFocus(visible[Math.min(focusIndex + 1, visible.length - 1)]?.node.id ?? focusId)
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      moveFocus(visible[Math.max(focusIndex - 1, 0)]?.node.id ?? focusId)
-    } else if (e.key === 'ArrowRight') {
-      e.preventDefault()
-      if (hasChildren && !isOpen(node.id)) toggle(node.id)
-      else if (hasChildren) moveFocus(node.children![0].id)
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault()
-      if (hasChildren && isOpen(node.id)) {
-        toggle(node.id)
-      } else {
-        const parent = findParent(nodes, node.id)
-        if (parent) moveFocus(parent.id)
-      }
-    } else if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      if (hasChildren) toggle(node.id)
+      if (node.children?.length) toggle(node.id)
       onSelect?.(node.id)
     }
   }

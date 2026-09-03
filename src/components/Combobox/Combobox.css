@@ -36,7 +36,7 @@
   background: var(--popover);
   /* Its own popover surface, so it answers for what a row hovers to. */
   --surface-hover: var(--popover-hover);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-popover);
 }
@@ -93,7 +93,7 @@
 .combobox[data-multiple][data-surface="muted"] .combobox-field,
 .combobox[data-multiple][data-surface="muted"] .combobox-field:hover { border-color: transparent; }
 .combobox[data-multiple] .combobox-field:focus-within {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 /* The input inside no longer draws its own ring — the field around it does, and

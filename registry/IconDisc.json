@@ -17,7 +17,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md'",
       "required": false,
       "description": "How big the DISC is.",
       "values": [
@@ -27,7 +27,7 @@
     },
     {
       "name": "tone",
-      "type": "Tone",
+      "type": "'neutral' | 'primary'",
       "required": false,
       "description": "What the disc is filled with.",
       "values": [

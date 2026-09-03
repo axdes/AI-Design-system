@@ -20,7 +20,7 @@
  * that appears only on hover shifts the glyph by a pixel. */
 .filter-bar-trigger .icon-button {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   transition:
     background var(--duration-fast),
     border-color var(--duration-fast),

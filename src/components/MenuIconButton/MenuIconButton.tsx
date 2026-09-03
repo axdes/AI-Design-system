@@ -37,12 +37,13 @@ type Props = {
  * A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra
  * actions a toolbar has no room to name.
  *
- * It is <MenuButton>'s pair, and the split between them is the same one the
+ * It is <ButtonGroup>'s pair, and the split between them is the same one the
  * system already makes between `Button` and `IconButton`: a control with no
  * words in it has to carry a name and a tooltip, and a separate component is
  * what makes that unavoidable rather than remembered. Folding it into
- * MenuButton as an optional label would make the name optional, which is the
- * whole thing this prevents.
+ * ButtonGroup as an optional label would make the name optional, which is the
+ * whole thing this prevents. That group absorbed the menu button on 2026-08-31
+ * and this one stayed out of it for exactly that reason.
  *
  * Built 2026-08-26, after four screens assembled it by hand from a Dropdown
  * render prop, an IconButton and an aria-label.

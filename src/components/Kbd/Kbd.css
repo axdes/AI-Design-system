@@ -5,7 +5,7 @@
   min-inline-size: 1.4em;
   padding-inline: var(--space-1);
   padding-block: 0;
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-block-end-width: 2px;
   border-radius: var(--radius-sm);
   background: var(--muted);

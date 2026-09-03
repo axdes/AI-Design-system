@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "shape",
-      "type": "Shape",
+      "type": "'text' | 'block' | 'circle'",
       "required": false,
       "description": "text = a line of body text (default). block = a rectangular area (card, image). circle = an avatar-sized disc.",
       "values": [

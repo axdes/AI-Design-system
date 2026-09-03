@@ -6,12 +6,10 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--control-radius);
   background: var(--card);
   color: var(--foreground);
-  font: inherit;
-  cursor: pointer;
 }
 
 /* MORE ROOM AT THE END THAN AT THE START. Equal padding measures equal and does
@@ -47,15 +45,11 @@
 .color-swatch:hover:not(:disabled) { background: var(--accent); }
 .color-swatch:active:not(:disabled) { background: var(--accent-strong); }
 
-.color-swatch:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 
 .color-swatch:disabled {
   /* The same disabled treatment <Button> uses, so a dead control looks dead
      the one way in this system. */
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
   pointer-events: none;
 }

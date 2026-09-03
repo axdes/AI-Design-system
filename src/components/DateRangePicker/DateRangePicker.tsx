@@ -1,3 +1,12 @@
+/* MONOLITHIC BECAUSE IT IS THE DATE FIELD, TWICE, AS ONE VALUE.
+ *
+ * A range is one answer with two ends, and the props are that answer plus the
+ * field contract around it. Splitting it into two pickers is what products did
+ * before this existed, and it is why a range could be entered backwards.
+ *
+ * What the split would cost: the invariant that the end is not before the start
+ * would move back to every caller. (2026-09-03)
+ */
 import '../DatePicker/DatePicker.css'
 import './DateRangePicker.css'
 import { useState } from 'react'

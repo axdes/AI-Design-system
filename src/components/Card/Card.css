@@ -130,7 +130,7 @@
  * link under the table). The separator belongs to whatever follows, because
  * only it knows it is there. */
 .card[data-flush] > :is(.table, .table-scroll, .datagrid) + *:not(.table, .table-scroll, .datagrid, .card-media, .divider) {
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
   padding-block-start: var(--space-3);
 }
 
@@ -304,7 +304,7 @@
 [data-surface="card"] .card,
 .card .card {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   padding: var(--card-padding-nested);
   border-radius: calc(var(--card-radius) - var(--grid-unit));   /* one grid step tighter (concentric) */
 }
@@ -418,7 +418,7 @@
  * the card's rhythm without knowing it is in a card. */
 .card > :is(.timeline, .table-scroll, .accordion, .descriptions, .field, .tabs,
     .sparkline, .chart, .donut-chart, .meter, .progressbar, .list-item,
-    .selectable-tile, .quote, .logo-wall, .grid, .empty-state,
+    .selectable-tile, .quote, .grid, .empty-state,
     .content-card[data-layout='row']) {
   margin-block-start: var(--space-2);
 }
@@ -426,17 +426,11 @@
 /* Unless it opens the card: then the card's padding is the distance. */
 .card > :is(.timeline, .table-scroll, .accordion, .descriptions, .field, .tabs,
     .sparkline, .chart, .donut-chart, .meter, .progressbar, .list-item,
-    .selectable-tile, .quote, .logo-wall, .grid, .empty-state,
+    .selectable-tile, .quote, .grid, .empty-state,
     .content-card[data-layout='row']):first-child {
   margin-block-start: 0;
 }
 
-/* A wall of marks centres itself in what the row leaves. It is the card's
- * subject, not a line under the title, and in a row of equal heights the spare
- * space reads as a frame around it rather than as a hole beneath it. */
-.card > .logo-wall {
-  margin-block: auto;
-}
 
 /* A picture already ends at the card's own distance (the media slot sets it),
  * so a component that follows it does not add a step on top: a tab strip under

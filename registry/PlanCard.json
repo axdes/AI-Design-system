@@ -28,7 +28,7 @@
     },
     {
       "name": "description",
-      "type": "string",
+      "type": "ReactNode",
       "required": false
     },
     {

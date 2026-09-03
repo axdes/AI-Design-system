@@ -1,6 +1,7 @@
 import './ExpandButton.css'
 import { type ButtonHTMLAttributes, type Ref } from 'react'
 import { cn } from '../../lib/cn'
+import { Button } from '../Button'
 import { Icon, type IconName } from '../Icon'
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -25,7 +26,8 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
  *
  * It is NOT a disclosure caret, whatever the name suggests: it does not rotate,
  * and `withChevron` adds a mark that appears WITH the label rather than turning.
- * A row that opens a panel below it is <Accordion>, and a menu is <MenuButton>.
+ * A row that opens a panel below it is <Accordion>, and a menu is
+ * <ButtonGroup menu>.
  * This description used to say "the chevron that opens and closes a row", which
  * described a component that was never here (2026-08-29).
  *
@@ -36,8 +38,15 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
  * not "Expand".
  */
 export function ExpandButton({ icon, label, withChevron, expanded, className, type = 'button', ref, ...rest }: Props) {
+  /* IT IS A <Button>, and it used to only look like one. Until 2026-08-31 this
+   * drew its own pill: the brand fill, the hover step, the radius and the
+   * pointer, all retyped in its own stylesheet. What it did not retype was the
+   * focus ring, the disabled state and the pressed step, so the one control in
+   * this family that was not built on Button was also the only one a keyboard
+   * user could not see. Composing gets all four for free and leaves this
+   * stylesheet with the one thing that is actually its own: the reveal. */
   return (
-    <button
+    <Button
       ref={ref}
       type={type}
       className={cn('expand-button', className)}
@@ -48,6 +57,6 @@ export function ExpandButton({ icon, label, withChevron, expanded, className, ty
       <Icon name={icon} size="md" />
       <span className="expand-button-label">{label}</span>
       {withChevron && <Icon name="arrow_drop_down" size="md" className="expand-button-chevron" />}
-    </button>
+    </Button>
   )
 }

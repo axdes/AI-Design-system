@@ -14,10 +14,8 @@
   border-radius: var(--radius-full);
   background: var(--card);
   color: var(--muted-foreground);
-  font-family: inherit;
   font-size: var(--font-base);
   font-weight: var(--font-weight-regular);
-  cursor: pointer;
   white-space: nowrap;
   transition: color var(--duration-fast);
 }
@@ -123,7 +121,7 @@
   inset-block-start: 0;
   z-index: var(--z-sticky);
   background: var(--popover);
-  border-block-end: 1px solid var(--border);
+  border-block-end: var(--surface-edge);
   margin-block-end: var(--space-1);
 }
 /* Built into the panel, not a control ON it: the menu itself is the surface,

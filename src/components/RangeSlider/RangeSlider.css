@@ -5,7 +5,7 @@
   inline-size: 100%;
 }
 .rangeslider[data-disabled] {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -55,7 +55,7 @@
 }
 .rangeslider-input[data-top] { z-index: 1; }
 .rangeslider-input:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
   border-radius: var(--radius-full);
 }

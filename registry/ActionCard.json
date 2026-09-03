@@ -47,7 +47,7 @@
       "fields": [
         {
           "name": "tone",
-          "type": "Tone",
+          "type": "'success' | 'danger' | 'neutral'",
           "required": true,
           "description": "What the answer was: success for the affirmative one, danger for the refusal, neutral for anything that expired or was withdrawn.",
           "values": [

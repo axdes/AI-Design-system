@@ -24,7 +24,7 @@
   background: var(--popover);
 
   color: var(--popover-foreground);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-lg);
   animation: modal-pop var(--duration-normal) ease-out;

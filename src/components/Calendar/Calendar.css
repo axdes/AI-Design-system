@@ -34,22 +34,19 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  border: none;
   /* Square cell + full radius = a circular day, so the selected/hover/today
    * states read as circles like the rest of the system. */
   border-radius: var(--radius-full);
   background: transparent;
   color: var(--foreground);
-  font-family: inherit;
   font-size: var(--font-sm);
   font-variant-numeric: tabular-nums;
-  cursor: pointer;
   transition: background var(--duration-fast);
 }
 .calendar-day:hover { background: var(--accent-soft); }
 /* Pressed: one stop past hover, the third answer every control now gives. */
 .calendar-day:active:not(:disabled) { background: var(--accent); }
-.calendar-day:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * -1); }
+.calendar-day:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-ring-inset); }
 /* No opacity. A day from the next month is still a day you can click, so it is
  * ordinary text and 1.4.3 applies: --muted-foreground alone is 6.04:1 here,
  * and halving it took the same text to 2.12. The colour already says "another

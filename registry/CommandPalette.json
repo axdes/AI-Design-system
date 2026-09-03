@@ -45,7 +45,9 @@
   "context": "region",
   "uses": [
     "Button",
-    "Icon"
+    "Highlight",
+    "Icon",
+    "Kbd"
   ],
   "example": "const [open, setOpen] = useState(false)useEffect(() => {\n  const onKey = (e: KeyboardEvent) => {\n    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {\n      e.preventDefault()\n      setOpen((v) => !v)\n    }\n  }\n  window.addEventListener('keydown', onKey)\n  return () => window.removeEventListener('keydown', onKey)\n}, [])\n\n<>\n  <Button variant=\"secondary\" onClick={() => setOpen(true)}>Open commands (Cmd K)</Button>\n  <CommandPalette\n    open={open}\n    onClose={() => setOpen(false)}\n    commands={[\n      { id: 'new', label: 'New document', icon: 'add', hint: 'C', onRun: () => undefined },\n      { id: 'search', label: 'Search library', icon: 'search', onRun: () => undefined },\n      { id: 'settings', label: 'Open settings', icon: 'settings', keywords: 'preferences', onRun: () => undefined },\n    ]}\n  />\n</>"
 }

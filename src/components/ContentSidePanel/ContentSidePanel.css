@@ -17,7 +17,7 @@
   padding-inline: var(--space-2);
   background: var(--card);
   /* Divider from the content/document — also terminates the header underline. */
-  border-inline-start: 1px solid var(--border);
+  border-inline-start: var(--surface-edge);
   border-start-end-radius: var(--card-radius);
   border-end-end-radius: var(--card-radius);
 }
@@ -40,7 +40,7 @@
 .content-side-panel-content {
   align-self: stretch;
   width: var(--side-panel-width);
-  border-inline-start: 1px solid var(--border);   /* hairline divider from the document */
+  border-inline-start: var(--surface-edge);   /* hairline divider from the document */
 }
 
 /* On mobile the panel stacks below the document — standalone surfaces again. */

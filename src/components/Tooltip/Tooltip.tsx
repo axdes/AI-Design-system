@@ -1,10 +1,13 @@
 import './Tooltip.css'
 import { composeRefs } from '../../lib/composeRefs'
+import { useTimer } from '../../lib/useTimer'
+import { readAnchor } from '../../lib/placement'
+import { useAnchoredLayer } from '../../lib/useAnchoredLayer'
 import {
   cloneElement,
+  useCallback,
   useEffect,
   useId,
-  useRef,
   useState,
   type ReactElement,
 } from 'react'
@@ -75,19 +78,69 @@ type Resolved = {
  * screen and gone on the next keystroke.
  */
 export function Tooltip({ content, placement = 'top', delay = 300, enabled = true, children }: Props) {
-  const [pos, setPos] = useState<Resolved | null>(null)
-  const childRef = useRef<HTMLElement | null>(null)
-  const timerRef = useRef<number | null>(null)
+  const [open, setOpen] = useState(false)
+  /* One pending timer, cleared before the next and on unmount: src/lib/useTimer.ts,
+   * shared with <HoverCard>, which wrote the same six lines. */
+  const { after, cancel } = useTimer()
   const id = useId()
+
+  /* WHERE IT GOES IS STILL THIS COMPONENT'S QUESTION; everything around the
+   * answer is not. `useAnchoredLayer` owns the listeners, the rAF-throttled
+   * reflow, the mount timing and the two dismissals, and it existed before this
+   * component used it: <Dropdown> and <Popover> each wrote that machinery, drifted,
+   * and the hook is what stopped them. Tooltip and <HoverCard> then wrote it a
+   * third and fourth time, which is how a tooltip ended up MEASURED ONCE — open
+   * one and scroll, and until 2026-08-31 it stayed where the page used to be.
+   * Moving to the hook is what fixes that, and it is not a fix anyone would have
+   * made in four places. */
+  // eslint-disable-next-line sonarjs/cognitive-complexity -- collision-flip across four placements; inherently branchy
+  const measure = useCallback((): Resolved | null => {
+    const el = triggerRef.current
+    if (!el) return null
+    /* The same three reads every anchored layer makes, made once in
+     * lib/placement.ts. Only the arithmetic below is this component's: a tooltip
+     * sits BESIDE its trigger on a chosen side, where a menu hangs under it. */
+    const anchor = readAnchor(el, null)
+    if (!anchor) return null
+    const rect = anchor.trigger
+    const vw = anchor.viewport.width
+    const vh = anchor.viewport.height
+    const rtl = anchor.isRtl
+
+    let p: Placement = placement
+    if (rtl && p === 'end') p = 'start'
+    else if (rtl && p === 'start') p = 'end'
+
+    /* Collision-flip: if not enough room on requested side, flip to opposite. */
+    const fits = {
+      top: rect.top - GAP - EDGE_PAD,
+      bottom: vh - rect.bottom - GAP - EDGE_PAD,
+      start: rect.left - GAP - EDGE_PAD,
+      end: vw - rect.right - GAP - EDGE_PAD,
+    }
+    const minRoom = 32
+    if (p === 'top' && fits.top < minRoom && fits.bottom > fits.top) p = 'bottom'
+    if (p === 'bottom' && fits.bottom < minRoom && fits.top > fits.bottom) p = 'top'
+    if (p === 'end' && fits.end < minRoom && fits.start > fits.end) p = 'start'
+    if (p === 'start' && fits.start < minRoom && fits.end > fits.start) p = 'end'
+
+    if (p === 'top') return { top: rect.top - GAP, left: rect.left + rect.width / 2, transform: 'translate(-50%, -100%)' }
+    if (p === 'bottom') return { top: rect.bottom + GAP, left: rect.left + rect.width / 2, transform: 'translate(-50%, 0)' }
+    if (p === 'end') return { top: rect.top + rect.height / 2, left: rect.right + GAP, transform: 'translate(0, -50%)' }
+    return { top: rect.top + rect.height / 2, left: rect.left - GAP, transform: 'translate(-100%, -50%)' }
+  }, [placement])
+
+  const close = useCallback(() => {
+    cancel()
+    setOpen(false)
+  }, [cancel])
+
+  const { triggerRef, setLayer, position } = useAnchoredLayer<Resolved>({ open, onClose: close, measure })
 
   /* Bind the modality listeners once, and always cleanup the pending timeout on
    * unmount (prevents "setState on unmounted component" warnings). */
-  useEffect(() => {
-    trackModality()
-    return () => {
-      if (timerRef.current !== null) window.clearTimeout(timerRef.current)
-    }
-  }, [])
+  /* The timeout is cleaned up by useTimer; this binds the modality listeners once. */
+  useEffect(() => { trackModality() }, [])
 
   /* A trigger that goes DISABLED under the pointer never reports the pointer leaving.
    *
@@ -101,95 +154,33 @@ export function Tooltip({ content, placement = 'top', delay = 300, enabled = tru
    * disabling need not be its own doing: a parent can disable it for any reason, and the tooltip is
    * just as stuck. Above the `enabled` return because a hook may not be called conditionally.
    */
-  /* Escape closes it. SC 1.4.13 asks that content shown on hover or focus be
-   * dismissible without moving the pointer or the focus, and until this existed
-   * a tooltip could only be escaped by moving off the trigger — which on a
-   * magnified screen means losing the thing you were reading about. Bound on the
-   * document, in the capture phase, so it fires wherever focus happens to be. */
-  useEffect(() => {
-    if (!pos) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      if (timerRef.current !== null) window.clearTimeout(timerRef.current)
-      setPos(null)
-    }
-    document.addEventListener('keydown', onKey, true)
-    return () => { document.removeEventListener('keydown', onKey, true) }
-  }, [pos])
+  /* Escape is the shared dismissal now (useDismiss, inside the hook above), and
+   * it arrives with the outside press beside it. SC 1.4.13 asks that content
+   * shown on hover or focus be dismissible without moving the pointer or the
+   * focus, and this component used to answer that with its own capture-phase
+   * listener. Two differences, both deliberate: the shared one preventDefaults,
+   * so one Escape dismisses one layer rather than a tooltip and the dialog
+   * behind it at once, and a press anywhere outside now closes the tooltip too,
+   * which is what every other transient layer in this system already did. */
 
   useEffect(() => {
-    if (!pos) return
-    const el = childRef.current as (HTMLElement & { disabled?: boolean }) | null
+    if (!open) return
+    const el = triggerRef.current as (HTMLElement & { disabled?: boolean }) | null
     if (!el?.disabled) return
-    if (timerRef.current !== null) window.clearTimeout(timerRef.current)
-    setPos(null)
+    cancel()
+    setOpen(false)
   })
 
   if (!enabled) return children
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity -- collision-flip positioning across four placements; inherently branchy
-  const show = () => {
-    const el = childRef.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const vw = window.innerWidth
-    const vh = window.innerHeight
-    const isRtl = document.documentElement.dir === 'rtl'
-
-    let p: Placement = placement
-    if (isRtl && p === 'end') p = 'start'
-    else if (isRtl && p === 'start') p = 'end'
-
-    /* Collision-flip: if not enough room on requested side, flip to opposite. */
-    const fits = {
-      top:    rect.top - GAP - EDGE_PAD,
-      bottom: vh - rect.bottom - GAP - EDGE_PAD,
-      start:   rect.left - GAP - EDGE_PAD,
-      end:  vw - rect.right - GAP - EDGE_PAD,
-    }
-    const minRoom = 32
-    if (p === 'top'    && fits.top    < minRoom && fits.bottom > fits.top)    p = 'bottom'
-    if (p === 'bottom' && fits.bottom < minRoom && fits.top    > fits.bottom) p = 'top'
-    if (p === 'end'  && fits.end  < minRoom && fits.start   > fits.end)  p = 'start'
-    if (p === 'start'   && fits.start   < minRoom && fits.end  > fits.start)   p = 'end'
-
-    let top = 0, left = 0, transform = ''
-    if (p === 'top') {
-      top = rect.top - GAP
-      left = rect.left + rect.width / 2
-      transform = 'translate(-50%, -100%)'
-    } else if (p === 'bottom') {
-      top = rect.bottom + GAP
-      left = rect.left + rect.width / 2
-      transform = 'translate(-50%, 0)'
-    } else if (p === 'end') {
-      top = rect.top + rect.height / 2
-      left = rect.right + GAP
-      transform = 'translate(0, -50%)'
-    } else /* start */ {
-      top = rect.top + rect.height / 2
-      left = rect.left - GAP
-      transform = 'translate(-100%, -50%)'
-    }
-    setPos({ top, left, transform })
-  }
-
-  const open = () => {
-    if (timerRef.current !== null) window.clearTimeout(timerRef.current)
-    timerRef.current = window.setTimeout(show, delay)
-  }
-  const close = () => {
-    if (timerRef.current !== null) window.clearTimeout(timerRef.current)
-    setPos(null)
-  }
-
+  const show = () => after(delay, () => { setOpen(true) })
 
   /* Inject event handlers + aria-describedby directly into the child.
    * Avoids an extra wrapper span and gives screen readers a real association.
    * Compose ref: if caller already set one, forward to both our internal ref
    * and the caller's (callback OR mutable ref-object are both honored). */
   // eslint-disable-next-line react-hooks/refs -- composeRefs only stores these; React calls the result at commit
-  const composedRef = composeRefs<HTMLElement>(childRef, (children as ReactElement<ChildProps>).props.ref)
+  const composedRef = composeRefs<HTMLElement>(triggerRef, (children as ReactElement<ChildProps>).props.ref)
   // eslint-disable-next-line @eslint-react/no-clone-element, react-hooks/refs -- injects hover/focus handlers into the trigger without an extra wrapper span
   const childWithHandlers = cloneElement(children, {
     ref: composedRef,
@@ -197,29 +188,38 @@ export function Tooltip({ content, placement = 'top', delay = 300, enabled = tru
      * has been read, the press is the answer to it, and whatever the press changes is what the eye
      * should be on. It also covers the case above from the other side, before the disable lands. */
     onPointerDown: (e: React.PointerEvent) => { close(); children.props.onPointerDown?.(e) },
-    onMouseEnter: (e: React.MouseEvent) => { open(); children.props.onMouseEnter?.(e) },
+    onMouseEnter: (e: React.MouseEvent) => { show(); children.props.onMouseEnter?.(e) },
     onMouseLeave: (e: React.MouseEvent) => { close(); children.props.onMouseLeave?.(e) },
-    onFocus:      (e: React.FocusEvent) => { if (lastInputWasKeyboard) { open() } children.props.onFocus?.(e) },
+    onFocus:      (e: React.FocusEvent) => { if (lastInputWasKeyboard) { show() } children.props.onFocus?.(e) },
     onBlur:       (e: React.FocusEvent) => { close(); children.props.onBlur?.(e) },
-    'aria-describedby': pos ? id : children.props['aria-describedby'],
+    'aria-describedby': open && position ? id : children.props['aria-describedby'],
   })
 
   return (
     <>
       {childWithHandlers}
-      {pos && createPortal(
+      {/* BOTH, and `open` first. The hook keeps the last position after it
+          closes — it has nothing to reset it to and no reason to — so a layer
+          that renders on `position` alone opens once and never leaves. Every
+          consumer of the hook gates on its own open state; this one learned
+          that from four failing tests (2026-08-31). */}
+      {open && position && createPortal(
         <div
           id={id}
           role="tooltip"
           className="tooltip"
           ref={(node) => {
-            /* The pill radius looks wrong once the text wraps; flag wrapped
-             * tooltips so the CSS can switch to a rect radius. */
+            /* The layer's ref belongs to the hook — it is what tells the
+               measurement the portal exists and what an outside press is
+               measured against. The multiline flag rides along: the pill radius
+               looks wrong once the text wraps, so a wrapped tooltip says so and
+               the CSS switches to a rect radius. */
+            setLayer(node)
             if (!node) return
             const oneLine = parseFloat(getComputedStyle(node).lineHeight) * 1.5
             if (node.getBoundingClientRect().height > oneLine) node.dataset.multiline = 'true'
           }}
-          style={{ top: pos.top, left: pos.left, transform: pos.transform }}
+          style={{ top: position.top, left: position.left, transform: position.transform }}
         >
           {content}
         </div>,

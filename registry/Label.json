@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md'",
       "required": false,
       "description": "md (default) = 15px; sm = 13px, matching small-button text.",
       "values": [

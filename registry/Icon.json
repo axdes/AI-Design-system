@@ -17,7 +17,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg' | 'xl'",
       "required": false,
       "description": "How big, and it follows the JOB rather than taste. `sm` (default) sits inline with text and inside buttons. `md` is for navigation and list rows, where the glyph is a landmark. `lg`/`xl` are for the single mark on an empty state or a page with nothing else on it — in a row of controls they make everything beside them look broken.",
       "values": [

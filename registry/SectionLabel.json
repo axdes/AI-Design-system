@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "as",
-      "type": "Heading",
+      "type": "'h2' | 'h3' | 'h4'",
       "required": false,
       "description": "The heading level, and whether this is a heading at all. Give it on a page: a section nobody can reach by walking the outline is a section a screen reader has to scroll for. Pick the level from the page, not from the look — one step under whatever heading contains it, never skipping one. Left off it renders a div, which is right inside a card, where the card's own title is already the heading.",
       "values": [

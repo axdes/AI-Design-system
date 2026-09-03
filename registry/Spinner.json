@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg' | 'xl'",
       "required": false,
       "description": "Matches the icon scale: sm 16 / md 20 / lg 24 / xl 40. Default 'md'.",
       "values": [

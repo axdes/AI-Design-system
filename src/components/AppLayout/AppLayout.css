@@ -60,7 +60,7 @@
    * rendered before the rail. */
   .app-layout-backdrop {
     position: fixed; inset: 0; z-index: var(--z-modal);
-    border: 0; padding: 0; background: var(--overlay); cursor: pointer;
+    background: var(--overlay);
   }
 }
 
@@ -96,7 +96,7 @@
   block-size: auto;
   z-index: var(--z-sticky);
   background: var(--card);
-  border-block-end: 1px solid var(--border);
+  border-block-end: var(--surface-edge);
 }
 
 /* No navigation: the content is the whole composition. */

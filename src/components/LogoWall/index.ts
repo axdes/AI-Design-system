@@ -1,1 +1,0 @@
-export { LogoWall } from "./LogoWall";

@@ -1,5 +1,6 @@
 import './Pagination.css'
 import { cn } from '../../lib/cn'
+import { Button } from '../Button'
 import { IconButton } from '../IconButton'
 import { Tooltip } from '../Tooltip'
 
@@ -71,16 +72,23 @@ export function Pagination({
             <li key={`gap-${i}`} className="pagination-gap" aria-hidden="true">…</li>
           ) : (
             <li key={item}>
-              <button
-                type="button"
+              {/* A numbered page IS a small button, and it used to be a
+                  hand-drawn one: fifty lines restating the pill, the hover, the
+                  pressed step, the focus ring and the disabled state that
+                  `size="sm"` already carries. The variant is the whole decision
+                  it makes on its own, since the current page is the one that is
+                  filled. */}
+              <Button
+                size="sm"
+                variant={item === page ? 'primary' : 'ghost'}
                 className="pagination-page"
                 data-current={item === page || undefined}
                 aria-current={item === page ? 'page' : undefined}
                 aria-label={`Page ${item}`}
-                onClick={() => onChange(item)}
+                onClick={() => { onChange(item) }}
               >
                 {item}
-              </button>
+              </Button>
             </li>
           ),
         )}

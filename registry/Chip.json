@@ -22,7 +22,7 @@
     },
     {
       "name": "variant",
-      "type": "Variant",
+      "type": "'secondary' | 'primary' | 'ghost' | 'destructive' | 'dark'",
       "required": false,
       "description": "How much the chip is claiming. `secondary` (default) is a label; `primary` is the one that is selected or active; `ghost` is a chip on a busy surface; `destructive` marks something failing.",
       "values": [
@@ -35,7 +35,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "Follows the row it sits in: `sm` inside a table cell or a dense toolbar, `md` on its own. Defaults to `md` as a control and `sm` as a data token, which is the size each was already shipping at.",
       "values": [

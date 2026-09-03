@@ -62,7 +62,7 @@
       "props": [
         {
           "name": "align",
-          "type": "Align",
+          "type": "'start' | 'end' | 'center'",
           "required": false,
           "values": [
             "start",
@@ -108,7 +108,7 @@
         },
         {
           "name": "hideBelow",
-          "type": "HideBelow",
+          "type": "'sm' | 'md'",
           "required": false,
           "description": "Drops this column below a breakpoint. Only for a column whose value is reachable another way: dropping a column drops data, and the identifier and the actions are never the ones to go.",
           "values": [
@@ -123,7 +123,7 @@
       "props": [
         {
           "name": "align",
-          "type": "Align",
+          "type": "'start' | 'end' | 'center'",
           "required": false,
           "values": [
             "start",
@@ -138,7 +138,7 @@
         },
         {
           "name": "tone",
-          "type": "Tone",
+          "type": "'success' | 'warning' | 'danger'",
           "required": false,
           "values": [
             "success",
@@ -167,7 +167,7 @@
         },
         {
           "name": "hideBelow",
-          "type": "HideBelow",
+          "type": "'sm' | 'md'",
           "required": false,
           "description": "Drops this cell below a breakpoint. It has to match its header's `hideBelow`, or the row and the head stop having the same columns.",
           "values": [
@@ -187,7 +187,7 @@
         },
         {
           "name": "align",
-          "type": "Align",
+          "type": "'start' | 'end' | 'center'",
           "required": false,
           "values": [
             "start",
@@ -306,7 +306,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md'",
       "required": false,
       "description": "Row density: md (default) / sm for dense reference tables.",
       "values": [
@@ -334,7 +334,7 @@
     },
     {
       "name": "layout",
-      "type": "Layout",
+      "type": "'auto' | 'fixed'",
       "required": false,
       "description": "Column sizing: content-driven (default) or the widths the header declares.",
       "values": [

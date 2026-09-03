@@ -15,9 +15,15 @@ type Props = {
   /** The `<FormSection>` stack, or a plain `<FormStack>` for a short form. */
   children?: ReactNode
   /** Names the real event ("Create workspace"), never "Submit". */
-  submitLabel: string
+  /* ReactNode: the same word means the same shape everywhere in this system,
+   * and its neighbours already took one. Widened 2026-09-03; it is rendered
+   * as content here, never put in an attribute. */
+  submitLabel: ReactNode
   onSubmit: () => void
-  cancelLabel?: string
+  /* ReactNode: the same word means the same shape everywhere in this system,
+   * and its neighbours already took one. Widened 2026-09-03; it is rendered
+   * as content here, never put in an attribute. */
+  cancelLabel?: ReactNode
   /** Omit for a form nobody cancels out of (an autosaving draft). */
   onCancel?: () => void
   /** Submitting: the primary carries the spinner, the rest disables. */

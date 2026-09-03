@@ -126,6 +126,20 @@ describe('the design system over MCP', () => {
     expect(textOf(one)).not.toContain('golden example')
   })
 
+  /* The wiring, not the wording: guidance is a separate module with its own unit
+     tests, and what this proves is that a nudge actually crosses the protocol and
+     that a session gets it once rather than on every answer. */
+  it('appends one decision-time nudge, and does not repeat it', async () => {
+    const [, first, second] = await talk([
+      init,
+      callTool(2, 'design_system_index', { query: 'badge' }),
+      callTool(3, 'design_system_index', { query: 'table' }),
+    ])
+    expect(textOf(first)).toContain('→ ')
+    expect(textOf(first)).toMatch(/names, not contracts/)
+    expect(textOf(second)).not.toContain('→ ')
+  })
+
   it('names the nearest real components instead of accepting an invented one', async () => {
     const [, answer] = await talk([init, callTool(2, 'component', { names: ['DataTable'] })])
     expect(textOf(answer)).toContain('not in this design system')

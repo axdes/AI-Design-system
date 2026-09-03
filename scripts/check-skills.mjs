@@ -14,7 +14,22 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const DS = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
-const ROOT = fileURLToPath(new URL('../../..', import.meta.url)).replace(/\/$/, '')
+/* THREE LEVELS UP IS THE MONOREPO ROOT HERE AND SOMEBODY ELSE'S DIRECTORY THERE.
+ *
+ * In this checkout the script sits at packages/design-system/scripts/, so
+ * `../../..` is the monorepo. In the published copy the package IS the
+ * repository, the script sits at scripts/, and the same expression lands one
+ * level ABOVE the clone — whatever happens to be there. Found by
+ * `npm run check:clone` on its first run, 2026-09-02: in a scratch clone it
+ * walked the system temp directory looking for markdown and died on a macOS
+ * file it may not stat. The check was reading a tree it had no business in, and
+ * the whole gate went red for a reason that was not about this package.
+ *
+ * So the monorepo is DETECTED rather than assumed, and standalone means the
+ * package root is the only root there is. */
+const ABOVE = fileURLToPath(new URL('../../..', import.meta.url)).replace(/\/$/, '')
+const inMonorepo = existsSync(`${ABOVE}/packages/design-system`) && existsSync(`${ABOVE}/apps`)
+const ROOT = inMonorepo ? ABOVE : DS
 const SKILLS = `${ROOT}/.claude/skills`
 const AGENTS = `${ROOT}/.claude/agents`
 
@@ -27,8 +42,7 @@ const AGENTS = `${ROOT}/.claude/agents`
  *
  * This runs BEFORE the standalone exit, because it is the standalone case it is
  * about. */
-const PKG = `${ROOT}/packages/design-system`
-const pkgRoot = existsSync(PKG) ? PKG : ROOT
+const pkgRoot = DS
 const stale = []
 /* Every markdown the package ships, not two folders: the first pass looked at
    `.claude` and `docs/contract` and missed `mcp/README.md`, which tells a
@@ -60,19 +74,14 @@ if (stale.length) {
   process.exit(1)
 }
 
-/* Standalone clone (the published design-system repo): no monorepo above it,
- * so there are no monorepo skills, agents or app AGENTS.md files to check. */
-if (!existsSync(`${ROOT}/apps`)) {
-  console.log('check-skills: the package\'s own skills and contract check out; no monorepo around this checkout.')
-  process.exit(0)
-}
-
 const problems = []
 const note = (file, msg) => problems.push(`${file.replace(ROOT + '/', '')}: ${msg}`)
 
-/* Every script name declared anywhere in the workspace. */
+/* Every script name declared anywhere in the workspace — and, in a standalone
+ * clone, the package's own, which is then the only package.json there is. */
 const scriptNames = new Set()
-const pkgDirs = [ROOT, DS, ...readdirSync(`${ROOT}/apps`).map((a) => `${ROOT}/apps/${a}`)]
+const apps = existsSync(`${ROOT}/apps`) ? readdirSync(`${ROOT}/apps`).map((a) => `${ROOT}/apps/${a}`) : []
+const pkgDirs = [ROOT, DS, pkgRoot, ...apps]
 for (const dir of pkgDirs) {
   const p = `${dir}/package.json`
   if (!existsSync(p)) continue
@@ -85,7 +94,16 @@ for (const dir of pkgDirs) {
 const REPO_PATH = /^(packages|apps|docs|src|styles|scripts|evals|visual|screen-specs|requests|\.claude|\.githooks|\.github)\//
 const PLACEHOLDER = /[<>*]|(^|\/)(Name|<id>)(\/|\.|$)/
 
-function checkDoc(file, body) {
+/* A skill in `.claude/` may name any command the workspace defines: its reader is
+ * standing in the workspace. The EXPORTED skill may not — its reader has this
+ * package and nothing else, so `npm run X` there has to be a script this package
+ * itself declares. The two lists were one until an export claimed `check:tokens`,
+ * which seven apps define and this package never has. */
+const pkgScripts = new Set(
+  Object.keys(JSON.parse(readFileSync(`${pkgRoot}/package.json`, 'utf8')).scripts ?? {}),
+)
+
+function checkDoc(file, body, { scripts = scriptNames, roots = [ROOT, DS] } = {}) {
   /* Frontmatter: the loader needs a description, and it doubles as the trigger. */
   const fm = body.match(/^---\n([\s\S]*?)\n---/)
   if (!fm) return note(file, 'no YAML frontmatter (the loader will skip it)')
@@ -98,7 +116,9 @@ function checkDoc(file, body) {
 
   /* Claimed npm scripts must exist. */
   for (const m of body.matchAll(/npm run ([a-z0-9:-]+)/g)) {
-    if (!scriptNames.has(m[1])) note(file, `claims \`npm run ${m[1]}\`, which no package.json defines`)
+    if (!scripts.has(m[1])) {
+      note(file, `claims \`npm run ${m[1]}\`, which ${scripts === scriptNames ? 'no package.json defines' : 'this package does not define — the reader of this file has no other'}`)
+    }
   }
 
   /* Claimed repo paths must exist. Only check things that look like real paths. */
@@ -108,8 +128,29 @@ function checkDoc(file, body) {
     if (seen.has(p) || PLACEHOLDER.test(p) || !REPO_PATH.test(p)) continue
     seen.add(p)
     /* A path may be written relative to the repo root or to the DS package. */
-    if (![`${ROOT}/${p}`, `${DS}/${p}`].some((c) => existsSync(c))) {
+    if (!roots.some((r) => existsSync(`${r}/${p}`))) {
       note(file, `mentions \`${p}\`, which does not exist (moved or renamed?)`)
+    }
+  }
+}
+
+/* Counted claims. "73 components, 4 blocks" is the kind of sentence that reads as
+ * authoritative and rots the moment somebody adds a component: an agent told the
+ * system has 73 components will not go looking for the 74th. Commands and paths
+ * are claims about the repository; a number is one too. */
+const countDirs = (dir) =>
+  readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory()).length
+const REAL = {
+  components: countDirs(`${DS}/src/components`),
+  blocks: countDirs(`${DS}/src/blocks`),
+}
+function checkCounts(files) {
+  for (const f of files) {
+    const body = readFileSync(f, 'utf8')
+    for (const m of body.matchAll(/(\d+)\s+(components|blocks)\b/g)) {
+      const claimed = Number(m[1])
+      const real = REAL[m[2]]
+      if (claimed !== real) note(f, `claims ${claimed} ${m[2]}, there are ${real}`)
     }
   }
 }
@@ -125,6 +166,45 @@ function walk(dir, isSkillDir) {
     } else if (e.isFile() && e.name.endsWith('.md') && !isSkillDir) out.push(p)
   }
   return out
+}
+
+/* THE EXPORTED SKILL — `.agents/skills/`, written by gen-agent-skills.mjs for an
+ * agent working WITH this package in somebody else's repository.
+ *
+ * Generated is not the same as true. Every command it names and every number it
+ * prints is a claim about a repository the reader has and this checkout is not,
+ * and it is the one document here whose reader cannot ask anybody what was meant.
+ * So it is checked like a hand-written skill — and it is checked in a standalone
+ * clone too, because a standalone clone is the only place it is ever read.
+ *
+ * Its own links are the fourth acceptance point of docs/skill-package-draft.md:
+ * a `references/…` path that resolves in the monorepo and nowhere else is exactly
+ * the failure this file was written for, one directory over. */
+const exported = walk(`${pkgRoot}/.agents/skills`, true)
+for (const f of exported) {
+  const body = readFileSync(f, 'utf8')
+  checkDoc(f, body, { scripts: pkgScripts, roots: [pkgRoot] })
+  const dir = f.slice(0, f.lastIndexOf('/'))
+  const seen = new Set()
+  for (const m of body.matchAll(/`([^`\s]+\/[^`\s]*)`/g)) {
+    const rel = m[1].replace(/[.,)]$/, '')
+    if (seen.has(rel) || PLACEHOLDER.test(rel) || !rel.startsWith('references/')) continue
+    seen.add(rel)
+    if (!existsSync(`${dir}/${rel}`)) note(f, `points at \`${rel}\`, which is not in the exported skill`)
+  }
+}
+checkCounts(exported)
+
+/* Standalone clone (the published design-system repo): no monorepo above it, so
+ * there are no monorepo skills, agents or app AGENTS.md files left to check. */
+if (!existsSync(`${ROOT}/apps`)) {
+  if (problems.length) {
+    console.error(`\n\x1b[31m✗ ${problems.length} problem(s) in the exported skill\x1b[0m\n`)
+    for (const p of problems) console.error(`  ${p}`)
+    process.exit(1)
+  }
+  console.log(`check-skills: the package's own skills and contract check out (${exported.length} exported skill(s)); no monorepo around this checkout.`)
+  process.exit(0)
 }
 
 const docs = [...walk(SKILLS, true), ...walk(AGENTS, false)]
@@ -173,24 +253,7 @@ for (const f of contracts) {
   }
 }
 
-/* Counted claims. "73 components, 4 blocks" is the kind of sentence that reads as
- * authoritative and rots the moment somebody adds a component: an agent told the
- * system has 73 components will not go looking for the 74th. Commands and paths
- * were already checked; a number is just as much a claim about the repository. */
-const countDirs = (dir) =>
-  readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory()).length
-const REAL = {
-  components: countDirs(`${DS}/src/components`),
-  blocks: countDirs(`${DS}/src/blocks`),
-}
-for (const f of [...walk(SKILLS, true), ...walk(AGENTS, false), ...contracts]) {
-  const body = readFileSync(f, 'utf8')
-  for (const m of body.matchAll(/(\d+)\s+(components|blocks)\b/g)) {
-    const claimed = Number(m[1])
-    const real = REAL[m[2]]
-    if (claimed !== real) note(f, `claims ${claimed} ${m[2]}, there are ${real}`)
-  }
-}
+checkCounts([...walk(SKILLS, true), ...walk(AGENTS, false), ...contracts])
 
 const skillCount = walk(SKILLS, true).length
 const agentCount = walk(AGENTS, false).length
@@ -202,4 +265,4 @@ if (problems.length) {
   process.exit(1)
 }
 
-console.log(`\x1b[32m✓ project skills and agents check out\x1b[0m (${skillCount} skills, ${agentCount} agents, ${contracts.length} AGENTS.md: commands exist, paths exist, descriptions trigger)`)
+console.log(`\x1b[32m✓ project skills and agents check out\x1b[0m (${skillCount} skills, ${agentCount} agents, ${exported.length} exported, ${contracts.length} AGENTS.md: commands exist, paths exist, descriptions trigger)`)

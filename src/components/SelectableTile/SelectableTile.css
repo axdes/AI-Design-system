@@ -9,7 +9,7 @@
   align-items: center;
   gap: var(--space-1) var(--space-3);
   padding: var(--space-4);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--card-radius);
   background: var(--card);
   color: var(--card-foreground);
@@ -19,7 +19,7 @@
 .selectable-tile:hover { border-color: var(--border-strong, var(--border)); }
 /* Pressed: one stop past hover, the third answer every control now gives. */
 .selectable-tile:active:not([data-disabled]) { background: var(--surface-hover); }
-.selectable-tile[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.selectable-tile[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
 /* The real control, kept in the DOM so the keyboard, the radio group and the
  * form all work, and visually replaced by the mark. */
@@ -83,7 +83,7 @@
 }
 
 .selectable-tile:has(.selectable-tile-input:focus-visible) {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 

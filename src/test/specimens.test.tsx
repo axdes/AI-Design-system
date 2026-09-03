@@ -5,10 +5,12 @@ import { CARD_SPECIMENS } from '../specimens/cards'
 import { FORM_SPECIMENS } from '../specimens/forms'
 import { TABLE_SPECIMENS } from '../specimens/tables'
 import { CELL_SPECIMENS } from '../specimens/cells'
+import { CONTROL_SPECIMENS } from '../specimens/controls'
 import rules from '../../screen-specs/card-rules.json'
 import formRules from '../../screen-specs/form-rules.json'
 import tableRules from '../../screen-specs/table-rules.json'
 import cellRules from '../../screen-specs/cell-rules.json'
+import controlRules from '../../screen-specs/control-rules.json'
 
 /* The 31 card families, rendered.
  *
@@ -43,7 +45,11 @@ describe('card specimens', () => {
 
   /* One sweep rather than one test each: these are compositions of parts that
      are already audited alone, so what is new here is how they combine. */
-  it('has no accessibility violations in any family', async () => {
+  /* 30s, not the 5s default: axe holds one global lock, so the harness queues
+   * its runs (src/test/harness/a11y.ts, 2026-09-02) and a test that checks
+   * thirty specimens now waits for every other file's axe as well. The work is
+   * real; the old number was measuring a race. */
+  it('has no accessibility violations in any family', { timeout: 30_000 }, async () => {
     for (const [id, Specimen] of Object.entries(CARD_SPECIMENS)) {
       const { container, unmount } = render(<Specimen />)
       const violations = await a11yViolations(container)
@@ -53,13 +59,14 @@ describe('card specimens', () => {
   })
 })
 
-/* The same three questions for the other two layers. A kind the rules can
+/* The same three questions for the other three layers. A kind the rules can
    choose and nobody has ever rendered is a rule taught blind, and the fastest
    way for one to break is a part it composes changing under it. */
 for (const [layer, specimens, ids] of [
   ['form', FORM_SPECIMENS, Object.keys(formRules.formKinds ?? {})],
   ['table', TABLE_SPECIMENS, Object.keys(tableRules.tableKinds ?? {})],
   ['cell', CELL_SPECIMENS, Object.keys(cellRules.cellKinds ?? {})],
+  ['control', CONTROL_SPECIMENS, Object.keys(controlRules.controlKinds ?? {})],
 ] as const) {
   describe(`${layer} specimens`, () => {
     it('covers every kind the rules name, and invents none', () => {
@@ -81,7 +88,7 @@ for (const [layer, specimens, ids] of [
       })
     }
 
-    it('has no accessibility violations in any kind', async () => {
+    it('has no accessibility violations in any kind', { timeout: 30_000 }, async () => {
       for (const [id, Specimen] of Object.entries(specimens)) {
         const { container, unmount } = render(<Specimen />)
         const violations = await a11yViolations(container)

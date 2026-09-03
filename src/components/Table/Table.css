@@ -3,17 +3,13 @@
  * "what happens on a phone" is a scroll container, not a different structure.
  * `contain` stops a sideways swipe at the table edge from paging the browser. */
 .table-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
-.table-scroll:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 
 .table { inline-size: 100%; border-collapse: collapse; font-size: var(--font-sm); }
 .table[data-size="sm"] { font-size: var(--font-xs); }
 
 .table-th, .table-td {
   text-align: start; padding: var(--space-3) var(--space-4);
-  border-block-end: 1px solid var(--border); vertical-align: top;
+  border-block-end: var(--surface-edge); vertical-align: top;
 }
 .table[data-size="sm"] .table-th, .table[data-size="sm"] .table-td { padding: var(--space-2) var(--space-3); }
 
@@ -76,7 +72,7 @@ tbody .table-row:last-child .table-th { border-block-end: 0; }
 /* Unless something follows it: a detail row, a group heading or a footer are
  * the next block, and the line between them is what says so. */
 tbody .table-row:last-child:has(+ .table-detail) .table-td,
-tbody .table-row:last-child:has(+ .table-detail) .table-th { border-block-end: 1px solid var(--border); }
+tbody .table-row:last-child:has(+ .table-detail) .table-th { border-block-end: var(--surface-edge); }
 /* THE ROW'S STATE IS PAINTED ON THE ROW, NOT ON ITS CELLS.
  *
  * It used to be `.table-row:hover .table-td`, which outranks
@@ -99,18 +95,10 @@ tbody .table-row:last-child:has(+ .table-detail) .table-th { border-block-end: 1
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  padding: 0;
-  border: none;
   background: transparent;
   color: inherit;
-  font: inherit;
   text-transform: inherit;
   letter-spacing: inherit;
-  cursor: pointer;
-}
-.table-sort:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
 }
 .table-sort-icon { opacity: 0; transition: opacity var(--duration-fast); }
 .table-sort:hover .table-sort-icon { opacity: 0.4; }
@@ -173,7 +161,7 @@ tbody .table-th[data-emphasis] { font-weight: var(--font-weight-semibold); }
 /* The row under the rows. A double line, because the total is not one more
  * record: it is what the records add up to. */
 .table-foot .table-td, .table-foot .table-th {
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
   border-block-end: 0;
   background: var(--card);
   font-weight: var(--font-weight-semibold);
@@ -227,26 +215,23 @@ tbody .table-th[data-emphasis] { font-weight: var(--font-weight-semibold); }
  * so a group heading in it would say "selected". This is the card's own surface
  * pulled a third of the way to its border: visible on white, correct in dark
  * without a second declaration, and it means nothing else in the system. */
-.table-group-cell { padding: 0; background: color-mix(in oklch, var(--card), var(--border) 30%); border-block-end: 1px solid var(--border); }
+.table-group-cell { padding: 0; background: color-mix(in oklch, var(--card), var(--border) 30%); border-block-end: var(--surface-edge); }
 .table-group-toggle {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   inline-size: 100%;
   padding: var(--space-2) var(--space-4);
-  border: none;
   background: transparent;
   color: var(--foreground);
-  font: inherit;
   font-size: var(--font-sm);
   font-weight: var(--font-weight-semibold);
   text-align: start;
-  cursor: pointer;
 }
 .table-group-toggle:hover { background: color-mix(in oklch, var(--card), var(--border) 55%); }
 .table-group-toggle:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(var(--ring-offset) * -1);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
 }
 .table-group-label { flex: 1; }
 .table-group-count {
@@ -268,25 +253,18 @@ tbody .table-th[data-emphasis] { font-weight: var(--font-weight-semibold); }
   justify-content: center;
   /* 24px floor, the same one the sort control carries (SC 2.5.8). */
   inline-size: var(--space-6); block-size: var(--space-6);
-  padding: 0;
-  border: none;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--muted-foreground);
-  cursor: pointer;
 }
 .table-expand:hover { color: var(--foreground); background: var(--surface-hover); }
-.table-expand:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 
 /* The second layer, in the row's own width. It is not a row of data, so it
  * carries the muted surface rather than the card's. */
 .table-detail-cell {
   padding: var(--space-4);
   background: color-mix(in oklch, var(--card), var(--border) 30%);
-  border-block-end: 1px solid var(--border);
+  border-block-end: var(--surface-edge);
 }
 
 /* No rows. The cell spans the table so the message sits under the columns it
@@ -317,7 +295,7 @@ tbody .table-th[data-emphasis] { font-weight: var(--font-weight-semibold); }
 /* A group heading: the second axis of a header, over the columns it names. It
  * centres over its span and carries the line that says where the group ends. */
 .table-colgroup {
-  border-inline-end: 1px solid var(--border);
+  border-inline-end: var(--surface-edge);
   padding-block-end: var(--space-2);
 }
 .table-colgroup:last-child { border-inline-end: 0; }

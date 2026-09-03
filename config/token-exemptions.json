@@ -1,0 +1,11 @@
+{
+  "_why": "Tokens that npm run lint:token-layer must not call dead, each with the reason. Two kinds only. `unreadable` is what the platform cannot take: the value has to be repeated literally at the call site, and the token stands beside it as the source of truth. `published` is a token this system offers outward on purpose, taken by nothing here — and it is the harder case to justify, because the owner's rule says a product using a token is not a reason to keep it (2026-09-02). A ladder step needs no entry: the check derives that from the family.",
+  "unreadable": {
+    "--bp-sm": "@media cannot read a custom property, so every media query repeats 30rem literally. lint:rules holds those literals to this scale, which is only possible because the token is here to be the scale.",
+    "--bp-md": "the same, 48rem — the tablet step, and the one the sidebar drawer switches on.",
+    "--bp-lg": "the same, 62rem.",
+    "--bp-xl": "the same, 75rem.",
+    "--bp-2xl": "the same, 100rem."
+  },
+  "published": {}
+}

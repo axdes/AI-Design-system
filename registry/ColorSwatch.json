@@ -35,7 +35,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md'",
       "required": false,
       "description": "How the set is used: `md` when picking is the task, `sm` for a row read as a summary of what is already chosen.",
       "values": [

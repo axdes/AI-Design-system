@@ -19,7 +19,7 @@
   padding: var(--space-3) var(--space-3) var(--space-3) var(--space-3);
   background: var(--popover);
   color: var(--popover-foreground);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-lg);
   pointer-events: auto;
@@ -63,16 +63,13 @@
   justify-content: center;
   width: 1.5rem;    /* 24px — fixed */
   height: 1.5rem;
-  padding: 0;
-  border: none;
   background: transparent;
   color: var(--muted-foreground);
-  cursor: pointer;
   border-radius: var(--radius-sm);
   transition: background var(--duration-fast), color var(--duration-fast);
 }
 .toast-close:hover { background: var(--accent-soft); color: var(--accent-foreground); }
-.toast-close:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
+.toast-close:focus-visible { outline: var(--focus-ring); outline-offset: var(--ring-offset); }
 
 @keyframes toast-in {
   from { opacity: 0; transform: translateY(var(--space-2)) scale(0.98); }

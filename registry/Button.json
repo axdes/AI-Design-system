@@ -17,7 +17,7 @@
     },
     {
       "name": "variant",
-      "type": "Variant",
+      "type": "'primary' | 'secondary' | 'ghost' | 'destructive' | 'success' | 'dark' | 'link' | 'ai'",
       "required": false,
       "description": "How much weight this action carries ON THE SCREEN — which makes it a decision about the screen, not about the button. Exactly one action is `primary`: the thing the reader came to do. Everything beside it is `secondary`, which is also what a button with no variant gets, and that is the right default for a control nobody has thought about yet. `ghost` is for a control that must not compete with the content under it. `destructive` is reserved for what cannot be undone, where the colour IS the warning — and it does not remove the need to confirm.",
       "values": [
@@ -33,7 +33,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "Control height: sm 32 / md 40 (default) / lg 52. State it whenever the button sits beside an `<IconButton>`, which defaults to `sm`.",
       "values": [

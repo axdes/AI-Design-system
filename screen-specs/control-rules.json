@@ -1,0 +1,661 @@
+{
+  "$comment": [
+    "WHICH CONTROL A VALUE GETS — the layer under form-rules.json.",
+    "",
+    "form-rules decides what KIND of form a zone is: a dialog, a panel, a page, a",
+    "wizard. It names the parts that build the container and stops there. Nothing",
+    "in this system has ever said when a field is a Slider and when it is a",
+    "NumberInput, when a boolean is a Switch and when it is a Checkbox, or at how",
+    "many options a Radio group becomes a Select.",
+    "",
+    "That gap was measured rather than felt (2026-08-31): eight of the thirteen",
+    "components no rule and no product named were input controls — DatePicker,",
+    "DateRangePicker, Slider, RangeSlider, TagInput, CodeInput, InputGroup,",
+    "ConditionalReveal. They were not unused because they were wrong. They were",
+    "unused because nothing in the system could say when to reach for them, so",
+    "every screen that needed one either hand-rolled it or picked the nearest",
+    "field it happened to remember.",
+    "",
+    "A zone that takes input may declare `controls`, the same way a table zone",
+    "declares `columns`. Each control names what it TAKES, and the kind decides",
+    "the component and what it owes. `data.fields` stays what it was: a count,",
+    "which is what form-rules reads to choose dialog against page against wizard.",
+    "This layer is about each field; that one is about how many there are.",
+    "",
+    "Every component named below is in the registry and is built."
+  ],
+  "controlKinds": {
+    "text": {
+      "means": "One line of free text: a name, a reference, a title.",
+      "useWhen": "The value is short, and the reader writes it rather than picks it.",
+      "notWhen": "The set of acceptable answers is known — that is a choice, not typing.",
+      "components": {
+        "required": [
+          "Input"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "A label that names the value, not the action: \"Supplier\", not \"Enter supplier\".",
+        "The browser's own purpose where it has one (autocomplete), so a phone fills it in."
+      ],
+      "status": "built"
+    },
+    "long-text": {
+      "means": "Several sentences: a note, a description, a reason.",
+      "useWhen": "The answer is prose and its length is not known in advance.",
+      "notWhen": "One line is the honest expectation — a tall box asks for an essay.",
+      "components": {
+        "required": [
+          "Textarea"
+        ],
+        "expect": [
+          "Field",
+          "CharacterCount"
+        ]
+      },
+      "owes": [
+        "A capped field says what is left, under it, as it is typed (<CharacterCount>).",
+        "Room for the answer it expects: a box sized for one line teaches the reader to write one."
+      ],
+      "status": "built"
+    },
+    "number": {
+      "means": "A quantity typed exactly: how many, how long, how far.",
+      "useWhen": "The digits are the point and the reader knows them.",
+      "notWhen": "The value is a position on a scale — see `bounded`.",
+      "components": {
+        "required": [
+          "NumberInput"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "A step that matches the quantity: a whole number of people steps by one, not by 0.1.",
+        "Tabular figures, so a column of them lines up."
+      ],
+      "status": "built"
+    },
+    "amount": {
+      "means": "A number that is nothing without its unit: a price, a weight, a rate.",
+      "useWhen": "The unit is fixed by the screen rather than chosen by the reader.",
+      "notWhen": "The reader picks the unit too — that is two controls, and the unit is a `choice`.",
+      "components": {
+        "required": [
+          "InputGroup"
+        ],
+        "expect": [
+          "NumberInput",
+          "Field"
+        ]
+      },
+      "owes": [
+        "The unit attached to the field, never only in the label: a value read back without its unit is a different value.",
+        "The unit on the side the language puts it: a currency leads, a weight trails."
+      ],
+      "status": "built"
+    },
+    "bounded": {
+      "means": "A position on a known scale, where the digits are not the point.",
+      "useWhen": "Both ends are fixed and the reader is choosing more or less, not a figure.",
+      "notWhen": "The exact number matters. A slider for a price is a control that cannot be typed.",
+      "components": {
+        "required": [
+          "Slider"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "The current value shown as a number beside the track: a slider with no readout is a guess.",
+        "Both ends labelled, so the scale is legible without dragging it."
+      ],
+      "status": "built"
+    },
+    "span": {
+      "means": "A pair on one scale: from and to.",
+      "useWhen": "The reader is narrowing a range and both ends move.",
+      "notWhen": "The pair is two dates — see `date-span`, which has a calendar.",
+      "components": {
+        "required": [
+          "RangeSlider"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "An ordered pair: the ends clamp against each other rather than crossing.",
+        "Both values readable at once, because the range IS the value."
+      ],
+      "status": "built"
+    },
+    "choice": {
+      "means": "One of a few named options, all worth showing at once.",
+      "useWhen": "Two to five options AND comparing them is part of choosing: a plan, a priority, a delivery speed.",
+      "notWhen": "The reader already knows their answer and is looking it up rather than weighing it — then a menu is faster to skip past, whatever the count.",
+      "components": {
+        "required": [
+          "Radio"
+        ],
+        "expect": [
+          "Field",
+          "SegmentedControl"
+        ]
+      },
+      "owes": [
+        "Every option visible without a press, in a fixed order.",
+        "<SegmentedControl> instead when the options are VIEWS of the same thing and switching is instant."
+      ],
+      "status": "built"
+    },
+    "choice-view": {
+      "means": "One of a few options that are VIEWS of the same thing.",
+      "useWhen": "Switching is instant and nothing is submitted: list against board against calendar.",
+      "notWhen": "The options are values the form carries — that is `choice`, and a radio group says so.",
+      "components": {
+        "required": [
+          "SegmentedControl"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "The change applied at once, like a switch: a segmented control behind a Save button is a radio group in disguise.",
+        "Two to five segments, all readable without truncation, because the set is the control's whole width."
+      ],
+      "status": "built"
+    },
+    "choice-long": {
+      "means": "One of many named options.",
+      "useWhen": "Up to fifteen options, and the reader is finding a value rather than comparing the set.",
+      "notWhen": "The list is longer than a menu, or the set is worth comparing and small enough to lay out.",
+      "components": {
+        "required": [
+          "Select"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "The current value visible on the closed control, not just inside the menu.",
+        "An order the reader can predict: alphabetical, or the order the domain uses."
+      ],
+      "status": "built"
+    },
+    "choice-searched": {
+      "means": "One of many, found by typing.",
+      "useWhen": "More than about fifteen options, or a set the screen does not know in advance.",
+      "notWhen": "The reader cannot be expected to know the words — a menu they can read beats a box they must guess at.",
+      "components": {
+        "required": [
+          "Combobox"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "The typed text marked in each result, so the list says why each one is a hit (<Highlight>).",
+        "An answer when nothing matches, which is not an empty menu."
+      ],
+      "status": "built"
+    },
+    "choice-visual": {
+      "means": "An option recognised by how it looks rather than by its name.",
+      "useWhen": "The look IS the value: a colour, a layout, a plan, a theme.",
+      "notWhen": "The options differ in words. A tile of text is a radio that takes six times the room.",
+      "components": {
+        "required": [
+          "SelectableTile"
+        ],
+        "expect": [
+          "ColorSwatch",
+          "Field"
+        ]
+      },
+      "owes": [
+        "A name as well as the picture: a swatch with no name is unusable to anyone who cannot see it.",
+        "A real radio or checkbox underneath, so the group keeps its arrow keys and its value in a form."
+      ],
+      "status": "built"
+    },
+    "choices": {
+      "means": "Several values from a set the screen knows.",
+      "useWhen": "The reader may pick none, one or many, and the options are worth showing.",
+      "notWhen": "The reader invents the values — see `tags`.",
+      "components": {
+        "required": [
+          "Checkbox"
+        ],
+        "expect": [
+          "Field",
+          "Combobox"
+        ]
+      },
+      "owes": [
+        "A group with a name of its own, so the boxes are announced as one question.",
+        "<Combobox multiple> instead once the set is long enough to need searching."
+      ],
+      "status": "built"
+    },
+    "tags": {
+      "means": "Several values the reader invents as they go.",
+      "useWhen": "The set is open: keywords, recipients, labels.",
+      "notWhen": "The values must come from a known list — that is `choices`, and a free box invites a typo.",
+      "components": {
+        "required": [
+          "TagInput"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "Each value removable on its own, without retyping the rest.",
+        "One obvious way to commit a value, and the same one every time."
+      ],
+      "status": "built"
+    },
+    "toggle": {
+      "means": "On or off, and it takes effect the moment it is flipped.",
+      "useWhen": "A setting: nothing is submitted, the change IS the action.",
+      "notWhen": "The value is part of a form the reader submits — see `agreement`.",
+      "components": {
+        "required": [
+          "Switch"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "A label that reads as a state, not as a command: \"Weekly digest\", not \"Turn on digest\".",
+        "The result visible without a save: a switch that needs a Save button is a checkbox."
+      ],
+      "status": "built"
+    },
+    "agreement": {
+      "means": "A box the reader ticks, whose value is submitted with the form.",
+      "useWhen": "Consent, an option, an opt-in — anything the Save button carries.",
+      "notWhen": "The change applies at once. That is a `toggle`, and a switch says so.",
+      "components": {
+        "required": [
+          "Checkbox"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "The whole label clickable, not just the box.",
+        "Stated in the positive: a box that means \"do not send\" is read wrong by everyone in a hurry."
+      ],
+      "status": "built"
+    },
+    "date": {
+      "means": "One day.",
+      "useWhen": "The reader is choosing a day, and which day it is has context — a weekend, a deadline, next month.",
+      "notWhen": "The date is a birth date the reader knows by heart: typing beats nine clicks back through a calendar.",
+      "components": {
+        "required": [
+          "DatePicker"
+        ],
+        "expect": [
+          "Field",
+          "Calendar"
+        ]
+      },
+      "owes": [
+        "Typing as well as picking: a calendar-only field is slow for a date the reader already knows.",
+        "The format shown, not guessed at."
+      ],
+      "status": "built"
+    },
+    "date-span": {
+      "means": "A start and an end.",
+      "useWhen": "The two dates are one decision: a stay, a reporting period, a leave request.",
+      "notWhen": "The two are independent — then they are two `date` controls with their own labels.",
+      "components": {
+        "required": [
+          "DateRangePicker"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "A backwards pair ordered rather than refused.",
+        "The band between the ends painted, because the span is what is being chosen."
+      ],
+      "status": "built"
+    },
+    "time": {
+      "means": "A time of day.",
+      "useWhen": "The value is a clock time, with or without a date beside it.",
+      "notWhen": "The value is a duration. A duration is a `number` with a unit.",
+      "components": {
+        "required": [
+          "Input"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "`type=\"time\"`, so the platform's own clock and keyboard arrive with it.",
+        "One zone said, when the screen has more than one."
+      ],
+      "status": "built"
+    },
+    "file": {
+      "means": "One or more files from the reader's machine.",
+      "useWhen": "The value is a document, an image, an export.",
+      "notWhen": "The reader would paste the content — a text box is faster than a round trip through disk.",
+      "components": {
+        "required": [
+          "FileUpload"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "What is accepted and how large, said before the reader picks, not after.",
+        "Each chosen file removable, and the progress of each one visible."
+      ],
+      "status": "built"
+    },
+    "secret": {
+      "means": "A password or a token.",
+      "useWhen": "The value must not be read over the reader's shoulder.",
+      "notWhen": "Never anything else: a secret in a plain field is a secret on a screen.",
+      "components": {
+        "required": [
+          "PasswordInput"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "A way to reveal it, because a password typed blind is a password typed wrong.",
+        "Never written to storage, and never carried in a URL."
+      ],
+      "status": "built"
+    },
+    "code": {
+      "means": "A short verification code, one box per character.",
+      "useWhen": "A code arrived by mail or by phone and is about to be typed once.",
+      "notWhen": "The value is long or is remembered — one field is kinder than eight.",
+      "components": {
+        "required": [
+          "CodeInput"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "A paste of the whole code filling every box, because that is how a code arrives.",
+        "`autocomplete=\"one-time-code\"`, so the platform offers it."
+      ],
+      "status": "built"
+    },
+    "score": {
+      "means": "A rating out of a fixed number.",
+      "useWhen": "The reader is scoring something and the scale is small and familiar.",
+      "notWhen": "The scale is a measurement — that is `bounded`, and it has a readout.",
+      "components": {
+        "required": [
+          "Rating"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "The value in words as well as in marks, for anyone who cannot see the stars.",
+        "A way back to no score, if no score is a legal answer."
+      ],
+      "status": "built"
+    },
+    "query": {
+      "means": "Free text that narrows what is already on screen.",
+      "useWhen": "The typing changes a list rather than filling in a record.",
+      "notWhen": "The text is a value that gets saved. That is `text`, and it belongs in a Field.",
+      "components": {
+        "required": [
+          "SearchInput"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "No Field and no label above it: the placeholder says what is searched, and the results say the rest.",
+        "A way to clear it that does not need selecting the text first."
+      ],
+      "status": "built"
+    },
+    "message": {
+      "means": "A message the reader sends.",
+      "useWhen": "The zone is a conversation and the answer goes off immediately.",
+      "notWhen": "The text is saved with everything else on the screen — that is `long-text`.",
+      "components": {
+        "required": [
+          "ChatComposer"
+        ],
+        "expect": []
+      },
+      "owes": [
+        "A send that is reachable from the keyboard, and a stop while the answer is coming.",
+        "The box growing with the message, up to a stated limit."
+      ],
+      "status": "built"
+    },
+    "dependent": {
+      "means": "A field that exists only while another control has a particular value.",
+      "useWhen": "\"Other\" needs a box, a plan needs a seat count, a reason needs saying.",
+      "notWhen": "The field always applies. A field that appears for everyone is a field that should have been there.",
+      "components": {
+        "required": [
+          "ConditionalReveal"
+        ],
+        "expect": [
+          "Field"
+        ]
+      },
+      "owes": [
+        "Rendered under the option it belongs to, so the connection is spatial and not remembered.",
+        "Its value dropped when the option it depends on is unchosen, so a hidden field cannot be submitted."
+      ],
+      "status": "built"
+    }
+  },
+  "rules": [
+    {
+      "id": "V1",
+      "title": "A control that carries a value lives in a Field",
+      "when": {
+        "notControl": [
+          "query",
+          "message",
+          "toggle",
+          "choice-view"
+        ]
+      },
+      "expect": {
+        "component": "Field"
+      },
+      "because": "The label, the description and the error message are one part in this system, tied to the control by id. Written by hand they drift: the label stops being clickable, the error stops being announced, and the message ends up beside a control a screen reader never connects it to. The three exceptions carry their own name — a search box says what it searches in its placeholder, a composer is the whole zone, and a switch is labelled by the setting it is."
+    },
+    {
+      "id": "V2",
+      "title": "A set that cannot be scanned is not laid out, and one that cannot be scrolled is not a menu",
+      "when": {
+        "control": [
+          "choice",
+          "choice-long",
+          "choice-searched"
+        ]
+      },
+      "expect": {
+        "optionsMatchKind": true
+      },
+      "because": "Two bounds, not three buckets. Laying options out stops working past about five, and a menu stops working past about fifteen — those are the two failures worth a gate. Between them the screen decides, because the real question is whether COMPARING the options is part of choosing: a plan is weighed, an area is looked up. The first cut of this rule made the count pick the kind and failed the admin portal's own form on the day it was written, where Status has two values and Area five and both are Selects among ten fields. The rule was wrong, not the form."
+    },
+    {
+      "id": "V3",
+      "title": "A switch applies, a checkbox submits",
+      "when": {
+        "control": [
+          "toggle",
+          "agreement"
+        ]
+      },
+      "expect": {
+        "appliesDeclared": true
+      },
+      "because": "They look interchangeable and are not: a switch promises the change already happened, a checkbox promises it happens when the form is saved. Getting it the wrong way round produces either a setting nobody realises they have to save, or a form that changes something before the reader agreed to it. The screen knows which it is; the spec says so, and the component follows."
+    },
+    {
+      "id": "V4",
+      "title": "A slider is for a position, never for a figure",
+      "when": {
+        "control": [
+          "bounded",
+          "span"
+        ]
+      },
+      "expect": {
+        "readout": true
+      },
+      "because": "A track answers \"more or less\" well and \"how much exactly\" badly: it cannot be typed, it cannot be pasted, and on a phone it cannot be landed on a value. So it is for the case where the exact number does not matter, and even then it owes a readout — a slider whose value is only its handle position is a control the reader cannot check."
+    },
+    {
+      "id": "V5",
+      "title": "A capped text field says what is left",
+      "when": {
+        "control": [
+          "long-text",
+          "text"
+        ]
+      },
+      "expect": {
+        "capOwesCount": true
+      },
+      "because": "A limit the reader meets by being cut off is a limit the screen kept to itself. <CharacterCount> is the one place this is said, and it says it as it is typed rather than on submit."
+    }
+  ],
+  "hard": [
+    {
+      "id": "VH1",
+      "when": {
+        "control": [
+          "choice",
+          "choice-long"
+        ],
+        "options": 2,
+        "boolean": true
+      },
+      "forbid": [
+        "Select",
+        "Radio"
+      ],
+      "instead": "toggle",
+      "because": "Yes and No in a menu is a two-click answer to a one-click question, and it hides the current state behind a press."
+    },
+    {
+      "id": "VH2",
+      "when": {
+        "control": [
+          "date",
+          "date-span"
+        ]
+      },
+      "forbid": [
+        "Input",
+        "Select",
+        "NumberInput"
+      ],
+      "instead": "date",
+      "because": "A date assembled from three menus is three chances to build a day that does not exist, and a date typed into a plain field is a format argument with the reader. <DatePicker> takes both a keyboard and a calendar."
+    },
+    {
+      "id": "VH3",
+      "when": {
+        "control": [
+          "secret"
+        ]
+      },
+      "forbid": [
+        "Input"
+      ],
+      "instead": "secret",
+      "because": "A password in a plain field is readable over a shoulder and offered to the browser as an ordinary value. This one is not a matter of taste."
+    },
+    {
+      "id": "VH4",
+      "when": {
+        "control": [
+          "choices"
+        ]
+      },
+      "forbid": [
+        "Radio",
+        "SegmentedControl"
+      ],
+      "instead": "choices",
+      "because": "A radio group is exactly one answer, by definition and by keyboard. Using it where several are allowed leaves the reader unable to express the answer at all."
+    }
+  ],
+  "notes": [
+    {
+      "id": "VN-order",
+      "when": {
+        "control": [
+          "choice",
+          "choice-long",
+          "choice-searched",
+          "choices"
+        ]
+      },
+      "if": "the options have no natural order",
+      "say": "alphabetical, and the same order every time the screen renders — a list that reshuffles is a list nobody learns"
+    },
+    {
+      "id": "VN-required",
+      "when": {
+        "control": [
+          "*"
+        ]
+      },
+      "if": "most fields are required",
+      "say": "mark the OPTIONAL ones instead: marking the majority is noise, and the reader reads neither"
+    },
+    {
+      "id": "VN-units",
+      "when": {
+        "control": [
+          "amount",
+          "number"
+        ]
+      },
+      "if": "the value has a unit",
+      "say": "attach it to the field with <InputGroup>, and repeat it wherever the value is read back"
+    },
+    {
+      "id": "VN-dependent",
+      "when": {
+        "control": [
+          "dependent"
+        ]
+      },
+      "if": "the dependent field is required",
+      "say": "required only while it is shown — a hidden field that blocks submission is an error with nothing to point at"
+    }
+  ],
+  "$componentsNote": "Every component named above is in the registry and is built. This layer was written on 2026-08-31 after an audit measured that eight input controls existed which no rule and no product ever named: DatePicker, DateRangePicker, Slider, RangeSlider, TagInput, CodeInput, InputGroup and ConditionalReveal. They were not unused because they were wrong; they were unused because nothing could say when to reach for them."
+}

@@ -35,12 +35,8 @@
   place-items: center;
   width: var(--control-height);
   height: 100%;
-  padding: 0;
-  border: none;
   background: transparent;
   color: var(--muted-foreground);
-  font-family: inherit;
-  cursor: pointer;
   transition: color var(--duration-fast);
 }
 .search-input-toggle:hover { color: var(--foreground); }
@@ -76,18 +72,14 @@
   place-items: center;
   width: var(--control-height);
   height: 100%;
-  padding: 0;
-  border: none;
   background: transparent;
   color: var(--muted-foreground);
-  font-family: inherit;
-  cursor: pointer;
   transition: color var(--duration-fast);
 }
 .search-input-clear:hover { color: var(--foreground); }
 .search-input-clear:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(-1 * var(--ring-offset));
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
   border-radius: var(--radius-full);
 }
 
@@ -99,15 +91,15 @@
  * changes no dimension, which is what the original objection actually wanted. */
 .search-input[data-open]:focus-within {
   border-color: var(--primary-accent);
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(-1 * var(--ring-offset));
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
 }
 /* Collapsed state is a plain icon button; keep a visible keyboard focus. */
 .search-input-toggle:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   /* --ring-offset, not --ring-width: the two happen to be the same number today,
    * so this read as correct and would have drifted the moment either knob moved.
    * Inset is the shape; the offset token is the value. */
-  outline-offset: calc(-1 * var(--ring-offset));
+  outline-offset: var(--focus-ring-inset);
   border-radius: var(--radius-full);
 }

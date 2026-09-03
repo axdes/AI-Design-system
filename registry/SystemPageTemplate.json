@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "title",
-      "type": "string",
+      "type": "ReactNode",
       "required": true,
       "description": "The plain fact, GOV.UK style: \"Page not found\", \"Sorry, there is a problem with the service\". Never a code, never \"Oops\"."
     },

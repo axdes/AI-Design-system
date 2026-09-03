@@ -47,7 +47,12 @@ type Props = {
    */
   open: boolean
   onClose: () => void
-  title?: string
+  /* ReactNode, like every other title in this system: a heading routinely
+   * carries a status beside the words or a product name in the brand colour,
+   * and typing it as a string is what sends a screen off to hand-roll its own
+   * header. Widened 2026-09-03; nothing here puts it in an attribute — the
+   * dialog labels itself by id, not by the text. */
+  title?: ReactNode
   /** How much room the CONTENT needs, and md is the floor: sm is reserved for a yes-or-no
    *  confirmation and nothing else, because a form in a small dialog scrolls before it has asked
    *  anything.

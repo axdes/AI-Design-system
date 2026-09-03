@@ -1,5 +1,5 @@
 import './FileUpload.css'
-import { useId, useRef, useState, type DragEvent } from 'react'
+import { useId, useRef, useState, type DragEvent , type ReactNode } from 'react'
 import { cn } from '../../lib/cn'
 import { Icon } from '../Icon'
 import { IconButton } from '../IconButton'
@@ -24,7 +24,10 @@ type Props = {
   invalid?: boolean
   /** Prompt shown in the drop area. */
   label?: string
-  hint?: string
+  /* ReactNode: the same word means the same shape everywhere in this system,
+   * and its neighbours already took one. Widened 2026-09-03; it is rendered
+   * as content here, never put in an attribute. */
+  hint?: ReactNode
   className?: string
 }
 

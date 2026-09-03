@@ -36,7 +36,7 @@ Either way that file is the system: if a thing is not in it, it does not exist.
   per component, and that is what git carries; `component-registry.json` is the
   same thing combined, derived and gitignored, and it is what the linters read.
   Never edit either by hand and do not read the combined one whole (44k tokens for
-  128 components you will not use). `npm run gen-registry` writes all of it;
+  126 components you will not use). `npm run gen-registry` writes all of it;
   `gen-registry:check` fails on drift, undefined tokens, or a CSS variant missing
   from a prop union.
 - If no component (or composition of them, or a new data-variant on one) covers
@@ -111,7 +111,11 @@ Tailwind, no CSS modules), `lucide-react` behind `src/components/Icon`, and
 
 ## Architecture invariants (DO NOT VIOLATE)
 
-1. **3-tier tokens**: `settings` → `primitives` → `semantic`. Components use semantic only.
+1. **4-tier tokens**: `settings` → `primitives` → `semantic` → `recipes`. The
+   first three hand out ingredients; `recipes.css` holds whole answers
+   (`--focus-ring`, `--disabled-opacity`, `--surface-edge`). Components take
+   semantic + recipes, never a primitive, and never rebuild a recipe from its
+   parts.
 2. **Atomic dependency direction** (level comes from `src/components/levels.json`,
    the folder tree is flat). Never import UP the ladder; same-level imports are
    fine (IconButton → Icon, Select → Dropdown):
@@ -177,9 +181,10 @@ writing components: `screen-specs/<id>.json`, format in
   screen-specs/card-rules.json, and the gate holds it to the family's parts,
   components and rules.
 - A zone that TAKES INPUT is decided the same way: `task: "input"` plus
-  `data.commit` (explicit / per-row / autosave / none), `fields`, `context` and
-  `familiarity` choose the `form` kind (dialog, panel, page, wizard, draft, …)
-  from screen-specs/form-rules.json, and the gate holds it to its parts.
+  `data.commit`, `fields`, `context` and `familiarity` choose the `form` kind
+  from screen-specs/form-rules.json, and the gate holds it to its parts. It may
+  also declare `controls`, and screen-specs/control-rules.json decides each one
+  from what it TAKES.
 - Once the answer is a TABLE, which table is computed too: the zone declares
   `table` (list, worklist, selection, analytical, pivot, comparison, tree,
   schedule, diff, …) and, when the rows are not plain records, `data.rowUnit`

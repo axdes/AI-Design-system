@@ -32,7 +32,7 @@
   color: var(--popover-foreground);
   /* Border AND shadow: the shadow says "floating", the border is what keeps the
    * shape when it lands on a surface its own colour. */
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   box-shadow: var(--shadow-lg);
 }
 /* The tone is a stripe of ink, not a tinted surface: a toast is read against

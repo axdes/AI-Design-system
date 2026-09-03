@@ -32,6 +32,7 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { makeLifecycleEngine, makeRuleEngine, makeCardEngine, makeFormEngine, makeTableEngine, makeCellEngine, checkPriority, checkPrimaryActions, checkContentModel } from './lib/spec-rules.mjs'
+import { makeControlEngine } from './lib/control-rules.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const DIR = `${ROOT}/screen-specs`
@@ -195,6 +196,7 @@ const specimenIds = readSpecimens('cards.tsx')
 const formSpecimenIds = readSpecimens('forms.tsx')
 const tableSpecimenIds = readSpecimens('tables.tsx')
 const cellSpecimenIds = readSpecimens('cells.tsx')
+const controlSpecimenIds = readSpecimens('controls.tsx')
 const familyIds = (cardDoc.families ?? []).map((f) => f.id)
 for (const id of specimenIds) {
   if (!familyIds.includes(id)) rulesFileProblems.push(`src/specimens/cards.tsx: specimen "${id}" is not a card family`)
@@ -356,6 +358,30 @@ for (const id of cellKindIds.filter((k) => !cellSpecimenIds.includes(k))) {
   rulesFileProblems.push(`src/specimens/cells.tsx: cell kind "${id}" has no specimen — the rules can choose it and nobody has seen it`)
 }
 const cells = makeCellEngine(cellDoc)
+
+/* And the layer under the FORM layer: what one field is made of. form-rules
+ * chooses the container — dialog, panel, page, wizard — and named the parts that
+ * build it; nothing said what each field IS. Data in
+ * screen-specs/control-rules.json, written 2026-08-31 after an audit found eight
+ * input controls that existed and that no rule had ever named. */
+const controlDoc = JSON.parse(readFileSync(`${DIR}/control-rules.json`, 'utf8'))
+const controlKindIds = Object.keys(controlDoc.controlKinds ?? {})
+for (const id of controlSpecimenIds) {
+  if (!controlKindIds.includes(id)) rulesFileProblems.push(`src/specimens/controls.tsx: specimen "${id}" is not a control kind`)
+}
+const controlPictured = new Set(controlSpecimenIds)
+for (const id of controlKindIds.filter((k) => !controlPictured.has(k))) {
+  rulesFileProblems.push(`src/specimens/controls.tsx: control kind "${id}" has no specimen — the rules can choose it and nobody has seen it`)
+}
+for (const [id, kind] of Object.entries(controlDoc.controlKinds ?? {})) {
+  if (kind.status === 'planned') continue
+  for (const c of [...(kind.components?.required ?? []), ...(kind.components?.expect ?? [])]) {
+    if (!owner.has(c) && !blocks.includes(c)) {
+      rulesFileProblems.push(`control-rules.json: control kind "${id}" names <${c}>, which is not in the registry`)
+    }
+  }
+}
+const controls = makeControlEngine(controlDoc)
 
 for (const [id, kind] of Object.entries(cellDoc.cellKinds ?? {})) {
   if (kind.status === 'planned') continue
@@ -556,6 +582,7 @@ function validate(name, spec) {
     collect(tbl)
     if (tbl.unchecked) uncheckedTables.push(`${name}/${zone.name}`)
     collect(cells.checkColumns(zone))
+    collect(controls.checkControls(zone))
   }
 
   /* States: the ones that exist must be described in terms of a real component,
@@ -575,7 +602,7 @@ const arg = process.argv[2]
 const files = arg
   ? [arg]
   : existsSync(DIR)
-    ? readdirSync(DIR).filter((f) => f.endsWith('.json') && f !== 'schema.json' && !f.endsWith('.schema.json') && f !== 'selection-rules.json' && f !== 'card-rules.json' && f !== 'form-rules.json' && f !== 'table-rules.json' && f !== 'cell-rules.json' && f !== 'page-rules.json' && f !== 'lifecycle-rules.json').map((f) => `${DIR}/${f}`)
+    ? readdirSync(DIR).filter((f) => f.endsWith('.json') && f !== 'schema.json' && !f.endsWith('.schema.json') && f !== 'selection-rules.json' && f !== 'card-rules.json' && f !== 'form-rules.json' && f !== 'table-rules.json' && f !== 'cell-rules.json' && f !== 'control-rules.json' && f !== 'page-rules.json' && f !== 'lifecycle-rules.json').map((f) => `${DIR}/${f}`)
     : []
 
 if (!files.length) {
@@ -685,7 +712,7 @@ const withBehaviours = files.filter((f) => {
 }).length
 console.log(`  \x1b[2mbehaviour: ${behaviourCount} scenario(s) across ${withBehaviours}/${files.length} screens; ${proven} proven by a test, ${pending.length} pending\x1b[0m`)
 console.log(`  \x1b[2mdecision: ${questionCount}/${files.length} screens name their primaryQuestion; ${acceptanceCount}/${files.length} carry acceptance criteria; ${unchecked.length} collection zone(s) the rules cannot see${modelCount ? `; ${modelCount} content model(s), ${objectCount} object(s)` : ''}\x1b[0m`)
-console.log(`  \x1b[2m${specimenIds.length}/${familyIds.length} card families, ${formSpecimenIds.length}/${formKindIds.length} form kinds and ${tableSpecimenIds.length}/${tableKindIds.length} table kinds, ${cellSpecimenIds.length}/${cellKindIds.length} cell kinds have a rendered specimen\x1b[0m`)
+console.log(`  \x1b[2m${specimenIds.length}/${familyIds.length} card families, ${formSpecimenIds.length}/${formKindIds.length} form kinds and ${tableSpecimenIds.length}/${tableKindIds.length} table kinds, ${cellSpecimenIds.length}/${cellKindIds.length} cell kinds and ${controlPictured.size}/${controlKindIds.length} control kinds have a rendered specimen\x1b[0m`)
 if (missingSpecimens.length) console.log(`      \x1b[33m!\x1b[0m \x1b[2mno picture yet: ${missingSpecimens.join(', ')}\x1b[0m`)
 for (const z of unchecked) console.log(`      \x1b[33m!\x1b[0m \x1b[2m${z} shows a collection but names no task — say what the user does there and the representation rules apply\x1b[0m`)
 for (const z of uncheckedForms) console.log(`      \x1b[33m!\x1b[0m \x1b[2m${z} takes input but names no task — say task: "input" plus data.commit and the form rules apply\x1b[0m`)

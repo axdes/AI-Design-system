@@ -83,7 +83,7 @@ body {
  * muted page has no fill to separate it, so it gets the hairline. */
 .gallery-sample-stage[data-surface="card"] { background: var(--background); }
 .gallery-sample-stage[data-surface="region"],
-.gallery-sample-stage[data-surface="page"] { background: var(--muted); border: 1px solid var(--border); }
+.gallery-sample-stage[data-surface="page"] { background: var(--muted); border: var(--surface-edge); }
 /* Stand-in for the parent a `fill`-style prop sizes itself from. Dashed, so it
  * reads as scaffolding rather than as part of the component. */
 .gallery-slot {

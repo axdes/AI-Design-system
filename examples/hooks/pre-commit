@@ -1,0 +1,32 @@
+#!/bin/sh
+# Example .githooks/pre-commit — the full gate on every commit.
+#
+# Enable once per clone:
+#   git config core.hooksPath .githooks
+#   chmod +x .githooks/pre-commit
+#
+# core.hooksPath rather than .git/hooks/ so the hook is a file git carries: a
+# fresh clone has it, and a change to it is reviewed like any other change.
+#
+# Blocks the commit on any failure, so the rules run ALWAYS, regardless of who
+# or which editor commits. Bypass in a genuine emergency: git commit --no-verify
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+# Hooks run in a bare /bin/sh that never reads the shell profile, so an nvm or
+# Homebrew node is not on PATH here unless we put it there. Without this line
+# every hook dies with "npm: command not found" and reads like a hook that was
+# never installed.
+. ./scripts/node-path.sh
+
+staged=$(git diff --cached --name-only)
+
+# Only pay for the gate when something it covers is actually staged. In a
+# monorepo this is one branch per package; here it is the whole repository.
+if [ -n "$staged" ]; then
+  echo "▶ pre-commit: gate (npm run check)…"
+  if ! npm run check; then
+    echo ""
+    echo "✗ commit blocked — the gate failed (fix above, or git commit --no-verify only if truly necessary)."
+    exit 1
+  fi
+fi

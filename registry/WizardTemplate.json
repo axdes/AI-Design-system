@@ -72,7 +72,7 @@
     },
     {
       "name": "submitLabel",
-      "type": "string",
+      "type": "ReactNode",
       "required": true,
       "description": "Names the real event (\"Create schedule\"), never \"Submit\"."
     },

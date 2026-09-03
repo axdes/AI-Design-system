@@ -17,7 +17,7 @@
     },
     {
       "name": "tone",
-      "type": "Tone",
+      "type": "'neutral' | 'primary' | 'success' | 'warning' | 'danger'",
       "required": false,
       "description": "What the trend MEANS to this metric, and it does not follow the direction: revenue climbing is `success`, a queue climbing is `warning`, and the same rising line is both.",
       "values": [
@@ -36,7 +36,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "How much of the row it is allowed: `sm` beside a value in a stat, larger only when the shape itself is being read.",
       "values": [

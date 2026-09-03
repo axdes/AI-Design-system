@@ -6,7 +6,7 @@
   position: fixed;
   z-index: var(--z-dropdown);
   min-width: 13rem;   /* dropdown menu knob */
-  padding: var(--space-1);
+  padding: var(--popover-frame-padding);
   background: var(--popover);
 
   color: var(--popover-foreground);
@@ -22,14 +22,11 @@
   width: 100%;
   min-height: var(--control-height);
   padding: 0 var(--space-3);
-  border: none;
   border-radius: var(--popover-item-radius);
   background: transparent;
   color: var(--foreground);
-  font-family: inherit;
   font-size: var(--font-base);
   text-align: start;
-  cursor: pointer;
   transition: background var(--duration-fast), color var(--duration-fast);
 }
 .dropdown-item:hover { background: var(--surface-hover); }
@@ -46,8 +43,8 @@
 .dropdown-item[data-disabled]:hover { background: transparent; }
 .dropdown-item:focus-visible {
   background: var(--surface-hover);
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(-1 * var(--ring-offset));
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
 }
 .dropdown-item .icon { color: var(--muted-foreground); }
 
@@ -74,11 +71,10 @@
 /* Shortcut hint — pushed to the trailing edge, quiet enough to read as a
  * reminder rather than a second label. When an item is both selected and has a
  * shortcut, the hint takes the auto margin and the check follows it. */
+/* Layout only: the size, the ink and the cap belong to <Kbd>, which is what is
+   inside this now. */
 .dropdown-item-shortcut {
   margin-inline-start: auto;
-  color: var(--muted-foreground);
-  font-size: var(--font-xs);
-  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 .dropdown-item-shortcut ~ .dropdown-item-check { margin-inline-start: var(--space-2); }

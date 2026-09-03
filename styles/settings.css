@@ -159,6 +159,19 @@
   --popover-radius: var(--radius-lg);
   --popover-item-radius: var(--radius-md);
 
+  /* THE TWO ROOMS A FLOATING SURFACE GIVES, and they are two questions rather
+   * than one taste. A surface carrying CONTENT — a popover, a hover card, the
+   * palette's field — pads it like a small card. A surface that is a FRAME
+   * around rows — a menu, a listbox — pads only enough to keep the first row off
+   * the edge, because the rows carry their own padding and doubling it makes a
+   * menu look like a card with a list in it.
+   *
+   * They were five separate numbers in five stylesheets until 2026-09-03, which
+   * is one family answering one question five ways: a brand retuning its popover
+   * density had five files to find and no way to know it had found them. */
+  --popover-padding: var(--space-4);
+  --popover-frame-padding: var(--space-1);
+
   /* ════ VISUAL SCALES ════════════════════════════════════════════ */
 
   /* Icons — FIXED sizes, multiples of 4 (legibility, not spacing-density). */
@@ -188,8 +201,6 @@
 
   /* App sidebar. */
   --sidebar-width: 16.25rem; /* 260px — expanded */
-  --sidebar-width-collapsed: 5.625rem; /* icon pill rail */
-  --sidebar-drawer-width: min(20rem, 85vw); /* mobile drawer */
   --sidebar-rail-item-size: 2.5rem; /* 40px — collapsed icon button (fixed component size) */
 
   /* Content widths. */
@@ -209,5 +220,4 @@
   --chat-message-max-width: 44rem; /* readable message column */
 
   /* Brand marks (used by Sidebar + LoginPage). */
-  --logo-height: 2rem; /* full wordmark */
 }

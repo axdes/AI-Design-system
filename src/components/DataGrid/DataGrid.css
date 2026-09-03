@@ -4,7 +4,7 @@
      cannot. `100%` is the honest fallback — a sheet with no computed floor is
      the sheet we had. */
   --dg-min-width: 100%;
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--radius-lg);
   /* THE FRAME IS THE ONE HORIZONTAL SCROLLER, and the header and the body are
    * one width inside it, so they move together. `overflow: hidden` used to clip
@@ -26,7 +26,7 @@
 .datagrid-header {
   display: grid;
   background: var(--card);
-  border-block-end: 1px solid var(--border);
+  border-block-end: var(--surface-edge);
 }
 .datagrid-body {
   overflow-y: auto;
@@ -46,7 +46,7 @@
 .datagrid-row {
   display: grid;
   align-items: stretch;
-  border-block-end: 1px solid var(--border);
+  border-block-end: var(--surface-edge);
 }
 
 /* A table is read ALONG a row: six columns are one fact, not six. Without this the eye has to
@@ -125,8 +125,8 @@
   outline: none;
 }
 .datagrid-cell:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: calc(var(--ring-offset) * -1);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-inset);
 }
 /* An editable cell says so before it is entered, rather than only once the
  * user has already typed into the wrong one. */
@@ -154,18 +154,10 @@
   align-items: center;
   gap: var(--space-1);
   min-block-size: var(--space-6);
-  padding: 0;
-  border: none;
   background: transparent;
   color: inherit;
-  font: inherit;
   text-transform: inherit;
   letter-spacing: inherit;
-  cursor: pointer;
-}
-.datagrid-sort:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
 }
 .datagrid-sort-icon { opacity: 0; transition: opacity var(--duration-fast); }
 .datagrid-sort:hover .datagrid-sort-icon { opacity: 0.4; }
@@ -211,7 +203,7 @@
 .dg-choice:focus-visible {
   border-color: var(--input);
   background: var(--background);
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: 0;
 }
 

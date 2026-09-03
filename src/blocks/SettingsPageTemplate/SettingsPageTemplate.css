@@ -18,7 +18,7 @@
 .settings-section-head {
   margin-block-end: var(--space-4);
   padding-block-end: var(--space-4);
-  border-block-end: 1px solid var(--border);
+  border-block-end: var(--surface-edge);
 }
 
 .settings-section-title {
@@ -49,7 +49,7 @@
 }
 
 .settings-row + .settings-row {
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
 }
 
 .settings-row:first-child {

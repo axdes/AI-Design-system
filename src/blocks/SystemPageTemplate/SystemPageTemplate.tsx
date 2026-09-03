@@ -5,7 +5,12 @@ import { cn } from '../../lib/cn'
 
 type Props = {
   /** The plain fact, GOV.UK style: "Page not found", "Sorry, there is a problem with the service". Never a code, never "Oops". */
-  title: string
+  /* ReactNode, like every other title in this system: a heading routinely
+   * carries a status beside the words or a product name in the brand colour,
+   * and typing it as a string is what sends a screen off to hand-roll its own
+   * header. Widened 2026-09-03; nothing here puts it in an attribute — the
+   * dialog labels itself by id, not by the text. */
+  title: ReactNode
   /** The body: for a not-found page, the triage of the ways the user got here; for a failure, what to do and what happened to their answers. */
   children?: ReactNode
   /** How to reach a human — the recovery that always works. */

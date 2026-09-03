@@ -51,7 +51,7 @@
   justify-content: space-between;
   gap: var(--space-4);
   padding: var(--space-4) var(--card-padding);
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
 }
 
 /* The actions line up with the reading column rather than with the card's own
@@ -74,7 +74,7 @@
 
 /* A card placed INSIDE the form surface is white on white, the exception
  * Card.css names. Same answer the panelled detail page gives: a hairline. */
-.form-page .card { border: 1px solid var(--border); }
+.form-page .card { border: var(--surface-edge); }
 
 /* From the width where the card is taller than it is wide, the FORM scrolls and
  * the page holds still, so the actions never leave the screen and the header

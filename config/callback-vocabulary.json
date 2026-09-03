@@ -1,0 +1,42 @@
+{
+  "_why": "One name per idea, for the half of the API that is behaviour. lint:vocab holds the shared props to one set of VALUES and lint:api holds every prop name to one TYPE; neither stops a part from inventing a twenty-third word for a thing the system already names. On 2026-09-02 this catalogue published 32 callback names for about eight ideas, and writing one specimen against them means guessing. The canonical list is deliberately short: a name that is not on it is argued into this file, with what it means, before it is written at a call site.",
+  "canonical": {
+    "onChange": "The value this part owns became a different value. The argument is the new value, never an event.",
+    "onSelect": "One of several offered things was chosen. The argument names what was chosen.",
+    "onOpenChange": "A layer this part owns opened or closed. The argument is the new open state, so one name covers both directions and a controlled caller needs no second prop.",
+    "onDismiss": "The person asked to be rid of it — Escape, the backdrop, the close control. Distinct from onOpenChange because a dismissal is a request that a caller may refuse.",
+    "onSubmit": "A form was sent. The argument is what was collected.",
+    "onAction": "A named action on this part was invoked. The argument says which one, so a part with five actions does not publish five callbacks."
+  },
+  "exceptions": {
+    "_why": "Every callback this catalogue published on 2026-09-02 that is not one of the six, with the name it reads as. These are recorded, not renamed: a rename is a breaking change to a published API and belongs in a version, not in the commit that starts measuring. config/api-debt.json freezes which parts carry each one, so an exception cannot spread while it waits.",
+    "onOpen": { "use": "onOpenChange", "why": "half of an open state, published as its own prop; the other half is onClose" },
+    "onClose": { "use": "onOpenChange", "why": "the other half; a controlled layer then needs two props to say one thing" },
+    "onNavOpen": { "use": "onOpenChange", "why": "the same pair again, prefixed with the thing it opens" },
+    "onNavClose": { "use": "onOpenChange", "why": "the same pair again, prefixed with the thing it opens" },
+    "onDetailClose": { "use": "onOpenChange", "why": "the same pair again, prefixed with the thing it opens" },
+    "onCancel": { "use": "onDismiss", "why": "a dismissal wearing the name of the button that caused it" },
+    "onClear": { "use": "onChange", "why": "clearing is a value becoming empty, which onChange already carries" },
+    "onFiles": { "use": "onChange", "why": "named after the payload rather than the idea; the value happens to be files" },
+    "onMonthChange": { "use": "onChange", "why": "a second value on a part that already publishes onChange — the shape of a compound that was not taken apart" },
+    "onSortChange": { "use": "onChange", "why": "a second value on a part that already publishes onChange" },
+    "onCellChange": { "use": "onChange", "why": "a second value on a part that already publishes onChange" },
+    "onDensityChange": { "use": "onChange", "why": "a second value on a part that already publishes onChange" },
+    "onCollapsedChange": { "use": "onChange", "why": "a second value on a part that already publishes onChange" },
+    "onExpandedChange": { "use": "onChange", "why": "a second value on a part that already publishes onChange" },
+    "onStep": { "use": "onSelect", "why": "a step was chosen out of several" },
+    "onStepClick": { "use": "onSelect", "why": "a step was chosen out of several, named after the input device" },
+    "onBack": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onNext": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onSave": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onSend": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onStop": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onAbort": { "use": "onAction", "why": "one named action out of a fixed set, and the second word for stopping" },
+    "onReset": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onRemove": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onMove": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onLoad": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onDislike": { "use": "onAction", "why": "one named action out of a fixed set" },
+    "onClick": { "use": "onAction", "why": "the DOM's name for an input device, published as this system's name for an intention" }
+  }
+}

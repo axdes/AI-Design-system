@@ -34,7 +34,7 @@
     },
     {
       "name": "tone",
-      "type": "Tone",
+      "type": "'primary' | 'danger' | 'success'",
       "required": false,
       "description": "What the count MEANS, never how big it is: `primary` there is something here, `danger` something is wrong, `success` something finished. A count that reddens as it grows blames the number.",
       "values": [

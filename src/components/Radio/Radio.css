@@ -15,7 +15,7 @@
 }
 .radio[data-size="sm"] { --dot-size: 1rem; font-size: var(--font-sm); }
 .radio[data-size="lg"] { --dot-size: 1.5rem; font-size: var(--font-md); }
-.radio[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.radio[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 /* The same three answers every other control gives. The selection family gave
  * none of them: a checkbox did not acknowledge the pointer, did not answer the
  * press, and had no way to be marked wrong — so a required consent box could be
@@ -50,7 +50,7 @@
   background: var(--primary);
 }
 .radio-input:focus-visible + .radio-circle {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 

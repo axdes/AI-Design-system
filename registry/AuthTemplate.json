@@ -22,7 +22,7 @@
     },
     {
       "name": "title",
-      "type": "string",
+      "type": "ReactNode",
       "required": true,
       "description": "The page's accessible name, rendered as a visually hidden `<h1>`. A logo image is not a heading: without this the screen has no h1 at all and a screen reader lands on a page with no title."
     },

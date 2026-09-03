@@ -20,9 +20,6 @@
   height: var(--switch-height);
   border-radius: var(--radius-full);
   background: var(--switch-track-off);
-  cursor: pointer;
-  border: none;
-  padding: 0;
   transition: background var(--duration-fast);
 }
 /* The track is 20px tall because that is the shape; the TARGET has to be 24
@@ -34,9 +31,8 @@
   inset-block: calc((var(--space-6) - var(--switch-height)) / -2);
   inset-inline: 0;
 }
-.switch:focus-visible { outline: var(--ring-width) solid var(--ring); outline-offset: var(--ring-offset); }
 .switch[aria-checked="true"] { background: var(--primary); }
-.switch[disabled] { opacity: 0.5; cursor: not-allowed; }
+.switch[disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 /* The same three answers the rest of the system gives. A switch that does not
  * acknowledge the pointer reads as a picture of a switch. */
 .switch:hover:not([disabled]) { background: var(--accent-strong); }

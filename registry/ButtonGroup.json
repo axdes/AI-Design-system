@@ -1,7 +1,7 @@
 {
   "ref": "ButtonGroup",
   "level": "molecule",
-  "description": "Two or three buttons that are one decision: \"Save\" beside the menu of other ways to save. They are welded into one pill — the radii flatten where they meet and a hairline separates them, because a gap says \"two things\". There is no loose variant on purpose: a row of buttons with space between them is a row of buttons, and `<Layout direction=\"row\" gap>` already builds it. For the commonest case of all — an action beside its own menu of alternatives — reach for `<MenuButton onClick>`, which welds this group around a Button and a Dropdown and cannot forget the accessible name on the chevron half. This component is the seam underneath it, for the pairs it does not cover. Copy: the group's name says what the pair decides — \"Save options\" — and the halves keep the same verb, so the menu reads as more ways to do the thing the button does.",
+  "description": "ONE CONTROL MADE OF MORE THAN ONE PART: buttons welded into a single pill, a menu welded onto the end, or both. The radii flatten where the parts meet and a hairline separates them, because a gap says \"two things\" — a row of buttons with space between them is a row of buttons, and `<Layout direction=\"row\">` already builds that. Three forms, and the props choose between them rather than three components doing it: - `menu` alone — one button that opens the menu. For options that are peers, where none of them is the usual answer: \"Create\" is not an action, it is a question about what to create. - `menu` with halves — a split control. The common action keeps its own half at one press and the alternatives stay one press away. Promote something only when it really is what people pick; a promoted half that is usually wrong makes the common case two presses and looks like a misfire. - halves alone — a welded pair with no menu. It was two components until 2026-08-31, `ButtonGroup` and `MenuButton`, and the second was built on the first. Reach for `<MenuIconButton>` when the whole control is one glyph, and for `<Dropdown>` when the trigger is not a button at all (an avatar, a table row). Copy: the label says what the control decides — \"Save options\" — and the menu items keep the verb of the half beside them, so the set reads as more ways to do the one thing.",
   "exports": [
     "ButtonGroup"
   ],
@@ -12,23 +12,57 @@
     {
       "name": "children",
       "type": "ReactNode",
-      "required": true,
-      "description": "The buttons. Two or three; past that it is a toolbar, not one control."
+      "required": false,
+      "description": "The halves: `<Button>`s or `<IconButton>`s, two or three. Past that it is a toolbar, not one control. Leave them out and `menu` gives you a single button that opens the menu, which is the form to reach for when the options are peers and none of them is the usual answer."
     },
     {
       "name": "label",
       "type": "string",
       "required": true,
-      "description": "Announced name for the group, e.g. \"Save options\"."
+      "description": "What the control is called. With halves it is the announced name for the pair, which otherwise reaches a screen reader as two controls with nothing tying them together. With none it is ALSO the visible text, because then there is nothing else to read."
     },
     {
-      "name": "tone",
-      "type": "'neutral' | 'primary'",
+      "name": "menu",
+      "type": "ReactNode",
       "required": false,
-      "description": "Which fill the halves carry, so the SEAM between them can match it: `primary` for a split primary action (a brand pill divided by a darker step of the brand), `neutral` when the halves are quiet controls and the divider is the ordinary control edge. Default 'neutral'.",
+      "description": "The menu: `<DropdownItem>`, `<DropdownSection>`, `<DropdownDivider>`. Given it, a menu is welded onto the end — as its own chevron half when there are halves, and as the whole button when there are none."
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "required": false,
+      "description": "Names the half that is only a chevron, and it cannot be nameless: an icon with no words is unreachable by anyone who cannot see it. Defaults to `label`, which is why forgetting it is not a bug you can ship."
+    },
+    {
+      "name": "variant",
+      "type": "'primary' | 'secondary' | 'ghost'",
+      "required": false,
+      "description": "The weight this control carries ON THE SCREEN, and the one decision behind every fill here: the seam between the halves, the single button's fill and the chevron half's. `primary` for the one action the screen is for and a screen has one, `secondary` for a real action that is not that one, `ghost` where a filled pill would shout — a toolbar, a card header, a row. It is the same word, meaning the same thing, that every half you pass takes.",
       "values": [
-        "neutral",
-        "primary"
+        "primary",
+        "secondary",
+        "ghost"
+      ]
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "description": "Control height for the parts THIS component renders (the single button, the chevron half). Halves you pass carry their own `size`, and they have to agree: `IconButton` defaults to sm and `Button` to md, so an unsized pair renders 32px beside 40px.",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "align",
+      "type": "'start' | 'end'",
+      "required": false,
+      "description": "Which edge the menu lines up with, and it follows where the control SITS rather than taste. The default `end` is right for a control on the right of its container, which is where actions usually are; `start` when it is on the left, so the menu opens into the page instead of off its edge.",
+      "values": [
+        "start",
+        "end"
       ]
     },
     {
@@ -39,20 +73,22 @@
   ],
   "sourcePath": "src/components/ButtonGroup/ButtonGroup.tsx",
   "variants": {
-    "tone": {
-      "prop": "tone",
+    "variant": {
+      "prop": "variant",
       "values": [
-        "neutral",
-        "primary"
+        "primary",
+        "secondary",
+        "ghost"
       ]
     }
   },
   "uses": [
     "Button",
     "Dropdown",
+    "Icon",
     "IconButton",
     "Layout",
     "Tooltip"
   ],
-  "example": "<Row gap={4} align=\"center\">\n  <ButtonGroup label=\"Save options\" tone=\"primary\">\n    <Button onClick={() => undefined}>Save</Button>\n    <Dropdown\n      align=\"end\"\n      trigger={({ isOpen, ...triggerProps }) => (\n        <Tooltip content=\"Other ways to save\">\n          <IconButton\n            icon=\"arrow_drop_down\"\n            size=\"md\"\n            variant=\"filled\"\n            tone=\"primary\"\n            aria-label=\"Other ways to save\"\n            data-open={isOpen || undefined}\n            {...triggerProps}\n          />\n        </Tooltip>\n      )}\n    >\n      <DropdownItem icon=\"content_copy\" onClick={() => undefined}>Save a copy</DropdownItem>\n      <DropdownItem icon=\"description\" onClick={() => undefined}>Save as template</DropdownItem>\n    </Dropdown>\n  </ButtonGroup>\n  <ButtonGroup label=\"Export options\" tone=\"neutral\">\n    <Button variant=\"secondary\" onClick={() => undefined}>Export</Button>\n    <Dropdown\n      align=\"end\"\n      trigger={({ isOpen, ...triggerProps }) => (\n        <Tooltip content=\"Other export formats\">\n          <IconButton\n            icon=\"arrow_drop_down\"\n            size=\"md\"\n            variant=\"filled\"\n            aria-label=\"Other export formats\"\n  "
+  "example": "<Row gap={4} align=\"center\">\n  \n  <ButtonGroup\n    label=\"Create\"\n    align=\"start\"\n    menu={\n      <>\n        <DropdownItem icon=\"description\" onClick={() => undefined}>Blank document</DropdownItem>\n        <DropdownItem icon=\"content_copy\" onClick={() => undefined}>From a template</DropdownItem>\n        <DropdownDivider />\n        <DropdownItem icon=\"upload\" onClick={() => undefined}>Upload a file</DropdownItem>\n      </>\n    }\n  />\n  \n  <ButtonGroup\n    label=\"Save options\"\n    menuLabel=\"Other ways to save\"\n    variant=\"primary\"\n    menu={\n      <>\n        <DropdownItem icon=\"content_copy\" onClick={() => undefined}>Save a copy</DropdownItem>\n        <DropdownItem icon=\"description\" onClick={() => undefined}>Save as template</DropdownItem>\n      </>\n    }\n  >\n    <Button onClick={() => undefined}>Save</Button>\n  </ButtonGroup>\n  \n  <ButtonGroup label=\"Export options\">\n    <Button variant=\"secondary\" onClick={() => undefined}>Export as CSV</Button>\n    <Button variant=\"secondary\" onClick={() => undefined}>Export as PDF</Button>\n  </ButtonGroup>\n</Row>"
 }

@@ -40,7 +40,7 @@
     },
     {
       "name": "collapseControl",
-      "type": "CollapseControl",
+      "type": "'bottom' | 'logo' | 'both'",
       "required": false,
       "description": "Which control collapses the rail. `logo` is the default and is the decided answer: collapsed, the biggest target on the rail is what opens the rail, and expanded, hovering the mark says what pressing it will do. It used to default to `bottom`, and the measurement on 2026-08-23 was that no product passed this prop at all — so every one of them carried a Collapse button nobody had chosen, while the behaviour they wanted sat behind a default.",
       "values": [

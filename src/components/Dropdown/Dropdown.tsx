@@ -1,5 +1,5 @@
 import './Dropdown.css'
-import { computePlacement, type Placement } from '../../lib/placement'
+import { readAnchor, computePlacement, type Placement } from '../../lib/placement'
 import {
   useCallback,
   useEffect,
@@ -15,8 +15,10 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
+import { useListKeys } from '../../lib/useListKeys'
 import { useAnchoredLayer } from '../../lib/useAnchoredLayer'
 import { Icon, type IconName } from '../Icon'
+import { Kbd } from '../Kbd'
 
 type Align = 'start' | 'end'
 
@@ -63,7 +65,7 @@ type Position = Placement
  * built in, so spread `triggerProps` onto your own button. Items, sections and
  * dividers are the parts.
  *
- * When the trigger is an ordinary labelled button, `<MenuButton>` is that
+ * When the trigger is an ordinary labelled button, `<ButtonGroup menu>` is that
  * already assembled — including the split form where a default action sits on
  * its own half. Come here when the trigger is something else: an avatar, a
  * table row, a field.
@@ -97,18 +99,12 @@ export function Dropdown({
   const computePosition = useCallback((): Position | null => {
     const triggerEl = triggerRef.current
     if (!triggerEl) return null
-    const rect = triggerEl.getBoundingClientRect()
-    return computePlacement({
-      trigger: { top: rect.top, bottom: rect.bottom, left: rect.left, right: rect.right, width: rect.width },
-      /* scrollHeight reports natural content size — offsetHeight would be the
-       * already-clamped size after maxHeight is applied, which creates a feedback
-       * loop where the menu never flips because it appears to "fit". */
-      menu: { height: menuRef.current?.scrollHeight ?? 0, width: menuRef.current?.scrollWidth ?? 0 },
-      viewport: { width: window.innerWidth, height: window.innerHeight },
-      align,
-      isRtl: document.documentElement.dir === 'rtl',
-      matchTriggerWidth,
-    })
+    /* `natural: true` because this menu clamps its own height: measured as
+     * rendered it would read as "it fits" for ever and never flip. The read
+     * itself is readAnchor's, shared with every other anchored layer. */
+    const anchor = readAnchor(triggerEl, menuRef.current, { natural: true })
+    if (!anchor) return null
+    return computePlacement({ ...anchor, align, matchTriggerWidth })
   }, [align, matchTriggerWidth])
 
   /* The mechanism — measurement timing, rAF-throttled reflow, outside press and
@@ -135,41 +131,38 @@ export function Dropdown({
     setOpen((v) => !v)
   }, [])
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const items = itemsRef.current
-    const i = items.findIndex((el) => el === document.activeElement)
+  /* The list and the current row are read WHEN THE KEY ARRIVES: this menu moves
+   * real DOM focus between real buttons, so `document.activeElement` is the
+   * truth and mirroring it into state would be the bug. */
+  const listKeys = useListKeys({
+    count: () => itemsRef.current.length,
+    index: () => itemsRef.current.findIndex((el) => el === document.activeElement),
+    move: (i) => itemsRef.current[i]?.focus(),
+  })
 
-    switch (e.key) {
-      case 'Escape':
-        e.preventDefault()
-        close()
-        break
-      case 'Tab':
-        /* Tab closes the menu and moves ON, never back into a loop with the
-         * trigger. The focused item is about to unmount, and a default Tab
-         * from a removed element starts over from <body> — so focus hops to
-         * the trigger FIRST (without preventDefault), and the browser's own
-         * Tab then advances from there to the next element in the page. */
-        triggerRef.current?.focus()
-        setOpen(false)
-        break
-      case 'ArrowDown':
-        e.preventDefault()
-        items[Math.min(i + 1, items.length - 1)]?.focus()
-        break
-      case 'ArrowUp':
-        e.preventDefault()
-        items[Math.max(i - 1, 0)]?.focus()
-        break
-      case 'Home':
-        e.preventDefault()
-        items[0]?.focus()
-        break
-      case 'End':
-        e.preventDefault()
-        items[items.length - 1]?.focus()
-        break
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      close()
+      return
     }
+    if (e.key === 'Tab') {
+      /* Tab closes the menu and moves ON, never back into a loop with the
+       * trigger. The focused item is about to unmount, and a default Tab from a
+       * removed element starts over from <body> — so focus hops to the trigger
+       * FIRST (without preventDefault), and the browser's own Tab then advances
+       * from there to the next element in the page. */
+      triggerRef.current?.focus()
+      setOpen(false)
+      return
+    }
+
+    /* Down, Up, Home and End are the same four keys in every list this system
+     * walks, and this menu used to write them out for itself. They come from
+     * the shared mechanism now; what stays above is what a MENU answers and a
+     * list does not — Escape closes it, and Tab leaves it forwards.
+     * (src/lib/useListKeys.ts, 2026-09-02) */
+    listKeys(e)
   }
 
   /* Stable ref callback — assigned once for lifetime of component. */
@@ -264,7 +257,13 @@ export function DropdownItem({
     >
       {icon && <Icon name={icon} />}
       {children}
-      {shortcut && <span className="dropdown-item-shortcut" aria-hidden="true">{shortcut}</span>}
+      {/* THE MARK IS <Kbd>'s, and this row drew its own until 2026-08-31: a grey
+          span at --font-xs, which is the shape Kbd's own JSDoc names ("a menu
+          row") and the reason Kbd had no consumer anywhere in the system. The
+          span stays as the LAYOUT (it is what pushes the cap to the trailing
+          edge) and no longer paints anything. `aria-hidden` is unchanged: in a
+          menu the shortcut is a reminder, and the item's label is its name. */}
+      {shortcut && <span className="dropdown-item-shortcut" aria-hidden="true"><Kbd>{shortcut}</Kbd></span>}
       {selected && <Icon name="check" className="dropdown-item-check" />}
     </button>
   )

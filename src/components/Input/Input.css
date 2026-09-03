@@ -10,7 +10,7 @@
  * The recipe every one of them now keeps, in this order:
  *   resting   1px solid var(--input) on var(--background), --control-radius
  *   hover     border-color -> var(--ring)
- *   focus     outline var(--ring-width) solid var(--ring), offset --ring-offset
+ *   focus     outline var(--focus-ring), offset --ring-offset
  *   invalid   border-color -> var(--destructive); the ring turns red too
  *   muted     resting border dropped; invalid and focus still show
  *   disabled  opacity 0.5, cursor not-allowed, pointer events KEPT so a
@@ -87,12 +87,8 @@
  * border (invalid + focus outline still show). */
 .input[data-surface="muted"]:not([aria-invalid="true"]),
 .input[data-surface="muted"]:not([aria-invalid="true"]):hover:not(:disabled) { border-color: transparent; }
-.input:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 .input:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
 .input[aria-invalid="true"] {

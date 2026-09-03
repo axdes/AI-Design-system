@@ -46,10 +46,11 @@ export function renderRow(row) {
     .join(' · ')
 }
 
-export function header({ components, blocks, tokens }) {
-  return `# Design system — ${components} components, ${blocks} blocks, ${tokens} tokens
+export function header({ components, blocks, tokens, mechanisms }) {
+  const behaviour = mechanisms?.length ? `, ${mechanisms.length} mechanisms` : ''
+  return `# Design system — ${components} components, ${blocks} blocks${behaviour}, ${tokens} tokens
 
-Every one of them, one line each: name · level[/surface] · +parts of a compound · what it is for.
+Every one you pick from, one line each: name · level[/surface] · +parts of a compound · what it is for.
 This is the whole system. If a thing is not here it does not exist, and inventing it fails \`npm run verify\`.
 
 Detail for the ones you will actually write: \`npm run registry -- <Name>\` (\`--dense\` drops the
@@ -58,7 +59,37 @@ this package and \`@ds/<Name>\` from an app. Generated from registry/ — never 
 `
 }
 
-/** The whole index, as the file an agent reads. */
+/** The whole index, as the file an agent reads.
+ *
+ * Everything except the parts marked `@internal` in their own JSDoc: those are
+ * rendered FOR you by something else (the drawer trigger inside PageHeader and
+ * ChatShell), so a row for them is a name to read past on every task and a name
+ * to reach for by mistake. They are named once at the foot of the file rather
+ * than hidden, because "this list is everything" has to stay true — the line
+ * says what they are and who renders them, and costs a row instead of one each.
+ */
 export function renderIndex(rows, counts) {
-  return `${header(counts)}\n${rows.map(renderRow).join('\n')}\n`
+  const shown = rows.filter((r) => r.status !== 'internal')
+  const internal = rows.filter((r) => r.status === 'internal').map((r) => r.ref)
+  const foot = internal.length
+    ? `\nRendered for you, never picked: ${internal.join(', ')}. Whatever renders them owns them; ` +
+      `\`npm run registry -- <Name>\` still answers if you need one.\n`
+    : ''
+  /* BEHAVIOUR IS LISTED TOO, and in the same file, because the cost of it not
+   * being was measured: four floating layers and three list navigations written
+   * by hand beside hooks that already did the job. A mechanism nobody can find
+   * is a mechanism somebody rewrites. (2026-09-03) */
+  const behaviour = counts.mechanisms?.length
+    ? `\n## Behaviour · \`@/lib/<name>\` here, \`@lib/<name>\` from an app\n\n` +
+      counts.mechanisms
+        /* One line and one SENTENCE each: this file is read on every task, and a
+         * hook that explains its own history here is charging every agent for
+         * it. The reasoning stays in the file, where somebody changing it looks. */
+        /* The same cap the component rows take, for the same reason: this file
+         * is read on every task, and a mechanism that tells its history here is
+         * charging every agent for it. The history stays in the file. */
+        .map((m) => `${m.ref} · ${firstSentence(m.description) || '(no description)'}`)
+        .join('\n') + '\n'
+    : ''
+  return `${header(counts)}\n${shown.map(renderRow).join('\n')}\n${behaviour}${foot}`
 }

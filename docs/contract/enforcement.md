@@ -29,6 +29,78 @@ work; one small custom linter covers what only this project knows.
   components → blocks → shell → layouts, atomic ranks, no cycles.
 - **`lint:vocab`** — one word per meaning; a union prop name on 2+ components
   must itself be declared in `config/prop-vocabulary.json`.
+- **`lint:rules` → a recipe is named, not rebuilt** — `styles/recipes.css` is
+  the fourth tier: the complete answers a part would otherwise work out again.
+  The ingredients stay legal in the token layer, so the rule is what keeps the
+  tier alive — a component that writes `var(--ring-width) solid var(--ring)`,
+  the negated ring offset, `1px solid var(--border)` or a `0.5` opacity under a
+  disabled selector is rebuilding an answer that exists. Two other checks read
+  the OLD spelling and were taught the new one in the same commit: without that,
+  `states` called 32 of 34 controls ringless and the restated-ring rule went
+  quietly silent.
+- **`lint:api`** — the same rule one level deeper, plus three more. One prop
+  name resolves to ONE TYPE everywhere (`lint:vocab` checks the VALUES of a
+  union and never the shape, so 53 names carried more than one type with every
+  gate green); a part past seven props is a compound or writes
+  `monolithic because …` in its file; a callback comes from the closed list in
+  `config/callback-vocabulary.json`; no part is admitted without a test. All
+  four run against `config/api-debt.json`, a ceiling that only falls: today's
+  numbers are recorded, and from here a name may not gain a type, a part may not
+  gain a prop, a callback outside the vocabulary may not spread to a new part,
+  and a new part may not arrive untested. Pay some down and re-record with
+  `npm run lint:api -- --record`.
+- **`lint:mechanism`** — the same BEHAVIOUR written twice, which copy-paste
+  detection cannot see: it compares what a file DOES (which events it binds,
+  whether it portals, measures, clamps an index) rather than what it says. A
+  pair's shared imports are subtracted first, so calling a shared hook is
+  composition and not duplication. The pairs that stood when it landed are in
+  `config/mechanism-debt.json`, each with the reason it stands and what would
+  close it; a pair not in that file, or one recorded without a reason, fails.
+- **`lint:mechanisms`** (plural) — the other half of the same rule, before the
+  duplication rather than after it: every module in `src/lib` that exports
+  behaviour says what it is for in a comment, and has a caller here or writes
+  `published because …` naming the product that takes it. A mechanism nobody can
+  find is a mechanism somebody rewrites.
+- **`lint:token-layer`** — the token layer held to itself. Nothing dead (a token
+  nobody takes is deleted, or exempted in `config/token-exemptions.json` for the
+  one reason that survives: the platform cannot read it); no tier reaching
+  upwards; no role invented inside a dark block; no stylesheet outside
+  `styles/index.css`. Plus **one question, one answer**: how many different
+  values answer "how far apart are two things", "how much room does a surface
+  give its content", "how far is a section from what is above it", against
+  `config/token-answers.json`, a ceiling that only falls. A LADDER STEP IS NEVER
+  DEAD — a palette, the type scale and the space scale are complete on purpose
+  and `primitives.css` is meant to be swapped whole. The population is this
+  package plus `apps/showcase`, deliberately not the products: a product taking
+  a token is not a reason for the system to carry it.
+- **`check:gates`** — the gate list holds itself. Every step names a real
+  script, says what it is for, where its subjects come from (`population`) and
+  what it started as (`startedAs`); the CI mode is derived from the same list,
+  never hand-kept. A step whose population is a hand-written list must argue for
+  it, because a list cannot know what is missing from it.
+- **`check:determinism`** — every zone of every screen spec is decided twice,
+  once as written and once with the facts and the rule documents shuffled under
+  three fixed seeds, and the two verdicts must be identical. An engine that lets
+  whichever fact it sees first win looks deterministic for months.
+- **`check:corpus`** — every defect this system is known to have shipped names
+  the check that finds it now, or says in writing why it cannot be checked
+  (`config/defects.json`). It prints the ratio that matters: how many were found
+  by a person looking versus by a check. Seeded, not complete — the number of
+  unread log entries is carried in the file and only falls.
+- **`npm run check:clone`** — not in the gate, run when packaging or the harness
+  changes: clone HEAD into a scratch directory, install from the lockfile with
+  nothing carried over, and run the CI gate there. It is the proof behind the
+  claim that this package is standalone-complete. On its first run it found two
+  defects that had been green here for months — a check resolving the repository
+  root as three levels above its own file (correct in the monorepo, somebody
+  else's directory in a clone) and a suite that passed because of how many cores
+  this laptop has. `--worktree` runs it on uncommitted work.
+- **`npm run impact`** and **`npm run hunt`** — not checks and never red.
+  `impact` says what a change touches before the gate does: which parts changed,
+  which baselines carry them, which tokens moved and who reads them, and what is
+  generated now stale. `hunt` prints every recorded balance next to today's
+  number, so paid-down debt and fresh drift are visible without running
+  anything.
 - **`npm test`** (vitest + Testing Library + axe) — what only running code can
   prove: every golden example renders and is axe-clean, every advertised variant
   lands as `data-*`, and every stateful component's keyboard/ARIA contract holds

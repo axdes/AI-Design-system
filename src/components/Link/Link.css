@@ -72,10 +72,6 @@
 
 .link:hover { color: var(--link-hover); }
 .link:active { color: var(--primary-active); }
-.link:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
-  outline-offset: var(--ring-offset);
-}
 
 /* The trailing arrow: it TRAILS, like every icon in this system, and it moves a
  * step further out when the pointer arrives — the same "one stop further" the

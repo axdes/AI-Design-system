@@ -58,16 +58,13 @@
   block-size: 100%;
   display: flex;
   align-items: flex-end;
-  padding: 0;
-  border: none;
   background: none;
-  font: inherit;
   color: inherit;
   /* Reads, does not navigate: the data cursor, not the link one. */
   cursor: crosshair;
 }
 .chart-bar-column:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
   border-radius: var(--radius-sm);
 }

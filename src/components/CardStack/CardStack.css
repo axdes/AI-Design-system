@@ -23,7 +23,7 @@
  * the card, in the same white, so without a line of its own the top card melts
  * into the sheets under it and the whole thing reads as one smudged rectangle
  * (owner, 23.08, twice: "it blends in"). */
-.card-stack > .card { border: 1px solid var(--border); }
+.card-stack > .card { border: var(--surface-edge); }
 
 /* The two controls sit together at the foot, after whatever the card carries.
  * `auto` would fight the content's own footer for the spare height and put it

@@ -4,6 +4,7 @@ import { cn } from '../../lib/cn'
 import { type Option } from '../../lib/option'
 import { Icon } from '../Icon'
 import { Chip } from '../Chip'
+import { useListNavigation } from '../../lib/useListNavigation'
 
 /** A Combobox choice. Nothing beyond the shared <Option>: this control renders
  *  a label and filters on it, and any field it does not draw would be a lie. */
@@ -64,7 +65,6 @@ export function Combobox<V extends string>(props: Props<V>) {
 
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
-  const [active, setActive] = useState(0)
   const listId = useId()
   const optionId = (i: number) => `${listId}-opt-${i}`
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -95,17 +95,21 @@ export function Combobox<V extends string>(props: Props<V>) {
     if (multiple) onChangeMulti(selectedValues.filter((x) => x !== v))
   }
 
+  const { active, setActive, handleKey } = useListNavigation({
+    count: matches.length,
+    onEnter: (i) => { const m = matches[i]; if (m) pick(m) },
+  })
+
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      if (!open) { setOpen(true); return }
-      setActive((i) => Math.min(i + 1, matches.length - 1))
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setActive((i) => Math.max(i - 1, 0))
-    } else if (e.key === 'Enter') {
-      if (open && matches[active]) { e.preventDefault(); pick(matches[active]) }
-    } else if (e.key === 'Escape') {
+    /* ArrowDown on a CLOSED field opens it and moves nothing, which is the
+       listbox pattern and is this component's own answer — so it comes before
+       the shared keys rather than inside them. Everything after that (both
+       arrows, Home, End, Enter) is `useListNavigation`'s, and Home and End are
+       new here: this list had them nowhere, and a searchable set is the one
+       most worth jumping the ends of. */
+    if (e.key === 'ArrowDown' && !open) { e.preventDefault(); setOpen(true); return }
+    if (open && handleKey(e)) return
+    if (e.key === 'Escape') {
       setOpen(false)
       setQuery('')
     } else if (e.key === 'Backspace' && multiple && query === '' && selectedValues.length) {

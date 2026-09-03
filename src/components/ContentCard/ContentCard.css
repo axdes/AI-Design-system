@@ -190,7 +190,7 @@
  * space reads as four loose lines (owner, 2026-08-23). Drawn between rows and
  * never under the last one — a list should not look fenced. */
 .content-card[data-layout='row'] + .content-card[data-layout='row'] {
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
 }
 
 /* A row inside a FLUSH card gives itself back the padding the card gave up.
@@ -295,7 +295,7 @@
 /* Pressed: one stop past hover, the third answer every control now gives. */
 .content-card-open:active { color: var(--primary-accent); }
 .content-card-open:focus-visible {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
   border-radius: var(--radius-sm);
 }

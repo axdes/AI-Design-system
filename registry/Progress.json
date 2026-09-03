@@ -32,7 +32,7 @@
     },
     {
       "name": "tone",
-      "type": "Tone",
+      "type": "'primary' | 'success' | 'warning' | 'danger'",
       "required": false,
       "description": "What finishing would MEAN: `primary` for ordinary work, `success` when the bar reaching the end is the good outcome, `warning` and `danger` when it is a budget or a quota being used up.",
       "values": [
@@ -44,7 +44,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "Ring only: how big the ring is. A bar takes the width it is given.",
       "values": [

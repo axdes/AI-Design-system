@@ -21,6 +21,21 @@ provider to wrap your app in. Browse what is installable in
 
 ## Point your agent at it
 
+One command, and the agent loads the contract by itself the moment a task is UI:
+
+```bash
+curl -fsSL https://github.com/axdes/AI-Design-system/releases/latest/download/skill-install.sh | sh -s -- --skill design-system
+```
+
+That writes `.agents/skills/design-system/` in the current repository — the path
+Codex, Cursor, Gemini CLI, Copilot and Claude Code all read, so it arrives for
+everyone working in that repo rather than for whoever ran the command. `--user`
+puts it under `~/.claude/skills/` instead. Inside: what exists, which
+representation a zone earns, and every token.
+
+For the live answers — a component's props, the decision computed for your zone,
+`verify` run on code that is not on disk yet — add the MCP server:
+
 ```bash
 claude mcp add ds -- node /path/to/design-system/mcp/server.mjs
 ```
@@ -58,7 +73,7 @@ scores 61% and writes six times more code. Numbers and history in
    "which representation for this data and task": rules with reasons and
    good/bad pairs, hard forbids, archetype taxonomy. The validator computes
    "table or cards" from the declared facts and fails the contradiction.
-4. **Components and blocks** (`src/`) — 128 components and 12 page templates,
+4. **Components and blocks** (`src/`) — 126 components and 12 page templates,
    token-driven, RTL-ready, with a golden example per component that the test
    suite compiles, renders and axe-checks, so the docs cannot drift from the
    code.

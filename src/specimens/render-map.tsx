@@ -64,7 +64,6 @@ import { PlanCard } from '@/components/PlanCard'
 import { Radio } from '@/components/Radio'
 import { Select } from '@/components/Select'
 import { SideNav } from '@/components/SideNav'
-import { LogoWall } from '@/components/LogoWall'
 import { SelectableTile } from '@/components/SelectableTile'
 import { Skeleton } from '@/components/Skeleton'
 import { Sparkline } from '@/components/Sparkline'
@@ -76,7 +75,6 @@ import { Thumbnail } from '@/components/Thumbnail'
 import { Truncate } from '@/components/Truncate'
 import { SessionPill } from '@/components/SessionPill'
 import { ContentCard } from '@/components/ContentCard'
-import { MenuButton } from '@/components/MenuButton'
 import { MenuIconButton } from '@/components/MenuIconButton'
 import { SidePanel } from '@/components/SidePanel'
 import { DropdownItem } from '@/components/Dropdown'
@@ -116,7 +114,19 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
   ColorSwatch: (p) => <ColorSwatch value="#4638d3" label="Indigo" {...p} />,
   IconDisc: (p) => <IconDisc icon="campaign" {...p} />,
   Button: (p) => <Button {...p}>{kids(p, 'Save')}</Button>,
-  ButtonGroup: (p) => <ButtonGroup label="Save options" {...p}>{kids(p, <Button>Save</Button>)}</ButtonGroup>,
+  /* The split form is the fixture: a menu AND a half is the shape with the most
+     to get wrong (two targets, the seam between them, the name on the chevron),
+     so it is the one the variant sheet photographs. */
+  ButtonGroup: (p) => (
+    <ButtonGroup
+      label="Save options"
+      menuLabel="Other ways to save"
+      menu={<DropdownItem onClick={() => undefined}>Save a copy</DropdownItem>}
+      {...p}
+    >
+      {kids(p, <Button>Save</Button>)}
+    </ButtonGroup>
+  ),
   Card: (p) => <Card {...p}>{kids(p, 'Body')}</Card>,
   ChatShell: (p) => <ChatShell {...p}>Thread</ChatShell>,
   Checkbox: (p) => <Checkbox label="Notify me" {...p} />,
@@ -159,13 +169,6 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
      their unions are written with double quotes, and the registry only read
      single ones until 2026-08-26. The contract became visible, so it becomes
      photographed. */
-  /* The split form is the fixture: `onClick` is what makes the second target
-     exist, so the variant sheet has to photograph a control that has one. */
-  MenuButton: (p) => (
-    <MenuButton label="Save" menuLabel="Other ways to save" onClick={() => undefined} {...p}>
-      <DropdownItem onClick={() => undefined}>Save a copy</DropdownItem>
-    </MenuButton>
-  ),
   MenuIconButton: (p) => (
     <MenuIconButton label="Actions for the March invoice" {...p}>
       <DropdownItem onClick={() => undefined}>Rename</DropdownItem>
@@ -182,7 +185,6 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
   Quote: (p) => <Quote by="Ada Meridian" {...p}>The number moved because two sites closed early.</Quote>,
   /* One mark is enough to prove the normalisation lands: `colour` is the variant
      that opts out of it. */
-  LogoWall: (p) => <LogoWall logos={[{ src: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=', alt: 'Northwind' }]} {...p} />,
   /* selected/onSelect are required: the tile is a controlled control, and the
      spread comes last so each variant case can flip what it is testing. */
   SelectableTile: (p) => <SelectableTile name="region" title="Europe" selected onSelect={() => {}} {...p} />,

@@ -10,7 +10,10 @@ type Props = {
    */
   open: boolean
   /** Dialog title, e.g. "Rename recording". */
-  title: string
+  /* ReactNode: the last title in this system that was a string, and every one
+   * of its neighbours takes a node. The dialog labels itself by id rather than
+   * by the text, so nothing here needs it flat. Widened 2026-09-03. */
+  title: ReactNode
   /** Label over the single field. */
   label: string
   /** The current name. The field opens seeded with it, selected. */

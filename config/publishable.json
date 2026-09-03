@@ -66,6 +66,7 @@
     "screen-specs/handbook-skills.json",
     "screen-specs/handbook-skill.json",
     "screen-specs/handbook-candidates.json",
-    "screen-specs/handbook-candidate.json"
+    "screen-specs/handbook-candidate.json",
+    "docs/skill-package-draft.md"
   ]
 }

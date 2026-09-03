@@ -53,7 +53,7 @@
     },
     {
       "name": "layout",
-      "type": "Layout",
+      "type": "'auto' | 'tile' | 'side' | 'cover' | 'row'",
       "required": false,
       "description": "Where the media sits and which way the entry reads. `auto` (the default) lets it answer its OWN width: a row with a thumbnail under 360px, a tile up to 560, media beside the words above it. Name a layout to fix it, and `row` for the list form — no surface, a hairline between neighbours.",
       "values": [
@@ -66,7 +66,7 @@
     },
     {
       "name": "density",
-      "type": "Density",
+      "type": "'comfortable' | 'compact' | 'dense'",
       "required": false,
       "description": "How much of the anatomy survives; the entry degrades from the bottom up. `compact` drops the excerpt, `dense` is a single reading line. The default keeps everything and lets `auto` decide by width.",
       "values": [

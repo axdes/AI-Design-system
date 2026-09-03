@@ -18,7 +18,7 @@
 
 .rich-message-rule {
   border: 0;
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
   margin-block: var(--space-3);
 }
 
@@ -68,7 +68,7 @@
 .rich-message-table th,
 .rich-message-table td {
   padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   text-align: start;
   /* nowrap is what makes the scroll container useful: cells hold their line
    * and the TABLE moves, instead of every column squeezing into hyphens. */

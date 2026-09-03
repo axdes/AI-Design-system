@@ -23,7 +23,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "Square button matching control heights: sm 32 / md 40 / lg 52. Default 'sm'. NOTE: `Button` defaults to 'md', so a pair of them needs this stated — an unsized icon button beside an unsized button is 32 next to 40. Three apps shipped that before `controls-same-height` started asking.",
       "values": [
@@ -34,7 +34,7 @@
     },
     {
       "name": "variant",
-      "type": "Variant",
+      "type": "'ghost' | 'filled' | 'quiet'",
       "required": false,
       "description": "ghost = transparent (default, hover = accent fill). filled = solid fill. quiet = transparent, hover recolors only (no fill) — for inline toolbar icons.",
       "values": [
@@ -45,7 +45,7 @@
     },
     {
       "name": "tone",
-      "type": "Tone",
+      "type": "'primary' | 'destructive'",
       "required": false,
       "description": "Fill colour for `filled` (e.g. send = primary, stop = destructive).",
       "values": [

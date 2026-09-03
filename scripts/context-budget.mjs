@@ -74,7 +74,7 @@ const REQUIRED = [
    * system-wide). Paid for first: the bullet was compressed from four lines to
    * three before the raise. Two real rules in one day is why the ceiling moved
    * twice; a third raise needs a cut, not a note. */
-  { path: 'AGENTS.md', why: 'the system contract, read every session', budget: 4500 },  /* 6420 -> 6560 on 2026-08-23: five lines for the form decision layer. The contract has to name it, or an agent writes a 15-field dialog and finds out at the gate. 6560 -> 6760 the same day for the TABLE layer, on the same argument and for the same price: six lines saying a table zone declares WHICH table, and six naming the components that are a table (TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable) so an agent stops reaching for <Table> and a padding class. A contract that does not name a layer is a layer the gate enforces and nobody was told about. 6760 -> 6900 the same day again, for the five lines that name the CELL layer: a zone may declare its columns, and then each column says what it carries and the rules decide alignment, width, sortability. Same argument the third time; the alternative is a gate that rejects a column alignment nobody was told was a rule. 6900 -> 7050 the same day, fourth
+  { path: 'AGENTS.md', why: 'the system contract, read every session', budget: 4600 },  /* 6420 -> 6560 on 2026-08-23: five lines for the form decision layer. The contract has to name it, or an agent writes a 15-field dialog and finds out at the gate. 6560 -> 6760 the same day for the TABLE layer, on the same argument and for the same price: six lines saying a table zone declares WHICH table, and six naming the components that are a table (TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable) so an agent stops reaching for <Table> and a padding class. A contract that does not name a layer is a layer the gate enforces and nobody was told about. 6760 -> 6900 the same day again, for the five lines that name the CELL layer: a zone may declare its columns, and then each column says what it carries and the rules decide alignment, width, sortability. Same argument the third time; the alternative is a gate that rejects a column alignment nobody was told was a rule. 6900 -> 7050 the same day, fourth
    * time, for the six lines that name the LIFECYCLE layer: a screen may declare
    * what it does to the resource, and the three decisions that hang off it
    * (which detail page, which shape an edit takes, how hard a destruction is to
@@ -83,7 +83,7 @@ const REQUIRED = [
    * counter-intuitive: a reversible destruction gets an undo and NOT a dialog.
    * An agent that has not been told that adds an Are-you-sure to everything,
    * which is precisely the habit that gets the irreversible one clicked
-   * through. */
+   * through.  4500 -> 4600 on 2026-09-02, for the fourth token tier: `recipes.css` holds the whole answers (--focus-ring, --disabled-opacity, --surface-edge) and `lint:rules` fails a component that rebuilds one from its parts. Same argument as the layer raises above, and the file was seven tokens under the old ceiling, so naming the tier at all needed the raise. The alternative is a rule the gate enforces and the contract never mentions, which is the one thing this budget must never buy. */
   /* component-index.md, new on 2026-08-13 as JSON and text since 2026-08-16. One
    * line per component: name, level, surface, the parts of a compound, and one
    * sentence saying what it is for. 2.4k for all 82 components and 7 blocks,
@@ -100,7 +100,7 @@ const REQUIRED = [
    * cap to 80 characters elides half the rows mid-phrase, which is measured and
    * recorded in the generator. It is either a deliberate raise, or search becomes
    * the only path and this file stops being must-read. */
-  { path: 'component-index.md', why: 'what exists, one line each — discovery reads this', budget: 4600 },  /* 4050 -> 4170 -> 4600 on 2026-08-28, and this is the deliberate raise the note above says the runway ends in. It was taken with a number rather than a feeling, because 2026-08-28 is also the day the harness first PRICED a run: one screen, 4,350k tokens, 61 turns, $3.45, of which 98% is context re-read turn after turn (evals/BASELINE.md). That gives the multiplier this budget never had. 1k of must-read is not 1k; it is 1k x 61 = 61k, 1.4% of the run. So this 430-token raise costs about 26k tokens and two cents per screen, and buys room for roughly seventeen more components instead of three. The alternative on the table was making search the only path and dropping this file from must-read, and the measurement argues against it: the index is 5.7% of a run's tokens and it is what stops an agent guessing a component that does not exist — the defect the eval baseline traced most of its lost points to. Taken knowingly, and the next raise needs its own number. 3600 -> 3800 on 2026-08-23: seven index rows for the form layer, 28 tokens each. The rows are the cheap half of a component — this is the file that keeps a component findable at all. 3800 -> 3900 the same day for the table layer's eight rows (TableToolbar, BatchActions, ColumnPicker, TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable). Eight rows at 28 would be 224; it costs 57, because the generator fix that went in with them (parts publish their OWN props, not the main component's) shortened the index rows of every compound as well. 3900 -> 4050 for the CELL layer's four rows (Truncate, CellStack, TagGroup, Thumbnail): the parts a real cell needs, which the table layer's exhibits proved were missing the moment the content stopped being text. */
+  { path: 'component-index.md', why: 'what exists, one line each — discovery reads this', budget: 4600 },  /* NOT raised on 2026-09-03, and the twenty-one mechanism rows still went in: the raise was written, measured and taken back out the same hour, because capping each row to one sentence — the cap the component rows have always had — bought the whole section and 100 tokens besides. A budget is a question about what a line is worth, and the first answer here was to pay rather than to ask. The argument for the section stands and is worth writing down: for the twenty-one lines that make BEHAVIOUR discoverable: src/lib is where the mechanisms live and it had no index row, no search and nothing to find. The price of that was measured rather than guessed — four floating layers written by hand beside a hook that already carried the listeners, the throttled reflow and both dismissals, and three list navigations beside another, every one of them missing a key its neighbour had. At the multiplier below, 200 tokens is about 12k a run and under a cent; one rewritten mechanism costs an afternoon and ships an accessibility defect. The rows are one sentence each on purpose: the reasoning stays in the file, where somebody changing it looks. 4050 -> 4170 -> 4600 on 2026-08-28, and this is the deliberate raise the note above says the runway ends in. It was taken with a number rather than a feeling, because 2026-08-28 is also the day the harness first PRICED a run: one screen, 4,350k tokens, 61 turns, $3.45, of which 98% is context re-read turn after turn (evals/BASELINE.md). That gives the multiplier this budget never had. 1k of must-read is not 1k; it is 1k x 61 = 61k, 1.4% of the run. So this 430-token raise costs about 26k tokens and two cents per screen, and buys room for roughly seventeen more components instead of three. The alternative on the table was making search the only path and dropping this file from must-read, and the measurement argues against it: the index is 5.7% of a run's tokens and it is what stops an agent guessing a component that does not exist — the defect the eval baseline traced most of its lost points to. Taken knowingly, and the next raise needs its own number. 3600 -> 3800 on 2026-08-23: seven index rows for the form layer, 28 tokens each. The rows are the cheap half of a component — this is the file that keeps a component findable at all. 3800 -> 3900 the same day for the table layer's eight rows (TableToolbar, BatchActions, ColumnPicker, TreeTable, PivotTable, ComparisonTable, ScheduleGrid, DiffTable). Eight rows at 28 would be 224; it costs 57, because the generator fix that went in with them (parts publish their OWN props, not the main component's) shortened the index rows of every compound as well. 3900 -> 4050 for the CELL layer's four rows (Truncate, CellStack, TagGroup, Thumbnail): the parts a real cell needs, which the table layer's exhibits proved were missing the moment the content stopped being text. */
 ]
 
 /* Read on demand, not on every task: `npm run registry -- <Name>` returns these
@@ -454,8 +454,23 @@ const ON_DEMAND = [
 /* 8600 -> 9030 on 2026-08-28, carrying the index raise argued at its own line
  * above and nothing else. The total is not a separate decision — it is the sum
  * of two that were each made in the open — but it is kept as its own number so
- * that a raise nobody argued for cannot arrive as an accident of arithmetic. */
-const TOTAL_BUDGET = 9030 // must-read context, tokens
+ * that a raise nobody argued for cannot arrive as an accident of arithmetic.
+ *
+ * 9030 -> 9130 on 2026-09-03, for the twenty-one mechanism rows that make
+ * BEHAVIOUR discoverable. The section cost 380 tokens when it was written and
+ * costs 92 now: the rows were capped to one sentence each, the same cap the
+ * component rows have always had, and the index itself stayed inside its own
+ * budget. What is left is the honest price of listing behaviour at all.
+ *
+ * It is worth it on a measured number rather than a feeling. src/lib had no
+ * index row, no search and nothing to find, and the bill for that was four
+ * floating layers written by hand beside a hook that already carried the
+ * listeners, the throttled reflow and both dismissals, plus three list
+ * navigations beside another — every one of them missing a key its neighbour
+ * had. At the multiplier above, 92 tokens is about 5.6k a run and well under a
+ * cent; one rewritten mechanism costs an afternoon and ships an accessibility
+ * defect. */
+const TOTAL_BUDGET = 9130 // must-read context, tokens
 
 let failed = 0
 /** The median number of turns a measured run took, or null when none was.

@@ -79,8 +79,6 @@
   "ListItem": "card",
   "ListPageTemplate": "page",
   "LoadMore": "region",
-  "LogoWall": "region",
-  "MenuButton": "card",
   "MenuIconButton": "card",
   "MetaItem": "card",
   "Meter": "card",

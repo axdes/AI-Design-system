@@ -104,6 +104,33 @@ describe('the validator bites', () => {
   it('catches a step dropped from CI with an empty reason', () => {
     expect(withGate({ run: 'lint:dead', why: 'triage', localOnly: '  ' }).join(' ')).toContain('no reason written down')
   })
+
+  it('catches a step that does not say where its subjects come from', () => {
+    expect(withGate({ run: 'lint:dead', why: 'triage', startedAs: 'the knip run somebody does by hand once a month' }).join(' '))
+      .toContain('where its subjects come from')
+  })
+
+  it('catches a hand-written population that is not argued for', () => {
+    /* `derived` needs no argument; naming your own list does. Four words is not
+     * an argument, and this is the shape the field exists to stop: a check that
+     * compares against a list and cannot know what is missing from it. */
+    expect(withGate({ run: 'lint:dead', why: 'triage', population: 'the usual files', startedAs: 'the knip run somebody does by hand once a month' }).join(' '))
+      .toContain('cannot know what is missing')
+  })
+
+  it('catches a step that never says what it started as', () => {
+    expect(withGate({ run: 'lint:dead', why: 'triage', population: 'derived' }).join(' '))
+      .toContain('does not say what it started as')
+  })
+
+  it('holds every real step to both, not only the probes', () => {
+    /* The rules above bite on a planted gate; this is the one that matters —
+     * the list as it actually ships. */
+    for (const gate of GATES) {
+      expect(String(gate.population ?? ''), `${gate.run} has no population`).not.toBe('')
+      expect(String(gate.startedAs ?? '').length, `${gate.run} has no startedAs`).toBeGreaterThan(40)
+    }
+  })
 })
 
 describe('modes', () => {

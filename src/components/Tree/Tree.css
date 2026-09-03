@@ -12,7 +12,7 @@
   cursor: pointer;
 }
 .tree-row:hover { background: var(--accent-soft); }
-.tree-item:focus-visible > .tree-row { outline: var(--ring-width) solid var(--ring); outline-offset: calc(var(--ring-offset) * -1); }
+.tree-item:focus-visible > .tree-row { outline: var(--focus-ring); outline-offset: var(--focus-ring-inset); }
 .tree-row[data-selected] { background: var(--accent-soft); color: var(--primary-accent); font-weight: var(--font-weight-medium); }
 
 .tree-caret {

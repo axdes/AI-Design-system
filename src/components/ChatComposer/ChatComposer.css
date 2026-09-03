@@ -19,7 +19,7 @@
  * in the composer or in a form above it. The border keeps its accent too. */
 .chat-composer:focus-within {
   border-color: var(--primary-accent);
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }
 .chat-composer[data-stretched] {

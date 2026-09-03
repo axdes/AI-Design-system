@@ -14,7 +14,12 @@ type Props = {
    * image is not a heading: without this the screen has no h1 at all and a
    * screen reader lands on a page with no title.
    */
-  title: string
+  /* ReactNode, like every other title in this system: a heading routinely
+   * carries a status beside the words or a product name in the brand colour,
+   * and typing it as a string is what sends a screen off to hand-roll its own
+   * header. Widened 2026-09-03; nothing here puts it in an attribute — the
+   * dialog labels itself by id, not by the text. */
+  title: ReactNode
   /** Optional one-line subtitle under the brand. */
   subtitle?: ReactNode
   /** The form fields, or whatever the screen shows when there is no form. */

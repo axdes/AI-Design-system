@@ -27,7 +27,7 @@
 }
 
 .setup-guide-step + .setup-guide-step {
-  border-block-start: 1px solid var(--border);
+  border-block-start: var(--surface-edge);
 }
 
 /* The mark: an empty ring for an open step, the success check for a done one.

@@ -1,3 +1,14 @@
+/* MONOLITHIC BECAUSE IT IS A FIELD PLUS THE DATE DOMAIN.
+ *
+ * Seven of these are the field contract every control in this system carries —
+ * label, id, placeholder, invalid, surface, size, disabled — and the rest are
+ * the dates: which exist (`min`, `max`), which is chosen, in whose language.
+ * A compound would separate a control from its own validity.
+ *
+ * What the split would cost: the same field contract expressed twice, once on
+ * the trigger and once on the panel, with nothing holding them in step.
+ * (2026-09-03)
+ */
 import './DatePicker.css'
 import { useState } from 'react'
 import { cn } from '../../lib/cn'

@@ -1,3 +1,8 @@
+/* Owns which theme the tree renders in — light, dark, or the reader's system
+ * setting — and writes it where CSS can read it (`data-theme` on the root). It
+ * is a mechanism rather than a component because both halves matter: the choice
+ * is remembered, and the DOM attribute is the only thing every stylesheet here
+ * agrees on. Reach for it once, at the root of a product; never nest one. */
 import { createContext, use, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 
 const THEMES = ['light', 'dark', 'system'] as const

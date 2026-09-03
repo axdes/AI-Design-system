@@ -1077,35 +1077,6 @@
       "status": "built"
     },
     {
-      "id": "logos",
-      "name": "Logo wall",
-      "carries": [
-        "proof"
-      ],
-      "intent": "Customer logos in one optical weight.",
-      "anatomy": {
-        "required": [
-          "media"
-        ],
-        "optional": [
-          "title"
-        ]
-      },
-      "components": {
-        "required": [
-          "LogoWall"
-        ],
-        "optional": [
-          "Card",
-          "SectionLabel"
-        ]
-      },
-      "notWhen": "Fewer than four logos — a short row reads as a gap, not as proof.",
-      "because": "Normalising the optical weight of unlike logos is systems work; done per page it is done by eye and looks it.",
-      "source": "B2B marketing practice",
-      "status": "built"
-    },
-    {
       "id": "offer",
       "name": "Offer card",
       "carries": [
@@ -1488,8 +1459,7 @@
       "choose": [
         "testimonial",
         "case",
-        "proof",
-        "logos"
+        "proof"
       ],
       "because": "Proof carries attribution rather than fields: who said it, for whom, measured how.",
       "good": "a quote with the person, their role and their company",

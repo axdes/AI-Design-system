@@ -1,3 +1,9 @@
+/* The last thing between a thrown render and a blank page. Wraps a subtree and
+ * shows a plain, honest failure instead of the white screen React leaves behind
+ * when a component throws — the one failure a product cannot recover from on its
+ * own, because after it there is nothing left to render the message with. Reach
+ * for it at a route boundary, not around a control: a boundary that catches too
+ * much hides where the throw came from. */
 import './ErrorBoundary.css'
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { Button } from '../components/Button'

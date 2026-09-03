@@ -19,7 +19,7 @@
 }
 .checkbox[data-size="sm"] { --box-size: 1rem; font-size: var(--font-sm); }
 .checkbox[data-size="lg"] { --box-size: 1.5rem; font-size: var(--font-md); }
-.checkbox[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.checkbox[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 /* The same three answers every other control gives. The selection family gave
  * none of them: a checkbox did not acknowledge the pointer, did not answer the
  * press, and had no way to be marked wrong — so a required consent box could be
@@ -61,6 +61,6 @@
   background: var(--primary-foreground);
 }
 .checkbox-input:focus-visible + .checkbox-box {
-  outline: var(--ring-width) solid var(--ring);
+  outline: var(--focus-ring);
   outline-offset: var(--ring-offset);
 }

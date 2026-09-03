@@ -37,7 +37,8 @@
   "context": "region",
   "uses": [
     "Avatar",
+    "Button",
     "Layout"
   ],
-  "example": "<HoverCard\n  content={\n    <Row gap={3}>\n      <Avatar name=\"Ada Meridian\" />\n      <Stack gap={1}>\n        <strong>Ada Meridian</strong>\n        <span>Brand manager, joined 2023</span>\n      </Stack>\n    </Row>\n  }\n>\n  <button type=\"button\">@sarah</button>\n</HoverCard>"
+  "example": "<HoverCard\n  content={\n    <Row gap={3}>\n      <Avatar name=\"Ada Meridian\" />\n      <Stack gap={1}>\n        <strong>Ada Meridian</strong>\n        <span>Brand manager, joined 2023</span>\n      </Stack>\n    </Row>\n  }\n>\n  \n  <Button variant=\"link\">@sarah</Button>\n</HoverCard>"
 }

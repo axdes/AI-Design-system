@@ -79,7 +79,7 @@
       "name": "button-group",
       "type": "registry:ui",
       "title": "ButtonGroup",
-      "description": "Two or three buttons that are one decision: \"Save\" beside the menu of other ways to save. They are welded into one pill — the radii flatten where they meet and a hairline separates them, because a gap says \"two things\". There is no loose variant on purpose: a row of buttons with space between them is a row of buttons, and `<Layout direction=\"row\" gap>` already builds it. For the commonest case of "
+      "description": "ONE CONTROL MADE OF MORE THAN ONE PART: buttons welded into a single pill, a menu welded onto the end, or both. The radii flatten where the parts meet and a hairline separates them, because a gap says \"two things\" — a row of buttons with space between them is a row of buttons, and `<Layout direction=\"row\">` already builds that. Three forms, and the props choose between them rather than three compo"
     },
     {
       "name": "calendar",
@@ -283,7 +283,7 @@
       "name": "dropdown",
       "type": "registry:ui",
       "title": "Dropdown",
-      "description": "Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are built in, so spread `triggerProps` onto your own button. Items, sections and dividers are the parts. When the trigger is an ordinary labelled button, `<MenuButton>` is that already assembled — including the split form where a default action sits on its own half. Come here when the trigger is something else: an avatar, a ta"
+      "description": "Menu hung on a trigger you supply: keyboard navigation, portal and ARIA are built in, so spread `triggerProps` onto your own button. Items, sections and dividers are the parts. When the trigger is an ordinary labelled button, `<ButtonGroup menu>` is that already assembled — including the split form where a default action sits on its own half. Come here when the trigger is something else: an avatar"
     },
     {
       "name": "empty-state",
@@ -454,22 +454,10 @@
       "description": "The end of a list that has more of it. `<Pagination>` pages a known total; this is for the ones where the total is not known and may not be finite. Copy: name what arrives, with the number when it is known — \"Show 20 more invoices\". \"Load more\" tells the reader nothing about what they are about to wait for."
     },
     {
-      "name": "logo-wall",
-      "type": "registry:ui",
-      "title": "LogoWall",
-      "description": "Customer or partner marks in ONE optical weight: unlike logos are drawn at unlike strengths, and a row of them at full colour reads as noise rather than as proof. Normalising that is systems work — done per page it is done by eye, and looks it. Copy: every `alt` is the organisation's name in full. The mark IS the information here, so a reader who cannot see it learns who is on the wall only from t"
-    },
-    {
-      "name": "menu-button",
-      "type": "registry:ui",
-      "title": "MenuButton",
-      "description": "A button that opens a MENU, in its two forms: one target that opens the menu, or — with `onClick` — a split button whose label commits the default action and whose chevron opens the rest. It exists because the system had neither form and both were being assembled by hand in eight places (2026-08-26): the render-prop trigger, the chevron, `data-open`, and — the part that breaks silently — an `aria-"
-    },
-    {
       "name": "menu-icon-button",
       "type": "registry:ui",
       "title": "MenuIconButton",
-      "description": "A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra actions a toolbar has no room to name. It is <MenuButton>'s pair, and the split between them is the same one the system already makes between `Button` and `IconButton`: a control with no words in it has to carry a name and a tooltip, and a separate component is what makes that unavoidable rather than remembered. Folding it"
+      "description": "A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra actions a toolbar has no room to name. It is <ButtonGroup>'s pair, and the split between them is the same one the system already makes between `Button` and `IconButton`: a control with no words in it has to carry a name and a tooltip, and a separate component is what makes that unavoidable rather than remembered. Folding i"
     },
     {
       "name": "meta-item",
@@ -493,7 +481,7 @@
       "name": "nav-drawer-button",
       "type": "registry:ui",
       "title": "NavDrawerButton",
-      "description": "Opens the navigation drawer, in the leading slot of the screen's top bar and only below the drawer breakpoint. `<PageHeader>` renders it when the screen has no `onBack`; a screen with its own bar renders it there instead."
+      "description": "Opens the navigation drawer, in the leading slot of the screen's top bar and only below the drawer breakpoint. `<PageHeader>` renders it when the screen has no `onBack`, and `<ChatShell>` does the same for a screen with its own bar — which is why nothing outside this package has ever imported it and nothing should. It is `` for that reason and not because it is unfinished: shared, maintained and t"
     },
     {
       "name": "number-input",

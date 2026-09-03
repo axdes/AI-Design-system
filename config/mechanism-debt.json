@@ -1,0 +1,7 @@
+{
+  "_why": "The mechanisms still written twice, each with the reason it stands and what would close it. Recorded by npm run lint:mechanism -- --record, which leaves the reason blank; a pair with no reason fails, because a pair carried without one is the silence this check exists to end. A pair not in this file fails outright: the number only falls. Ten on 2026-09-02, seven that afternoon when the list keyboard became one mechanism, one on 2026-09-03 when the geometry read did.",
+  "recorded": "2026-09-03",
+  "pairs": {
+    "CommandPalette ~ Dropdown": "What is left after the geometry read and the list keyboard became mechanisms: both portal a layer, take focus into it, and answer Escape in their own key handler. useDismiss owns Escape at the document level and neither calls it, because both also want the same keydown for something else — the menu for Tab, the palette for its filter — and a document listener would fire beside the local one rather than instead of it. So the honest shape of the remainder is a PART, one portalled layer that takes focus and closes, which the two would render. That is a change to two public APIs rather than a refactor behind them. Closes when that part exists; until then this is the last pair standing, and it is one worth looking at rather than one worth explaining away."
+  }
+}

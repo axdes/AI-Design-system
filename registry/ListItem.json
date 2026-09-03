@@ -3,11 +3,33 @@
   "level": "molecule",
   "description": "One clickable row of a list: an optional marker, leading media, title, meta and a trailing action, all inside the row's own hit area.",
   "exports": [
-    "ListItem"
+    "ListItem",
+    "ListGroup"
   ],
   "main": "ListItem",
   "from": "@/components/ListItem",
-  "slots": [],
+  "slots": [
+    {
+      "name": "ListGroup",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ]
+    }
+  ],
   "props": [
     {
       "name": "icon",

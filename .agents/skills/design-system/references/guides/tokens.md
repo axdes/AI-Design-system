@@ -1,0 +1,274 @@
+# Tokens
+
+264 tokens. A component uses these; a raw px or hex is a defect the
+linters reject. The same values in DTCG form, for a pipeline rather than a prompt,
+are in `tokens/design.tokens.json`.
+
+Generated from the registry. Never edit this file.
+
+```
+--accent                       var(--neutral-200)
+--accent-active                var(--neutral-400)
+--accent-foreground            var(--neutral-900)
+--accent-soft                  var(--neutral-200)
+--accent-strong                var(--neutral-300)
+--ai                           var(--violet-600)
+--ai-foreground                var(--neutral-0)
+--ai-soft                      var(--violet-50)
+--ai-soft-foreground           var(--violet-700)
+--avatar                       var(--neutral-700)
+--avatar-2xl                   8rem
+--avatar-foreground            var(--neutral-0)
+--avatar-lg                    var(--control-height-lg)
+--avatar-md                    var(--control-height)
+--avatar-sm                    var(--control-height-sm)
+--avatar-xl                    5rem
+--background                   var(--neutral-0)
+--border                       var(--neutral-200)
+--border-strong                var(--neutral-300)
+--bp-2xl                       100rem
+--bp-lg                        62rem
+--bp-md                        48rem
+--bp-sm                        30rem
+--bp-xl                        75rem
+--brand-100                    #d8d5f9
+--brand-200                    #b7b2f2
+--brand-300                    #8680e7
+--brand-400                    #4638d3
+--brand-50                     #edecfc
+--brand-500                    #3b2fb6
+--brand-600                    #33289c
+--brand-700                    #2a2181
+--brand-800                    #211a66
+--brand-900                    #171247
+--card                         var(--neutral-0)
+--card-foreground              var(--neutral-900)
+--card-media-ratio             16 / 9
+--card-padding                 var(--space-6)
+--card-padding-nested          var(--space-6)
+--card-radius                  var(--radius-xl)
+--card-shadow                  var(--shadow-popover)
+--card-title-size              var(--font-lg)
+--chart-1                      var(--series-1)
+--chart-2                      var(--series-2)
+--chart-3                      var(--series-3)
+--chart-4                      var(--series-4)
+--chart-5                      var(--series-5)
+--chart-6                      var(--series-6)
+--chart-axis                   var(--muted-foreground)
+--chart-danger                 var(--danger-600)
+--chart-grid                   var(--border)
+--chart-success                var(--success-600)
+--chart-track                  var(--accent)
+--chart-warning                var(--warning-800)
+--chat-message-max-width       44rem
+--chat-panel-width             24rem
+--chat-sidebar-width           22.5rem
+--control-edge                 var(--neutral-550)
+--control-font-size            var(--font-base)
+--control-font-size-lg         1rem
+--control-font-weight          var(--font-weight-semibold)
+--control-height               2.5rem
+--control-height-lg            3rem
+--control-height-sm            2rem
+--control-padding-x            var(--space-6)
+--control-radius               var(--radius-full)
+--danger-100                   #fdd2d4
+--danger-200                   #eca39f
+--danger-300                   #e2817a
+--danger-400                   #eb6858
+--danger-50                    #feedef
+--danger-500                   #f05e41
+--danger-600                   #e1553f
+--danger-700                   #cf4b39
+--danger-800                   #c24633
+--danger-900                   #b13e29
+--danger-930                   #8d3122
+--danger-950                   #3b1410
+--destructive                  var(--danger-800)
+--destructive-border           var(--danger-200)
+--destructive-emphasis         var(--danger-800)
+--destructive-foreground       var(--neutral-0)
+--destructive-soft             var(--danger-50)
+--destructive-soft-foreground  var(--danger-900)
+--disabled-opacity             0.5
+--duration-fast                120ms
+--duration-normal              200ms
+--duration-slow                320ms
+--ease-out                     cubic-bezier(0.2, 0, 0, 1)
+--focus-ring                   var(--ring-width) solid var(--ring)
+--focus-ring-inset             calc(-1 * var(--ring-offset))
+--font-2xl                     1.875rem
+--font-3xl                     2.25rem
+--font-4xl                     2.75rem
+--font-base                    0.9375rem
+--font-family                  'Onest', ui-sans-serif, system-ui, sans-serif
+--font-family-display          'Commissioner', 'Onest', ui-sans-serif, system-ui, sans-serif
+--font-family-mono             ui-monospace, 'Menlo', monospace
+--font-lg                      1.25rem
+--font-md                      1.0625rem
+--font-sm                      0.8125rem
+--font-weight-light            300
+--font-weight-medium           500
+--font-weight-regular          400
+--font-weight-semibold         600
+--font-xl                      1.5rem
+--font-xs                      0.75rem
+--foreground                   var(--neutral-900)
+--grid-unit                    4px
+--icon-2xl                     5rem
+--icon-lg                      1.5rem
+--icon-md                      1.25rem
+--icon-muted                   var(--neutral-500)
+--icon-sm                      1rem
+--icon-stroke                  2
+--icon-xl                      2.5rem
+--input                        var(--neutral-300)
+--leading-none                 1
+--leading-normal               1.5
+--leading-relaxed              1.65
+--leading-snug                 1.3
+--leading-tight                1.15
+--link                         var(--primary-accent)
+--link-hover                   var(--primary-hover)
+--link-quiet                   var(--muted-foreground)
+--muted                        var(--neutral-100)
+--muted-foreground             var(--neutral-700)
+--nav-active                   var(--primary-soft)
+--nav-active-border            var(--primary-accent)
+--nav-active-foreground        var(--primary-accent)
+--neutral-0                    #ffffff
+--neutral-100                  #f1f6fd
+--neutral-200                  #ebf0f7
+--neutral-300                  #dde2e9
+--neutral-400                  #bbbfc6
+--neutral-50                   #f6fbff
+--neutral-500                  #9ca0a7
+--neutral-550                  #858a91
+--neutral-600                  #73777d
+--neutral-700                  #5f6369
+--neutral-800                  #3b3f45
+--neutral-820                  #2c3036
+--neutral-900                  #1f2328
+--neutral-950                  #0e1217
+--overlay                      rgb(0 0 0 / 0.4)
+--page-max-width               96rem
+--popover                      var(--neutral-0)
+--popover-foreground           var(--neutral-900)
+--popover-frame-padding        var(--space-1)
+--popover-hover                var(--neutral-100)
+--popover-item-radius          var(--radius-md)
+--popover-padding              var(--space-4)
+--popover-radius               var(--radius-lg)
+--primary                      var(--brand-400)
+--primary-accent               var(--brand-400)
+--primary-active               var(--brand-600)
+--primary-border               var(--brand-200)
+--primary-foreground           var(--neutral-0)
+--primary-hover                var(--brand-500)
+--primary-soft                 var(--brand-50)
+--primary-soft-foreground      var(--brand-700)
+--prose-max-width              32rem
+--radius                       8px
+--radius-full                  9999px
+--radius-lg                    calc(var(--radius) + var(--grid-unit))
+--radius-md                    var(--radius)
+--radius-rect                  calc( var(--radius) + var(--grid-unit) * 4 )
+--radius-sm                    max(0px, calc(var(--radius) - var(--grid-unit)))
+--radius-xl                    calc(var(--radius) + var(--grid-unit) * 2)
+--ring                         var(--brand-400)
+--ring-offset                  2px
+--ring-width                   2px
+--scrim-0                      rgb(16 19 24 / 0)
+--scrim-70                     rgb(16 19 24 / 0.72)
+--scrim-85                     rgb(16 19 24 / 0.85)
+--secondary-foreground         var(--neutral-700)
+--series-1                     var(--brand-400)
+--series-1-dark                var(--brand-300)
+--series-2                     #eb6834
+--series-2-dark                #d95926
+--series-3                     #1baf7a
+--series-3-dark                #199e70
+--series-4                     #eda100
+--series-4-dark                #c98500
+--series-5                     #e87ba4
+--series-5-dark                #d55181
+--series-6                     #008300
+--series-6-dark                var(--series-6)
+--shadow-card-hover            0 6px 20px rgb(0 0 0 / 0.45)
+--shadow-lg                    0 12px 32px rgb(0 0 0 / 0.14)
+--shadow-md                    0 2px 16px rgb(0 0 0 / 0.06)
+--shadow-popover               0 4px 24px rgb(0 0 0 / 0.40)
+--shadow-sm                    0 1px 2px rgb(0 0 0 / 0.08)
+--shell-max-width              112rem
+--side-panel-width             24rem
+--sidebar-rail-item-size       2.5rem
+--sidebar-width                16.25rem
+--space-1                      calc(var(--grid-unit) * 1)
+--space-12                     calc(var(--grid-unit) * 12)
+--space-16                     calc(var(--grid-unit) * 16)
+--space-2                      calc(var(--grid-unit) * 2)
+--space-2xs                    2px
+--space-3                      calc(var(--grid-unit) * 3)
+--space-4                      calc(var(--grid-unit) * 4)
+--space-5                      calc(var(--grid-unit) * 5)
+--space-6                      calc(var(--grid-unit) * 6)
+--space-8                      calc(var(--grid-unit) * 8)
+--success                      var(--success-800)
+--success-100                  #e3f0c2
+--success-200                  #cde59a
+--success-300                  #b3d96b
+--success-400                  #9ccb38
+--success-50                   #f4f9e6
+--success-500                  #84bd00
+--success-600                  #76a900
+--success-700                  #659200
+--success-800                  #527700
+--success-900                  #3c5800
+--success-border               var(--success-300)
+--success-emphasis             var(--success-800)
+--success-foreground           var(--neutral-0)
+--success-soft                 var(--success-50)
+--success-soft-foreground      var(--success-800)
+--surface-contrast             var(--card)
+--surface-contrast-active      var(--accent-strong)
+--surface-contrast-hover       var(--accent)
+--surface-edge                 1px solid var(--border)
+--surface-hover                var(--neutral-50)
+--switch-thumb                 var(--neutral-0)
+--switch-track-off             var(--neutral-300)
+--tracking-wide                0.08em
+--violet-100                   #ede9fe
+--violet-200                   #ddd6fe
+--violet-300                   #c4b5fd
+--violet-400                   #a78bfa
+--violet-50                    #f5f3ff
+--violet-500                   #8b5cf6
+--violet-600                   #7c3aed
+--violet-700                   #6d28d9
+--violet-800                   #5b21b6
+--violet-900                   #4c1d95
+--warning                      var(--warning-700)
+--warning-100                  #fffac8
+--warning-200                  #fff6a3
+--warning-300                  #fef17f
+--warning-400                  #fcec63
+--warning-50                   #fffee9
+--warning-500                  #f9e74a
+--warning-600                  #ffde4d
+--warning-700                  #ffc846
+--warning-800                  #fcb03e
+--warning-900                  #f68930
+--warning-930                  #6b4915
+--warning-950                  #3a2a05
+--warning-border               var(--warning-700)
+--warning-emphasis             var(--warning-950)
+--warning-foreground           var(--neutral-900)
+--warning-soft                 var(--warning-100)
+--warning-soft-foreground      var(--neutral-900)
+--z-dropdown                   200
+--z-modal                      100
+--z-sticky                     50
+--z-toast                      300
+--z-tooltip                    400
+```

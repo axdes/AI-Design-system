@@ -81,9 +81,14 @@ function renderIndex({ query, level, context } = {}) {
   )
   if (!hits.length) return `Nothing matches. Call design_system_index with no arguments for the whole list of ${rows.length}.`
   const lines = hits.map(renderRow)
+  /* The second line used to be "Ask `component` for the props…", printed on every
+     index call whether or not the caller had already done it. That is the shape
+     of instruction that stops being read: it is the same words at the same place
+     every time, and it costs tokens in every answer to say something true once.
+     It moved into mcp/guidance.mjs, which says it at the FIRST index call of a
+     session and then never again. */
   return [
     `${hits.length} of ${rows.length} entries. This is the whole system: a component that is not here does not exist.`,
-    'Ask `component` for the props, the allowed values and the golden example of the ones you will actually write.',
     '',
     ...lines,
   ].join('\n')
@@ -414,6 +419,11 @@ function renderDecide({ task, data, components, archetype, lifecycle } = {}) {
 /* ── the protocol ────────────────────────────────────────────────────── */
 
 import { TOOLS } from './tools.mjs'
+import { createGuidance } from './guidance.mjs'
+
+/* One bank of situational reminders per session. See mcp/guidance.mjs for why a
+ * nudge appended to the answer beats the same sentence added to `instructions`. */
+const guidance = createGuidance()
 
 function call(name, args = {}) {
   switch (name) {
@@ -467,7 +477,12 @@ function handle(msg) {
       return result(id, { tools: TOOLS })
     case 'tools/call':
       try {
-        return result(id, { content: [{ type: 'text', text: call(params?.name, params?.arguments) }] })
+        const text = call(params?.name, params?.arguments)
+        /* Decision-time guidance: at most one line, only when this particular
+         * answer earns it, appended AFTER the answer so it is the last thing
+         * read before the next decision. */
+        const note = guidance.note(params?.name, text)
+        return result(id, { content: [{ type: 'text', text: note ? `${text}\n\n→ ${note}` : text }] })
       } catch (e) {
         /* A tool failure is a result with isError, not a protocol error: the
          * model has to see it and correct itself, not have the call disappear. */

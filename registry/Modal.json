@@ -22,12 +22,12 @@
     },
     {
       "name": "title",
-      "type": "string",
+      "type": "ReactNode",
       "required": false
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "How much room the CONTENT needs, and md is the floor: sm is reserved for a yes-or-no confirmation and nothing else, because a form in a small dialog scrolls before it has asked anything.",
       "values": [
@@ -38,7 +38,7 @@
     },
     {
       "name": "placement",
-      "type": "Placement",
+      "type": "'center' | 'drawer'",
       "required": false,
       "description": "center = floating dialog (default). drawer = panel docked to the inline-end edge, full height, sliding in from the side.",
       "values": [

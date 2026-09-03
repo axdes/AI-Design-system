@@ -1,3 +1,8 @@
+/* Owns the queue of transient messages and renders them in one place. A toast
+ * is not a component a screen renders: two screens rendering their own would
+ * stack two toast layers, and the second one would cover the first. Reach for
+ * the provider once at the root, and for `useToast()` wherever something needs
+ * to say that it worked. */
 import { createContext, useCallback, use, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'

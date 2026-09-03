@@ -129,7 +129,7 @@
     },
     {
       "name": "asideWidth",
-      "type": "AsideWidth",
+      "type": "'default' | 'rail'",
       "required": false,
       "description": "How much room the aside takes: a column that shares the width, or a rail as wide as its content.",
       "values": [
@@ -145,7 +145,7 @@
     },
     {
       "name": "shape",
-      "type": "Shape",
+      "type": "'single' | 'list-detail' | 'feed' | 'board' | 'canvas'",
       "required": false,
       "description": "Overrides the archetype's shape. Required when there is no archetype.",
       "values": [
@@ -158,7 +158,7 @@
     },
     {
       "name": "width",
-      "type": "Width",
+      "type": "'narrow' | 'reading' | 'default' | 'full'",
       "required": false,
       "description": "Overrides the archetype's width.",
       "values": [
@@ -170,7 +170,7 @@
     },
     {
       "name": "align",
-      "type": "Align",
+      "type": "'start' | 'center'",
       "required": false,
       "description": "Overrides the archetype's alignment. `center` puts a short column mid-height.",
       "values": [

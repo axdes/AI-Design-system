@@ -1,7 +1,7 @@
 {
   "ref": "MenuIconButton",
   "level": "molecule",
-  "description": "A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra actions a toolbar has no room to name. It is <MenuButton>'s pair, and the split between them is the same one the system already makes between `Button` and `IconButton`: a control with no words in it has to carry a name and a tooltip, and a separate component is what makes that unavoidable rather than remembered. Folding it into MenuButton as an optional label would make the name optional, which is the whole thing this prevents. Built 2026-08-26, after four screens assembled it by hand from a Dropdown render prop, an IconButton and an aria-label. Copy: the label names WHOSE actions these are — \"Actions for the March invoice\" — because \"More actions\" on six rows tells a screen-reader user nothing about which row they are on.",
+  "description": "A MENU behind a single glyph: the row's `⋮`, the card's overflow, the extra actions a toolbar has no room to name. It is <ButtonGroup>'s pair, and the split between them is the same one the system already makes between `Button` and `IconButton`: a control with no words in it has to carry a name and a tooltip, and a separate component is what makes that unavoidable rather than remembered. Folding it into ButtonGroup as an optional label would make the name optional, which is the whole thing this prevents. That group absorbed the menu button on 2026-08-31 and this one stayed out of it for exactly that reason. Built 2026-08-26, after four screens assembled it by hand from a Dropdown render prop, an IconButton and an aria-label. Copy: the label names WHOSE actions these are — \"Actions for the March invoice\" — because \"More actions\" on six rows tells a screen-reader user nothing about which row they are on.",
   "exports": [
     "MenuIconButton"
   ],
@@ -29,7 +29,7 @@
     },
     {
       "name": "variant",
-      "type": "Variant",
+      "type": "'ghost' | 'filled' | 'quiet'",
       "required": false,
       "description": "Decides whether the control is discoverable. `ghost` is right in a list, quiet until wanted; `filled` for a busy or coloured surface where a transparent glyph disappears; `quiet` answers with ink only, for a dense inline toolbar.",
       "values": [
@@ -40,7 +40,7 @@
     },
     {
       "name": "size",
-      "type": "Size",
+      "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "Follows the row: `sm` inside a table row or a dense toolbar, `md` beside full-size controls.",
       "values": [
@@ -51,7 +51,7 @@
     },
     {
       "name": "align",
-      "type": "Align",
+      "type": "'start' | 'end'",
       "required": false,
       "description": "Which edge of the trigger the menu lines up with.",
       "values": [

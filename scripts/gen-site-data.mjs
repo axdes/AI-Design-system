@@ -62,12 +62,13 @@ const entry = (name, c, kind) => ({
 const components = Object.entries(registry.components).map(([n, c]) => entry(n, c, 'component'))
 const blocks = Object.entries(registry.blocks).map(([n, c]) => entry(n, c, 'block'))
 
-/* The seven decision layers, whole rather than summarised: a summary is the
+/* The eight decision layers, whole rather than summarised: a summary is the
  * thing this data exists not to be. */
 const LAYERS = [
   ['selection', 'selection-rules.json', 'Which representation a collection gets'],
   ['card', 'card-rules.json', 'Which card family, once the answer is cards'],
   ['form', 'form-rules.json', 'Which kind of form a zone that takes input is'],
+  ['control', 'control-rules.json', 'Which control one field gets, from what the value takes'],
   ['table', 'table-rules.json', 'Which kind of table, once the answer is a table'],
   ['cell', 'cell-rules.json', 'What one column carries, and what that decides'],
   ['page', 'page-rules.json', 'Which regions a page archetype has, and what shape its body takes'],
@@ -130,7 +131,13 @@ if (publishedTree) {
  * this package's business to announce.
  */
 const gate = {
-  steps: GATES.map((g) => ({ run: g.run, why: g.why, lane: g.lane ?? 'main', ci: g.ci !== false, after: g.after ?? null })),
+  /* `ci` used to read `g.ci !== false`, and no gate step has ever had a `ci`
+   * field: the manifest says `localOnly` with the reason. So the site told every
+   * reader that every step runs in CI — "50 of 50" while one of them is local by
+   * declaration — and it had been saying it since the field was renamed. The
+   * reason travels too as `ciNote`, which is the field the site was already
+   * rendering into a tooltip that had never once appeared. (2026-09-02) */
+  steps: GATES.map((g) => ({ run: g.run, why: g.why, lane: g.lane ?? 'main', ci: !g.localOnly, ciNote: g.localOnly ?? null, after: g.after ?? null })),
 }
 
 const ruleCount = layers.reduce(
@@ -163,7 +170,7 @@ const READABLE = [
   ['component-index.md', 'Every component, one line each. The file discovery starts from.'],
   ['llms.txt', 'The whole contract in prose, for an agent that reads rather than calls.'],
   ['component-registry.json', 'Every component\'s full contract: props, allowed values, the golden example.'],
-  ['public/data/layers.json', 'The seven decision layers, whole — the rules the gate enforces.'],
+  ['public/data/layers.json', 'The eight decision layers, whole — the rules the gate enforces.'],
 ]
 const kb = (p) => (existsSync(`${ROOT}/${p}`) ? Math.round(readFileSync(`${ROOT}/${p}`, 'utf8').length / 1024) : null)
 /* A step counts as holding an agent when it fails on what an agent produces

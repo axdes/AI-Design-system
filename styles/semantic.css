@@ -106,7 +106,11 @@
   --chart-danger:  var(--danger-600);
 
 
-  --secondary:              var(--neutral-100);   /* plain light grey on white surfaces; page-level contexts override to white */
+  /* The FILL of this pair went on 2026-09-02: nothing in the system painted
+   * with it, and the rule is that a token nobody takes is deleted rather than
+   * carried. The ink stayed because Chip takes it. A half-used pair is worth
+   * noticing — if a part ever needs the fill back it is --neutral-100 in light
+   * and --neutral-950 in dark, which is what it was. */
   --secondary-foreground:   var(--neutral-700);   /* text-secondary */
 
   --accent:                 var(--neutral-200);
@@ -330,7 +334,6 @@
   /* neutral-950, not -850: at -850 this token WAS --card, so every secondary
    * button standing on a card was 1.00:1 against it — the fill was not quiet, it
    * was absent. A step BELOW the card reads on the card and on the page both. */
-  --secondary:              var(--neutral-950);
   --secondary-foreground:   var(--neutral-100);
 
   --accent:                 var(--neutral-800);
@@ -482,7 +485,6 @@
   --chart-success: var(--success-500);
     --chart-warning: var(--warning-800);
     --chart-danger:  var(--danger-400);
-    --secondary:              var(--neutral-950);
     --secondary-foreground:   var(--neutral-100);
     --accent:                 var(--neutral-800);
     --accent-foreground:      var(--neutral-100);

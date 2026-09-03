@@ -12,6 +12,10 @@
  * a bare `startsWith` lights `/discovery` while you are on `/discovery-types`,
  * and those two are siblings in a real menu, not parent and child.
  */
+/* Published because: three products take it. Each asks "is this nav item the page
+ * we are on", and the answer is not `===`: a detail route is inside its list
+ * route, and a trailing slash is not a different page. Written once here, wrong
+ * in three places otherwise. (2026-09-02) */
 export function isRouteActive(pathname: string, route: string): boolean {
   /* Root is only ever itself; a prefix test would make it match every page. */
   if (route === '/') return pathname === '/'

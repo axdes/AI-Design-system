@@ -17,7 +17,7 @@
     },
     {
       "name": "placement",
-      "type": "Placement",
+      "type": "'top' | 'bottom' | 'end' | 'start'",
       "required": false,
       "description": "Which side it prefers, chosen by the room available rather than the look — `start`/`end` beside a control at the edge of a panel, where a tooltip above it would be clipped. A preference, not an instruction: the layer flips itself when the chosen side does not fit.",
       "values": [

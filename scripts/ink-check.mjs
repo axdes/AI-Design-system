@@ -63,7 +63,6 @@ if (!existsSync(`${ROOT}/dist/visual/index.html`)) {
  * blanket excuse. */
 const EXEMPT = {
   'Skeleton': 'a loading placeholder has no text — the shapes ARE the content',
-  'LogoWall': 'client wordmarks, supplied as images at whatever contrast the client owns',
 }
 
 const lin = (c) => { const s = c / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4 }

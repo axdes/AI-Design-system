@@ -539,6 +539,12 @@
     "role": "ink"
   },
   {
+    "name": "--disabled-opacity",
+    "group": "other",
+    "value": "0.5",
+    "layer": "recipe"
+  },
+  {
     "name": "--duration-fast",
     "group": "motion",
     "value": "120ms",
@@ -561,6 +567,18 @@
     "group": "motion",
     "value": "cubic-bezier(0.2, 0, 0, 1)",
     "layer": "semantic"
+  },
+  {
+    "name": "--focus-ring",
+    "group": "other",
+    "value": "var(--ring-width) solid var(--ring)",
+    "layer": "recipe"
+  },
+  {
+    "name": "--focus-ring-inset",
+    "group": "other",
+    "value": "calc(-1 * var(--ring-offset))",
+    "layer": "recipe"
   },
   {
     "name": "--font-2xl",
@@ -664,12 +682,6 @@
     "value": "var(--neutral-900)",
     "layer": "semantic",
     "role": "ink"
-  },
-  {
-    "name": "--gradient-brand",
-    "group": "color",
-    "value": "linear-gradient(-135deg, var(--brand-400) 0%, var(--brand-500) 50%, var(--brand-700) 100%)",
-    "layer": "primitive"
   },
   {
     "name": "--grid-unit",
@@ -777,12 +789,6 @@
     "value": "var(--muted-foreground)",
     "layer": "semantic",
     "role": "brand"
-  },
-  {
-    "name": "--logo-height",
-    "group": "size",
-    "value": "2rem",
-    "layer": "semantic"
   },
   {
     "name": "--muted",
@@ -931,6 +937,12 @@
     "role": "ink"
   },
   {
+    "name": "--popover-frame-padding",
+    "group": "spacing",
+    "value": "var(--space-1)",
+    "layer": "semantic"
+  },
+  {
     "name": "--popover-hover",
     "group": "color",
     "value": "var(--neutral-100)",
@@ -941,6 +953,12 @@
     "name": "--popover-item-radius",
     "group": "radius",
     "value": "var(--radius-md)",
+    "layer": "semantic"
+  },
+  {
+    "name": "--popover-padding",
+    "group": "spacing",
+    "value": "var(--space-4)",
     "layer": "semantic"
   },
   {
@@ -1091,13 +1109,6 @@
     "layer": "primitive"
   },
   {
-    "name": "--secondary",
-    "group": "color",
-    "value": "var(--neutral-100)",
-    "layer": "semantic",
-    "role": "brand"
-  },
-  {
     "name": "--secondary-foreground",
     "group": "color",
     "value": "var(--neutral-700)",
@@ -1219,12 +1230,6 @@
     "layer": "semantic"
   },
   {
-    "name": "--sidebar-drawer-width",
-    "group": "size",
-    "value": "min(20rem, 85vw)",
-    "layer": "semantic"
-  },
-  {
     "name": "--sidebar-rail-item-size",
     "group": "size",
     "value": "2.5rem",
@@ -1234,12 +1239,6 @@
     "name": "--sidebar-width",
     "group": "size",
     "value": "16.25rem",
-    "layer": "semantic"
-  },
-  {
-    "name": "--sidebar-width-collapsed",
-    "group": "size",
-    "value": "5.625rem",
     "layer": "semantic"
   },
   {
@@ -1300,12 +1299,6 @@
     "name": "--space-8",
     "group": "spacing",
     "value": "calc(var(--grid-unit) * 8)",
-    "layer": "primitive"
-  },
-  {
-    "name": "--space-section",
-    "group": "spacing",
-    "value": "clamp(var(--space-8), 5vw, var(--space-16))",
     "layer": "primitive"
   },
   {
@@ -1430,6 +1423,12 @@
     "value": "var(--accent)",
     "layer": "semantic",
     "role": "state"
+  },
+  {
+    "name": "--surface-edge",
+    "group": "other",
+    "value": "1px solid var(--border)",
+    "layer": "recipe"
   },
   {
     "name": "--surface-hover",

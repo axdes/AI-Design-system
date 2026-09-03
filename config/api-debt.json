@@ -1,0 +1,182 @@
+{
+  "_why": "The opening balance for npm run lint:api, recorded by npm run lint:api -- --record. Each number is a ceiling that may only fall: a prop name may not gain a type, a part may not gain a prop, a callback outside the vocabulary may not spread to a new part, and a new part may not arrive untested. Re-record after a payment, never to make a failure go away.",
+  "recorded": "2026-09-03",
+  "shapes": {
+    "actions": 3,
+    "aside": 2,
+    "columns": 6,
+    "content": 2,
+    "count": 3,
+    "current": 2,
+    "defaultExpandedIds": 2,
+    "defaultOpen": 2,
+    "empty": 3,
+    "error": 3,
+    "fill": 2,
+    "formatValue": 2,
+    "height": 2,
+    "inline": 2,
+    "items": 8,
+    "label": 2,
+    "labels": 2,
+    "lines": 2,
+    "max": 2,
+    "min": 3,
+    "name": 3,
+    "nodes": 2,
+    "onChange": 15,
+    "onDismiss": 2,
+    "onRemove": 2,
+    "onSave": 2,
+    "onSelect": 3,
+    "onSubmit": 3,
+    "options": 4,
+    "role": 2,
+    "rows": 3,
+    "shape": 4,
+    "status": 2,
+    "steps": 3,
+    "trigger": 2,
+    "value": 13,
+    "width": 2
+  },
+  "props": {
+    "AdaptiveListPage": 11,
+    "AuthTemplate": 11,
+    "ChatComposer": 8,
+    "Chip": 8,
+    "Combobox": 11,
+    "ContentCard": 11,
+    "DataGrid": 12,
+    "DonutChart": 9,
+    "Field": 8,
+    "FileUpload": 10,
+    "FilterDropdown": 15,
+    "FormPageTemplate": 10,
+    "FormPanel": 8,
+    "Identity": 8,
+    "ListPageTemplate": 9,
+    "Meter": 8,
+    "Modal": 9,
+    "NumberInput": 11,
+    "OverviewPageTemplate": 9,
+    "Pagination": 8,
+    "PivotTable": 10,
+    "PlanCard": 9,
+    "Progress": 9,
+    "RangeSlider": 10,
+    "RenameDialog": 8,
+    "ScheduleGrid": 9,
+    "Select": 12,
+    "SelectableTile": 10,
+    "SessionPill": 9,
+    "SideNav": 9,
+    "SidePanel": 8,
+    "Slider": 8,
+    "Stat": 9,
+    "Table": 8,
+    "TableToolbar": 8,
+    "Tree": 8,
+    "WizardTemplate": 10
+  },
+  "callbacks": {
+    "onAbort": [
+      "InlineText"
+    ],
+    "onBack": [
+      "DetailPageTemplate",
+      "Page",
+      "PageHeader"
+    ],
+    "onCancel": [
+      "FormPageTemplate"
+    ],
+    "onCellChange": [
+      "DataGrid"
+    ],
+    "onClear": [
+      "BatchActions",
+      "FilterBar",
+      "SearchInput"
+    ],
+    "onClick": [
+      "SessionPill"
+    ],
+    "onClose": [
+      "CommandPalette",
+      "FeedbackModal",
+      "FormPanel",
+      "Modal",
+      "RenameDialog",
+      "SidePanel"
+    ],
+    "onCollapsedChange": [
+      "SideNav"
+    ],
+    "onDensityChange": [
+      "TableToolbar"
+    ],
+    "onDetailClose": [
+      "Page"
+    ],
+    "onDislike": [
+      "ChatMessage"
+    ],
+    "onExpandedChange": [
+      "Tree"
+    ],
+    "onFiles": [
+      "FileUpload"
+    ],
+    "onLoad": [
+      "LoadMore"
+    ],
+    "onMonthChange": [
+      "Calendar"
+    ],
+    "onMove": [
+      "ColumnPicker"
+    ],
+    "onNavClose": [
+      "AppLayout"
+    ],
+    "onNavOpen": [
+      "AppLayout"
+    ],
+    "onNext": [
+      "CardStack"
+    ],
+    "onOpen": [
+      "CardStack",
+      "ContentCard",
+      "LinkTile"
+    ],
+    "onRemove": [
+      "Chip",
+      "FileUpload"
+    ],
+    "onReset": [
+      "ColumnPicker"
+    ],
+    "onSave": [
+      "InlineText",
+      "RenameDialog"
+    ],
+    "onSend": [
+      "ChatComposer"
+    ],
+    "onSortChange": [
+      "DataGrid"
+    ],
+    "onStep": [
+      "WizardTemplate"
+    ],
+    "onStepClick": [
+      "Stepper"
+    ],
+    "onStop": [
+      "ChatComposer"
+    ]
+  },
+  "untested": []
+}

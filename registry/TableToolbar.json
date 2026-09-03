@@ -46,7 +46,7 @@
     },
     {
       "name": "density",
-      "type": "Density",
+      "type": "'comfortable' | 'compact'",
       "required": false,
       "description": "The row density this table is read at. Given with `onDensityChange`, the toolbar renders the switch. Density is a decision of the screen and of the reader, so remember the choice per collection rather than resetting it.",
       "values": [
@@ -56,7 +56,7 @@
     },
     {
       "name": "onDensityChange",
-      "type": "(density: Density) => void",
+      "type": "(density: 'comfortable' | 'compact') => void",
       "required": false
     },
     {

@@ -29,7 +29,7 @@
     },
     {
       "name": "submitLabel",
-      "type": "string",
+      "type": "ReactNode",
       "required": true,
       "description": "Names the real event (\"Create workspace\"), never \"Submit\"."
     },
@@ -40,7 +40,7 @@
     },
     {
       "name": "cancelLabel",
-      "type": "string",
+      "type": "ReactNode",
       "required": false
     },
     {

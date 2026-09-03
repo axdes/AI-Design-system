@@ -13,7 +13,7 @@
   background: var(--popover);
 
   color: var(--popover-foreground);
-  border: 1px solid var(--border);
+  border: var(--surface-edge);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
@@ -22,8 +22,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  border-block-end: 1px solid var(--border);
+  padding: var(--space-3) var(--popover-padding);
+  border-block-end: var(--surface-edge);
 }
 .command-search-icon { color: var(--muted-foreground); }
 .command-input {
@@ -54,11 +54,8 @@
 }
 .command-item-icon { color: var(--muted-foreground); }
 .command-item-label { flex: 1; }
-.command-item-hint {
-  font-size: var(--font-xs);
-  color: var(--muted-foreground);
-  font-variant-numeric: tabular-nums;
-}
+/* Layout only: the cap is <Kbd>'s. */
+.command-item-hint { white-space: nowrap; }
 .command-empty { padding: var(--space-4); text-align: center; font-size: var(--font-sm); color: var(--muted-foreground); }
 
 /* WHERE ENTER WILL LAND — said by the row itself, not by a bar beside it.

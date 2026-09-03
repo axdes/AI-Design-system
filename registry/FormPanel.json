@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "title",
-      "type": "string",
+      "type": "ReactNode",
       "required": true
     },
     {
@@ -28,13 +28,13 @@
     },
     {
       "name": "submitLabel",
-      "type": "string",
+      "type": "ReactNode",
       "required": false,
       "description": "Names the real event (\"Save changes\"), never \"Submit\"."
     },
     {
       "name": "cancelLabel",
-      "type": "string",
+      "type": "ReactNode",
       "required": false
     },
     {

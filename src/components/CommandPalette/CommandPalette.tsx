@@ -2,7 +2,10 @@ import './CommandPalette.css'
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
+import { Highlight } from '../Highlight'
 import { Icon, type IconName } from '../Icon'
+import { Kbd } from '../Kbd'
+import { useListNavigation } from '../../lib/useListNavigation'
 
 export type Command = {
   id: string
@@ -36,7 +39,6 @@ type Props = {
    */
 export function CommandPalette({ open, onClose, commands, placeholder = 'Type a command or search…', emptyLabel = 'No results', className }: Props) {
   const [query, setQuery] = useState('')
-  const [active, setActive] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listId = useId()
 
@@ -46,25 +48,34 @@ export function CommandPalette({ open, onClose, commands, placeholder = 'Type a 
     return commands.filter((c) => (c.label + ' ' + (c.keywords ?? '')).toLowerCase().includes(q))
   }, [commands, query])
 
+  const run = (cmd: Command) => { cmd.onRun(); onClose() }
+  /* Above the effects and above the early return, because a hook may be neither
+     conditional nor used before it exists — which is what four seconds of red
+     tests said when this sat where it reads most naturally (2026-08-31). */
+  const { active, setActive, handleKey } = useListNavigation({
+    count: results.length,
+    onEnter: (i) => { const cmd = results[i]; if (cmd) run(cmd) },
+  })
+
   useEffect(() => {
     if (open) {
       setQuery('')
       setActive(0)
       inputRef.current?.focus()
     }
-  }, [open])
+  }, [open, setActive])
 
-  useEffect(() => { setActive(0) }, [query])
+  useEffect(() => { setActive(0) }, [query, setActive])
 
   if (!open) return null
 
-  const run = (cmd: Command) => { cmd.onRun(); onClose() }
-
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'ArrowDown') { e.preventDefault(); setActive((i) => Math.min(i + 1, results.length - 1)) }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive((i) => Math.max(i - 1, 0)) }
-    else if (e.key === 'Enter') { if (results[active]) { e.preventDefault(); run(results[active]) } }
-    else if (e.key === 'Escape') { e.preventDefault(); onClose() }
+    /* Arrows, Home and End are `useListNavigation`'s, and Enter with them: this
+       list had neither Home nor End, and a palette is exactly the list long
+       enough to want them. Escape is the palette's own, because it closes the
+       dialog rather than moving inside it. */
+    if (handleKey(e)) return
+    if (e.key === 'Escape') { e.preventDefault(); onClose() }
   }
 
   return createPortal(
@@ -99,8 +110,14 @@ export function CommandPalette({ open, onClose, commands, placeholder = 'Type a 
               onMouseEnter={() => setActive(i)}
             >
               {cmd.icon && <Icon name={cmd.icon} size="sm" className="command-item-icon" />}
-              <span className="command-item-label">{cmd.label}</span>
-              {cmd.hint && <span className="command-item-hint">{cmd.hint}</span>}
+              {/* WHY THIS ROW IS A HIT, said on the row. A palette filters as you
+                  type and then showed the label plain, so a list of nine results
+                  did not say which word each one matched on — and <Highlight>,
+                  which marks exactly that with a real <mark>, had no consumer
+                  anywhere in the system (2026-08-31). The same pass gave the
+                  hint the key cap <Kbd> was written for. */}
+              <Highlight text={cmd.label} query={query} className="command-item-label" />
+              {cmd.hint && <span className="command-item-hint"><Kbd>{cmd.hint}</Kbd></span>}
             </li>
           ))}
         </ul>
