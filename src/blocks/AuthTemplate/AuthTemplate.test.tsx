@@ -28,7 +28,7 @@ describe('AuthTemplate', () => {
   })
 
   it('submits the form rather than only the button', async () => {
-    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault())
+    const onSubmit = vi.fn()
     render(
       <AuthTemplate brand={<span>Acme</span>} title="Sign in" submitLabel="Sign in" onSubmit={onSubmit}>
         <Input aria-label="Password" type="password" />

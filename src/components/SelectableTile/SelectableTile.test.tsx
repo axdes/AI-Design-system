@@ -11,12 +11,12 @@ import { SelectableTile } from './SelectableTile'
 
 describe('SelectableTile', () => {
   it('is a radio when one option can be chosen, named by its title', () => {
-    render(<SelectableTile name="region" title="Europe" selected onSelect={() => {}} />)
+    render(<SelectableTile name="region" title="Europe" selected onChange={() => {}} />)
     expect(screen.getByRole('radio', { name: /Europe/ })).toBeChecked()
   })
 
   it('is a checkbox when several can be', () => {
-    render(<SelectableTile multiple title="Logs" selected={false} onSelect={() => {}} />)
+    render(<SelectableTile multiple title="Logs" selected={false} onChange={() => {}} />)
     expect(screen.getByRole('checkbox', { name: /Logs/ })).not.toBeChecked()
   })
 
@@ -29,7 +29,7 @@ describe('SelectableTile', () => {
         title="Europe"
         description="Frankfurt, Warsaw"
         selected={false}
-        onSelect={onSelect}
+        onChange={onSelect}
       />,
     )
 
@@ -40,7 +40,7 @@ describe('SelectableTile', () => {
   it('says what the state BECOMES, so multi-select can unpick', async () => {
     const onSelect = vi.fn()
     const user = userEvent.setup()
-    render(<SelectableTile multiple title="Logs" selected onSelect={onSelect} />)
+    render(<SelectableTile multiple title="Logs" selected onChange={onSelect} />)
 
     await user.click(screen.getByRole('checkbox'))
     expect(onSelect).toHaveBeenCalledWith(false)
@@ -51,8 +51,8 @@ describe('SelectableTile', () => {
     const user = userEvent.setup()
     render(
       <>
-        <SelectableTile name="region" title="Europe" selected onSelect={() => {}} />
-        <SelectableTile name="region" title="North America" selected={false} onSelect={onSelect} />
+        <SelectableTile name="region" title="Europe" selected onChange={() => {}} />
+        <SelectableTile name="region" title="North America" selected={false} onChange={onSelect} />
       </>,
     )
 
@@ -64,7 +64,7 @@ describe('SelectableTile', () => {
   it('honours disabled', async () => {
     const onSelect = vi.fn()
     const user = userEvent.setup()
-    render(<SelectableTile name="region" title="Europe" disabled selected={false} onSelect={onSelect} />)
+    render(<SelectableTile name="region" title="Europe" disabled selected={false} onChange={onSelect} />)
 
     await user.click(screen.getByText('Europe'))
     expect(screen.getByRole('radio')).toBeDisabled()
@@ -77,11 +77,11 @@ describe('SelectableTile', () => {
      answer. A mutation run made the tick unconditional and nothing failed
      (2026-08-29). */
   it('draws the tick only when several can be chosen', () => {
-    const { container, unmount } = render(<SelectableTile name="region" title="Europe" selected={false} onSelect={() => {}} />)
+    const { container, unmount } = render(<SelectableTile name="region" title="Europe" selected={false} onChange={() => {}} />)
     expect(container.querySelector('.selectable-tile-mark svg')).toBeNull()
     unmount()
 
-    const { container: many } = render(<SelectableTile multiple title="Europe" selected={false} onSelect={() => {}} />)
+    const { container: many } = render(<SelectableTile multiple title="Europe" selected={false} onChange={() => {}} />)
     expect(many.querySelector('.selectable-tile-mark svg')).not.toBeNull()
   })
 })

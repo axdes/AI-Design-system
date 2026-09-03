@@ -34,7 +34,9 @@ type Props = {
    * a dead column (handbook's skill page, 2026-08-26). The word and its two
    * values are the system's own — `<Th hideBelow>` drops a column the same way.
    */
-  aside?: {
+  /* `asidePanel`, not `aside`: <Page aside> takes the rendered pane, and this
+   * takes a description of one. (2026-09-03) */
+  asidePanel?: {
     title: string
     content: ReactNode
     collapsible?: boolean
@@ -63,32 +65,32 @@ type Props = {
  * not "Supplier". Nothing goes under it; what would have is content and
  * belongs in the body.
  */
-export function DetailPageTemplate({ title, onBack, backLabel, actions, children, aside, panels }: Props) {
-  const [asideCollapsed, setAsideCollapsed] = useState(aside?.defaultCollapsed ?? false)
-  const collapsed = !!aside?.collapsible && asideCollapsed
+export function DetailPageTemplate({ title, onBack, backLabel, actions, children, asidePanel, panels }: Props) {
+  const [asideCollapsed, setAsideCollapsed] = useState(asidePanel?.defaultCollapsed ?? false)
+  const collapsed = !!asidePanel?.collapsible && asideCollapsed
 
   return (
     <Page
       archetype="detail"
       className="detail-page"
       panels={panels}
-      /* Collapsed, the panel is a rail one control wide. <Page><Page> takes that as a
+      /* Collapsed, the panel is a rail one control wide. <Page><Page><Page> takes that as a
          WIDTH, so the block keeps the state and the page keeps the geometry. */
       asideWidth={collapsed ? 'rail' : 'default'}
       title={title}
       onBack={onBack}
       backLabel={backLabel}
       actions={actions}
-      aside={aside && (collapsed ? (
+      aside={asidePanel && (collapsed ? (
           /* Collapsed: a rail the width of one control, and the control says what it opens. The
              panel is NOT removed from the page — a reader who folded it away still needs to see
              that there is something there, or the width just silently changed. */
           <div className="detail-page-aside-rail">
-            <Tooltip content={aside.title} placement="start">
+            <Tooltip content={asidePanel.title} placement="start">
               <IconButton
                 icon="arrow_left_to_line"
                 size="md"
-                aria-label={`Show ${aside.title}`}
+                aria-label={`Show ${asidePanel.title}`}
                 aria-expanded={false}
                 onClick={() => setAsideCollapsed(false)}
               />
@@ -96,22 +98,22 @@ export function DetailPageTemplate({ title, onBack, backLabel, actions, children
           </div>
         ) : (
           <SidePanel
-            title={aside.title}
+            title={asidePanel.title}
             className="detail-page-aside"
-            hideBelow={aside.hideBelow}
-            headerActions={aside.collapsible && (
+            hideBelow={asidePanel.hideBelow}
+            headerActions={asidePanel.collapsible && (
               <Tooltip content="Collapse">
                 <IconButton
                   icon="arrow_right_to_line"
                   size="md"
-                  aria-label={`Collapse ${aside.title}`}
+                  aria-label={`Collapse ${asidePanel.title}`}
                   aria-expanded
                   onClick={() => setAsideCollapsed(true)}
                 />
               </Tooltip>
             )}
           >
-            {aside.content}
+            {asidePanel.content}
           </SidePanel>
         ))}
     >

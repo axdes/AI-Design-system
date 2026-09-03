@@ -138,6 +138,19 @@ const subsumes = (wide, narrow) => [...narrow].every((w) => wide.has(w))
  * (2026-09-03) */
 const isNumberUnion = (type) => /^-?\d+(?:\.\d+)?(\s*\|\s*-?\d+(?:\.\d+)?)*$/.test(String(type).trim())
 
+/* A STRING IS A ReactNode. A part that takes `label: string` and one that takes
+ * `label: ReactNode` are answering the same question; the second accepts
+ * everything the first does and more. That is the narrowing rule already applied
+ * to a union of words — a part offering fewer answers is not a second question —
+ * said for the two types that stand in the same relation. It cost nothing to
+ * count and hid the names where the two types mean two different things.
+ * (2026-09-03) */
+/* Only a string. A `number` is a valid ReactNode too, and folding it would put
+ * `value: number` on a Meter — a measured quantity — into `value: ReactNode` on
+ * a Stat, which is displayed content. Two questions, and the count is the only
+ * thing that would notice. */
+const NODE_NARROWINGS = new Set(['string'])
+
 /* A NULLABLE IS THE SAME IDEA WITH ONE MORE STATE. `count: number` and
  * `count: number | null` are one contract — the second says "not counted yet",
  * which is a fact about the data rather than a second question. */
@@ -154,14 +167,56 @@ const withoutNull = (type) => type.replace(/\s*\|\s*(null|undefined)\b/g, '').tr
  * union, the name is being used for two things and the finding stands.
  * (2026-09-03) */
 const NAMED_SHAPE = /^(readonly\s+)?[A-Z][\w.]*(<[^>]*>)?(\[\])?$/
-const isPolymorphic = (types) => types.length > 1 && types.every((t) => NAMED_SHAPE.test(t.trim()))
+/* Two more count as a named shape, for the same reason and not as an exception:
+ * a COLLECTION of a primitive (`readonly string[]` on a TagGroup is still the
+ * part's own list, and the thing in it having no name of its own changes
+ * nothing), and a RENDER PROP whose parameter is the part's own named shape
+ * (`(DropdownTriggerProps) => ReactNode` against `(PopoverTriggerProps) =>
+ * ReactNode` — one question, answered with the part's own props). */
+const PRIMITIVE_LIST = /^(readonly\s+)?(string|number|boolean)\[\]$/
+const RENDER_PROP = /^\((readonly\s+)?[A-Z][\w.]*(<[^>]*>)?(\[\])?\)\s*=>\s*ReactNode$/
+const namedShape = (t) => NAMED_SHAPE.test(t.trim()) || PRIMITIVE_LIST.test(t.trim()) || RENDER_PROP.test(t.trim())
+const isPolymorphic = (types) => types.length > 1 && types.every(namedShape)
+
+const canonical = new Set(Object.keys(vocab.canonical))
+/* A KEPT NAME IS PART OF THE VOCABULARY, not debt inside it. Each one carries
+ * the thing it says that the canonical name cannot, and that reason IS the
+ * decision — `onBack` is the way out of a screen rather than one action among
+ * many, `onClear` does not fire when the value changes. Deferring them as
+ * exceptions was the first version of this file and it was wrong: applying that
+ * table would have made several APIs worse. What stays debt is only what is
+ * still wrong. (2026-09-03) */
+const kept = new Set(Object.keys(vocab.kept ?? {}).filter((k) => k !== '_why'))
+
+/* A CALLBACK'S ARGUMENT IS ITS PART'S OWN PAYLOAD.
+ *
+ * `config/callback-vocabulary.json` decides what each name reports and what it
+ * carries: onChange takes "the new value, never an event", onSelect "names what
+ * was chosen", onRemove takes which one of many. Which value, which id, which
+ * index is the part's own type — the same argument the polymorphic rule makes
+ * for `items`, said for behaviour, and A3 is what holds the NAME to the list.
+ * Counting eleven payloads for `onChange` was counting eleven parts.
+ *
+ * With ONE exception, and it is the reason this fold is a check rather than a
+ * surrender: a DOM EVENT is not a payload. `onSubmit: (FormEvent) => void`
+ * hands the caller the browser's object and makes them dig the values out of
+ * it, which is exactly what the vocabulary says the argument is not. An event
+ * shape stays counted, and stands out now that the payloads no longer bury it.
+ * (2026-09-03) */
+const DOM_EVENT = /\b(\w*Event)\b/
+const isCallbackPayload = (type) => /^\(.*\)\s*=>/.test(String(type).trim()) && !DOM_EVENT.test(String(type))
 
 /** Fold each union into the widest union of the same vocabulary. */
 function foldNarrowings(name, byType) {
   const unions = [...byType.keys()].map((t) => [t, wordsOf(t)]).filter(([, w]) => w)
   const numbers = [...byType.keys()].filter((t) => t.trim() === 'number' || isNumberUnion(t))
   const numeric = numbers.length > 1
-  if (unions.length < 2 && !numeric) return { byType, folded: [] }
+  const nodes = [...byType.keys()].some((t) => t.trim() === 'ReactNode') && [...byType.keys()].some((t) => NODE_NARROWINGS.has(t.trim()))
+  /* Only a name the vocabulary decides. A callback nobody declared is A3's
+   * finding, and folding its payloads here would answer a question that has not
+   * been asked yet. */
+  const vocabCallback = (canonical.has(name) || kept.has(name)) && [...byType.keys()].filter(isCallbackPayload).length > 1
+  if (unions.length < 2 && !numeric && !nodes && !vocabCallback) return { byType, folded: [] }
 
   /* A GOVERNED PROP IS ONE TYPE WHEN EVERY PART SPEAKS THE DECLARED WORDS.
    * Which of them a part offers is lint:vocab's question and it asks it
@@ -175,7 +230,19 @@ function foldNarrowings(name, byType) {
   }
   const out = new Map()
   const folded = []
+  const hasNode = [...byType.keys()].some((t) => t.trim() === 'ReactNode')
+  const widestPayload = vocabCallback ? [...byType.keys()].filter(isCallbackPayload).sort((a, b) => b.length - a.length)[0] : null
   for (const [type, parts] of byType) {
+    if (widestPayload && isCallbackPayload(type) && type !== widestPayload) {
+      folded.push({ narrow: type, wide: `${name}: the part's own payload`, parts })
+      out.set(widestPayload, [...(out.get(widestPayload) ?? []), ...parts])
+      continue
+    }
+    if (hasNode && NODE_NARROWINGS.has(type.trim())) {
+      folded.push({ narrow: type, wide: 'ReactNode', parts })
+      out.set('ReactNode', [...(out.get('ReactNode') ?? []), ...parts])
+      continue
+    }
     if (numeric && isNumberUnion(type)) {
       folded.push({ narrow: type, wide: 'number', parts })
       out.set('number', [...(out.get('number') ?? []), ...parts])
@@ -242,15 +309,6 @@ const wide = parts
   .filter((p) => p.count > 7 && !p.excused)
 
 /* ── A3 ─────────────────────────────────────────────────────────────────── */
-const canonical = new Set(Object.keys(vocab.canonical))
-/* A KEPT NAME IS PART OF THE VOCABULARY, not debt inside it. Each one carries
- * the thing it says that the canonical name cannot, and that reason IS the
- * decision — `onBack` is the way out of a screen rather than one action among
- * many, `onClear` does not fire when the value changes. Deferring them as
- * exceptions was the first version of this file and it was wrong: applying that
- * table would have made several APIs worse. What stays debt is only what is
- * still wrong. (2026-09-03) */
-const kept = new Set(Object.keys(vocab.kept ?? {}).filter((k) => k !== '_why'))
 const exceptions = Object.fromEntries(Object.entries(vocab.exceptions ?? {}).filter(([k]) => k !== '_why'))
 const callbacks = new Map()
 for (const part of parts) {

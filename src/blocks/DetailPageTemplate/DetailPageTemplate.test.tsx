@@ -13,7 +13,7 @@ describe('DetailPageTemplate', () => {
        point of folding it away. */
     const user = userEvent.setup()
     const { container } = render(
-      <DetailPageTemplate title="Onboarding revamp" panels aside={aside}>
+      <DetailPageTemplate title="Onboarding revamp" panels asidePanel={aside}>
         <p>Body</p>
       </DetailPageTemplate>,
     )
@@ -43,7 +43,7 @@ describe('DetailPageTemplate', () => {
     expect(container.querySelector('.page')).not.toHaveAttribute('data-has-aside')
 
     const { container: two } = render(
-      <DetailPageTemplate title="Two panes" panels aside={aside}><p>Body</p></DetailPageTemplate>,
+      <DetailPageTemplate title="Two panes" panels asidePanel={aside}><p>Body</p></DetailPageTemplate>,
     )
     expect(two.querySelector('.page')).toHaveAttribute('data-has-aside')
   })

@@ -9,7 +9,10 @@ type Props = {
   /** Whether it is currently chosen — this is a controlled control. */
   selected: boolean;
   /** Called with what the state becomes. */
-  onSelect: (selected: boolean) => void;
+  /* `onChange`, not `onSelect`: the vocabulary reserves onSelect for naming
+   * WHICH thing was chosen, and this reports the tile's own value moving
+   * between on and off. (2026-09-03) */
+  onChange: (selected: boolean) => void;
   /** true when several tiles can be chosen at once: a checkbox mark instead of
    *  a radio one, and no group name needed. */
   multiple?: boolean;
@@ -42,7 +45,7 @@ type Props = {
 export function SelectableTile({
   title,
   selected,
-  onSelect,
+  onChange,
   multiple,
   name,
   icon,
@@ -64,7 +67,7 @@ export function SelectableTile({
         name={name}
         checked={selected}
         disabled={disabled}
-        onChange={(e) => onSelect(e.target.checked)}
+        onChange={(e) => onChange(e.target.checked)}
       />
       <span className="selectable-tile-mark" aria-hidden="true">
         {multiple && <Icon name="check" size="sm" />}

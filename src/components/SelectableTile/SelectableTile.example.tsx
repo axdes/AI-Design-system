@@ -26,7 +26,7 @@ export function Example() {
           description={r.description}
           meta={r.meta}
           selected={region === r.id}
-          onSelect={() => setRegion(r.id)}
+          onChange={() => setRegion(r.id)}
         />
       ))}
     </Grid>

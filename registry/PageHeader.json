@@ -34,7 +34,7 @@
       "description": "Inline tools next to the title (search, filters)."
     },
     {
-      "name": "inline",
+      "name": "titleTools",
       "type": "ReactNode",
       "required": false
     },

@@ -8,6 +8,25 @@ import { Icon, type IconName } from '../Icon'
  * announce it by. Inside a card or a section it stays h2 or lower. */
 type Heading = 'h1' | 'h2' | 'h3' | 'h4'
 
+/**
+ * What a PAGE TEMPLATE takes to build one of these: the words, not the element.
+ *
+ * Three templates declared the same object inline and a fourth declared it
+ * without `reason`, so one name carried three shapes and an agent reading the
+ * registry saw three questions (2026-09-03). The templates publish it as
+ * `emptyState` / `errorState` — `empty` on a DataGrid is arbitrary CONTENT, and
+ * a description of a state is not that.
+ */
+export type PageStateSpec = {
+  icon?: IconName
+  title: ReactNode
+  description?: ReactNode
+  action?: ReactNode
+  /** Only the list templates read it: `no-matches` keeps the header, because
+   *  the filter that emptied the list is in it. Default `no-data`. */
+  reason?: 'no-data' | 'no-matches'
+}
+
 type Props = {
   icon?: IconName
   /* ReactNode, like every other title in this system: a heading routinely

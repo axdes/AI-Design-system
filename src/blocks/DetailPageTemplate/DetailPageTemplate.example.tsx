@@ -27,7 +27,7 @@ export function Example() {
       onBack={() => undefined}
       actions={<Button variant="ghost"><Icon name="edit" />Edit</Button>}
       panels
-      aside={{
+      asidePanel={{
         title: 'Details',
         collapsible: true,
         content: (

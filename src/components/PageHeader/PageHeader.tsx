@@ -18,7 +18,7 @@ type Props = {
    *  companion: one step up is an arrow, several is a trail, and a screen
    *  showing both gives the reader two ways out of the same corner. */
   breadcrumb?: ReactNode
-  inline?: ReactNode
+  titleTools?: ReactNode
   /** Trailing actions pinned to the far end (create button, user menu). */
   actions?: ReactNode
 }
@@ -34,7 +34,7 @@ type Props = {
  * not "Supplier detail". Nothing goes under it: an explanatory line there
  * is content and belongs in the body.
  */
-export function PageHeader({ title, onBack, backLabel, breadcrumb, inline, actions }: Props) {
+export function PageHeader({ title, onBack, backLabel, breadcrumb, titleTools, actions }: Props) {
   const { t } = useTranslation()
   return (
     <header className="page-header">
@@ -74,7 +74,7 @@ export function PageHeader({ title, onBack, backLabel, breadcrumb, inline, actio
             <h1 className="page-title">{title}</h1>
           </div>
         )}
-        {inline && <div className="page-header-inline">{inline}</div>}
+        {titleTools && <div className="page-header-inline">{titleTools}</div>}
         {actions && <div className="page-header-actions">{actions}</div>}
       </div>
     </header>

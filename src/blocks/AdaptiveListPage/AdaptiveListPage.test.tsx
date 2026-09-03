@@ -15,8 +15,8 @@ function Page({ count, error }: { count: number | null; error?: boolean }) {
       count={count}
       actions={<Button>New</Button>}
       cta={<Button size="lg">New</Button>}
-      empty={{ icon: 'presentation', title: 'No workshops yet' }}
-      error={error ? { title: 'Backend is not reachable' } : undefined}
+      emptyState={{ icon: 'presentation', title: 'No workshops yet' }}
+      errorState={error ? { title: 'Backend is not reachable' } : undefined}
     >
       {(gridRef) => (
         <div className="list-cluster-grid" ref={gridRef}>
@@ -89,7 +89,7 @@ describe('AdaptiveListPage', () => {
         subtitle="Run a session"
         count={0}
         cta={<Button size="lg">New</Button>}
-        empty={{ title: 'No workshops yet' }}
+        emptyState={{ title: 'No workshops yet' }}
         notice={<p>Two boards failed to sync</p>}
       >
         {(gridRef) => <div ref={gridRef} />}
@@ -108,9 +108,9 @@ describe('AdaptiveListPage', () => {
         title="Workshops"
         subtitle="Run a session"
         count={0}
-        inline={<input aria-label="Search" />}
+        titleTools={<input aria-label="Search" />}
         cta={<Button size="lg">New</Button>}
-        empty={{ title: 'Nothing matches', reason: 'no-matches' }}
+        emptyState={{ title: 'Nothing matches', reason: 'no-matches' }}
       >
         {(gridRef) => <div ref={gridRef} />}
       </AdaptiveListPage>,

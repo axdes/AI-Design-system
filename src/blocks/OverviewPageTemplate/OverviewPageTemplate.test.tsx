@@ -38,7 +38,7 @@ describe('OverviewPageTemplate', () => {
   })
 
   it('shows the empty state instead of the zones when there is nothing yet', () => {
-    page({ isEmpty: true, empty: { title: 'Nothing here yet' } })
+    page({ isEmpty: true, emptyState: { title: 'Nothing here yet' } })
     expect(screen.getByText('Nothing here yet')).toBeInTheDocument()
     expect(screen.queryByText('the rest')).not.toBeInTheDocument()
   })

@@ -1,8 +1,7 @@
 import './OverviewPageTemplate.css'
 import { type ReactNode } from 'react'
 import { Card, CardHeader, CardTitle, CardMeta } from '../../components/Card'
-import { EmptyState } from '../../components/EmptyState'
-import { type IconName } from '../../components/Icon'
+import { EmptyState, type PageStateSpec } from '../../components/EmptyState'
 import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 
@@ -42,19 +41,14 @@ type Props = {
   board?: ReactNode
   /** The widget grid: `<OverviewWidget>` children, laid out by the template. */
   children?: ReactNode
-  /** When true, the empty state is shown instead of band, prime and grid. */
+  /** When true, the emptyState state is shown instead of band, prime and grid. */
   isEmpty?: boolean
   /**
    * Empty-state config. An overview has no filters, so there is only the
    * `no-data` case: a fresh install, nothing to oversee yet. The header stays —
    * its actions are usually how the first data arrives.
    */
-  empty?: {
-    icon?: IconName
-    title: string
-    description?: string
-    action?: ReactNode
-  }
+  emptyState?: PageStateSpec
   /** Extra class on the page wrapper, for the rare app-level difference. */
   className?: string
 }
@@ -78,23 +72,23 @@ export function OverviewPageTemplate({
   board,
   children,
   isEmpty,
-  empty,
+  emptyState,
   className,
 }: Props) {
   return (
     <Page archetype="overview" className={cn('overview-page', className)} title={title} actions={actions}>
         {notices && <div className="overview-notices">{notices}</div>}
-        {isEmpty && empty ? (
+        {isEmpty && emptyState ? (
           <EmptyState
             size="lg"
             surface="page"
             /* The header kept the title, so this is a section of the page, not
                its name — h2, or the page claims to be two pages. */
             as="h2"
-            icon={empty.icon}
-            title={empty.title}
-            description={empty.description}
-            action={empty.action}
+            icon={emptyState.icon}
+            title={emptyState.title}
+            description={emptyState.description}
+            action={emptyState.action}
           />
         ) : (
           <>

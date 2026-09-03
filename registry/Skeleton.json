@@ -27,13 +27,13 @@
       "description": "Number of text lines. Only meaningful for kind=\"text\"; the last line is rendered short so the block reads as a paragraph, not a bar. Default 1."
     },
     {
-      "name": "width",
+      "name": "inlineSize",
       "type": "string",
       "required": false,
-      "description": "Width / height overrides for block and circle (a token or length). Text fills its container."
+      "description": "Inline / block size overrides for block and circle (a token or length). Text fills its container."
     },
     {
-      "name": "height",
+      "name": "blockSize",
       "type": "string",
       "required": false
     },
@@ -58,5 +58,5 @@
   "uses": [
     "Layout"
   ],
-  "example": "<Row gap={3} aria-busy=\"true\">\n  <Skeleton kind=\"circle\" />\n  <Stack gap={2} className=\"skeleton-lines\">\n    <Skeleton width=\"12rem\" height=\"1rem\" kind=\"block\" />\n    <Skeleton lines={3} />\n  </Stack>\n</Row>"
+  "example": "<Row gap={3} aria-busy=\"true\">\n  <Skeleton kind=\"circle\" />\n  <Stack gap={2} className=\"skeleton-lines\">\n    <Skeleton inlineSize=\"12rem\" blockSize=\"1rem\" kind=\"block\" />\n    <Skeleton lines={3} />\n  </Stack>\n</Row>"
 }

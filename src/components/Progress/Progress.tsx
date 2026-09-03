@@ -22,7 +22,9 @@ type Props = {
   /** Show the value — beside the label on a bar, inside the ring. */
   showValue?: boolean
   /** Formats the shown value (default is the rounded percentage). */
-  formatValue?: (value: number, max: number) => string
+  /* One argument, like the two sliders that publish the same name: the caller
+   * passed `max` in and already has it. (2026-09-03) */
+  formatValue?: (value: number) => string
   className?: string
 }
 
@@ -51,7 +53,7 @@ export function Progress({
 }: Props) {
   const indeterminate = value === undefined
   const pct = indeterminate ? 0 : clamp((value / max) * 100)
-  const shown = formatValue && !indeterminate ? formatValue(value, max) : `${Math.round(pct)}%`
+  const shown = formatValue && !indeterminate ? formatValue(value) : `${Math.round(pct)}%`
   const aria = {
     role: 'progressbar' as const,
     'aria-label': label,

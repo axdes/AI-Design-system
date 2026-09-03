@@ -24,7 +24,7 @@ describe('ListPageTemplate', () => {
   })
 
   it('shows the empty state instead of the rows when there is nothing', () => {
-    page({ isEmpty: true, empty: { title: 'No sessions yet' } })
+    page({ isEmpty: true, emptyState: { title: 'No sessions yet' } })
     expect(screen.getByText('No sessions yet')).toBeInTheDocument()
     expect(screen.queryByText('the rows')).not.toBeInTheDocument()
   })
@@ -35,7 +35,7 @@ describe('ListPageTemplate', () => {
   it('keeps the toolbar when a filter is what emptied the page', () => {
     page({
       isEmpty: true,
-      empty: { title: 'Nothing matches', reason: 'no-matches' },
+      emptyState: { title: 'Nothing matches', reason: 'no-matches' },
       toolbar: <div>the filters</div>,
     })
     expect(screen.getByText('the filters')).toBeInTheDocument()

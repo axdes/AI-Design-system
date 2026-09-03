@@ -1,6 +1,6 @@
 /* Golden example. A real module: tsc compiles it, src/test/examples.test.tsx
  * renders it, and the registry publishes the usage below to agents. */
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import { AuthTemplate } from './AuthTemplate'
 import { BrandMark } from '../../components/BrandMark'
 import { Logo } from '../../shell/Logo'
@@ -45,8 +45,9 @@ export function Example() {
   /* `busy` stops a second press. Copy this shape. */
   const [busy, setBusy] = useState(false)
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+  /* No event to stop: the template owns the form and calls this after it has
+   * done that itself. */
+  const handleSubmit = () => {
     if (!email || !password) return setError('Enter your email and password.')
     setError(null)
     setBusy(true)
@@ -91,7 +92,7 @@ export function DarkBrandExample() {
       title="Sign in"
       subtitle="Sign in to continue"
       submitLabel="Sign in"
-      onSubmit={(e) => { e.preventDefault() }}
+      onSubmit={() => {}}
     >
       <Field label="Email" htmlFor="auth-email-dark" required>
         <Input id="auth-email-dark" type="email" autoComplete="off" defaultValue="" />

@@ -11,7 +11,7 @@ export function Example() {
     <Row gap={3} aria-busy="true">
       <Skeleton kind="circle" />
       <Stack gap={2} className="skeleton-lines">
-        <Skeleton width="12rem" height="1rem" kind="block" />
+        <Skeleton inlineSize="12rem" blockSize="1rem" kind="block" />
         <Skeleton lines={3} />
       </Stack>
     </Row>

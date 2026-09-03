@@ -339,16 +339,22 @@ describe('lint-api', () => {
 
   it('holds the ceiling: a name on it may not gain a type', () => {
     const { code, out } = withRegistry((registry) => {
-      /* `label` is on the ceiling at two types. A third is a rise, and a rise
-       * fails even though the name itself is already carried as debt. */
-      registry.components.ProbeLabel = {
-        ref: 'ProbeLabel',
-        main: 'ProbeLabel',
-        props: [{ name: 'label', type: '{ text: string }', required: false }],
+      /* `value` is on the ceiling: the value a part carries is that part's own
+       * type, and ten of them are recorded. An eleventh is a rise, and a rise
+       * fails even though the name itself is already carried as debt.
+       *
+       * It used to be `label`, until `label` was paid off — string folded into
+       * the ReactNode two parts publish — and the fixture started proving the
+       * OTHER branch, "not on the ceiling", in green. A break that moves off its
+       * own case proves nothing. (2026-09-03) */
+      registry.components.ProbeValue = {
+        ref: 'ProbeValue',
+        main: 'ProbeValue',
+        props: [{ name: 'value', type: '{ text: string }', required: false }],
       }
     })
     expect(code, out).toBe(1)
-    expect(out).toContain('label')
+    expect(out).toContain('value')
     expect(out).toContain('up from')
   }, 30_000)
 })

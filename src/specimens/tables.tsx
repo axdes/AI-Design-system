@@ -214,13 +214,13 @@ export const TABLE_SPECIMENS: Record<string, () => ReactElement> = {
 
   /* Two categorical axes and ONE measure in the cell. */
   pivot: () => (
-    <PivotTable label="Hours by team and month" captionHidden rowHeader="Team" rows={AXIS} columns={MONTHS} totals value={(r, c) => (r === 'a' && c === 'jun' ? 120 : 80)} />
+    <PivotTable label="Hours by team and month" captionHidden rowHeader="Team" rows={AXIS} columns={MONTHS} totals cellValue={(r, c) => (r === 'a' && c === 'jun' ? 120 : 80)} />
   ),
 
   /* The same two axes, read as a PATTERN: the shape across the grid matters
      more than any single number, so the cells carry heat. */
   heatmap: () => (
-    <PivotTable label="Load by team and month" captionHidden rowHeader="Team" rows={AXIS} columns={MONTHS} heat value={(r, c) => (r === 'a' && c === 'jun' ? 120 : 20)} />
+    <PivotTable label="Load by team and month" captionHidden rowHeader="Team" rows={AXIS} columns={MONTHS} heat cellValue={(r, c) => (r === 'a' && c === 'jun' ? 120 : 20)} />
   ),
 
   /* A few subjects as COLUMNS and their attributes as rows. */

@@ -1,5 +1,5 @@
 import './AuthTemplate.css'
-import { type FormEvent, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { Alert } from '../../components/Alert'
 import { Button } from '../../components/Button'
 import { Card } from '../../components/Card'
@@ -54,7 +54,11 @@ type Props = {
    * this was a union. The registry is the contract agents build against, so its
    * accuracy wins over a compile-time nicety no caller needed.)
    */
-  onSubmit?: (e: FormEvent) => void
+  /* No argument. The vocabulary says onSubmit carries what was collected and
+   * never a DOM event, and handing the caller a FormEvent made every sign-in
+   * screen write the same `e.preventDefault()` — the template does it here, once.
+   * (2026-09-03) */
+  onSubmit?: () => void
   /** The submit button label. Only meaningful together with `onSubmit`. */
   submitLabel?: ReactNode
   /** The submission is in flight: the submit shows a spinner and stops accepting
@@ -113,7 +117,7 @@ export function AuthTemplate({
             {subtitle && <p className="auth-template-subtitle">{subtitle}</p>}
           </Stack>
           {onSubmit ? (
-            <form onSubmit={onSubmit}>
+            <form onSubmit={(e) => { e.preventDefault(); onSubmit() }}>
               <Stack gap={4}>
                 {children}
                 {alert}

@@ -12,21 +12,21 @@ const value = (r: string, c: string) => (r === 'eu' && c === 'q1' ? 10 : r === '
 
 describe('PivotTable', () => {
   it('is a real table with a header per column and a header per row', () => {
-    render(<PivotTable label="Revenue" rows={rows} columns={columns} value={value} rowHeader="Region" />)
+    render(<PivotTable label="Revenue" rows={rows} columns={columns} cellValue={value} rowHeader="Region" />)
     expect(screen.getByRole('table', { name: 'Revenue' })).toBeInTheDocument()
     expect(screen.getByRole('columnheader', { name: 'Q1' })).toBeInTheDocument()
     expect(screen.getByRole('rowheader', { name: 'Europe' })).toBeInTheDocument()
   })
 
   it('leaves a crossing with no observation empty, because that is not a zero', () => {
-    render(<PivotTable label="Revenue" rows={rows} columns={columns} value={value} rowHeader="Region" />)
+    render(<PivotTable label="Revenue" rows={rows} columns={columns} cellValue={value} rowHeader="Region" />)
     expect(screen.queryByText('0')).not.toBeInTheDocument()
     expect(screen.getByText('10')).toBeInTheDocument()
   })
 
   it('writes its numbers the way the caller writes numbers', () => {
     render(
-      <PivotTable label="Revenue" rows={rows} columns={columns} value={value} rowHeader="Region"
+      <PivotTable label="Revenue" rows={rows} columns={columns} cellValue={value} rowHeader="Region"
         format={(n) => `${n} k`} />,
     )
     expect(screen.getByText('10 k')).toBeInTheDocument()
@@ -36,7 +36,7 @@ describe('PivotTable', () => {
    * total that counted a missing observation as zero would be a different
    * number from the one a reader adds up by eye. */
   it('adds the margins when asked, over the observations there are', () => {
-    render(<PivotTable label="Revenue" rows={rows} columns={columns} value={value} rowHeader="Region" totals />)
+    render(<PivotTable label="Revenue" rows={rows} columns={columns} cellValue={value} rowHeader="Region" totals />)
     expect(screen.getAllByText('14').length).toBeGreaterThan(0)
   })
 })

@@ -1,7 +1,6 @@
 import './AdaptiveListPage.css'
 import { type ReactNode, type Ref } from 'react'
-import { EmptyState } from '../../components/EmptyState'
-import { type IconName } from '../../components/Icon'
+import { EmptyState, type PageStateSpec } from '../../components/EmptyState'
 import { ListCluster } from '../../components/ListCluster'
 import { PageHeader } from '../../components/PageHeader'
 import { cn } from '../../lib/cn'
@@ -20,7 +19,7 @@ import { useSimpleFit } from '../../lib/useSimpleFit'
  * down is a lie the UI tells confidently.
  *
  * `notice` — a banner about the data that stays put in every state, because the
- * thing it warns about does not stop being true while the list is empty.
+ * thing it warns about does not stop being true while the list is emptyState.
  *
  * `inline` — where a list puts its search. Only the standard layout shows it: the
  * welcome layout exists precisely because there is little enough to see without
@@ -43,7 +42,7 @@ type Props = {
   /** Header action in the standard layout. */
   actions?: ReactNode
   /** Beside the title in the header row: the list's search. */
-  inline?: ReactNode
+  titleTools?: ReactNode
   /** The large call to action under the cards in the welcome layout. */
   cta: ReactNode
   /** How many items there are, or `null` while they load. */
@@ -53,15 +52,9 @@ type Props = {
    * list rather than there being nothing: the header keeps its title, its search
    * and its filters, because those are what the user has to undo.
    */
-  empty: {
-    icon?: IconName
-    title: string
-    description?: string
-    action?: ReactNode
-    reason?: 'no-data' | 'no-matches'
-  }
+  emptyState: PageStateSpec
   /** Shown instead of everything else when the list could not be loaded. */
-  error?: { icon?: IconName; title: string; description?: string; action?: ReactNode }
+  errorState?: PageStateSpec
   /** A banner above the list, kept in every state. */
   notice?: ReactNode
   /** The grid. Attach the ref it hands you to the grid element. */
@@ -92,15 +85,15 @@ type Props = {
  * under a title is allowed, because it IS the screen. The empty state
  * names what is missing, not that something is.
  */
-export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, count, empty, error, notice, children, className }: Props) {
+export function AdaptiveListPage({ mark, title, subtitle, actions, titleTools, cta, count, emptyState, errorState, notice, children, className }: Props) {
   /* `centered` covers both "still loading" and "nothing yet": neither has a grid
    * to measure, and both belong in the middle of the page rather than under a
    * header. `simple` is the welcome layout, which only applies once there IS
    * something to show. */
-  const filtered = empty.reason === 'no-matches'
+  const filtered = emptyState.reason === 'no-matches'
   /* A filtered-empty list is NOT the welcome state: dropping the header would
    * take away the search box that caused it. Same rule as ListPageTemplate. */
-  const centered = !filtered && (!!error || count === null || count === 0)
+  const centered = !filtered && (!!errorState || count === null || count === 0)
   const { fits, setGridEl, setClusterEl } = useSimpleFit(count ?? 0)
   /* Nor the welcome layout: a search that found nothing is a result, not a
      greeting. */
@@ -109,16 +102,16 @@ export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, 
   const grid = children(setGridEl)
 
   let content: ReactNode = null
-  if (error) {
+  if (errorState) {
     content = (
       <EmptyState
         size="lg"
         surface="page"
         as="h1"
-        icon={error.icon ?? 'error'}
-        title={error.title}
-        description={error.description}
-        action={error.action}
+        icon={errorState.icon ?? 'error'}
+        title={errorState.title}
+        description={errorState.description}
+        action={errorState.action}
       />
     )
   } else if (count === 0) {
@@ -129,10 +122,10 @@ export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, 
         /* The header keeps its title when a filter emptied the list, so this is
            only the page's h1 in the truly-empty case. */
         as={filtered ? 'h2' : 'h1'}
-        icon={empty.icon}
-        title={empty.title}
-        description={empty.description}
-        action={empty.action}
+        icon={emptyState.icon}
+        title={emptyState.title}
+        description={emptyState.description}
+        action={emptyState.action}
       />
     )
   } else if (simple) {
@@ -150,12 +143,12 @@ export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, 
       archetype="hub"
       className={cn('adaptive-list-page', className)}
       /* Loading and empty have nothing to put under a header, so they sit in
-         the middle of the page. That is the `center` alignment <Page><Page> owns. */
+         the middle of the page. That is the `center` alignment <Page><Page><Page> owns. */
       align={centered ? 'center' : undefined}
       /* The welcome layout carries its own hero title, so the header bar stays
         * but empty — repeating the title directly above it reads as a mistake.
         * Same reasoning as ListPageTemplate's empty branch. */
-      header={centered || simple ? <PageHeader /> : <PageHeader title={title} inline={inline} actions={actions} />}
+      header={centered || simple ? <PageHeader /> : <PageHeader title={title} titleTools={titleTools} actions={actions} />}
     >
       {notice}
       {content}

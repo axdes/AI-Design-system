@@ -29,8 +29,8 @@ export function Screen() {
     <Stack gap={4} aria-busy={settings === null}>
       {settings === null ? (
         <Stack gap={4}>
-          <Skeleton height="1.5rem" kind="block" width="14rem" />
-          <Skeleton height="1.5rem" kind="block" width="14rem" />
+          <Skeleton blockSize="1.5rem" kind="block" inlineSize="14rem" />
+          <Skeleton blockSize="1.5rem" kind="block" inlineSize="14rem" />
         </Stack>
       ) : (
         <>

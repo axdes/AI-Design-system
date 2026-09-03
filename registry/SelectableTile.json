@@ -22,7 +22,7 @@
       "description": "Whether it is currently chosen — this is a controlled control."
     },
     {
-      "name": "onSelect",
+      "name": "onChange",
       "type": "(selected: boolean) => void",
       "required": true,
       "description": "Called with what the state becomes."
@@ -95,5 +95,5 @@
     "Icon",
     "Layout"
   ],
-  "example": "const [region, setRegion] = useState('eu')\n\n<Grid gap={3}>\n  {regions.map((r) => (\n    <SelectableTile\n      key={r.id}\n      name=\"region\"\n      title={r.title}\n      icon={r.icon}\n      description={r.description}\n      meta={r.meta}\n      selected={region === r.id}\n      onSelect={() => setRegion(r.id)}\n    />\n  ))}\n</Grid>"
+  "example": "const [region, setRegion] = useState('eu')\n\n<Grid gap={3}>\n  {regions.map((r) => (\n    <SelectableTile\n      key={r.id}\n      name=\"region\"\n      title={r.title}\n      icon={r.icon}\n      description={r.description}\n      meta={r.meta}\n      selected={region === r.id}\n      onChange={() => setRegion(r.id)}\n    />\n  ))}\n</Grid>"
 }

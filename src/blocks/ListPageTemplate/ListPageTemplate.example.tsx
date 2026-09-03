@@ -18,7 +18,7 @@ export function Example() {
       title="Projects"
       actions={<Button variant="primary">New<Icon name="add" /></Button>}
       /* SEARCH IS HOW A LIST PAGE IS USED, so it stands in the header beside the
-         title, not on a row of its own below it — `inline` is the slot
+         title, not on a row of its own below it — `titleTools` is the slot
          <PageHeader> keeps for exactly this, and `toolbar` is for the controls
          that FILTER what search returns.
          `expanded` because on this page the field is not one control among
@@ -27,7 +27,7 @@ export function Example() {
          then hidden behind a click nobody is told about (owner, read off the
          gallery, 2026-08-30). Collapsed is right in a toolbar that already has
          four other controls; it is wrong when search IS the toolbar. */
-      inline={
+      titleTools={
         <SearchInput
           expanded
           placeholder="Search projects"
@@ -37,7 +37,7 @@ export function Example() {
         />
       }
       isEmpty={shown.length === 0}
-      empty={{ icon: 'folder', title: 'No projects match', description: 'Try a different search.' }}
+      emptyState={{ icon: 'folder', title: 'No projects match', description: 'Try a different search.' }}
     >
       {/* The block stacks its children; a card grid is one line of <Grid>, and
           leaving that to the caller is what lets a table or a single reading

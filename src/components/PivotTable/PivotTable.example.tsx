@@ -51,7 +51,7 @@ export function Example() {
       columns={MONTHS}
       totals
       heat
-      value={(team, month) => HOURS[team]?.[month]}
+      cellValue={(team, month) => HOURS[team]?.[month]}
     />
   )
 }

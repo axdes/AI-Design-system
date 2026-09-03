@@ -30,7 +30,7 @@ export function Screen() {
       title={<>Pay statement, {STATEMENT.period} <Badge tone="success" fill="soft">{STATEMENT.status}</Badge></>}
       onBack={() => undefined}
       actions={<Button variant="secondary"><Icon name="download" />Download PDF</Button>}
-      aside={{
+      asidePanel={{
         title: 'Details',
         content: (
           <Stack gap={3}>

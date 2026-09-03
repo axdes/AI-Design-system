@@ -15,7 +15,9 @@ type Props = {
   columns: readonly PivotAxis[]
   /** The measure at a crossing. Undefined means no observation, which is not
    *  the same fact as zero and is not printed as one. */
-  value: (rowKey: string, columnKey: string) => number | undefined
+  /* `cellValue`, not `value`: everywhere else in the system `value` is what a
+   * part CARRIES, and this is the function that goes and gets one. (2026-09-03) */
+  cellValue: (rowKey: string, columnKey: string) => number | undefined
   /** How a number is written. Defaults to the local integer format. */
   format?: (value: number) => string
   /** Row totals in a last column and column totals in the footer. A matrix is
@@ -48,16 +50,16 @@ const HEAT_STEPS = 4
  * named once, with its unit, rather than repeated in every cell.
  */
 export function PivotTable({
-  label, captionHidden, rows, columns, value, format, totals, heat, rowHeader, className,
+  label, captionHidden, rows, columns, cellValue, format, totals, heat, rowHeader, className,
 }: Props) {
   const write = useMemo(() => format ?? ((n: number) => n.toLocaleString()), [format])
 
   const max = useMemo(() => {
     if (!heat) return 0
     let top = 0
-    for (const r of rows) for (const c of columns) top = Math.max(top, value(r.key, c.key) ?? 0)
+    for (const r of rows) for (const c of columns) top = Math.max(top, cellValue(r.key, c.key) ?? 0)
     return top
-  }, [heat, rows, columns, value])
+  }, [heat, rows, columns, cellValue])
 
   /* The ramp is discrete and scaled to the largest observation: a cell says
    * "high for this table", which is the only claim a colour can honestly make
@@ -68,8 +70,8 @@ export function PivotTable({
     return Math.min(HEAT_STEPS, Math.max(0, s)) as 0 | 1 | 2 | 3 | 4
   }
 
-  const columnTotal = (columnKey: string) => rows.reduce((sum, r) => sum + (value(r.key, columnKey) ?? 0), 0)
-  const rowTotal = (rowKey: string) => columns.reduce((sum, c) => sum + (value(rowKey, c.key) ?? 0), 0)
+  const columnTotal = (columnKey: string) => rows.reduce((sum, r) => sum + (cellValue(r.key, columnKey) ?? 0), 0)
+  const rowTotal = (rowKey: string) => columns.reduce((sum, c) => sum + (cellValue(rowKey, c.key) ?? 0), 0)
   const grandTotal = rows.reduce((sum, r) => sum + rowTotal(r.key), 0)
 
   return (
@@ -88,7 +90,7 @@ export function PivotTable({
             <Tr key={r.key}>
               <Th scope="row" emphasis>{r.label}</Th>
               {columns.map((c) => {
-                const n = value(r.key, c.key)
+                const n = cellValue(r.key, c.key)
                 return (
                   <Td key={c.key} align="end" heat={step(n)}>
                     {/* No observation is not zero, and printing it as zero is

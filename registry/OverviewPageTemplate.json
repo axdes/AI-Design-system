@@ -60,11 +60,11 @@
       "name": "isEmpty",
       "type": "boolean",
       "required": false,
-      "description": "When true, the empty state is shown instead of band, prime and grid."
+      "description": "When true, the emptyState state is shown instead of band, prime and grid."
     },
     {
-      "name": "empty",
-      "type": "{ icon?: IconName title: string description?: string action?: ReactNode }",
+      "name": "emptyState",
+      "type": "PageStateSpec",
       "required": false,
       "description": "Empty-state config. An overview has no filters, so there is only the `no-data` case: a fresh install, nothing to oversee yet. The header stays — its actions are usually how the first data arrives."
     },
@@ -83,7 +83,6 @@
     "Button",
     "Card",
     "EmptyState",
-    "Icon",
     "Layout",
     "Meter",
     "Stat"

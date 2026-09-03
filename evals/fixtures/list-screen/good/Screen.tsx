@@ -57,7 +57,7 @@ export function Screen() {
         </Row>
       }
       isEmpty={shown.length === 0}
-      empty={{
+      emptyState={{
         icon: 'folder',
         title: 'No documents match',
         description: 'Try a different search or clear the status filter.',

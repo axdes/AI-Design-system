@@ -1,15 +1,14 @@
 import './ListPageTemplate.css'
 import { type ReactNode } from 'react'
-import { EmptyState } from '../../components/EmptyState'
-import { type IconName } from '../../components/Icon'
+import { EmptyState, type PageStateSpec } from '../../components/EmptyState'
 import { PageHeader } from '../../components/PageHeader'
 import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 
 type Props = {
   /**
-   * Page title in the header. Optional because a screen that is only ever empty
-   * has none: the empty state carries the words, and repeating them above it
+   * Page title in the header. Optional because a screen that is only ever emptyState
+   * has none: the emptyState state carries the words, and repeating them above it
    * reads as an error. `PlaceholderPage` is exactly that screen.
    */
   title?: ReactNode
@@ -20,13 +19,13 @@ type Props = {
    * puts its search: two of the real ones already do it that way, and without
    * this the only option was a toolbar on its own line below.
    */
-  inline?: ReactNode
+  titleTools?: ReactNode
   /** Optional toolbar under the header (a FilterBar / a row of filters). */
   toolbar?: ReactNode
   /** The list / grid content the caller supplies, with its own layout. Optional
-   *  for the same reason as `title`: an always-empty screen has no list. */
+   *  for the same reason as `title`: an always-emptyState screen has no list. */
   children?: ReactNode
-  /** When true, the empty state is shown instead of the content. */
+  /** When true, the emptyState state is shown instead of the content. */
   isEmpty?: boolean
   /**
    * Empty-state config, shown when isEmpty.
@@ -36,15 +35,9 @@ type Props = {
    * "no users yet" reads as an error, which is what the hand-written screens
    * already did. `no-matches` keeps the whole header, because the search box and
    * the filters that caused the emptiness are IN it — dropping them leaves the
-   * user with an empty screen and nothing to undo it with.
+   * user with an emptyState screen and nothing to undo it with.
    */
-  empty?: {
-    icon?: IconName
-    title: string
-    description?: string
-    action?: ReactNode
-    reason?: 'no-data' | 'no-matches'
-  }
+  emptyState?: PageStateSpec
   /**
    * Extra class on the content wrapper. A list screen decides its own layout (a
    * card grid, one reading column, a table), so the template does not impose
@@ -79,47 +72,47 @@ type Props = {
 
 /**
  * The LIST page skeleton, the most common product screen: a header (title +
- * actions), an optional toolbar, then either the content or an empty state.
+ * actions), an optional toolbar, then either the content or an emptyState state.
  *
  * Copy: the title is the collection in the plural, in the reader's word for it —
- * "Invoices", not "Invoice list". The empty state names what is missing
+ * "Invoices", not "Invoice list". The emptyState state names what is missing
  * and what would fill it.
  */
 export function ListPageTemplate({
   title,
   actions,
-  inline,
+  titleTools,
   toolbar,
   children,
   isEmpty,
-  empty,
+  emptyState,
   contentClassName,
   className,
   panels,
 }: Props) {
-  if (isEmpty && empty) {
-    const filtered = empty.reason === 'no-matches'
+  if (isEmpty && emptyState) {
+    const filtered = emptyState.reason === 'no-matches'
     return (
       <Page
         archetype="list"
         className={cn('list-page', className)}
-        /* `data-panels` stays on through the empty state: the shell keys its
+        /* `data-panels` stays on through the emptyState state: the shell keys its
           * height release on the attribute, and dropping it the moment a filter
           * matches nothing would bounce the whole layout under the user's
           * pointer. */
         panels={panels}
-        /* An empty state centred in the leftover height pushes the controls to
+        /* An emptyState state centred in the leftover height pushes the controls to
           * the top of a tall blank page and reads as a toolbar belonging to
-          * nothing, so a filtered-empty screen that kept its toolbar starts at
+          * nothing, so a filtered-emptyState screen that kept its toolbar starts at
           * the top like any other. */
         align={filtered && toolbar ? undefined : 'center'}
         /* Nothing here yet: the header bar stays, without its title, because an
-          * empty screen still belongs to a page but repeating the title above
+          * emptyState screen still belongs to a page but repeating the title above
           * "nothing yet" reads as an error. Nothing MATCHES: the full header
           * stays, since the search and filters that emptied the screen live in
           * it and removing them would trap the user. */
         header={filtered
-          ? <PageHeader title={title} inline={inline} actions={actions} />
+          ? <PageHeader title={title} titleTools={titleTools} actions={actions} />
           : <PageHeader />}
         /* And the TOOLBAR stays too, for exactly the same reason the header does.
           * It did not, and a screen whose search lives in the toolbar rather than in the
@@ -136,10 +129,10 @@ export function ListPageTemplate({
                the header kept its title, and a second h1 would claim there are
                two pages here. */
             as={filtered ? 'h2' : 'h1'}
-            icon={empty.icon}
-            title={empty.title}
-            description={empty.description}
-            action={empty.action}
+            icon={emptyState.icon}
+            title={emptyState.title}
+            description={emptyState.description}
+            action={emptyState.action}
           />
       </Page>
     )
@@ -151,7 +144,7 @@ export function ListPageTemplate({
       className={cn('list-page', className)}
       panels={panels}
       title={title}
-      inline={inline}
+      titleTools={titleTools}
       actions={actions}
       toolbar={toolbar}
     >

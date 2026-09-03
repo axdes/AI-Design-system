@@ -68,7 +68,7 @@
       "description": "Accessible name for that control; PageHeader has a default."
     },
     {
-      "name": "inline",
+      "name": "titleTools",
       "type": "ReactNode",
       "required": false,
       "description": "Tools that belong BESIDE the title rather than at the far end: a search field, a filter. `actions` is the far end."

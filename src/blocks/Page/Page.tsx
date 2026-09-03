@@ -80,7 +80,7 @@ type Props = {
   backLabel?: string
   /** Tools that belong BESIDE the title rather than at the far end: a search
    *  field, a filter. `actions` is the far end. */
-  inline?: ReactNode
+  titleTools?: ReactNode
   /**
    * A header you build yourself, for the pages the ingredients above do not
    * describe. Ignored when `title` is given: a page has one header — the same
@@ -161,7 +161,7 @@ export function Page({
   breadcrumb,
   detailOpen,
   onDetailClose,
-  inline,
+  titleTools,
   header,
   subnav,
   toolbar,
@@ -229,7 +229,7 @@ export function Page({
             onBack={pane === 'detail' ? onDetailClose : onBack}
             backLabel={backLabel}
             breadcrumb={breadcrumb}
-            inline={inline}
+            titleTools={titleTools}
           />
         )
         : header}

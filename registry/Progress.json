@@ -67,7 +67,7 @@
     },
     {
       "name": "formatValue",
-      "type": "(value: number, max: number) => string",
+      "type": "(value: number) => string",
       "required": false,
       "description": "Formats the shown value (default is the rounded percentage)."
     },

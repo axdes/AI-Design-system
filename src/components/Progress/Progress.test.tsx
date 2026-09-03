@@ -29,7 +29,7 @@ describe('Progress', () => {
   })
 
   it('lets the caller say the number in its own words', () => {
-    render(<Progress value={3} max={12} label="Uploading" showValue formatValue={(v, m) => `${v} of ${m} files`} />)
+    render(<Progress value={3} max={12} label="Uploading" showValue formatValue={(v) => `${v} of 12 files`} />)
     expect(screen.getByText('3 of 12 files')).toBeInTheDocument()
   })
 

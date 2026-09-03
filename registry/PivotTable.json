@@ -34,7 +34,7 @@
       "description": "The horizontal axis: one column per entry, each a column header."
     },
     {
-      "name": "value",
+      "name": "cellValue",
       "type": "(rowKey: string, columnKey: string) => number | undefined",
       "required": true,
       "description": "The measure at a crossing. Undefined means no observation, which is not the same fact as zero and is not printed as one."
@@ -74,5 +74,5 @@
   "uses": [
     "Table"
   ],
-  "example": "<PivotTable\n  label=\"Hours by team and month\"\n  captionHidden\n  rowHeader=\"Team\"\n  rows={TEAMS}\n  columns={MONTHS}\n  totals\n  heat\n  value={(team, month) => HOURS[team]?.[month]}\n/>"
+  "example": "<PivotTable\n  label=\"Hours by team and month\"\n  captionHidden\n  rowHeader=\"Team\"\n  rows={TEAMS}\n  columns={MONTHS}\n  totals\n  heat\n  cellValue={(team, month) => HOURS[team]?.[month]}\n/>"
 }

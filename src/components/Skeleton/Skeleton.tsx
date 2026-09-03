@@ -13,10 +13,14 @@ type Props = {
   /** Number of text lines. Only meaningful for kind="text"; the last line is
    *  rendered short so the block reads as a paragraph, not a bar. Default 1. */
   lines?: number
-  /** Width / height overrides for block and circle (a token or length). Text
+  /* `inlineSize` / `blockSize`, not width / height: these are raw CSS lengths,
+   * and `width` on a Page is one of four named page widths — one word cannot be
+   * both a decision and a measurement. The logical names are also the ones this
+   * system's own CSS rule requires. (2026-09-03) */
+  /** Inline / block size overrides for block and circle (a token or length). Text
    *  fills its container. */
-  width?: string
-  height?: string
+  inlineSize?: string
+  blockSize?: string
   className?: string
 }
 
@@ -24,7 +28,7 @@ type Props = {
  * does not jump when it does. Decorative by design (aria-hidden) — announce the
  * loading state once, on the region, with a <Spinner> or aria-busy, not on every
  * shimmer. The pulse animation is disabled under prefers-reduced-motion. */
-export function Skeleton({ kind = 'text', lines = 1, width, height, className }: Props) {
+export function Skeleton({ kind = 'text', lines = 1, inlineSize, blockSize, className }: Props) {
   if (kind === 'text' && lines > 1) {
     return (
       <span className={cn('skeleton-lines', className)} aria-hidden="true">
@@ -40,7 +44,7 @@ export function Skeleton({ kind = 'text', lines = 1, width, height, className }:
       className={cn('skeleton', className)}
       data-kind={kind}
       aria-hidden="true"
-      style={width || height ? { width, height } : undefined}
+      style={inlineSize || blockSize ? { inlineSize, blockSize } : undefined}
     />
   )
 }

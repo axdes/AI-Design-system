@@ -71,7 +71,7 @@ export function Screen() {
       }
       panels
       isEmpty={inWindow.length === 0}
-      empty={{
+      emptyState={{
         icon: 'check_circle',
         title: 'The window is clear',
         description: 'Every contract this week has been decided. New contracts appear as their end dates approach.',

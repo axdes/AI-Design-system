@@ -23,7 +23,7 @@ export function Example() {
       count={ITEMS.length}
       actions={add()}
       cta={add('lg')}
-      empty={{ icon: 'presentation', title: 'No workshops yet', action: add('lg') }}
+      emptyState={{ icon: 'presentation', title: 'No workshops yet', action: add('lg') }}
     >
       {/* The ref goes on the grid: it is what the block measures to choose
           between the welcome layout and the standard one. */}

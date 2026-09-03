@@ -34,7 +34,7 @@
       "description": "Header action in the standard layout."
     },
     {
-      "name": "inline",
+      "name": "titleTools",
       "type": "ReactNode",
       "required": false,
       "description": "Beside the title in the header row: the list's search."
@@ -52,14 +52,14 @@
       "description": "How many items there are, or `null` while they load."
     },
     {
-      "name": "empty",
-      "type": "{ icon?: IconName title: string description?: string action?: ReactNode reason?: 'no-data' | 'no-matches' }",
+      "name": "emptyState",
+      "type": "PageStateSpec",
       "required": true,
       "description": "Shown when `count` is 0. `reason: 'no-matches'` means a filter emptied the list rather than there being nothing: the header keeps its title, its search and its filters, because those are what the user has to undo."
     },
     {
-      "name": "error",
-      "type": "{ icon?: IconName; title: string; description?: string; action?: ReactNode }",
+      "name": "errorState",
+      "type": "PageStateSpec",
       "required": false,
       "description": "Shown instead of everything else when the list could not be loaded."
     },
@@ -92,5 +92,5 @@
     "ListCluster",
     "PageHeader"
   ],
-  "example": "const add = (size?: 'lg') => (\n  <Button size={size} onClick={() => undefined}>\n    <Icon name=\"add\" />\n    New workshop\n  </Button>\n)\n\n<AdaptiveListPage\n  title=\"Workshops\"\n  subtitle=\"Run a session, or open one you already have.\"\n  count={ITEMS.length}\n  actions={add()}\n  cta={add('lg')}\n  empty={{ icon: 'presentation', title: 'No workshops yet', action: add('lg') }}\n>\n  \n  {(gridRef) => (\n    <div className=\"list-cluster-grid\" ref={gridRef}>\n      {ITEMS.map((i) => (\n        <Card key={i.id} interactive stretch tight>\n          <CardTitle as=\"h2\">{i.name}</CardTitle>\n        </Card>\n      ))}\n    </div>\n  )}\n</AdaptiveListPage>"
+  "example": "const add = (size?: 'lg') => (\n  <Button size={size} onClick={() => undefined}>\n    <Icon name=\"add\" />\n    New workshop\n  </Button>\n)\n\n<AdaptiveListPage\n  title=\"Workshops\"\n  subtitle=\"Run a session, or open one you already have.\"\n  count={ITEMS.length}\n  actions={add()}\n  cta={add('lg')}\n  emptyState={{ icon: 'presentation', title: 'No workshops yet', action: add('lg') }}\n>\n  \n  {(gridRef) => (\n    <div className=\"list-cluster-grid\" ref={gridRef}>\n      {ITEMS.map((i) => (\n        <Card key={i.id} interactive stretch tight>\n          <CardTitle as=\"h2\">{i.name}</CardTitle>\n        </Card>\n      ))}\n    </div>\n  )}\n</AdaptiveListPage>"
 }

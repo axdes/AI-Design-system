@@ -213,7 +213,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
       description="Up to 20 people, shared workspaces."
       meta="€24 per person"
       selected
-      onSelect={() => undefined}
+      onChange={() => undefined}
     />
   ),
 

@@ -187,7 +187,7 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
      that opts out of it. */
   /* selected/onSelect are required: the tile is a controlled control, and the
      spread comes last so each variant case can flip what it is testing. */
-  SelectableTile: (p) => <SelectableTile name="region" title="Europe" selected onSelect={() => {}} {...p} />,
+  SelectableTile: (p) => <SelectableTile name="region" title="Europe" selected onChange={() => {}} {...p} />,
   Skeleton: (p) => <Skeleton {...p} />,
   Chart: (p) => (
     <Chart categories={['Apr', 'May']} series={[{ label: 'Closed', values: [34, 41] }]} label="Findings closed" {...p} />

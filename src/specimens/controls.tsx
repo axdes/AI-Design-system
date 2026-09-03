@@ -116,8 +116,8 @@ export const CONTROL_SPECIMENS: Record<string, () => ReactElement> = {
     <Stack gap={4}>
       <Field label="Plan">
         <Row gap={3}>
-          <SelectableTile name="c-visual" title="Team" description="Up to 20 people" selected onSelect={noop} />
-          <SelectableTile name="c-visual" title="Scale" description="Unlimited people" selected={false} onSelect={noop} />
+          <SelectableTile name="c-visual" title="Team" description="Up to 20 people" selected onChange={noop} />
+          <SelectableTile name="c-visual" title="Scale" description="Unlimited people" selected={false} onChange={noop} />
         </Row>
       </Field>
       {/* The same decision at its smallest: a colour is recognised by its look
