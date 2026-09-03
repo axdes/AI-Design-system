@@ -6,6 +6,9 @@ import { FormStack } from '../../components/FormStack'
 import { SidePanel } from '../../components/SidePanel'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because it is the same frame as FormPageTemplate inside a
+ * panel, and for the same reason: the errors, the two commits and the busy
+ * state that freezes them are one contract, not four parts. */
 type Props = {
   /* ReactNode, like every other title in this system: a heading routinely
    * carries a status beside the words or a product name in the brand colour,

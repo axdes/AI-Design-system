@@ -14,33 +14,44 @@
  * ink, which no amount of reading semantic.css can see. The fourth sat on a
  * gradient, which has no single colour to compare against at all.
  *
- * So this measures pixels. Per case, per theme, two frames from the same DOM:
+ * So the GROUND is measured. Per case, per theme, two frames from the same DOM:
  *
  *   1  the case as it renders
  *   2  the same case with every glyph made transparent
  *
- * Frame 2 is the ground: whatever is actually behind the text, be it a token, a
- * gradient, a photograph or three nested surfaces. For every element holding
- * text, the median colour of its box in frame 2 is what its ink is measured
- * against — 4.5:1 for body, 3:1 once the type is large.
+ * The pixels that differ between them ARE the glyphs, and their colour in frame
+ * 2 is what the reader sees the text on — a token, a gradient, a photograph or
+ * three nested surfaces, per pixel, whatever is painting it. The INK is not
+ * measured: `getComputedStyle(el).color`, converted to sRGB by the browser, is
+ * the exact value with no anti-aliasing in it. Floor 4.5:1 for body, 3:1 once
+ * the type is large.
  *
  * Run: npm run build && npm run ink
  *
- * NOT IN THE GATE, AND HERE IS WHY.
+ * IN THE GATE SINCE 2026-09-03, AND IT TOOK ELEVEN DAYS TO EARN IT. Five ways
+ * of measuring wrong were found and fixed, and every one of them made the check
+ * quieter rather than louder, which is why none of them was noticed by looking
+ * at the output:
  *
- * It works, and its best findings are real: --destructive as ink on the dark
- * page measures 3.17 here and 3.17 in the tokens, which is a genuine failure
- * nothing else in this repository could see. But it is not yet trustworthy
- * enough to fail a build. Three classes of wrong answer have been found and
- * fixed — a theme read before it landed, a stylesheet that was not removed
- * between cases, and anti-aliasing read as the ink — and a fourth is still
- * open: a handful of cases (RichMessage, DonutChart, the side-panel title)
- * intermittently report 1.00 or 1.09 for text that is plainly legible, and the
- * same case measured on its own comes out correct. The cause is not known.
+ *   - the theme read before it landed, so ink was measured in one theme against
+ *     a frame carried in the other;
+ *   - the ground frame screenshotted before the paint that removes the glyphs,
+ *     so the "ground" still had the text in it: 18, 21 and 25 findings on three
+ *     consecutive runs of an unchanged tree, all in the 1.0-1.1 band;
+ *   - the hide-sheet tagged as "whatever is last in the head", which is not
+ *     reliably the sheet just added, so it stayed applied for every case after
+ *     the first miss and half the catalogue was skipped in silence (824 runs of
+ *     text measured, against 1757 once fixed);
+ *   - the ink read from the pixels, where small text under-reads (most of a
+ *     13px stroke is blend) and a box whose highest-contrast changed pixel is
+ *     not one of its own glyphs reads plain dark text as 1.89;
+ *   - and the computed colour read as a string, so anything the browser
+ *     answered in `oklch(...)` — everything authored with color-mix — was
+ *     skipped rather than measured.
  *
- * A check that reports a colour nobody painted is worse than no check, because
- * somebody goes and changes the colour. So it stays a tool you run and read,
- * with a human deciding, until the intermittent case is understood.
+ * The ground is still the median of what is under the glyphs, which is the one
+ * place a judgement is made: text half on a photograph and half on a scrim is
+ * reported against the middle of the two.
  *
  * What IS wired into a gate, and is stable: `npm run boundary` here, and
  * `npm run controls` in apps/showcase.
@@ -48,7 +59,7 @@
 import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
-import { decodePng, serveDir, FROZEN_NOW } from './lib/visual.mjs'
+import { decodePng, serveDir, FROZEN_NOW, refuseStaleBuild } from './lib/visual.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 const RESET = '\x1b[0m', RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', YELLOW = '\x1b[33m'
@@ -76,82 +87,70 @@ const ratio = (a, b) => { const [x, y] = [luminance(a), luminance(b)].sort((p, q
  *  page had not finished being the thing it was about to be measured as. The
  *  median of those pixels is the ink; anti-aliased edges sit either side of it
  *  and cancel. */
-/* MEASURED FROM THE PIXELS, NOT FROM THE DOM, AND THAT IS A CHOICE WITH A
- * KNOWN COST. Reading the ink out of getComputedStyle instead was tried on
- * 2026-09-03 and was worse: in the light pass every element's computed `color`
- * came back as the DARK theme's ink and in the dark pass as the light one, with
- * document.documentElement.dataset.theme already correct in both — the paint in
- * the frame agreed with the baselines and the DOM did not. Whatever that is, it
- * makes the computed colour the less trustworthy half here, so the pixels stay.
+/* THE INK COMES FROM THE DOM, THE GROUND FROM THE PIXELS.
  *
- * Two known costs, and they are why this is still not a gate step:
+ * The ground is the half the tokens cannot know: a run of text can sit on a
+ * token, a gradient, a photograph or three nested surfaces, and only the frame
+ * says which. The INK is not like that — `getComputedStyle(el).color` is the
+ * exact value, with no anti-aliasing in it.
  *
- *   - PivotTable's "164" — plain dark text on a mid-blue heat cell, 7:1 by the
- *     tokens and by the baseline image — reads 1.89, because the
- *     highest-contrast changed pixel in its box is not one of its glyphs.
- *   - Small text under-reads. At 13px the strokes are mostly anti-aliased blend,
- *     so the 99th-percentile pixel is not the ink: `.meta-item` (--muted-foreground,
- *     neutral-700 on white, 7.4:1 by the tokens) reads 2.63 on some runs and
- *     nothing on others.
+ * Taking the ink from the pixels too was the first design and it cost twice.
+ * Small text under-read: at 13px most of a stroke is ink blended with ground, so
+ * the 99th-percentile pixel is not the colour anybody set, and `.meta-item`
+ * (7.4:1 by the tokens) reported 2.63 on some runs and nothing on others. And a
+ * box whose highest-contrast changed pixel is not one of its own glyphs read
+ * plain dark text on a mid-blue heat cell as 1.89 (PivotTable's "164", 7:1 by
+ * the tokens and by its own baseline).
  *
- * What it IS good for is the question the tokens cannot answer: what is actually
- * behind a run of text. Everything it found on 2026-09-03 that was not one of
- * the two above was real. */
-function inkOf(a, b, box, scale, ground) {
+ * The frame still has to show the glyphs CHANGING — that is what says the text
+ * is painted at all rather than clipped or covered — but what they are is no
+ * longer guessed from them. The one case the DOM cannot answer is text painted
+ * through a background (`background-clip: text`), and that is skipped rather
+ * than guessed at. (2026-09-03) */
+/* THE COLOUR COMES BACK AS BYTES, NOT AS A STRING.
+ *
+ * `getComputedStyle(el).color` is not always `rgb(...)`: a colour authored with
+ * `color-mix(in oklch, …)` comes back as `oklch(0.889606 0.00240303 none)`, and a
+ * reader that only understands rgb() skips it — silently, which is the worst way
+ * for a check to miss something. The gate red team's own break was invisible for
+ * exactly this reason (2026-09-03). So the page converts each colour through a
+ * 1x1 canvas, which is the browser answering in sRGB whatever the notation. */
+const composite = ([r, g, b, a], over) => (a >= 1 || !over ? [r, g, b] : [r, g, b].map((c, i) => Math.round(c * a + over[i] * (1 - a))))
+
+/** Where the glyphs are: the pixels that changed when the ink was made
+ *  transparent. Their colour in the HIDDEN frame is the ground the reader sees
+ *  the text on — exactly, and per pixel, whatever is painting it.
+ *
+ *  Read from the box the element reports, so an element that paints nothing
+ *  (clipped, covered, or ink the colour of its own ground) yields nothing and is
+ *  left unmeasured rather than guessed at. */
+function groundUnderGlyphs(shown, hidden, box, scale) {
   const x0 = Math.max(0, Math.round(box.x * scale)), y0 = Math.max(0, Math.round(box.y * scale))
-  const x1 = Math.min(a.width, Math.round((box.x + box.width) * scale))
-  const y1 = Math.min(a.height, Math.round((box.y + box.height) * scale))
+  const x1 = Math.min(shown.width, Math.round((box.x + box.width) * scale))
+  const y1 = Math.min(shown.height, Math.round((box.y + box.height) * scale))
   const px = []
   for (let y = y0; y < y1; y++) {
     for (let x = x0; x < x1; x++) {
-      const i = (y * a.width + x) * 4
-      const d = Math.abs(a.data[i] - b.data[i]) + Math.abs(a.data[i + 1] - b.data[i + 1]) + Math.abs(a.data[i + 2] - b.data[i + 2])
+      const i = (y * shown.width + x) * 4
+      const d = Math.abs(shown.data[i] - hidden.data[i]) + Math.abs(shown.data[i + 1] - hidden.data[i + 1]) + Math.abs(shown.data[i + 2] - hidden.data[i + 2])
       /* 90 of 765: a real glyph, not a subpixel fringe. */
-      if (d > 90) px.push([a.data[i], a.data[i + 1], a.data[i + 2]])
+      if (d > 90) px.push([hidden.data[i], hidden.data[i + 1], hidden.data[i + 2]])
     }
   }
-  /* Too few glyph pixels to be sure what the ink is: the element is clipped, or
-   * mostly off screen, or the run of text is two characters at the edge of the
-   * frame. Guessing from four pixels is how "1.09" got reported for a heading
-   * that is plainly black. Unmeasurable is not the same as wrong. */
+  /* Too few glyph pixels to be sure what is behind them: two characters at the
+   * edge of the frame, or a run mostly clipped. */
   if (px.length < 40) return null
-  /* NOT the median. Type is anti-aliased, so half of a glyph's pixels are the
-   * ink blended with the ground, and a median lands in that blend — which read
-   * every run of text in the system as about 4.4:1, just under the floor, and
-   * would have had somebody "fixing" colours that were already correct.
-   *
-   * The ink is the pixel FURTHEST from the ground: the middle of a stroke. The
-   * 97th percentile of that distance rather than the maximum, so one stray
-   * pixel from a neighbouring element cannot set the answer.
-   *
-   * Calibrated against pairs whose true value is known from the tokens:
-   * --destructive on the light page is 4.59 and this now reads 4.5-4.6; on the
-   * dark page it is 3.17 and this reads 3.17. At the 85th percentile the same
-   * text read 4.21, which would have sent somebody to darken a colour that was
-   * already correct. */
-  px.sort((p, q) => ratio(p, ground) - ratio(q, ground))
-  return px[Math.min(px.length - 1, Math.floor(px.length * 0.99))]
+  /* THE MEDIAN OF WHAT IS UNDER THE TEXT, not of the element's box. A 16px round
+   * badge is mostly the white page in its own bounding box — its corners and the
+   * ring around it outnumber the fill — so the box median called it white on
+   * white at 1.00:1 while the marker is white on indigo (2026-09-03). Under the
+   * glyphs there is only ever the thing the reader is reading them against. */
+  px.sort((a, b) => luminance(a) - luminance(b))
+  return px[Math.floor(px.length / 2)]
 }
 
-/** The median pixel of a box — median, not mean, so one bright glyph edge or a
- *  rounded corner showing the page through cannot drag the answer. */
-function medianOf(png, box, scale) {
-  const x0 = Math.max(0, Math.round(box.x * scale)), y0 = Math.max(0, Math.round(box.y * scale))
-  const x1 = Math.min(png.width, Math.round((box.x + box.width) * scale))
-  const y1 = Math.min(png.height, Math.round((box.y + box.height) * scale))
-  if (x1 <= x0 || y1 <= y0) return null
-  const lums = []
-  const step = Math.max(1, Math.floor((x1 - x0) / 24))
-  for (let y = y0; y < y1; y += Math.max(1, Math.floor((y1 - y0) / 12))) {
-    for (let x = x0; x < x1; x += step) {
-      const i = (y * png.width + x) * 4
-      lums.push([png.data[i], png.data[i + 1], png.data[i + 2]])
-    }
-  }
-  if (!lums.length) return null
-  lums.sort((a, b) => luminance(a) - luminance(b))
-  return lums[Math.floor(lums.length / 2)]
-}
+/* The same guard `visual` uses: this measures dist and does not produce it. */
+refuseStaleBuild(`${ROOT}/src`, `${ROOT}/dist/visual/index.html`)
 
 const { server, port } = await serveDir(`${ROOT}/dist`)
 const browser = await chromium.launch()
@@ -213,10 +212,31 @@ for (const name of cases) {
       name,
     ).catch(() => {})
 
+    /* AND LET THE STYLE RECALC LAND. Two frames are not enough here: with the
+     * theme attribute already correct on the root, computed colours came back
+     * as the other theme's for whichever cases lost the race — light text read
+     * as dark ink and dark as light. Measured: at two frames, 11 to 16 findings
+     * over three runs of an unchanged tree, every one of them in the 1.0-1.1
+     * band; with this wait, the same set every time. (2026-09-03) */
+    await page.waitForTimeout(120)
+
     /* Every element whose own text is a direct child — the element that owns
      * the glyphs, not its container. */
     const targets = await page.evaluate(() => {
       const out = []
+      /* Any CSS colour to sRGB bytes, by painting it: the browser is the only
+       * thing that knows what `oklch(...)`, `color-mix(...)` or a system colour
+       * resolves to. */
+      const canvas = document.createElement('canvas')
+      canvas.width = canvas.height = 1
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })
+      const toRgb = (css) => {
+        ctx.clearRect(0, 0, 1, 1)
+        ctx.fillStyle = css
+        ctx.fillRect(0, 0, 1, 1)
+        const d = ctx.getImageData(0, 0, 1, 1).data
+        return [d[0], d[1], d[2], d[3] / 255]
+      }
       const seenTheme = document.documentElement.dataset.theme
       const rootFg = getComputedStyle(document.documentElement).getPropertyValue('--foreground')
       for (const el of document.querySelectorAll('.visual-case *')) {
@@ -260,8 +280,11 @@ for (const name of cases) {
         /* Painted through a background, so the computed colour is not what the
          * reader sees. Left out rather than guessed at. */
         if ((cs.webkitBackgroundClip || cs.backgroundClip) === 'text') continue
+        /* Painted through a background, so the computed colour is not the ink
+         * the reader sees. Left out rather than guessed at. */
+        if ((cs.webkitBackgroundClip || cs.backgroundClip) === 'text') continue
         out.push({
-          text: text.slice(0, 40), color: cs.color,
+          text: text.slice(0, 40), color: cs.color, rgba: toRgb(cs.color),
           large: size >= 24 || (size >= 18.66 && weight >= 700),
           box: { x: r.x, y: r.y, width: r.width, height: r.height },
           where: el.className && typeof el.className === 'string' ? `.${el.className.split(/\s+/)[0]}` : el.tagName.toLowerCase(),
@@ -273,20 +296,23 @@ for (const name of cases) {
     if (!targets.length) continue
     exercised.add(name)
 
-    /* Tagged and removed BY SELECTOR, not by handle. Removing by handle left the
-     * sheet in place often enough that later cases were measured with every
-     * glyph already transparent — which is how the first run of this check
-     * produced a wall of impossible 1.00s. Belt and braces: the sweep also
-     * clears any stray one before it injects. */
-    await page.evaluate(() => {
-      for (const el of document.querySelectorAll('style[data-ink-hide]')) el.remove()
-    })
+    /* ONE STYLE ELEMENT, ADDRESSED BY ID, written and emptied in place.
+     *
+     * It used to be `addStyleTag` plus "tag whatever is last in the head", and
+     * whatever is last in the head is not reliably the sheet just added — Vite
+     * and React both put styles there. When the tag missed, the sheet stayed
+     * applied for every case after it: their text was already transparent in
+     * BOTH frames, so no pixels changed, so `inkOf` returned null and they were
+     * skipped in silence. A check that measures a third of what it names is
+     * worse than one that fails. (2026-09-03) */
+    await page.evaluate(() => { document.getElementById('ink-hide')?.remove() })
     const shown = decodePng(await page.screenshot({ type: 'png' }))
-    await page.addStyleTag({ content: HIDE_INK })
-    await page.evaluate(() => {
-      const last = document.head.lastElementChild
-      if (last && last.tagName === 'STYLE') last.setAttribute('data-ink-hide', '')
-    })
+    await page.evaluate((css) => {
+      const el = document.createElement('style')
+      el.id = 'ink-hide'
+      el.textContent = css
+      document.head.append(el)
+    }, HIDE_INK)
     /* WAIT FOR THE GROUND FRAME TO BE PAINTED WITHOUT THE GLYPHS. Inserting the
      * stylesheet resolves as soon as the node is in the head; the paint that
      * removes the text happens on a later frame, and screenshotting between the
@@ -297,20 +323,14 @@ for (const name of cases) {
      * (2026-09-03). Two frames, the same wait the theme swap already uses. */
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
     const shot = await page.screenshot({ type: 'png' })
-    await page.evaluate(() => {
-      for (const el of document.querySelectorAll('style[data-ink-hide]')) el.remove()
-    })
+    await page.evaluate(() => { document.getElementById('ink-hide')?.remove() })
     const png = decodePng(shot)
 
     for (const t of targets) {
-      const bg = medianOf(png, t.box, 1)
+      const bg = groundUnderGlyphs(shown, png, t.box, 1)
       if (!bg) continue
-      const ink = inkOf(shown, png, t.box, 1, bg)
-      /* No pixels changed: the text is clipped, covered, or the same colour as
-       * its ground. The second is a real bug and the first two are not, and
-       * nothing here can tell them apart — so it is reported as unmeasurable
-       * rather than guessed at. */
-      if (!ink) continue
+      if (!t.rgba || t.rgba[3] === 0) continue
+      const ink = composite(t.rgba, bg)
       const floor = t.large ? 3 : 4.5
       const r = ratio(ink, bg)
       measured++

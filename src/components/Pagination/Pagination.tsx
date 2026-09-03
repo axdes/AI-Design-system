@@ -4,6 +4,9 @@ import { Button } from '../Button'
 import { IconButton } from '../IconButton'
 import { Tooltip } from '../Tooltip'
 
+/* Monolithic because the arrows have no words on screen: their labels live
+ * in aria-label and a tooltip, so a translated pagination needs all three of
+ * page, count and the two names in one call. */
 type Props = {
   /** 1-based current page. */
   page: number

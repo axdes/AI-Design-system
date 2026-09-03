@@ -5,6 +5,10 @@ import { cn } from '../../lib/cn'
 import { IconButton } from '../IconButton'
 import { Tooltip } from '../Tooltip'
 
+/* Monolithic because the panel owns its own chrome — the title, the way out,
+ * the actions beside it and the footer under it — and the width below which
+ * it stops being a panel at all. That last one is not composable: it is a
+ * decision about the screen. */
 type Props = {
   /**
    * Drop the panel entirely below this width. For a pane that is a WIDE-SCREEN

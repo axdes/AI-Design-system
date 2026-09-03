@@ -6,6 +6,11 @@ import { Card } from '../../components/Card'
 import { Stack } from '../../components/Layout'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because a sign-in screen is one composition: the brand, the
+ * words, the form, the error above it and the busy state that freezes the
+ * way out. Split into parts, a product can ship the brand without the form
+ * or the submit without the error, which is exactly what the hand-written
+ * sign-in screens did. */
 type Props = {
   /** Brand mark shown above the content (a logo img or wordmark node). */
   brand: ReactNode

@@ -3,6 +3,10 @@ import { type ReactNode } from 'react'
 import { Avatar } from '../Avatar'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because it is a person in one line: the avatar (whose initials
+ * come from a different name than the one displayed), the name, the line
+ * under it, and an action at the end. Split, the avatar and the name stop
+ * being one target. */
 type Props = {
   /** The person's (or team's) name — the identity's strongest line. ReactNode so a card can pass its own CardTitle. */
   name: ReactNode

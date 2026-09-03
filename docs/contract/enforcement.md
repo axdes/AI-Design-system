@@ -42,7 +42,9 @@ work; one small custom linter covers what only this project knows.
   name resolves to ONE TYPE everywhere (`lint:vocab` checks the VALUES of a
   union and never the shape, so 53 names carried more than one type with every
   gate green); a part past seven props is a compound or writes
-  `monolithic because …` in its file; a callback comes from the closed list in
+  `monolithic because …` in its file AND keeps its count on the ceiling — the
+  written reason answers "why is this not a compound" and not "why does it now
+  take four more props than when that was written"; a callback comes from the closed list in
   `config/callback-vocabulary.json`; no part is admitted without a test; and
   every published prop is PASSED somewhere in this package — an example, a test,
   a specimen. That last one landed on 2026-09-03 and found 78 props that had
@@ -115,6 +117,19 @@ work; one small custom linter covers what only this project knows.
   prove: every golden example renders and is axe-clean, every advertised variant
   lands as `data-*`, and every stateful component's keyboard/ARIA contract holds
   (its own `.test.tsx`).
+- **`ink`** — the same question asked of the PIXELS: every run of text in every
+  golden example, both themes, against what is actually behind it. A token can
+  be right and the screen still wrong — a descendant setting its own colour
+  inside a surface that inverted its ink beats everything the surface said, and
+  text on a gradient or a photograph has no single colour to compare against at
+  all. Two frames from one DOM: the case, and the case with every glyph made
+  transparent. The pixels that differ are the glyphs, and their colour in the
+  second frame is the ground; the ink comes from `getComputedStyle`, converted
+  to sRGB by the browser. It took eleven days to earn its place in the gate and
+  five measurement bugs to get there, every one of which made it QUIETER — the
+  worst had it skipping half the catalogue in silence. The history is in the
+  file's own header, because a check that has been wrong five times is a check
+  whose next reader needs to know how.
 - **`npm run contrast`** — WCAG pairs in both themes, from the token files: the
   curated role pairs AND every pair the CSS paints, since a pair nobody listed is
   a pair nobody measures. Misses are recorded with their ratio and may not get

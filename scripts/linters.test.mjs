@@ -337,6 +337,18 @@ describe('lint-api', () => {
     expect(out).toContain('no test')
   }, 30_000)
 
+  /* An ARGUED part is excused from being a compound, not from its size: 42 parts
+     wrote "monolithic because …" on 2026-09-03 and the recorded counts have to
+     keep meaning something. */
+  it('A2 catches an argued part growing past the count it was argued at', () => {
+    const { code, out } = withRegistry((registry) => {
+      registry.components.Modal.props.push({ name: 'probeExtraKnob', type: 'boolean', required: false })
+    })
+    expect(code, out).toBe(1)
+    expect(out).toContain('Modal')
+    expect(out).toContain('up from')
+  }, 30_000)
+
   /* A5's population is the package's own src, so the probe needs a part nothing
      renders — which is every invented one — and a prop nobody could have passed. */
   it('A5 catches a prop nothing in the package passes', () => {

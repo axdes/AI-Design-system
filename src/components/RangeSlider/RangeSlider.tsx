@@ -2,6 +2,9 @@ import './RangeSlider.css'
 import { useId } from 'react'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because a range is one value with two ends: the pair, the
+ * bounds, the step and how the number is written. Two sliders composed by a
+ * caller is exactly the thing this part exists to stop. */
 type Props = {
   /** The selected span, start then end. */
   value: [number, number]

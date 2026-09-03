@@ -11,6 +11,11 @@ export type TreeNode = {
   children?: TreeNode[]
 }
 
+/* Monolithic because a tree owns two independent states — what is selected
+ * and what is open — and each is offered controlled and uncontrolled, which
+ * is five props for two ideas. A compound would move both into the caller,
+ * and a tree whose expansion the caller keeps is a tree that collapses on
+ * every render. */
 type Props = {
   nodes: TreeNode[]
   /** Selected node id (single-select). */

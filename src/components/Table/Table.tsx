@@ -33,6 +33,10 @@ type SortDirection = "asc" | "desc" | null;
  * Table with an empty props entry — `verify` then rejected `stickyHeader` on a
  * table that really has it. (Wording note: spelling the declaration syntax out
  * in this comment would itself match the extractor's pattern.) */
+/* Monolithic because these are the decisions the whole table takes at once —
+ * what sticks, how dense it is, whether text wraps, and whether a width is a
+ * suggestion. Its parts ARE components (Tr, Th, Td); what is left here is
+ * the frame they live in. */
 type Props = TableHTMLAttributes<HTMLTableElement> & {
   /** Header stays while the rows scroll. It sticks to the nearest scrolling
    *  ancestor, so inside `<TableScroll>` give the wrapper a block size. */

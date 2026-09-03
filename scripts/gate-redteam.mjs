@@ -61,7 +61,7 @@ const BREAKS = [
     file: 'src/specimens/cards.tsx', edit: (s) => s.replace(/^ {2}person: \(\) =>/m, '  mutatedPerson: () =>') },
   { name: 'decision layer: a form kind loses its specimen', step: 'check:spec',
     file: 'src/specimens/forms.tsx', edit: (s) => s.replace(/^ {2}'?dialog'?: \(\) =>/m, "  mutatedDialog: () =>") },
-  { name: 'states: a control loses its press', step: 'states',
+  { name: 'states: a control loses its press', step: 'states', needsBuild: true,
     file: 'src/components/ColorSwatch/ColorSwatch.css', edit: (s) => s.replace(/\.color-swatch:active:not\(:disabled\)[^\n]*\n/, '') },
   { name: 'docs: llms.txt goes stale', step: 'llms:check',
     file: 'llms.txt', edit: (s) => s.replace(/^- /m, '- Mutated ') },
@@ -120,6 +120,13 @@ const BREAKS = [
   { name: 'mechanism: an anchored layer written a sixth time', step: 'lint:mechanism',
     file: 'src/components/Badge/Badge.tsx',
     edit: (s) => `${s}\nexport function probeLayer(anchor: HTMLElement | null) {\n  const box = anchor?.getBoundingClientRect()\n  const room = window.innerHeight - (box?.bottom ?? 0)\n  anchor?.focus()\n  return createPortal(<div data-room={room} />, document.body)\n}\n` },
+  /* Ink that no token check can see is wrong. `--muted-foreground` stays a
+     legal, defined token and every pair `npm run contrast` reads still passes:
+     what breaks is the pixels a reader actually sees, on the surfaces the text
+     really lands on. */
+  { name: 'contrast: ink that is legal in the tokens and unreadable on the screen', step: 'ink', needsBuild: true,
+    file: 'src/components/MetaItem/MetaItem.css',
+    edit: (s) => s.replace('.meta-item {', '.meta-item {\n  color: color-mix(in oklch, var(--muted-foreground) 22%, var(--card));') },
 ]
 
 if (process.argv.includes('--list')) {
@@ -163,6 +170,11 @@ for (const b of BREAKS) {
   }
   outstanding.add(path)
   writeFileSync(path, after)
+  /* A STEP THAT READS `dist` HAS TO BE HANDED A dist THAT CONTAINS THE BREAK.
+   * Both of those steps refuse a build older than the source, so without this
+   * they came back red for the right reason and the wrong cause — the break
+   * would have "passed" while the check never saw it. (2026-09-03) */
+  if (b.needsBuild) run('npm run build --silent')
   const namedStepCaught = !run(`npm run ${b.step} --silent`)
   /* Its own step missing it is not yet a hole: something else may hold the same
      invariant, and what matters is whether the GATE goes red. */

@@ -5,6 +5,10 @@ import { Icon } from '../Icon'
 import { IconButton } from '../IconButton'
 import { Tooltip } from '../Tooltip'
 
+/* Monolithic because it wraps the one control this system does not own — the
+ * raw <input type="file"> — and everything else here is that input's
+ * contract: what it accepts, how many, its state, and the list of what has
+ * been chosen. */
 type Props = {
   /** Called with the picked/dropped files (appended, not replaced). */
   onChange: (files: File[]) => void

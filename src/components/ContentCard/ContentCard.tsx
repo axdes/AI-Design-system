@@ -10,6 +10,11 @@ type Layout = "auto" | "tile" | "side" | "cover" | "row";
  *  dense and a row can be comfortable. */
 type Density = "comfortable" | "compact" | "dense";
 
+/* Monolithic because it is the ONE-CALL card: the whole point is that a
+ * screen with a list of records writes one line per record and gets the same
+ * anatomy every time. Card + CardTitle + CardMedia is the compound, and it
+ * already exists — this is the part for when the caller has data rather than
+ * markup. */
 type Props = {
   /** What it is called, in the reader's words. The one part that never drops. */
   title: ReactNode;

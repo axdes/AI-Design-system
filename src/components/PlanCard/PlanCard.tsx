@@ -5,6 +5,10 @@ import { Badge } from '../Badge'
 import { Card, CardTitle } from '../Card'
 import { Icon } from '../Icon'
 
+/* Monolithic because a pricing card is a fixed anatomy — name, price,
+ * period, what you get, the action, and whether this is the one being
+ * recommended — and the fixedness is what lets three of them stand in a row
+ * and be compared. */
 type Props = {
   name: string
   /** Already formatted, including the currency: this component does not know

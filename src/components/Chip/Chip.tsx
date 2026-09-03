@@ -9,6 +9,9 @@ import { Tooltip } from '../Tooltip'
 type Variant = 'secondary' | 'primary' | 'ghost' | 'destructive' | 'dark'
 type Size = 'sm' | 'md' | 'lg'
 
+/* Monolithic because a chip is one word with the affordances around it: what
+ * it is, whether it is chosen, whether it can be pressed, and whether it can
+ * be taken away — and the label of that removal, which is icon-only. */
 type Props = Omit<HTMLAttributes<HTMLElement>, 'children'> & {
   children: ReactNode
   /** Forwarded to the element this renders — the <button>, or the <span> of a

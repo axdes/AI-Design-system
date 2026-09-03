@@ -49,6 +49,10 @@ export type SideNavGroup = {
  *  clicking the `logo`, or `both`. */
 type CollapseControl = "bottom" | "logo" | "both";
 
+/* Monolithic because collapsing is one behaviour offered controlled and
+ * uncontrolled — five of these props are that one idea — and the two marks
+ * are the same brand at two widths. A compound would put the rail's width in
+ * the caller's hands and the two marks out of step. */
 type Props = {
   groups: SideNavGroup[];
   /** Full brand lockup, shown when expanded (mark + wordmark). */

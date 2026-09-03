@@ -4,6 +4,9 @@ import { Icon, type IconName } from '../Icon'
 import { Tooltip } from '../Tooltip'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because it is one floating pill that says what is running: the
+ * label, the timer, the action back to it and the way to dismiss it. Every
+ * prop is one of those four, and none of them is a part. */
 type Props = {
   /** What is live ("Emergency call", "Recording: Design sprint"). */
   label: ReactNode

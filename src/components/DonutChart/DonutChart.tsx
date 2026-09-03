@@ -17,6 +17,10 @@ export type Segment = {
   tone?: Tone;
 };
 
+/* Monolithic because the chart and its legend are one figure: the segments
+ * decide both, and the legend is the only place a sighted reader gets the
+ * values. Splitting them is how a legend drifts out of step with the ring it
+ * labels. */
 type Props = {
   segments: Segment[];
   /** What sits in the hole: the total, or the share that matters. Under the

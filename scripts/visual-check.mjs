@@ -32,10 +32,10 @@
  * another OS stops reporting breakage it cannot have caused. Regenerate with
  * :update when a change is intended, never to silence one.
  */
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync, unlinkSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync, unlinkSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
-import { comparePng, serveDir, FROZEN_NOW } from './lib/visual.mjs'
+import { comparePng, serveDir, refuseStaleBuild, FROZEN_NOW } from './lib/visual.mjs'
 import { measure, compareStructure } from './lib/structure.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
@@ -55,41 +55,9 @@ if (!existsSync(`${DIST}/visual/index.html`)) {
   process.exit(1)
 }
 
-/* A BUILD THIS OLD IS A LIE, NOT A BASELINE.
- *
- * This script photographs `dist`; it does not produce it. In the gate that is
- * right, because `build:gate` runs two lanes ahead of it. Run by hand it is a
- * trap: three edits in a row were photographed against a stale bundle and every
- * one of them came back "baselines match" on a file that had just changed
- * (2026-08-29) — and `--update` would have written that stale rendering INTO
- * the baseline, which is the way a wrong picture becomes the expected one.
- *
- * So the build has to be at least as new as everything it was built from. */
-const newestSource = (() => {
-  let newest = 0
-  const walk = (dir) => {
-    for (const name of readdirSync(dir)) {
-      /* `__eval__` is scratch the eval lane WRITES during a gate run, so counting
-         it as source made this refuse the build it had just been handed
-         (2026-08-29). Generated screens are not what dist is built from. */
-      if (name === 'node_modules' || name === '__eval__' || name.startsWith('.')) continue
-      const path = `${dir}/${name}`
-      const info = statSync(path)
-      if (info.isDirectory()) walk(path)
-      else if (/\.(tsx?|css|json)$/.test(name)) newest = Math.max(newest, info.mtimeMs)
-    }
-  }
-  walk(`${ROOT}/src`)
-  return newest
-})()
-
-const builtAt = statSync(`${DIST}/visual/index.html`).mtimeMs
-if (newestSource > builtAt) {
-  const minutes = Math.round((newestSource - builtAt) / 60000)
-  console.error(`dist is ${minutes} minute(s) older than src — this would photograph the previous build.`)
-  console.error('Run `npm run build` first. (The gate does; running this script by hand does not.)')
-  process.exit(1)
-}
+/* The build has to be at least as new as everything it was built from; the
+ * guard is shared with `npm run ink`, which reads the same dist. */
+refuseStaleBuild(`${ROOT}/src`, `${DIST}/visual/index.html`)
 
 /* PNG decode, compare and the static server now live in ./lib/visual.mjs, so the
  * screen-level gate uses the same pixels rather than a second copy. */

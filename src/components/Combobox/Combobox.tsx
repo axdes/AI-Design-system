@@ -10,6 +10,10 @@ import { useListNavigation } from '../../lib/useListNavigation'
  *  a label and filters on it, and any field it does not draw would be a lie. */
 export type ComboboxOption<V extends string> = Option<V>
 
+/* Monolithic because a combobox is one control: a value, the options it
+ * comes from, how they are filtered, what it says when nothing matches, and
+ * the size and surface it has to match the field beside it. Sub-components
+ * would be parts of one input that cannot be used apart. */
 type Props<V extends string> = {
   options: readonly ComboboxOption<V>[]
   /** Accessible name for the text field. */

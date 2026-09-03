@@ -2,6 +2,8 @@ import './Slider.css'
 import { useId, type InputHTMLAttributes } from 'react'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because there is nothing to split: a value, its bounds, its
+ * step, and whether the number is shown and in whose words. */
 type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step'> & {
   value: number
   onChange: (value: number) => void

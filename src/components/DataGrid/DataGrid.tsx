@@ -93,6 +93,10 @@ function cellMark(at?: { state: 'saving' | 'saved' | 'failed'; error?: string })
   )
 }
 
+/* Monolithic because a windowed grid is one machine: the rows, how a row is
+ * identified, how tall it is, how much of it is kept off-screen, and the
+ * sort and edit it reports. Split into parts, the window and the rows stop
+ * agreeing and the grid renders a blank band. */
 type Props<Row> = {
   columns: readonly DataGridColumn<Row>[]
   rows: readonly Row[]

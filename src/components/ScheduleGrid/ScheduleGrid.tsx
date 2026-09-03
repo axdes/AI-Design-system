@@ -20,6 +20,9 @@ export type ScheduleEvent = {
   tone?: 'neutral' | 'primary' | 'success' | 'warning' | 'danger'
 }
 
+/* Monolithic because a schedule is resources against slots with events
+ * across them: three lists that only mean something together, plus the words
+ * for an empty slot, which only a screen reader hears. */
 type Props = {
   label: string
   /** Hides the caption visually and KEEPS it for a screen reader. The caption is how a grid

@@ -6,6 +6,9 @@ import { Icon } from '../Icon'
 import { IconButton } from '../IconButton'
 import { Tooltip } from '../Tooltip'
 
+/* Monolithic because it is one control with two commits: send while there is
+ * something to send, stop while an answer is streaming. The pair is the
+ * mechanism, and a compound would let a screen ship one of them. */
 type Props = {
   /** Controlled value (optional — composer manages its own state otherwise). */
   value?: string

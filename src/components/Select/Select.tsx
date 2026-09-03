@@ -8,6 +8,10 @@ import { Dropdown, DropdownItem } from '../Dropdown'
  *  renders — a choice shown but not pickable (an out-of-stock plan). */
 export type SelectOption<V extends string> = Option<V> & { disabled?: boolean }
 
+/* Monolithic because its props are one control's contract — the value, the
+ * options, the state (disabled, invalid) and the fit (size, surface) — plus
+ * `id` and `tabIndex`, which exist because the label outside points AT this
+ * control and a roving focus has to be able to skip it. */
 type Props<V extends string> = {
   value: V | undefined
   onChange: (next: V) => void

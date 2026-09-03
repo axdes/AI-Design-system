@@ -8,6 +8,10 @@ type Size = "md" | "lg";
 type DeltaDirection = "up" | "down" | "flat";
 type DeltaTone = "success" | "danger" | "neutral";
 
+/* Monolithic because a stat is one number with everything that qualifies it:
+ * the unit, the caption, the delta and its direction and tone, and the trend
+ * behind it. As parts, the delta's arrow and its colour end up disagreeing
+ * about which way is good. */
 type Props = HTMLAttributes<HTMLDivElement> & {
   /** The headline metric (rendered tabular-nums). */
   value: ReactNode;

@@ -4,6 +4,9 @@ import { cn } from "../../lib/cn";
 type Tone = "primary" | "success" | "warning" | "danger";
 type Size = "sm" | "md";
 
+/* Monolithic because a meter is a value against a scale: the value, the
+ * scale, the target on it, and how much of that scale is drawn. Its parts
+ * are marks, not components. */
 type Props = {
   value: number;
   /** Scale maximum (default 100). */

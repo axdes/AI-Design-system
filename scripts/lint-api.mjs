@@ -305,9 +305,15 @@ const saysWhy = (part) => {
   const file = sourceOf(part)
   return !!file && existsSync(file) && /monolithic because|not a compound because/i.test(readFileSync(file, 'utf8'))
 }
+/* EVERY part past seven, excused or not. The written reason answers "why is this
+ * not a compound"; it does not answer "why does it now take four more props than
+ * when that was written". So an argued part keeps its COUNT on the ceiling and
+ * may not grow past it — which is the half that would have quietly gone missing
+ * on 2026-09-03, when 37 parts were argued for in one pass and the recorded
+ * numbers went with them. */
 const wide = parts
   .map((p) => ({ name: p.name, count: publicProps(p).length, excused: saysWhy(p) }))
-  .filter((p) => p.count > 7 && !p.excused)
+  .filter((p) => p.count > 7)
 
 /* ── A3 ─────────────────────────────────────────────────────────────────── */
 const exceptions = Object.fromEntries(Object.entries(vocab.exceptions ?? {}).filter(([k]) => k !== '_why'))
@@ -474,10 +480,10 @@ for (const [name, held] of Object.entries(debt.shapes ?? {})) {
 
 for (const p of wide) {
   const held = debt.props?.[p.name]
-  if (held === undefined) {
+  if (held === undefined && !p.excused) {
     say('A2', p.name, `takes ${p.count} props and is not on the ceiling`,
       'a part past seven is a compound that was never taken apart. Split it into parts rather than flags, or write "monolithic because …" in the file and say what the split would cost.')
-  } else if (p.count > held) {
+  } else if (held !== undefined && p.count > held) {
     say('A2', p.name, `takes ${p.count} props, up from ${held}`,
       'the answer to a part that is already too wide is never one more prop. Take the new behaviour out as a part, or pay the ceiling down first.')
   } else if (p.count < held) paid.push(`${p.name}: ${held} → ${p.count} props`)
@@ -531,7 +537,7 @@ const nTypes = drift.reduce((n, d) => n + d.types.size, 0)
 const narrowed = narrowings.reduce((n, x) => n + x.notes.length, 0)
 console.log(
   `${BOLD}API${RESET} ${DIM}${parts.length} parts, ${shapes.size} prop names — ${nShapes} carry more than one type (${nTypes} shapes), ` +
-    `${wide.length} past seven props, ${[...callbacks.keys()].filter((c) => !canonical.has(c) && !kept.has(c)).length} callbacks outside the vocabulary, ${untested.length} without a test, ` +
+    `${wide.filter((p) => !p.excused).length} past seven props with no reason written, ${wide.filter((p) => p.excused).length} argued, ${[...callbacks.keys()].filter((c) => !canonical.has(c) && !kept.has(c)).length} callbacks outside the vocabulary, ${untested.length} without a test, ` +
     `${unexercised.reduce((n, u) => n + u.props.length, 0)} props nothing here passes${RESET}`,
 )
 if (polymorphic.length) {

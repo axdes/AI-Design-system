@@ -5,6 +5,10 @@ import { EmptyState, type PageStateSpec } from '../../components/EmptyState'
 import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because an overview is an ORDER — notices, band, prime, board,
+ * grid — and the order is the decision. As a compound the zones become a
+ * list a caller can shuffle, and an overview whose prime figure sits under
+ * its grid is not an overview. */
 type Props = {
   /** Page title in the header. */
   title?: ReactNode

@@ -27,6 +27,11 @@ import { useSimpleFit } from '../../lib/useSimpleFit'
  *
  * `children` as a render prop — the block owns the fit measurement and the grid
  * is what gets measured, so the caller has to be handed the ref. */
+/* Monolithic because its props are the five STATES of one screen — loading,
+ * nothing yet, nothing matched, could not load, and rows — plus the zones
+ * the header keeps through all of them. A compound would hand the caller the
+ * precedence between those states, and that precedence is the one thing this
+ * block exists to decide. */
 type Props = {
   /** Brand mark above the hero title, welcome layout only. See ListCluster. */
   mark?: ReactNode

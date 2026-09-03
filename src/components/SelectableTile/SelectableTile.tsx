@@ -3,6 +3,9 @@ import type { ReactNode } from "react";
 import { cn } from "../../lib/cn";
 import { Icon, type IconName } from "../Icon";
 
+/* Monolithic because it is a checkbox or a radio wearing a card: the state,
+ * the group it belongs to, and the four pieces of the card it wears. The
+ * tile cannot be composed from parts without losing the input at its centre. */
 type Props = {
   /** What this option is. */
   title: ReactNode;

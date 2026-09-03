@@ -11,6 +11,10 @@ import { Tooltip } from '../Tooltip'
  * working union while every call passing one was a type error, and the only
  * reason nobody hit it is that no test or example had ever set it
  * (2026-08-29). */
+/* Monolithic because the props ARE the number: value, the bounds it moves
+ * between, the step it moves by, and the two steppers' accessible names,
+ * which are the only place their words exist. A compound splitting the field
+ * from its steppers is two controls a caller has to keep in step. */
 type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'min' | 'max' | 'step' | 'size'> & {
   value: number
   onChange: (value: number) => void

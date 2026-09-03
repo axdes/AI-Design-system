@@ -5,6 +5,10 @@ import { PageHeader } from '../../components/PageHeader'
 import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 
+/* Monolithic because its props are the zones of a list screen and the empty
+ * state that replaces them. `panels` and `contentClassName` are what the
+ * SHELL and the screen's own layout need from it; neither is a part a caller
+ * could compose. */
 type Props = {
   /**
    * Page title in the header. Optional because a screen that is only ever emptyState

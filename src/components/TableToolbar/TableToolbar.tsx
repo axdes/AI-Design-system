@@ -10,6 +10,10 @@ import { cn } from '../../lib/cn'
  *  words for the same question, and adds `dense`.) */
 type Density = 'comfortable' | 'compact'
 
+/* Monolithic because the toolbar is the row above a table that reports its
+ * state: the count, the density it can change, and the batch bar that
+ * replaces it when rows are selected. A compound would be a row of parts
+ * that have to agree about the same table. */
 type Props = {
   /** What this table is called. Leave it out when the page heading above the
    *  table already says the same words. */

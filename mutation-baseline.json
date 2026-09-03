@@ -105,7 +105,7 @@
       "survived": []
     },
     "ChatComposer": {
-      "hash": "f6cebee38b6f",
+      "hash": "117c8970dc0f",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -138,7 +138,7 @@
       ]
     },
     "Chip": {
-      "hash": "6e3036821c09",
+      "hash": "9ff8241887e1",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -166,7 +166,7 @@
       "survived": []
     },
     "Combobox": {
-      "hash": "17b5c4478494",
+      "hash": "73648dc2f456",
       "killed": [
         "boolean-default",
         "and-to-or",
@@ -184,7 +184,7 @@
       "survived": []
     },
     "ContentCard": {
-      "hash": "c1c4cc1591f9",
+      "hash": "54e853dc35a7",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -217,7 +217,7 @@
       "survived": []
     },
     "DataGrid": {
-      "hash": "b77247c2c8eb",
+      "hash": "1207c29f3acf",
       "killed": [
         "and-to-or",
         "negate-cond"
@@ -244,7 +244,7 @@
       "survived": []
     },
     "DonutChart": {
-      "hash": "291b9a86b727",
+      "hash": "34140cb9993c",
       "killed": [
         "boolean-default",
         "and-to-or",
@@ -275,7 +275,7 @@
       "survived": []
     },
     "Field": {
-      "hash": "e21ee7882df3",
+      "hash": "66207f62fc97",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -283,7 +283,7 @@
       "survived": []
     },
     "FileUpload": {
-      "hash": "8d030312bf3b",
+      "hash": "40b409605df5",
       "killed": [
         "strip-aria",
         "drop-optional-render",
@@ -303,7 +303,7 @@
       "survived": []
     },
     "FilterDropdown": {
-      "hash": "055b7417a3af",
+      "hash": "13ab0c3327f5",
       "killed": [
         "boolean-default",
         "strip-aria"
@@ -382,7 +382,7 @@
       "survived": []
     },
     "Modal": {
-      "hash": "423e6499a99d",
+      "hash": "2e80483eaf8a",
       "killed": [
         "boolean-default",
         "and-to-or",
@@ -393,7 +393,7 @@
       "survived": []
     },
     "NumberInput": {
-      "hash": "16ee61ae0788",
+      "hash": "bb12121b1466",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -405,7 +405,7 @@
       ]
     },
     "Pagination": {
-      "hash": "e6b824f4827e",
+      "hash": "5acbad1bab5d",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -425,7 +425,7 @@
       "survived": []
     },
     "PlanCard": {
-      "hash": "771f8839d9c9",
+      "hash": "5f30dc6d2eda",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -452,7 +452,7 @@
       ]
     },
     "RangeSlider": {
-      "hash": "c220059840e6",
+      "hash": "f99d9a76a51f",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -472,7 +472,7 @@
       "survived": []
     },
     "ScheduleGrid": {
-      "hash": "2becc65e2c48",
+      "hash": "39f6ee6e1eff",
       "killed": [
         "and-to-or",
         "off-by-one"
@@ -501,14 +501,14 @@
       "survived": []
     },
     "Select": {
-      "hash": "edfa1d6a962f",
+      "hash": "2e4147981473",
       "killed": [
         "strip-aria"
       ],
       "survived": []
     },
     "SelectableTile": {
-      "hash": "b02fb1e12f73",
+      "hash": "d4a24f6fe616",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -516,7 +516,7 @@
       "survived": []
     },
     "SideNav": {
-      "hash": "3927ba87f485",
+      "hash": "12b01207f015",
       "killed": [
         "boolean-default",
         "and-to-or",
@@ -527,7 +527,7 @@
       "survived": []
     },
     "Slider": {
-      "hash": "ca1d71c4e58a",
+      "hash": "f3ae94f5d674",
       "killed": [
         "and-to-or",
         "drop-optional-render",
@@ -553,7 +553,7 @@
       "survived": []
     },
     "Table": {
-      "hash": "255911dd39a4",
+      "hash": "2671c33a1922",
       "killed": [
         "strip-aria",
         "drop-spread"
@@ -606,7 +606,7 @@
       ]
     },
     "Tree": {
-      "hash": "d6ee81c653f1",
+      "hash": "d52f6ba2c857",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -780,7 +780,7 @@
       "survived": []
     },
     "Identity": {
-      "hash": "e0cf78d8145d",
+      "hash": "dc8758b7e690",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -834,7 +834,7 @@
       "survived": []
     },
     "Meter": {
-      "hash": "87a45a3da9f4",
+      "hash": "dcd9c1bf1e83",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -843,7 +843,7 @@
       "survived": []
     },
     "Progress": {
-      "hash": "38704a0b3e95",
+      "hash": "76e6cad16248",
       "killed": [
         "and-to-or"
       ],
@@ -881,7 +881,7 @@
       "survived": []
     },
     "SessionPill": {
-      "hash": "c5b5e3e2eee2",
+      "hash": "15d2e60bc4eb",
       "killed": [
         "strip-aria",
         "drop-optional-render"
@@ -900,7 +900,7 @@
       "survived": []
     },
     "SidePanel": {
-      "hash": "55a798fdaefe",
+      "hash": "77bfdb8fcd66",
       "killed": [
         "strip-aria"
       ],
@@ -935,7 +935,7 @@
       "survived": []
     },
     "Stat": {
-      "hash": "1192b9473e43",
+      "hash": "1ee764b1a700",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -945,7 +945,7 @@
       ]
     },
     "TableToolbar": {
-      "hash": "48517d67300b",
+      "hash": "8ab2a646c2a1",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -1039,7 +1039,7 @@
       "survived": []
     },
     "PivotTable": {
-      "hash": "4a9cc1cce27f",
+      "hash": "fe4780606790",
       "killed": [],
       "survived": []
     },

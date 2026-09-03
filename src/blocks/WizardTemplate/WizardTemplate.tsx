@@ -12,6 +12,10 @@ type WizardStep = {
   description?: string
 }
 
+/* Monolithic because a wizard IS its steps, where it stands in them and the
+ * two ways through, and every one of those has to agree with the others. A
+ * compound would let a screen render a Back that the stepper does not know
+ * about. */
 type Props = {
   /** Page title in the header. */
   title?: ReactNode

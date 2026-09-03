@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/cn'
 import { Label } from '../Label'
 
+/* Monolithic because a field IS the wiring: the label pointing at the
+ * control, the error that describes it, the hint that is replaced by that
+ * error, and the counter under it. Handing those back as parts is handing
+ * back the aria-describedby. */
 type Props = {
   /** What the control is asking for, in the reader's words. Required, and it is
    *  the field's whole reason to exist: a control with no label announces only

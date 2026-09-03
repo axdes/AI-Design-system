@@ -41,6 +41,10 @@ type Actions = {
   confirmDisabled?: boolean
 }
 
+/* Monolithic because a dialog's props are its contract with the page:
+ * whether it is open, how it may be dismissed, where it sits, and the
+ * actions that close it. The parts a caller composes go in `children`; these
+ * are the things the layer itself has to know. */
 type Props = {
   /** The caller owns it. A modal renders nothing when closed, so mounting it conditionally as
    *  well is a second switch for one state.

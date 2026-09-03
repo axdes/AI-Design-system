@@ -4,6 +4,9 @@ import { cn } from '../../lib/cn'
 type Tone = 'primary' | 'success' | 'warning' | 'danger'
 type Size = 'sm' | 'md' | 'lg'
 
+/* Monolithic because it is one measure drawn two ways (bar or ring), and
+ * every prop past the value says how that one drawing reads: the tone, the
+ * size, and whether the number is written and in whose words. */
 type Props = {
   /** 0..max filled fraction. Omit for an INDETERMINATE bar (unknown duration); a ring has no indeterminate form. */
   value?: number

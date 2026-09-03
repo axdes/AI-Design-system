@@ -8,7 +8,7 @@
 // normalised to RGBA before comparing. Decoding locally keeps the harness
 // dependency-free apart from the browser itself.
 import { createServer } from 'node:http'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { inflateSync } from 'node:zlib'
 
@@ -130,3 +130,43 @@ export function serveDir(dir) {
  * Far enough ahead of every fixture in the repository that relative labels are
  * stable, and fixed, so they stay stable. */
 export const FROZEN_NOW = '2026-08-10T12:00:00Z'
+
+/** THE BUILD HAS TO BE AT LEAST AS NEW AS EVERYTHING IT WAS BUILT FROM.
+ *
+ * These checks photograph `dist`; they do not produce it. In the gate that is
+ * right, because `build:gate` runs two lanes ahead. Run by hand it is a trap:
+ * three edits in a row were photographed against a stale bundle and every one
+ * came back "baselines match" on a file that had just changed (2026-08-29), and
+ * `--update` would have written that stale rendering INTO the baseline.
+ *
+ * Shared because the second reader of dist made the same mistake in a different
+ * way: `npm run ink` had no guard at all, so the gate red team broke a colour,
+ * ran ink against the previous build and was told the colour was fine
+ * (2026-09-03).
+ */
+export function refuseStaleBuild(srcDir, builtFile) {
+  const newest = (() => {
+    let newest = 0
+    const walk = (dir) => {
+      for (const name of readdirSync(dir)) {
+        /* `__eval__` is scratch the eval lane WRITES during a gate run, so
+           counting it as source made this refuse the build it had just been
+           handed (2026-08-29). Generated screens are not what dist is built
+           from. */
+        if (name === 'node_modules' || name === '__eval__' || name.startsWith('.')) continue
+        const path = `${dir}/${name}`
+        const info = statSync(path)
+        if (info.isDirectory()) walk(path)
+        else if (/\.(tsx?|css|json)$/.test(name)) newest = Math.max(newest, info.mtimeMs)
+      }
+    }
+    walk(srcDir)
+    return newest
+  })()
+  const builtAt = statSync(builtFile).mtimeMs
+  if (newest <= builtAt) return
+  const minutes = Math.round((newest - builtAt) / 60000)
+  console.error(`dist is ${minutes} minute(s) older than src — this would measure the previous build.`)
+  console.error('Run `npm run build` first. (The gate does; running this script by hand does not.)')
+  process.exit(1)
+}

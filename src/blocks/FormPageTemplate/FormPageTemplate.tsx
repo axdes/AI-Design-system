@@ -6,6 +6,10 @@ import { Page } from '../Page'
 import { cn } from '../../lib/cn'
 import { useUnsavedChanges } from '../../lib/useUnsavedChanges'
 
+/* Monolithic because its props are the frame a form needs to be safe: the
+ * error summary above the first field, the two commits, the busy state that
+ * blocks a second submit, and the dirty flag that guards the way out. A
+ * caller assembling those from parts is a caller who can leave one out. */
 type Props = {
   /** Page title in the header. */
   title?: ReactNode

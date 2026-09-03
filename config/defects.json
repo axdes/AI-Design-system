@@ -307,7 +307,7 @@
       "foundBy": "eye",
       "check": "ink · every run of text measured against the median colour of its own box",
       "status": "proven",
-      "evidence": "`npm run ink` measures pixels instead of tokens: two frames from one DOM, the second with every glyph made transparent, so the ground can be a token, a gradient, a photograph or three nested surfaces. It found 14 more the moment it ran"
+      "evidence": "`npm run ink` measures pixels instead of tokens: two frames from one DOM, the second with every glyph made transparent, so the ground can be a token, a gradient, a photograph or three nested surfaces. It found 14 more the moment it ran, and joined the gate on 2026-09-03 after five of its own measurement bugs were found and fixed"
     },
     {
       "id": "ink-read-the-previous-theme",
@@ -353,6 +353,24 @@
       "check": "ink · every run of text measured against the median colour of its own box",
       "status": "proven",
       "evidence": "exactly the shape the check was written for after 2026-08-23: a descendant setting its own colour inside a surface that had inverted its ink, which no reading of the tokens can see. Fixed by scoping the quiet colour to cells with no tone"
+    },
+    {
+      "id": "the-hide-sheet-was-never-removed",
+      "date": "2026-09-03",
+      "was": "`npm run ink` injected its glyph-hiding stylesheet with addStyleTag and then tagged \"whatever is last in the head\" so it could remove it again. Whatever is last in the head is not reliably the sheet just added — Vite and React both put styles there — and when the tag missed, the sheet stayed applied for every case after it: their text was transparent in BOTH frames, so no pixels changed, so every run of text in them was skipped. The check reported 824 runs of text where there are 1757",
+      "foundBy": "eye",
+      "check": "ink · the sheet is one element addressed by id",
+      "status": "proven",
+      "evidence": "found by asking why a case that should have failed did not, and the number in the header answered it. A check that measures half of what it names is the quietest way to be wrong, and nothing in the gate reads another check's coverage — this is the argument for printing the population in the header of every check that has one"
+    },
+    {
+      "id": "a-colour-that-was-not-rgb-was-skipped",
+      "date": "2026-09-03",
+      "was": "ink read the computed colour with a regex for `rgb(...)`. A colour authored with `color-mix(in oklch, …)` comes back as `oklch(0.889606 0.00240303 none)`, so every element wearing one was skipped rather than measured — silently. The gate red team's own break was invisible for exactly this reason",
+      "foundBy": "check",
+      "check": "gate-redteam · contrast: ink that is legal in the tokens and unreadable on the screen",
+      "status": "proven",
+      "evidence": "the break was written, the gate went red, and the step that should have caught it said nothing. The page now converts every colour through a 1x1 canvas, which is the browser answering in sRGB whatever the notation"
     }
   ],
   "_unclassifiedMeans": "Entries in docs/CHANGELOG-REVIEW.md that nobody has read into this corpus yet. 609 entries, five read. It falls by reading, never by rounding.",

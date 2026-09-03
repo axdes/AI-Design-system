@@ -20,6 +20,11 @@ export type FilterOption<V extends string> = Option<V> & {
   count?: number
 }
 
+/* Monolithic because a filter is four things that have to agree: the
+ * trigger, the menu, the "all" row that means no filter, and the tags under
+ * it that remove one. Fifteen props is the most in this catalogue and it is
+ * the one to watch — reopened the moment a fifth prop is proposed for the
+ * trigger, because that is the group that would become an object. */
 type Props<V extends string> = {
   label: string
   options: readonly FilterOption<V>[]

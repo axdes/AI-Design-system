@@ -300,6 +300,10 @@ export const GATES = [
     population: 'derived — every part that stands in a row, measured in a real browser against dist',
     startedAs: 'one ladder, 32/40/48. A height decided by CSS is only true after the cascade, so it is measured rather than read.',
   },
+  { run: 'ink', why: 'every run of text against the pixels actually behind it, which no reading of the tokens can see', lane: 'browser', needs: 'build:gate',
+    population: 'derived — every run of text in every golden example, both themes, in a real browser',
+    startedAs: 'four legibility failures the owner reported in one afternoon with every check green (2026-08-23): three were a descendant setting its own colour inside a surface that had inverted its ink, and the fourth sat on a gradient. It stayed out of the gate for eleven days because it was measuring badly — 18, 21 and 25 findings on three consecutive runs of an unchanged tree — and joined it on 2026-09-03, once the ink came from the DOM and the ground from under the glyphs.',
+  },
   /* size, audit:pages and screens moved to apps/showcase on 2026-08-21, with the
    * screens themselves. They measure a PRODUCT — a real bundle, a composed page,
    * a whole screen at three widths — and this package stopped being one: it is a

@@ -4,6 +4,9 @@ import { FormStack } from '../../components/FormStack'
 import { Input } from '../../components/Input'
 import { Modal } from '../../components/Modal'
 
+/* Monolithic because it is one dialog around one field: the field, the two
+ * buttons that commit or leave it, and whether it is open. There is nothing
+ * here to compose — a caller who wants more than one field wants FormPanel. */
 type Props = {
   /** The caller owns it, and it should close once the rename has been accepted, not when the
    *  button was pressed.

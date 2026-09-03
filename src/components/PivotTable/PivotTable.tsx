@@ -3,6 +3,9 @@ import { Table, TableScroll, THead, TBody, TFoot, Tr, Th, Td } from '../Table'
 
 export type PivotAxis = { key: string; label: ReactNode }
 
+/* Monolithic because a pivot is defined by its two axes and the function
+ * that answers a cell; the rest — totals, heat, the row header — say how
+ * that one answer is read. There is no part of it that means anything alone. */
 type Props = {
   /** The name of the table. Say what is crossed with what: "Hours by team and
    *  month" tells the reader which axis is which before they read a cell. */
