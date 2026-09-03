@@ -76,6 +76,27 @@ const ratio = (a, b) => { const [x, y] = [luminance(a), luminance(b)].sort((p, q
  *  page had not finished being the thing it was about to be measured as. The
  *  median of those pixels is the ink; anti-aliased edges sit either side of it
  *  and cancel. */
+/* MEASURED FROM THE PIXELS, NOT FROM THE DOM, AND THAT IS A CHOICE WITH A
+ * KNOWN COST. Reading the ink out of getComputedStyle instead was tried on
+ * 2026-09-03 and was worse: in the light pass every element's computed `color`
+ * came back as the DARK theme's ink and in the dark pass as the light one, with
+ * document.documentElement.dataset.theme already correct in both — the paint in
+ * the frame agreed with the baselines and the DOM did not. Whatever that is, it
+ * makes the computed colour the less trustworthy half here, so the pixels stay.
+ *
+ * Two known costs, and they are why this is still not a gate step:
+ *
+ *   - PivotTable's "164" — plain dark text on a mid-blue heat cell, 7:1 by the
+ *     tokens and by the baseline image — reads 1.89, because the
+ *     highest-contrast changed pixel in its box is not one of its glyphs.
+ *   - Small text under-reads. At 13px the strokes are mostly anti-aliased blend,
+ *     so the 99th-percentile pixel is not the ink: `.meta-item` (--muted-foreground,
+ *     neutral-700 on white, 7.4:1 by the tokens) reads 2.63 on some runs and
+ *     nothing on others.
+ *
+ * What it IS good for is the question the tokens cannot answer: what is actually
+ * behind a run of text. Everything it found on 2026-09-03 that was not one of
+ * the two above was real. */
 function inkOf(a, b, box, scale, ground) {
   const x0 = Math.max(0, Math.round(box.x * scale)), y0 = Math.max(0, Math.round(box.y * scale))
   const x1 = Math.min(a.width, Math.round((box.x + box.width) * scale))
@@ -169,6 +190,28 @@ for (const name of cases) {
       [name, theme],
     )
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
+    /* AND WAIT FOR THE CASE ITSELF TO WEAR THE THEME. The root attribute and the
+     * custom properties on :root land first; the case subtree resolves its own
+     * `color` one commit later, so reading computed colours here returned the
+     * PREVIOUS theme's ink — light text measured as dark and dark as light, for
+     * whichever cases lost the race. Same failure as the first version of this
+     * check, one level down, and it only became visible once the ink stopped
+     * being guessed from pixels (2026-09-03). */
+    await page.waitForFunction(
+      (n) => {
+        const el = document.querySelector(`.visual-case[data-case="${n}"]`)
+        if (!el) return false
+        const hex = getComputedStyle(document.documentElement).getPropertyValue('--foreground').trim()
+        const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex)
+        if (!m) return true
+        const want = [1, 2, 3].map((i) => parseInt(m[i], 16))
+        const have = /rgba?\(([^)]+)\)/.exec(getComputedStyle(el).color)
+        if (!have) return true
+        const got = have[1].split(/[\s,/]+/).filter(Boolean).map(Number)
+        return want.every((c, i) => Math.abs(c - got[i]) <= 2)
+      },
+      name,
+    ).catch(() => {})
 
     /* Every element whose own text is a direct child — the element that owns
      * the glyphs, not its container. */
@@ -194,13 +237,29 @@ for (const name of cases) {
          * scrim, so the two disagree, and a check that cannot say which is right
          * must not report either. These pairs are measured at the token level by
          * `npm run contrast` and in a real browser by the showcase's axe pass. */
-        if (el.closest('.modal-overlay, .command-overlay')) continue
+        /* An open layer dims the page behind it, and the frame composites the
+         * two: everything OUTSIDE the overlay is measured through the scrim, and
+         * everything inside it is measured against a ground the DOM says is
+         * above that scrim. The trigger button standing behind an open Modal read
+         * 2.83 for exactly this reason (2026-09-03). While a layer is open, only
+         * the layer is measurable. */
+        const overlay = document.querySelector('.modal-overlay, .command-overlay')
+        if (overlay) continue
+        /* Text that is only for a screen reader has no ground: the accessible
+         * table a Chart renders beside its bars is clipped to a pixel, so what
+         * gets measured is whatever the clip left behind. Skipped by the class
+         * that hides it, not by the box, because clipping leaves the layout box
+         * its normal size. (2026-09-03) */
+        if (el.closest('.sr-only')) continue
         /* Disabled text is exempt from contrast by the standard itself (1.4.3),
          * and this system dims it with opacity, so measuring it reports the
          * dimming rather than a decision anybody made. */
         if (el.closest('[disabled], [data-disabled], [aria-disabled="true"], :disabled')) continue
         const size = parseFloat(cs.fontSize)
         const weight = Number(cs.fontWeight) || 400
+        /* Painted through a background, so the computed colour is not what the
+         * reader sees. Left out rather than guessed at. */
+        if ((cs.webkitBackgroundClip || cs.backgroundClip) === 'text') continue
         out.push({
           text: text.slice(0, 40), color: cs.color,
           large: size >= 24 || (size >= 18.66 && weight >= 700),
@@ -228,6 +287,15 @@ for (const name of cases) {
       const last = document.head.lastElementChild
       if (last && last.tagName === 'STYLE') last.setAttribute('data-ink-hide', '')
     })
+    /* WAIT FOR THE GROUND FRAME TO BE PAINTED WITHOUT THE GLYPHS. Inserting the
+     * stylesheet resolves as soon as the node is in the head; the paint that
+     * removes the text happens on a later frame, and screenshotting between the
+     * two captures a "ground" that still has the text in it. Ink then equals
+     * ground and the ratio comes out at 1.0-1.1 for whichever cases lost the
+     * race — which is why this check reported 18, 21 and 25 findings on three
+     * consecutive runs of an unchanged tree, all of them in that band
+     * (2026-09-03). Two frames, the same wait the theme swap already uses. */
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
     const shot = await page.screenshot({ type: 'png' })
     await page.evaluate(() => {
       for (const el of document.querySelectorAll('style[data-ink-hide]')) el.remove()
@@ -266,7 +334,7 @@ if (findings.length) {
     failures++
     console.log(`  ${RED}✗${RESET} ${f.name} ${DIM}(${f.theme})${RESET}  ${f.where}  ` +
       `${RED}${f.ratio.toFixed(2)}${RESET}${DIM} needs ${f.floor} — "${f.text}"${RESET}` +
-      (process.env.INK_DEBUG ? `  ${DIM}ink ${f.ink} on ${f.bg} | theme seen "${f.seenTheme}" --foreground ${f.rootFg}${RESET}` : ''))
+      (process.env.INK_DEBUG ? `  ${DIM}ink ${f.ink} on ${f.bg} | box ${Math.round(f.box.x)},${Math.round(f.box.y)} ${Math.round(f.box.width)}x${Math.round(f.box.height)} | theme seen "${f.seenTheme}"${RESET}` : ''))
   }
 }
 for (const [name, why] of Object.entries(EXEMPT)) {

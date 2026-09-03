@@ -1,7 +1,7 @@
 {
   "_why": "Real defects this system shipped, each with the check that finds it now or a written statement that it cannot be checked. It exists to answer one question the gate cannot answer about itself: of the things that actually went wrong, how many would a person still have to notice by eye. ds-factory built the same ledger from this system's fix commits and measured 34 of 46 found by eye against 7 by the gate; this is the same instrument, kept here where the fixes land.",
-  "_seeded": "SEEDED, NOT COMPLETE. docs/CHANGELOG-REVIEW.md carries 609 entries and only the ones below have been read and classified — every one states what was wrong in the words of the entry it came from, and nothing here is inferred from a heading. `unclassified` is the rest, and it is a number that falls as entries are read. A corpus that pretended to be complete would be the same lie as a check with the wrong population.",
-  "unclassified": 591,
+  "_seeded": "SEEDED, NOT COMPLETE. docs/CHANGELOG-REVIEW.md carries 614 entries and only the ones below have been read and classified — every one states what was wrong in the words of the entry it came from, and nothing here is inferred from a heading. `unclassified` is the rest, and it is a number that falls as entries are read. A corpus that pretended to be complete would be the same lie as a check with the wrong population.",
+  "unclassified": 582,
   "defects": [
     {
       "id": "ring-declared-56-times",
@@ -245,8 +245,116 @@
       "check": "test:cov",
       "status": "proven",
       "evidence": "the suite itself was the check that caught it, loudly and unhelpfully. The shim is a module rather than lines in the setup because setup.ts imports i18n first and imports run before the body of the file — the fix was one import too late until the order was made visible."
+    },
+    {
+      "id": "every-star-empty",
+      "date": "2026-08-29",
+      "was": "<Icon> accepted only name, size and className and dropped everything else, and TypeScript deliberately does not check hyphenated JSX attributes — so Rating's per-star `data-fill` was accepted by the types and lost at runtime. `.rating-star[data-fill='full']` matched nothing and EVERY star drew as an outline: four out of five looked exactly like zero. The rule against reaching into a primitive's class+data contract was already written beside it (owner, 2026-08-24); the defect came back invisible because the screenshot had been accepted with it",
+      "foundBy": "check",
+      "check": "mutate · a mutant that used to die may not start surviving",
+      "status": "proven",
+      "evidence": "found while writing a test to kill the `fill >= 0` mutant: the assertion came back null instead of 'empty' because the attribute was not in the DOM at all. Neither a person looking at the gallery nor any gate step had noticed"
+    },
+    {
+      "id": "impossible-prop-on-numberinput",
+      "date": "2026-08-29",
+      "was": "NumberInput's Props extended Omit<InputHTMLAttributes, ...> without omitting `size`, and InputHTMLAttributes carries its own `size?: number` — the ancient HTML width-in-characters attribute. The intersection of number with 'sm' | 'md' | 'lg' is a type nothing can be assigned to, so the prop could not be passed at all, while the registry published it as a working axis and an agent following the contract got a type error",
+      "foundBy": "eye",
+      "check": "lint:rules · a redeclared DOM prop is omitted first",
+      "status": "proven",
+      "evidence": "tsc cannot say it: an impossible prop nobody passes is not an error until somebody writes the call. The rule keys off the BASE TYPE rather than a list of suspicious words — `size` clashes on input and select and is free on a span — and was verified both ways. lint:api A5 would now also catch it: a prop nobody can pass is a prop nobody passes"
+    },
+    {
+      "id": "white-card-on-white",
+      "date": "2026-08-29",
+      "was": "a card separates itself by FILL, not by outline: on the page's muted ground white is the separation, and on white it is not. The outline for that case was written one container at a time — `.card .card` here, `.detail-page[data-panels] .card` there — so a container nobody had written the rule for got white on white. The showcase's own component stage was exactly such a container: three cards in the Layout example read as bare headings in one large white box",
+      "foundBy": "eye",
+      "check": "boundary · SC 1.4.11, a control edge against every surface it can land on",
+      "status": "proven",
+      "evidence": "the fix was structural — `[data-surface=\"card\"]` declares the surface once instead of a growing list of special cases — and `boundary` walks every control edge against every surface a part can land on, which is the same question one level down. What it does NOT cover is a CARD on an unexpected surface: that is still the visual baselines of the screens somebody shot, and it is why the Layout example is one of them"
+    },
+    {
+      "id": "mobile-nav-could-not-be-opened",
+      "date": "2026-08-30",
+      "was": "NavDrawerButton — which PageHeader puts on every screen without a back arrow — asks SidebarProvider to open the drawer and renders nothing at all when there is no provider, while AppLayout moved the rail from its own `navOpen` prop. Two halves of one mechanism with nothing between them: an app that mounted the shell without thinking about the provider gave a phone no way to reach navigation, which is the exact failure NavDrawerButton was written to prevent. This system's own site was such an app",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "the owner said \"the menu does not open in responsive\" and it was true. No static check reads whether a context provider is mounted above a component that needs one; the fix was to make the shell own the drawer so no app has to remember"
+    },
+    {
+      "id": "applayout-example-showed-a-shell-nobody-builds",
+      "date": "2026-08-29",
+      "was": "the AppLayout golden example disagreed with the shell this system's own site runs on in three places: a bare glyph in `logo` and a different one in `logoMark` instead of one BrandMark in both, nav items that were not links (so middle click, copy address and the back button did nothing), and a rail that never said it collapses",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "checked against apps/showcase/src/site/SiteShell.tsx rather than written from memory. Nothing compares an example to a real screen: the example compiles, renders and is axe-clean while teaching a composition nobody uses"
+    },
+    {
+      "id": "mutation-run-left-a-mutant-in-the-source",
+      "date": "2026-08-29",
+      "was": "a mutation run cut short — a piped `head`, a Ctrl-C — left both the mutation and its backup file in the source tree, and the backup then shipped as a component file",
+      "foundBy": "eye",
+      "check": "mutate · the runner sweeps on exit",
+      "status": "proven",
+      "evidence": "the same sweep-on-exit pattern was given to gate-redteam when it landed, for the same reason: a tool that edits the tree must restore it however it ends"
+    },
+    {
+      "id": "four-legibility-failures-in-one-afternoon",
+      "date": "2026-08-23",
+      "was": "the owner reported four legibility failures by looking at screens, with every static check green: a card title over a photograph as dark ink on a dark scrim, a Chip on the page surface in the exact colour of the page, an icon button turning its glyph brand-blue on hover alone in its family, and a row title recolouring on hover where a card title underlines. Three of the four are CASCADE bugs — a descendant setting its own colour inside a surface that had inverted its ink — which no reading of semantic.css can see; the fourth sat on a gradient, which has no single colour to compare against at all",
+      "foundBy": "eye",
+      "check": "ink · every run of text measured against the median colour of its own box",
+      "status": "proven",
+      "evidence": "`npm run ink` measures pixels instead of tokens: two frames from one DOM, the second with every glyph made transparent, so the ground can be a token, a gradient, a photograph or three nested surfaces. It found 14 more the moment it ran"
+    },
+    {
+      "id": "ink-read-the-previous-theme",
+      "date": "2026-08-23",
+      "was": "the first run of `npm run ink` reported a wall of exactly-1.00 failures: `__show()` sets React state and the theme attribute follows on the next commit, so computed colours were read in the PREVIOUS theme while the frame already carried the new one",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "a measurement bug in a new check, caught by its own implausible output — 1.00 contrast everywhere is not a design defect. Nothing checks a check's own timing; what stands in for it is that a check reporting a colour nobody painted is worse than no check, because somebody goes and changes the colour"
+    },
+    {
+      "id": "one-control-five-answers-diverged-31-times",
+      "date": "2026-08-23",
+      "was": "33 controls answered hover, press, focus, disabled and invalid 31 different ways: a checkbox did not acknowledge the pointer at all, Checkbox / Radio / Switch / FileUpload had no `invalid` (so a required consent box could be rejected with nothing on screen saying which box), ChatComposer, Tag and SearchInput had no focus ring, ContextMenu had no aria-activedescendant, and `ghost` and `quiet` drew one button between them",
+      "foundBy": "eye",
+      "check": "states · one control, one set of answers",
+      "status": "proven",
+      "evidence": "the check asks each question only where it means something — a control you type into answers a click with focus rather than a press, a breadcrumb has no disabled state, a component wearing another's class inherits its answers. Getting those three wrong first produced 31 findings of which 8 were noise, which is the reason the population rule exists"
+    },
+    {
+      "id": "ink-measured-a-ground-that-still-had-the-text-in-it",
+      "date": "2026-09-03",
+      "was": "`npm run ink` took its ground frame immediately after inserting the stylesheet that makes every glyph transparent. Inserting a stylesheet resolves as soon as the node is in the head; the paint happens on a later frame, so the \"ground\" still had the text in it for whichever cases lost the race. Ink then equalled ground and the ratio came out at 1.0-1.1: three consecutive runs of an unchanged tree reported 18, 21 and 25 findings, all in that band",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "found by running the same check three times and diffing the output — a check whose findings shuffle is not measuring the thing it names. Nothing checks a check for determinism except check:determinism, which reads the spec engine and not a browser. After the two-frame wait, three consecutive runs gave the same six findings"
+    },
+    {
+      "id": "session-pill-action-in-the-dark",
+      "date": "2026-09-03",
+      "was": "SessionPill's action link painted `--primary`, which is a SURFACE colour and stays brand-400 in the dark theme, so \"Back to the board\" measured 2.08:1 as ink on the pill's own card. Every other piece of text that goes somewhere uses `--link`, which moves to brand-200 in dark",
+      "foundBy": "check",
+      "check": "ink · every run of text measured against the median colour of its own box",
+      "status": "proven",
+      "evidence": "npm run contrast reads the pairs the tokens declare and this pair was never declared: a component reached past the roles and took the fill colour for ink. That is the case ink exists for, and it is the first defect the check found on its own rather than the day it was written"
+    },
+    {
+      "id": "diff-before-overrode-the-tone-it-sat-on",
+      "date": "2026-09-03",
+      "was": "the DiffTable's \"before\" column paints `--muted-foreground` to read as quiet, and that class also lands on the cells carrying the removed TONE. Muted grey on the dark removed tint measures 4.39:1 — the toned cell already carried --destructive-soft-foreground, and the quiet class beat it",
+      "foundBy": "check",
+      "check": "ink · every run of text measured against the median colour of its own box",
+      "status": "proven",
+      "evidence": "exactly the shape the check was written for after 2026-08-23: a descendant setting its own colour inside a surface that had inverted its ink, which no reading of the tokens can see. Fixed by scoping the quiet colour to cells with no tone"
     }
   ],
   "_unclassifiedMeans": "Entries in docs/CHANGELOG-REVIEW.md that nobody has read into this corpus yet. 609 entries, five read. It falls by reading, never by rounding.",
-  "_sample": "The entries read so far are not a random sample and the ratio should be read knowing it: they cluster in the weeks when the gate was already mature, which flatters it. The three from 11-13 August are a deliberate step back into a thinner period, and two of the three were still found by a person opening a screen."
+  "_sample": "The entries read so far are not a random sample and the ratio should be read knowing it: they cluster in the weeks when the gate was already mature, which flatters it. The three from 11-13 August are a deliberate step back into a thinner period, and two of the three were still found by a person opening a screen. The 2026-08-23 entries added on 2026-09-03 are a second such step: that day alone carried four legibility failures found by eye with every check green, and the check that answers them (ink) was written the same afternoon."
 }

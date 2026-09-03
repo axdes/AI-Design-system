@@ -11,7 +11,7 @@
   "files": [
     {
       "path": "src/components/DiffTable/DiffTable.css",
-      "content": "/* The old value is struck through only where a value was really replaced: a\n * strike on an unchanged line reads as a deletion that did not happen. */\n.diff-table .diff-before { color: var(--muted-foreground); }\n\n/* The change word is the row's own label, not a badge: four of them in a\n * column of forty rows would be forty pills and no table. */\n.diff-kind { text-transform: capitalize; color: var(--muted-foreground); }\n",
+      "content": "/* The old value is struck through only where a value was really replaced: a\n * strike on an unchanged line reads as a deletion that did not happen. */\n/* Quiet — until the cell is TONED, and then the tone owns its ink. Muted grey on\n * the dark removed tint measures 4.39:1 against the pixels, just under the 4.5\n * the text needs, because a class that sets its own colour beats what the\n * surface said (2026-09-03). The toned cell already carries\n * --destructive-soft-foreground, which is the pair this system measures. */\n.diff-table .diff-before:not([data-tone]) { color: var(--muted-foreground); }\n\n/* The change word is the row's own label, not a badge: four of them in a\n * column of forty rows would be forty pills and no table. */\n.diff-kind { text-transform: capitalize; color: var(--muted-foreground); }\n",
       "type": "registry:ui",
       "target": "@ui/DiffTable/DiffTable.css"
     },

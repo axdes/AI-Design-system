@@ -1,6 +1,11 @@
 /* The old value is struck through only where a value was really replaced: a
  * strike on an unchanged line reads as a deletion that did not happen. */
-.diff-table .diff-before { color: var(--muted-foreground); }
+/* Quiet — until the cell is TONED, and then the tone owns its ink. Muted grey on
+ * the dark removed tint measures 4.39:1 against the pixels, just under the 4.5
+ * the text needs, because a class that sets its own colour beats what the
+ * surface said (2026-09-03). The toned cell already carries
+ * --destructive-soft-foreground, which is the pair this system measures. */
+.diff-table .diff-before:not([data-tone]) { color: var(--muted-foreground); }
 
 /* The change word is the row's own label, not a badge: four of them in a
  * column of forty rows would be forty pills and no table. */

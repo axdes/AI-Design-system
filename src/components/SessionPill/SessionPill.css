@@ -50,7 +50,12 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  color: var(--primary);
+  /* `--link`, not `--primary`: the brand fill is a SURFACE colour and stays
+   * brand-400 in dark, where it measures 2.08:1 as ink on the pill's card. The
+   * link role is the same idea said in ink and it moves to brand-200 in dark,
+   * which is what every other "text that goes somewhere" in this system uses.
+   * Measured against the pixels behind it (2026-09-03). */
+  color: var(--link);
   font-weight: var(--font-weight-medium);
 }
 
