@@ -637,7 +637,7 @@
       "name": "skeleton",
       "type": "registry:ui",
       "title": "Skeleton",
-      "description": "Loading placeholder: the shape of content before it arrives, so the layout does not jump when it does. Decorative by design (aria-hidden) — announce the loading state once, on the region, with a <Spinner> or aria-busy, not on every shimmer. The pulse animation is disabled under prefers-reduced-motion."
+      "description": "Loading placeholder: the kind of content before it arrives, so the layout does not jump when it does. Decorative by design (aria-hidden) — announce the loading state once, on the region, with a <Spinner> or aria-busy, not on every shimmer. The pulse animation is disabled under prefers-reduced-motion."
     },
     {
       "name": "slider",
@@ -661,7 +661,7 @@
       "name": "stat",
       "type": "registry:ui",
       "title": "Stat",
-      "description": "A KPI tile: a large value with a caption, and — when the number is judged rather than just read — the comparison and the trend behind it. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>. Copy: the label says what the number counts, with its unit and its period — \"Invoices paid this quarter\". The delta says what it is compared to, or it is not a comparison."
+      "description": "A KPI tile: a large value with a caption, and — when the number is judged rather than just read — the comparison and the trend behind it. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>. Copy: the caption says what the number counts, with its unit and its period — \"Invoices paid this quarter\". The delta says what it is compared to, or it is not a comparison."
     },
     {
       "name": "stepper",
@@ -763,7 +763,7 @@
       "name": "user-menu",
       "type": "registry:ui",
       "title": "UserMenu",
-      "description": "Account trigger for a sidebar footer: name + role expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions. Copy: the trigger names the person, and the items are verbs — \"Sign out\", not \"Sign-out\"."
+      "description": "Account trigger for a sidebar footer: name + secondary expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions. Copy: the trigger names the person, and the items are verbs — \"Sign out\", not \"Sign-out\"."
     }
   ]
 }

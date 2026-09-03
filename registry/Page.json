@@ -1,7 +1,7 @@
 {
   "ref": "Page",
   "level": "block",
-  "description": "The PAGE mechanism: the regions a screen is made of and the shape its body takes. Every page archetype is a preset over this one component rather than a component of its own, so a shape the system has not met yet is composed from system parts instead of from divs. Copy: the title is the page's own name in the reader's words. Nothing renders under it — a line explaining the page is content, and content lives in the body (the rule that removed `subtitle` from this system, 2026-08-20).",
+  "description": "The PAGE mechanism: the regions a screen is made of and the body its body takes. Every page archetype is a preset over this one component rather than a component of its own, so a body the system has not met yet is composed from system parts instead of from divs. Copy: the title is the page's own name in the reader's words. Nothing renders under it — a line explaining the page is content, and content lives in the body (the rule that removed `subtitle` from this system, 2026-08-20).",
   "exports": [
     "Page",
     "ListExample",
@@ -101,7 +101,7 @@
       "name": "detail",
       "type": "ReactNode",
       "required": false,
-      "description": "The second pane of a `list-detail` body. Ignored by every other shape."
+      "description": "The second pane of a `list-detail` body. Ignored by every other body."
     },
     {
       "name": "breadcrumb",
@@ -144,10 +144,10 @@
       "description": "A sticky bar carrying the commitment: submit, next, apply."
     },
     {
-      "name": "shape",
+      "name": "body",
       "type": "'single' | 'list-detail' | 'feed' | 'board' | 'canvas'",
       "required": false,
-      "description": "Overrides the archetype's shape. Required when there is no archetype.",
+      "description": "Overrides the archetype's body. Required when there is no archetype.",
       "values": [
         "single",
         "list-detail",
@@ -209,8 +209,8 @@
         "system"
       ]
     },
-    "shape": {
-      "prop": "shape",
+    "body": {
+      "prop": "body",
       "values": [
         "single",
         "list-detail",
@@ -261,5 +261,5 @@
     "ListItem",
     "PageHeader"
   ],
-  "example": "const [selected, setSelected] = useState<string | null>('r-1')\nconst current = REQUESTS.find((r) => r.id === selected)\n\n<Page\n      archetype=\"worklist\"\n      shape=\"list-detail\"\n      title=\"Approvals\"detailOpen={selected !== null}\n      onDetailClose={() => setSelected(null)}\n      detail={current\n        ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>: <EmptyState as=\"h2\" surface=\"card\" icon=\"list_alt\" title=\"Nothing selected\" />}\n      footerBar={<Button variant=\"primary\" disabled={!current}>Approve</Button>}\n    >\n      \n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function ListExample() {\n  return (\n    <Page archetype=\"list\" title=\"Requests\">\n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function InnerPageExample() {\n  return (\n    <Page\n      archetype=\"detail\"\n      title=\"Quarterly access review\"\n      breadcrumb={\n        <Breadcrumb\n          items={[\n            { label: 'Library', href: '/library' "
+  "example": "const [selected, setSelected] = useState<string | null>('r-1')\nconst current = REQUESTS.find((r) => r.id === selected)\n\n<Page\n      archetype=\"worklist\"\n      body=\"list-detail\"\n      title=\"Approvals\"detailOpen={selected !== null}\n      onDetailClose={() => setSelected(null)}\n      detail={current\n        ? <Card><CardTitle>{current.title}</CardTitle><p>{current.owner}</p></Card>: <EmptyState as=\"h2\" surface=\"card\" icon=\"list_alt\" title=\"Nothing selected\" />}\n      footerBar={<Button variant=\"primary\" disabled={!current}>Approve</Button>}\n    >\n      \n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id} onClick={() => setSelected(r.id)}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function ListExample() {\n  return (\n    <Page archetype=\"list\" title=\"Requests\">\n      <Card flush>\n        {REQUESTS.map((r) => (\n          <ListItem key={r.id}>{r.title}</ListItem>\n        ))}\n      </Card>\n    </Page>\n  )\n}export function InnerPageExample() {\n  return (\n    <Page\n      archetype=\"detail\"\n      title=\"Quarterly access review\"\n      breadcrumb={\n        <Breadcrumb\n          items={[\n            { label: 'Library', href: '/library' }"
 }

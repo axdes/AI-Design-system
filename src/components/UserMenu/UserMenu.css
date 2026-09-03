@@ -28,7 +28,7 @@
   font-size: var(--font-sm); font-weight: var(--font-weight-regular); line-height: var(--leading-tight);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.user-menu-trigger-role {
+.user-menu-trigger-secondary {
   font-size: var(--font-xs); color: var(--muted-foreground); line-height: var(--leading-tight);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }

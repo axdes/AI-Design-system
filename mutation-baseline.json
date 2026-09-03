@@ -192,7 +192,7 @@
       "survived": []
     },
     "ContentSidePanel": {
-      "hash": "8cbff393f007",
+      "hash": "e40b60464450",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -554,7 +554,7 @@
       "survived": []
     },
     "Table": {
-      "hash": "08d9ca42398c",
+      "hash": "255911dd39a4",
       "killed": [
         "strip-aria",
         "drop-spread"
@@ -911,7 +911,7 @@
       ]
     },
     "Skeleton": {
-      "hash": "7472a1abc657",
+      "hash": "309d10195830",
       "killed": [],
       "survived": [
         "and-to-or",
@@ -936,7 +936,7 @@
       "survived": []
     },
     "Stat": {
-      "hash": "4cd0bfef20ec",
+      "hash": "1192b9473e43",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -1056,7 +1056,7 @@
       ]
     },
     "UserMenu": {
-      "hash": "c059d50ebca5",
+      "hash": "6601536d8bee",
       "killed": [
         "and-to-or",
         "strip-aria",

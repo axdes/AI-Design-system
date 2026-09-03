@@ -15,7 +15,7 @@ const REQUESTS = [
 
 /* THE ARCHETYPE IS THE DECISION; EVERYTHING ELSE ON THIS COMPONENT IS AN
  * OVERRIDE OF IT. Name what KIND of page this is and the geometry follows: the
- * width, the shape of the body, and which regions the page may and may not
+ * width, the body of the body, and which regions the page may and may not
  * have. Say `archetype="worklist"` and a screen stops restating what its own
  * kind already implies.
  *
@@ -30,8 +30,8 @@ const REQUESTS = [
  * the source of truth, and `check:spec` fails on drift — so an archetype
  * cannot mean one thing to the gate and another on screen.
  *
- * `shape`, `width` and `align` OVERRIDE the archetype, and each one is a claim
- * that this screen is the exception. `shape="list-detail"` below is the case a
+ * `body`, `width` and `align` OVERRIDE the archetype, and each one is a claim
+ * that this screen is the exception. `body="list-detail"` below is the case a
  * worklist earns: the items are reviewed in place, so the queue and the
  * selection are on screen together. An override with no such reason is a page
  * disagreeing with its own kind.
@@ -43,7 +43,7 @@ export function Example() {
   return (
     <Page
       archetype="worklist"
-      shape="list-detail"
+      body="list-detail"
       title="Approvals"
       /* BELOW THE SPLIT ONE PANE SHOWS AT A TIME, and the page cannot work out
          which: "selected" is this component's state, and the empty pane below is
@@ -72,7 +72,7 @@ export function Example() {
   )
 }
 
-/* The same mechanism with NO override: a `list` takes its shape, its width and
+/* The same mechanism with NO override: a `list` takes its body, its width and
  * its regions from its kind, and the screen says nothing about geometry at all.
  * This is what most pages should look like. */
 export function ListExample() {

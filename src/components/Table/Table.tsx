@@ -301,7 +301,7 @@ export function TableSkeleton({ columns, rows = 5 }: { columns: number; rows?: n
       {Array.from({ length: rows }, (_, r) => (
         <Tr key={r}>
           {Array.from({ length: columns }, (_, c) => (
-            <Td key={c}><Skeleton shape="text" /></Td>
+            <Td key={c}><Skeleton kind="text" /></Td>
           ))}
         </Tr>
       ))}

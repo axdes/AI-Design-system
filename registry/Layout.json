@@ -48,7 +48,7 @@
       ]
     },
     {
-      "name": "min",
+      "name": "minColumn",
       "type": "'sm' | 'md' | 'lg'",
       "required": false,
       "description": "The narrowest a card in this grid may get before the grid drops a column. `sm` (16rem) is the default and right for tiles that carry a word or two; `md` (20rem) is what a card with a name, a role and an action needs; `lg` (24rem) is for a card with a picture and two sentences. Measured, not guessed: at `sm` a person card came out 250px wide on a laptop and every name broke over two lines.",
@@ -98,8 +98,8 @@
         12
       ]
     },
-    "min": {
-      "prop": "min",
+    "min-column": {
+      "prop": "minColumn",
       "values": [
         "sm",
         "md",

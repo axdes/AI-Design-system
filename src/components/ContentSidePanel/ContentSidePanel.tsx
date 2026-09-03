@@ -17,15 +17,18 @@ export type SidePanelSection = {
 type Props = {
   sections: readonly SidePanelSection[]
   /** Optional default-open section by key. */
-  defaultOpen?: string
+  /* `defaultSection`: <Accordion> publishes `defaultOpen` as the LIST of ids
+   * that start open, and this panel opens exactly one. One word for a list and
+   * for a single id is a word a caller has to check every time. (2026-09-03) */
+  defaultSection?: string
 }
 
 /**
  * Document side panel: an icon rail that slides a SidePanel out over the
  * content, one panel per icon.
  */
-export function ContentSidePanel({ sections, defaultOpen }: Props) {
-  const [open, setOpen] = useState<string | null>(defaultOpen ?? null)
+export function ContentSidePanel({ sections, defaultSection }: Props) {
+  const [open, setOpen] = useState<string | null>(defaultSection ?? null)
   const active = sections.find((s) => s.key === open) ?? null
   const panelId = useId()
 

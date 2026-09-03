@@ -1,7 +1,7 @@
 {
   "ref": "Skeleton",
   "level": "atom",
-  "description": "Loading placeholder: the shape of content before it arrives, so the layout does not jump when it does. Decorative by design (aria-hidden) — announce the loading state once, on the region, with a <Spinner> or aria-busy, not on every shimmer. The pulse animation is disabled under prefers-reduced-motion.",
+  "description": "Loading placeholder: the kind of content before it arrives, so the layout does not jump when it does. Decorative by design (aria-hidden) — announce the loading state once, on the region, with a <Spinner> or aria-busy, not on every shimmer. The pulse animation is disabled under prefers-reduced-motion.",
   "exports": [
     "Skeleton"
   ],
@@ -10,7 +10,7 @@
   "slots": [],
   "props": [
     {
-      "name": "shape",
+      "name": "kind",
       "type": "'text' | 'block' | 'circle'",
       "required": false,
       "description": "text = a line of body text (default). block = a rectangular area (card, image). circle = an avatar-sized disc.",
@@ -24,7 +24,7 @@
       "name": "lines",
       "type": "number",
       "required": false,
-      "description": "Number of text lines. Only meaningful for shape=\"text\"; the last line is rendered short so the block reads as a paragraph, not a bar. Default 1."
+      "description": "Number of text lines. Only meaningful for kind=\"text\"; the last line is rendered short so the block reads as a paragraph, not a bar. Default 1."
     },
     {
       "name": "width",
@@ -46,8 +46,8 @@
   "sourcePath": "src/components/Skeleton/Skeleton.tsx",
   "context": "region",
   "variants": {
-    "shape": {
-      "prop": "shape",
+    "kind": {
+      "prop": "kind",
       "values": [
         "text",
         "block",
@@ -58,5 +58,5 @@
   "uses": [
     "Layout"
   ],
-  "example": "<Row gap={3} aria-busy=\"true\">\n  <Skeleton shape=\"circle\" />\n  <Stack gap={2} className=\"skeleton-lines\">\n    <Skeleton width=\"12rem\" height=\"1rem\" shape=\"block\" />\n    <Skeleton lines={3} />\n  </Stack>\n</Row>"
+  "example": "<Row gap={3} aria-busy=\"true\">\n  <Skeleton kind=\"circle\" />\n  <Stack gap={2} className=\"skeleton-lines\">\n    <Skeleton width=\"12rem\" height=\"1rem\" kind=\"block\" />\n    <Skeleton lines={3} />\n  </Stack>\n</Row>"
 }

@@ -8,13 +8,13 @@ import { Stat } from './Stat'
 
 describe('Stat', () => {
   it('shows the number and what it is the number OF', () => {
-    render(<Stat value="1,204" label="Sessions this week" />)
+    render(<Stat value="1,204" caption="Sessions this week" />)
     expect(screen.getByText('1,204')).toBeInTheDocument()
     expect(screen.getByText('Sessions this week')).toBeInTheDocument()
   })
 
   it('leaves out the delta entirely when there is none, rather than showing a zero', () => {
-    const { container } = render(<Stat value="1,204" label="Sessions" />)
+    const { container } = render(<Stat value="1,204" caption="Sessions" />)
     expect(container.querySelector('.stat-delta')).toBeNull()
   })
 
@@ -22,7 +22,7 @@ describe('Stat', () => {
    * "up" and "bad" is a real combination, and a component that derived the tone
    * from the arrow could not express it. */
   it('keeps the direction and the meaning apart', () => {
-    const { container } = render(<Stat value="42" label="Open incidents" delta="+8" deltaDirection="up" deltaTone="danger" />)
+    const { container } = render(<Stat value="42" caption="Open incidents" delta="+8" deltaDirection="up" deltaTone="danger" />)
     const delta = container.querySelector('.stat-delta')
     expect(delta).toHaveAttribute('data-delta-direction', 'up')
     expect(delta).toHaveAttribute('data-delta-tone', 'danger')
@@ -30,7 +30,7 @@ describe('Stat', () => {
   })
 
   it('carries a unit beside the value rather than inside it', () => {
-    const { container } = render(<Stat value="62" unit="GB" label="Storage used" />)
+    const { container } = render(<Stat value="62" unit="GB" caption="Storage used" />)
     expect(container.querySelector('.stat-unit')).toHaveTextContent('GB')
   })
 })

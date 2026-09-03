@@ -72,7 +72,7 @@ export function DetailPageTemplate({ title, onBack, backLabel, actions, children
       archetype="detail"
       className="detail-page"
       panels={panels}
-      /* Collapsed, the panel is a rail one control wide. <Page> takes that as a
+      /* Collapsed, the panel is a rail one control wide. <Page><Page> takes that as a
          WIDTH, so the block keeps the state and the page keeps the geometry. */
       asideWidth={collapsed ? 'rail' : 'default'}
       title={title}

@@ -18,9 +18,9 @@
 .grid[data-align="center"] { align-items: center; }
 .grid[data-align="end"]    { align-items: end; }
 
-.grid[data-min="sm"] { --min-item: 16rem; }
-.grid[data-min="md"] { --min-item: 20rem; }
-.grid[data-min="lg"] { --min-item: 24rem; }
+.grid[data-min-column="sm"] { --min-item: 16rem; }
+.grid[data-min-column="md"] { --min-item: 20rem; }
+.grid[data-min-column="lg"] { --min-item: 24rem; }
 
 /* The unequal set: twelve tracks, each item declaring how many it takes. The
  * auto-fit default above answers "a set of equals"; this answers "a wide one

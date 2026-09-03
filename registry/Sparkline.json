@@ -89,5 +89,5 @@
     "Layout",
     "Stat"
   ],
-  "example": "<Row gap={4} align=\"start\">\n  <Card>\n    <Stat label=\"Revenue\" value=\"SAR 63k\" delta=\"+12%\" deltaDirection=\"up\"\n          trend={<Sparkline values={week} tone=\"success\" area />} />\n  </Card>\n  <Card>\n    <Stat label=\"Queue depth\" value=\"63\" delta=\"+12\" deltaDirection=\"up\" deltaTone=\"danger\"\n          trend={<Sparkline values={week} tone=\"warning\" size=\"sm\" />} />\n  </Card>\n</Row>"
+  "example": "<Row gap={4} align=\"start\">\n  <Card>\n    <Stat caption=\"Revenue\" value=\"SAR 63k\" delta=\"+12%\" deltaDirection=\"up\"\n          trend={<Sparkline values={week} tone=\"success\" area />} />\n  </Card>\n  <Card>\n    <Stat caption=\"Queue depth\" value=\"63\" delta=\"+12\" deltaDirection=\"up\" deltaTone=\"danger\"\n          trend={<Sparkline values={week} tone=\"warning\" size=\"sm\" />} />\n  </Card>\n</Row>"
 }

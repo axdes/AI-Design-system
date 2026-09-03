@@ -6,22 +6,22 @@
   animation: skeleton-pulse 1.4s ease-in-out infinite;
 }
 
-.skeleton[data-shape="text"] {
+.skeleton[data-kind="text"] {
   height: 0.75em;
   margin-block: 0.3em;
   border-radius: var(--radius-full);
 }
-.skeleton[data-shape="text"][data-last] {
+.skeleton[data-kind="text"][data-last] {
   inline-size: 60%; /* short last line so a paragraph reads as prose, not a bar */
 }
 
-.skeleton[data-shape="block"] {
+.skeleton[data-kind="block"] {
   inline-size: 100%;
   block-size: 8rem;
   border-radius: var(--radius-lg);
 }
 
-.skeleton[data-shape="circle"] {
+.skeleton[data-kind="circle"] {
   inline-size: var(--icon-xl);
   block-size: var(--icon-xl);
   border-radius: var(--radius-full);

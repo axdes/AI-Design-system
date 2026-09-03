@@ -41,19 +41,19 @@ type Archetype =
  * which regions each archetype may and may not have, and why. `check:spec`
  * compares the two and fails on drift, so an archetype cannot mean one thing to
  * the gate and another on screen. One line per archetype, deliberately: the
- * check reads this shape. */
-const PRESETS: Record<Archetype, { shape: Shape; width: Width; align?: Align }> = {
-  overview: { shape: 'single', width: 'default' },
-  list: { shape: 'single', width: 'default' },
-  worklist: { shape: 'single', width: 'default' },
-  analytical: { shape: 'single', width: 'default' },
-  detail: { shape: 'single', width: 'default' },
-  hub: { shape: 'single', width: 'default' },
-  form: { shape: 'single', width: 'default' },
-  wizard: { shape: 'single', width: 'default' },
-  settings: { shape: 'single', width: 'reading' },
-  auth: { shape: 'single', width: 'narrow', align: 'center' },
-  system: { shape: 'single', width: 'narrow' },
+ * check reads this body. */
+const PRESETS: Record<Archetype, { body: Shape; width: Width; align?: Align }> = {
+  overview: { body: 'single', width: 'default' },
+  list: { body: 'single', width: 'default' },
+  worklist: { body: 'single', width: 'default' },
+  analytical: { body: 'single', width: 'default' },
+  detail: { body: 'single', width: 'default' },
+  hub: { body: 'single', width: 'default' },
+  form: { body: 'single', width: 'default' },
+  wizard: { body: 'single', width: 'default' },
+  settings: { body: 'single', width: 'reading' },
+  auth: { body: 'single', width: 'narrow', align: 'center' },
+  system: { body: 'single', width: 'narrow' },
 }
 
 type Props = {
@@ -93,7 +93,7 @@ type Props = {
   toolbar?: ReactNode
   /** The body. */
   children?: ReactNode
-  /** The second pane of a `list-detail` body. Ignored by every other shape. */
+  /** The second pane of a `list-detail` body. Ignored by every other body. */
   detail?: ReactNode
   /** The trail up, for a page more than one level deep. Forwarded to
    *  `<PageHeader breadcrumb>`; an alternative to `onBack`, never both. */
@@ -121,8 +121,12 @@ type Props = {
   asideWidth?: AsideWidth
   /** A sticky bar carrying the commitment: submit, next, apply. */
   footerBar?: ReactNode
-  /** Overrides the archetype's shape. Required when there is no archetype. */
-  shape?: Shape
+  /** Overrides the archetype's body. Required when there is no archetype. */
+  /* `body`, not `shape`: `shape` in this system is the OUTLINE a part draws — a
+   * circle or a square, a bar or a ring. This is how the page arranges what is
+   * inside it, which is a different question and the only one with five answers.
+   * (2026-09-03) */
+  body?: Shape
   /** Overrides the archetype's width. */
   width?: Width
   /** Overrides the archetype's alignment. `center` puts a short column mid-height. */
@@ -137,9 +141,9 @@ type Props = {
 }
 
 /**
- * The PAGE mechanism: the regions a screen is made of and the shape its body
+ * The PAGE mechanism: the regions a screen is made of and the body its body
  * takes. Every page archetype is a preset over this one component rather than a
- * component of its own, so a shape the system has not met yet is composed from
+ * component of its own, so a body the system has not met yet is composed from
  * system parts instead of from divs.
  *
  * Copy: the title is the page's own name in the reader's words. Nothing renders
@@ -166,26 +170,26 @@ export function Page({
   aside,
   asideWidth = 'default',
   footerBar,
-  shape: shapeProp,
+  body: shapeProp,
   width: widthProp,
   align: alignProp,
   panels,
   className,
 }: Props) {
   const preset = archetype ? PRESETS[archetype] : undefined
-  const shape = shapeProp ?? preset?.shape ?? 'single'
+  const body = shapeProp ?? preset?.body ?? 'single'
   const width = widthProp ?? preset?.width ?? 'default'
   const align = alignProp ?? preset?.align ?? 'start'
-  /* A second pane only exists in the shape that has one. Rendering it anywhere
+  /* A second pane only exists in the body that has one. Rendering it anywhere
    * else would put a nameless column beside content that never asked for it. */
-  const secondPane = shape === 'list-detail' ? detail : undefined
+  const secondPane = body === 'list-detail' ? detail : undefined
   /* ONE PANE AT A TIME BELOW THE SPLIT. `false` when nothing is known — no
      window, first paint — because the single-pane arrangement is the one that
      is correct without an answer. The query is the same 62rem the stylesheet
      splits at; they are one decision said twice because CSS cannot tell React
      which pane to put the back arrow on. */
   const wide = useMediaQuery('(min-width: 62rem)')
-  const split = shape === 'list-detail' && !!secondPane
+  const split = body === 'list-detail' && !!secondPane
   const onePane = split && !wide
   /* Which one. With no `detailOpen` at all the page keeps the old behaviour of
      showing both — a caller that has not been updated is not suddenly missing
@@ -202,7 +206,7 @@ export function Page({
     <div
       className={cn('page', className)}
       data-archetype={archetype}
-      data-shape={shape}
+      data-body={body}
       data-width={width}
       data-align={align}
       data-panels={panels || undefined}

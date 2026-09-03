@@ -89,7 +89,7 @@ export function Example() {
           between the rail and what stands beside it. */}
       <PageHeader title="Content library" />
       <Stack gap={4}>
-        <Grid gap={4} min="md">
+        <Grid gap={4} minColumn="md">
           <Card>
             <CardTitle as="h2">Drafts</CardTitle>
             <Prose size="sm">Twelve items, four of them edited this week.</Prose>

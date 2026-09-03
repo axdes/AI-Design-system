@@ -150,7 +150,7 @@ export function AdaptiveListPage({ mark, title, subtitle, actions, inline, cta, 
       archetype="hub"
       className={cn('adaptive-list-page', className)}
       /* Loading and empty have nothing to put under a header, so they sit in
-         the middle of the page. That is the `center` alignment <Page> owns. */
+         the middle of the page. That is the `center` alignment <Page><Page> owns. */
       align={centered ? 'center' : undefined}
       /* The welcome layout carries its own hero title, so the header bar stays
         * but empty — repeating the title directly above it reads as a mistake.

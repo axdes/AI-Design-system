@@ -1,7 +1,7 @@
 {
   "ref": "Stat",
   "level": "atom",
-  "description": "A KPI tile: a large value with a caption, and — when the number is judged rather than just read — the comparison and the trend behind it. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>. Copy: the label says what the number counts, with its unit and its period — \"Invoices paid this quarter\". The delta says what it is compared to, or it is not a comparison.",
+  "description": "A KPI tile: a large value with a caption, and — when the number is judged rather than just read — the comparison and the trend behind it. Compose inside a <Card> for a bordered surface, or use bare in a <Grid>. Copy: the caption says what the number counts, with its unit and its period — \"Invoices paid this quarter\". The delta says what it is compared to, or it is not a comparison.",
   "exports": [
     "Stat"
   ],
@@ -16,7 +16,7 @@
       "description": "The headline metric (rendered tabular-nums)."
     },
     {
-      "name": "label",
+      "name": "caption",
       "type": "ReactNode",
       "required": true,
       "description": "Caption under the value."
@@ -127,5 +127,5 @@
     "Layout",
     "Sparkline"
   ],
-  "example": "<Grid columns={12} gap={4}>\n  <GridItem span={4}>\n    <Card>\n      <Stat\n        value=\"221\"\n        label=\"Sessions this week\"\n        delta=\"+9% vs last week\"\n        deltaDirection=\"up\"\n        deltaTone=\"success\"\n        trend={<Sparkline values={sessions} tone=\"success\" size=\"sm\" area />}\n      />\n    </Card>\n  </GridItem>\n  \n  <GridItem span={4}>\n    <Card>\n      <Stat\n        value=\"240\"\n        unit=\"ms\"\n        label=\"p95 response time\"\n        delta=\"+33% vs last week\"\n        deltaDirection=\"up\"\n        deltaTone=\"danger\"\n        trend={<Sparkline values={latency} tone=\"danger\" size=\"sm\" />}\n      />\n    </Card>\n  </GridItem>\n  <GridItem span={4}>\n    <Card>\n      <Stat\n        value=\"12\"\n        label=\"Open incidents\"\n        delta=\"no change\"\n        deltaDirection=\"flat\"\n        deltaTone=\"neutral\"\n      />\n    </Card>\n  </GridItem>\n</Grid>"
+  "example": "<Grid columns={12} gap={4}>\n  <GridItem span={4}>\n    <Card>\n      <Stat\n        value=\"221\"\n        caption=\"Sessions this week\"\n        delta=\"+9% vs last week\"\n        deltaDirection=\"up\"\n        deltaTone=\"success\"\n        trend={<Sparkline values={sessions} tone=\"success\" size=\"sm\" area />}\n      />\n    </Card>\n  </GridItem>\n  \n  <GridItem span={4}>\n    <Card>\n      <Stat\n        value=\"240\"\n        unit=\"ms\"\n        caption=\"p95 response time\"\n        delta=\"+33% vs last week\"\n        deltaDirection=\"up\"\n        deltaTone=\"danger\"\n        trend={<Sparkline values={latency} tone=\"danger\" size=\"sm\" />}\n      />\n    </Card>\n  </GridItem>\n  <GridItem span={4}>\n    <Card>\n      <Stat\n        value=\"12\"\n        caption=\"Open incidents\"\n        delta=\"no change\"\n        deltaDirection=\"flat\"\n        deltaTone=\"neutral\"\n      />\n    </Card>\n  </GridItem>\n</Grid>"
 }

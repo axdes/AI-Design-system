@@ -1,7 +1,7 @@
 {
   "ref": "UserMenu",
   "level": "organism",
-  "description": "Account trigger for a sidebar footer: name + role expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions. Copy: the trigger names the person, and the items are verbs — \"Sign out\", not \"Sign-out\".",
+  "description": "Account trigger for a sidebar footer: name + secondary expanded, avatar-only when the surrounding rail is collapsed (reacts to a collapsed SideNav / app shell). Presentation-only — the consumer supplies the user and the menu actions. Copy: the trigger names the person, and the items are verbs — \"Sign out\", not \"Sign-out\".",
   "exports": [
     "UserMenu"
   ],
@@ -15,10 +15,10 @@
       "required": true
     },
     {
-      "name": "role",
+      "name": "secondary",
       "type": "string",
       "required": false,
-      "description": "Secondary line under the name (e.g. role)."
+      "description": "Secondary line under the name (e.g. secondary)."
     },
     {
       "name": "avatarSrc",
@@ -39,5 +39,5 @@
   ],
   "sourcePath": "src/components/UserMenu/UserMenu.tsx",
   "context": "region",
-  "example": "<UserMenu\n  name=\"Ada Meridian\"\n  role=\"Brand manager\"\n  menuLabel=\"Account menu\"\n  actions={[\n    { id: 'profile', label: 'Profile', icon: 'person', onSelect: () => undefined },\n    { id: 'logout', label: 'Sign out', icon: 'logout', onSelect: () => undefined },\n  ]}\n/>"
+  "example": "<UserMenu\n  name=\"Ada Meridian\"\n  secondary=\"Brand manager\"\n  menuLabel=\"Account menu\"\n  actions={[\n    { id: 'profile', label: 'Profile', icon: 'person', onSelect: () => undefined },\n    { id: 'logout', label: 'Sign out', icon: 'logout', onSelect: () => undefined },\n  ]}\n/>"
 }

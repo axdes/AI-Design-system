@@ -34,11 +34,11 @@ export function Example() {
        stops reading as a sparkline at all. */
     <Row gap={4} align="start">
       <Card>
-        <Stat label="Revenue" value="SAR 63k" delta="+12%" deltaDirection="up"
+        <Stat caption="Revenue" value="SAR 63k" delta="+12%" deltaDirection="up"
               trend={<Sparkline values={week} tone="success" area />} />
       </Card>
       <Card>
-        <Stat label="Queue depth" value="63" delta="+12" deltaDirection="up" deltaTone="danger"
+        <Stat caption="Queue depth" value="63" delta="+12" deltaDirection="up" deltaTone="danger"
               trend={<Sparkline values={week} tone="warning" size="sm" />} />
       </Card>
     </Row>

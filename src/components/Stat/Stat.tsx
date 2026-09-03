@@ -12,7 +12,10 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   /** The headline metric (rendered tabular-nums). */
   value: ReactNode;
   /** Caption under the value. */
-  label: ReactNode;
+  /* `caption`, not `label`: `label` in this system is the accessible NAME of a
+   * control, a string that usually becomes an attribute. This is the words under
+   * the number, rendered as content, and a node belongs in it. (2026-09-03) */
+  caption: ReactNode;
   /** Semantic emphasis for the value. */
   tone?: Tone;
   /** Small suffix after the value, e.g. "/3" or "%". */
@@ -40,13 +43,13 @@ const ARROW: Record<DeltaDirection, IconName> = { up: "arrow_upward", down: "arr
  *  rather than just read — the comparison and the trend behind it. Compose
  *  inside a <Card> for a bordered surface, or use bare in a <Grid>. 
  *
- * Copy: the label says what the number counts, with its unit and its period —
+ * Copy: the caption says what the number counts, with its unit and its period —
  * "Invoices paid this quarter". The delta says what it is compared to, or
  * it is not a comparison.
  */
 export function Stat({
   value,
-  label,
+  caption,
   tone = "neutral",
   unit,
   delta,
@@ -69,7 +72,7 @@ export function Stat({
           </span>
         )}
       </div>
-      <div className="stat-label">{label}</div>
+      <div className="stat-caption">{caption}</div>
       {trend && <div className="stat-trend">{trend}</div>}
     </div>
   );

@@ -9,7 +9,7 @@ import { UserMenu } from './UserMenu'
 
 describe('UserMenu', () => {
   it('is one named trigger showing who is signed in', () => {
-    render(<UserMenu name="Ada Lovelace" role="Admin" actions={[]} />)
+    render(<UserMenu name="Ada Lovelace" secondary="Admin" actions={[]} />)
     const trigger = screen.getByRole('button', { name: 'Account menu' })
     expect(trigger).toHaveTextContent('Ada Lovelace')
     expect(trigger).toHaveTextContent('Admin')
@@ -30,14 +30,14 @@ describe('UserMenu', () => {
     expect(screen.getByRole('button', { name: 'Your account' })).toBeInTheDocument()
   })
 
-  /* The role is the second line and it is optional: a product with one kind of
+  /* The secondary is the second line and it is optional: a product with one kind of
    * user has nothing to put there, and an empty line under the name reads as a
    * value that failed to load. */
-  it('shows the second line only when there is a role to show', () => {
+  it('shows the second line only when there is a secondary to show', () => {
     const { container, rerender } = render(<UserMenu name="Ada Lovelace" actions={[]} />)
-    expect(container.querySelector('.user-menu-trigger-role')).toBeNull()
+    expect(container.querySelector('.user-menu-trigger-secondary')).toBeNull()
 
-    rerender(<UserMenu name="Ada Lovelace" role="Admin" actions={[]} />)
-    expect(container.querySelector('.user-menu-trigger-role')).toHaveTextContent('Admin')
+    rerender(<UserMenu name="Ada Lovelace" secondary="Admin" actions={[]} />)
+    expect(container.querySelector('.user-menu-trigger-secondary')).toHaveTextContent('Admin')
   })
 })

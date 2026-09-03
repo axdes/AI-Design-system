@@ -36,7 +36,7 @@ export function Example() {
         <Card>
           <Stat
             value="221"
-            label="Sessions this week"
+            caption="Sessions this week"
             delta="+9% vs last week"
             deltaDirection="up"
             deltaTone="success"
@@ -51,7 +51,7 @@ export function Example() {
           <Stat
             value="240"
             unit="ms"
-            label="p95 response time"
+            caption="p95 response time"
             delta="+33% vs last week"
             deltaDirection="up"
             deltaTone="danger"
@@ -64,7 +64,7 @@ export function Example() {
         <Card>
           <Stat
             value="12"
-            label="Open incidents"
+            caption="Open incidents"
             delta="no change"
             deltaDirection="flat"
             deltaTone="neutral"

@@ -24,8 +24,8 @@ export function Example() {
       notices={setupGap && <Alert tone="warning">The export connector is signed out.</Alert>}
       prime={
         <>
-          <Stat value={2} label="Waiting on you" tone="warning" size="lg" />
-          <Stat value={14} label="Handled this week" size="lg" />
+          <Stat value={2} caption="Waiting on you" tone="warning" size="lg" />
+          <Stat value={14} caption="Handled this week" size="lg" />
         </>
       }
     >
@@ -51,7 +51,7 @@ export function Example() {
             track and no number anywhere (owner, read off the gallery,
             2026-08-29). Meter's own example says the reading comes from what
             the meter sits in, and here that is the Stat above it. */}
-        <Stat value={72} unit="%" label="of the review budget used" size="lg" />
+        <Stat value={72} unit="%" caption="of the review budget used" size="lg" />
         <Meter value={72} max={100} label="72% of the review budget used" />
       </OverviewWidget>
     </OverviewPageTemplate>

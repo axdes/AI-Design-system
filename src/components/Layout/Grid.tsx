@@ -25,7 +25,10 @@ type Props = HTMLAttributes<HTMLDivElement> & {
    * guessed: at `sm` a person card came out 250px wide on a laptop and every
    * name broke over two lines.
    */
-  min?: 'sm' | 'md' | 'lg'
+  /* `minColumn`, not `min`: `min` everywhere else in this system is the smallest
+   * value a control accepts, a date or a number. This is how narrow a column may
+   * get before the grid drops one. (2026-09-03) */
+  minColumn?: 'sm' | 'md' | 'lg'
   /**
    * How the children sit in their row. The default stretches them to the
    * tallest, and for CARDS that default is the rule: cards in a row are always
@@ -51,13 +54,13 @@ type Props = HTMLAttributes<HTMLDivElement> & {
  * spans when the set is deliberately unequal. `gap` is a token step, never a
  * raw px.
  */
-export function Grid({ gap = 4, columns, min, align, alignRows, className, ...rest }: Props) {
+export function Grid({ gap = 4, columns, minColumn, align, alignRows, className, ...rest }: Props) {
   return (
     <div
       className={cn('grid', className)}
       data-gap={gap}
       data-columns={columns}
-      data-min={min}
+      data-min-column={minColumn}
       data-align={align}
       data-align-rows={alignRows || undefined}
       {...rest}

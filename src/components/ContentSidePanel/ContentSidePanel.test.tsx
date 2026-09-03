@@ -24,7 +24,7 @@ describe('ContentSidePanel', () => {
   })
 
   it('opens the section it is given', () => {
-    render(<ContentSidePanel sections={sections} defaultOpen="files" />)
+    render(<ContentSidePanel sections={sections} defaultSection="files" />)
 
     expect(rail('Files')).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByText('File list')).toBeInTheDocument()
@@ -68,7 +68,7 @@ describe('ContentSidePanel', () => {
 
   it('closes from the panel itself', async () => {
     const user = userEvent.setup()
-    render(<ContentSidePanel sections={sections} defaultOpen="notes" />)
+    render(<ContentSidePanel sections={sections} defaultSection="notes" />)
 
     await user.click(screen.getByRole('button', { name: /close/i }))
 

@@ -326,7 +326,11 @@ for (const [id, a] of Object.entries(pageDoc.archetypes ?? {})) {
  * parsed. If the shape of that table changes, this check says so instead of
  * quietly passing on nothing. */
 const pageSrc = readFileSync(`${ROOT}/src/blocks/Page/Page.tsx`, 'utf8')
-const presetLines = [...pageSrc.matchAll(/^\s{2}(\w+): \{ shape: '([^']+)', width: '([^']+)'(?:, align: '([^']+)')? \},$/gm)]
+/* `body`, not `shape`: the prop was renamed on 2026-09-03 because `shape` in
+ * this system is the OUTLINE a part draws and this is how a page arranges what
+ * is inside it. The check read the old word and reported the table as empty,
+ * which is the failure it was written to make loud rather than quiet. */
+const presetLines = [...pageSrc.matchAll(/^\s{2}(\w+): \{ body: '([^']+)', width: '([^']+)'(?:, align: '([^']+)')? \},$/gm)]
 if (presetLines.length !== Object.keys(pageDoc.archetypes ?? {}).length) {
   rulesFileProblems.push(
     `page-rules.json has ${Object.keys(pageDoc.archetypes ?? {}).length} archetype(s) and Page.tsx's PRESETS table reads as ${presetLines.length} — they are the same decision and must stay in step`,

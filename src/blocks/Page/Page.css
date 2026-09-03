@@ -144,7 +144,7 @@
  * of sentences from taking the room the detail came for. Between them the pane
  * is as wide as the longest thing in it and no wider, which is what "until its
  * rows are comfortable" meant all along. */
-.page[data-shape='list-detail'] .page-body {
+.page[data-body='list-detail'] .page-body {
   /* Stacked, it is the full-width pane at the top of a column and takes the
      line. Content sizing is a decision about a COLUMN BESIDE SOMETHING, so it
      lives in the query below with the ceiling, for the same reason: with
@@ -172,7 +172,7 @@
  * query says, and wrapping late costs nothing, while a cap applied to a
  * full-width pane is the defect above. */
 @container content (min-width: 47rem) {
-  .page[data-shape='list-detail'] .page-body {
+  .page[data-body='list-detail'] .page-body {
     flex: 0 1 auto;
     min-inline-size: 16rem;
     max-inline-size: 26rem;
@@ -194,7 +194,7 @@
 /* A grid of equivalent items, browsed. `auto-fill` rather than a column count:
  * the number of columns is whatever fits, so the shape holds inside a narrow
  * shell as well as on a wide screen. */
-.page[data-shape='feed'] .page-body {
+.page[data-body='feed'] .page-body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
   align-content: start;
@@ -202,7 +202,7 @@
 
 /* Columns of movable items: the board scrolls sideways as one, and each column
  * scrolls its own items. The columns are the caller's; this only sets the track. */
-.page[data-shape='board'] .page-body {
+.page[data-body='board'] .page-body {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(16rem, 20rem);
@@ -212,7 +212,7 @@
 
 /* Free-form content that manages its own space. The page stops padding it and
  * stops capping it; everything else about the page still applies. */
-.page[data-shape='canvas'] .page-body {
+.page[data-body='canvas'] .page-body {
   flex: 1;
   min-block-size: 0;
 }
@@ -251,8 +251,8 @@
  * 2026-08-30). Only the split is a wide-screen arrangement: two panes side by
  * side joined by one seam. Being a surface is not; a list on a phone is still a
  * list on something. */
-.page[data-shape='list-detail'][data-panels] .page-body,
-.page[data-shape='list-detail'][data-panels] .page-detail {
+.page[data-body='list-detail'][data-panels] .page-body,
+.page[data-body='list-detail'][data-panels] .page-detail {
   background: var(--card);
   border-radius: var(--card-radius);
 }
@@ -277,8 +277,8 @@
    the list took its 8px on all four sides and its first heading sat 16px above
    the detail's first line, which reads as one surface printed twice rather than
    split once (owner, 2026-08-31, with the two marked on the screenshot). */
-.page[data-shape='list-detail'][data-panels] .page-body { padding: var(--card-padding) var(--space-2); }
-.page[data-shape='list-detail'][data-panels] .page-detail { padding: var(--card-padding); }
+.page[data-body='list-detail'][data-panels] .page-body { padding: var(--card-padding) var(--space-2); }
+.page[data-body='list-detail'][data-panels] .page-detail { padding: var(--card-padding); }
 
 @media (min-width: 62rem) {
   .page[data-panels],
@@ -309,14 +309,14 @@
    * The halves paint the surface rather than their parent, because the parent
    * carries the inline padding that lines the page up with its header —
    * painting it would push the surface past the title on both sides. */
-  .page[data-shape='list-detail'][data-panels] .page-main { gap: 0; align-items: stretch; }
+  .page[data-body='list-detail'][data-panels] .page-main { gap: 0; align-items: stretch; }
   /* Flat where they meet, rounded where they do not. Logical, so the seam stays
    * on the inner edge when the text runs the other way. */
-  .page[data-shape='list-detail'][data-panels] .page-body {
+  .page[data-body='list-detail'][data-panels] .page-body {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   }
-  .page[data-shape='list-detail'][data-panels] .page-detail {
+  .page[data-body='list-detail'][data-panels] .page-detail {
     border-start-start-radius: 0;
     border-end-start-radius: 0;
     border-inline-start: var(--surface-edge);

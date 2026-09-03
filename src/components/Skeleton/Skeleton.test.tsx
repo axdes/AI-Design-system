@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { render } from '@testing-library/react'
 import { Skeleton } from './Skeleton'
 
-/* The shape of content that has not arrived. It must be invisible to a screen
+/* The kind of content that has not arrived. It must be invisible to a screen
  * reader in every form: announcing a placeholder is announcing a lie, and the
  * live region that says "loading" is <Spinner>'s job, once, not this one's per
  * grey box. */
@@ -28,9 +28,9 @@ describe('Skeleton', () => {
     expect(container.querySelectorAll('.skeleton[data-last]')).toHaveLength(1)
   })
 
-  it('is one box when it is one line, whatever the shape', () => {
-    const { container } = render(<Skeleton shape="circle" />)
+  it('is one box when it is one line, whatever the kind', () => {
+    const { container } = render(<Skeleton kind="circle" />)
     expect(container.querySelectorAll('.skeleton')).toHaveLength(1)
-    expect(container.querySelector('.skeleton')).toHaveAttribute('data-shape', 'circle')
+    expect(container.querySelector('.skeleton')).toHaveAttribute('data-kind', 'circle')
   })
 })

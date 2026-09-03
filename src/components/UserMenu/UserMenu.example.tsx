@@ -8,7 +8,7 @@ export function Example() {
   return (
     <UserMenu
       name="Ada Meridian"
-      role="Brand manager"
+      secondary="Brand manager"
       menuLabel="Account menu"
       actions={[
         { id: 'profile', label: 'Profile', icon: 'person', onSelect: () => undefined },

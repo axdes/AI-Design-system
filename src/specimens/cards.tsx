@@ -275,7 +275,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
       <Stack gap={3}>
         <CardTitle as="h3">Weekly submissions</CardTitle>
         <Row gap={4} align="end">
-          <Stat size="lg" value="1,284" label="this week" />
+          <Stat size="lg" value="1,284" caption="this week" />
           <Sparkline values={[8, 11, 9, 14, 13, 18, 21]} label="Submissions over seven weeks" area />
         </Row>
         <CardMeta><MetaItem icon="schedule">Updated an hour ago</MetaItem></CardMeta>
@@ -286,7 +286,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
   /* One value, read at a glance and acted on elsewhere. */
   kpi: () => (
     <Card>
-      <Stat size="lg" value="98.4%" label="within target" />
+      <Stat size="lg" value="98.4%" caption="within target" />
     </Card>
   ),
 
@@ -366,7 +366,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
     <Card>
       <Stack gap={3}>
         <MetaItem appearance="eyebrow">Northwind Paper</MetaItem>
-        <Stat value="21 → 6" label="Days to close a finding" />
+        <Stat value="21 → 6" caption="Days to close a finding" />
         <Prose size="sm">One change: the evidence is attached where the work happens.</Prose>
       </Stack>
     </Card>
@@ -376,7 +376,7 @@ export const CARD_SPECIMENS: Record<string, () => ReactElement> = {
      point standing on its own surface is a Stat, and wrapping it in a box makes
      a row of four look like a dashboard. */
   proof: () => (
-    <Stat value="99.95%" label="Uptime, last twelve months" size="lg" />
+    <Stat value="99.95%" caption="Uptime, last twelve months" size="lg" />
   ),
 
   /* The words of someone who used the thing, with who they are. The attribution
