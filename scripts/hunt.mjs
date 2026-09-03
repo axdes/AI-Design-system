@@ -39,6 +39,7 @@ if (api) {
   row('parts past seven props', Object.keys(api.props).length, num(apiOut, /(\d+) past seven props/), 'lint:api A2')
   row('callbacks outside the vocabulary', Object.keys(api.callbacks).length, num(apiOut, /(\d+) callbacks outside/), 'lint:api A3')
   row('parts with no test', api.untested.length, num(apiOut, /(\d+) without a test/), 'lint:api A4')
+  row('props nothing here passes', Object.values(api.cold ?? {}).reduce((n, ps) => n + ps.length, 0), num(apiOut, /(\d+) props nothing here passes/), 'lint:api A5')
 }
 const mech = read('config/mechanism-debt.json')
 if (mech) row('behaviours written twice', Object.keys(mech.pairs).length, num(run('lint:mechanism'), /— (\d+) pair\(s\)/), 'lint:mechanism')
