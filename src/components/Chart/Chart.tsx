@@ -1,6 +1,6 @@
 /* MONOLITHIC BECAUSE THESE ARE A DATA SPECIFICATION, NOT OPTIONS.
  *
- * `series`, `labels`, `type`, `stacked`, `orientation`, `max`, `target`,
+ * `series`, `categories`, `type`, `stacked`, `orientation`, `max`, `target`,
  * `emphasis` and `axis` describe one thing: what is being plotted and against
  * what. They arrive together from the caller's data and are meaningless apart —
  * a `stacked` with no `series` says nothing, an `axis` without a `max` cannot be
@@ -24,7 +24,7 @@ export type ChartSeries = {
   /** What this measure is. It names the colour in the legend, in the readout
    *  and in the table a screen reader is given. */
   label: string
-  /** One value per entry of `labels`, in the same order. */
+  /** One value per entry of `categories`, in the same order. */
   values: number[]
   /** A status tone instead of the next series colour — for a measure that MEANS
    *  late, over budget, or done. Otherwise the slot colour, in fixed order. */
@@ -36,7 +36,10 @@ type Props = {
    *  value over time. Everything else on this component is the same furniture. */
   type?: 'bar' | 'line'
   /** The categories, or the x axis oldest first: months, weeks, sites. */
-  labels: string[]
+  /* `categories`, because they are what the axis divides into. `labels`
+   * elsewhere is a set of WORDS a part shows, and this is the domain of the
+   * chart. (2026-09-03) */
+  categories: string[]
   /** One entry per measure. Two or more bring a legend with them. */
   series: ChartSeries[]
   /** `bar`: segments of one column instead of columns side by side, for parts
@@ -114,14 +117,14 @@ function readout(category: string, parts: [string, string][]): string {
  * against one target, and a <Table> when the numbers are compared exactly
  * rather than at a glance.
  *
- * Copy: labels are the categories' or periods' own names, short enough to sit
+ * Copy: categories are the categories' or periods' own names, short enough to sit
  * under a mark without turning. Series names are the things themselves, because
  * a legend of "Series 1" is a legend of nothing. The accessible label says what
  * is being counted and over what.
  */
 export function Chart({
   type = 'bar',
-  labels,
+  categories,
   series,
   stacked,
   orientation = 'vertical',
@@ -140,14 +143,14 @@ export function Chart({
   const [at, setAt] = useState<number | null>(null)
   const plotRef = useRef<HTMLDivElement>(null)
 
-  if (!labels.length || !series.length) return null
+  if (!categories.length || !series.length) return null
 
   const format = (v: number) => formatValue(v, locale)
   const valuesAt = (i: number) => series.map((s) => s.values[i] ?? 0)
 
   /* Stacked columns are read as their total, so that is what the scale has to
    * hold; everything else is read mark by mark. */
-  const peaks = labels.map((_, i) => {
+  const peaks = categories.map((_, i) => {
     const row = valuesAt(i)
     return stacked && type === 'bar' ? row.reduce((sum, v) => sum + v, 0) : Math.max(...row)
   })
@@ -172,12 +175,12 @@ export function Chart({
   const areaFilled = area && single
   const keyShape = type === 'line' ? 'dot' : undefined
 
-  const step = labels.length > 1 ? W / (labels.length - 1) : 0
+  const step = categories.length > 1 ? W / (categories.length - 1) : 0
   const pointsOf = (values: number[]) =>
     values.map(
-      (v, i) => [labels.length > 1 ? i * step : W / 2, H - (Math.max(0, Math.min(top, v)) / top) * H] as const,
+      (v, i) => [categories.length > 1 ? i * step : W / 2, H - (Math.max(0, Math.min(top, v)) / top) * H] as const,
     )
-  const atX = `${(Number(at) / Math.max(1, labels.length - 1)) * 100}%`
+  const atX = `${(Number(at) / Math.max(1, categories.length - 1)) * 100}%`
 
   /* Which point the pointer is nearest, for a line. One crosshair for every
    * series at once, because the reader is comparing them at that x — not
@@ -187,7 +190,7 @@ export function Chart({
     if (!box || box.width === 0) return
     const ratio = (e.clientX - box.left) / box.width
     const flipped = getComputedStyle(plotRef.current as Element).direction === 'rtl' ? 1 - ratio : ratio
-    setAt(Math.max(0, Math.min(labels.length - 1, Math.round(flipped * (labels.length - 1)))))
+    setAt(Math.max(0, Math.min(categories.length - 1, Math.round(flipped * (categories.length - 1)))))
   }
 
   /* The scale column and the grid behind the marks: identical on both types,
@@ -228,7 +231,7 @@ export function Chart({
               <span className="chart-target" style={{ '--tick-at': pct(target) } as CSSProperties} aria-hidden="true" />
             )}
 
-            {labels.map((name, i) => (
+            {categories.map((name, i) => (
               /* A button, not a div with a mouse handler: the readout is
                  reachable by keyboard and announced, and the whole column is
                  the hit area. */
@@ -272,11 +275,11 @@ export function Chart({
             {at != null && (
               <div
                 className="chart-readout"
-                data-side={side(at, labels.length)}
-                style={{ '--readout-at': `${((at + 0.5) / labels.length) * 100}%` } as CSSProperties}
+                data-side={side(at, categories.length)}
+                style={{ '--readout-at': `${((at + 0.5) / categories.length) * 100}%` } as CSSProperties}
                 aria-hidden="true"
               >
-                <span className="chart-readout-label">{labels[at]}</span>
+                <span className="chart-readout-label">{categories[at]}</span>
                 {valuesAt(at).map((v, k) => (
                   <span key={series[k].label || k} className="chart-readout-row">
                     {!single && <span className="chart-key" data-series={k + 1} data-tone={series[k].tone} />}
@@ -336,11 +339,11 @@ export function Chart({
             {at != null && (
               <div
                 className="chart-readout"
-                data-side={at > labels.length / 2 ? 'start' : 'end'}
+                data-side={at > categories.length / 2 ? 'start' : 'end'}
                 style={{ '--dot-x': atX } as CSSProperties}
                 aria-hidden="true"
               >
-                <span className="chart-readout-label">{labels[at]}</span>
+                <span className="chart-readout-label">{categories[at]}</span>
                 {series.map((s, k) => (
                   <span key={s.label} className="chart-readout-row">
                     <span className="chart-key" data-shape="dot" data-series={k + 1} data-tone={s.tone} />
@@ -357,8 +360,8 @@ export function Chart({
       {/* Lying down, every bar carries its own name, so the row below would say
           each of them twice. */}
       {!(type === 'bar' && orientation === 'horizontal') && (
-        <div className="chart-labels" aria-hidden="true">
-          {labels.map((name, i) => (
+        <div className="chart-categories" aria-hidden="true">
+          {categories.map((name, i) => (
             <span key={name} data-active={at === i ? '' : undefined}>
               {name}
             </span>
@@ -393,7 +396,7 @@ export function Chart({
           </tr>
         </thead>
         <tbody>
-          {labels.map((name, i) => (
+          {categories.map((name, i) => (
             <tr key={name}>
               <th scope="row">{name}</th>
               {valuesAt(i).map((v, k) => (

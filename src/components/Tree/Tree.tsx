@@ -19,7 +19,7 @@ type Props = {
   /** Expanded node ids; omit to let the tree manage them. */
   expandedIds?: string[]
   onExpandedChange?: (ids: string[]) => void
-  defaultExpandedIds?: string[]
+  defaultExpandedIds?: readonly string[]
   /** Accessible name for the tree. */
   label: string
   className?: string
@@ -36,7 +36,7 @@ type Props = {
 export function Tree({
   nodes, selectedId, onSelect, expandedIds, onExpandedChange, defaultExpandedIds = [], label, className,
 }: Props) {
-  const [innerExpanded, setInnerExpanded] = useState<string[]>(defaultExpandedIds)
+  const [innerExpanded, setInnerExpanded] = useState<string[]>(() => [...defaultExpandedIds])
   const expanded = expandedIds ?? innerExpanded
   const setExpanded = (ids: string[]) => { onExpandedChange?.(ids); if (!expandedIds) setInnerExpanded(ids) }
   const isOpen = (id: string) => expanded.includes(id)

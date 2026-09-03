@@ -38,7 +38,7 @@
     },
     {
       "name": "defaultExpandedIds",
-      "type": "string[]",
+      "type": "readonly string[]",
       "required": false
     },
     {

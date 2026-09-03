@@ -43,7 +43,7 @@ export function Screen() {
         label="Files"
         rows={FILES}
         rowKey={(r) => r.id}
-        height={420}
+        viewportHeight={420}
         columns={[
           {
             key: 'name',

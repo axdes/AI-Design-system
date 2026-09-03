@@ -42,7 +42,7 @@
       "survived": []
     },
     "Avatar": {
-      "hash": "25b192bcb09c",
+      "hash": "e26d23e63ddc",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -217,7 +217,7 @@
       "survived": []
     },
     "DataGrid": {
-      "hash": "2068c10f0396",
+      "hash": "b77247c2c8eb",
       "killed": [
         "and-to-or",
         "negate-cond"
@@ -596,7 +596,7 @@
       ]
     },
     "Tooltip": {
-      "hash": "ce29a6833d8f",
+      "hash": "23030f20a158",
       "killed": [
         "drop-optional-render"
       ],
@@ -607,7 +607,7 @@
       ]
     },
     "Tree": {
-      "hash": "4cd55793471a",
+      "hash": "d6ee81c653f1",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -634,7 +634,7 @@
       ]
     },
     "Chart": {
-      "hash": "bf0a6481520a",
+      "hash": "b9e3c6c9cea6",
       "killed": [
         "boolean-default",
         "strip-aria",

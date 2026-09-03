@@ -73,8 +73,30 @@ const parts = Object.entries({ ...registry.components, ...registry.blocks })
  * wraps: both differ by construction and neither is a word a caller has to
  * LEARN twice. Everything else is. */
 const STRUCTURAL = /^(ref|children)$/
+
+/* A PARAMETER'S NAME IS NOT PART OF ITS TYPE.
+ *
+ * `(next: string) => void` and `(value: string) => void` are the same type and
+ * were counted as two, because this compares the type as WRITTEN. Half of what
+ * looked like drift on the callbacks was two authors picking a different word
+ * for the same argument — which is a readability question for the file it is
+ * written in, not a contract a caller has to learn twice. The parameter list of
+ * a function type is reduced to its types; everything else is left alone,
+ * because a field name inside an object type IS part of the contract.
+ * (2026-09-03) */
+const stripParamNames = (type) => {
+  const m = /^\(([^)]*)\)\s*=>(.*)$/.exec(type)
+  if (!m) return type
+  const params = m[1]
+    .split(',')
+    .map((p) => p.replace(/^\s*[A-Za-z_$][\w$]*\??\s*:\s*/, '').trim())
+    .filter(Boolean)
+    .join(', ')
+  return `(${params}) =>${m[2]}`
+}
+
 const shapeOf = (name, type) =>
-  STRUCTURAL.test(name) ? name : String(type ?? '').replace(/\s+/g, ' ').trim()
+  STRUCTURAL.test(name) ? name : stripParamNames(String(type ?? '').replace(/\s+/g, ' ').trim())
 
 /* A NARROWER UNION IS NOT A DIFFERENT TYPE.
  *
@@ -100,6 +122,24 @@ const wordsOf = (type) => {
   return words.length && onlyLiterals ? new Set(words) : null
 }
 const subsumes = (wide, narrow) => [...narrow].every((w) => wide.has(w))
+
+/* A NULLABLE IS THE SAME IDEA WITH ONE MORE STATE. `count: number` and
+ * `count: number | null` are one contract — the second says "not counted yet",
+ * which is a fact about the data rather than a second question. */
+const withoutNull = (type) => type.replace(/\s*\|\s*(null|undefined)\b/g, '').trim()
+
+/* A COLLECTION OF THE PART'S OWN THING IS NOT DRIFT.
+ *
+ * `items` is eight named types because an Accordion holds AccordionItems and a
+ * Breadcrumb holds Crumbs. There is no type a caller could learn once: the shape
+ * belongs to the part and the registry publishes it beside the prop. What the
+ * rule is for is a word that means two different QUESTIONS, and this is one
+ * question whose answer is parameterised. Folded only when EVERY type is a
+ * distinct named shape — the moment one of them is a primitive or a literal
+ * union, the name is being used for two things and the finding stands.
+ * (2026-09-03) */
+const NAMED_SHAPE = /^(readonly\s+)?[A-Z][\w.]*(<[^>]*>)?(\[\])?$/
+const isPolymorphic = (types) => types.length > 1 && types.every((t) => NAMED_SHAPE.test(t.trim()))
 
 /** Fold each union into the widest union of the same vocabulary. */
 function foldNarrowings(name, byType) {
@@ -142,9 +182,21 @@ for (const part of parts) {
   }
 }
 const narrowings = []
+const polymorphic = []
 const drift = [...shapes]
   .map(([name, byType]) => {
-    const { byType: folded, folded: notes } = foldNarrowings(name, byType)
+    /* Nullability first, so `number` and `number | null` are one key before
+     * anything else counts them. */
+    const merged = new Map()
+    for (const [type, parts] of byType) {
+      const key = withoutNull(type)
+      merged.set(key, [...(merged.get(key) ?? []), ...parts])
+    }
+    if (isPolymorphic([...merged.keys()])) {
+      polymorphic.push({ name, types: merged.size })
+      return { name, types: new Map([['(one per part)', [...merged.values()].flat()]]), uses: 0 }
+    }
+    const { byType: folded, folded: notes } = foldNarrowings(name, merged)
     if (notes.length) narrowings.push({ name, notes })
     return { name, types: folded, uses: [...folded.values()].flat().length }
   })
@@ -202,8 +254,12 @@ if (record) {
     recorded: new Date().toISOString().slice(0, 10),
     shapes: Object.fromEntries(drift.map((d) => [d.name, d.types.size]).sort((a, b) => a[0].localeCompare(b[0]))),
     props: Object.fromEntries(wide.map((p) => [p.name, p.count]).sort((a, b) => a[0].localeCompare(b[0]))),
+    /* Only what is outside the vocabulary ENTIRELY. A `kept` name is a decided
+     * part of it, with the argument written against it, and recording those as
+     * debt made the file say 24 while the check said 0 — a ceiling that counts
+     * something the rule does not is a number nobody can act on. (2026-09-03) */
     callbacks: Object.fromEntries(
-      [...callbacks].filter(([n]) => !canonical.has(n)).map(([n, ps]) => [n, [...ps].sort()]).sort((a, b) => a[0].localeCompare(b[0])),
+      [...callbacks].filter(([n]) => !canonical.has(n) && !kept.has(n)).map(([n, ps]) => [n, [...ps].sort()]).sort((a, b) => a[0].localeCompare(b[0])),
     ),
     untested: [...untested].sort(),
   }
@@ -289,6 +345,9 @@ console.log(
   `${BOLD}API${RESET} ${DIM}${parts.length} parts, ${shapes.size} prop names — ${nShapes} carry more than one type (${nTypes} shapes), ` +
     `${wide.length} past seven props, ${[...callbacks.keys()].filter((c) => !canonical.has(c) && !kept.has(c)).length} callbacks outside the vocabulary, ${untested.length} without a test${RESET}`,
 )
+if (polymorphic.length) {
+  console.log(`  ${DIM}${polymorphic.length} name(s) carry one shape per part — a collection of the part's own thing is one question with a parameterised answer${RESET}`)
+}
 if (narrowed) {
   console.log(`  ${DIM}${narrowed} narrower union(s) folded into the wider vocabulary they belong to — a part offering fewer steps is not a second answer${RESET}`)
 }

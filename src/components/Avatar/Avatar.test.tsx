@@ -28,20 +28,20 @@ describe('Avatar', () => {
     expect(screen.getByRole('img').querySelector('img')).toHaveAttribute('src', '/there.png')
   })
 
-  it('puts the status into the accessible name, not only into the dot colour', () => {
-    render(<Avatar name="Ben Calloway" status="online" statusLabel="Online" />)
+  it('puts the presence into the accessible name, not only into the dot colour', () => {
+    render(<Avatar name="Ben Calloway" presence="online" statusLabel="Online" />)
     expect(screen.getByRole('img', { name: 'Ben Calloway, Online' })).toBeInTheDocument()
   })
 
-  it('reads the raw status when no label is given', () => {
-    render(<Avatar name="Ben Calloway" status="busy" />)
+  it('reads the raw presence when no label is given', () => {
+    render(<Avatar name="Ben Calloway" presence="busy" />)
     expect(screen.getByRole('img', { name: 'Ben Calloway, busy' })).toBeInTheDocument()
   })
 
-  it('says nothing extra without a status', () => {
+  it('says nothing extra without a presence', () => {
     const { container } = render(<Avatar name="Ben Calloway" />)
     expect(screen.getByRole('img', { name: 'Ben Calloway' })).toBeInTheDocument()
-    expect(container.querySelector('.avatar-status')).toBeNull()
+    expect(container.querySelector('.avatar-presence')).toBeNull()
   })
 
   it('carries the shape as a data attribute', () => {

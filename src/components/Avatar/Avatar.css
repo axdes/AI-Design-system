@@ -36,7 +36,7 @@
 /* Presence dot. Sized as a share of the avatar so it stays proportional across
  * the size scale, with a floor so it does not vanish at `sm`. The ring is the
  * page colour, which is what separates it from the photo underneath. */
-.avatar-status {
+.avatar-presence {
   position: absolute;
   inset-block-end: 0;
   inset-inline-end: 0;
@@ -45,7 +45,7 @@
   border-radius: var(--radius-full);
   box-shadow: 0 0 0 var(--space-2xs) var(--background);
 }
-.avatar-status[data-status="online"]  { background: var(--success); }
-.avatar-status[data-status="away"]    { background: var(--warning); }
-.avatar-status[data-status="busy"]    { background: var(--destructive); }
-.avatar-status[data-status="offline"] { background: var(--border-strong); }
+.avatar-presence[data-presence="online"]  { background: var(--success); }
+.avatar-presence[data-presence="away"]    { background: var(--warning); }
+.avatar-presence[data-presence="busy"]    { background: var(--destructive); }
+.avatar-presence[data-presence="offline"] { background: var(--border-strong); }

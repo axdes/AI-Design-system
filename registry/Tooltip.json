@@ -11,7 +11,7 @@
   "props": [
     {
       "name": "content",
-      "type": "string",
+      "type": "ReactNode",
       "required": true,
       "description": "What the control is CALLED — one or two words, the same verb it would carry if it had room. Not an explanation: a tooltip cannot be reached by touch, cannot be selected, and disappears the moment the pointer leaves, so anything the reader actually needs belongs on the page. On an icon-only control this is the VISIBLE name and `aria-label` is the announced one; both, always."
     },

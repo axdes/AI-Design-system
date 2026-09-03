@@ -13,7 +13,7 @@ function grid() {
       rows={ROWS}
       rowKey={(r) => r.id}
       rowHeight={40}
-      height={400}
+      viewportHeight={400}
       overscan={2}
       columns={[{ key: 'name', header: 'Name', cell: (r) => r.name }]}
     />
@@ -320,7 +320,7 @@ describe('which way the column is sorted', () => {
           rows={ROWS.slice(0, 5)}
           rowKey={(r) => r.id}
           rowHeight={40}
-          height={400}
+          viewportHeight={400}
           sort={{ key: 'name', sortDirection: dir }}
           onSortChange={onSort}
           columns={[{ key: 'name', header: 'Name', cell: (r) => r.name, sortable: true }]}

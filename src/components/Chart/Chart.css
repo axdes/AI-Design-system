@@ -349,5 +349,5 @@
 
 /* The ends of a line are POINTS, not the middles of columns: the first and last
  * labels sit under them rather than over a slot that is not there. */
-.chart[data-type='line'] .chart-labels > span:first-child { text-align: start; }
-.chart[data-type='line'] .chart-labels > span:last-child { text-align: end; }
+.chart[data-type='line'] .chart-categories > span:first-child { text-align: start; }
+.chart[data-type='line'] .chart-categories > span:last-child { text-align: end; }

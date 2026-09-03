@@ -19,14 +19,17 @@ type Props = HTMLAttributes<HTMLSpanElement> & {
    *  organisation rather than a person. */
   shape?: Shape
   /** Presence dot pinned to the corner. */
-  status?: Status
-  /** Localised word for the status, folded into the accessible name so the dot
-   *  is never colour-only. Without it the raw status value is read. */
+  /* `presence` rather than `status`: online, away, busy and offline are where a
+   * person IS, and `status` elsewhere in this system is a status ELEMENT — a
+   * badge beside a name. One word cannot be both. (2026-09-03) */
+  presence?: Status
+  /** Localised word for the presence, folded into the accessible name so the dot
+   *  is never colour-only. Without it the raw presence value is read. */
   statusLabel?: string
 }
 
 /**
- * A person or a team as an image with an initial fallback. `status` adds a
+ * A person or a team as an image with an initial fallback. `presence` adds a
  * presence dot whose meaning lives in `statusLabel`, not in its colour;
  * `shape="square"` reads as a team rather than a person.
  *
@@ -34,7 +37,7 @@ type Props = HTMLAttributes<HTMLSpanElement> & {
  * the accessible name both come from it. `statusLabel` says what the dot
  * means; a colour on its own says nothing.
  */
-export function Avatar({ name, size, fill, src, shape, status, statusLabel, className, ...rest }: Props) {
+export function Avatar({ name, size, fill, src, shape, presence, statusLabel, className, ...rest }: Props) {
   /* Remember WHICH src broke rather than a boolean: a new url then renders on
    * its own, with no effect needed to clear the flag. */
   const [brokenSrc, setBrokenSrc] = useState<string | null>(null)
@@ -50,14 +53,14 @@ export function Avatar({ name, size, fill, src, shape, status, statusLabel, clas
       data-size={resolvedSize}
       data-fill={fill || undefined}
       data-shape={shape}
-      aria-label={status ? `${name}, ${statusLabel ?? status}` : name}
+      aria-label={presence ? `${name}, ${statusLabel ?? presence}` : name}
       role="img"
       {...rest}
     >
       {showImage
         ? <img src={src} alt="" onError={() => setBrokenSrc(src ?? null)} />
         : <span aria-hidden="true">{initial}</span>}
-      {status && <span className="avatar-status" data-status={status} aria-hidden="true" />}
+      {presence && <span className="avatar-presence" data-presence={presence} aria-hidden="true" />}
     </span>
   )
 }

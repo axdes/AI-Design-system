@@ -1,7 +1,7 @@
 {
   "ref": "Chart",
   "level": "atom",
-  "description": "A measure across categories or over time, with the scale that says by how much: `type=\"bar\"` for a value per category, `type=\"line\"` for a value over time. Carries its own scale, grid, goal line, legend and hover readout, and reads as a TABLE to a screen reader. Reach for <Sparkline> when the shape sits beside a number and needs no axis, <DonutChart> for a whole split into named shares, <Meter> for one value against one target, and a <Table> when the numbers are compared exactly rather than at a glance. Copy: labels are the categories' or periods' own names, short enough to sit under a mark without turning. Series names are the things themselves, because a legend of \"Series 1\" is a legend of nothing. The accessible label says what is being counted and over what.",
+  "description": "A measure across categories or over time, with the scale that says by how much: `type=\"bar\"` for a value per category, `type=\"line\"` for a value over time. Carries its own scale, grid, goal line, legend and hover readout, and reads as a TABLE to a screen reader. Reach for <Sparkline> when the shape sits beside a number and needs no axis, <DonutChart> for a whole split into named shares, <Meter> for one value against one target, and a <Table> when the numbers are compared exactly rather than at a glance. Copy: categories are the categories' or periods' own names, short enough to sit under a mark without turning. Series names are the things themselves, because a legend of \"Series 1\" is a legend of nothing. The accessible label says what is being counted and over what.",
   "exports": [
     "Chart"
   ],
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "name": "labels",
+      "name": "categories",
       "type": "string[]",
       "required": true,
       "description": "The categories, or the x axis oldest first: months, weeks, sites."
@@ -177,5 +177,5 @@
     "Layout",
     "SectionLabel"
   ],
-  "example": "<Grid columns={12} gap={4}>\n  <GridItem span={8}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Raised against closed</SectionLabel>\n        \n        <Chart\n          type=\"line\"\n          labels={MONTHS}\n          series={[\n            { label: 'Raised', values: [52, 61, 48, 67, 72] },\n            { label: 'Closed', values: [34, 41, 28, 47, 52] },\n          ]}\n          target={60}label=\"Findings raised and closed per month\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={4}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">By team</SectionLabel>\n        \n        <Chart\n          labels={TEAMS}\n          series={[{ label: 'Open findings', values: [62, 48, 31] }]}\n          orientation=\"horizontal\"\n          size=\"sm\"\n          tone=\"warning\"\n          label=\"Open findings by team\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={12}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Closed per month</SectionLabel>\n        \n        <Chart\n          labels={MONTHS}\n          series={[{ label: 'Closed', values: [34, 41, 28, 47, 52] }]}\n          target={40}\n          emphasis=\"Aug\"\n          tone=\""
+  "example": "<Grid columns={12} gap={4}>\n  <GridItem span={8}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Raised against closed</SectionLabel>\n        \n        <Chart\n          type=\"line\"\n          categories={MONTHS}\n          series={[\n            { label: 'Raised', values: [52, 61, 48, 67, 72] },\n            { label: 'Closed', values: [34, 41, 28, 47, 52] },\n          ]}\n          target={60}label=\"Findings raised and closed per month\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={4}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">By team</SectionLabel>\n        \n        <Chart\n          categories={TEAMS}\n          series={[{ label: 'Open findings', values: [62, 48, 31] }]}\n          orientation=\"horizontal\"\n          size=\"sm\"\n          tone=\"warning\"\n          label=\"Open findings by team\"\n        />\n      </Stack>\n    </Card>\n  </GridItem>\n  <GridItem span={12}>\n    <Card>\n      <Stack gap={3}>\n        <SectionLabel as=\"h3\">Closed per month</SectionLabel>\n        \n        <Chart\n          categories={MONTHS}\n          series={[{ label: 'Closed', values: [34, 41, 28, 47, 52] }]}\n          target={40}\n          emphasis=\"Aug\"\n    "
 }

@@ -17,13 +17,13 @@ function withPlotWidth(width: number) {
 
 describe('Chart, bars', () => {
   it('gives every column a readable name, so a keyboard gets what the pointer gets', () => {
-    render(<Chart labels={MONTHS} series={CLOSED} label="Findings closed" />)
+    render(<Chart categories={MONTHS} series={CLOSED} label="Findings closed" />)
     expect(screen.getByRole('button', { name: 'Aug: 52' })).toBeInTheDocument()
   })
 
   it('shows the readout on focus and moves it with the focus', async () => {
     const user = userEvent.setup()
-    const { container } = render(<Chart labels={MONTHS} series={CLOSED} label="Findings closed" />)
+    const { container } = render(<Chart categories={MONTHS} series={CLOSED} label="Findings closed" />)
     /* Read off the readout element, not off the page: the sr-only table carries
      * the same numbers, so a text query would pass with no readout at all. */
     const readout = () => container.querySelector('.chart-readout')
@@ -42,7 +42,7 @@ describe('Chart, bars', () => {
     const user = userEvent.setup()
     render(
       <Chart
-        labels={['Apr', 'May']}
+        categories={['Apr', 'May']}
         series={[{ label: 'Open', values: [12, 9] }, { label: 'Overdue', values: [5, 3] }]}
         label="Findings by state"
       />,
@@ -52,7 +52,7 @@ describe('Chart, bars', () => {
   })
 
   it('scales to a nice round top rather than to the tallest bar', () => {
-    render(<Chart labels={['Apr']} series={[{ label: 'Closed', values: [34] }]} label="Findings closed" />)
+    render(<Chart categories={['Apr']} series={[{ label: 'Closed', values: [34] }]} label="Findings closed" />)
     /* 34 is drawn against 40, not against itself: a bar that always touches the
      * ceiling says nothing about how big it is. */
     expect(screen.getByText('40')).toBeInTheDocument()
@@ -66,7 +66,7 @@ describe('Chart, line', () => {
     const { container } = render(
       <Chart
         type="line"
-        labels={['Apr', 'May', 'Jun']}
+        categories={['Apr', 'May', 'Jun']}
         series={[{ label: 'Raised', values: [52, 61, 48] }, { label: 'Closed', values: [34, 41, 28] }]}
         label="Findings"
       />,
@@ -89,14 +89,14 @@ describe('Chart, line', () => {
 
   it('draws a legend once there is more than one measure, so colour is never the only clue', () => {
     const { rerender, container } = render(
-      <Chart type="line" labels={['Apr', 'May', 'Jun']} series={[{ label: 'Closed', values: [1, 2, 3] }]} label="Findings" />,
+      <Chart type="line" categories={['Apr', 'May', 'Jun']} series={[{ label: 'Closed', values: [1, 2, 3] }]} label="Findings" />,
     )
     expect(container.querySelector('.chart-legend')).toBeNull()
 
     rerender(
       <Chart
         type="line"
-        labels={['Apr', 'May', 'Jun']}
+        categories={['Apr', 'May', 'Jun']}
         series={[{ label: 'Closed', values: [1, 2, 3] }, { label: 'Raised', values: [3, 2, 1] }]}
         label="Findings"
       />,
@@ -109,7 +109,7 @@ describe('Chart, both marks', () => {
   /* One component, so the furniture is proven once for both: the table a screen
    * reader reads is the same code path with a different first column. */
   it.each(['bar', 'line'] as const)('publishes the numbers as a table (%s)', (type) => {
-    render(<Chart type={type} labels={MONTHS} series={CLOSED} label="Findings closed" />)
+    render(<Chart type={type} categories={MONTHS} series={CLOSED} label="Findings closed" />)
     expect(screen.getByRole('table', { name: 'Findings closed' })).toBeInTheDocument()
     expect(screen.getByRole('rowheader', { name: 'Jul' })).toBeInTheDocument()
   })

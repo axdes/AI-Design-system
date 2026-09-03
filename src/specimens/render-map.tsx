@@ -190,7 +190,7 @@ export const RENDER: Record<string, (p: RenderProps) => ReactElement> = {
   SelectableTile: (p) => <SelectableTile name="region" title="Europe" selected onSelect={() => {}} {...p} />,
   Skeleton: (p) => <Skeleton {...p} />,
   Chart: (p) => (
-    <Chart labels={['Apr', 'May']} series={[{ label: 'Closed', values: [34, 41] }]} label="Findings closed" {...p} />
+    <Chart categories={['Apr', 'May']} series={[{ label: 'Closed', values: [34, 41] }]} label="Findings closed" {...p} />
   ),
   Sparkline: (p) => <Sparkline values={[3, 5, 4, 8, 6, 9]} {...p} />,
   Spinner: (p) => <Spinner label="Loading" {...p} />,

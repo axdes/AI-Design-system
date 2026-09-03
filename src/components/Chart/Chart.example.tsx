@@ -16,14 +16,14 @@ const TEAMS = ['Payments', 'Identity and access', 'Platform']
  * measured over time. Categories are not connected, and joining them draws a
  * slope that does not exist; those are `type="bar"`.
  *
- * One entry per measure in `series`, each with a value per entry of `labels`,
+ * One entry per measure in `series`, each with a value per entry of `categories`,
  * oldest first. The slot colours are assigned in that order and never cycled,
  * so adding a third measure never repaints the first two.
  *
  * `orientation` (bars) IS DECIDED BY THE LABELS, NOT BY TASTE. `vertical` is
  * for a series with a natural order, where left to right IS time. `horizontal`
  * is for categories with no order and names too long to stand under a column:
- * rotated or wrapped labels are the commonest reason a chart cannot be read.
+ * rotated or wrapped categories are the commonest reason a chart cannot be read.
  *
  * `target` draws the goal ACROSS the plot, which turns "short" into "short of
  * something". Without it a mark is only shorter than its neighbour, and the
@@ -52,7 +52,7 @@ export function Example() {
             {/* Two measures over time, so they are lines read at one x. */}
             <Chart
               type="line"
-              labels={MONTHS}
+              categories={MONTHS}
               series={[
                 { label: 'Raised', values: [52, 61, 48, 67, 72] },
                 { label: 'Closed', values: [34, 41, 28, 47, 52] },
@@ -73,7 +73,7 @@ export function Example() {
             <SectionLabel as="h3">By team</SectionLabel>
             {/* No order and long names, so the bars lie down. */}
             <Chart
-              labels={TEAMS}
+              categories={TEAMS}
               series={[{ label: 'Open findings', values: [62, 48, 31] }]}
               orientation="horizontal"
               size="sm"
@@ -91,7 +91,7 @@ export function Example() {
             {/* Periods have an order, so left to right is time; the goal line
                 and the accent on the latest column do the rest. */}
             <Chart
-              labels={MONTHS}
+              categories={MONTHS}
               series={[{ label: 'Closed', values: [34, 41, 28, 47, 52] }]}
               target={40}
               emphasis="Aug"

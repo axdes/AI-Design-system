@@ -10,6 +10,7 @@ import {
   useId,
   useState,
   type ReactElement,
+  type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -32,7 +33,10 @@ type Props = {
    *  anything the reader actually needs belongs on the page. On an icon-only
    *  control this is the VISIBLE name and `aria-label` is the announced one;
    *  both, always. */
-  content: string
+  /* ReactNode, like every other content slot: a tooltip that carries an icon
+   * beside its words is legitimate, and <HoverCard> next door already took one.
+   * (2026-09-03) */
+  content: ReactNode
   /** Which side it prefers, chosen by the room available rather than the look —
    *  `start`/`end` beside a control at the edge of a panel, where a tooltip
    *  above it would be clipped. A preference, not an instruction: the layer

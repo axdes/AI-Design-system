@@ -114,14 +114,14 @@
 /* Round, when the mark it stands for is a point on a line. */
 .chart-key[data-shape="dot"] { border-radius: var(--radius-full); }
 
-.chart-labels {
+.chart-categories {
   display: flex;
   gap: var(--space-2);
   padding-inline-start: calc(var(--chart-scale-width) + var(--space-2));
   font-size: var(--font-xs);
   color: var(--chart-axis);
 }
-.chart-labels > span {
+.chart-categories > span {
   flex: 1 1 0;
   min-inline-size: 0;
   text-align: center;
@@ -129,7 +129,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.chart-labels > span[data-active] { color: var(--foreground); }
+.chart-categories > span[data-active] { color: var(--foreground); }
 
 .chart-legend {
   display: flex;

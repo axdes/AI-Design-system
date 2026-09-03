@@ -15,7 +15,7 @@ export function Example() {
   return (
     <Row gap={3}>
       <Avatar name="Ada Meridian" src={FACES[0]} />
-      <Avatar name="Ben Calloway" src={FACES[1]} status="online" statusLabel="Online" />
+      <Avatar name="Ben Calloway" src={FACES[1]} presence="online" statusLabel="Online" />
       <Avatar name="Cleo Nakamura" />
     </Row>
   )

@@ -2,42 +2,31 @@
   "_why": "The opening balance for npm run lint:api, recorded by npm run lint:api -- --record. Each number is a ceiling that may only fall: a prop name may not gain a type, a part may not gain a prop, a callback outside the vocabulary may not spread to a new part, and a new part may not arrive untested. Re-record after a payment, never to make a failure go away.",
   "recorded": "2026-09-03",
   "shapes": {
-    "actions": 3,
     "aside": 2,
     "columns": 6,
-    "content": 2,
-    "count": 3,
+    "count": 2,
     "current": 2,
-    "defaultExpandedIds": 2,
     "defaultOpen": 2,
     "empty": 3,
     "error": 3,
     "fill": 2,
     "formatValue": 2,
-    "height": 2,
     "inline": 2,
     "items": 8,
     "label": 2,
-    "labels": 2,
     "lines": 2,
     "max": 2,
     "min": 3,
     "name": 3,
-    "nodes": 2,
-    "onChange": 16,
+    "onChange": 11,
     "onDismiss": 2,
     "onRemove": 2,
-    "onSave": 2,
-    "onSelect": 5,
+    "onSelect": 4,
     "onSubmit": 3,
-    "options": 4,
     "role": 2,
-    "rows": 3,
     "shape": 4,
-    "status": 2,
-    "steps": 3,
     "trigger": 2,
-    "value": 13,
+    "value": 12,
     "width": 2
   },
   "props": {
@@ -79,92 +68,6 @@
     "Tree": 8,
     "WizardTemplate": 10
   },
-  "callbacks": {
-    "onAbort": [
-      "InlineText"
-    ],
-    "onBack": [
-      "DetailPageTemplate",
-      "Page",
-      "PageHeader"
-    ],
-    "onCancel": [
-      "FormPageTemplate"
-    ],
-    "onCellChange": [
-      "DataGrid"
-    ],
-    "onClear": [
-      "BatchActions",
-      "FilterBar",
-      "SearchInput"
-    ],
-    "onClick": [
-      "SessionPill"
-    ],
-    "onClose": [
-      "CommandPalette",
-      "FeedbackModal",
-      "FormPanel",
-      "Modal",
-      "RenameDialog",
-      "SidePanel"
-    ],
-    "onCollapsedChange": [
-      "SideNav"
-    ],
-    "onDensityChange": [
-      "TableToolbar"
-    ],
-    "onDetailClose": [
-      "Page"
-    ],
-    "onDislike": [
-      "ChatMessage"
-    ],
-    "onExpandedChange": [
-      "Tree"
-    ],
-    "onLoad": [
-      "LoadMore"
-    ],
-    "onMonthChange": [
-      "Calendar"
-    ],
-    "onMove": [
-      "ColumnPicker"
-    ],
-    "onNavClose": [
-      "AppLayout"
-    ],
-    "onNavOpen": [
-      "AppLayout"
-    ],
-    "onNext": [
-      "CardStack"
-    ],
-    "onRemove": [
-      "Chip",
-      "FileUpload"
-    ],
-    "onReset": [
-      "ColumnPicker"
-    ],
-    "onSave": [
-      "InlineText",
-      "RenameDialog"
-    ],
-    "onSend": [
-      "ChatComposer"
-    ],
-    "onSortChange": [
-      "DataGrid"
-    ],
-    "onStop": [
-      "ChatComposer"
-    ]
-  },
-  "untested": [],
-  "_callbacks": "The callback count is 0 on 2026-09-03, and that is a decision rather than a rename spree. config/callback-vocabulary.json now has three sections: the canonical six, a `kept` list where each name carries the thing the six cannot say, and the exceptions that are still wrong. Four names moved — onStepClick and onStep became onSelect, onFiles became onChange, onOpen on the four card parts became onSelect — and the rest were decided to stay, with the reason on each. Applying the original table mechanically would have made several APIs worse: onBack is not one action among many, onExpandedChange says which value moved, onClear does not fire when the value changes.",
-  "_shapesRose": "onChange and onSelect each gained a signature on 2026-09-03, which is the price of the renames: fewer NAMES means more signatures under one name, and that trade is the one the vocabulary makes on purpose. A reader now learns one word and reads its type per part, rather than learning four words."
+  "callbacks": {},
+  "untested": []
 }

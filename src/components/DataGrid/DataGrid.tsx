@@ -100,7 +100,11 @@ type Props<Row> = {
   /** Fixed row height in px — required for windowing. Default 40. */
   rowHeight?: number
   /** Visible viewport height in px. Default 400. */
-  height?: number
+  /* `viewportHeight`, because the grid already publishes `rowHeight` beside it
+   * and `height` elsewhere in this system is a CSS length. Two numbers in
+   * pixels under one word, one of them named, is how a caller sets the wrong
+   * one. (2026-09-03) */
+  viewportHeight?: number
   /** Extra rows rendered above/below the viewport to smooth scrolling. Default 6. */
   overscan?: number
   /** Accessible name for the grid. */
@@ -140,7 +144,7 @@ type Props<Row> = {
    * sit above its values.
    */
 export function DataGrid<Row>({
-  columns, rows, rowKey, rowHeight = 40, height = 400, overscan = 6, label,
+  columns, rows, rowKey, rowHeight = 40, viewportHeight: height = 400, overscan = 6, label,
   sort, onSortChange, onCellChange, empty, className,
 }: Props<Row>) {
   const [scrollTop, setScrollTop] = useState(0)

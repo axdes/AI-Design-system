@@ -37,7 +37,7 @@ export function Example() {
       label="Customers"
       rows={sorted}
       rowKey={(r) => r.id}
-      height={320}
+      viewportHeight={320}
       rowHeight={56}
       sort={sort}
       onSortChange={setSort}

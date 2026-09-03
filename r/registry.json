@@ -37,7 +37,7 @@
       "name": "avatar",
       "type": "registry:ui",
       "title": "Avatar",
-      "description": "A person or a team as an image with an initial fallback. `status` adds a presence dot whose meaning lives in `statusLabel`, not in its colour; `shape=\"square\"` reads as a team rather than a person. Copy: the name is the person's own, spelled as they spell it — the initial and the accessible name both come from it. `statusLabel` says what the dot means; a colour on its own says nothing."
+      "description": "A person or a team as an image with an initial fallback. `presence` adds a presence dot whose meaning lives in `statusLabel`, not in its colour; `shape=\"square\"` reads as a team rather than a person. Copy: the name is the person's own, spelled as they spell it — the initial and the accessible name both come from it. `statusLabel` says what the dot means; a colour on its own says nothing."
     },
     {
       "name": "avatar-group",
