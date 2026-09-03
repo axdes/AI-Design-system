@@ -122,4 +122,27 @@ describe('AdaptiveListPage', () => {
     render(<Page count={0} />)
     expect(screen.queryByRole('heading', { name: 'Workshops' })).toBeNull()
   })
+
+  /* The mark belongs to the WELCOME layout — the few-rows screen a young product
+     shows, where the title is a hero rather than a header — and to nothing else:
+     an empty page carries the empty state's own words, not a brand mark. */
+  it('shows the brand mark on the welcome layout, and not on the empty page', () => {
+    const withMark = (count: number) => (
+      <AdaptiveListPage
+        title="Workshops"
+        count={count}
+        cta={<Button size="lg">New</Button>}
+        emptyState={{ title: 'No workshops yet' }}
+        mark={<span data-testid="mark">Acme</span>}
+      >
+        {(gridRef) => <div ref={gridRef} />}
+      </AdaptiveListPage>
+    )
+    const { unmount } = render(withMark(3))
+    expect(screen.getByTestId('mark')).toBeInTheDocument()
+    unmount()
+
+    render(withMark(0))
+    expect(screen.queryByTestId('mark')).toBeNull()
+  })
 })

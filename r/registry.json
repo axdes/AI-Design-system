@@ -73,7 +73,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "The action control: `variant` sets its weight, `loading` swaps the icon for a spinner and disables it (`iconEnd` is a deprecated no-op: icons always trail) actions. Copy: the verb the reader is about to perform, with its object when the screen has more than one — \"Send invoice\", not \"Submit\", never \"OK\". The label is a promise about what happens next."
+      "description": "The action control: `variant` sets its weight, `loading` swaps the icon for a spinner and disables it while it runs. Copy: the verb the reader is about to perform, with its object when the screen has more than one — \"Send invoice\", not \"Submit\", never \"OK\". The label is a promise about what happens next."
     },
     {
       "name": "button-group",

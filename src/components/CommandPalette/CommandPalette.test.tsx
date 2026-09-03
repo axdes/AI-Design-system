@@ -78,4 +78,16 @@ describe('CommandPalette', () => {
     await user.keyboard('{Enter}')
     expect(onSettings).toHaveBeenCalledTimes(1)
   })
+
+  it('names the verbs it knows in its own placeholder', () => {
+    render(
+      <CommandPalette
+        open
+        onClose={() => undefined}
+        commands={[{ id: 'new', label: 'New invoice', onRun: () => undefined }]}
+        placeholder="Search invoices or jump to a client"
+      />,
+    )
+    expect(screen.getByPlaceholderText('Search invoices or jump to a client')).toBeInTheDocument()
+  })
 })

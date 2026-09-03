@@ -73,4 +73,16 @@ describe('ButtonGroup', () => {
     expect(container.querySelector('.button-group')).toHaveAttribute('data-variant', 'primary')
     expect(screen.getByRole('button', { name: 'Save options' })).toHaveAttribute('data-tone', 'primary')
   })
+
+  /* The size reaches the halves the group MAKES — the split button's own
+     trigger and its menu items — which is the pair the comment on the prop says
+     has to agree. */
+  it('gives the halves it builds the size it was given', () => {
+    const { container } = render(
+      <ButtonGroup label="Export" size="sm" menu={<DropdownItem onClick={() => undefined}>CSV</DropdownItem>}>
+        Export
+      </ButtonGroup>,
+    )
+    for (const b of container.querySelectorAll('.btn')) expect(b).toHaveAttribute('data-size', 'sm')
+  })
 })

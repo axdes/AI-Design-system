@@ -89,4 +89,11 @@ describe('InlineText', () => {
     expect(heading).toContainElement(box)
     expect(heading.tagName).toBe('H2')
   })
+
+  /* For the value the reader has just created and is expected to name — a new
+     document, a new board — the field is already theirs to type in. */
+  it('opens straight into the field for a value the reader has just created', () => {
+    render(<InlineText value="Untitled" label="Document title" onSave={() => undefined} autoFocus />)
+    expect(screen.getByRole('textbox', { name: 'Document title' })).toHaveFocus()
+  })
 })

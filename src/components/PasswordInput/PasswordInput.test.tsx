@@ -52,4 +52,9 @@ describe('PasswordInput', () => {
     await user.type(field, 'abc')
     expect(field).toHaveValue('abc')
   })
+
+  it('takes the size the field beside it takes', () => {
+    const { container } = render(<PasswordInput aria-label="Password" size="lg" />)
+    expect(container.querySelector('input')).toHaveAttribute('data-size', 'lg')
+  })
 })

@@ -25,12 +25,6 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
    *  column — a form's submit on a phone, a card's single action — never as a
    *  way to make one button look important in a row. */
   block?: boolean
-  /**
-   * @deprecated Inert. Every icon in a button trails the label from one line of
-   * CSS (`.btn > .icon { order: 1 }`, owner 2026-06-10), and nothing reads this.
-   * It survived the rule it belonged to. Do not pass it in new code.
-   */
-  iconEnd?: boolean
   /** In-flight action: shows a spinner in place of the icon and blocks further
    *  clicks. The label stays so the button keeps its width. Set the accessible
    *  busy text with `loadingLabel`. */
@@ -42,15 +36,14 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 /**
  * The action control: `variant` sets its weight, `loading` swaps the icon for
- * a spinner and disables it (`iconEnd` is a deprecated no-op: icons always trail)
- * actions.
+ * a spinner and disables it while it runs.
  *
  * Copy: the verb the reader is about to perform, with its object when the screen
  * has more than one — "Send invoice", not "Submit", never "OK". The label
  * is a promise about what happens next.
  */
 export function Button({
-  variant, size, block, iconEnd, loading, loadingLabel = 'Loading', disabled, className, ref, children, ...rest
+  variant, size, block, loading, loadingLabel = 'Loading', disabled, className, ref, children, ...rest
 }: Props) {
   return (
     <button
@@ -59,7 +52,6 @@ export function Button({
       data-variant={variant}
       data-size={size}
       data-block={block || undefined}
-      data-icon-end={iconEnd || undefined}
       data-loading={loading || undefined}
       disabled={disabled || loading || undefined}
       aria-busy={loading || undefined}

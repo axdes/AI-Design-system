@@ -45,4 +45,15 @@ describe('DonutChart', () => {
     const { container } = render(<DonutChart segments={[{ label: 'None', value: 0 }]} label="Empty" />)
     expect(container.firstChild).toBeNull()
   })
+
+  it('drops the legend when asked, and formats its values in the given locale', () => {
+    const segments = [{ label: 'Direct', value: 1234.5 }, { label: 'Search', value: 1000 }]
+    const { container, unmount } = render(<DonutChart label="Traffic" segments={segments} locale="de-DE" />)
+    expect(container.querySelector('.donut-chart-legend')).toBeInTheDocument()
+    expect(screen.getAllByText(/1\.234,5/).length).toBeGreaterThan(0)
+    unmount()
+
+    const { container: bare } = render(<DonutChart label="Traffic" segments={segments} legend={false} />)
+    expect(bare.querySelector('.donut-chart-legend')).toBeNull()
+  })
 })

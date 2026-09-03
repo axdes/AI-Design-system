@@ -47,4 +47,12 @@ describe('FileUpload', () => {
     expect(container.querySelector('.file-upload-list')).toBeNull()
     expect(screen.queryByRole('list')).toBeNull()
   })
+
+  it('refuses the file on a disabled dropzone, and marks an invalid one', () => {
+    const { container } = render(<FileUpload label="Attachments" onChange={() => undefined} disabled invalid />)
+    const zone = container.querySelector('.file-upload-drop') as HTMLElement
+    expect(zone).toHaveAttribute('data-disabled')
+    expect(zone).toHaveAttribute('data-invalid')
+    expect(container.querySelector('input')).toBeDisabled()
+  })
 })

@@ -100,4 +100,21 @@ describe('RenameDialog', () => {
     await user.click(screen.getByRole('button', { name: 'Open second' }))
     expect(screen.getByLabelText('Name')).toHaveValue('Second')
   })
+
+  it('names both buttons in the caller’s words', () => {
+    render(
+      <RenameDialog
+        open
+        title="Rename recording"
+        label="Name"
+        initial="Kickoff call"
+        onClose={() => undefined}
+        onSave={() => undefined}
+        confirmLabel="Spara"
+        cancelLabel="Avbryt"
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'Spara' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Avbryt' })).toBeInTheDocument()
+  })
 })

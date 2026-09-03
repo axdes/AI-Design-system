@@ -40,4 +40,9 @@ describe('InputGroup', () => {
     expect(group).toHaveAttribute('data-invalid')
     expect(group).toHaveAttribute('data-disabled')
   })
+
+  it('sizes the whole group, so the affixes match the field', () => {
+    const { container } = render(<InputGroup size="sm" prefix="https://"><input aria-label="Site" /></InputGroup>)
+    expect(container.querySelector('.input-group')).toHaveAttribute('data-size', 'sm')
+  })
 })

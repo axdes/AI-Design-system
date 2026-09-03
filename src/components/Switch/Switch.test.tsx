@@ -40,4 +40,11 @@ describe('Switch', () => {
     await user.keyboard('{Enter}')
     expect(control).toHaveAttribute('aria-checked', 'false')
   })
+
+  /* The invalid state reaches assistive tech and nothing else: a switch has no
+     message of its own, so aria-invalid is the whole of it. */
+  it('marks itself invalid for a screen reader', () => {
+    render(<Switch checked={false} onChange={() => undefined} label="Weekly digest" invalid />)
+    expect(screen.getByRole('switch')).toHaveAttribute('aria-invalid', 'true')
+  })
 })

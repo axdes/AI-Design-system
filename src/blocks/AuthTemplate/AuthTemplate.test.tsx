@@ -46,4 +46,13 @@ describe('AuthTemplate', () => {
     )
     expect(screen.getByRole('heading', { name: 'Sign in' })).toBeInTheDocument()
   })
+
+  it('carries a footer under the form, where the way out of a dead end goes', () => {
+    render(
+      <AuthTemplate brand={<span>Acme</span>} title="Sign in" submitLabel="Sign in" onSubmit={() => undefined} footer={<a href="/reset">Forgotten your password?</a>}>
+        <p>fields</p>
+      </AuthTemplate>,
+    )
+    expect(screen.getByRole('link', { name: 'Forgotten your password?' })).toBeInTheDocument()
+  })
 })

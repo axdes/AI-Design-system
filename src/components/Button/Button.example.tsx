@@ -13,8 +13,7 @@ import { Row } from '../Layout'
  * Two of these have no variant at all, on purpose: a button that leaves it off is
  * secondary, which is the right default for a control you have not thought about.
  *
- * The icon always trails the label — one line of CSS, not a prop. `iconEnd` is an
- * inert leftover and passing it does nothing.
+ * The icon always trails the label — one line of CSS, not a prop.
  */
 export function Example() {
   return (

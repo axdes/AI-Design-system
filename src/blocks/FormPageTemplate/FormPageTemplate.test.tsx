@@ -49,4 +49,21 @@ describe('FormPageTemplate', () => {
     page({ onCancel: vi.fn() })
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
   })
+
+  it('names the way out and freezes it while the form commits', () => {
+    render(
+      <FormPageTemplate
+        title="New client"
+        onSubmit={() => undefined}
+        onCancel={() => undefined}
+        submitLabel="Create"
+        cancelLabel="Not now"
+        busy
+      >
+        <p>fields</p>
+      </FormPageTemplate>,
+    )
+    expect(screen.getByRole('button', { name: 'Not now' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Create/ })).toHaveAttribute('data-loading')
+  })
 })

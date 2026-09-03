@@ -36,4 +36,12 @@ describe('RangeSlider', () => {
     )
     expect(screen.getByText('SAR 25k to SAR 70k')).toBeInTheDocument()
   })
+
+  it('disables both thumbs, not only the look of them', () => {
+    const { container } = render(
+      <RangeSlider label="Price" value={[10, 40]} onChange={() => undefined} disabled />,
+    )
+    expect(container.querySelector('.rangeslider')).toHaveAttribute('data-disabled')
+    for (const input of container.querySelectorAll('input')) expect(input).toBeDisabled()
+  })
 })

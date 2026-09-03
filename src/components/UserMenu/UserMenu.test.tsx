@@ -40,4 +40,11 @@ describe('UserMenu', () => {
     rerender(<UserMenu name="Ada Lovelace" secondary="Admin" actions={[]} />)
     expect(container.querySelector('.user-menu-trigger-secondary')).toHaveTextContent('Admin')
   })
+
+  it('shows the person’s own picture when there is one', () => {
+    const { container } = render(
+      <UserMenu name="Ada Lovelace" avatarSrc="/ada.png" actions={[{ id: 'out', label: 'Sign out', onSelect: () => undefined }]} />,
+    )
+    expect(container.querySelector('img')).toHaveAttribute('src', '/ada.png')
+  })
 })

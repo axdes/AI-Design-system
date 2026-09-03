@@ -125,4 +125,38 @@ describe('FilterDropdown', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent('draft,published')
   })
+
+  /* The six props that turn this from a menu into the filter a toolbar wears:
+     the trigger showing the chosen value instead of the label, a count on the
+     "all" row, an icon on it, an extra row under the options, and the removable
+     tags under the trigger. None of them had ever been rendered. */
+  it('shows the value on the trigger, counts the all row, and hangs a tag under it', async () => {
+    const user = userEvent.setup()
+    function Host() {
+      const [value, setValue] = useState<Status[]>(['draft'])
+      return (
+        <FilterDropdown<Status>
+          label="Status"
+          options={OPTIONS}
+          value={value}
+          onChange={setValue}
+          allLabel="All statuses"
+          allCount={42}
+          allIcon="tune"
+          showValue
+          valueText="One status"
+          showTags
+          menuExtra={<button type="button">Manage statuses</button>}
+        />
+      )
+    }
+    render(<Host />)
+    expect(screen.getByRole('button', { name: /One status/ })).toBeInTheDocument()
+    /* The tag is under the trigger, not in the menu, so it is there before any click. */
+    expect(screen.getByRole('button', { name: 'Remove Draft' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /One status/ }))
+    expect(screen.getByText('42')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Manage statuses' })).toBeInTheDocument()
+  })
 })

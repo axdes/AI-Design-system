@@ -83,4 +83,10 @@ describe('ContentCard', () => {
     )
     expect(container.querySelector('.content-card')).toHaveAttribute('data-density', 'compact')
   })
+
+  it('stretches to its grid cell, and hands the same instruction to the Card underneath', () => {
+    const { container } = render(<ContentCard title="Quarterly review" stretch />)
+    expect(container.querySelector('.content-card')).toHaveAttribute('data-stretch')
+    expect(container.querySelector('.card')).toHaveAttribute('data-stretch')
+  })
 })

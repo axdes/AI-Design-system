@@ -1,8 +1,8 @@
 {
   "score": 80,
   "floor": 80,
-  "killed": 231,
-  "survived": 59,
+  "killed": 233,
+  "survived": 57,
   "components": {
     "Accordion": {
       "hash": "ad6112206c77",
@@ -42,7 +42,7 @@
       "survived": []
     },
     "Avatar": {
-      "hash": "932238dbae27",
+      "hash": "a9bd8e2158e6",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -61,7 +61,7 @@
       "survived": []
     },
     "Button": {
-      "hash": "75363426fcbb",
+      "hash": "afd4b75586a1",
       "killed": [
         "and-to-or",
         "drop-optional-render",
@@ -105,13 +105,13 @@
       "survived": []
     },
     "ChatComposer": {
-      "hash": "517d88035a35",
+      "hash": "f6cebee38b6f",
       "killed": [
         "and-to-or",
-        "strip-aria"
+        "strip-aria",
+        "drop-optional-render"
       ],
       "survived": [
-        "drop-optional-render",
         "invert-comparison"
       ]
     },
@@ -149,7 +149,7 @@
       "survived": []
     },
     "CodeInput": {
-      "hash": "ea1ca55bd9a6",
+      "hash": "a503d9ee8fc5",
       "killed": [
         "boolean-default",
         "and-to-or",
@@ -177,14 +177,14 @@
       "survived": []
     },
     "CommandPalette": {
-      "hash": "b3a44f222cab",
+      "hash": "d80dc1ed3711",
       "killed": [
         "and-to-or"
       ],
       "survived": []
     },
     "ContentCard": {
-      "hash": "32fe08b9f645",
+      "hash": "c1c4cc1591f9",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -209,7 +209,7 @@
       "survived": []
     },
     "CopyButton": {
-      "hash": "d84b507aae0b",
+      "hash": "2910232bce67",
       "killed": [
         "strip-aria",
         "negate-cond"
@@ -230,21 +230,21 @@
       ]
     },
     "DatePicker": {
-      "hash": "e5ebc756785c",
+      "hash": "be408bae3251",
       "killed": [
         "strip-aria"
       ],
       "survived": []
     },
     "DateRangePicker": {
-      "hash": "aa1acf275b0b",
+      "hash": "f84818b0003d",
       "killed": [
         "strip-aria"
       ],
       "survived": []
     },
     "DonutChart": {
-      "hash": "e82e0efe0330",
+      "hash": "291b9a86b727",
       "killed": [
         "boolean-default",
         "and-to-or",
@@ -283,7 +283,7 @@
       "survived": []
     },
     "FileUpload": {
-      "hash": "0735146fb2aa",
+      "hash": "8d030312bf3b",
       "killed": [
         "strip-aria",
         "drop-optional-render",
@@ -294,7 +294,7 @@
       ]
     },
     "FilterBar": {
-      "hash": "2cf395a8ffc1",
+      "hash": "e1c99b13975b",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -303,7 +303,7 @@
       "survived": []
     },
     "FilterDropdown": {
-      "hash": "b749686f9df9",
+      "hash": "055b7417a3af",
       "killed": [
         "boolean-default",
         "strip-aria"
@@ -346,13 +346,12 @@
       "survived": []
     },
     "InlineText": {
-      "hash": "78773677947f",
+      "hash": "4af6edba3dac",
       "killed": [
+        "and-to-or",
         "strip-aria"
       ],
-      "survived": [
-        "and-to-or"
-      ]
+      "survived": []
     },
     "Input": {
       "hash": "1cfb051f7e57",
@@ -369,14 +368,14 @@
       "survived": []
     },
     "LoadMore": {
-      "hash": "c52f25463ddc",
+      "hash": "89162c4a26db",
       "killed": [
         "and-to-or"
       ],
       "survived": []
     },
     "MenuIconButton": {
-      "hash": "6b7b83429c1e",
+      "hash": "781201518619",
       "killed": [
         "strip-aria"
       ],
@@ -394,7 +393,7 @@
       "survived": []
     },
     "NumberInput": {
-      "hash": "5e28eec0cff4",
+      "hash": "16ee61ae0788",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -406,7 +405,7 @@
       ]
     },
     "Pagination": {
-      "hash": "f361d1ce9d6d",
+      "hash": "e6b824f4827e",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -417,7 +416,7 @@
       ]
     },
     "PasswordInput": {
-      "hash": "8db7021ee643",
+      "hash": "100a2d8717ca",
       "killed": [
         "strip-aria",
         "negate-cond",
@@ -426,7 +425,7 @@
       "survived": []
     },
     "PlanCard": {
-      "hash": "cac31c5825c5",
+      "hash": "771f8839d9c9",
       "killed": [
         "and-to-or",
         "drop-optional-render"
@@ -453,7 +452,7 @@
       ]
     },
     "RangeSlider": {
-      "hash": "5ee3e728e368",
+      "hash": "c220059840e6",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -473,7 +472,7 @@
       "survived": []
     },
     "ScheduleGrid": {
-      "hash": "42708c4fbaed",
+      "hash": "2becc65e2c48",
       "killed": [
         "and-to-or",
         "off-by-one"
@@ -493,7 +492,7 @@
       ]
     },
     "SegmentedControl": {
-      "hash": "ada8d5b60e6b",
+      "hash": "751107a1b126",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -546,7 +545,7 @@
       "survived": []
     },
     "Switch": {
-      "hash": "c1ecfc9f996a",
+      "hash": "39c2f3edc040",
       "killed": [
         "strip-aria",
         "drop-spread"
@@ -570,7 +569,7 @@
       "survived": []
     },
     "TagInput": {
-      "hash": "14f37b987a28",
+      "hash": "0d71e0a36b58",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -634,7 +633,7 @@
       ]
     },
     "Chart": {
-      "hash": "b9e3c6c9cea6",
+      "hash": "ce93999a761e",
       "killed": [
         "boolean-default",
         "strip-aria",
@@ -648,7 +647,7 @@
       ]
     },
     "ButtonGroup": {
-      "hash": "2cdc623e8fe4",
+      "hash": "58161f8d7b4f",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -672,7 +671,7 @@
       "survived": []
     },
     "BatchActions": {
-      "hash": "11ea3365d29f",
+      "hash": "c916ea314690",
       "killed": [
         "strip-aria"
       ],
@@ -789,7 +788,7 @@
       "survived": []
     },
     "InputGroup": {
-      "hash": "16a057e47c0a",
+      "hash": "87720db2249b",
       "killed": [
         "and-to-or"
       ],
@@ -853,7 +852,7 @@
       ]
     },
     "Prose": {
-      "hash": "b22140a7ba3b",
+      "hash": "c65a1da9f794",
       "killed": [
         "drop-spread"
       ],
@@ -892,7 +891,7 @@
       ]
     },
     "SetupGuide": {
-      "hash": "dc3e72729afa",
+      "hash": "116866f55db0",
       "killed": [
         "and-to-or",
         "strip-aria",
@@ -1056,7 +1055,7 @@
       ]
     },
     "UserMenu": {
-      "hash": "79acdbfbbc51",
+      "hash": "af8e1ef3a587",
       "killed": [
         "and-to-or",
         "strip-aria",

@@ -66,4 +66,18 @@ describe('ScheduleGrid', () => {
     expect(marked).toHaveLength(1)
     expect(marked[0]).toHaveTextContent('Kick-off')
   })
+
+  it('says "free" for an empty slot, in the caller’s words, to a screen reader only', () => {
+    const { container } = render(
+      <ScheduleGrid
+        label="Rooms"
+        resources={[{ key: 'r1', label: 'Room 1' }]}
+        slots={[{ key: 's1', label: '09:00' }]}
+        events={[]}
+        freeLabel="Ledig"
+      />,
+    )
+    const free = container.querySelector('.sr-only')
+    expect(free).toHaveTextContent('Ledig')
+  })
 })

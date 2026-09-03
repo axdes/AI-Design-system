@@ -35,4 +35,16 @@ describe('SetupGuide', () => {
     const { container } = render(<SetupGuide title="Get started" steps={steps} />)
     expect(container.querySelectorAll('.setup-guide-step[data-done]')).toHaveLength(1)
   })
+
+  it('names the dismiss control in the caller’s words', () => {
+    render(
+      <SetupGuide
+        title="Finish setting up"
+        steps={[{ id: 'one', label: 'Connect a source', done: true }]}
+        onDismiss={() => undefined}
+        dismissLabel="Hide the checklist"
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'Hide the checklist' })).toBeInTheDocument()
+  })
 })

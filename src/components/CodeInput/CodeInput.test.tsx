@@ -110,4 +110,13 @@ describe('CodeInput', () => {
     render(<CodeInput length={4} value="" onChange={() => undefined} label="Code" numeric={false} />)
     for (const box of screen.getAllByRole('textbox')) expect(box).toHaveAttribute('inputmode', 'text')
   })
+
+  it('marks every box invalid, not only the one that was typed in', () => {
+    const { container } = render(
+      <CodeInput label="Verification code" value="12" onChange={() => undefined} invalid />,
+    )
+    const boxes = container.querySelectorAll('input')
+    expect(boxes.length).toBeGreaterThan(0)
+    for (const box of boxes) expect(box).toHaveAttribute('aria-invalid', 'true')
+  })
 })

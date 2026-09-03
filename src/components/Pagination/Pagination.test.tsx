@@ -83,4 +83,27 @@ describe('Pagination', () => {
       expect(screen.getByRole('button', { name: new RegExp(`\\b${n}\\b`) })).toBeInTheDocument()
     }
   })
+
+  /* The three props a translated pagination needs, and the only place they are
+     ever seen: the arrows are icon-only, so their words live in an aria-label
+     and a tooltip and nowhere on screen. */
+  it('says the arrows and sizes the window in the caller’s words', () => {
+    render(
+      <Pagination
+        page={5}
+        pageCount={20}
+        onChange={() => undefined}
+        siblingCount={2}
+        prevLabel="Föregående sida"
+        nextLabel="Nästa sida"
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'Föregående sida' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Nästa sida' })).toBeInTheDocument()
+    /* Two either side of 5, so 3..7 are listed and 8 is not. */
+    for (const n of ['3', '4', '5', '6', '7']) {
+      expect(screen.getByRole('button', { name: new RegExp(`\\b${n}\\b`) })).toBeInTheDocument()
+    }
+    expect(screen.queryByRole('button', { name: /\b8\b/ })).toBeNull()
+  })
 })

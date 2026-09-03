@@ -113,4 +113,33 @@ describe('Chart, both marks', () => {
     expect(screen.getByRole('table', { name: 'Findings closed' })).toBeInTheDocument()
     expect(screen.getByRole('rowheader', { name: 'Jul' })).toBeInTheDocument()
   })
+
+  /* Four props that decide what the reader sees and had never been rendered:
+     stacked bars, a filled line, the numbers on the bars, and the locale those
+     numbers are formatted in. `locale` is the one a non-English product reads
+     first, and a chart formatting 1234.5 the American way in a Swedish screen
+     is wrong in a way nothing else in the gate would notice. */
+  it('stacks, fills, shows its numbers and formats them in the given locale', () => {
+    const { container } = render(
+      <Chart
+        label="Revenue"
+        type="bar"
+        stacked
+        showValues
+        locale="de-DE"
+        categories={['Q1', 'Q2']}
+        series={[{ label: 'New', values: [1234.5, 2000] }, { label: 'Renewal', values: [1000, 500] }]}
+      />,
+    )
+    expect(container.querySelector('.chart')).toHaveAttribute('data-stacked')
+    expect(screen.getAllByText('1.234,5').length).toBeGreaterThan(0)
+  })
+
+  it('fills the area under a single line', () => {
+    const { container } = render(
+      <Chart label="Signups" type="line" area categories={['Mon', 'Tue', 'Wed']} series={[{ label: 'Signups', values: [1, 4, 2] }]} />,
+    )
+    expect(container.querySelector('.chart')).toHaveAttribute('data-area')
+    expect(container.querySelector('.chart-line-area')).toBeInTheDocument()
+  })
 })

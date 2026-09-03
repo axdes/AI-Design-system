@@ -78,4 +78,16 @@ describe('TagInput', () => {
 
     expect(onChange).not.toHaveBeenCalled()
   })
+
+  it('paints invalid, and a disabled field takes nothing away and adds nothing', async () => {
+    const onChange = vi.fn()
+    const { container } = render(<TagInput value={['one']} onChange={onChange} label="Tags" invalid disabled />)
+    const root = container.querySelector('.taginput') as HTMLElement
+    expect(root).toHaveAttribute('data-invalid')
+    expect(root).toHaveAttribute('data-disabled')
+    /* The remove control is not merely styled off: it is not wired, so a click
+       anywhere on the chip cannot drop a tag. */
+    expect(screen.queryByRole('button', { name: /remove/i })).toBeNull()
+    expect(onChange).not.toHaveBeenCalled()
+  })
 })

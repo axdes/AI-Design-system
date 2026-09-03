@@ -41,4 +41,18 @@ describe('PlanCard', () => {
     rerender(<PlanCard name="Team" price="$12" features={[]} action={<button type="button">Pick</button>} />)
     expect(screen.queryByText('per month')).toBeNull()
   })
+
+  it('says the recommendation in the caller’s words', () => {
+    render(
+      <PlanCard
+        name="Business"
+        price="$29"
+        features={[]}
+        action={<button type="button">Pick</button>}
+        recommended
+        recommendedLabel="Most popular"
+      />,
+    )
+    expect(screen.getByText('Most popular')).toBeInTheDocument()
+  })
 })

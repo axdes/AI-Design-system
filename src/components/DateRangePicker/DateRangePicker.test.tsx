@@ -84,4 +84,28 @@ describe('DateRangePicker', () => {
     await user.click(day('20'))
     await waitFor(() => expect(screen.queryByRole('grid')).toBeNull())
   })
+
+  /* Five props that had never been rendered: the two bounds the calendar is
+     supposed to enforce, the invalid and size attributes the CSS paints, and
+     disabled — which has to reach the BUTTON, not only the look of it. */
+  it('carries its bounds into the calendar, and a disabled trigger does not open', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <DateRangePicker
+        label="Stay dates"
+        onChange={() => undefined}
+        min={new Date(2026, 0, 10)}
+        max={new Date(2026, 0, 20)}
+        invalid
+        size="sm"
+        disabled
+      />,
+    )
+    const trigger = screen.getByRole('button', { name: 'Stay dates' })
+    expect(trigger).toBeDisabled()
+    expect(trigger).toHaveAttribute('data-invalid')
+    expect(trigger).toHaveAttribute('data-size', 'sm')
+    await user.click(trigger)
+    expect(container.querySelector('.calendar')).toBeNull()
+  })
 })

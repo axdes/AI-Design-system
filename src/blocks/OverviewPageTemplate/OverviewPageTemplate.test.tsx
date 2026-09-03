@@ -42,4 +42,15 @@ describe('OverviewPageTemplate', () => {
     expect(screen.getByText('Nothing here yet')).toBeInTheDocument()
     expect(screen.queryByText('the rest')).not.toBeInTheDocument()
   })
+
+  it('puts the board above the grid when a screen passes one', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <OverviewPageTemplate title="This quarter" board={<div>the board</div>}>
+          <div>the widgets</div>
+        </OverviewPageTemplate>
+      </MemoryRouter>,
+    )
+    expect(container.querySelector('.overview-board')).toHaveTextContent('the board')
+  })
 })

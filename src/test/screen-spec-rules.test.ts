@@ -175,7 +175,7 @@ describe('priority and archetype checks can fail', () => {
 
   it('fails two primary buttons in one zone, notes two on one surface', () => {
     const one = checkPrimaryActions([
-      { name: 'header', components: ['Button variant=primary', 'Button variant=primary iconEnd'] },
+      { name: 'header', components: ['Button variant=primary', 'Button variant=primary block'] },
     ])
     expect(one.problems.join('\n')).toMatch(/a screen answers once/)
     const samePage = checkPrimaryActions([

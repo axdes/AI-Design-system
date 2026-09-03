@@ -47,4 +47,9 @@ describe('Layout', () => {
     render(<Stack as="ul" aria-label="Sessions"><li>one</li></Stack>)
     expect(screen.getByRole('list', { name: 'Sessions' })).toBeInTheDocument()
   })
+
+  it('lines the rows of a grid up with each other when asked', () => {
+    const { container } = render(<Grid alignRows><div>a</div><div>b</div></Grid>)
+    expect(container.querySelector('.grid')).toHaveAttribute('data-align-rows')
+  })
 })

@@ -337,6 +337,21 @@ describe('lint-api', () => {
     expect(out).toContain('no test')
   }, 30_000)
 
+  /* A5's population is the package's own src, so the probe needs a part nothing
+     renders — which is every invented one — and a prop nobody could have passed. */
+  it('A5 catches a prop nothing in the package passes', () => {
+    const { code, out } = withRegistry((registry) => {
+      registry.components.ProbeCold = {
+        ref: 'ProbeCold',
+        main: 'ProbeCold',
+        sourcePath: 'src/components/Button/Button.tsx',
+        props: [{ name: 'neverPassedAnywhere', type: 'boolean', required: false }],
+      }
+    })
+    expect(code, out).toBe(1)
+    expect(out).toContain('neverPassedAnywhere')
+  }, 30_000)
+
   it('holds the ceiling: a name on it may not gain a type', () => {
     const { code, out } = withRegistry((registry) => {
       /* `value` is on the ceiling: the value a part carries is that part's own

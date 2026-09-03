@@ -48,4 +48,11 @@ describe('Avatar', () => {
     const { container } = render(<Avatar name="Platform Guild" shape="square" />)
     expect(container.querySelector('.avatar')).toHaveAttribute('data-shape', 'square')
   })
+
+  it('sizes from its parent when told to stretch, instead of picking a step', () => {
+    const { container } = render(<Avatar name="Ada Lovelace" stretch />)
+    const el = container.querySelector('.avatar') as HTMLElement
+    expect(el).toHaveAttribute('data-stretch')
+    expect(el).not.toHaveAttribute('data-size')
+  })
 })

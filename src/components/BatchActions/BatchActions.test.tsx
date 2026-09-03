@@ -38,4 +38,13 @@ describe('BatchActions', () => {
     expect(screen.getByRole('button', { name: 'Archive' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
   })
+
+  it('carries a select-all control beside the count', () => {
+    render(
+      <BatchActions count={3} onClear={() => undefined} selectAll={<button type="button">Select all 40</button>}>
+        <Button>Archive</Button>
+      </BatchActions>,
+    )
+    expect(screen.getByRole('button', { name: 'Select all 40' })).toBeInTheDocument()
+  })
 })

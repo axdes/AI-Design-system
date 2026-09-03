@@ -82,4 +82,11 @@ describe('DatePicker', () => {
     expect(day('5')).toBeDisabled()
     expect(day('15')).toBeEnabled()
   })
+
+  it('paints itself invalid and takes the size of the field beside it', () => {
+    render(<DatePicker label="Due date" onChange={() => undefined} invalid size="sm" />)
+    const trigger = screen.getByRole('button', { name: 'Due date' })
+    expect(trigger).toHaveAttribute('data-invalid')
+    expect(trigger).toHaveAttribute('data-size', 'sm')
+  })
 })

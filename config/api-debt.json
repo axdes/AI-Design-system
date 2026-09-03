@@ -1,5 +1,5 @@
 {
-  "_why": "The opening balance for npm run lint:api, recorded by npm run lint:api -- --record. Each number is a ceiling that may only fall: a prop name may not gain a type, a part may not gain a prop, a callback outside the vocabulary may not spread to a new part, and a new part may not arrive untested. Re-record after a payment, never to make a failure go away.",
+  "_why": "The opening balance for npm run lint:api, recorded by npm run lint:api -- --record. Each number is a ceiling that may only fall: a prop name may not gain a type, a part may not gain a prop, a callback outside the vocabulary may not spread to a new part, a new part may not arrive untested, and a part may not publish a new prop that nothing here passes. Re-record after a payment, never to make a failure go away.",
   "recorded": "2026-09-03",
   "shapes": {
     "max": 2,
@@ -47,5 +47,6 @@
     "WizardTemplate": 10
   },
   "callbacks": {},
-  "untested": []
+  "untested": [],
+  "cold": {}
 }

@@ -38,17 +38,27 @@ work; one small custom linter covers what only this project knows.
   the OLD spelling and were taught the new one in the same commit: without that,
   `states` called 32 of 34 controls ringless and the restated-ring rule went
   quietly silent.
-- **`lint:api`** — the same rule one level deeper, plus three more. One prop
+- **`lint:api`** — the same rule one level deeper, plus four more. One prop
   name resolves to ONE TYPE everywhere (`lint:vocab` checks the VALUES of a
   union and never the shape, so 53 names carried more than one type with every
   gate green); a part past seven props is a compound or writes
   `monolithic because …` in its file; a callback comes from the closed list in
-  `config/callback-vocabulary.json`; no part is admitted without a test. All
-  four run against `config/api-debt.json`, a ceiling that only falls: today's
-  numbers are recorded, and from here a name may not gain a type, a part may not
-  gain a prop, a callback outside the vocabulary may not spread to a new part,
-  and a new part may not arrive untested. Pay some down and re-record with
-  `npm run lint:api -- --record`.
+  `config/callback-vocabulary.json`; no part is admitted without a test; and
+  every published prop is PASSED somewhere in this package — an example, a test,
+  a specimen. That last one landed on 2026-09-03 and found 78 props that had
+  never been rendered here, `Button.iconEnd` among them, which the contract
+  itself described as inert. What counts as one type is decided as carefully as
+  the rule: a narrower union of the same words, a union of numbers against
+  `number`, a string against `ReactNode`, a collection or render prop of the
+  part's own named shape, and a vocabulary callback's payload all fold — but a
+  DOM EVENT in a callback never does, and that exception is what caught
+  `AuthTemplate.onSubmit` handing every sign-in screen a `FormEvent`. All five
+  run against `config/api-debt.json`, a ceiling that only falls: today's numbers
+  are recorded, and from here a name may not gain a type, a part may not gain a
+  prop, a callback outside the vocabulary may not spread to a new part, a new
+  part may not arrive untested, and a part may not publish a prop nothing here
+  passes. `npm run lint:api -- --show` prints what the ceiling holds; pay some
+  down and re-record with `npm run lint:api -- --record`.
 - **`lint:mechanism`** — the same BEHAVIOUR written twice, which copy-paste
   detection cannot see: it compares what a file DOES (which events it binds,
   whether it portals, measures, clamps an index) rather than what it says. A

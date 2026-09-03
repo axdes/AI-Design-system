@@ -79,4 +79,9 @@ describe('LoadMore', () => {
     fire([{ isIntersecting: false }])
     expect(onLoad).not.toHaveBeenCalled()
   })
+
+  it('says what it is doing while it loads, in the caller’s words', () => {
+    render(<LoadMore onLoad={() => undefined} hasMore loading label="Load more" loadingLabel="Hämtar fler" />)
+    expect(screen.getByRole('button', { name: /Hämtar fler/ })).toBeInTheDocument()
+  })
 })

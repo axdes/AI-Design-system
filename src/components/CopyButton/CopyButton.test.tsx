@@ -87,4 +87,12 @@ describe('CopyButton', () => {
     expect(glyph(done)).toContain('lucide-check')
     expect(glyph(done)).not.toContain('lucide-copy')
   })
+
+  it('says "copied" in the caller’s words', async () => {
+    const user = userEvent.setup()
+    stubClipboard({ writeText: vi.fn(() => Promise.resolve()) })
+    render(<CopyButton value="sk-123" label="Copy key" copiedLabel="Kopierat" />)
+    await user.click(screen.getByRole('button', { name: 'Copy key' }))
+    expect(await screen.findByRole('button', { name: 'Kopierat' })).toBeInTheDocument()
+  })
 })

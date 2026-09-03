@@ -46,4 +46,24 @@ describe('NumberInput', () => {
     const { container: small } = render(<NumberInput label="Qty" value={1} onChange={() => undefined} />)
     for (const b of small.querySelectorAll<HTMLElement>('.icon-button')) expect(b).toHaveAttribute('data-size', 'sm')
   })
+
+  /* Three props with nowhere to show themselves on screen: the steppers are
+     icon-only, so their words exist only as an accessible name, and invalid is
+     a data attribute the CSS paints. A locale that is not English is where all
+     three are first read. */
+  it('marks itself invalid and names both steppers in the caller’s words', () => {
+    const { container } = render(
+      <NumberInput
+        label="Antal"
+        value={2}
+        onChange={() => undefined}
+        invalid
+        decrementLabel="Minska"
+        incrementLabel="Öka"
+      />,
+    )
+    expect(container.querySelector('.number-input')).toHaveAttribute('data-invalid')
+    expect(screen.getByRole('button', { name: 'Minska' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Öka' })).toBeInTheDocument()
+  })
 })

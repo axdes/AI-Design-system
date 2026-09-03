@@ -31,7 +31,7 @@ export function Screen() {
   return (
     <ListPageTemplate
       title="Documents"
-      actions={<Button variant="primary" iconEnd>New document<Icon name="add" /></Button>}
+      actions={<Button variant="primary">New document<Icon name="add" /></Button>}
       toolbar={
         <Row gap={2}>
           {/* `expanded`: in a list toolbar the field is the point, so it stays

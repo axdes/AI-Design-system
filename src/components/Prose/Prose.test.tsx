@@ -23,4 +23,9 @@ describe('Prose', () => {
     expect(prose).toHaveAttribute('data-size', 'md')
     expect(prose).toHaveAttribute('data-appearance', 'muted')
   })
+
+  it('drops to plain ink when the paragraph is the content rather than a note about it', () => {
+    const { container } = render(<Prose appearance="plain">The invoice was paid on Tuesday.</Prose>)
+    expect(container.querySelector('.prose')).toHaveAttribute('data-appearance', 'plain')
+  })
 })

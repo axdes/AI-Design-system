@@ -64,4 +64,17 @@ describe('SegmentedControl', () => {
     await user.keyboard('{Home}')
     expect(screen.getByRole('radio', { name: 'List' })).toHaveAttribute('aria-checked', 'true')
   })
+
+  it('inverts its fills for a control sitting on a grey surface', () => {
+    const { container } = render(
+      <SegmentedControl
+        label="View"
+        value="list"
+        onChange={() => undefined}
+        options={[{ value: 'list', label: 'List' }, { value: 'grid', label: 'Grid' }]}
+        surface="muted"
+      />,
+    )
+    expect(container.querySelector('.segmented')).toHaveAttribute('data-surface', 'muted')
+  })
 })

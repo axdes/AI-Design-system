@@ -61,4 +61,11 @@ describe('ChatComposer', () => {
     expect(onStop).toHaveBeenCalledOnce()
     expect(screen.queryByRole('button', { name: /send/i })).toBeNull()
   })
+
+  it('wears the AI mark when the answer on the other end is a model', () => {
+    const { container } = render(
+      <ChatComposer value="" onChange={() => undefined} onSend={() => undefined} aiSpark />,
+    )
+    expect(container.querySelector('.chat-composer-spark')).toBeInTheDocument()
+  })
 })

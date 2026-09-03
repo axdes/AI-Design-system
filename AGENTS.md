@@ -53,8 +53,8 @@ Either way that file is the system: if a thing is not in it, it does not exist.
 
 ## Button icon placement
 
-Every icon in a button trails the label — one line of CSS, not a choice.
-`iconEnd` is an inert leftover; passing it does nothing (owner, 2026-06-10).
+Every icon in a button trails the label — one line of CSS, not a choice. The
+`iconEnd` prop that once said so was inert and is gone (2026-09-03).
 
 ## The props every component takes, said once
 

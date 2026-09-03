@@ -59,4 +59,15 @@ describe('WizardTemplate', () => {
     wizard()
     expect(screen.getByText('step body')).toBeInTheDocument()
   })
+
+  /* The three props a wizard needs while it is committing: both ways through
+     say the caller's words, and `busy` freezes them so a slow save cannot be
+     stepped over or repeated. */
+  it('names both ways through, and freezes them while it commits', () => {
+    wizard({ currentId: 'what', backLabel: 'Tillbaka', nextLabel: 'Nästa', busy: true })
+    const back = screen.getByRole('button', { name: 'Tillbaka' })
+    const next = screen.getByRole('button', { name: 'Nästa' })
+    expect(back).toBeDisabled()
+    expect(next).toBeDisabled()
+  })
 })

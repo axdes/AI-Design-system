@@ -47,4 +47,13 @@ describe('DetailPageTemplate', () => {
     )
     expect(two.querySelector('.page')).toHaveAttribute('data-has-aside')
   })
+
+  it('names the way back in the caller’s words', () => {
+    render(
+      <DetailPageTemplate title="Invoice 4021" onBack={() => undefined} backLabel="Back to invoices">
+        <p>the record</p>
+      </DetailPageTemplate>,
+    )
+    expect(screen.getByRole('button', { name: 'Back to invoices' })).toBeInTheDocument()
+  })
 })

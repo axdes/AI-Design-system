@@ -37,4 +37,24 @@ describe('FormPanel', () => {
     panel({ errors: [{ id: 'name', message: 'Give it a name.' }] })
     expect(screen.getByText('Give it a name.')).toBeInTheDocument()
   })
+
+  /* `busy` is the whole of what a form does while it is saving: the commit
+     shows a spinner and the way out is blocked, so a second submit cannot
+     happen and a half-saved record cannot be abandoned mid-write. */
+  it('blocks the way out and spins the commit while it saves, in the caller’s words', () => {
+    render(
+      <FormPanel
+        title="Edit client"
+        onClose={() => undefined}
+        onSubmit={() => undefined}
+        submitLabel="Save"
+        cancelLabel="Not now"
+        busy
+      >
+        <p>fields</p>
+      </FormPanel>,
+    )
+    expect(screen.getByRole('button', { name: 'Not now' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Save/ })).toHaveAttribute('data-loading')
+  })
 })

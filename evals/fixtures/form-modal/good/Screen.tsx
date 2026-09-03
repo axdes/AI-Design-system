@@ -40,7 +40,7 @@ export function Screen() {
 
   return (
     <>
-      <Button variant="primary" iconEnd onClick={() => setOpen(true)}>
+      <Button variant="primary" onClick={() => setOpen(true)}>
         Invite user<Icon name="person_add" />
       </Button>
 

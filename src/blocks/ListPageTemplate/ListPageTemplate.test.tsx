@@ -46,4 +46,20 @@ describe('ListPageTemplate', () => {
     page()
     expect(screen.getByRole('heading', { level: 1, name: 'Sessions' })).toBeInTheDocument()
   })
+
+  /* `panels` is what the app shell keys its height off, and it stays on through
+     the empty state — a page that scrolls its own panel must not start
+     scrolling the window the moment the list is empty. `contentClassName` is
+     where the screen's own layout goes. */
+  it('declares its panels to the shell and carries the screen’s layout class', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <ListPageTemplate title="Sessions" panels contentClassName="session-grid">
+          <div>the rows</div>
+        </ListPageTemplate>
+      </MemoryRouter>,
+    )
+    expect(container.querySelector('[data-panels]')).toBeInTheDocument()
+    expect(container.querySelector('.list-page-content')).toHaveClass('session-grid')
+  })
 })

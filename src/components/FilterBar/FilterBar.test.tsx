@@ -106,4 +106,16 @@ describe('FilterBar', () => {
     render(<FilterBar activeCount={2} onClear={() => undefined}><button>Owner</button></FilterBar>)
     expect(screen.getByRole('button', { name: /filters/i })).toHaveAttribute('data-active')
   })
+
+  /* `collapsed` is the desktop screen ASKING for the mobile shape: a toolbar
+     with no room of its own folds its filters into the sheet, the same one the
+     phone gets, rather than pushing them onto a second row. */
+  it('folds into the sheet on a wide screen when the caller asks it to', async () => {
+    const user = userEvent.setup()
+    render(<FilterBar activeCount={0} onClear={() => undefined} collapsed><button>Owner</button></FilterBar>)
+    const trigger = screen.getByRole('button', { name: /filter/i })
+    expect(screen.queryByRole('button', { name: 'Owner' })).toBeNull()
+    await user.click(trigger)
+    expect(screen.getByRole('button', { name: 'Owner' })).toBeInTheDocument()
+  })
 })

@@ -16,7 +16,8 @@
   white-space: nowrap;
 }
 /* Icons in buttons always trail the label (`order` works with the flex row,
- * so it mirrors in RTL). `iconEnd` is redundant now but kept for compat. */
+ * so it mirrors in RTL). The `iconEnd` prop it replaced was deleted 2026-09-03: it did nothing, and an
+ * inert prop in the registry is a prop an agent tries. */
 .btn > .icon {
   order: 1;
 }

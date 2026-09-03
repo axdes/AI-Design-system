@@ -5,6 +5,7 @@
  *   A2  a part past seven props is a compound, or records why not
  *   A3  callbacks come from a closed list
  *   A4  no part without a test
+ *   A5  every published prop is passed somewhere in this package
  *
  * A1 is the reason this exists. `lint:vocab` holds the shared props to one set
  * of VALUES — `tone` on Alert accepts what `tone` on Progress accepts — and has
@@ -327,10 +328,99 @@ const hasTest = (part) => {
 }
 const untested = parts.filter((p) => !hasTest(p)).map((p) => p.name)
 
+
+/* ── A5 ─────────────────────────────────────────────────────────────────── */
+
+/* A PROP NOBODY PASSES HAS NEVER BEEN RENDERED.
+ *
+ * Every part ships a golden example, a test and — for the decision layers — a
+ * specimen, and those three are the evidence this system publishes about itself.
+ * A prop that appears in none of them has never been through a browser here:
+ * `Sparkline` drew a flat series along the floor for months and its FIRST test
+ * found it. `Button.iconEnd` is the extreme case — the contract says out loud
+ * that passing it does nothing, and it is still in the registry an agent reads.
+ *
+ * POPULATION: this package. Deliberately not the products, for the same reason
+ * lint:token-layer excludes them — a product passing a prop is not the system
+ * proving one, and the published copy has no products to look at.
+ *
+ * Counted from the JSX in `src`, plus object-literal keys in any file that
+ * mentions the part, because a test harness passes its props as an object. */
+const srcFiles = []
+const walk = (dir) => {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name)
+    if (entry.isDirectory()) walk(full)
+    else if (/\.tsx?$/.test(entry.name)) srcFiles.push(full)
+  }
+}
+walk(join(ROOT, 'src'))
+
+const attrsOfTag = new Map()
+const keysOfFile = new Map()
+const tagsOfFile = new Map()
+for (const file of srcFiles) {
+  const text = readFileSync(file, 'utf8')
+  const keys = new Set()
+  for (const m of text.matchAll(/(?<![\w.])([A-Za-z][\w]*)\s*:/g)) keys.add(m[1])
+  keysOfFile.set(file, keys)
+  const tags = new Set()
+  for (const m of text.matchAll(/<([A-Z][A-Za-z0-9]*)/g)) {
+    tags.add(m[1])
+    /* The opening element, brace- and string-aware: an attribute is a name at
+     * depth 0, and everything inside {…} is somebody else's identifier. */
+    let i = m.index + m[0].length, depth = 0, quote = null
+    /* `<DataGrid<Row> …>` — the generic argument comes before the attributes,
+     * and reading its `>` as the end of the element made every prop of the three
+     * generic parts read as never passed. */
+    if (text[i] === '<') {
+      let g = 1
+      i++
+      while (i < text.length && g > 0) { if (text[i] === '<') g++; else if (text[i] === '>') g--; i++ }
+    }
+    const attrs = attrsOfTag.get(m[1]) ?? new Set()
+    while (i < text.length) {
+      const c = text[i]
+      if (quote) { if (c === quote && text[i - 1] !== '\\') quote = null; i++; continue }
+      if (c === '/' && text[i + 1] === '*') { const end = text.indexOf('*/', i + 2); i = end === -1 ? text.length : end + 2; continue }
+      if (c === '"' || c === "'" || c === '`') { quote = c; i++; continue }
+      if (c === '{') { depth++; i++; continue }
+      if (c === '}') { depth--; i++; continue }
+      if (depth === 0 && c === '>') break
+      if (depth > 0) { i++; continue }
+      const rest = /^([A-Za-z][\w-]*)\s*(=|[\s/>])/.exec(text.slice(i))
+      if (rest && !/[\w\-.$]/.test(text[i - 1] ?? '')) { attrs.add(rest[1]); i += rest[1].length; continue }
+      i++
+    }
+    attrsOfTag.set(m[1], attrs)
+  }
+  tagsOfFile.set(file, tags)
+}
+const exercised = (part) => {
+  const tag = part.main ?? part.name
+  const used = new Set(attrsOfTag.get(tag) ?? [])
+  /* Any file that NAMES the part, not only one that renders it as a tag: a test
+   * harness imports the part and hands its props over as an object. */
+  for (const [file, tags] of tagsOfFile) {
+    if (tags.has(tag) || readFileSync(file, 'utf8').includes(tag)) for (const k of keysOfFile.get(file)) used.add(k)
+  }
+  return used
+}
+/* The five that mean the same on all of them are documented once in the contract
+ * and passed on whichever part a screen happens to need — counting them here
+ * would report the catalogue rather than the API. */
+const SHARED = new Set(['className', 'children', 'ref', 'id', 'style', 'key'])
+const unexercised = []
+for (const part of parts) {
+  const used = exercised(part)
+  const cold = publicProps(part).map((p) => p.name).filter((n) => !SHARED.has(n) && !used.has(n))
+  if (cold.length) unexercised.push({ name: part.name, props: cold })
+}
+
 /* ── record ─────────────────────────────────────────────────────────────── */
 if (record) {
   const next = {
-    _why: 'The opening balance for npm run lint:api, recorded by npm run lint:api -- --record. Each number is a ceiling that may only fall: a prop name may not gain a type, a part may not gain a prop, a callback outside the vocabulary may not spread to a new part, and a new part may not arrive untested. Re-record after a payment, never to make a failure go away.',
+    _why: 'The opening balance for npm run lint:api, recorded by npm run lint:api -- --record. Each number is a ceiling that may only fall: a prop name may not gain a type, a part may not gain a prop, a callback outside the vocabulary may not spread to a new part, a new part may not arrive untested, and a part may not publish a new prop that nothing here passes. Re-record after a payment, never to make a failure go away.',
     recorded: new Date().toISOString().slice(0, 10),
     shapes: Object.fromEntries(drift.map((d) => [d.name, d.types.size]).sort((a, b) => a[0].localeCompare(b[0]))),
     props: Object.fromEntries(wide.map((p) => [p.name, p.count]).sort((a, b) => a[0].localeCompare(b[0]))),
@@ -342,6 +432,10 @@ if (record) {
       [...callbacks].filter(([n]) => !canonical.has(n) && !kept.has(n)).map(([n, ps]) => [n, [...ps].sort()]).sort((a, b) => a[0].localeCompare(b[0])),
     ),
     untested: [...untested].sort(),
+    /* A5: which props of which part nothing here passes. Per part rather than a
+     * total, so warming one prop shows as paid and a NEW cold prop on the same
+     * part still fails. */
+    cold: Object.fromEntries(unexercised.map((u) => [u.name, [...u.props].sort()]).sort((a, b) => a[0].localeCompare(b[0]))),
   }
   writeFileSync(DEBT, `${JSON.stringify(next, null, 2)}\n`)
   console.log(
@@ -417,13 +511,28 @@ for (const name of untested) {
 }
 paid.push(...(debt.untested ?? []).filter((n) => !untested.includes(n)).map((n) => `${n}: now tested`))
 
+for (const { name, props } of unexercised) {
+  const held = debt.cold?.[name] ?? []
+  const fresh = props.filter((p) => !held.includes(p))
+  if (fresh.length) {
+    say('A5', name, `publishes ${fresh.join(', ')} and nothing here passes ${fresh.length > 1 ? 'them' : 'it'}`,
+      'put it in the golden example if it is part of how the part is used, in the test if it is a promise, or delete it. A prop an agent can read and nobody has rendered is a prop that may not work.')
+  }
+}
+for (const [name, held] of Object.entries(debt.cold ?? {})) {
+  const now = unexercised.find((u) => u.name === name)?.props ?? []
+  const warmed = held.filter((p) => !now.includes(p))
+  if (warmed.length) paid.push(`${name}: ${warmed.join(', ')} now exercised`)
+}
+
 /* ── the report ─────────────────────────────────────────────────────────── */
 const nShapes = drift.length
 const nTypes = drift.reduce((n, d) => n + d.types.size, 0)
 const narrowed = narrowings.reduce((n, x) => n + x.notes.length, 0)
 console.log(
   `${BOLD}API${RESET} ${DIM}${parts.length} parts, ${shapes.size} prop names — ${nShapes} carry more than one type (${nTypes} shapes), ` +
-    `${wide.length} past seven props, ${[...callbacks.keys()].filter((c) => !canonical.has(c) && !kept.has(c)).length} callbacks outside the vocabulary, ${untested.length} without a test${RESET}`,
+    `${wide.length} past seven props, ${[...callbacks.keys()].filter((c) => !canonical.has(c) && !kept.has(c)).length} callbacks outside the vocabulary, ${untested.length} without a test, ` +
+    `${unexercised.reduce((n, u) => n + u.props.length, 0)} props nothing here passes${RESET}`,
 )
 if (polymorphic.length) {
   console.log(`  ${DIM}${polymorphic.length} name(s) carry one shape per part — a collection of the part's own thing is one question with a parameterised answer${RESET}`)
@@ -440,6 +549,8 @@ if (show) {
   }
   console.log()
   for (const w of wide) console.log(`  ${BOLD}${w.name}${RESET} ${DIM}${w.count} props${RESET}`)
+  console.log()
+  for (const u of unexercised) console.log(`  ${BOLD}${u.name}${RESET} ${DIM}cold: ${u.props.join(', ')}${RESET}`)
   console.log()
 }
 
@@ -465,6 +576,7 @@ const TITLE = {
   A2: 'seven props, then compound',
   A3: 'callbacks come from a closed list',
   A4: 'no part without a test',
+  A5: 'every published prop is exercised here',
 }
 console.error(`${RED}${problems.length} finding(s)${RESET}\n`)
 for (const [rule, list] of [...byRule].sort()) {
