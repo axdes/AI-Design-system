@@ -25,7 +25,17 @@ type Props = {
    */
   onDismiss?: () => void
   dismissLabel?: string
-  /** danger = something live is running (default); warning = it ended, work remains. */
+  /**
+   * danger = something live is running (default); warning = it ended, work
+   * remains.
+   *
+   * The tone decides the LOUDNESS too, and that is the system deciding rather
+   * than a knob: a live thing with a cost is painted in its tone at full
+   * strength, and a reminder you may put away is a card with the tone as a dot.
+   * The second product to need the pill kept its own copy rather than take this
+   * one, because the card version "blended into the chrome" (its review,
+   * 2026-08) — and it was right, for `danger`. (2026-09-04)
+   */
   tone?: 'danger' | 'warning'
   className?: string
 }

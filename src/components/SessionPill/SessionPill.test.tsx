@@ -29,4 +29,20 @@ describe('SessionPill', () => {
     await userEvent.click(screen.getByRole('button', { name: 'End call' }))
     expect(onDismiss).toHaveBeenCalledOnce()
   })
+
+  /* The tone carries the loudness: a live thing with a cost is painted in it,
+     a reminder is the card with a dot. One product kept its own copy of this
+     pill because the card version blended into the chrome. */
+  it('is painted in its tone while something is live, and a card once it is only a reminder', () => {
+    const { container, unmount } = render(
+      <SessionPill tone="danger" label="Emergency call" timer="04:12" actionLabel="Return" icon="phone_callback" onClick={() => undefined} />,
+    )
+    expect(container.querySelector('.session-pill')).toHaveAttribute('data-tone', 'danger')
+    unmount()
+
+    const { container: quiet } = render(
+      <SessionPill tone="warning" label="Wrap-up" onClick={() => undefined} onDismiss={() => undefined} />,
+    )
+    expect(quiet.querySelector('.session-pill')).toHaveAttribute('data-tone', 'warning')
+  })
 })

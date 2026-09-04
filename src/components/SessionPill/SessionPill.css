@@ -83,3 +83,27 @@
     animation: none;
   }
 }
+
+/* THE TONE IS THE LOUDNESS. A live thing with a cost — an emergency call parked
+ * behind another screen, a recording running — is painted in its tone at full
+ * strength; a reminder the reader may put away stays the card with the tone as a
+ * dot. One product kept a hand-written copy of this pill for two weeks because
+ * the card version "blended into the chrome", and it was right about the case it
+ * had. (2026-09-04)
+ *
+ * Everything inside inverts together — the dot, the timer, the action and the
+ * dismiss — which is what makes this a fill rather than a background. */
+.session-pill[data-tone='danger'] {
+  background: var(--destructive);
+  border-color: transparent;
+}
+.session-pill[data-tone='danger'] .session-pill-main,
+.session-pill[data-tone='danger'] .session-pill-label,
+.session-pill[data-tone='danger'] .session-pill-timer,
+.session-pill[data-tone='danger'] .session-pill-action,
+.session-pill[data-tone='danger'] .session-pill-dismiss {
+  color: var(--destructive-foreground);
+}
+/* The dot cannot be the tone on a pill painted in it: it becomes the ink, so it
+ * stays a mark rather than a colour. */
+.session-pill[data-tone='danger'] .session-pill-dot { background: currentcolor; }

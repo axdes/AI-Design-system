@@ -881,7 +881,7 @@
       "survived": []
     },
     "SessionPill": {
-      "hash": "15d2e60bc4eb",
+      "hash": "0f0dacab2058",
       "killed": [
         "strip-aria",
         "drop-optional-render"
