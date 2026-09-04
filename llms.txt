@@ -51,7 +51,7 @@ One line each: name, atomic level[/surface], +parts of a compound, what it is
 for. Import from '@ds/<Name>' in an app, '@/components/<Name>' inside the
 design system.
 
-- Accordion · molecule · Disclosure list: a stack of headers that each reveal a panel.
+- Accordion · molecule · Monolithic because an accordion is one list with one state: the items, whether more than one may…
 - ActionCard · organism/region · A question put to THIS reader, answered on the spot: the ask, the context it needs, the answers,…
 - Alert · molecule/region · Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible.
 - AppLayout · organism/page · The application shell: navigation and a scrolling main, in one of four arrangements.

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Accordion } from './Accordion'
@@ -84,5 +84,24 @@ describe('Accordion', () => {
 
     await user.keyboard('{Home}')
     expect(screen.getByRole('button', { name: 'First' })).toHaveFocus()
+  })
+
+  /* The pair a screen needs when the open state is the PAGE's: a step list whose
+     progress the page owns, a panel a URL deep-links into. Two screens in one
+     product hand-rolled a disclosure rather than take this component, and this
+     is the reason they gave. */
+  it('lets the screen own which panels are open', async () => {
+    const user = userEvent.setup()
+    const onOpenChange = vi.fn()
+    const { rerender } = render(
+      <Accordion openIds={[]} onOpenChange={onOpenChange} items={ITEMS} />,
+    )
+    /* Controlled: the press reports, and nothing opens until the caller says so. */
+    await user.click(screen.getByRole('button', { name: 'First' }))
+    expect(onOpenChange).toHaveBeenCalledWith(['a'])
+    expect(screen.getByRole('button', { name: 'First' })).toHaveAttribute('aria-expanded', 'false')
+
+    rerender(<Accordion openIds={['a']} onOpenChange={onOpenChange} items={ITEMS} />)
+    expect(screen.getByRole('button', { name: 'First' })).toHaveAttribute('aria-expanded', 'true')
   })
 })

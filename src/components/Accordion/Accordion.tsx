@@ -16,8 +16,21 @@ type Props = {
   items: AccordionItem[]
   /** true = several panels open at once; false (default) = one at a time. */
   multiple?: boolean
-  /** Ids open on first render. */
+  /** Ids open on first render, when the accordion keeps its own state. */
   defaultOpen?: string[]
+  /**
+   * Which ids are open, when the SCREEN keeps that state — a step list whose
+   * progress the page owns, a findings panel a URL can deep-link into. Same pair
+   * as `<Tree>`'s `expandedIds` / `onExpandedChange`, and the same rule: pass
+   * both or neither.
+   *
+   * Written because two screens in one product hand-rolled a disclosure rather
+   * than take this component, and the reason both times was that the open state
+   * lives outside it. (2026-09-04)
+   */
+  openIds?: string[]
+  /** Fires with the ids that are open after the press. */
+  onOpenChange?: (ids: string[]) => void
   /** Header voice: `md` (default, body size) or `lg` — the section-head size, for a column of
    *  blocks whose titles are the headings of the page beside them. */
   size?: 'md' | 'lg'
@@ -32,8 +45,21 @@ type Props = {
  * real <button> (Space/Enter toggle it, focus ring, disabled honoured); Arrow
  * Up/Down/Home/End move between headers, matching the WAI-ARIA accordion. State
  * is owned here — pass `multiple` to allow several panels open at once. */
-export function Accordion({ items, multiple = false, defaultOpen = [], size = 'md', headingLevel = 3, className }: Props) {
-  const [open, setOpen] = useState<string[]>(defaultOpen)
+/* Monolithic because an accordion is one list with one state: the items, whether
+ * more than one may stand open, who keeps that state, and the two things a
+ * header has to agree with the page about — its size and its heading level.
+ * There is no half of this a caller could use alone. */
+export function Accordion({ items, multiple = false, defaultOpen = [], openIds, onOpenChange, size = 'md', headingLevel = 3, className }: Props) {
+  const [inner, setInner] = useState<string[]>(defaultOpen)
+  /* Controlled when the caller passes ids, uncontrolled otherwise — and the
+     toggle below computes the next list either way, so the caller receives the
+     same answer the component would have kept. */
+  const open = openIds ?? inner
+  const setOpen = (next: (cur: string[]) => string[]) => {
+    const value = next(open)
+    if (!openIds) setInner(value)
+    onOpenChange?.(value)
+  }
   const baseId = useId()
   const Heading = `h${headingLevel}` as const
 

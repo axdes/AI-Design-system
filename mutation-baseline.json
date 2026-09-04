@@ -5,7 +5,7 @@
   "survived": 57,
   "components": {
     "Accordion": {
-      "hash": "ad6112206c77",
+      "hash": "a58143c2aa78",
       "killed": [
         "and-to-or",
         "drop-optional-render",
