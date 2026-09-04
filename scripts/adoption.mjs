@@ -157,6 +157,16 @@ function measure(app) {
   const used = new Set()
   let screens = 0, templated = 0
 
+  /* Every component mounted by a <Route>, from wherever this app declares them. */
+  const routed = new Set()
+  for (const file of files) {
+    if (!/App\.tsx$|routes?\.tsx$/.test(file)) continue
+    const text = readFileSync(file, 'utf8')
+    for (const m of text.matchAll(/element=\{[\s\S]{0,200}?\}/g)) {
+      for (const t of m[0].matchAll(/<([A-Z][A-Za-z0-9]*)/g)) routed.add(t[1])
+    }
+  }
+
   for (const file of files) {
     const raw = readFileSync(file, 'utf8')
     const imported = systemImports(raw)
@@ -177,10 +187,17 @@ function measure(app) {
      * there is no such thing as choosing the system's Input instead, and the
      * system does not publish a colour picker because the OS one is the answer. */
     let platformDialogs = [...raw.matchAll(/<input\b[^>]*>/g)].filter((el) => /type=["']color["']/.test(el[0])).length
-    /* A screen is a file the app itself files under layouts/ or pages/. Both
-     * names are in use across the products and neither is this package's to
-     * rename. */
-    const isScreen = /\/(layouts|pages)\//.test(file)
+    /* A SCREEN IS WHAT THE ROUTER MOUNTS.
+     *
+     * It used to be "any file under layouts/ or pages/", and those folders hold
+     * a screen's PARTS too: workshops keeps eleven screens there and seventeen
+     * modals, columns and cards beside them, so the templated fraction read 6 of
+     * 28 for a product where seven of eleven screens sit on a page block
+     * (2026-09-04). A modal is not a screen and cannot sit on a page template.
+     *
+     * `routed` is every component the app renders inside a <Route>, read from
+     * the app's own routing file — derived from the product, not a list here. */
+    const isScreen = /\/(layouts|pages)\//.test(file) && [...routed].some((n) => new RegExp(`export (function|const) ${n}\\b`).test(raw))
     if (isScreen) {
       screens++
       if ([...imported].some((n) => PAGE_BLOCKS.has(n) && src.includes(`<${n}`))) templated++
