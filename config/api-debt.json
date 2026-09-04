@@ -1,6 +1,6 @@
 {
   "_why": "The opening balance for npm run lint:api, recorded by npm run lint:api -- --record. Each number is a ceiling that may only fall: a prop name may not gain a type, a part may not gain a prop, a callback outside the vocabulary may not spread to a new part, a new part may not arrive untested, and a part may not publish a new prop that nothing here passes. Re-record after a payment, never to make a failure go away.",
-  "recorded": "2026-09-03",
+  "recorded": "2026-09-04",
   "shapes": {
     "max": 2,
     "min": 2,
@@ -8,6 +8,7 @@
     "value": 10
   },
   "props": {
+    "Accordion": 8,
     "AdaptiveListPage": 11,
     "AuthTemplate": 11,
     "Calendar": 12,
@@ -53,6 +54,5 @@
   },
   "callbacks": {},
   "untested": [],
-  "cold": {},
-  "_theFour": "The four names still carrying more than one type, and why each stays (2026-09-04). `value` — ten shapes, one per control, and the value a part carries IS that part's type; folding it was tried and the fold turned out tautological, since a value is trivially its own value. `min` and `max` — a bound in the part's own scale, a Date on the three date parts and a number on the nine numeric ones; a rule that folds a bound only when it matches the part's `value` type does not cover AvatarGroup, Chart, CountBadge or TagGroup, which bound a count and have no `value` at all. `name` — an icon's name against a person's, which is genuinely two questions sharing an honest word: renaming Icon's prop would touch every call site in eight products to say `glyph` or `icon`, and `<Icon name=\"add\">` is not wrong. All four are frozen: none may gain a type."
+  "cold": {}
 }

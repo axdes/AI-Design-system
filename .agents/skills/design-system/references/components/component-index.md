@@ -7,7 +7,7 @@ Detail for the ones you will actually write: `npm run registry -- <Name>` (`--de
 examples, `--search <word>` when you do not know the name). Import from `@/components/<Name>` inside
 this package and `@ds/<Name>` from an app. Generated from registry/ — never edit this file.
 
-Accordion · molecule · Monolithic because an accordion is one list with one state: the items, whether more than one may…
+Accordion · molecule · Disclosure list: a stack of headers that each reveal a panel.
 ActionCard · organism/region · A question put to THIS reader, answered on the spot: the ask, the context it needs, the answers,…
 Alert · molecule/region · Inline message on a region: `tone` carries the meaning and `onDismiss` makes it dismissible.
 AppLayout · organism/page · The application shell: navigation and a scrolling main, in one of four arrangements.

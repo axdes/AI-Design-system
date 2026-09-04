@@ -478,6 +478,21 @@ for (const [name, held] of Object.entries(debt.shapes ?? {})) {
   if (!drift.some((d) => d.name === name)) paid.push(`${name}: ${held} types → one`)
 }
 
+/* AND THE REASON IS NOT THE INDEX ROW.
+ *
+ * `Monolithic because …` sitting directly above the export IS the component's
+ * JSDoc, and the registry publishes the first sentence of that as the one line
+ * every agent reads when it is choosing a part. Accordion's read "Monolithic
+ * because an accordion is one list with one state" for as long as it took to
+ * look at the showcase (2026-09-04). The argument belongs above `type Props`,
+ * with the props it is about. */
+for (const part of parts) {
+  if (/^\s*(monolithic|not a compound) because/i.test(part.description ?? '')) {
+    say('A2', part.name, 'publishes its own A2 argument as its description',
+      'the first sentence of a part\'s JSDoc IS its index row — what it is for, and when to reach for it instead of its neighbour. Move "monolithic because …" above `type Props`, where the props it argues about are.')
+  }
+}
+
 for (const p of wide) {
   const held = debt.props?.[p.name]
   if (held === undefined && !p.excused) {

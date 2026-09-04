@@ -12,6 +12,10 @@ export type AccordionItem = {
   disabled?: boolean
 }
 
+/* Monolithic because an accordion is one list with one state: the items, whether
+ * more than one may stand open, who keeps that state, and the two things a
+ * header has to agree with the page about — its size and its heading level.
+ * There is no half of this a caller could use alone. */
 type Props = {
   items: AccordionItem[]
   /** true = several panels open at once; false (default) = one at a time. */
@@ -43,12 +47,9 @@ type Props = {
 
 /* Disclosure list: a stack of headers that each reveal a panel. The header is a
  * real <button> (Space/Enter toggle it, focus ring, disabled honoured); Arrow
- * Up/Down/Home/End move between headers, matching the WAI-ARIA accordion. State
- * is owned here — pass `multiple` to allow several panels open at once. */
-/* Monolithic because an accordion is one list with one state: the items, whether
- * more than one may stand open, who keeps that state, and the two things a
- * header has to agree with the page about — its size and its heading level.
- * There is no half of this a caller could use alone. */
+ * Up/Down/Home/End move between headers, matching the WAI-ARIA accordion. It
+ * keeps its own state unless the screen owns it (`openIds` + `onOpenChange`);
+ * `multiple` allows several panels open at once. */
 export function Accordion({ items, multiple = false, defaultOpen = [], openIds, onOpenChange, size = 'md', headingLevel = 3, className }: Props) {
   const [inner, setInner] = useState<string[]>(defaultOpen)
   /* Controlled when the caller passes ids, uncontrolled otherwise — and the
