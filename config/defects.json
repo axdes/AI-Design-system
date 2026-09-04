@@ -1,7 +1,7 @@
 {
   "_why": "Real defects this system shipped, each with the check that finds it now or a written statement that it cannot be checked. It exists to answer one question the gate cannot answer about itself: of the things that actually went wrong, how many would a person still have to notice by eye. ds-factory built the same ledger from this system's fix commits and measured 34 of 46 found by eye against 7 by the gate; this is the same instrument, kept here where the fixes land.",
   "_seeded": "SEEDED, NOT COMPLETE. docs/CHANGELOG-REVIEW.md carries 614 entries and only the ones below have been read and classified — every one states what was wrong in the words of the entry it came from, and nothing here is inferred from a heading. `unclassified` is the rest, and it is a number that falls as entries are read. A corpus that pretended to be complete would be the same lie as a check with the wrong population.",
-  "unclassified": 564,
+  "unclassified": 557,
   "defects": [
     {
       "id": "ring-declared-56-times",
@@ -542,6 +542,69 @@
       "check": "mutate:check · only the parts whose code or test moved since the last measure",
       "status": "proven",
       "evidence": "0.2 seconds when nothing moved. And it fails on the right thing: not a falling score, but a mutant that USED to die and started surviving — a test that stopped biting"
+    },
+    {
+      "id": "250px-of-nothing-above-a-full-library",
+      "date": "2026-08-26",
+      "was": "transcript's library screen opened with 250px of empty space above it, because `.page-content[data-center]` centres vertically UNCONDITIONALLY. The system's answer for that is AdaptiveListPage — a welcome while everything fits, the ordinary layout once it outgrows the screen — and the screen was the hand-rolled version of it",
+      "foundBy": "eye",
+      "check": "audit:pages · no dead band",
+      "status": "proven",
+      "evidence": "the page audit measures the bands a screen leaves empty, in a real browser at three widths. The port also proves the promotion rule: useSimpleFit already carried a note saying this rule was written once and implemented three times"
+    },
+    {
+      "id": "a-full-library-said-it-was-empty-on-the-first-frame",
+      "date": "2026-08-26",
+      "was": "AdaptiveListPage types `count` as `number | null`, where null means \"still loading\", and the screen passed 0 until the data arrived — so a full library rendered \"nothing here yet\" for one frame",
+      "foundBy": "check",
+      "check": "the block's own types, read while migrating",
+      "status": "proven",
+      "evidence": "three defects surfaced by the migration rather than by me, and this is the one a user would have seen. The other two: transcript was the only product without the shared test harness, so the block's ResizeObserver had nothing to measure in jsdom, and the block's empty state replaced the product's own welcome until it was moved into `empty.title`"
+    },
+    {
+      "id": "a-hidden-panel-counted-as-a-dead-column",
+      "date": "2026-08-26",
+      "was": "the page audit called a hidden side panel a dead column. A panel that is not displayed is ABSENT, not dead — and hiding the panel without its region leaves a zero-height column, which is what the audit was actually measuring",
+      "foundBy": "eye",
+      "check": "audit:pages · the rule now distinguishes absent from dead",
+      "status": "proven",
+      "evidence": "found while giving SidePanel `hideBelow`, for the handbook's table of contents: a jump list wrapped under the article points only at what the reader has already scrolled past. The word and its two steps existed already on `<Th hideBelow>`"
+    },
+    {
+      "id": "hiding-the-toc-on-a-tablet-that-had-room",
+      "date": "2026-08-26",
+      "was": "the first fix took `hideBelow: 'md'` and hid the table of contents on a tablet, where there is room for it — 47% of the screen's pixels. The audit only complained about the phone",
+      "foundBy": "eye",
+      "check": "screens · committed shots at three widths",
+      "status": "proven",
+      "evidence": "a miss inside a fix, caught by looking at the shot rather than at the passing audit. Corrected to `sm`"
+    },
+    {
+      "id": "one-component-painted-with-a-primitive",
+      "date": "2026-08-26",
+      "was": "of 138 components exactly one reached past the roles and took a colour primitive: Card pulled `--scrim-70`. Not carelessness — no role existed for the middle step of the scrim, only `--scrim-strong` and `--scrim-fade`",
+      "foundBy": "eye",
+      "check": "lint:token-layer L2 · no tier reaching upwards",
+      "status": "proven",
+      "evidence": "the measurement itself was got wrong twice on the way and both were caught by re-checking: `--space-*` and `--radius-*` were counted as primitives, but a spacing scale IS the vocabulary and there is no semantic layer over it; then `--success-soft` and `--warning-emphasis` were sorted by their NAMES rather than by which file declares them. Membership of the file is the only measure that holds"
+    },
+    {
+      "id": "three-hexes-printed-twice",
+      "date": "2026-08-26",
+      "was": "one value under several names is not a duplicate — `--card-foreground` and `--popover-foreground` are two decisions that agree today and will part the day a popover goes dark. A duplicate is one hex PRINTED twice, and there were three, `--series-1` against `--brand-400` among them",
+      "foundBy": "eye",
+      "check": "tokens:check · no token is declared twice in one theme with two values",
+      "status": "proven",
+      "evidence": "one value under several names is not a duplicate: `--card-foreground` and `--popover-foreground` are two decisions that agree today and part the day a popover goes dark. A duplicate is one hex PRINTED twice, and the DTCG export is where that is now caught — it round-trips every value and fails on a token declared twice in one theme. lint:css keeps hexes out of the components; this is the same question one file up"
+    },
+    {
+      "id": "a-promised-cut-of-eight-roles-was-four",
+      "date": "2026-08-26",
+      "was": "eight semantic roles were promised to move down into their one component, and four could not: `--avatar-foreground`, `--switch-track-off`, `--switch-thumb-bg` and `--shadow-card-hover` each carry THREE declarations — light, dark, and system-dark — and pushing them into a component moves theme logic into the place the semantic layer exists to take it out of",
+      "foundBy": "eye",
+      "check": null,
+      "status": "uncheckable",
+      "evidence": "nothing checks whether a role SHOULD move down; what the layer check enforces is direction, not population. The record is here because the reason is reusable: a role with a per-theme declaration belongs to the theme layer, and a pair is not worth breaking to move half of it (--avatar-bg is the same in every theme and its partner is not). 87 roles → 83"
     }
   ],
   "_unclassifiedMeans": "Entries in docs/CHANGELOG-REVIEW.md that nobody has read into this corpus yet. 609 entries, five read. It falls by reading, never by rounding.",
