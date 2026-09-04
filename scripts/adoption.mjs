@@ -83,7 +83,29 @@ for (const [tag, name] of Object.entries(COVERED)) {
   }
 }
 
-const TEMPLATE = /Template$/
+/* WHAT A PAGE TEMPLATE IS, DERIVED RATHER THAN NAMED.
+ *
+ * It used to be `/Template$/`, and a suffix is not a fact: `AdaptiveListPage` is
+ * the list page this system reaches for most, and every screen carried by it
+ * counted as hand-rolled chrome — transcript's library read 0 of 3 while its one
+ * list screen sat on the block (2026-09-04). `FormPanel` and `RenameDialog` end
+ * in neither and are not page templates either.
+ *
+ * A block is a page template when it IS the screen: it renders <Page>, the
+ * mechanism every template is built on, or it owns the <main> landmark itself
+ * because it has no shell around it (AuthTemplate, the sign-in screen). */
+const PAGE_BLOCKS = (() => {
+  const dir = `${ROOT}/packages/design-system/src/blocks`
+  const out = new Set()
+  if (!existsSync(dir)) return out
+  for (const name of readdirSync(dir)) {
+    const file = `${dir}/${name}/${name}.tsx`
+    if (!existsSync(file)) continue
+    const src = readFileSync(file, 'utf8')
+    if (name === 'Page' || /<Page\b/.test(src) || /<main\b/.test(src)) out.add(name)
+  }
+  return out
+})()
 
 /** Every .tsx under a directory, minus tests and golden examples. */
 function sources(dir) {
@@ -161,7 +183,7 @@ function measure(app) {
     const isScreen = /\/(layouts|pages)\//.test(file)
     if (isScreen) {
       screens++
-      if ([...imported].some((n) => TEMPLATE.test(n) && src.includes(`<${n}`))) templated++
+      if ([...imported].some((n) => PAGE_BLOCKS.has(n) && src.includes(`<${n}`))) templated++
     }
     for (const m of src.matchAll(/<([A-Za-z][A-Za-z0-9.]*)[\s/>]/g)) {
       const tag = m[1]

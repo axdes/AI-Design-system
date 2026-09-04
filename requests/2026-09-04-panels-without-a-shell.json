@@ -1,0 +1,24 @@
+{
+  "name": "panels without a shell",
+  "level": "block",
+  "date": "2026-09-04",
+  "requestedBy": "agent (adoption pass: screens on a page template)",
+  "need": "A screen whose content is ONE panel that fills the content area and scrolls inside itself — a transcript, a log, a chat — cannot use <DetailPageTemplate panels> unless the product mounts <AppLayout>. The height is released by `.app-layout:has([data-panels])`, so an app with no shell (transcript is one: three screens, no rail, no top bar) gets a panel that is either edge-to-edge white or content-height with the page ground below it. Measured 2026-09-04 while porting transcript's session screen onto the template: both outcomes are worse than the hand-rolled chrome the screen already had, so the port was reverted rather than shipped.",
+  "consideredAlternatives": [
+    {
+      "ref": "<DetailPageTemplate panels>",
+      "whyNot": "Without the shell above it the panel loses its gutters and paints the whole column white; the app's own ground is what the design puts AROUND the panel."
+    },
+    {
+      "ref": "<DetailPageTemplate> without panels, plus the app's own Card",
+      "whyNot": "The column is content-height, so the panel stops filling the screen and the transcript no longer scrolls inside it."
+    },
+    {
+      "ref": "app CSS on .page-inner / .page-main",
+      "whyNot": "Reaching into the template's own class contract, which lint:rules forbids for exactly the reason this would prove: the app would break the next time the block's internals move."
+    }
+  ],
+  "proposedApi": "Either <Page panels> releases its own height when there is no shell around it (the shell then only has to agree), or the templates take the surface decision as a prop the app can answer — `surface: 'panel' | 'ground'` — so a shell-less product can have the fill without the full-bleed white.",
+  "status": "pending",
+  "waitingFor": "A decision on which of the two shapes it should be. Nothing is blocked meanwhile: transcript's two detail screens keep their own panel geometry and are counted as not-on-a-template by npm run adoption, which is the honest number."
+}
