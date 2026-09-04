@@ -53,5 +53,6 @@
   },
   "callbacks": {},
   "untested": [],
-  "cold": {}
+  "cold": {},
+  "_theFour": "The four names still carrying more than one type, and why each stays (2026-09-04). `value` — ten shapes, one per control, and the value a part carries IS that part's type; folding it was tried and the fold turned out tautological, since a value is trivially its own value. `min` and `max` — a bound in the part's own scale, a Date on the three date parts and a number on the nine numeric ones; a rule that folds a bound only when it matches the part's `value` type does not cover AvatarGroup, Chart, CountBadge or TagGroup, which bound a count and have no `value` at all. `name` — an icon's name against a person's, which is genuinely two questions sharing an honest word: renaming Icon's prop would touch every call site in eight products to say `glyph` or `icon`, and `<Icon name=\"add\">` is not wrong. All four are frozen: none may gain a type."
 }
