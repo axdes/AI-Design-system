@@ -235,22 +235,65 @@ const resolve = (value, depth = 0) => {
   return next === String(value) ? next.replace(/\s+/g, ' ').trim() : resolve(next, depth + 1)
 }
 
+/* ONE DECLARATION CAN BE TWO DISTANCES, AND THEY ARE NOT NEW ONES.
+ *
+ * `gap: var(--space-1) var(--space-3)` is a row gap and a column gap: two
+ * answers, both of which the ladder already gives. Counting the PAIR as its own
+ * answer inflated the number by six on the gap question alone and by four on the
+ * surface one — and worse, it made the honest thing (saying both distances in one
+ * declaration) look like drift. Split on the spaces that are outside brackets.
+ *
+ * And a negative distance has three spellings — `calc(-1 * X)`, `calc(X * -1)`,
+ * `calc(X / -2)` is its own thing — that resolve to one number. The first two are
+ * folded; anything else stands for itself, because a check that guesses at
+ * arithmetic is worse than one that over-counts. (2026-09-04) */
+const splitOutsideBrackets = (value) => {
+  const out = []
+  let depth = 0, cur = ''
+  for (const c of String(value)) {
+    if (c === '(') depth++
+    if (c === ')') depth--
+    if (c === ' ' && depth === 0) { if (cur.trim()) out.push(cur.trim()); cur = ''; continue }
+    cur += c
+  }
+  if (cur.trim()) out.push(cur.trim())
+  return out.length ? out : [String(value).trim()]
+}
+const negation = (v) => {
+  const a = /^calc\(\s*-1\s*\*\s*(.+?)\s*\)$/.exec(v)
+  const b = /^calc\(\s*(.+?)\s*\*\s*-1\s*\)$/.exec(v)
+  const inner = a?.[1] ?? b?.[1]
+  return inner ? `-(${inner})` : v
+}
+const distancesOf = (value) => splitOutsideBrackets(resolve(value)).map(negation)
+
 const SURFACE_QUESTION = 'how much room does a painted surface give its content'
 const answers = Object.fromEntries([...Object.keys(QUESTIONS), SURFACE_QUESTION].map((q) => [q, new Set()]))
 for (const f of walk(join(ROOT, 'src'))) {
   const css = strip(read(f))
   for (const m of css.matchAll(/([a-z-]+)\s*:\s*([^;{}]+);/g)) {
     for (const [question, re] of Object.entries(QUESTIONS)) {
-      if (re.test(m[1])) answers[question].add(resolve(m[2].trim()))
+      if (re.test(m[1])) for (const d of distancesOf(m[2].trim())) answers[question].add(d)
     }
   }
   for (const rule of css.matchAll(/(?:^|\})([^{}]+)\{([^{}]*)\}/g)) {
     const selector = rule[1].trim()
     if (!selector || selector.startsWith('@')) continue
     const pad = SURFACE_PAD.exec(rule[2])
-    if (pad && PAINTS_SURFACE.test(rule[2])) answers[SURFACE_QUESTION].add(resolve(pad[1].trim()))
+    if (pad && PAINTS_SURFACE.test(rule[2])) for (const d of distancesOf(pad[1].trim())) answers[SURFACE_QUESTION].add(d)
   }
 }
+/* `--show` prints the answers themselves. The count says whether the number
+ * moved; paying it down needs to know WHICH distances are answering, and reading
+ * them out of a red run means breaking something first. (2026-09-04) */
+if (process.argv.includes('--show')) {
+  for (const [question, set] of Object.entries(answers)) {
+    console.log(`\n  ${question} — ${set.size}`)
+    console.log(`    ${[...set].sort().join('  ')}`)
+  }
+  console.log()
+}
+
 const CEILING = `${ROOT}/config/token-answers.json`
 const ceiling = existsSync(CEILING) ? JSON.parse(read(CEILING)).answers ?? {} : null
 if (process.argv.includes('--record')) {

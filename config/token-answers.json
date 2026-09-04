@@ -1,10 +1,10 @@
 {
-  "_why": "How many different DISTANCES answer one spacing question, recorded by npm run lint:token-layer -- --record. A ceiling that only falls: the right number is not 1 — a dense table and a hero are different questions wearing one property — but a question that gains an answer has gained drift somebody can see and nobody decided.",
-  "recorded": "2026-09-03",
+  "_why": "How many different values answer one spacing question, recorded by npm run lint:token-layer -- --record. A ceiling that only falls: the right number is not 1 (a dense table and a hero are different questions wearing one property), but a question that gains an answer has gained drift somebody has to read.",
+  "recorded": "2026-09-04",
   "answers": {
-    "how far apart are two things": 16,
-    "how far is a section from what is above it": 15,
-    "how much room does a painted surface give its content": 13
+    "how far apart are two things": 10,
+    "how far is a section from what is above it": 14,
+    "how much room does a painted surface give its content": 8
   },
-  "_remeasured": "2026-09-03, twice, and both times because the number was measuring the wrong thing. It counted the value AS WRITTEN, so naming a family knob made it go UP: var(--space-4) and var(--popover-padding) are one distance and were two answers. Values are resolved through the token layer now. And the surface question counted every padding in the package, 57 of them, which is a chip s inline padding and a card s room filed under one property; it asks rules that PAINT a surface and give their content room, derived from the CSS rather than from a list of selector words. 60 became 13, and the 13 are readable: five surfaces at one step, five at another, four control paddings, two cards."
+  "_remeasured": " Third time, 2026-09-04, and the same mistake one level down: it counted a DECLARATION as one answer, so `gap: var(--space-1) var(--space-3)` — a row gap and a column gap, both already on the ladder — was a new answer of its own. Six such pairs on the gap question and four on the surface one, and saying both distances in one declaration is the honest thing to do. A value is split on the spaces outside its brackets now, and the two spellings of a negation (`calc(-1 * X)` and `calc(X * -1)`) fold into one. 16/15/13 → 10/14/8."
 }
