@@ -2,7 +2,7 @@
 name: design-system
 description: The component library, tokens and layout rules this product is built from. Use when the user asks for any UI — a screen, a page, a form, a table, a dialog, a card — in a repository that ships this design system, and before writing any JSX or CSS that renders something a person looks at. Do not use it for backend, data or build work.
 metadata:
-  version: skill-v1.0.0
+  version: skill-v1.1.0
   source: https://github.com/axdes/AI-Design-system
 ---
 

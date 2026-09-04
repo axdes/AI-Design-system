@@ -2,7 +2,7 @@
   "name": "css-design-system",
   "private": true,
   "version": "0.0.0",
-  "skillVersion": "1.0.0",
+  "skillVersion": "1.1.0",
   "type": "module",
   "scripts": {
     "predev": "node scripts/gen-component-registry.mjs",
